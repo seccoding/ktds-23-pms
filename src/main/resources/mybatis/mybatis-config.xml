@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- https://mybatis.org/mybatis-3/ko/configuration.html#settings -->
+	<settings>
+		<!-- 전통적인 데이터베이스 칼럼명 형태인 A_COLUMN을 CamelCase형태의 자바 프로퍼티명 형태인 aColumn으로 
+			자동으로 매핑하도록 함 (기본값: false) -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- JDBC타입을 파라미터에 제공하지 않을때 null값을 처리한 JDBC타입을 명시한다. 일부 드라이버는 칼럼의 JDBC타입을 
+			정의하도록 요구하지만 대부분은 NULL, VARCHAR 나 OTHER처럼 일반적인 값을 사용해서 동작한다. -->
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+
+</configuration>

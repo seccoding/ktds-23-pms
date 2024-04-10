@@ -1,0 +1,69 @@
+spring:
+    application.name: pms
+    datasource:
+        url: jdbc:oracle:thin:@mcjang.iptime.org:1521:XE
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        username: PMS
+        password: PMS
+    servlet:
+        # 파일 업로드 설정
+        multipart:
+            # 최대 업로드 파일 크기 설정(100MB : 1024 * 1024 * 100)
+            max-file-size: 104857600
+            # 요청당 최대 업로드 파일 크기 설정 (10MB : 1024 * 1024 * 10)
+            max-request-size: 10485760 
+
+mybatis:
+    config-location: classpath:mybatis/mybatis-config.xml
+    mapper-locations: classpath:com/ktdsuniversity/edu/pms/**/dao/mapper/*Mapper.xml
+
+
+# 사용자 설정
+app:
+    authentication:
+        check-url-pattern: /**
+        ignore-url-patterns:
+            /js/**,
+            /css/**,
+            /error/**
+    multipart:
+        #파일 업로드 위치 지정
+        base-dir: c:/uploadFiles
+        # 난독화 여부 설정
+        obfuscation:
+            # 파일명 난독화 할 경우 true
+            enable: true
+            # 파일 확장자 가리기 여부 설정
+            hide-ext:
+                # 파일 확장자 가릴 경우 true
+                enable: true
+        available-file-list:
+            handler: tika
+            enable: true
+            list:
+                audio/aac,
+                video/x-msvideo,
+                text/css,
+                text/csv,
+                application/msword,
+                image/gif,
+                text/html,
+                image/jpeg,
+                application/json,
+                audio/midi,
+                video/mpeg,
+                audio/ogg,
+                video/ogg,
+                application/ogg,
+                application/pdf,
+                application/vnd.ms-powerpoint,
+                image/png,
+                image/tiff,
+                application/vnd.ms-excel,
+                application/zip,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                text/plain,
+                application/x-tika-ooxml
