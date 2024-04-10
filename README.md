@@ -1,4 +1,6 @@
 # ktds 23기 1차 프로젝트
+## 배치 프로젝트
+### [batch project](https://github.com/seccoding/batch-exam)
 ## Spring Boot + JSP + Oracle 기반 프로젝트
 > 공유할 내용이 있다면 README.md 파일에 아래 포멧으로 기록해주세요
 > 
