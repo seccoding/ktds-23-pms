@@ -2,6 +2,5 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper>
-  
-  </mapper>
+<mapper namespace="com.ktdsuniversity.edu.pms.requirement.dao.RequirementDao">
+</mapper>
