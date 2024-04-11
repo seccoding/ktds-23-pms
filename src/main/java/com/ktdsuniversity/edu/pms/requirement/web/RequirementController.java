@@ -15,35 +15,35 @@ public class RequirementController {
 	@Autowired
 	private RequirementService requirementService;
 	
-	@GetMapping("")
-	public AjaxResponse getAllRequirement(/*@SessionAttribute ,*/ String prjId) {
-		return null;
-		
-	}
-
-	@GetMapping("")
-	public AjaxResponse getOneRequirement(/*@SessionAttribute ,*/ String rqmId) {
-		return null;
-
-	}
-	@PostMapping("")
-	public AjaxResponse modifyRequirement(/*@SessionAttribute ,*/RequirementVO requirementVO) {
-		return null;
-
-	}
-	@PostMapping("")
-	public AjaxResponse deleteRequirement(/*@SessionAttribute ,*/ RequirementVO requirementVO) {
-		return null;
-
-	}
-	public AjaxResponse delayRequirement(/*@SessionAttribute ,*/ String rqmId) {
-		return null;
-
-	}
-	@PostMapping("")
-	public AjaxResponse approveDelay(/*@SessionAttribute ,*/ String rqmId) {
-		return null;
-
-	}
+//	@GetMapping("")
+//	public AjaxResponse getAllRequirement(/*@SessionAttribute ,*/ String prjId) {
+//		return null;
+//		
+//	}
+//
+//	@GetMapping("")
+//	public AjaxResponse getOneRequirement(/*@SessionAttribute ,*/ String rqmId) {
+//		return null;
+//
+//	}
+//	@PostMapping("")
+//	public AjaxResponse modifyRequirement(/*@SessionAttribute ,*/RequirementVO requirementVO) {
+//		return null;
+//
+//	}
+//	@PostMapping("")
+//	public AjaxResponse deleteRequirement(/*@SessionAttribute ,*/ RequirementVO requirementVO) {
+//		return null;
+//
+//	}
+//	public AjaxResponse delayRequirement(/*@SessionAttribute ,*/ String rqmId) {
+//		return null;
+//
+//	}
+//	@PostMapping("")
+//	public AjaxResponse approveDelay(/*@SessionAttribute ,*/ String rqmId) {
+//		return null;
+//
+//	}
 
 }

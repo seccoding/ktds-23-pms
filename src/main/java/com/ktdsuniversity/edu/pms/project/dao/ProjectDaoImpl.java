@@ -10,8 +10,8 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
 
 	@Autowired
 	@Override
-	public SqlSessionTemplate getSqlSessionTemplate() {
-		return super.getSqlSessionTemplate();
+	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+		super.setSqlSessionTemplate(sqlSessionTemplate);
 	}
 
 }
