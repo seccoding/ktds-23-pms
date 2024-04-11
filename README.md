@@ -10,3 +10,12 @@
 > 
 > 공유할 자세한 내용
 > 
+
+> 장민창 | 2024-04-11
+>
+> 주요 URL 공유
+> 
+> Tomcat: http://mcjang.iptime.org:8080/
+>
+> Jenkins: http://mcjang.iptime.org:9090/
+> 
