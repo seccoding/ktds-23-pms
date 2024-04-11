@@ -1,159 +1,192 @@
 package com.ktdsuniversity.edu.pms.project.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+
+import java.util.List;
+
 public class ProjectVO {
 
-	private String prjId;
-	private String prjName;
-	private String clntInfo;
-	private String deptId;
-	private String prjSts;
-	private String strtDt;
-	private String endDt;
-	private String delYn;
-	private String reqYn;
-	private String isYn;
-	private String knlYn;
-	private String qaYn;
-	private String outYn;
-	private String crtrId;
-	private String crtDt;
-	private String mdfId;
-	private String mdfDt;
+    private String prjId;
+    private String prjName;
+    private String clntInfo;
+    private String deptId;
+    private String prjSts;
+    private String strtDt;
+    private String endDt;
+    private String delYn;
+    private String reqYn;
+    private String isYn;
+    private String knlYn;
+    private String qaYn;
+    private String outYn;
+    private String crtrId;
+    private String crtDt;
+    private String mdfId;
+    private String mdfDt;
 
-	public String getPrjId() {
-		return prjId;
-	}
+    private CommonCodeVO prjStsCode;
+    private DepartmentVO deptVO;
 
-	public void setPrjId(String prjId) {
-		this.prjId = prjId;
-	}
+    private List<ProjectTeammateVO> projectTeammateList;
 
-	public String getPrjName() {
-		return prjName;
-	}
+    public String getPrjId() {
+        return prjId;
+    }
 
-	public void setPrjName(String prjName) {
-		this.prjName = prjName;
-	}
+    public void setPrjId(String prjId) {
+        this.prjId = prjId;
+    }
 
-	public String getClntInfo() {
-		return clntInfo;
-	}
+    public String getPrjName() {
+        return prjName;
+    }
 
-	public void setClntInfo(String clntInfo) {
-		this.clntInfo = clntInfo;
-	}
+    public void setPrjName(String prjName) {
+        this.prjName = prjName;
+    }
 
-	public String getDeptId() {
-		return deptId;
-	}
+    public String getClntInfo() {
+        return clntInfo;
+    }
 
-	public void setDeptId(String deptId) {
-		this.deptId = deptId;
-	}
+    public void setClntInfo(String clntInfo) {
+        this.clntInfo = clntInfo;
+    }
 
-	public String getPrjSts() {
-		return prjSts;
-	}
+    public String getDeptId() {
+        return deptId;
+    }
 
-	public void setPrjSts(String prjSts) {
-		this.prjSts = prjSts;
-	}
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
-	public String getStrtDt() {
-		return strtDt;
-	}
+    public String getPrjSts() {
+        return prjSts;
+    }
 
-	public void setStrtDt(String strtDt) {
-		this.strtDt = strtDt;
-	}
+    public void setPrjSts(String prjSts) {
+        this.prjSts = prjSts;
+    }
 
-	public String getEndDt() {
-		return endDt;
-	}
+    public String getStrtDt() {
+        return strtDt;
+    }
 
-	public void setEndDt(String endDt) {
-		this.endDt = endDt;
-	}
+    public void setStrtDt(String strtDt) {
+        this.strtDt = strtDt;
+    }
 
-	public String getDelYn() {
-		return delYn;
-	}
+    public String getEndDt() {
+        return endDt;
+    }
 
-	public void setDelYn(String delYn) {
-		this.delYn = delYn;
-	}
+    public void setEndDt(String endDt) {
+        this.endDt = endDt;
+    }
 
-	public String getReqYn() {
-		return reqYn;
-	}
+    public String getDelYn() {
+        return delYn;
+    }
 
-	public void setReqYn(String reqYn) {
-		this.reqYn = reqYn;
-	}
+    public void setDelYn(String delYn) {
+        this.delYn = delYn;
+    }
 
-	public String getIsYn() {
-		return isYn;
-	}
+    public String getReqYn() {
+        return reqYn;
+    }
 
-	public void setIsYn(String isYn) {
-		this.isYn = isYn;
-	}
+    public void setReqYn(String reqYn) {
+        this.reqYn = reqYn;
+    }
 
-	public String getKnlYn() {
-		return knlYn;
-	}
+    public String getIsYn() {
+        return isYn;
+    }
 
-	public void setKnlYn(String knlYn) {
-		this.knlYn = knlYn;
-	}
+    public void setIsYn(String isYn) {
+        this.isYn = isYn;
+    }
 
-	public String getQaYn() {
-		return qaYn;
-	}
+    public String getKnlYn() {
+        return knlYn;
+    }
 
-	public void setQaYn(String qaYn) {
-		this.qaYn = qaYn;
-	}
+    public void setKnlYn(String knlYn) {
+        this.knlYn = knlYn;
+    }
 
-	public String getOutYn() {
-		return outYn;
-	}
+    public String getQaYn() {
+        return qaYn;
+    }
 
-	public void setOutYn(String outYn) {
-		this.outYn = outYn;
-	}
+    public void setQaYn(String qaYn) {
+        this.qaYn = qaYn;
+    }
 
-	public String getCrtrId() {
-		return crtrId;
-	}
+    public String getOutYn() {
+        return outYn;
+    }
 
-	public void setCrtrId(String crtrId) {
-		this.crtrId = crtrId;
-	}
+    public void setOutYn(String outYn) {
+        this.outYn = outYn;
+    }
 
-	public String getCrtDt() {
-		return crtDt;
-	}
+    public String getCrtrId() {
+        return crtrId;
+    }
 
-	public void setCrtDt(String crtDt) {
-		this.crtDt = crtDt;
-	}
+    public void setCrtrId(String crtrId) {
+        this.crtrId = crtrId;
+    }
 
-	public String getMdfId() {
-		return mdfId;
-	}
+    public String getCrtDt() {
+        return crtDt;
+    }
 
-	public void setMdfId(String mdfId) {
-		this.mdfId = mdfId;
-	}
+    public void setCrtDt(String crtDt) {
+        this.crtDt = crtDt;
+    }
 
-	public String getMdfDt() {
-		return mdfDt;
-	}
+    public String getMdfId() {
+        return mdfId;
+    }
 
-	public void setMdfDt(String mdfDt) {
-		this.mdfDt = mdfDt;
-	}
+    public void setMdfId(String mdfId) {
+        this.mdfId = mdfId;
+    }
 
+    public String getMdfDt() {
+        return mdfDt;
+    }
+
+    public void setMdfDt(String mdfDt) {
+        this.mdfDt = mdfDt;
+    }
+
+    public CommonCodeVO getPrjStsCode() {
+        return prjStsCode;
+    }
+
+    public void setPrjStsCode(CommonCodeVO prjStsCode) {
+        this.prjStsCode = prjStsCode;
+    }
+
+    public DepartmentVO getDeptVO() {
+        return deptVO;
+    }
+
+    public void setDeptVO(DepartmentVO deptVO) {
+        this.deptVO = deptVO;
+    }
+
+    public List<ProjectTeammateVO> getProjectTeammateList() {
+        return projectTeammateList;
+    }
+
+    public void setProjectTeammateList(List<ProjectTeammateVO> projectTeammateList) {
+        this.projectTeammateList = projectTeammateList;
+    }
 }
