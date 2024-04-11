@@ -18,4 +18,9 @@
 > Tomcat: http://mcjang.iptime.org:8080/
 >
 > Jenkins: http://mcjang.iptime.org:9090/
+> > ATeam ID: ateam
+> > Ateam PW: ateam
+> >
+> > BTeam ID: bteam
+> > BTeam PW: bteam
 > 
