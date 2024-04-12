@@ -19,15 +19,14 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	}
 
 	@Override
-	public List<RequirementVO> getAllRequirement(String prjId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RequirementVO> getAllRequirement() {
+		
+		return getSqlSession().selectList(NAME_SPACE+".getAllRequirement");
 	}
 
 	@Override
 	public RequirementVO getOneRequirement(String rqmId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSqlSession().selectOne(NAME_SPACE+".getOneRequirement",rqmId);
 	}
 
 	@Override

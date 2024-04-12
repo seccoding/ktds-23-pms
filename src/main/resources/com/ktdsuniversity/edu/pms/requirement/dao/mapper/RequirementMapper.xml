@@ -3,4 +3,78 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.requirement.dao.RequirementDao">
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO" 
+	id="requirementVOMap" autoMapping="true">
+	<id column="RQM_ID" property="rqmId" /><!-- pk -->
+	<result column="SCD_STS" property="scdSts" /><!-- join value -->
+	<result column="RQM_STS" property="rqmSts" /><!-- join value -->
+	<result column="PRJ_ID" property="prjId" /><!-- join value -->
+	<!-- join table -->
+	<association property="scdStsVO" 
+		javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="STS_NAME" property="cmcdName" />
+	</association> 
+	 
+	<!-- join table -->
+	
+	<association property="rqmStsVO" 
+		javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="RQM_NAME" property="cmcdName" />
+	</association> 
+	<!-- join table -->
+	
+	<association property="projectVO" 
+		javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+			<id column="PRJ_ID" property="prjId" />
+			<result column="PRJ_NAME" property="prjName" />
+	</association>
+	 
+	</resultMap>
+
+
+	<select id="getAllRequirement" 
+	resultMap="requirementVOMap">
+SELECT  R.RQM_ID 
+	 ,	R.RQM_TTL 
+	 ,	R.RQM_CNTNT 
+	 ,	R.SCD_STS 
+	 ,	CC1.CMCD_NAME AS STS_NAME
+	 ,	R.RQM_STS 
+	 ,	cc2.CMCD_NAME AS RQM_NAME	
+	 ,	r.PRJ_ID
+	 ,	p.PRJ_NAME 
+  FROM 	REQUIREMENT r 
+  JOIN	COMMON_CODE cc1 
+  	ON	R.SCD_STS =CC1.CMCD_ID
+  JOIN  COMMON_CODE cc2
+  	ON  r.RQM_STS  = cc2.CMCD_ID 
+  JOIN	PROJECT p 
+  	ON	r.PRJ_ID = p.PRJ_ID 
+	</select>
+	
+	<select id="getOneRequirement" 
+	parameterType="String"
+	resultMap="requirementVOMap">
+SELECT  R.RQM_ID 
+	 ,	R.RQM_TTL 
+	 ,	R.RQM_CNTNT 
+	 ,	R.SCD_STS 
+	 ,	CC1.CMCD_NAME AS STS_NAME
+	 ,	R.RQM_STS 
+	 ,	cc2.CMCD_NAME AS RQM_NAME	
+	 ,	r.PRJ_ID
+	 ,	p.PRJ_NAME 
+  FROM 	REQUIREMENT r 
+  JOIN	COMMON_CODE cc1 
+  	ON	R.SCD_STS =CC1.CMCD_ID
+  JOIN  COMMON_CODE cc2
+  	ON  r.RQM_STS  = cc2.CMCD_ID 
+  JOIN	PROJECT p 
+  	ON	r.PRJ_ID = p.PRJ_ID 
+ WHERE	R.RQM_ID = #{_PARAMETER}
+	</select>
+	
 </mapper>
