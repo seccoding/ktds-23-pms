@@ -27,4 +27,29 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	public List<IssueVO> getAllIssue() {
 		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".getAllIssue");
 	}
+
+	@Override
+	public IssueVO selectOneIssue(int isId) {
+		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".selectOneIssue");
+	}
+
+	@Override
+	public int increaseViewCount(int isId) {
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".increaseViewCount");
+	}
+
+	@Override
+	public int insertNewIssue(IssueVO issueVO) {
+		return getSqlSession().insert(IssueDao.NAME_SPACE + ".insertNewIssue");
+	}
+
+	@Override
+	public int updateOneIssue(IssueVO issueVO) {
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".updateOneIssue");
+	}
+
+	@Override
+	public int deleteOneIssue(int isId) {
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue");
+	}
 }
