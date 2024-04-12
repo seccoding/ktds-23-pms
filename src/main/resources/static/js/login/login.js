@@ -5,7 +5,7 @@ $().ready(function () {
             {
                 empId: $("#empId").val(),
                 pwd: $("#pwd").val(),
-                nextUrl: $("#next").val(),
+                nextUrl: $("#nextUrl").val(),
             },
             function (response) {
                 var next = response.data.next;
