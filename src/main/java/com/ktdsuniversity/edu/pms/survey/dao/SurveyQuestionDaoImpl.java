@@ -19,8 +19,8 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public List<SurveyQuestionVO> getAllSurvey(SurveyQuestionVO surveyQuestionVO) {
-		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllSurvey", surveyQuestionVO);
+	public List<SurveyQuestionVO> getAllSurvey() {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllSurvey");
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public SurveyQuestionVO selectOneSurvey(int prjId) {
+	public SurveyQuestionVO selectOneSurvey(String prjId) {
 		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".selectOneSurvey", prjId);
 	}
 
@@ -44,12 +44,12 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public int deleteOneSurvey(int prjId) {
+	public int deleteOneSurvey(String prjId) {
 		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".deleteOneSurvey", prjId);
 	}
 
 	@Override
-	public int deleteOneSurveyQuestion(int srvId) {
+	public int deleteOneSurveyQuestion(String srvId) {
 		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".deleteOneSurveyQuestion", srvId);
 	}
 
