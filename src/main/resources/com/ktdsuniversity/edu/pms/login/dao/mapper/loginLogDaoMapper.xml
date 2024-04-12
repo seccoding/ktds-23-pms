@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.login.dao.LoginLogDao">
+    <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        SELECT EMP_ID
+             , WORK_STS
+             , EMP_NAME
+             , PWD
+             , SALT
+             , ADMN_CODE
+          FROM EMPLOYEE
+         WHERE EMP_ID = #{empId}
+           AND PWD = #{pwd}
+    </select>
+</mapper>
