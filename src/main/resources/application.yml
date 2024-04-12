@@ -28,7 +28,7 @@ app:
             /error/**
     multipart:
         #파일 업로드 위치 지정
-        base-dir: c:/uploadFiles
+        base-dir: Z:\uploadfile
         # 난독화 여부 설정
         obfuscation:
             # 파일명 난독화 할 경우 true

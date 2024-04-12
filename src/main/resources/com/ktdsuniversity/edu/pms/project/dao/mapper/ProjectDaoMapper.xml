@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.project.dao.ProjectDao">
+
+    <!--    <resultMap type="com.ktdsuniversity.edu.pms.project.vo.ProjectVO"-->
+    <!--               id="projectVOMap"-->
+    <!--               autoMapping="true">-->
+    <!--        <id column="PRJ_ID" property="prjId"/>-->
+    <!--        <association property="commonCodeVO"-->
+    <!--                     javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">-->
+    <!--            <id column="CMCD_ID" property="cmcdId"/>-->
+    <!--            <result column="CMCD_NAME" property="cmcdName"/>-->
+    <!--        </association>-->
+    <!--    </resultMap>-->
+
+    <select id="selectAllProject"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+        <!--            resultMap="projectVOMap">-->
+        SELECT P.PRJ_ID,
+        P.PRJ_NAME,
+        P.CLNT_INFO,
+        P.DEPT_ID,
+        P.PRJ_STS,
+        P.STRT_DT,
+        P.END_DT,
+        P.DEL_YN,
+        P.REQ_YN,
+        P.IS_YN,
+        P.KNL_YN,
+        P.QA_YN,
+        P.OUT_YN,
+        P.CRTR_ID,
+        C.CMCD_NAME
+        FROM PROJECT P
+        INNER JOIN COMMON_CODE C
+        ON P.PRJ_STS = C.CMCD_ID
+        ORDER BY P.PRJ_ID DESC
+    </select>
+
+    <select id="selectAllProjectCount">
+        SELECT COUNT(1)
+        FROM PROJECT
+        WHERE DEL_YN = 'N'
+    </select>
+
+    <select id="findById"
+            parameterType="String">
+        SELECT PRJ_ID,
+        PRJ_NAME,
+        CLNT_INFO,
+        DEPT_ID,
+        PRJ_STS,
+        STRT_DT,
+        END_DT,
+        DEL_YN,
+        REQ_YN,
+        IS_YN,
+        KNL_YN,
+        QA_YN,
+        OUT_YN,
+        CRTR_ID
+        FROM PROJECT
+        WHERE DEL_YN = 'N'
+        AND PRJ_ID = #{_parameter}
+    </select>
+
+    <insert id="insertNewProject"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+        INSERT INTO PROJECT
+        (PRJ_ID,
+        PRJ_NAME,
+        CLNT_INFO,
+        DEPT_ID,
+        PRJ_STS,
+        STRT_DT,
+        END_DT,
+        DEL_YN,
+        REQ_YN,
+        IS_YN,
+        KNL_YN,
+        QA_YN,
+        OUT_YN,
+        CRTR_ID)
+        VALUES
+        (('PRJ_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_PK.NEXTVAL, 6, '0')),
+        #{prjName},
+        #{clntInfo},
+        #{deptId},
+        '401',
+        TO_DATE(#{strtDt}, 'YYYY-MM-DD'),
+        TO_DATE(#{endDt}, 'YYYY-MM-DD'),
+        'N',
+        #{reqYn},
+        #{isYn},
+        #{knlYn},
+        #{qaYn},
+        #{outYn},
+        #{crtrId})
+    </insert>
+
+    <insert id="insertNewPm"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        INSERT INTO PROJECT_TEAMMATE
+        (PRJ_TM_ID,
+        PRJ_ID,
+        TM_ID,
+        ROLE,
+        DEL_YN)
+        VALUES
+        (('PRJTM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0')),
+        #{prjId},
+        #{tmId},
+        #{role},
+        'N')
+    </insert>
+
+    <update id="deleteById"
+            parameterType="String">
+        UPDATE PROJECT
+        SET DEL_YN = 'Y',
+        MDF_DT = SYSDATE
+        WHERE PRJ_ID = #{_parameter}
+    </update>
+</mapper>
