@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,5 +13,10 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     @Override
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
         super.setSqlSessionTemplate(sqlSessionTemplate);
+    }
+
+    @Override
+    public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO) {
+        return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmployeeByEmpIdAndPwd", employeeVO);
     }
 }
