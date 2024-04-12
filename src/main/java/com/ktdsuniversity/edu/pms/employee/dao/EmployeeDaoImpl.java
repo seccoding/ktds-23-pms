@@ -2,7 +2,9 @@ package com.ktdsuniversity.edu.pms.employee.dao;
 
 import java.util.List;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -10,6 +12,12 @@ import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 
 @Repository
 public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao{
+
+	@Autowired
+	@Override
+	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+		super.setSqlSessionTemplate(sqlSessionTemplate);
+	}
 
 	@Override
 	public int getAllEmployeeCount() {
