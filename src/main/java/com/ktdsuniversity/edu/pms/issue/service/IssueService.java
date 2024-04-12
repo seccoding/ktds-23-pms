@@ -18,7 +18,7 @@ public interface IssueService {
 	 * @param isIncrease 이 값이 true일 때, 조회수가 증가한다
 	 * @return 이슈 정보
 	 */
-	public IssueVO getOneIssue(int isId, boolean isIncrease);
+	public IssueVO getOneIssue(String isId, boolean isIncrease);
 	
 	/**
 	 * 새로운 이슈를 등록한다
@@ -40,5 +40,5 @@ public interface IssueService {
 	 * @param isId 삭제할 이슈의 번호
 	 * @return 삭제 성공 여부
 	 */
-	public boolean deleteOneIssue(int isId);
+	public boolean deleteOneIssue(String isId);
 }

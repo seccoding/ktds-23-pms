@@ -30,13 +30,13 @@ public class IssueServiceImpl implements IssueService {
 
 	@Transactional
 	@Override
-	public IssueVO getOneIssue(int isId, boolean isIncrease) {
+	public IssueVO getOneIssue(String isId, boolean isIncrease) {
 		IssueVO issueVO = this.issueDao.selectOneIssue(isId);
 		
 		if (issueVO == null) {
-			return null;
-			// TODO PageNotFoundException 작성해야함.
-		}
+            throw new RuntimeException("잘못된 접근입니다.");
+        }
+		
 		if (isIncrease) {
 			this.issueDao.increaseViewCount(isId);
 		}
@@ -61,7 +61,7 @@ public class IssueServiceImpl implements IssueService {
 
 	@Transactional
 	@Override
-	public boolean deleteOneIssue(int isId) {
+	public boolean deleteOneIssue(String isId) {
 		int deletedCount = this.issueDao.deleteOneIssue(isId);
 		
 		return deletedCount > 0;

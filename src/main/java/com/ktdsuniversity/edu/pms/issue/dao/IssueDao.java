@@ -25,7 +25,7 @@ public interface IssueDao {
 	 * @param isId 조회하려는 이슈의 번호
 	 * @return 조회된 이슈의 정보
 	 */
-	public IssueVO selectOneIssue(int isId);
+	public IssueVO selectOneIssue(String isId);
 	
 	
 	/**
@@ -33,7 +33,7 @@ public interface IssueDao {
 	 * @param isId 조회수를 증가시키려는 이슈의 번호
 	 * @return 업데이트 영향을 받은 데이터의 건수
 	 */
-	public int increaseViewCount(int isId);
+	public int increaseViewCount(String isId);
 	
 	/**
 	 * 새로운 이슈를 등록한다
@@ -55,5 +55,5 @@ public interface IssueDao {
 	 * @param isId 삭제할 이슈 번호
 	 * @return 삭제 영향을 받은 데이터의 건수
 	 */
-	public int deleteOneIssue(int isId);
+	public int deleteOneIssue(String isId);
 }

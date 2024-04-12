@@ -29,12 +29,12 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	}
 
 	@Override
-	public IssueVO selectOneIssue(int isId) {
+	public IssueVO selectOneIssue(String isId) {
 		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".selectOneIssue");
 	}
 
 	@Override
-	public int increaseViewCount(int isId) {
+	public int increaseViewCount(String isId) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".increaseViewCount");
 	}
 
@@ -49,7 +49,7 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	}
 
 	@Override
-	public int deleteOneIssue(int isId) {
+	public int deleteOneIssue(String isId) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue");
 	}
 }
