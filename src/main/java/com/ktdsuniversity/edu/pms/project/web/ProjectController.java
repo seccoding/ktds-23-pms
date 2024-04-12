@@ -40,7 +40,7 @@ public class ProjectController {
 	public AjaxResponse viewProjectDetailPage(@RequestParam String projectId) {
 		ProjectVO projectVO = projectService.getOneProject(projectId);
 
-		return new AjaxResponse().append("oneProject", projectVO);
+		return new AjaxResponse().append("project", projectVO);
 	}
 
 	@GetMapping("/project/write")
@@ -68,12 +68,24 @@ public class ProjectController {
 
 		boolean isCreateSuccess = projectService.createNewProject(registProjectVO);
 
-		return "redirect:/project/view";
+		String prjId = registProjectVO.getPrjId();
+
+		return "redirect:/project/view?" + prjId;
 	}
 
 	/**
 	 * TODO
 	 */
+	@GetMapping("/project/modify/{projectId}")
+	public String viewProjectModifyPage(@PathVariable String projectId, Model model) {
+
+		ProjectVO projectVO = projectService.getOneProject(projectId);
+
+		model.addAttribute("projectVO", projectVO);
+
+		return "project/projectmodify";
+	}
+
 	// 수정자 추가를 위해 SessionAttribute 추가 필요
 	@PostMapping("/project/modify/{projectId}")
 	public String modifyProject(@PathVariable String projectId) {
@@ -96,6 +108,7 @@ public class ProjectController {
 		ProjectVO originalProjectVO = projectService.getOneProject(projectId);
 
 		// 2. 검증 로직 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw new
+		// 작성자 또는 관리자
 		// RuntimeException
 
 		// 3. 데이터 삭제 여부 확인

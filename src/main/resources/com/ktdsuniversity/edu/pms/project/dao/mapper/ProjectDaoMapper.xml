@@ -20,31 +20,59 @@
         </association>
     </resultMap>
 
+    <resultMap type="com.ktdsuniversity.edu.pms.project.vo.ProjectVO"
+               id="projectTeamListMap"
+               autoMapping="true">
+        <id column="PRJ_ID" property="prjId"/>
+        <association property="prjStsCode"
+                     javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+            <id column="CMCD_ID" property="cmcdId"/>
+            <result column="CMCD_NAME" property="cmcdName"/>
+        </association>
+        <association property="deptVO"
+                     javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+            <id column="DEPT_ID" property="deptId"/>
+            <result column="DEPT_NAME" property="deptName"/>
+        </association>
+        <collection property="projectTeammateList"
+                    ofType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO"
+                    column="PRJ_ID">
+            <id column="PRJ_TM_ID" property="prjTmId"/>
+            <result column="TM_ID" property="tmId"/>
+            <result column="ROLE" property="role"/>
+            <association property="employeeVO"
+                         javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+                <id column="EMP_ID" property="empId"/>
+                <result column="EMP_NAME" property="empName"/>
+            </association>
+        </collection>
+    </resultMap>
+
     <select id="selectAllProject"
             resultMap="projectVOMap">
         <!--            resultMap="projectVOMap">-->
         SELECT P.PRJ_ID
 	         , P.PRJ_NAME
-	         , P.CLNT_INFO 
-	         , P.DEPT_ID 
-	         , P.PRJ_STS 
-	         , P.STRT_DT 
-	         , P.END_DT 
-	         , P.DEL_YN 
-	         , P.REQ_YN 
-	         , P.IS_YN 
-	         , P.KNL_YN 
-	         , P.QA_YN 
-	         , P.OUT_YN 
-	         , P.CRTR_ID 
-	         , P.CRT_DT 
-	         , P.MDFR_ID 
-	         , P.MDF_DT 
+	         , P.CLNT_INFO
+	         , P.DEPT_ID
+	         , P.PRJ_STS
+	         , P.STRT_DT
+	         , P.END_DT
+	         , P.DEL_YN
+	         , P.REQ_YN
+	         , P.IS_YN
+	         , P.KNL_YN
+	         , P.QA_YN
+	         , P.OUT_YN
+	         , P.CRTR_ID
+	         , P.CRT_DT
+	         , P.MDFR_ID
+	         , P.MDF_DT
 	         , C.CMCD_NAME
-	         , D.DEPT_NAME 
+	         , D.DEPT_NAME
         FROM PROJECT P
         LEFT JOIN DEPARTMENT D
-        ON P.DEPT_ID = D.DEPT_ID 
+        ON P.DEPT_ID = D.DEPT_ID
         LEFT JOIN COMMON_CODE C
         ON P.PRJ_STS = C.CMCD_ID
         WHERE P.DEL_YN = 'N'
@@ -59,33 +87,57 @@
 
     <select id="findById"
             parameterType="String"
-            resultMap="projectVOMap">
+            resultMap="projectTeamListMap">
         SELECT P.PRJ_ID
-	         , P.PRJ_NAME
-	         , P.CLNT_INFO 
-	         , P.DEPT_ID 
-	         , P.PRJ_STS 
-	         , P.STRT_DT 
-	         , P.END_DT 
-	         , P.DEL_YN 
-	         , P.REQ_YN 
-	         , P.IS_YN 
-	         , P.KNL_YN 
-	         , P.QA_YN 
-	         , P.OUT_YN 
-	         , P.CRTR_ID 
-	         , P.CRT_DT 
-	         , P.MDFR_ID 
-	         , P.MDF_DT 
-	         , C.CMCD_NAME
-	         , D.DEPT_NAME 
-        FROM PROJECT P
+        , P.PRJ_NAME
+        , P.CLNT_INFO
+        , P.DEPT_ID
+        , P.PRJ_STS
+        , P.STRT_DT
+        , P.END_DT
+        , P.DEL_YN
+        , P.REQ_YN
+        , P.IS_YN
+        , P.KNL_YN
+        , P.QA_YN
+        , P.OUT_YN
+        , P.CRTR_ID
+        , P.CRT_DT
+        , P.MDFR_ID
+        , P.MDF_DT
+        , C.CMCD_NAME
+        , D.DEPT_NAME
+        , PT."ROLE"
+        , E.EMP_NAME
+        FROM (SELECT PRJ_ID
+        , PRJ_NAME
+        , CLNT_INFO
+        , DEPT_ID
+        , PRJ_STS
+        , STRT_DT
+        , END_DT
+        , DEL_YN
+        , REQ_YN
+        , IS_YN
+        , KNL_YN
+        , QA_YN
+        , OUT_YN
+        , CRTR_ID
+        , CRT_DT
+        , MDFR_ID
+        , MDF_DT
+        FROM PROJECT
+        WHERE PRJ_ID = #{_parameter}
+        ) P
         LEFT JOIN DEPARTMENT D
-        ON P.DEPT_ID = D.DEPT_ID 
+        ON P.DEPT_ID = D.DEPT_ID
         LEFT JOIN COMMON_CODE C
         ON P.PRJ_STS = C.CMCD_ID
+        LEFT JOIN PROJECT_TEAMMATE PT
+        ON P.PRJ_ID = PT.PRJ_ID
+        LEFT JOIN EMPLOYEE E
+        ON PT.TM_ID = E.EMP_ID
         WHERE P.DEL_YN = 'N'
-		AND P.PRJ_ID = #{_parameter}
     </select>
 
     <insert id="insertNewProject"
