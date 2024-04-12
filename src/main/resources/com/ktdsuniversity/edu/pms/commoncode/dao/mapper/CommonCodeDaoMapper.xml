@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.commoncode.dao.CommonCodeDao">
+
+	<select id="selectAllCommonCodeList"
+			resultType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+		SELECT CMCD_ID
+		     , CMCD_PID
+		     , CMCD_NAME
+		     , TO_CHAR(CRT_DT, 'YYYY-MM-DD') CRT_DT
+		     , CRTR_ID
+		     , TO_CHAR(MDF_DT, 'YYYY-MM-DD') MDF_DT
+		     , MDFR_ID
+		     , DEL_YN
+		  FROM COMMON_CODE
+		 WHERE DEL_YN = 'N'
+	</select>
+
+</mapper>

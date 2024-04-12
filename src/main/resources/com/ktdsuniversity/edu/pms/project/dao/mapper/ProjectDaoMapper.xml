@@ -4,39 +4,51 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.project.dao.ProjectDao">
 
-    <!--    <resultMap type="com.ktdsuniversity.edu.pms.project.vo.ProjectVO"-->
-    <!--               id="projectVOMap"-->
-    <!--               autoMapping="true">-->
-    <!--        <id column="PRJ_ID" property="prjId"/>-->
-    <!--        <association property="commonCodeVO"-->
-    <!--                     javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">-->
-    <!--            <id column="CMCD_ID" property="cmcdId"/>-->
-    <!--            <result column="CMCD_NAME" property="cmcdName"/>-->
-    <!--        </association>-->
-    <!--    </resultMap>-->
+    <resultMap type="com.ktdsuniversity.edu.pms.project.vo.ProjectVO"
+               id="projectVOMap"
+               autoMapping="true">
+        <id column="PRJ_ID" property="prjId"/>
+        <association property="prjStsCode"
+                     javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+            <id column="CMCD_ID" property="cmcdId"/>
+            <result column="CMCD_NAME" property="cmcdName"/>
+        </association>
+        <association property="deptVO"
+                     javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+            <id column="DEPT_ID" property="deptId"/>
+            <result column="DEPT_NAME" property="deptName"/>
+        </association>
+    </resultMap>
 
     <select id="selectAllProject"
-            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+            resultMap="projectVOMap">
         <!--            resultMap="projectVOMap">-->
-        SELECT P.PRJ_ID,
-        P.PRJ_NAME,
-        P.CLNT_INFO,
-        P.DEPT_ID,
-        P.PRJ_STS,
-        P.STRT_DT,
-        P.END_DT,
-        P.DEL_YN,
-        P.REQ_YN,
-        P.IS_YN,
-        P.KNL_YN,
-        P.QA_YN,
-        P.OUT_YN,
-        P.CRTR_ID,
-        C.CMCD_NAME
+        SELECT P.PRJ_ID
+	         , P.PRJ_NAME
+	         , P.CLNT_INFO 
+	         , P.DEPT_ID 
+	         , P.PRJ_STS 
+	         , P.STRT_DT 
+	         , P.END_DT 
+	         , P.DEL_YN 
+	         , P.REQ_YN 
+	         , P.IS_YN 
+	         , P.KNL_YN 
+	         , P.QA_YN 
+	         , P.OUT_YN 
+	         , P.CRTR_ID 
+	         , P.CRT_DT 
+	         , P.MDFR_ID 
+	         , P.MDF_DT 
+	         , C.CMCD_NAME
+	         , D.DEPT_NAME 
         FROM PROJECT P
-        INNER JOIN COMMON_CODE C
+        LEFT JOIN DEPARTMENT D
+        ON P.DEPT_ID = D.DEPT_ID 
+        LEFT JOIN COMMON_CODE C
         ON P.PRJ_STS = C.CMCD_ID
-        ORDER BY P.PRJ_ID DESC
+        WHERE P.DEL_YN = 'N'
+        ORDER BY P.CRT_DT DESC
     </select>
 
     <select id="selectAllProjectCount">
@@ -46,24 +58,34 @@
     </select>
 
     <select id="findById"
-            parameterType="String">
-        SELECT PRJ_ID,
-        PRJ_NAME,
-        CLNT_INFO,
-        DEPT_ID,
-        PRJ_STS,
-        STRT_DT,
-        END_DT,
-        DEL_YN,
-        REQ_YN,
-        IS_YN,
-        KNL_YN,
-        QA_YN,
-        OUT_YN,
-        CRTR_ID
-        FROM PROJECT
-        WHERE DEL_YN = 'N'
-        AND PRJ_ID = #{_parameter}
+            parameterType="String"
+            resultMap="projectVOMap">
+        SELECT P.PRJ_ID
+	         , P.PRJ_NAME
+	         , P.CLNT_INFO 
+	         , P.DEPT_ID 
+	         , P.PRJ_STS 
+	         , P.STRT_DT 
+	         , P.END_DT 
+	         , P.DEL_YN 
+	         , P.REQ_YN 
+	         , P.IS_YN 
+	         , P.KNL_YN 
+	         , P.QA_YN 
+	         , P.OUT_YN 
+	         , P.CRTR_ID 
+	         , P.CRT_DT 
+	         , P.MDFR_ID 
+	         , P.MDF_DT 
+	         , C.CMCD_NAME
+	         , D.DEPT_NAME 
+        FROM PROJECT P
+        LEFT JOIN DEPARTMENT D
+        ON P.DEPT_ID = D.DEPT_ID 
+        LEFT JOIN COMMON_CODE C
+        ON P.PRJ_STS = C.CMCD_ID
+        WHERE P.DEL_YN = 'N'
+		AND P.PRJ_ID = #{_parameter}
     </select>
 
     <insert id="insertNewProject"
