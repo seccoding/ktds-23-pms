@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class ProjectController {
 
@@ -85,14 +88,28 @@ public class ProjectController {
             return "project/projectwrite";
         }
 
-        if (isEmptyStrtDt) {
-            model.addAttribute("errorMessage", "시작일을 입력해주세요.");
+        if (isEmptyStrtDt || isEmptyEndDt) {
+            model.addAttribute("errorMessage", "시작일, 종료일을 입력해주세요.");
             model.addAttribute("project", createProjectVO);
             return "project/projectwrite";
         }
 
-        if (isEmptyEndDt) {
-            model.addAttribute("errorMessage", "종료일을 입력해주세요.");
+
+        LocalDate strtDt = LocalDate.parse(createProjectVO.getStrtDt(), DateTimeFormatter.ISO_DATE);
+        LocalDate endDt = LocalDate.parse(createProjectVO.getEndDt(), DateTimeFormatter.ISO_DATE);
+        if (strtDt.isEqual(endDt) || endDt.isBefore(strtDt)) {
+            model.addAttribute("errorMessage", "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요.");
+            model.addAttribute("project", createProjectVO);
+            return "project/projectwrite";
+        }
+
+        // 범위 검사를 위한 날짜
+        LocalDate startOfThisYear = LocalDate.of(strtDt.getYear(), 1, 1);
+        LocalDate endOfFiveYears = LocalDate.now().plusYears(5).withMonth(12).withDayOfMonth(31);
+
+        // 시작일이 올해의 1월 1일 이후인지, 종료일이 5년 후의 12월 31일 이전 또는 그 날짜인지 확인
+        if (strtDt.isBefore(startOfThisYear) || endDt.isAfter(endOfFiveYears)) {
+            model.addAttribute("errorMessage", "시작일은 올해의 1월 1일 이후여야 하며, 종료일은 5년 후의 12월 31일 이전 또는 그 날짜여야 합니다.");
             model.addAttribute("project", createProjectVO);
             return "project/projectwrite";
         }
@@ -107,6 +124,7 @@ public class ProjectController {
 
         // 2. 검증 로직에 잘 맞춰서 작성한 경우, 데이터 저장
         // 2-1. 세션에서 작성자 id 추출, projectVO.setCrtrId();
+        // 현재는 정적 데이터로 해결함.
         createProjectVO.setCrtrId("system01");
 
         boolean isCreateSuccess = projectService.createNewProject(createProjectVO);

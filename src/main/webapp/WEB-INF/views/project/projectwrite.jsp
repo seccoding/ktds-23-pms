@@ -8,10 +8,6 @@
     <title>프로젝트 생성 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
 
-    <link rel="stylesheet" href="/css/lib/jquery-ui.css"/>
-    <script type="text/javascript" src="/js/lib/jquery-ui.js"></script>
-    <script type="text/javascript" src="/js/lib/datepicker.js"></script>
-
     <script type="text/javascript" src="/js/project/projectwrite.js"></script>
 </head>
 <body>
@@ -29,10 +25,10 @@
         <%-- 프로젝트 명, 고객사명 --%>
         <div>
             <label for="project-name">프로젝트명</label>
-            <input type="text" id="project-name" name="prjName" value="${project.prjName}"/>
+            <input type="text" id="project-name" name="prjName" value="${project.prjName}" autocomplete="off"/>
 
             <label for="client-info">고객사명</label>
-            <input type="text" id="client-info" name="clntInfo" value="${project.clntInfo}"/>
+            <input type="text" id="client-info" name="clntInfo" value="${project.clntInfo}" autocomplete="off"/>
         </div>
 
         <%-- 게시판 생성 여부 --%>
@@ -60,21 +56,30 @@
         <%-- 담당자 (PM) 선택 --%>
         <div>
             <label for="pm-selector">담당자 </label>
-            <input list="employee-list" name="pmId" id="pm-selector">
+            <input list="employee-list" name="pmId" id="pm-selector" autocomplete="off">
             <datalist id="employee-list">
-                <option value="Safari">테스트</option>
+                <option value="테스트">테스트</option>
                 <c:forEach items="${employee}" var="employee">
                     <option value="${employee.empId}">${employee.empName}</option>
                 </c:forEach>
             </datalist>
+
+            <%--            <label for="pm-selector">담당자 </label>--%>
+            <%--            <input list="employee-list" id="pm-selector" autocomplete="off">--%>
+            <%--            <datalist id="employee-list">--%>
+            <%--            <c:forEach items="${employee}" var="employee">--%>
+            <%--                <option data-emp-id="${employee.empId}" value="${employee.empName}"/>--%>
+            <%--            </c:forEach>--%>
+            <%--            </datalist>--%>
+            <%--            <input type="hidden" id="employee-id" name="pmId">--%>
         </div>
 
-        <%-- datepicker.js 사용, 시작일과 종료일 선택 --%>
+        <%--    html date type 사용으로 해결, datepicker는 미사용    --%>
         <div>
-            <label for="start-datepicker">시작일</label>
-            <input type="text" id="start-datepicker" name="strtDt" value="${project.strtDt}"/>
-            <label for="start-datepicker">종료일</label>
-            <input type="text" id="end-datepicker" name="endDt" value="${project.endDt}"/>
+            <label for="start-date">시작일</label>
+            <input type="date" id="start-date" name="strtDt" value="${project.strtDt}"/>
+            <label for="end-date">종료일</label>
+            <input type="date" id="end-date" name="endDt" value="${project.endDt}"/>
         </div>
 
         <div>

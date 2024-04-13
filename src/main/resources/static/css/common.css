@@ -370,7 +370,6 @@ a {
 
 table {
   width: 100%;
-  /* min-width 수정 필요, 개별 css 분리 필요 datepicker lib 의 table 요소에도 영향을 줌 */
   min-width: 1000px;
 }
 
