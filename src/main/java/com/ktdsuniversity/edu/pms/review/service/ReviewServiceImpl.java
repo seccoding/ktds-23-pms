@@ -12,6 +12,9 @@ import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
+	/*
+	*Bean Container에 등록된 reviewDao Bean을 가져와 주입시킨다
+	*/
 	@Autowired
 	private ReviewDao reviewDao;
 
@@ -24,4 +27,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewListVO;
 	}
+
+//	@Override
+//	public List<ReviewVO> getAllReview() {
+//		return reviewDao.selectAllReview();
+//	}
+	
+	
 }

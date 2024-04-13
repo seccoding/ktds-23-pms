@@ -11,4 +11,12 @@ public interface ReviewDao {
 
 	public List<ReviewVO> selectAllReview();
 
+	public int insertNewReviewQuestion(ReviewVO reviewVO);
+	
+	public int seleceOneReview(ReviewVO reviewVO);
+	
+	public int updateOneReview(ReviewVO reviewVO);
+	
+	public int deleteOneReview(ReviewVO reviewVO);
+	
 }
