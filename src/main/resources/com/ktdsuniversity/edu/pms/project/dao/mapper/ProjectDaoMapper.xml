@@ -141,7 +141,8 @@
     </select>
 
     <insert id="insertNewProject"
-            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO"
+            useGeneratedKeys="true" keyProperty="prjId" keyColumn="PRJ_ID">
         INSERT INTO PROJECT
         (PRJ_ID,
         PRJ_NAME,
@@ -151,10 +152,12 @@
         STRT_DT,
         END_DT,
         DEL_YN,
+        <if test='reqYn != null and reqYn != ""'>
         REQ_YN,
         IS_YN,
         KNL_YN,
         QA_YN,
+        </if>
         OUT_YN,
         CRTR_ID)
         VALUES
@@ -166,10 +169,27 @@
         TO_DATE(#{strtDt}, 'YYYY-MM-DD'),
         TO_DATE(#{endDt}, 'YYYY-MM-DD'),
         'N',
-        #{reqYn},
-        #{isYn},
-        #{knlYn},
-        #{qaYn},
+        <if test='reqYn != null and reqYn != ""'>
+            #{reqYn},
+            <choose>
+                <when test='isYn == null and isYn != ""'> 'N',
+                </when>
+                <otherwise>#{isYn},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test='knlYn == null and knlYn != ""'> 'N',
+                </when>
+                <otherwise>#{knlYn},
+                </otherwise>
+            </choose>
+            <choose>
+                <when test='qaYn == null and qaYn != ""'> 'N',
+                </when>
+                <otherwise>#{qaYn},
+                </otherwise>
+            </choose>
+        </if>
         #{outYn},
         #{crtrId})
     </insert>
@@ -183,7 +203,7 @@
         ROLE,
         DEL_YN)
         VALUES
-        (('PRJTM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0')),
+        (('PRJ_TM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0')),
         #{prjId},
         #{tmId},
         #{role},

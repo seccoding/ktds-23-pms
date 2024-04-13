@@ -5,6 +5,7 @@ import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,102 +18,144 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ProjectController {
 
-	@Autowired
-	private ProjectService projectService;
+    @Autowired
+    private ProjectService projectService;
 
-	@GetMapping("/project")
-	public String viewProjectListPage(Model model) {
-		ProjectListVO projectListVO = projectService.getAllProject();
+    @GetMapping("/project")
+    public String viewProjectListPage(Model model) {
+        ProjectListVO projectListVO = projectService.getAllProject();
 
-		model.addAttribute("projectList", projectListVO);
+        model.addAttribute("projectList", projectListVO);
 
-		return "project/projectlist";
-	}
+        return "project/projectlist";
+    }
 
-	/**
-	 * /project/view?projectId=PRJ_240409_000012
-	 *
-	 * @param projectId
-	 * @return
-	 */
-	@ResponseBody
-	@GetMapping("/project/view")
-	public AjaxResponse viewProjectDetailPage(@RequestParam String projectId) {
-		ProjectVO projectVO = projectService.getOneProject(projectId);
+    /**
+     * /project/view?projectId=PRJ_240409_000012
+     *
+     * @param projectId
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/project/view")
+    public AjaxResponse viewProjectDetailPage(@RequestParam String projectId) {
+        ProjectVO projectVO = projectService.getOneProject(projectId);
 
-		return new AjaxResponse().append("project", projectVO);
-	}
+        return new AjaxResponse().append("project", projectVO);
+    }
 
-	@GetMapping("/project/write")
-	public String viewProjectWritePage() {
-		return "project/projectwrite";
-	}
+    @GetMapping("/project/write")
+    public String viewProjectWritePage() {
+        return "project/projectwrite";
+    }
 
-	// 작성자 추가를 위해 SessionAttribute 추가 필요, @SessionAttribute("_LOGIN_USER_") MemberVO
-	// memberVO
-	// form action 추가 필요
-	@PostMapping("/project/write")
-	public String writeProject(CreateProjectVO registProjectVO) {
-		// 0. session memberVO가 admin 이 아닌 경우, return list page or return 400 page(잘못된
-		// 접근)
+    // 작성자 추가를 위해 SessionAttribute 추가 필요, @SessionAttribute("_LOGIN_USER_") MemberVO
+    // memberVO
+    // form action 추가 필요
+    @PostMapping("/project/write")
+    public String writeProject(CreateProjectVO createProjectVO, Model model) {
+        // 0. session memberVO가 admin 이 아닌 경우, return list page or return 400 page(잘못된
+        // 접근)
 
-		// 1. 데이터 검증, 검증에 맞춰 errorMessage 추가 후 write page return
-		// 1-1. 프로젝트명, 고객사명
-		// 1-2. 요구사항 관리 필요여부 없이 보낼 시, 다른 게시판 서비스 3개를 null 로 처리
+        // 1. 데이터 검증, 검증에 맞춰 errorMessage 추가 후 write page return
+        // 1-1. 프로젝트명, 고객사명
+        // 1-3. 수행부서가 있는 부서인지 확인하는 로직, 수행부서 get logic 이 필요
+        // 1-4. 총책임자에 해당하는 pmId로, 사원 get logic 이 필요
+        boolean isEmptyPrjName = StringUtil.isEmpty(createProjectVO.getPrjName());
+        boolean isEmptyClntInfo = StringUtil.isEmpty(createProjectVO.getClntInfo());
+        boolean isEmptyDeptId = StringUtil.isEmpty(createProjectVO.getDeptId());
+        boolean isEmptyStrtDt = StringUtil.isEmpty(createProjectVO.getStrtDt());
+        boolean isEmptyEndDt = StringUtil.isEmpty(createProjectVO.getEndDt());
 
-		// 1-3. 수행부서가 있는 부서인지 확인하는 로직, 수행부서 get logic 이 필요
-		// 1-4. 총책임자에 해당하는 pmId로, 사원 get logic 이 필요
+        if (isEmptyPrjName) {
+            model.addAttribute("errorMessage", "프로젝트명을 입력해주세요.");
+            model.addAttribute("project", createProjectVO);
+            return "project/projectwrite";
+        }
 
-		// 2. 검증 로직에 잘 맞춰서 작성한 경우, 데이터 저장
-		// 2-1. 세션에서 작성자 id 추출, projectVO.setCrtrId();
+        if (isEmptyClntInfo) {
+            model.addAttribute("errorMessage", "고객사를 입력해주세요.");
+            model.addAttribute("project", createProjectVO);
+            return "project/projectwrite";
+        }
 
-		boolean isCreateSuccess = projectService.createNewProject(registProjectVO);
+        if (isEmptyDeptId) {
+            model.addAttribute("errorMessage", "부서를 선택해주세요.");
+            model.addAttribute("project", createProjectVO);
+            return "project/projectwrite";
+        }
 
-		String prjId = registProjectVO.getPrjId();
+        if (isEmptyStrtDt) {
+            model.addAttribute("errorMessage", "시작일을 입력해주세요.");
+            model.addAttribute("project", createProjectVO);
+            return "project/projectwrite";
+        }
 
-		return "redirect:/project/view?" + prjId;
-	}
+        if (isEmptyEndDt) {
+            model.addAttribute("errorMessage", "종료일을 입력해주세요.");
+            model.addAttribute("project", createProjectVO);
+            return "project/projectwrite";
+        }
 
-	/**
-	 * TODO
-	 */
-	@GetMapping("/project/modify/{projectId}")
-	public String viewProjectModifyPage(@PathVariable String projectId, Model model) {
+        if (createProjectVO.getReqYn() == null) {
+            if (createProjectVO.getIsYn() != null || createProjectVO.getKnlYn() != null || createProjectVO.getQaYn() != null) {
+                model.addAttribute("errorMessage", "비정상적인 요청입니다.");
+                model.addAttribute("project", createProjectVO);
+                return "project/projectwrite";
+            }
+        }
 
-		ProjectVO projectVO = projectService.getOneProject(projectId);
+        // 2. 검증 로직에 잘 맞춰서 작성한 경우, 데이터 저장
+        // 2-1. 세션에서 작성자 id 추출, projectVO.setCrtrId();
+        createProjectVO.setCrtrId("system01");
 
-		model.addAttribute("projectVO", projectVO);
+        boolean isCreateSuccess = projectService.createNewProject(createProjectVO);
 
-		return "project/projectmodify";
-	}
+        String prjId = createProjectVO.getPrjId();
 
-	// 수정자 추가를 위해 SessionAttribute 추가 필요
-	@PostMapping("/project/modify/{projectId}")
-	public String modifyProject(@PathVariable String projectId) {
-		// 1. 프로젝트를 가져와서 있는지 확인
-		ProjectVO originalProjectVO = projectService.getOneProject(projectId);
+        return "redirect:/project/view?projectId=" + prjId;
+    }
 
-		// 2. 세션으로 관리자 판별 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw new
-		// RuntimeException
+    /**
+     * TODO
+     */
+    @GetMapping("/project/modify/{projectId}")
+    public String viewProjectModifyPage(@PathVariable String projectId, Model model) {
 
-		// 3. 데이터 수정 여부 확인
+        ProjectVO projectVO = projectService.getOneProject(projectId);
 
-		return "redirect:/project/view?projectId=" + projectId;
-	}
+        model.addAttribute("projectVO", projectVO);
 
-	// 수정자 추가를 위해 SessionAttribute 추가 필요,
-	// 수정자 추가 시, Mapper 에도 컬럼 추가 필요 Parameter 도 Id에서 VO로 변경 필요
-	@GetMapping("/project/delete/{projectId}")
-	public String deleteProject(@PathVariable String projectId) {
-		// 1. 프로젝트를 가져와서 있는지 확인
-		ProjectVO originalProjectVO = projectService.getOneProject(projectId);
+        return "project/projectmodify";
+    }
 
-		// 2. 검증 로직 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw new
-		// 작성자 또는 관리자
-		// RuntimeException
+    // 수정자 추가를 위해 SessionAttribute 추가 필요
+    @PostMapping("/project/modify/{projectId}")
+    public String modifyProject(@PathVariable String projectId) {
+        // 1. 프로젝트를 가져와서 있는지 확인
+        ProjectVO originalProjectVO = projectService.getOneProject(projectId);
 
-		// 3. 데이터 삭제 여부 확인
-		boolean isDeleteSuccess = projectService.deleteOneProject(projectId);
+        // 2. 세션으로 관리자 판별 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw new
+        // RuntimeException
+
+        // 3. 데이터 수정 여부 확인
+
+        return "redirect:/project/view?projectId=" + projectId;
+    }
+
+    // 수정자 추가를 위해 SessionAttribute 추가 필요,
+    // 수정자 추가 시, Mapper 에도 컬럼 추가 필요 Parameter 도 Id에서 VO로 변경 필요
+    @GetMapping("/project/delete/{projectId}")
+    public String deleteProject(@PathVariable String projectId) {
+        // 1. 프로젝트를 가져와서 있는지 확인
+        ProjectVO originalProjectVO = projectService.getOneProject(projectId);
+
+        // 2. 검증 로직 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw new
+        // 작성자 또는 관리자
+        // RuntimeException
+
+        // 3. 데이터 삭제 여부 확인
+        boolean isDeleteSuccess = projectService.deleteOneProject(projectId);
 
 //        if (isDeleteSuccess) {
 //            성공로그
@@ -120,6 +163,6 @@ public class ProjectController {
 //            실패로그
 //        }
 
-		return "redirect:/project";
-	}
+        return "redirect:/project";
+    }
 }
