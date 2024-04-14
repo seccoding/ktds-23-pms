@@ -1,6 +1,6 @@
 $().ready(function () {
     // 엔터키 방지
-    $('form').on('keypress', function(e) {
+    $('form').on('keypress', function (e) {
         if (e.which == 13) {
             e.preventDefault();  // 엔터 키 이벤트를 방지합니다.
             return false;        // 브라우저의 기본 동작을 막습니다.
@@ -12,7 +12,7 @@ $().ready(function () {
         dialog[0].showModal();
 
         dialog.on("click", function () {
-           this.close();
+            this.close();
         });
     }
 
@@ -31,19 +31,32 @@ $().ready(function () {
     });
 
 
-    // 날짜 체크, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
+    // 날짜 체크 1, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
     // 프로젝트 종료일을 초기화한다.
-    $('#end-date').change(function () {
+    $('#end-date').on("change", function () {
         var startDate = $('#start-date').val();
         var endDate = $('#end-date').val();
 
-        // 시작일과 종료일을 비교합니다.
+        // 시작일과 종료일을 비교
         if (startDate && endDate && endDate <= startDate) {
-            // 종료일이 시작일보다 이전이거나 같다면 경고를 표시하고 초기화합니다.
+            // 종료일이 시작일보다 이전이거나 같다면 경고를 표시하고 초기화
             alert('종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요.');
             $('#end-date').val(''); // 종료일 초기화
         }
     });
+
+    // 날짜 체크 2, 프로젝트 종료일이 선택된 후, 프로젝트 시작일을 수정하는 경우 alert 발생
+    // 프로젝트 시작일 유지
+    $('#start-date').on("change", function () {
+        var startDate = $('#start-date').val();
+        var endDate = $('#end-date').val();
+
+        if (startDate && endDate && endDate <= startDate) {
+            alert('시작일은 종료일보다 이전이여야 합니다. 날짜를 다시 설정해주세요.');
+            $('#start-date').val(''); // 시작일 초기화
+        }
+        }
+    );
 
     // 날짜 최소, 최대 값 설정
     var today = new Date();
