@@ -1,9 +1,12 @@
 package com.ktdsuniversity.edu.pms.project.web;
 
+import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 public class ProjectController {
@@ -24,11 +28,31 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/project")
-    public String viewProjectListPage(Model model) {
-        ProjectListVO projectListVO = projectService.getAllProject();
+    @Autowired
+    private CommonCodeService commonCodeService;
 
+    @GetMapping("/project")
+    public String redirectToProjectSearchPage() {
+//        ProjectListVO projectListVO = projectService.getAllProject();
+//
+//        model.addAttribute("projectList", projectListVO);
+
+        return "redirect:/project/search";
+    }
+
+    @GetMapping("/project/search")
+    public String viewSearchProjectListPage(Model model, SearchProjectVO searchProjectVO) {
+//        ProjectListVO projectListVO = projectService.getAllProject();
+
+        ProjectListVO projectListVO = projectService.searchProject(searchProjectVO);
+        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeList().stream()
+                .filter(code -> code.getCmcdPid() != null)
+                .filter(code -> code.getCmcdPid().equals("400"))
+                .toList();
+
+        model.addAttribute("commonCodeList", projectCommonCodeList);
         model.addAttribute("projectList", projectListVO);
+        model.addAttribute("searchProjectVO", searchProjectVO);
 
         return "project/projectlist";
     }
@@ -141,6 +165,8 @@ public class ProjectController {
     public String viewProjectModifyPage(@PathVariable String projectId, Model model) {
 
         ProjectVO projectVO = projectService.getOneProject(projectId);
+
+        // 작성자 또는 PM인지를 검증하는 로직 작성 필요
 
         model.addAttribute("projectVO", projectVO);
 

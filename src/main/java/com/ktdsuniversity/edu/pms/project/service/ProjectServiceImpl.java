@@ -5,6 +5,7 @@ import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,20 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectListVO getAllProject() {
         int projectCount = projectDao.selectAllProjectCount();
         List<ProjectVO> projectList = projectDao.selectAllProject();
+
+        ProjectListVO projectListVO = new ProjectListVO();
+        projectListVO.setProjectCount(projectCount);
+        projectListVO.setProjectList(projectList);
+
+        return projectListVO;
+    }
+
+    @Override
+    public ProjectListVO searchProject(SearchProjectVO searchProjectVO) {
+        int projectCount = projectDao.searchProjectCount(searchProjectVO);
+        searchProjectVO.setPageCount(projectCount);
+
+        List<ProjectVO> projectList = projectDao.searchBoard(searchProjectVO);
 
         ProjectListVO projectListVO = new ProjectListVO();
         projectListVO.setProjectCount(projectCount);

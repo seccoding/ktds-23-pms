@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>프로젝트 리스트 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    <script type="text/javascript" src="/js/project/projectlist.js"></script>
     <style type="text/css">
         div.grid {
             display: grid;
@@ -75,6 +76,77 @@
         </tbody>
     </table>
 
+    <!-- Paginator 시작 -->
+    <div>
+        <form id="search-form">
+            <input type="hidden" id="page-no" name="pageNo" value="0"/>
+            <select id="list-size" name="listSize">
+                <option value="10" ${searchProjectVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+                <option value="20" ${searchProjectVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+                <option value="30" ${searchProjectVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+                <option value="50" ${searchProjectVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+                <option value="100" ${searchProjectVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+            </select>
+
+            <select id="status" name="searchStatus">
+                <option value="" selected disabled hidden>프로젝트 상태</option>
+                <c:forEach items="${commonCodeList}" var="code">
+                    <option value="${code.cmcdId}" ${searchProjectVO.searchStatus eq code.cmcdId ? 'selected' : ''}>${code.cmcdName}</option>
+                </c:forEach>
+            </select>
+
+            <select id="search-type" name="searchType">
+                <option value="" selected disabled hidden>검색 옵션</option>
+                <option value="project" ${searchProjectVO.searchType eq 'project' ? 'selected' : ''}>프로젝트명</option>
+                <option value="client" ${searchProjectVO.searchType eq 'client' ? 'selected' : ''}>고객사명</option>
+                <option value="department" ${searchProjectVO.searchType eq 'department' ? 'selected' : ''}>수행부서명
+                </option>
+            </select>
+
+            <input type="text" name="searchKeyword" value="${searchProjectVO.searchKeyword}"/>
+            <button type="button" id="search-btn">검색</button>
+            <button type="button" id="cancel-search-btn">초기화</button>
+
+            <ul class="page-nav">
+                <c:if test="${searchProjectVO.hasPrevGroup}">
+                    <li><a href="javascript:search(0);">처음</a></li>
+                    <li>
+                        <a
+                                href="javascript:search(${searchProjectVO.prevGroupStartPageNo});"
+                        >이전</a
+                        >
+                    </li>
+                </c:if>
+
+                <!-- Page 번호를 반복하며 노출한다. -->
+                <c:forEach
+                        begin="${searchProjectVO.groupStartPageNo}"
+                        end="${searchProjectVO.groupEndPageNo}"
+                        step="1"
+                        var="p"
+                >
+                    <li class="${searchProjectVO.pageNo eq p ? 'active' : ''}">
+                        <a href="javascript:search(${p});">${p+1}</a>
+                    </li>
+                </c:forEach>
+
+                <c:if test="${searchProjectVO.hasNextGroup}">
+                    <li>
+                        <a
+                                href="javascript:search(${searchProjectVO.nextGroupStartPageNo});"
+                        >다음</a
+                        >
+                    </li>
+                    <li>
+                        <a href="javascript:search(${searchProjectVO.pageCount - 1});"
+                        >마지막</a
+                        >
+                    </li>
+                </c:if>
+            </ul>
+        </form>
+    </div>
+    <!-- Paginator 끝 -->
 
     <div>
         <a href="/project/write">프로젝트 등록</a>
