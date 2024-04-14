@@ -94,8 +94,8 @@
         , P.CLNT_INFO
         , P.DEPT_ID
         , P.PRJ_STS
-        , P.STRT_DT
-        , P.END_DT
+        , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
+        , TO_CHAR(P.END_DT, 'YYYY-MM-DD') AS END_DT
         , P.DEL_YN
         , P.REQ_YN
         , P.IS_YN
@@ -117,7 +117,13 @@
         AND D.DEL_YN = 'N'
         AND C.DEL_YN = 'N'
         <if test='searchStatus != null and searchStatus != ""'>
-            AND P.PRJ_STS = #{searchStatus}
+            <choose>
+                <when test='searchStatus == "all"'>
+                </when>
+                <otherwise>
+                    AND P.PRJ_STS = #{searchStatus}
+                </otherwise>
+            </choose>
         </if>
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
@@ -149,7 +155,13 @@
         AND D.DEL_YN = 'N'
         AND C.DEL_YN = 'N'
         <if test='searchStatus != null and searchStatus != ""'>
-            AND P.PRJ_STS = #{searchStatus}
+            <choose>
+                <when test='searchStatus == "all"'>
+                </when>
+                <otherwise>
+                    AND P.PRJ_STS = #{searchStatus}
+                </otherwise>
+            </choose>
         </if>
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>

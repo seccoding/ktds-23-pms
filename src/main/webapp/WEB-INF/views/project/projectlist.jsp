@@ -89,7 +89,7 @@
             </select>
 
             <select id="status" name="searchStatus">
-                <option value="" selected disabled hidden>프로젝트 상태</option>
+                <option value="all" ${searchProjectVO.searchStatus eq 'all' ? 'selected' : ''}>전체상태</option>
                 <c:forEach items="${commonCodeList}" var="code">
                     <option value="${code.cmcdId}" ${searchProjectVO.searchStatus eq code.cmcdId ? 'selected' : ''}>${code.cmcdName}</option>
                 </c:forEach>
