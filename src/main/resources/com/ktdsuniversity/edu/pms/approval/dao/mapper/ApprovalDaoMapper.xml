@@ -20,7 +20,7 @@
 		 WHERE A.DEL_YN = 'N'
 	</select>
 	
-	<select id="getAllApproval" resultType="">
+	<select id="getAllApproval" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO">
 		SELECT A.APPR_ID
 	     , A.DMD_DT
 	     , A.APPR_CTGR
