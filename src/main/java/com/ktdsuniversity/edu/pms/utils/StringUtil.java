@@ -13,7 +13,7 @@ public abstract class StringUtil {
 	}
 	
 	/**
-	 * 사원번호가 숫자10자리인지 확인하는 파라미터 유효성 검사
+	 * 사원번호가 숫자 10자리이거나,  "system"이 포함된 문자열인지 검사
 	 * @param str 입력받은 사원번호
 	 * @return 사원번호 형식이 맞다면 true, 틀리다면 false
 	 */
@@ -22,15 +22,9 @@ public abstract class StringUtil {
 			return false;
 		}
 		
-		String EmpIdFormat = "^\\\\d{10}$";
-		if (str.matches(EmpIdFormat)) {
-			return true;
-		}else if (str.equals("system01")) {
-			return true;
-		}
+		String EmpIdFormat = "(\\d{7}|.*system.*)";
 		
-		
-		return false;
+		return str.matches(EmpIdFormat);
 	}
 	
 	
