@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.project.web;
 
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
@@ -67,6 +68,11 @@ public class ProjectController {
     @GetMapping("/project/view")
     public AjaxResponse viewProjectDetailPage(@RequestParam String projectId) {
         ProjectVO projectVO = projectService.getOneProject(projectId);
+        
+        //  사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
+        //        boolean isTeammate = projectVO.getProjectTeammateList().stream()
+        //                .anyMatch(teammate -> teammate.getTmId().equals(세션에 있는 사원 아이디));
+
 
         return new AjaxResponse().append("project", projectVO);
     }
@@ -153,8 +159,11 @@ public class ProjectController {
 
         boolean isCreateSuccess = projectService.createNewProject(createProjectVO);
 
-        String prjId = createProjectVO.getPrjId();
+        if (!isCreateSuccess) {
+            throw new CreationException();
+        }
 
+        String prjId = createProjectVO.getPrjId();
         return "redirect:/project/view?projectId=" + prjId;
     }
 

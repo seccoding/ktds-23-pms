@@ -201,6 +201,7 @@
         , C.CMCD_NAME
         , D.DEPT_NAME
         , PT."ROLE"
+        , PT.TM_ID
         , E.EMP_NAME
         FROM (SELECT PRJ_ID
         , PRJ_NAME

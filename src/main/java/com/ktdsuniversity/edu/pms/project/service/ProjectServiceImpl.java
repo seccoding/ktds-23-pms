@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.project.service;
 
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
@@ -48,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectVO projectVO = projectDao.findById(projectId);
 
         if (projectVO == null) {
-            throw new RuntimeException("잘못된 접근입니다.");
+            throw new PageNotFoundException();
         }
 
         return projectVO;
