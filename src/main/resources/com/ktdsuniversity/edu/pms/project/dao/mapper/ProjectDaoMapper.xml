@@ -71,9 +71,9 @@
 	         , C.CMCD_NAME
 	         , D.DEPT_NAME
         FROM PROJECT P
-        LEFT JOIN DEPARTMENT D
+        INNER JOIN DEPARTMENT D
         ON P.DEPT_ID = D.DEPT_ID
-        LEFT JOIN COMMON_CODE C
+        INNER JOIN COMMON_CODE C
         ON P.PRJ_STS = C.CMCD_ID
         WHERE P.DEL_YN = 'N'
         ORDER BY P.CRT_DT DESC
@@ -83,6 +83,87 @@
         SELECT COUNT(1)
         FROM PROJECT
         WHERE DEL_YN = 'N'
+    </select>
+
+    <select id="searchBoard"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO"
+            resultMap="projectVOMap">
+        <include refid="Common.pagenate_header" />
+        SELECT P.PRJ_ID
+        , P.PRJ_NAME
+        , P.CLNT_INFO
+        , P.DEPT_ID
+        , P.PRJ_STS
+        , P.STRT_DT
+        , P.END_DT
+        , P.DEL_YN
+        , P.REQ_YN
+        , P.IS_YN
+        , P.KNL_YN
+        , P.QA_YN
+        , P.OUT_YN
+        , P.CRTR_ID
+        , P.CRT_DT
+        , P.MDFR_ID
+        , P.MDF_DT
+        , C.CMCD_NAME
+        , D.DEPT_NAME
+        FROM PROJECT P
+        INNER JOIN DEPARTMENT D
+        ON P.DEPT_ID = D.DEPT_ID
+        INNER JOIN COMMON_CODE C
+        ON P.PRJ_STS = C.CMCD_ID
+        WHERE P.DEL_YN = 'N'
+        AND D.DEL_YN = 'N'
+        AND C.DEL_YN = 'N'
+        <if test='searchStatus != null and searchStatus != ""'>
+            AND P.PRJ_STS = #{searchStatus}
+        </if>
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "project"'>
+                    AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "client"'>
+                    AND P.CLNT_INFO LIKE '%' ||  #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "department"'>
+                    AND D.DEPT_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
+        ORDER BY P.CRT_DT DESC
+        <include refid="Common.pagenate_footer" />
+    </select>
+
+    <select id="searchProjectCount"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO"
+            resultType="_int">
+        SELECT COUNT(1)
+        FROM PROJECT P
+        INNER JOIN DEPARTMENT D
+        ON P.DEPT_ID = D.DEPT_ID
+        INNER JOIN COMMON_CODE C
+        ON P.PRJ_STS = C.CMCD_ID
+        WHERE P.DEL_YN = 'N'
+        AND D.DEL_YN = 'N'
+        AND C.DEL_YN = 'N'
+        <if test='searchStatus != null and searchStatus != ""'>
+            AND P.PRJ_STS = #{searchStatus}
+        </if>
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "project"'>
+                    AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "client"'>
+                    AND P.CLNT_INFO LIKE '%' ||  #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "department"'>
+                    AND D.DEPT_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
     </select>
 
     <select id="findById"

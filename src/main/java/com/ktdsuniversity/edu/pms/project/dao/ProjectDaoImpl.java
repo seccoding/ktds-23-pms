@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.project.dao;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     @Override
     public int selectAllProjectCount() {
         return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".selectAllProjectCount");
+    }
+
+    @Override
+    public List<ProjectVO> searchBoard(SearchProjectVO searchProjectVO) {
+        return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".searchBoard", searchProjectVO);
+    }
+
+    @Override
+    public int searchProjectCount(SearchProjectVO searchProjectVO) {
+        return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".searchProjectCount", searchProjectVO);
     }
 
     @Override
