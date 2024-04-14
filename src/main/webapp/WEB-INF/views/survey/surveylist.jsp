@@ -38,7 +38,7 @@
                             <tr>
                                 <td>${survey.projectVO.prjName}</td>
                                 <td>${survey.projectVO.clntInfo}</td>
-                                <td>${survey.projectVO.deptId}</td>
+                                <td>${survey.departmentVO.deptName}</td>
                                 <td>${survey.projectVO.prjSts}</td>
                                 <td>${survey.projectVO.strtDt}</td>
                                 <td>${survey.projectVO.endDt}</td>

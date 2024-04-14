@@ -1,11 +1,10 @@
 package com.ktdsuniversity.edu.pms.survey.service;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
@@ -21,13 +20,20 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 	public SurveyListVO getAllSurvey() {
 		List<SurveyQuestionVO> surveyList = this.surveyQuestionDao.getAllSurvey();
 		
-		surveyList = surveyList.stream().collect(Collectors.toMap(SurveyQuestionVO::getPrjId, Function.identity(),
-				(existing, replacement) -> existing)).values().stream().collect(Collectors.toList());
-		
 		SurveyListVO surveyListVO = new SurveyListVO();
 		surveyListVO.setSurveyList(surveyList);
 		
 		return surveyListVO;
 	}
+
+	@Transactional
+	@Override
+	public boolean createNewSurveyQuestion(SurveyQuestionVO surveyQuestionVO) {
+		int insertedCount = this.surveyQuestionDao.insertNewSurveyQuestion(surveyQuestionVO);
+		
+		return insertedCount > 0;
+	}
+	
+
 
 }
