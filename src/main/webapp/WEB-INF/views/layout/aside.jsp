@@ -1,17 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <div class="sidebar">
+      <img class="user-img" src="/images/login.png" alt="" />
       <div class="sidebar-user">
-        <img class="user-img" src="./login.png" alt="" />
         <div class="sidebar-user-info">
           <div class="user-name">아무개</div>
-          <div class="user-team">A팀</div>
+          <div class="user-team">인사팀</div>
         </div>
       </div>
       <div class="sidebar-menu">
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-employee.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">사원</span>
             <div class="dropdown-icon"></div>
           </div>
@@ -22,27 +26,39 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-department.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">부서&팀</span>
           </div>
         </div>
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-product.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">비품</span>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#">비품 조회</a>
-            <a href="#">비품 대여</a>
-            <a href="#">비품 관리(admin)</a>
-            <a href="#">비품 상세(admin)</a>
-            <a href="#">비품 대여현황(admin)</a>
+            <a href="#" class="active">비품 조회</a>
+            <a href="#" class="active">비품 대여</a>
+            <a href="#" class="active">비품 관리(admin)</a>
+            <a href="#" class="active">비품 상세(admin)</a>
+            <a href="#" class="active">비품 대여현황(admin)</a>
           </div>
         </div>
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-approval.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">결재</span>
             <div class="dropdown-icon"></div>
           </div>
@@ -54,7 +70,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-project.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">프로젝트</span>
             <div class="dropdown-icon"></div>
           </div>
@@ -71,7 +91,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-memo.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">쪽지</span>
             <div class="dropdown-icon"></div>
           </div>
@@ -84,7 +108,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
         <div class="sidebar-submenu">
           <div class="sidebar-submenu-content">
-            <img class="sidebar-common-icon" src="./images/" alt="" />
+            <img
+              class="sidebar-common-icon"
+              src="/images/sidebar-commute.png"
+              alt=""
+            />
             <span class="sidedbar-menu-name">출퇴근</span>
             <div class="dropdown-icon"></div>
           </div>

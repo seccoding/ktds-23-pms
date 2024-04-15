@@ -1,3 +1,26 @@
+// 사이드바 서브메뉴 접는 기능
+$().ready(function () {
+  $(".sidebar-submenu").each(function () {
+    $(this)
+      .find(".sidebar-submenu-content")
+      .on("click", function (event) {
+        event.preventDefault();
+        $(this).find(".dropdown-icon").toggleClass("active");
+        var dropdown_content = $(this).siblings(".dropdown-menu");
+        var dropdown_content_lis = dropdown_content.find("a");
+        var active_height =
+          dropdown_content_lis.eq(0).outerHeight() *
+          dropdown_content_lis.length;
+        dropdown_content
+          .toggleClass("active")
+          .css(
+            "height",
+            dropdown_content.hasClass("active") ? active_height + "px" : "0"
+          );
+      });
+  });
+});
+
 $().ready(function () {
 
     // 날짜 체크 1, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
