@@ -3,5 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" id="approvalVOMap" autoMapping="true">
+		<id column="APPR_ID" property="apprId"/>
+		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName"/>
+		</association>
+	</resultMap>
+
+	<select id="getAllCount" resultType="_int">	
+		SELECT COUNT(*)
+		  FROM APPROVAL A
+		 INNER JOIN EMPLOYEE E
+			ON A.DMD_ID = E.EMP_ID
+		 WHERE A.DEL_YN = 'N'
+	</select>
 	
-</mapper>
+	<select id="getAllApproval" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO">
+		SELECT A.APPR_ID
+	     , A.DMD_DT
+	     , A.APPR_CTGR
+	     , A.APPR_STS
+	     , A.APPR_TTL
+	     , A.APPR_CNTNT
+	     , A.DMD_ID
+	     , A.APPR_MNG_ID
+	     , A.ARRP_RJCT
+	     , A.LAST_CN_DT
+	     , A.APPR_FNSH_DT
+	     , E.EMP_NAME 
+	  FROM APPROVAL A
+	 INNER JOIN EMPLOYEE E
+	    ON A.DMD_ID = E.EMP_ID 
+	 WHERE A.DEL_YN = 'N'
+	</select>
+	
+	
+</mapper> 

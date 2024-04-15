@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.project.vo;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+
 public class ProjectTeammateVO {
 
 	private String prjTmId;
@@ -7,6 +9,8 @@ public class ProjectTeammateVO {
 	private String tmId;
 	private String role;
 	private String delYn;
+
+	private EmployeeVO employeeVO;
 
 	public String getPrjTmId() {
 		return prjTmId;
@@ -48,4 +52,11 @@ public class ProjectTeammateVO {
 		this.delYn = delYn;
 	}
 
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
 }
