@@ -36,11 +36,25 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	}
 
 	@Override
-	public int updateOneRequirement(String rqmId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateOneRequirement(RequirementVO requirementVO) {
+		
+		return getSqlSession().update(NAME_SPACE+".updateOneRequirement", requirementVO);
 	}
 
+	
+
+	@Override
+	public int deleteReRequirement(RequirementVO requirementVO) {
+		// TODO Auto-generated method stub
+		return getSqlSession().update(NAME_SPACE+".deleteReRequirement", requirementVO);
+	}
+	
+	
+	@Override
+	public int delayRequirement(RequirementVO requirementVO) {
+		return getSqlSession().update(NAME_SPACE+".delayRequirement", requirementVO);
+		
+	}
 	@Override
 	public int updateDelayOneRequirement(RequirementVO requirementVO) {
 		// TODO Auto-generated method stub

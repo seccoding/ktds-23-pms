@@ -5,6 +5,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <title>요구사항 상세 페이지</title>
+    <jsp:include page="../commonheader.jsp"></jsp:include>
+    <script
+      type="text/javascript"
+      src="/js/requirement/requirementview.js"
+    ></script>
 
     <style>
       .grid {
@@ -20,7 +25,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div>프로젝트명</div>
       <div>${requirement.projectVO.prjName}</div>
       <div>요구사항 아이디</div>
-      <div>${requirement.rqmId}</div>
+      <div id="rqmId" data-rqm-id="${requirement.rqmId}">
+        ${requirement.rqmId}
+      </div>
       <div>요구사항 제목</div>
       <div>${requirement.rqmTtl}</div>
       <div>요구사항 내용</div>
@@ -33,9 +40,21 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     <div>
       <a
-        href="/project/${requirement.prjId}/requirement/${requirement.rqmId}/write"
+        href="/project/requirement/modify?prjId=${requirement.prjId}&rqmId=${requirement.rqmId}"
         >수정</a
       >
+      <a href="/project/requirement/delete?rqmId=${requirement.rqmId}">삭제</a>
+      <c:choose>
+        <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
+          <a href="/project/requirement/delaycall?rqmId=${requirement.rqmId}"
+            >연기요청</a
+          >
+        </c:when>
+        <c:otherwise>
+          <a id="approve" href="javascript:void(0)">승인</a>
+          <a id="refuse" href="javascript:void(0)">거절</a>
+        </c:otherwise>
+      </c:choose>
     </div>
   </body>
 </html>
