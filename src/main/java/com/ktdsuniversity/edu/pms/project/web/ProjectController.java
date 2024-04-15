@@ -3,6 +3,9 @@ package com.ktdsuniversity.edu.pms.project.web;
 import java.util.List;
 import java.util.Map;
 
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 import org.slf4j.Logger;
@@ -36,6 +39,9 @@ public class ProjectController {
 
     @Autowired
     private CommonCodeService commonCodeService;
+
+//    @Autowired
+//    private EmployeeService employeeService;
 
     @GetMapping("/project")
     public String redirectToProjectSearchPage() {
@@ -82,7 +88,12 @@ public class ProjectController {
     }
 
     @GetMapping("/project/write")
-    public String viewProjectWritePage() {
+    public String viewProjectWritePage(Model model) {
+
+//        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
+//
+//        model.addAttribute("employee", employeeList);
+
         return "project/projectwrite";
     }
 
