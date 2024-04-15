@@ -9,4 +9,15 @@ public interface LoginLogService {
      * @return
      */
     public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO);
+
+	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO);
+
+	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO);
+
+	
+
+	
+
+	
+
 }

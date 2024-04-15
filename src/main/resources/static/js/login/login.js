@@ -10,47 +10,28 @@ $().ready(function () {
       },
       function (response) {
         var errors = response.data.errors;
+        var errorUseNow = response.data.errorUseNow;
         var next = response.data.next;
         
-        if (errors) {
-            for (var key in errors) {
-                 console.log(errors[key]);
-                //  if (errors[key] === 2) {
-                    // var message = errors[0] + errors[1] + errors[2]
-                //  }
-                
-                //   var errorDiv = $("<div></div>");
-                //   errorDiv.addClass("error");
-                // var values = errors[key];
-                // for (var i in values) {
-                    // var errorValue = Values[i];
-                // var error = $("<div></div>");
-                // error.text(errorValue);
-                // error.append(error);
-            //   }
-            //   $("input[name=" + key + "]").after(errorDiv);
+        if (errors) { 
+          // 사번 + 비번 둘다 입력되지 않을때
+          if (!$("#empId").val() && !$("#pwd").val()) {
+            alert(errors.empId[0] + "\n" + errors.pwd[0]);
           }
-          /**
-           * 사번과 비밀번호를 둘다 입력하지 않은경우(사번, 비번 입력해주세요)
-           * 사번을 입력했으나 사번 형식이 아닌경우 (사번형식으로 입력해주세요)
-           * 사번을 입력했으나 사번 형식이 아니고 비밀번호를 입력하지 않은경우 (사번형식으로 입력해주세요
-           *                                                        , 비밀번호를 입력해주세요)
-           * 사번은 일치하나 비밀번호를 입력하지 않은경우 (비밀번호를 입력해 주세요)
-           * 
-           */
-        //   if (empId === "") {
-        //     alert(errors.empId[0]);
-        //   } 
-        //   else if(empId !== null) {
-        //     alert(errors.empId[1]);
-        //   }
-        //    else if(errors.empId == null){
-        //     alert(errors.empId[1]);
-        //   } else if(errors.pwd){
-        //     alert(errors.pwd);
-        //   }
-          
+          //입력받았지만 Id형식이 아닐때(숫자 7자리 or "system"포함되어있는지)
+          else if (errors.empId) {
+            alert(errors.empId[0]);
         }
+
+          else if (!$("#pwd").val()) {
+            alert(errors.pwd);
+          }
+        }
+
+        if (errorUseNow) {
+          alert(errorUseNow);
+        }
+
         if (next) {
           location.href = next;
         }

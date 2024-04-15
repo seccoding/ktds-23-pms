@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.SessionUtil;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
@@ -57,10 +59,44 @@ public class LoginController {
 		}
 		
 		EmployeeVO employee = this.loginLogService.getOneEmployeeByEmpIdAndPwd(employeeVO);
-		session.setAttribute("_LOGIN_USER_", employee);
-
-		return new AjaxResponse().append("next", nextUrl);
+		//로그인 할때 lgnYN이 N일 경우 로그인 진행
+		if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
+//		if (employee.getLgnYn().equals("N")) {
+			
+			session.setAttribute("_LOGIN_USER_", employee);
+			session.setMaxInactiveInterval(20 * 60);
+			SessionUtil.addSession(employee.getEmpId(), session);
+			
+//			session.setMaxInactiveInterval(20);
+			
+//			EmployeeVO EmpLog = (EmployeeVO) session.getAttribute("_LOGIN_USER_");
+//
+////			HttpSession log = (HttpSession) session.getAttribute("_LOGIN_USER_");
+////			
+//			if (EmpLog == null || EmpLog.equals("")) {
+//				System.out.println("로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인");
+//				this.loginLogService.getOneEmpIdNotUseNow(employee);
+//			}
+			//로그인 성공시 LGNYN을 Y로 변경
+			employee = this.loginLogService.getOneEmpIdUseOtherPlace(employeeVO);
+			
+			return new AjaxResponse().append("next", nextUrl);
+		}
+		// 아닐경우 오류 발생
+		else {
+			return new AjaxResponse().append("errorUseNow", "이미 로그인중인 사원번호입니다.");
+		}
+	}
+		
+	@GetMapping("/employee/logout")
+	public String doLogout(HttpSession session, @SessionAttribute("_LOGIN_USER_")EmployeeVO employeeVO) {
+		
+		this.loginLogService.getOneEmpIdNotUseNow(employeeVO);
+		SessionUtil.removeSession(employeeVO.getEmpId());
+		
+		session.invalidate();
 		
 		
+		return "redirect:/employee/login";
 	}
 }
