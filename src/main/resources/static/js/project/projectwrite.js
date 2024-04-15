@@ -7,6 +7,47 @@ $().ready(function () {
         }
     });
 
+    $("#btn-create").on("click", function () {
+        var reqYn = $("#requirement-check").is(":checked") ? "Y" : "N";
+        var outYn = $("#output-check").is(":checked") ? "Y" : "N";
+        var isYn = $("#issue-check").is(":checked") ? "Y" : "N";
+        var knlYn = $("#knowledge-check").is(":checked") ? "Y" : "N";
+        var qaYn = $("#qna-check").is(":checked") ? "Y" : "N";
+
+        $.post("/ajax/project/write",
+            {
+                prjName: $("#project-name").val(),
+                clntInfo: $("#client-info").val(),
+                reqYn: reqYn,
+                outYn: outYn,
+                isYn: isYn,
+                knlYn: knlYn,
+                qaYn: qaYn,
+                deptId: $("#dept-list").val(),
+                pmId: $("#pm-selector").val(),
+                strtDt: $("#start-date").val(),
+                endDt: $("#end-date").val()
+            }
+            , function (response) {
+                if (response.data.next) {
+                    location.href = response.data.next;
+                }
+
+                handleValidationErrors(response, function (error) {
+                    for (var key in error) {
+                        var errorMessages = error[key];
+                        for (var i in errorMessages) {
+                            var errorMessage = errorMessages[i]
+                            if (errorMessage) {
+                                alertModal("입력값을 확인하세요!", errorMessage);
+                                return;
+                            }
+                        }
+                    }
+                })
+            });
+    });
+
     var dialog = $(".alert-dialog");
     if (dialog.length > 0) {
         dialog[0].showModal();

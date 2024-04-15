@@ -14,14 +14,7 @@
 <jsp:include page="../layout/layout.jsp"></jsp:include>
 <div class="main">
     <h4>프로젝트 생성</h4>
-    <form action="/project/write" method="post">
-
-        <c:if test="${not empty errorMessage}">
-            <dialog class="alert-dialog">
-                <h1>${errorMessage}</h1>
-            </dialog>
-        </c:if>
-
+    <form>
         <%-- 프로젝트 명, 고객사명 --%>
         <div>
             <label for="project-name">프로젝트명</label>
@@ -84,7 +77,7 @@
 
         <div>
             <div>
-                <input type="submit" value="저장"/>
+                <button id="btn-create" type="button">생성</button>
             </div>
         </div>
     </form>
