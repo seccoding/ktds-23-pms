@@ -2,21 +2,83 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ktdsuniversity.edu.pms.review.dao.ReviewDao">
+<mapper
+	namespace="com.ktdsuniversity.edu.pms.review.dao.ReviewDao">
+	
+	<resultMap
+		type="com.ktdsuniversity.edu.pms.review.vo.ReviewVO" id="ReviewVOMap"
+		autoMapping="true">
+		<id column="RV_ID" property="rvId" />
+		<association property="projectVO"
+			javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+			<id column="PRJ_ID" property="prjId" />
+			<result column="PRJ_NAME" property="prjName" />
+			<result column="CLNT_INFO" property="clntInfo" />
+			<result column="DEPT_ID" property="deptId" />
+			<result column="PRJ_STS" property="prjSts" />
+			<result column="STRT_DT" property="strtDt" />
+			<result column="END_DT" property="endDt" />
+		</association>
+		<association property="departmentVO"
+					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+			<id column="DEPT_ID" property="deptId" />
+			<result column="DEPT_NAME" property="deptName" />
+		</association>
+		<association property="projectTeammateVO"
+					 javaType="com.ktdsuniversity.edu.pms.project.vo.projectTeammateVO">
+			<id column="PRJ_TM_ID" property="prjTmId" />
+			<result column="TM_ID" property="tmId" />
+			<result column="ROLE" property="role" />
+		</association>
+	</resultMap>
 
-    <select id="selectAllReview"
-             resultType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
-        SELECT PR.RV_ID,
-        PR.RV_ID,
-        PR.RV_CNTNT,
-        PR.PRJ_ID,
-        PR.CRT_DT,
-        PR.CRTR_ID,
-        PR.MDF_DT,
-        PR.MDFR_ID,
-        PR.DEL_YN
-        FROM PROJECT_REVIEW PR
-        INNER JOIN PROJECT P
-        ON PR.PRJ_ID = P.PRJ_ID 
-    </select>
+
+	<insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.reviewVO">
+		INSERT INTO PROJECT_REVIEW
+			 (RV_ID
+			, RV_CNTNT
+			, PRJ_ID
+			, CRT_DT
+			, CRTR_ID
+			, MDF_DT
+			, MDFR_ID
+			, DEL_YN
+			)
+		VALUES
+		 (('PRJ_RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REVIEW_PK.NEXTVAL, 6, '0'))
+			, #{rvCntnt}
+			, #{prjId}
+			, #{crtDt}
+			, SYSDATE
+			, NULL
+			, NULL
+			, 'N')
+	</insert>
+	
+	
+
+	<select id="selectAllReview" resultMap="ReviewVOMap">
+		SELECT
+			PR.RV_ID,
+			PR.RV_ID,
+			PR.RV_CNTNT,
+			PR.PRJ_ID,
+			PR.CRT_DT,
+			PR.CRTR_ID,
+			PR.MDF_DT,
+			PR.MDFR_ID,
+			PR.DEL_YN,
+			P.PRJ_ID,
+			P.PRJ_NAME,
+			P.CLNT_INFO,
+			P.DEPT_ID,
+			P.PRJ_STS,
+			P.STRT_DT,
+			P.END_DT
+		FROM
+			PROJECT_REVIEW PR
+			LEFT JOIN PROJECT P ON PR.PRJ_ID = P.PRJ_ID
+	</select>
+	
+	
 </mapper>

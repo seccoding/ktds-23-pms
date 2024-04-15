@@ -4,7 +4,7 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class ReviewVO {
 
-	private String arvId;
+	private String rvId;
 	private String rvCntnt;
 	private String prjId;
 	private String crtDt;
@@ -22,11 +22,11 @@ public class ReviewVO {
 	public void setProjectVO(ProjectVO projectVO) {
 		this.projectVO = projectVO;
 	}
-	public String getArvId() {
-		return arvId;
+	public String getRvId() {
+		return rvId;
 	}
-	public void setArvId(String arvId) {
-		this.arvId = arvId;
+	public void setRvId(String rvId) {
+		this.rvId = rvId;
 	}
 	public String getRvCntnt() {
 		return rvCntnt;
