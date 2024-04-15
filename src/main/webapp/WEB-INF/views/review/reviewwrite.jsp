@@ -28,8 +28,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <label for="crtrId">후기 작성하는 사람 ID</label>
         <input type="text" id="crtrId" name="crtrId" value="0005020" />
 
-		<label for="crtDt">후기 작성 날짜</label>
-        <input type="date" name="crtDt" value="2024-04-12 14:38:47.000" />
+        <label for="crtDt">후기 작성 날짜</label>
+        <input type="date" name="crtDt" value="2024-04-12" />
 
         <label for="mdfDt">후기 수정 날짜</label>
         <input type="date" name="mdfDt" value="2024-04-12 14:38:47.000" />
