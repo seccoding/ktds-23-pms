@@ -7,7 +7,7 @@ public interface RequirementDao {
 
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.requirement.dao.RequirementDao";
 
-	public List<RequirementVO> getAllRequirement(String prjId);
+	public List<RequirementVO> getAllRequirement();
 
 	public RequirementVO getOneRequirement(String rqmId);
 

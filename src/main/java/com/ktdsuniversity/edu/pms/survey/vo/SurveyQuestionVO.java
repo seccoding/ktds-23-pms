@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.survey.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+
 public class SurveyQuestionVO {
 	
 	private String srvId;
@@ -12,6 +15,10 @@ public class SurveyQuestionVO {
 	private String delYn;
 	private int seq;
 	private String typeYn;
+	private String srvSts;
+	
+	private ProjectVO projectVO;
+	private DepartmentVO departmentVO;
 	
 	public String getSrvId() {
 		return srvId;
@@ -72,6 +79,24 @@ public class SurveyQuestionVO {
 	}
 	public void setTypeYn(String typeYn) {
 		this.typeYn = typeYn;
+	}
+	public String getSrvSts() {
+		return srvSts;
+	}
+	public void setSrvSts(String srvSts) {
+		this.srvSts = srvSts;
+	}
+	public ProjectVO getProjectVO() {
+		return projectVO;
+	}
+	public void setProjectVO(ProjectVO projectVO) {
+		this.projectVO = projectVO;
+	}
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
 	}
 
 }

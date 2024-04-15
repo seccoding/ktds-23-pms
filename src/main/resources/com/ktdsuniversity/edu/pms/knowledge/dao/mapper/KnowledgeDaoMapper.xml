@@ -6,7 +6,28 @@
 <mapper namespace="com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeDao">
 
 
+  <select id="getAllKnowledgeCount" resultType="_int">
+  	SELECT COUNT(1)
+  	  FROM KNOWLEDGE
+  	 WHERE DEL_YN = 'N'
+  </select>
   
+  <select id="getAllKnowledge" resultType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">
+    SELECT KNL_ID
+		 , RQM_ID
+		 , KNL_TTL
+		 , KNL_CNTNT
+		 , KNL_CNT
+		 , KNL_REC_CNT
+		 , CRT_DT
+		 , MDF_DT
+		 , DEL_YN
+		 , CRTR_ID
+		 , MDFR_ID
+      FROM KNOWLEDGE
+  </select>
 	
+	
+	<!--  TO DO selectOneBoard  -->
 	
 </mapper>

@@ -1,4 +1,4 @@
-package com.ktdsuniversity.edu.employee.vo;
+package com.ktdsuniversity.edu.pms.employee.vo;
 
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 

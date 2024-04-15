@@ -12,12 +12,29 @@ public abstract class StringUtil {
 		
 	}
 	
+	/**
+	 * 사원번호가 숫자 10자리이거나,  "system"이 포함된 문자열인지 검사
+	 * @param str 입력받은 사원번호
+	 * @return 사원번호 형식이 맞다면 true, 틀리다면 false
+	 */
+	public final static boolean isEmpIdFormat(final String str) {
+		if (isEmpty(str)) {
+			return false;
+		}
+		
+		String EmpIdFormat = "(\\d{7}|.*system.*)";
+		
+		return str.matches(EmpIdFormat);
+	}
+	
+	
 	public final static boolean correctPasswordFormat(final String str) {
 		if (isEmpty(str)) {
 			return false;
 		}
 		
 		String passwordFormat = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+		
 		return str.matches(passwordFormat);
 	}
 	

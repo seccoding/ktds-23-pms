@@ -11,6 +11,10 @@ public class ApprovalVO {
 	private String delYn;
 	private String dmdId;
 	private String apprMngId;
+	private String apprFnshDt;
+	private String apprTtl;
+	private String apprCntnt;
+	
 	public String getApprId() {
 		return apprId;
 	}
@@ -65,7 +69,23 @@ public class ApprovalVO {
 	public void setApprMngId(String apprMngId) {
 		this.apprMngId = apprMngId;
 	}
-	
-	
+	public void setApprFnshDt(String apprFnshDt) {
+		this.apprFnshDt = apprFnshDt;
+	}
+	public String getApprFnshDt() {
+		return apprFnshDt;
+	}
+	public void setApprTtl(String apprTtl) {
+		this.apprTtl = apprTtl;
+	}
+	public String getApprTtl() {
+		return apprTtl;
+	}
+	public void setApprCntnt(String apprCntnt) {
+		this.apprCntnt = apprCntnt;
+	}
+	public String getApprCntnt() {
+		return apprCntnt;
+	}
 	
 }

@@ -1,8 +1,12 @@
 package com.ktdsuniversity.edu.pms.requirement.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+
 public class RequirementVO {
     
     private String rqmId;
+    private String rqmTtl;
     private String rqmCntnt;
     private String strtDt;
     private String endDt;
@@ -19,6 +23,12 @@ public class RequirementVO {
     private String mdfrId;
     private String prjId;
     private String delYn;
+    
+    private CommonCodeVO scdStsVO;
+    private CommonCodeVO rqmStsVO;
+    private ProjectVO  projectVO;
+    
+    
 
     public String getRqmId() {
         return rqmId;
@@ -28,7 +38,16 @@ public class RequirementVO {
         this.rqmId = rqmId;
     }
 
-    public String getRqmCntnt() {
+    
+	public String getRqmTtl() {
+		return rqmTtl;
+	}
+
+	public void setRqmTtl(String rqmTtl) {
+		this.rqmTtl = rqmTtl;
+	}
+
+	public String getRqmCntnt() {
         return rqmCntnt;
     }
 
@@ -99,4 +118,86 @@ public class RequirementVO {
     public void setScdSts(String scdSts) {
         this.scdSts = scdSts;
     }
+
+	public String getRqmSts() {
+		return rqmSts;
+	}
+
+	public void setRqmSts(String rqmSts) {
+		this.rqmSts = rqmSts;
+	}
+
+	public String getCrtDt() {
+		return crtDt;
+	}
+
+	public void setCrtDt(String crtDt) {
+		this.crtDt = crtDt;
+	}
+
+	public String getCrtrId() {
+		return crtrId;
+	}
+
+	public void setCrtrId(String crtrId) {
+		this.crtrId = crtrId;
+	}
+
+	public String getMdfDt() {
+		return mdfDt;
+	}
+
+	public void setMdfDt(String mdfDt) {
+		this.mdfDt = mdfDt;
+	}
+
+	public String getMdfrId() {
+		return mdfrId;
+	}
+
+	public void setMdfrId(String mdfrId) {
+		this.mdfrId = mdfrId;
+	}
+
+	public String getPrjId() {
+		return prjId;
+	}
+
+	public void setPrjId(String prjId) {
+		this.prjId = prjId;
+	}
+
+	public String getDelYn() {
+		return delYn;
+	}
+
+	public void setDelYn(String delYn) {
+		this.delYn = delYn;
+	}
+
+	public CommonCodeVO getScdStsVO() {
+		return scdStsVO;
+	}
+
+	public void setScdStsVO(CommonCodeVO scdStsVO) {
+		this.scdStsVO = scdStsVO;
+	}
+
+	public CommonCodeVO getRqmStsVO() {
+		return rqmStsVO;
+	}
+
+	public void setRqmStsVO(CommonCodeVO rqmStsVO) {
+		this.rqmStsVO = rqmStsVO;
+	}
+
+	public ProjectVO getProjectVO() {
+		return projectVO;
+	}
+
+	public void setProjectVO(ProjectVO projectVO) {
+		this.projectVO = projectVO;
+	}
+    
+    
 }

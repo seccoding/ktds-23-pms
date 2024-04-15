@@ -1,4 +1,4 @@
-package com.ktdsuniversity.edu.employee.vo;
+package com.ktdsuniversity.edu.pms.employee.vo;
 
 import java.util.List;
 
