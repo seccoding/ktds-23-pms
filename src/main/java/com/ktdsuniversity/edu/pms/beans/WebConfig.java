@@ -35,6 +35,8 @@ public class WebConfig implements WebMvcConfigurer {
 				.addResourceLocations("classpath:/static/css/");
 		registry.addResourceHandler("/image/**") // /image/로 시작하는 모든 URL
 				.addResourceLocations("classpath:/static/images/");
+		registry.addResourceHandler("/html/**") // /image/로 시작하는 모든 URL
+				.addResourceLocations("classpath:/static/html/");
 	}
 
 	@Override
