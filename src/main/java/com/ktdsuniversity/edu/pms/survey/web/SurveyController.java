@@ -4,11 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionService;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
 public class SurveyController {
@@ -38,9 +44,16 @@ public class SurveyController {
 		return "survey/surveywrite";
 	}
 	
-//	@PostMapping("/survey/write")
-//	public String doSurveyWrite(SurveyQuestionVO serveyQuestionVO, Model model) {
-//		
-//	}
+	@ResponseBody
+	@GetMapping("/ajax/survey/write/{prjId}")
+	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO,
+									  @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		surveyQuestionVO.setPrjId(prjId);
+		surveyQuestionVO.setCrtrId(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.surveyQuestionService.createNewSurveyQuestion(surveyQuestionVO);
+		return new AjaxResponse().append("result", isSuccess);
+		
+	}
 
 }
