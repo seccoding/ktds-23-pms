@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.requirement.dao;
 
 import java.util.List;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.DelayAcessVO;
 
 public interface RequirementDao {
 
@@ -22,7 +23,7 @@ public interface RequirementDao {
 
 	public int delayRequirement(RequirementVO requirementVO);
 	
-	public int updateDelayOneRequirement(RequirementVO requirementVO);
+	public int updateDelayOneRequirement(DelayAcessVO delayAcessVO);
 
 
 }

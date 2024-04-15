@@ -11,6 +11,7 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.requirement.dao.RequirementDao;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.DelayAcessVO;
 
 @Service
 public class RequirementServiceImpl implements RequirementService{
@@ -63,21 +64,16 @@ public class RequirementServiceImpl implements RequirementService{
 	@Transactional
 	@Override
 	public boolean updateDelayRequirement(String rqmId, boolean isApprove) {
-		// TODO Auto-generated method stub
 		
-//		RequirementVO thisRequirementVO = this.requirementDao.getOneRequirement(rqmId);
-//		if(isApprove) {
-//			this.requirementDao.updateOneRequirement(rqmId);
-//		}else {
-//			
-//		}
-//			
-			
+		DelayAcessVO delayAcessVO = (DelayAcessVO) this.requirementDao.getOneRequirement(rqmId);
+		delayAcessVO.setApprove(isApprove);
 		
-		return false;
+		
+		return this.requirementDao.updateDelayOneRequirement(delayAcessVO)>0;
+
+		 
 	}
 
-	@Transactional
 	@Override
 	public boolean deleteOneRequirement(RequirementVO RequirementVO) {
 		

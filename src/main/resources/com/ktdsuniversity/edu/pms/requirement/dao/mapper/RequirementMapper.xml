@@ -154,6 +154,14 @@ SELECT  R.RQM_ID
 	  WHERE RQM_ID=#{rqmId}
 	</update>
 	
+	<update id="deleteReRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+		UPDATE PMS.REQUIREMENT SET 
+		
+	</update>
+	
+
+	
 	
 	
 </mapper>
