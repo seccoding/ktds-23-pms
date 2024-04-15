@@ -33,18 +33,53 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 
 
 	@Override
-	public KnowledgeVO selectOneKnowledge(String knowledgeId) {
-		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE + ".selectOneKnowledge", knowledgeId);
+	public KnowledgeVO selectOneKnowledge(String knlId) {
+		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE + ".selectOneKnowledge", knlId);
 	}
 
 
 	@Override
-	public int increaseViewCount(String knowledgeId) {
-		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".increaseViewCount", knowledgeId);
+	public int increaseViewCount(String knlId) {
+		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".increaseViewCount", knlId);
+	}
+
+
+	@Override
+	public int insertNewKnowledge(KnowledgeVO knowledgeVO) {
+		return getSqlSession().insert(KnowledgeDao.NAME_SPACE + ".insertNewKnowledge", knowledgeVO);
+	}
+
+
+	@Override
+	public int updateOneKnowledge(KnowledgeVO knowledgeVO) {
+		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".updateOneKnowledge", knowledgeVO);
+	}
+
+
+	@Override
+	public int deleteOneKnowledge(String knlId) {
+		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".deleteOneKnowledge", knlId);
 	}
 
 
 	
 	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

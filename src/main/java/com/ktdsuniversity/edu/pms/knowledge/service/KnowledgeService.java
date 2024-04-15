@@ -9,8 +9,12 @@ public interface KnowledgeService {
 
 	public KnowledgeListVO getAllKnowledge();
 
-	public KnowledgeVO getOneKnowledge(String knlId, boolean isIncrease);
+	public KnowledgeVO getOneKnowledge(String knlId, boolean isIncrease, boolean isRecIncrease);
 
 	public boolean createNewKnowledge(KnowledgeVO knowledgeVO, MultipartFile file);
+
+	public boolean updateOneKnowledge(KnowledgeVO knowledgeVO, MultipartFile file);
+
+	public boolean deleteOneKnowledge(String knlId);
 
 }
