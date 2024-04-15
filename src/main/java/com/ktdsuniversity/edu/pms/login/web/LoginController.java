@@ -1,12 +1,17 @@
 package com.ktdsuniversity.edu.pms.login.web;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +48,7 @@ public class LoginController {
 	@ResponseBody
 	@PostMapping("/ajax/employee/login")
 	public AjaxResponse doLogin(HttpSession session, EmployeeVO employeeVO,
-			@RequestParam(defaultValue = "/main/mainpage") String nextUrl) {
+								@RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
 		
 		logger.info("NextUrl: " + nextUrl);
 		
@@ -57,8 +62,30 @@ public class LoginController {
 			Map<String, List<String>> errors = validator.getErrors();
 			return new AjaxResponse().append("errors", errors);
 		}
-		
+
+
 		EmployeeVO employee = this.loginLogService.getOneEmployeeByEmpIdAndPwd(employeeVO);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime currentDate = LocalDateTime.now();
+
+		if (employee.getEndDt() != null) {
+			LocalDateTime endDate = LocalDateTime.parse(employee.getEndDt(), formatter);
+
+			if (currentDate.isAfter(endDate)) {
+
+				return new AjaxResponse().append("errorEndDt", "퇴사한 사원입니다.");
+			}
+		}
+		if (employee.getRestStDt() != null ) {
+			LocalDateTime restStDt = LocalDateTime.parse(employee.getRestStDt(), formatter);
+			LocalDateTime restEndDt = LocalDateTime.parse(employee.getRestEndDt(), formatter);
+
+			if (currentDate.compareTo(restStDt) >= 0 && currentDate.compareTo(restEndDt) <= 0) {
+				return new AjaxResponse().append("errorRestDt", "휴직 중인 사원입니다.");
+			}
+		}
+
 		//로그인 할때 lgnYN이 N일 경우 로그인 진행
 		if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
 //		if (employee.getLgnYn().equals("N")) {
@@ -86,6 +113,8 @@ public class LoginController {
 		else {
 			return new AjaxResponse().append("errorUseNow", "이미 로그인중인 사원번호입니다.");
 		}
+
+
 	}
 		
 	@GetMapping("/employee/logout")

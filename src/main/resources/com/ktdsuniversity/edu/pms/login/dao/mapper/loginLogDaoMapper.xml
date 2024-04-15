@@ -11,6 +11,9 @@
              , SALT
              , ADMN_CODE
              , LGN_YN
+             , END_DT
+             , REST_ST_DT
+             , REST_END_DT
           FROM EMPLOYEE
          WHERE EMP_ID = #{empId}
            AND PWD = #{pwd}
