@@ -25,17 +25,17 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 
 	@Override
 	public int getOneReview(String rvId) {
-		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".seleceOneReview");
+		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".seleceOneReview", rvId);
 	}
 	
 	@Override
 	public int insertNewReviewQuestion(ReviewVO reviewVO) {
-		return getSqlSession().insert(ReviewDao.NAME_SPACE + ".insertNewReviewQuestion");
+		return getSqlSession().insert(ReviewDao.NAME_SPACE + ".insertNewReviewQuestion", reviewVO);
 	}
 	
 	@Override
 	public int insertNewReview(ReviewVO reviewVO) {
-		return getSqlSession().insert(ReviewDao.NAME_SPACE + ".insertNewReview");
+		return getSqlSession().insert(ReviewDao.NAME_SPACE + ".insertNewReview", reviewVO);
 	}
 	
 	@Override

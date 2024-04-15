@@ -25,7 +25,7 @@
 			<result column="DEPT_NAME" property="deptName" />
 		</association>
 		<association property="projectTeammateVO"
-					 javaType="com.ktdsuniversity.edu.pms.project.vo.projectTeammateVO">
+					 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
 			<id column="PRJ_TM_ID" property="prjTmId" />
 			<result column="TM_ID" property="tmId" />
 			<result column="ROLE" property="role" />
@@ -33,7 +33,7 @@
 	</resultMap>
 
 
-	<insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.reviewVO">
+	<insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
 		INSERT INTO PROJECT_REVIEW
 			 (RV_ID
 			, RV_CNTNT
