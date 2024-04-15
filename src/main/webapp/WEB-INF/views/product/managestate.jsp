@@ -33,7 +33,7 @@
         <tbody>
             <c:choose>
                 <c:when test="${not empty userRentalState.borrowList}">
-                    <c:foreach items="${userRentalState.borrowList}" var="product">
+                    <c:forEach items="${userRentalState.borrowList}" var="product">
                         <tr>
                             <td>${product.prdtMngId}</td>
                             <td>${product.productVO.prdtName}</td>
@@ -50,7 +50,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </tr>
-                    </c:foreach>
+                    </c:forEach>
 
                 </c:when>
                 

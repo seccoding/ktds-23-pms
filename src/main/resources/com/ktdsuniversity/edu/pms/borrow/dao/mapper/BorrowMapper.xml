@@ -6,7 +6,7 @@
 
 	<resultMap type="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO" id="borrowVOMap"  autoMapping="true">
 		<id column="BRRW_HIST_ID" property="brrwHistId" />
-		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.productVO">
+		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 			<id column="PRDT_ID" property="prdtId" />
 			<result column="PRDT_NAME" property="prdtName" />
 		</association>
