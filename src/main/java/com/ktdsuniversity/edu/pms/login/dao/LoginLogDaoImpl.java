@@ -19,4 +19,18 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO) {
         return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmployeeByEmpIdAndPwd", employeeVO);
     }
+
+	@Override
+	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
+		return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpIdUseOtherPlace", employeeVO);
+	}
+
+	@Override
+	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO) {
+		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpIdNotUseNow", employeeVO);
+	}
+
+	
+
+	
 }
