@@ -1,6 +1,9 @@
 $().ready(function () {
   $("#login-btn").on("click", function () {
-	
+
+      $(".errorEndDt").remove();
+      $(".errorRestDt").remove();
+
     $.post(
       "/ajax/employee/login",
       {
@@ -51,6 +54,27 @@ $().ready(function () {
         //   }
           
         }
+
+        var errorEndDt = response.data.errorEndDt;
+
+        if (errorEndDt) {
+            var EndDtDiv = $("<div></div>");
+            EndDtDiv.addClass("errorEndDt");
+            EndDtDiv.text(errorEndDt);
+
+            $("#loginForm").after(EndDtDiv);
+        }
+
+        var errorRestDt = response.data.errorRestDt;
+
+          if (errorRestDt) {
+              var RestDiv = $("<div></div>");
+              RestDiv.addClass("errorRestDt");
+              RestDiv.text(errorRestDt);
+
+              $("#loginForm").after(RestDiv);
+          }
+
         if (next) {
           location.href = next;
         }
