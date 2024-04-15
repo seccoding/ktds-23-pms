@@ -38,7 +38,7 @@
                     <c:forEach items="${productManagementList.productManagementList}" var="product">
                         <tr>
                             <td>${product.prdtMngId}</td>
-                            <td>${product.prdtName}</td>
+                            <td>${product.productVO.prdtName}</td>
                             <td>${product.prdtPrice}</td>
                             <td>${product.buyDt}</td>
                             <c:choose>

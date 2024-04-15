@@ -4,9 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>비품 추가</title>
-<jsp:include page="../commonheader.jsp" />
+    <meta charset="UTF-8">
+    <title>비품 추가</title>
+    <jsp:include page="../commonheader.jsp" />
+    <script type="text/javascript" src="/js/product/manageadd.js" ></script>
 </head>
 <body>
     <jsp:include page="../layout/layout.jsp" />

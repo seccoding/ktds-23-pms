@@ -34,7 +34,7 @@
             <c:choose>
                 <c:when test="${not empty productList.productList}">
                     <c:forEach items="${productList.productList}" var="product">
-                        <tr>
+                        <tr id="product">
                             <td>${product.prdtId}</td>
                             <td>${product.prdtName}</td>
                             <td>${product.prdtCtgr}</td>

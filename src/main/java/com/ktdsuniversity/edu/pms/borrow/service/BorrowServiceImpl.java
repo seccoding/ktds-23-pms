@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.borrow.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
@@ -12,6 +13,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 @Service
 public class BorrowServiceImpl implements BorrowService{
 
+	@Autowired
 	private BorrowDao borrowDao;
 	
 	@Override
