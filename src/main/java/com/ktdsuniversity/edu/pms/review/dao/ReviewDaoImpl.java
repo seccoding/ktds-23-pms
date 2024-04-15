@@ -29,7 +29,12 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	}
 	
 	@Override
-	public int seleceOneReview(ReviewVO reviewVO) {
+	public int insertNewReview(ReviewVO reviewVO) {
+		return getSqlSession().insert(ReviewDao.NAME_SPACE + ".insertNewReview");
+	}
+	
+	@Override
+	public int selectOneReview(ReviewVO reviewVO) {
 		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".seleceOneReview");
 	}
 	
