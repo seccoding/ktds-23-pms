@@ -56,8 +56,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </table>
 
     <div>
+      <p>임시 확인: ${resultList.prjId}</p>
       <p>
-        <a href="/project/requirement/write">신규</a>
+        <a href="/project/${resultList.prjId}/requirement/write">신규</a>
       </p>
     </div>
   </body>
