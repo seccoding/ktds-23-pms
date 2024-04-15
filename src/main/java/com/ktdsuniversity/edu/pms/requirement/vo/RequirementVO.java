@@ -5,24 +5,24 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class RequirementVO {
     
-    private String rqmId;
-    private String rqmTtl;
-    private String rqmCntnt;
-    private String strtDt;
-    private String endDt;
-    private String rqmFile;
-    private String dvlrp;
-    private String cfrmr;
-    private String tstr;
-    private String testRslt;
-    private String scdSts;
-    private String rqmSts;
-    private String crtDt;
-    private String crtrId;
-    private String mdfDt;
-    private String mdfrId;
-    private String prjId;
-    private String delYn;
+    private String rqmId;	//요구사항 아이디
+    private String rqmTtl;	//요구사항 제목
+    private String rqmCntnt;//요구사항 내
+    private String strtDt;	//시작일
+    private String endDt;	//종료예정일
+    private String rqmFile;	//파일명
+    private String dvlrp;	//담당개발자
+    private String cfrmr;	//확인자
+    private String tstr;	//테스터
+    private String testRslt;//테스트결과
+    private String scdSts;	//일정상태
+    private String rqmSts;	//요구사항 진행상태
+    private String crtDt;	//등록일
+    private String crtrId;	//등록자
+    private String mdfDt;	//수정일
+    private String mdfrId;	//수정자
+    private String prjId;	//프로젝트 아이디
+    private String delYn;	//삭제여부
     
     private CommonCodeVO scdStsVO;
     private CommonCodeVO rqmStsVO;
