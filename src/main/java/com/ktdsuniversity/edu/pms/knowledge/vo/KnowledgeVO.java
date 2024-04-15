@@ -1,5 +1,10 @@
 package com.ktdsuniversity.edu.pms.knowledge.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+
 public class KnowledgeVO {
 	
 	private String knlId;
@@ -19,6 +24,15 @@ public class KnowledgeVO {
 	// file - 난독화X
 	private String originalFileName;
 	
+	
+//	클래스를 선언
+	private RequirementVO requirementVO; 
+	
+	private ProjectVO  projectVO;
+	
+	private EmployeeVO employeeVO;
+	
+	private CommonCodeVO commonCodeVO;
 	
 	public String getKnlId() {
 		return knlId;
@@ -98,6 +112,31 @@ public class KnowledgeVO {
 	public void setOriginalFileName(String originalFileName) {
 		this.originalFileName = originalFileName;
 	}
+	public RequirementVO getRequirementVO() {
+		return requirementVO;
+	}
+	public void setRequirementVO(RequirementVO requirementVO) {
+		this.requirementVO = requirementVO;
+	}
+	public ProjectVO getProjectVO() {
+		return projectVO;
+	}
+	public void setProjectVO(ProjectVO projectVO) {
+		this.projectVO = projectVO;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
+	public CommonCodeVO getCommonCodeVO() {
+		return commonCodeVO;
+	}
+	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
+		this.commonCodeVO = commonCodeVO;
+	}
+
 	
 	
 	

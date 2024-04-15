@@ -12,9 +12,15 @@ public interface KnowledgeDao {
 
 	public List<KnowledgeVO> getAllKnowledge();
 
-	public KnowledgeVO selectOneKnowledge(String knowledgeId);
+	public KnowledgeVO selectOneKnowledge(String knlId);
 
-	public int increaseViewCount(String knowledgeId);
+	public int increaseViewCount(String knlId);
+
+	public int insertNewKnowledge(KnowledgeVO knowledgeVO);
+
+	public int updateOneKnowledge(KnowledgeVO knowledgeVO);
+
+	public int deleteOneKnowledge(String knlId);
 
 
 
