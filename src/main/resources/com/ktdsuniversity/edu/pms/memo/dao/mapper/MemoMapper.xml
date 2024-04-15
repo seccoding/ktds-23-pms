@@ -4,6 +4,39 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.memo.dao.MemoDao">
   
-  	
+  	<resultMap type="com.ktdsuniversity.edu.pms.memo.vo.MemoVO" id="MemoVOMap" autoMapping="true">
+  		<id column="CRTR_ID" property="crtrId"/>
+  		<association property="employeeVO" 
+  					javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+  			<id column="EMP_ID" property="empId"/>
+  			<result column="EMAIL" property="EMAIL"/>
+  		</association>
+  	</resultMap>
+  
+  	<select id="getSentMemoAllCount"
+  			resultType="_int">
+  		SELECT COUNT(1)
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE M.DEL_YN = 'N'
+  	</select>
+  
+  	<select id="getAllSentMemo"
+  			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  		SELECT MEMO_ID
+			 , MEMO_PID
+			 , RCV_ID
+			 , CRTR_ID
+			 , TO_CHAR(CRT_DT, 'YYYY-MM-DD') CRT_DT
+			 , MEMO_CNTNT
+			 , READ_YN
+			 , DEL_YN
+			 , TO_CHAR(MDF_DT, 'YYYY-MM-DD') MDF_DT
+			 , MDFR_ID
+			 , SAVE_YN
+  		  FROM MEMO
+  		 ORDER BY CRT_DT ASC
+  	</select>
   
 </mapper>
