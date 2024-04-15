@@ -6,7 +6,7 @@ import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 
 public interface ProductManagementDao {
 	
-	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.product.dao.ProductManagementVO";
+	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao";
 
 
 
