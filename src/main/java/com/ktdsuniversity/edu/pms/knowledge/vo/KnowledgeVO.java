@@ -99,8 +99,4 @@ public class KnowledgeVO {
 		this.originalFileName = originalFileName;
 	}
 	
-	
-	
-	
-
 }

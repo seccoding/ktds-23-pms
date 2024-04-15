@@ -4,5 +4,45 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.issue.dao.IssueDao">
 
+	<resultMap type="com.ktdsuniversity.edu.pms.issue.vo.IssueVO"
+			   id="issueVOMap" autoMapping="true">
+		<id column="IS_ID" property="isId"/>
+		<association property="projectVO"
+					 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+			<id column="PRJ_ID" property="prjId"/>
+			<result column="PRJ_NAME" property="prjName"/>
+		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId"/>
+			<result column="EMP_NAME" property="empName"/>
+		</association>
+	</resultMap>
 
+	<select id="getAllIssueCount"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM ISSUE
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="getAllIssue"
+			resultType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		SELECT IS_ID
+		     , RQM_ID
+		     , IS_TTL
+		     , IS_CNT
+		     , IS_LV
+		     , IS_FILE
+		     , IS_CNTNT
+		     , IS_MNGR
+		     , IS_STS
+		     , TO_CHAR(CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		     , CRTR_ID
+		     , TO_CHAR(MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		     , MDFR_ID
+		     , DEL_YN
+		  FROM ISSUE
+		 WHERE DEL_YN = 'N';
+	</select>
 </mapper>
