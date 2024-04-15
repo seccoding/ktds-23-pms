@@ -7,7 +7,7 @@ public class RequirementVO {
     
     private String rqmId;	//요구사항 아이디
     private String rqmTtl;	//요구사항 제목
-    private String rqmCntnt;//요구사항 내
+    private String rqmCntnt;//요구사항 내용
     private String strtDt;	//시작일
     private String endDt;	//종료예정일
     private String rqmFile;	//파일명

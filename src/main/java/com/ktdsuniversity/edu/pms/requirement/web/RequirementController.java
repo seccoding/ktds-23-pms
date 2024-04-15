@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -22,6 +26,10 @@ public class RequirementController {
 
 	@Autowired
 	private RequirementService requirementService;
+	@Autowired
+	private ProjectService projectService;
+	@Autowired
+	private CommonCodeService commonCodeService ;
 
 	/**
 	 * 전체 리스트를 받아온다. 계정에 정보에따라 노출되는 값이 다름
@@ -66,11 +74,19 @@ public class RequirementController {
 	}
 
 	@GetMapping("/project/requirement/write")
-	public String viewwritePage(
+	public String viewwritePage(Model model
 	/* @SessionAttribute , */) {
 //		1. fillter interceptor 
 //		요청자 정보가 비로그인 유져면 out 
 //		요청자 정보가 시스템관리자인지? & 팀원정보가 어떤것인지
+		ProjectListVO projectList = projectService.getAllProject();
+		List<CommonCodeVO> scdSts = commonCodeService.getAllCommonCodeList();
+		List<CommonCodeVO> rqmSts = commonCodeService.getAllCommonCodeList();
+		
+		
+		
+		model.addAttribute("projectList",projectList).addAttribute("scdSts",scdSts).addAttribute("rqmSts",rqmSts);
+		
 
 //		2. go jsp
 		return "requirement/requirementwrite";
@@ -80,13 +96,16 @@ public class RequirementController {
 	@ResponseBody
 	@PostMapping("/project/{prjId}/requirement/write")
 	public String createRequirement(/* @SessionAttribute , */
-			@PathVariable("prjId") String prjId, RequirementVO requirementVO, @RequestParam MultipartFile file,
+			@PathVariable("prjId") String prjId, RequirementVO requirementVO,
+			 @RequestParam MultipartFile file,
 			Model model) {
 //		1. fillter interceptor 
 //		요청자 정보가 비로그인 유져면 out 
 //		요청자 정보가 시스템관리자인지? & 팀원정보가 어떤것인지
+		
+		
 
-		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
+		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, null);
 
 //		4. isSuccess ==true -> redirect jsp
 		return "redirect:/project/" + prjId;

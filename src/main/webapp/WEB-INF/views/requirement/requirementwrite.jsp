@@ -4,6 +4,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
   <head>
     <meta charset="UTF-8" />
+    <jsp:include page="../commonheader.jsp"></jsp:include>
     <title>요구사항 상세 페이지</title>
 
     <style>
@@ -16,45 +17,67 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
 
   <body>
+    
+    <form action="/project/{requirememt.projectVO.prjId}/requirement/write" method="post" enctype="multipart/form-data"  >
     <div class="grid">
-      <c:if test="${not empty requirememt.projectVO.prjName}">
-        <div>프로젝트명</div>
-        <div>${requirememt.projectVO.prjName}</div>
-      </c:if>
+      <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
+      <label for="rqm-id">프로젝트명</label>
+      <select name="rqmId" id="rqm-id">
+        <c:forEach items="${projectList.projectList}" var="project">
+          <option value="${project.prjId}">${project.prjName}</option> 
+        </c:forEach>
+      </select> 
+      
 
-      <div>요구사항 제목</div>
-      <input type="text" name="rqmId" value="${requirement.rqmTtl}" />
+      <label for="rqm-ttl">요구사항 제목</label>
+      <input type="text" id="rqm-ttl" name="rqmTtl" value="${requirement.rqmTtl}" />
 
-      <div>요구사항 내용</div>
-      <input type="text" name="rqmId" value="${requirement.rqmCntnt}" />
-      <!--체크박스 선택창-->
-      <div>일정상태</div>
-      <select name="scdStsVOCmcdName" id="scdStsVO-cmcdName">
-        <option value="501">대기중</option>
-        <option value="502">진행중</option>
-        <!-- <option value="503" >연기필요</option> -->
+      <label for="rqm-cntnt">요구사항 내용</label>
+      <input type="text" id="rqm-cntnt" name="rqmCntnt" value="${requirement.rqmCntnt}" />
+
+      <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
+      <label for="scd-sts" >일정상태</label>
+      <select name="scdSts" id="scd-sts">
+        <c:forEach items="${scdSts}" var="scdSts">
+          <c:if test="${scdSts.cmcdPid == '500' && scdSts.cmcdId != '503'}">
+            <option value="${scdSts.cmcdId}">${scdSts.cmcdName}</option>
+          </c:if>
+        </c:forEach>
       </select>
 
-      <!--체크박스 선택창-->
-      <div>진행상태</div>
-      <select name="rqmStsVOCmcdName" id="rqmStsVO-cmcdName">
-        <option value="601">분석중</option>
-        <option value="602">설계중</option>
-        <option value="603">개발중</option>
-        <option value="604">단위테스트진행중</option>
-        <option value="605">개발완료</option>
+      <!--체크박스 진행상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
+      <label for="rqm-sts">진행상태</label>
+      <select name="rqmSts" id="rqm-sts">
+        <c:forEach items="${rqmSts}" var="rqmSts">
+          <c:if test="${rqmSts.cmcdPid eq 600}">
+            <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+          </c:if>
+        </c:forEach>
       </select>
 
       <!--날짜선택창-->
       <label for="start-date">시작일</label>
-      <input type="date" name="start-date" value="${requirement.strtDt}" />
+      <input
+        type="date"
+        id="start-date"
+        name="strtDt"
+        value="${requirement.strtDt}"
+      />
       <!--날짜선택창-->
       <label for="end-date">종료예정일</label>
-      <input type="date" name="end-date" value="${requirement.endDt}" />
+      <input
+        type="date"
+        id="end-date"
+        name="endDt"
+        value="${requirement.endDt}"
+      />
+      <label for="file">첨부파일</label> 
+			<input type="file" id="file"name="file" /> 
 
       <!--담당자 확인자 테스터 테스트결과는 아직 어떤 기준으로 해야하는지 알 수 없음-->
 
-      <button id="submitBtn" type="button" a="">제출</button>
+      <input id="submitBtn" type="submit" value="제출"></input>
     </div>
+    </form>
   </body>
 </html>

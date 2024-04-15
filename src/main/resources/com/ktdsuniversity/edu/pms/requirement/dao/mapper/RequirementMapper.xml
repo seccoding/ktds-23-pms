@@ -78,4 +78,47 @@ SELECT  R.RQM_ID
  WHERE	R.RQM_ID = #{_PARAMETER}
 	</select>
 	
+	
+	<insert id="insertOneRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+	INSERT INTO PMS.REQUIREMENT
+	( RQM_ID
+	, RQM_TTL
+	, RQM_CNTNT
+	, STRT_DT
+	, END_DT
+	, RQM_FILE
+	, DVLRP
+	, CFRMR
+	, TSTR
+	, TEST_RSLT
+	, SCD_STS
+	, RQM_STS
+	, CRT_DT
+	, CRTR_ID
+	, MDF_DT
+	, MDFR_ID
+	, PRJ_ID
+	, DEL_YN)
+	VALUES
+	( ('RQM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RQM_PK.NEXTVAL, 6, '0'))
+	, #{rqmTtl}
+	, #{rqmCntnt}
+	, #{strtDt}
+	, #{endDt}
+	, #{rqmFile}
+	, '0509006'
+	, '0509006'
+	, '0509006'
+	, ''
+	, #{scdSts}
+	, #{rqmSts}
+	, SYSDATE	
+	, '0509006'
+	, ''
+	, ''
+	, #{prjId}
+	, 'N' )
+		
+	</insert>
 </mapper>

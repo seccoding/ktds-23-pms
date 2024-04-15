@@ -32,7 +32,7 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	@Override
 	public int insertOneRequirement(RequirementVO requirementVO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return getSqlSession().insert(NAME_SPACE+".insertOneRequirement",requirementVO);
 	}
 
 	@Override
