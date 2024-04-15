@@ -65,11 +65,9 @@ public class Validator<T> {
 				boolean result = true;
 				if (type == Type.NOT_EMPTY) {
 					result = !StringUtil.isEmpty(value);
-				} 
-				else if (type == Type.EMAIL) {
+				} else if (type == Type.EMAIL) {
 					result = StringUtil.isEmailFormat(value);
-				}
-				else if (type == Type.EMPID) {
+				} else if (type == Type.EMPID) {
 					result = StringUtil.isEmpIdFormat(value);
 				} else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {

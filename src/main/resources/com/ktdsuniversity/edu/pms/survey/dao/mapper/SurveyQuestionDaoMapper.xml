@@ -18,32 +18,31 @@
 			<result column="STRT_DT" property="strtDt" />
 			<result column="END_DT" property="endDt" />
 		</association>
+		<association property="departmentVO"
+					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+			<id column="DEPT_ID" property="deptId" />
+			<result column="DEPT_NAME" property="deptName" />
+		</association>
 	</resultMap>
 
 	<select id="getAllSurvey" resultMap="SurveyQuestionVOMap">
-		SELECT sq.SRV_ID
-			 , sq.PRJ_ID
-			 , sq.SRV_QST
-			 , sq.CRTR_ID
-			 , sq.CRT_DT
-			 , sq.MDFR_ID
-			 , sq.MDF_DT
-			 , sq.DEL_YN
-			 , sq.SEQ
-			 , sq.TYPE_YN
+		SELECT DISTINCT sq.PRJ_ID
 			 , sq.SRV_STS
-			 , p.PRJ_ID
 			 , p.PRJ_NAME
 			 , p.CLNT_INFO
 			 , p.DEPT_ID
 			 , p.PRJ_STS
-			 , p.STRT_DT
-			 , p.END_DT
+			 , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
+			 , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
+			 , d.DEPT_NAME
 		  FROM SURVEY_QUESTION sq
-		  JOIN PROJECT p
+		  LEFT JOIN PROJECT p
 		    ON p.PRJ_ID = sq.PRJ_ID
+		  LEFT JOIN DEPARTMENT d
+    		ON d.DEPT_ID = p.DEPT_ID
 		 WHERE p.DEL_YN = 'N'
 		   AND sq.DEL_YN = 'N'
+		   AND d.DEL_YN = 'N'
 	</select>
 	
 	<insert id="insertNewSurveyQuestion" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">

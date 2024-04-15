@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.survey.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class SurveyQuestionVO {
@@ -17,6 +18,7 @@ public class SurveyQuestionVO {
 	private String srvSts;
 	
 	private ProjectVO projectVO;
+	private DepartmentVO departmentVO;
 	
 	public String getSrvId() {
 		return srvId;
@@ -89,6 +91,12 @@ public class SurveyQuestionVO {
 	}
 	public void setProjectVO(ProjectVO projectVO) {
 		this.projectVO = projectVO;
+	}
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
 	}
 
 }
