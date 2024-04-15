@@ -34,7 +34,7 @@ public interface RequirementService {
  */
 	public boolean updateRequirement(RequirementVO requirementVO, MultipartFile file);
 	
-
+	public boolean delayRequirement(RequirementVO requirementVO);
 /**
  * 연기요청을 승인 혹은 거절시 실행 
  * 승인시 연기되고 완성일 1주일 연장
@@ -45,6 +45,6 @@ public interface RequirementService {
  */
 	public boolean updateDelayRequirement(String rqmId,  boolean isApprove);
 
-	public boolean deleteOneRequirement(String rqmId);
+	public boolean deleteOneRequirement(RequirementVO RequirementVO);
 
 }
