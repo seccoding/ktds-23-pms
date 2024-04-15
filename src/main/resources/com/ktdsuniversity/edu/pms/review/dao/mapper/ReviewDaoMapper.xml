@@ -55,7 +55,7 @@
 			, DEL_YN
 			)
 		VALUES
-		 (('PRJ_RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REVIEW_PK.NEXTVAL, 6, '0'))
+		 (('PRJ_RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))
 			, #{rvCntnt}
 			, #{prjId}
 			, #{crtDt}

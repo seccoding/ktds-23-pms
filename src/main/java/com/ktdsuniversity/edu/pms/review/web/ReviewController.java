@@ -44,43 +44,42 @@ public class ReviewController {
 //		return new AjaxResponse().append("review/reviewwrite", isSuccess);
 //	}
 	
-	
 	@GetMapping("/review/write")
 	public String viewReviewWritePage() {
 		return "review/reviewwrite"; // reviewList.jsp 파일 이름
 	}
 	
 	@PostMapping("/review/write")
-	public String ReviewWritePage(Model model, ReviewVO reviewVO) {
+	public String viewReviewWritePage(Model model, ReviewVO reviewVO) {
 		
 		this.reviewService.insertNewReview(reviewVO);
 		model.addAttribute("reviewVO", reviewVO);
 		
-		return "redirect: /review"; // reviewList.jsp 파일 이름
+		return "redirect:/review"; // reviewList.jsp 파일 이름
 	}
 	
 	
 	
 	
-	
-	@PostMapping("ajax/review/modify/{reviewId}")
-	public AjaxResponse doModifyReview(@PathVariable String rvId, ReviewVO reviewVO) {
-		
-		reviewVO.setRvId(rvId);
-
-		boolean isSuccess = this.reviewService.updateOneReview(reviewVO);
-		return new AjaxResponse().append("review/reviewmodify", isSuccess);
-	}
-	
-	
-	
-	
-	@PostMapping("ajax/review/delete/{reviewId}")
-	public AjaxResponse doDeleteReview(@PathVariable String rvId, ReviewVO reviewVO) {		
-		
-		boolean isSuccess = this.reviewService.deleteOneReview(rvId);
-		return new AjaxResponse().append("review/reviewdelete", isSuccess);
-	}
+//	
+//	@PostMapping("ajax/review/modify/{reviewId}")
+//	public AjaxResponse doModifyReview(@PathVariable String rvId, ReviewVO reviewVO) {
+//		
+//		reviewVO.setRvId(rvId);
+//
+//		boolean isSuccess = this.reviewService.updateOneReview(reviewVO);
+//		return new AjaxResponse().append("review/reviewmodify", isSuccess);
+//	}
+//	
+//	
+//	
+//	
+//	@PostMapping("ajax/review/delete/{reviewId}")
+//	public AjaxResponse doDeleteReview(@PathVariable String rvId, ReviewVO reviewVO) {		
+//		
+//		boolean isSuccess = this.reviewService.deleteOneReview(rvId);
+//		return new AjaxResponse().append("review/reviewdelete", isSuccess);
+//	}
 
 //	@GetMapping("/timer")
 //	public String timer() {
