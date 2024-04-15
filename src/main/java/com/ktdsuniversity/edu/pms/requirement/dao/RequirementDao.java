@@ -10,11 +10,19 @@ public interface RequirementDao {
 	public List<RequirementVO> getAllRequirement();
 
 	public RequirementVO getOneRequirement(String rqmId);
+	
 
 	public int insertOneRequirement(RequirementVO requirementVO);
+	
 
-	public int updateOneRequirement(String rqmId);
+	public int updateOneRequirement(RequirementVO requirementVO);
 
+
+	public int deleteReRequirement(RequirementVO requirementVO);
+
+	public int delayRequirement(RequirementVO requirementVO);
+	
 	public int updateDelayOneRequirement(RequirementVO requirementVO);
+
 
 }

@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <jsp:include page="../commonheader.jsp"></jsp:include>
-    <title>요구사항 신규작성 페이지</title>
+    <title>요구사항 수정페이지</title>
 
     <style>
       .grid {
@@ -18,11 +18,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
   <body>
     
-    <form action="/project/requirement/write" method="post" enctype="multipart/form-data"  >
+    <form action="/project/requirement/modify?rqmId=${requirement.rqmId}" method="post" enctype="multipart/form-data"  >
     <div class="grid">
+      </label>
       <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
-      <label for="rqm-id">프로젝트명</label>
-      <select name="prjId" id="rqm-id">
+      <label for="prj-id">프로젝트명</label>
+      <select name="prjId" id="prj-id">
         <c:forEach items="${projectList.projectList}" var="project">
           <option value="${project.prjId}">${project.prjName}</option> 
         </c:forEach>

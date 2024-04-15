@@ -8,6 +8,7 @@
     <title>프로젝트 리스트 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/project/projectlist.js"></script>
+    <script type="text/javascript" src="/js/modal.js"></script>
     <style type="text/css">
         div.grid {
             display: grid;

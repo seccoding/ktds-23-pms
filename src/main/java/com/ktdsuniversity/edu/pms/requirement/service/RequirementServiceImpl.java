@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
@@ -43,7 +44,7 @@ public class RequirementServiceImpl implements RequirementService{
 		return this.requirementDao.insertOneRequirement(requirementVO)>0;
 		
 	}
-
+	@Transactional
 	@Override
 	public boolean updateRequirement(RequirementVO requirementVO,  MultipartFile file) {
 		// TODO Auto-generated method stub
@@ -54,34 +55,40 @@ public class RequirementServiceImpl implements RequirementService{
 				requirementVO.setRqmFile(storedFile.getRealFileName());
 			}
 		}
-		return false;
+		return this.requirementDao.updateOneRequirement(requirementVO)>0;
 		
 		 
 
 	}
-
+	@Transactional
 	@Override
 	public boolean updateDelayRequirement(String rqmId, boolean isApprove) {
 		// TODO Auto-generated method stub
 		
-		RequirementVO thisRequirementVO = this.requirementDao.getOneRequirement(rqmId);
-		if(isApprove) {
-			this.requirementDao.updateOneRequirement(rqmId);
-		}else {
-			
-		}
-			
+//		RequirementVO thisRequirementVO = this.requirementDao.getOneRequirement(rqmId);
+//		if(isApprove) {
+//			this.requirementDao.updateOneRequirement(rqmId);
+//		}else {
+//			
+//		}
+//			
 			
 		
 		return false;
 	}
 
+	@Transactional
+	@Override
+	public boolean deleteOneRequirement(RequirementVO RequirementVO) {
+		
+		
+		return this.requirementDao.deleteReRequirement(RequirementVO)>0;
+	}
 
 	@Override
-	public boolean deleteOneRequirement(String rqmId) {
-		
-		
-		return false;
+	public boolean delayRequirement(RequirementVO requirementVO) {
+
+		return this.requirementDao.delayRequirement(requirementVO)>0;
 	}
 
 	
