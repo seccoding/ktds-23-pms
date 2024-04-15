@@ -18,7 +18,7 @@ public interface ReviewDao {
 	 */
 	public int insertNewReviewQuestion(ReviewVO reviewVO);
 	
-	public int selectOneReview(ReviewVO reviewVO);
+	public int getOneReview(String rvId);
 	
 	/**
 	 * PM, 팀원 후기 작성
@@ -39,6 +39,6 @@ public interface ReviewDao {
 	 * @param reviewVO
 	 * @return
 	 */
-	public int deleteOneReview(ReviewVO reviewVO);
+	public int deleteOneReview(String rvId);
 	
 }

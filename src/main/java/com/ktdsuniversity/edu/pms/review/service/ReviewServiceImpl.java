@@ -29,36 +29,37 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewListVO;
 	}
 
+	@Override
+	public boolean getOneReview(String rvId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	@Transactional
 	@Override
 	public boolean insertNewReviewQuestion(ReviewVO reviewVO) {
 		return this.reviewDao.insertNewReviewQuestion(reviewVO) > 0;
 	}
 
-	@Override
-	public boolean selectOneReview(ReviewVO reviewVO) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Transactional
 	@Override
 	public boolean insertNewReview(ReviewVO reviewVO) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.reviewDao.insertNewReview(reviewVO) > 0;
 	}
 
 	@Transactional
 	@Override
 	public boolean updateOneReview(ReviewVO reviewVO) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.reviewDao.insertNewReviewQuestion(reviewVO) > 0;
 	}
 
 	//@Transactional
 	@Override
-	public boolean deleteOneReview(ReviewVO reviewVO) {
+	public boolean deleteOneReview(String rvId) {
 
+//		int reviewVO = this.reviewDao.getOneReview(reviewId);
+		
+		return this.reviewDao.deleteOneReview(rvId) > 0;
 //		ReviewVO reviewVO = this.reviewDao.getAllReview(reviewId);
 //
 //		// PM이상일 경우에만 삭제할 수 있음
@@ -66,11 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
 //			throw new PageNotFoundException();
 //		}
 //		return this.reviewDao.deleteOneReview(replyId) > 0;
-
-		return false;
 	}
-
-
 
 //	@Override
 //	public List<ReviewVO> getAllReview() {
