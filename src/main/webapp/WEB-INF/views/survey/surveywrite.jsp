@@ -30,7 +30,8 @@
 <body>
     <h1>설문 작성</h1>
     <form action="/survey/write" method="post">
-        <div class="survey-body">
+        <div class="survey-body" data-id="${surveyQuestionVO.prjId}">
+            <div></div>
             <!-- <div class="survey-question">
                 <div class="survey-question-top">
                     <div>질문 1</div>
@@ -73,7 +74,7 @@
                 </div>
             </div> -->
         </div>
-        <button id="btn-add-srv-qst"><a href="javascript:search(0);">문항 추가</a></button>
     </form>
+    <button id="btn-add-srv-qst">문항 추가</button>
 </body>
 </html>
