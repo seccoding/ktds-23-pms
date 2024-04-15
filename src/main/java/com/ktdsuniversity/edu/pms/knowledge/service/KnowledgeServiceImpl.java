@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeDao;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
@@ -57,6 +61,25 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 		
 		return knowledgeVO;
 	}
+
+
+	@Override
+	public boolean createNewKnowledge(KnowledgeVO knowledgeVO, MultipartFile file) {
+		
+		// 파일 업로드
+		if(file != null && !file.isEmpty()) {
+			
+			KnowledgeVO originalKnowledgeVO = this.knowledgeDao.selectOneKnowledge(knowledgeVO.getKnlId());
+			
+//			StoredFile storedfile = FileHandler.storeFile(file);
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
 
 
 

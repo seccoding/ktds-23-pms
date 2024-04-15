@@ -14,6 +14,11 @@ public class KnowledgeVO {
 	private String crtrId;
 	private String mdfrId;
 	
+	// file - 난독화
+	private String fileName;
+	// file - 난독화X
+	private String originalFileName;
+	
 	
 	public String getKnlId() {
 		return knlId;
@@ -80,6 +85,18 @@ public class KnowledgeVO {
 	}
 	public void setMdfrId(String mdfrId) {
 		this.mdfrId = mdfrId;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getOriginalFileName() {
+		return originalFileName;
+	}
+	public void setOriginalFileName(String originalFileName) {
+		this.originalFileName = originalFileName;
 	}
 	
 	

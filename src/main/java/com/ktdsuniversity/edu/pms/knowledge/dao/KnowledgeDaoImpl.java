@@ -34,15 +34,13 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 
 	@Override
 	public KnowledgeVO selectOneKnowledge(String knowledgeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE + ".selectOneKnowledge", knowledgeId);
 	}
 
 
 	@Override
 	public int increaseViewCount(String knowledgeId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".increaseViewCount", knowledgeId);
 	}
 
 
