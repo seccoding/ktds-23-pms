@@ -53,6 +53,7 @@ SELECT  R.RQM_ID
   	ON  r.RQM_STS  = cc2.CMCD_ID 
   JOIN	PROJECT p 
   	ON	r.PRJ_ID = p.PRJ_ID 
+ WHERE	R.DEL_YN = 'N'
 	</select>
 	
 	<select id="getOneRequirement" 
