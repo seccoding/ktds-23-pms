@@ -334,6 +334,24 @@ public class FileHandler {
 			return fileSize;
 		}
 
+		public void setFileName(String fileName) {
+			this.fileName = fileName;
+		}
+
+		public void setRealFileName(String realFileName) {
+			this.realFileName = realFileName;
+		}
+
+		public void setRealFilePath(String realFilePath) {
+			this.realFilePath = realFilePath;
+		}
+
+		public void setFileSize(long fileSize) {
+			this.fileSize = fileSize;
+		}
+		
+		
+
 	}
 
 }
