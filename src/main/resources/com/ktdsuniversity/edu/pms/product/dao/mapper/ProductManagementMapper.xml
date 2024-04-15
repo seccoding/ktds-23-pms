@@ -3,4 +3,59 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO" id="ProductManagementVOMap" autoMapping="true">
+		<id column="PRDT_MNG_ID" property="prdtMngId" />
+		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+			<id column="PRDT_ID" property="prdtId" />
+			<result column="PRDT_NAME" property="prdtName"/>
+		</association>
+	</resultMap>
+
+	<select id="getProductManagementCount" resultType="_int">
+		SELECT COUNT(1)
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="getAllProductManagement" resultMap="ProductManagementVOMap">
+		SELECT PM.PRDT_MNG_ID
+			 , PM.PRDT_PRICE
+			 , TO_CHAR(PM.BUY_DT, 'YYYY-MM-DD') BUY_DT
+			 , PM.LOST_YN
+			 , TO_CHAR(PM.LOST_DT, 'YYYY-MM-DD') LOST_DT
+			 , PM.BRRW_YN
+			 , PM.PRDT_ID
+			 , PM.DEL_YN
+			 , P.PRDT_NAME 
+		  FROM PRODUCT_MANAGEMENT PM
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE PM.DEL_YN = 'N'
+	</select>
+	
+	<select id="getProductManagementCount" resultType="_int" parameterType="string">
+		SELECT COUNT(1)
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE DEL_YN = 'N'
+		   AND PRDT_ID = #{_parameter}
+	</select>
+	
+	<select id="getAllProductManagement" resultMap="ProductManagementVOMap" parameterType="string">
+		SELECT PM.PRDT_MNG_ID
+			 , PM.PRDT_PRICE
+			 , TO_CHAR(PM.BUY_DT, 'YYYY-MM-DD') BUY_DT
+			 , PM.LOST_YN
+			 , TO_CHAR(PM.LOST_DT, 'YYYY-MM-DD') LOST_DT
+			 , PM.BRRW_YN
+			 , PM.PRDT_ID
+			 , PM.DEL_YN
+			 , P.PRDT_NAME 
+		  FROM PRODUCT_MANAGEMENT PM
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE PM.DEL_YN = 'N'
+		   AND PM.PRDT_ID = #{_parameter}
+	</select>
+	
 </mapper>
