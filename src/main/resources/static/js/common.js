@@ -46,6 +46,14 @@ $().ready(function () {
 
 })
 
+function handleValidationErrors(ajaxResponse, fnHandlerCallback) {
+    if (ajaxResponse && ajaxResponse.data && ajaxResponse.data.errors) {
+        fnHandlerCallback(ajaxResponse.data.errors);
+    }
+}
+
+
+
 // 검색
 function search(pageNo) {
     var searchForm = $("#search-form");
