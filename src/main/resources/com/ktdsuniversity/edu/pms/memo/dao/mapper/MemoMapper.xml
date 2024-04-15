@@ -4,6 +4,28 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.memo.dao.MemoDao">
   
+    <resultMap type="com.ktdsuniversity.edu.pms.memo.vo.MemoVO" id="MemoVOMap" autoMapping="false">
+    	<id column="CRTR_ID" property="crtrId"/>
+    	<association property="employeeVO"
+    				  javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    		<id column="EMP_ID"/>
+    		<result column="EMAIL" property="email"/>
+    	</association>
+    </resultMap>
+  
+  	<select id="getSentMemoAllCount" resultType="_int">
+  		SELECT COUNT(1)
+		  FROM MEMO M
+		<!--   INNER JOIN EMPLOYEE E
+		    ON E.EMP_ID = M.CRTR_ID-->
+		 WHERE M.DEL_YN = 'N'
+	  	  <!--  AND CRTR_ID = #{empId} --> 
+  	</select>
   	
+  	<select id="getSentAllMemo" 
+  	resultType="list">
+  		SELECT *
+  		  FROM MEMO
+  	</select>
   
 </mapper>
