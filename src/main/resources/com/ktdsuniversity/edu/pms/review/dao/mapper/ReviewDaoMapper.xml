@@ -9,6 +9,7 @@
 		type="com.ktdsuniversity.edu.pms.review.vo.ReviewVO" id="ReviewVOMap"
 		autoMapping="true">
 		<id column="RV_ID" property="rvId" />
+		
 		<association property="projectVO"
 			javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
 			<id column="PRJ_ID" property="prjId" />
@@ -19,17 +20,26 @@
 			<result column="STRT_DT" property="strtDt" />
 			<result column="END_DT" property="endDt" />
 		</association>
+		
 		<association property="departmentVO"
 					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 			<id column="DEPT_ID" property="deptId" />
 			<result column="DEPT_NAME" property="deptName" />
 		</association>
+		
 		<association property="projectTeammateVO"
 					 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
 			<id column="PRJ_TM_ID" property="prjTmId" />
 			<result column="TM_ID" property="tmId" />
 			<result column="ROLE" property="role" />
 		</association>
+		
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+		</association>
+		
 	</resultMap>
 
 
@@ -74,10 +84,13 @@
 			P.DEPT_ID,
 			P.PRJ_STS,
 			P.STRT_DT,
-			P.END_DT
+			P.END_DT,
+			E.EMP_NAME
 		FROM
 			PROJECT_REVIEW PR
 			LEFT JOIN PROJECT P ON PR.PRJ_ID = P.PRJ_ID
+			LEFT JOIN PROJECT_TEAMMATE PT ON PT.PRJ_ID = P.PRJ_ID 
+			LEFT JOIN EMPLOYEE E ON E.EMP_ID = PT.TM_ID 
 	</select>
 	
 	
