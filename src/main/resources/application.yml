@@ -25,11 +25,8 @@ app:
         ignore-url-patterns:
             /js/**,
             /css/**,
-<<<<<<< HEAD
             /html/**,
-=======
             /images/**,
->>>>>>> common-front
             /error/**
     multipart:
         #파일 업로드 위치 지정
