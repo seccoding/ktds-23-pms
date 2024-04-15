@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.issue.service;
 
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
+import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
 
 public interface IssueService {
 
@@ -10,6 +11,8 @@ public interface IssueService {
 	 * @return
 	 */
 	public IssueListVO getAllIssue();
+	
+	public IssueListVO searchIssue(SearchIssueVO searchIssueVO);
 	
 	/**
 	 * 전달받은 파라미터의 이슈 번호를 조회해 반환한다

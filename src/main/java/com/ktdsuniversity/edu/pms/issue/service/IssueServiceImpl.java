@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ktdsuniversity.edu.pms.issue.dao.IssueDao;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
+import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
 
 @Service
 public class IssueServiceImpl implements IssueService {
@@ -26,6 +27,11 @@ public class IssueServiceImpl implements IssueService {
 		issueListVO.setIssueList(issueList);
 		
 		return issueListVO;
+	}
+	@Override
+	public IssueListVO searchIssue(SearchIssueVO searchIssueVO) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Transactional
@@ -66,4 +72,6 @@ public class IssueServiceImpl implements IssueService {
 		
 		return deletedCount > 0;
 	}
+
+	
 }
