@@ -35,7 +35,7 @@
         <tbody>
             <c:choose>
                 <c:when test="${not empty productManagementList.productManagementList}">
-                    <c:foreach items="${productManagementList.productManagementList}" var="product">
+                    <c:forEach items="${productManagementList.productManagementList}" var="product">
                         <tr>
                             <td>${product.prdtMngId}</td>
                             <td>${product.prdtName}</td>
@@ -64,7 +64,7 @@
                                 <button>삭제</button>
                             </td>
                         </tr>
-                    </c:foreach>
+                    </c:forEach>
 
                 </c:when>
                 

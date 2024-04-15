@@ -32,7 +32,7 @@
         <tbody>
             <c:choose>
                 <c:when test="${not empty productList.productList}">
-                    <c:foreach items="${productList.productList}" var="product">
+                    <c:forEach items="${productList.productList}" var="product">
                         <tr>
                             <td>${product.prdtId}</td>
                             <td>${product.prdtName}</td>
@@ -40,7 +40,7 @@
                             <td>${product.onceYn}</td>
                             <td>${product.curStr}</td>
                         </tr>
-                    </c:foreach>
+                    </c:forEach>
 
                 </c:when>
                 

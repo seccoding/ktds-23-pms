@@ -34,14 +34,14 @@
 		 WHERE PM.DEL_YN = 'N'
 	</select>
 	
-	<select id="getProductManagementCount" resultType="_int" parameterType="string">
+	<select id="getFilteringProductManagementCount" resultType="_int" parameterType="string">
 		SELECT COUNT(1)
 		  FROM PRODUCT_MANAGEMENT
 		 WHERE DEL_YN = 'N'
 		   AND PRDT_ID = #{_parameter}
 	</select>
 	
-	<select id="getAllProductManagement" resultMap="ProductManagementVOMap" parameterType="string">
+	<select id="getFilteringProductManagement" resultMap="ProductManagementVOMap" parameterType="string">
 		SELECT PM.PRDT_MNG_ID
 			 , PM.PRDT_PRICE
 			 , TO_CHAR(PM.BUY_DT, 'YYYY-MM-DD') BUY_DT
