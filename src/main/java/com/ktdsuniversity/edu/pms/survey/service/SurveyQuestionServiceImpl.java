@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
@@ -28,12 +29,20 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 
 	@Transactional
 	@Override
+	public SurveyQuestionVO getOneSurvey(String prjId) {
+		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionDao.selectOneSurvey(prjId);
+		if (surveyQuestionVO == null) {
+			throw new PageNotFoundException();
+		}
+		return surveyQuestionVO;
+	}
+	
+	@Transactional
+	@Override
 	public boolean createNewSurveyQuestion(SurveyQuestionVO surveyQuestionVO) {
 		int insertedCount = this.surveyQuestionDao.insertNewSurveyQuestion(surveyQuestionVO);
 		
 		return insertedCount > 0;
 	}
-	
-
 
 }

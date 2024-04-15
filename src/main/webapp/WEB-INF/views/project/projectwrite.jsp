@@ -14,14 +14,7 @@
 <jsp:include page="../layout/layout.jsp"></jsp:include>
 <div class="main">
     <h4>프로젝트 생성</h4>
-    <form action="/project/write" method="post">
-
-        <c:if test="${not empty errorMessage}">
-            <dialog class="alert-dialog">
-                <h1>${errorMessage}</h1>
-            </dialog>
-        </c:if>
-
+    <form>
         <%-- 프로젝트 명, 고객사명 --%>
         <div>
             <label for="project-name">프로젝트명</label>
@@ -63,17 +56,8 @@
                     <option value="${employee.empId}">${employee.empName}</option>
                 </c:forEach>
             </datalist>
-
-            <%--            <label for="pm-selector">담당자 </label>--%>
-            <%--            <input list="employee-list" id="pm-selector" autocomplete="off">--%>
-            <%--            <datalist id="employee-list">--%>
-            <%--            <c:forEach items="${employee}" var="employee">--%>
-            <%--                <option data-emp-id="${employee.empId}" value="${employee.empName}"/>--%>
-            <%--            </c:forEach>--%>
-            <%--            </datalist>--%>
-            <%--            <input type="hidden" id="employee-id" name="pmId">--%>
         </div>
-
+            
         <%--    html date type 사용으로 해결, datepicker는 미사용    --%>
         <div>
             <label for="start-date">시작일</label>
@@ -84,7 +68,7 @@
 
         <div>
             <div>
-                <input type="submit" value="저장"/>
+                <button id="btn-create" type="button">생성</button>
             </div>
         </div>
     </form>

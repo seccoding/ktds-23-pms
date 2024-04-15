@@ -18,10 +18,21 @@
 			<result column="STRT_DT" property="strtDt" />
 			<result column="END_DT" property="endDt" />
 		</association>
+		<association property="projectTeammateVO"
+					 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+			<id column="PRJ_TM_ID" property="prjTmId" />
+			<result column="TM_ID" property="tmId" />
+			<result column="ROLE" property="role" />
+		</association>
 		<association property="departmentVO"
 					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 			<id column="DEPT_ID" property="deptId" />
 			<result column="DEPT_NAME" property="deptName" />
+		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
 		</association>
 	</resultMap>
 
@@ -36,13 +47,54 @@
 			 , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
 			 , d.DEPT_NAME
 		  FROM SURVEY_QUESTION sq
-		  LEFT JOIN PROJECT p
+		  JOIN PROJECT p
 		    ON p.PRJ_ID = sq.PRJ_ID
-		  LEFT JOIN DEPARTMENT d
+		  JOIN DEPARTMENT d
     		ON d.DEPT_ID = p.DEPT_ID
 		 WHERE p.DEL_YN = 'N'
+	</select>
+	
+	<select id="selectOneSurvey" parameterType="String" resultMap="SurveyQuestionVOMap">
+		SELECT sq.SRV_ID
+			 , sq.PRJ_ID
+			 , sq.SRV_QST
+			 , sq.CRTR_ID
+			 , sq.CRT_DT
+			 , sq.MDFR_ID
+			 , sq.MDF_DT
+			 , sq.DEL_YN
+			 , sq.SEQ
+			 , sq.TYPE_YN
+			 , sq.SRV_STS
+			 , p.PRJ_NAME
+			 , d.DEPT_NAME
+			 , pt.TM_ID
+			 , pt.ROLE
+			 , e.EMP_NAME
+		  FROM (SELECT SRV_ID
+		  			 , PRJ_ID
+		  			 , SRV_QST
+		  			 , CRTR_ID
+		  			 , CRT_DT
+		  			 , MDFR_ID
+		  			 , MDF_DT
+		  			 , DEL_YN
+		  			 , SEQ
+		  			 , TYPE_YN
+		  			 , SRV_STS
+		  		  FROM SURVEY_QUESTION) sq
+		  JOIN PROJECT p
+		    ON p.PRJ_ID = sq.PRJ_ID
+		  JOIN DEPARTMENT d
+		    ON d.DEPT_ID = p.DEPT_ID
+		  JOIN PROJECT_TEAMMATE pt
+		    ON pt.PRJ_ID = p.PRJ_ID
+		  JOIN EMPLOYEE e
+		    ON e.EMP_ID = pt.TM_ID
+		 WHERE sq.PRJ_ID = #{_parameter}
+		   AND pt.ROLE = 'PM'
+		   AND ROWNUM = 1
 		   AND sq.DEL_YN = 'N'
-		   AND d.DEL_YN = 'N'
 	</select>
 	
 	<insert id="insertNewSurveyQuestion" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
@@ -71,13 +123,6 @@
 		, #{typeYn}
 		, 'N')
 	</insert>
-	
-	<select id="selectOneSurvey" parameterType="String" resultMap="SurveyQuestionVOMap">
-		SELECT *
-		  FROM SURVEY_QUESTION
-		 WHERE DEL_YN = 'N'
-		   AND PRJ_ID = #{_parameter}
-	</select>
 	
 	<update id="updateOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
 		UPDATE SURVEY_QUESTION

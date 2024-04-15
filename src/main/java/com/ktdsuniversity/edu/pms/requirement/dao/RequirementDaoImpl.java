@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.DelayAcessVO;
 
 @Repository
 public class RequirementDaoImpl extends SqlSessionDaoSupport implements RequirementDao{
@@ -31,20 +32,32 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 
 	@Override
 	public int insertOneRequirement(RequirementVO requirementVO) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getSqlSession().insert(NAME_SPACE+".insertOneRequirement",requirementVO);
 	}
 
 	@Override
-	public int updateOneRequirement(String rqmId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateOneRequirement(RequirementVO requirementVO) {
+		
+		return getSqlSession().update(NAME_SPACE+".updateOneRequirement", requirementVO);
 	}
 
+	
+
 	@Override
-	public int updateDelayOneRequirement(RequirementVO requirementVO) {
+	public int deleteReRequirement(RequirementVO requirementVO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return getSqlSession().update(NAME_SPACE+".deleteReRequirement", requirementVO);
+	}
+	
+	
+	@Override
+	public int delayRequirement(RequirementVO requirementVO) {
+		return getSqlSession().update(NAME_SPACE+".delayRequirement", requirementVO);
+		
+	}
+	@Override
+	public int updateDelayOneRequirement(DelayAcessVO delayAcessVO) {
+		return getSqlSession().update(NAME_SPACE+".updateDelayOneRequirement", delayAcessVO);
 	}
 
 	

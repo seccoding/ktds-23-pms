@@ -22,13 +22,35 @@ public class LoginLogServiceImpl implements LoginLogService {
 	public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO) {
 
 		employeeVO.setPwd(employeeVO.getPwd());
+		
+		
 		EmployeeVO employee = loginLogDao.getOneEmployeeByEmpIdAndPwd(employeeVO);
-
+		
+		
 		if (employee == null) {
 			// exception 패키지에서 exception 처리 해야 한다.
 			throw new EmpIdAndPwdIsNotMatchException();
 		}
-
+		
+		
+//		employee.setLgnYn("Y");
 		return employee;
 	}
+
+	@Override
+	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
+		employeeVO.setLgnYn("Y");
+		this.loginLogDao.getOneEmpIdUseOtherPlace(employeeVO);
+		
+		return null;
+	}
+
+	@Override
+	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO) {
+		employeeVO.setLgnYn("N");
+		this.loginLogDao.getOneEmpIdNotUseNow(employeeVO);
+	}
+
+	
+
 }

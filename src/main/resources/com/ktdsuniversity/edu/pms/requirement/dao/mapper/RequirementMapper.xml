@@ -53,6 +53,7 @@ SELECT  R.RQM_ID
   	ON  r.RQM_STS  = cc2.CMCD_ID 
   JOIN	PROJECT p 
   	ON	r.PRJ_ID = p.PRJ_ID 
+ WHERE	R.DEL_YN = 'N'
 	</select>
 	
 	<select id="getOneRequirement" 
@@ -67,6 +68,8 @@ SELECT  R.RQM_ID
 	 ,	cc2.CMCD_NAME AS RQM_NAME	
 	 ,	r.PRJ_ID
 	 ,	p.PRJ_NAME 
+	 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
+	 ,	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
   FROM 	REQUIREMENT r 
   JOIN	COMMON_CODE cc1 
   	ON	R.SCD_STS =CC1.CMCD_ID
@@ -76,5 +79,89 @@ SELECT  R.RQM_ID
   	ON	r.PRJ_ID = p.PRJ_ID 
  WHERE	R.RQM_ID = #{_PARAMETER}
 	</select>
+	
+	
+	<insert id="insertOneRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+	INSERT INTO PMS.REQUIREMENT
+	( RQM_ID
+	, RQM_TTL
+	, RQM_CNTNT
+	, STRT_DT
+	, END_DT
+	, RQM_FILE
+	, DVLRP
+	, CFRMR
+	, TSTR
+	, TEST_RSLT
+	, SCD_STS
+	, RQM_STS
+	, CRT_DT
+	, CRTR_ID
+	, MDF_DT
+	, MDFR_ID
+	, PRJ_ID
+	, DEL_YN)
+	VALUES
+	( ('RQM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RQM_PK.NEXTVAL, 6, '0'))
+	, #{rqmTtl}
+	, #{rqmCntnt}
+	, #{strtDt}
+	, #{endDt}
+	, #{rqmFile}
+	, '0509006'
+	, '0509006'
+	, '0509006'
+	, ''
+	, #{scdSts}
+	, #{rqmSts}
+	, SYSDATE	
+	, '0509006'
+	, ''
+	, ''
+	, #{prjId}
+	, 'N' )
+		
+	</insert>
+	
+	<update id="updateOneRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+	UPDATE PMS.REQUIREMENT SET 
+	  RQM_CNTNT=#{rqmCntnt}
+	, STRT_DT=#{strtDt}
+	, END_DT=#{endDt}
+	, RQM_FILE=#{rqmFile}
+	, SCD_STS=#{scdSts}
+	, RQM_STS=#{rqmSts}
+	, MDF_DT=SYSDATE
+	, RQM_TTL=#{rqmTtl}
+	WHERE RQM_ID=#{rqmId}
+	
+	</update>
+	
+	<update id="deleteReRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+	UPDATE PMS.REQUIREMENT SET 
+	  DEL_YN = 'Y'
+	WHERE RQM_ID=#{rqmId}
+	
+	</update>
+	
+	<update id="delayRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+	 UPDATE PMS.REQUIREMENT SET 
+	SCD_STS = '503'
+	  WHERE RQM_ID=#{rqmId}
+	</update>
+	
+<!--	<update id="deleteReRequirement"-->
+<!--	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">-->
+<!--		UPDATE PMS.REQUIREMENT SET-->
+
+<!--	</update>-->
+	
+
+	
+	
 	
 </mapper>

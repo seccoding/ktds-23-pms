@@ -5,6 +5,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <title>요구사항 리스트 페이지</title>
+    <jsp:include page="../commonheader.jsp"></jsp:include>
   </head>
   <body>
     <table>
@@ -35,7 +36,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 <td>${requirememt.rqmId}</td>
                 <td>
                   <a
-                    href="/project/${requirememt.prjId}/requirement/${requirememt.rqmId}"
+                    href="/project/requirement/view?prjId=${requirememt.prjId}&rqmId=${requirememt.rqmId}"
                     >${requirememt.rqmTtl}</a
                   >
                 </td>

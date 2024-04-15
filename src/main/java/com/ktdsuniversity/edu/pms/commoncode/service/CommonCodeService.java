@@ -8,4 +8,6 @@ public interface CommonCodeService {
 
 	public List<CommonCodeVO> getAllCommonCodeList();
 
+	public List<CommonCodeVO> getAllCommonCodeListByPId(String pid);
+
 }

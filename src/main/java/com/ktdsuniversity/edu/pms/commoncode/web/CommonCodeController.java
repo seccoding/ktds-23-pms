@@ -16,36 +16,15 @@ import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 @Controller
 public class CommonCodeController {
 
-	private static List<CommonCodeVO> COMMON_CODE_LIST;
-	public static boolean NEED_RELOAD;
-	private static Object LOCK;
-
-	public static void needReload() {
-		NEED_RELOAD = true;
-	}
-
-	static {
-		NEED_RELOAD = false;
-		if (COMMON_CODE_LIST == null) {
-			NEED_RELOAD = true;
-		}
-
-		LOCK = new Object();
-	}
-
 	@Autowired
 	private CommonCodeService commonCodeService;
 
 	@GetMapping("/commoncode")
 	public synchronized String viewCommonCodeListPage(Model model) {
 
-		synchronized (LOCK) {
-			if (NEED_RELOAD) {
-				COMMON_CODE_LIST = commonCodeService.getAllCommonCodeList();
-			}
-		}
+		List<CommonCodeVO> codeList = commonCodeService.getAllCommonCodeList();
 
-		model.addAttribute("mainCodeList", COMMON_CODE_LIST.stream()
+		model.addAttribute("mainCodeList", codeList.stream()
 				.filter(code -> code.getCmcdPid() == null).toList());
 
 		return "commoncode/list";
@@ -56,15 +35,12 @@ public class CommonCodeController {
 	public synchronized AjaxResponse getCommonCodeByPID(
 			@PathVariable String pid) {
 
-		synchronized (LOCK) {
-			if (NEED_RELOAD) {
-				COMMON_CODE_LIST = commonCodeService.getAllCommonCodeList();
-			}
-		}
+		List<CommonCodeVO> codeList = commonCodeService.getAllCommonCodeList();
 
-		return new AjaxResponse().append("codeList", COMMON_CODE_LIST.stream()
-				.filter(code -> code.getCmcdPid() != null)
-				.filter(code -> code.getCmcdPid().equals(pid)).toList());
+		return new AjaxResponse().append("codeList",
+				codeList.stream().filter(code -> code.getCmcdPid() != null)
+						.filter(code -> code.getCmcdPid().equals(pid))
+						.toList());
 	}
 
 }

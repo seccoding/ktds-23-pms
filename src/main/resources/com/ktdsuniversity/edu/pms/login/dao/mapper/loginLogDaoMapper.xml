@@ -10,8 +10,27 @@
              , PWD
              , SALT
              , ADMN_CODE
+             , LGN_YN
+             , END_DT
+             , REST_ST_DT
+             , REST_END_DT
           FROM EMPLOYEE
          WHERE EMP_ID = #{empId}
            AND PWD = #{pwd}
     </select>
+    
+    <update id="getOneEmpIdUseOtherPlace"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    		UPDATE EMPLOYEE
+    		   SET LGN_YN = 'Y'
+    		 WHERE EMP_ID = #{empId}
+    </update>
+    
+    <update id="getOneEmpIdNotUseNow"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    		UPDATE EMPLOYEE
+    		   SET LGN_YN = 'N'
+    		 WHERE EMP_ID = #{empId}
+    </update>
+    
 </mapper>

@@ -10,9 +10,9 @@
 </head>
 <body>
     <div>
-        <table class="table">
+        <table>
             <colgroup>
-                <col width="*" />
+                <col width="150px" />
                 <col width="150px" />
                 <col width="150px" />
                 <col width="150px" />
@@ -35,7 +35,7 @@
                 <c:choose>
                     <c:when test="${not empty surveyList.surveyList}">
                         <c:forEach items="${surveyList.surveyList}" var="survey">
-                            <tr>
+                            <tr onclick="location.href='/survey/view?prjId=${survey.prjId}'">
                                 <td>${survey.projectVO.prjName}</td>
                                 <td>${survey.projectVO.clntInfo}</td>
                                 <td>${survey.departmentVO.deptName}</td>
@@ -49,8 +49,8 @@
                     <c:otherwise>
                         <tr>
                             <td colspan="7">
-                                <a href="/survey/write">
-                                    설문 작성 ㄱㄱ
+                                <a href="/survey/write/${survey.prjId}">
+                                    설문 작성
                                 </a>
                             </td>
                         </tr>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.ckeditor.dao.CkeditorDao">
+
+    <insert id="save"
+            parameterType="com.ktdsuniversity.edu.pms.ckeditor.vo.CkeditorVO">
+        INSERT INTO CKEDITOR(
+        ID,
+        TITLE,
+        CONTENT
+        )
+        VALUES(
+        SEQ_CKEDITOR_PK.NEXTVAL,
+        #{title},
+        #{content}
+        )
+    </insert>
+
+    <select id="findAll">
+        SELECT ID,
+        TITLE,
+        CONTENT
+        FROM CKEDITOR
+    </select>
+
+    <select id="findById"
+            parameterType="String">
+        SELECT ID,
+        TITLE,
+        CONTENT
+        FROM CKEDITOR
+        WHERE ID = #{_parameter}
+    </select>
+
+</mapper>
