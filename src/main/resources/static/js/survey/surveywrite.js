@@ -141,8 +141,10 @@ $().ready(function() {
         srvQstDom.append(srvQstBottomDom);
         $(".survey-body").append(srvQstDom);
 
+        var typeYn = 'N';
         $(selectiveTypeButtonDom).on("click", function() {
             $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
+            typeYn = 'N';
             var ulDom = $("<ul></ul>");
 
             var firstLiDom = $("<li></li>");
@@ -150,7 +152,6 @@ $().ready(function() {
             firstLiDivDom.text("답변 1");
             var firstLiFirstInputDom = $("<input/>");
             firstLiFirstInputDom.attr('type', 'text');
-            // firstLiFirstInputDom.val('${surveyQuestionVO.srvQst}')
             firstLiFirstInputDom.attr('placeholder', '답변명');
             var firstLiSecondInputDom = $("<input/>");
             firstLiSecondInputDom.attr('type', 'text');
@@ -230,8 +231,9 @@ $().ready(function() {
             var deleteSrvQstButtonDom = $("<button></button>");
             deleteSrvQstButtonDom.attr("type", "button");
             deleteSrvQstButtonDom.text("문항 삭제");
-    
+
             $(deleteSrvQstButtonDom).on("click", function() {
+                seqNum--;
                 var chooseValue = confirm("정말 삭제하시겠습니까?");
                 if (chooseValue) {
                     $(this).closest(srvQstDom).remove();
@@ -246,17 +248,33 @@ $().ready(function() {
 
         $(descriptiveTypeButtonDom).on("click", function() {
             $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
+            typeYn = 'Y';
             srvQstBottomDom.append(deleteSrvQstButtonDom);
             srvQstBottomDom.append(insertSrvQstButtonDom);
         });
 
-        // $(insertSrvQstButtonDom).on("click", function() {
-        //     var content = $(firstLiFirstInputDom).val();
-        //     body = {srvQst: content.trim()};
-            
-        //     $.post("/ajax/survey/write/" + prjId, body, function(response) {
-        //         console.log(response);
-        //     });
-        // });
+        $(insertSrvQstButtonDom).on("click", function() {
+            var srvQst = $(srvQstInputDom).val();
+            var closestQstNum = $(this).closest(srvQstBottomDom)
+                         .closest(srvQstDom).find(srvQstMiddleDom)
+                         .find(seqDom).text();
+
+            $.post("/ajax/survey/write/" + prjId, {
+                srvQst: srvQst,
+                crtrId: '0509004',
+                seq: closestQstNum,
+                typeYn: typeYn,
+            }, 
+            function(response) {
+                var result = response.data.result;
+                if(result){
+                    alert("성공!")
+                }
+                else{
+                    alert("실패!")
+                }
+                
+            });
+        });
     });
 });

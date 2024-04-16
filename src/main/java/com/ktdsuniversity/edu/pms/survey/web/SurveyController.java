@@ -45,7 +45,7 @@ public class SurveyController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/ajax/survey/write/{prjId}")
+	@PostMapping("/ajax/survey/write/{prjId}")
 	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setPrjId(prjId);
 		
