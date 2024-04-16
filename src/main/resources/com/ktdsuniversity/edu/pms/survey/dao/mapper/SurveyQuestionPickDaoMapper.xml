@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao">
 	
-	<resultMap type="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVo"
+	<resultMap type="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO"
 			   id="SurveyQuestionPickVoMap"
 			   autoMapping="true">
 		<id column="SQP_ID" property="sqpId" />
