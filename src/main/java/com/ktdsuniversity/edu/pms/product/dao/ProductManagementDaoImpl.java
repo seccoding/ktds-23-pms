@@ -20,13 +20,13 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 
 
 	@Override
-	public int getProductManagementCount() {
-		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductManagementCount");
+	public int getProductManagementCount(ProductManagementVO productManagementVO) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductManagementCount", productManagementVO);
 	}
 
 	@Override
-	public List<ProductManagementVO> getAllProductManagement() {
-		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getAllProductManagement");
+	public List<ProductManagementVO> getAllProductManagement(ProductManagementVO productManagementVO) {
+		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getAllProductManagement", productManagementVO);
 	}
 
 

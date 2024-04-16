@@ -5,7 +5,7 @@ import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 
 public interface ProductManagementService {
 
-	public ProductManagementListVO getAllProductdetail();
+	public ProductManagementListVO getAllProductdetail(ProductManagementVO productManagementVO);
 
 	public ProductManagementListVO getFilteringProductdetail(String id);
 

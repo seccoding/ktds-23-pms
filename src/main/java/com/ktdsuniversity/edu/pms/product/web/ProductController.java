@@ -28,26 +28,28 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/list")
-	public String viewProductListPage(Model model) {
-		ProductListVO productListVO = this.productService.getAllProduct();
+	public String viewProductListPage(Model model, ProductVO productVO) {
+		ProductListVO productListVO = this.productService.getAllProduct(productVO);
 		model.addAttribute("productList", productListVO);
+		model.addAttribute("productVO", productVO);
 		return "product/list";
 	}
 	
 	
-	
 	@GetMapping("/product/manage/list")
-	public String viewProductManageListPage(Model model) {
-		ProductListVO productListVO = this.productService.getAllProduct();
+	public String viewProductManageListPage(Model model, ProductVO productVO) {
+		ProductListVO productListVO = this.productService.getAllProduct(productVO);
 		model.addAttribute("productList", productListVO);
+		model.addAttribute("productVO", productVO);
 		return "product/managelist";
 	}
 	
 	
 	@GetMapping("/product/manage/detail")
-	public String viewProductManageDetailPage(Model model) {
-		ProductManagementListVO productManagementListVO = this.productManagementService.getAllProductdetail();
+	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO) {
+		ProductManagementListVO productManagementListVO = this.productManagementService.getAllProductdetail(productManagementVO);
 		model.addAttribute("productManagementList", productManagementListVO);
+		model.addAttribute("productVO", productManagementVO);
 		return "product/managedetail";
 	}
 	
