@@ -1,0 +1,127 @@
+// grid
+window.onload = function () {
+  var gridArray = document.querySelectorAll(".grid");
+
+  gridArray.forEach((_, index) => {
+    var dom = gridArray[index];
+    var data = dom.dataset;
+
+    dom.style["display"] = "grid";
+    dom.style["grid-template-columns"] = data["gridColumns"];
+    dom.style["grid-template-rows"] = data["gridRows"];
+
+    if (data["gap"]) {
+      dom.style["gap"] = data["gap"];
+    }
+
+    if (!data["gap"] && data["columnGap"]) {
+      dom.style["column-gap"] = data["columnGap"];
+    }
+
+    if (!data["gap"] && data["rowGap"]) {
+      dom.style["row-gap"] = data["rowGap"];
+    }
+  });
+
+  var gridItemArray = document.querySelectorAll(".grid > *");
+  gridItemArray.forEach((_, index) => {
+    var dom = gridItemArray[index];
+    var data = dom.dataset;
+
+    if (data["columns"]) {
+      dom.style["grid-column"] = data["columns"];
+    }
+
+    if (data["rows"]) {
+      dom.style["grid-row"] = data["rows"];
+    }
+  });
+};
+
+
+// 사이드바 서브메뉴 접는 기능
+$().ready(function () {
+  $(".sidebar-submenu").each(function () {
+    $(this)
+      .find(".sidebar-submenu-content")
+      .on("click", function (event) {
+        event.preventDefault();
+        $(this).find(".dropdown-icon").toggleClass("active");
+        var dropdown_content = $(this).siblings(".dropdown-menu");
+        var dropdown_content_lis = dropdown_content.find("a");
+        var active_height =
+          dropdown_content_lis.eq(0).outerHeight() *
+          dropdown_content_lis.length;
+        dropdown_content
+          .toggleClass("active")
+          .css(
+            "height",
+            dropdown_content.hasClass("active") ? active_height + "px" : "0"
+          );
+      });
+  });
+});
+
+$().ready(function () {
+
+    // 날짜 체크 1, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
+    // 프로젝트 종료일을 초기화한다.
+    $('#end-date').on("change", function () {
+        var startDate = $('#start-date').val();
+        var endDate = $('#end-date').val();
+
+        // 시작일과 종료일을 비교
+        if (startDate && endDate && endDate <= startDate) {
+            // 종료일이 시작일보다 이전이거나 같다면 경고를 표시하고 초기화
+            alert('종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요.');
+            $('#end-date').val(''); // 종료일 초기화
+        }
+    });
+
+    // 날짜 체크 2, 프로젝트 종료일이 선택된 후, 프로젝트 시작일을 수정하는 경우 alert 발생
+    // 프로젝트 시작일 유지
+    $('#start-date').on("change", function () {
+            var startDate = $('#start-date').val();
+            var endDate = $('#end-date').val();
+
+            if (startDate && endDate && endDate <= startDate) {
+                alert('시작일은 종료일보다 이전이여야 합니다. 날짜를 다시 설정해주세요.');
+                $('#start-date').val(''); // 시작일 초기화
+            }
+        }
+    );
+
+    // 날짜 최소, 최대 값 설정
+    var today = new Date();
+    var startOfYear = new Date(today.getFullYear(), 0, 1); // 올해의 1월 1일
+    var endOfFiveYears = new Date(today.getFullYear() + 5, 11, 31); // 5년 후의 12월 31일
+
+    // 날짜를 YYYY-MM-DD 형식으로 변환
+    var minStartDate = startOfYear.toISOString().slice(0, 10);
+    var maxEndDate = endOfFiveYears.toISOString().slice(0, 10);
+
+    // 시작일(input#start-date)에 min 속성 설정
+    $('#start-date').attr('min', minStartDate);
+    $('#start-date').attr('max', maxEndDate); // 시작일의 max를 종료일의 max와 동일하게 설정할 수 있습니다.
+
+    // 종료일(input#end-date)에 min과 max 속성 설정
+    $('#end-date').attr('min', minStartDate); // 종료일의 min을 시작일의 min과 동일하게 설정할 수 있습니다.
+    $('#end-date').attr('max', maxEndDate);
+
+})
+
+function handleValidationErrors(ajaxResponse, fnHandlerCallback) {
+    if (ajaxResponse && ajaxResponse.data && ajaxResponse.data.errors) {
+        fnHandlerCallback(ajaxResponse.data.errors);
+    }
+}
+
+
+
+// 검색
+function search(pageNo) {
+    var searchForm = $("#search-form");
+    $("#page-no").val(pageNo);
+
+    searchForm.attr("method", "get").submit();
+}

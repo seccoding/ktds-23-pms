@@ -1,5 +1,10 @@
 package com.ktdsuniversity.edu.pms.survey.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+
 public class SurveyQuestionVO {
 	
 	private String srvId;
@@ -12,6 +17,12 @@ public class SurveyQuestionVO {
 	private String delYn;
 	private int seq;
 	private String typeYn;
+	private String srvSts;
+	
+	private ProjectVO projectVO;
+	private DepartmentVO departmentVO;
+	private ProjectTeammateVO projectTeammateVO;
+	private EmployeeVO employeeVO;
 	
 	public String getSrvId() {
 		return srvId;
@@ -72,6 +83,36 @@ public class SurveyQuestionVO {
 	}
 	public void setTypeYn(String typeYn) {
 		this.typeYn = typeYn;
+	}
+	public String getSrvSts() {
+		return srvSts;
+	}
+	public void setSrvSts(String srvSts) {
+		this.srvSts = srvSts;
+	}
+	public ProjectVO getProjectVO() {
+		return projectVO;
+	}
+	public void setProjectVO(ProjectVO projectVO) {
+		this.projectVO = projectVO;
+	}
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
+	public ProjectTeammateVO getProjectTeammateVO() {
+		return projectTeammateVO;
+	}
+	public void setProjectTeammateVO(ProjectTeammateVO projectTeammateVO) {
+		this.projectTeammateVO = projectTeammateVO;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
 	}
 
 }

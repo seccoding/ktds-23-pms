@@ -3,4 +3,60 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO" id="borrowVOMap"  autoMapping="true">
+		<id column="BRRW_HIST_ID" property="brrwHistId" />
+		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+			<id column="PRDT_ID" property="prdtId" />
+			<result column="PRDT_NAME" property="prdtName" />
+		</association>
+	</resultMap>
+
+	<select id="getBorrowCount" resultType="_int" parameterType="string">
+		SELECT COUNT(1)
+		  FROM BORROW_HISTORY
+		 WHERE DEL_YN = 'N'
+		   AND BRRW_ID = #{_parameter}
+		   AND RTN_DT IS NULL
+	</select>
+
+	<select id="getUserRentalState" resultMap="borrowVOMap" parameterType="string">
+		SELECT BH.BRRW_HIST_ID
+			 , BH.BRRW_ID
+			 , BH.PRDT_MNG_ID
+			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
+			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
+			 , BH.DEL_YN
+			 , P.PRDT_NAME 
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE BH.DEL_YN = 'N'
+		   AND BH.BRRW_ID = #{_parameter}
+	</select>
+	
+	<select id="getProductManageStateAllCount" resultType="_int">
+		SELECT COUNT(1)
+		  FROM BORROW_HISTORY
+		 WHERE DEL_YN ='N'
+		   AND RTN_DT IS NULL
+	</select>
+
+	<select id="getProductManageState" resultMap="borrowVOMap">
+		SELECT BH.BRRW_HIST_ID
+			 , BH.BRRW_ID
+			 , BH.PRDT_MNG_ID
+			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
+			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
+			 , BH.DEL_YN
+			 , P.PRDT_NAME 
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE BH.DEL_YN = 'N'
+	</select>
 </mapper>

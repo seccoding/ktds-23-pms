@@ -1,8 +1,10 @@
 package com.ktdsuniversity.edu.pms.review.vo;
 
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+
 public class ReviewVO {
 
-	private String arvId;
+	private String rvId;
 	private String rvCntnt;
 	private String prjId;
 	private String crtDt;
@@ -10,11 +12,21 @@ public class ReviewVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String delYn;
-	public String getArvId() {
-		return arvId;
+		
+	private ProjectVO projectVO;
+	
+	
+	public ProjectVO getProjectVO() {
+		return projectVO;
 	}
-	public void setArvId(String arvId) {
-		this.arvId = arvId;
+	public void setProjectVO(ProjectVO projectVO) {
+		this.projectVO = projectVO;
+	}
+	public String getRvId() {
+		return rvId;
+	}
+	public void setRvId(String rvId) {
+		this.rvId = rvId;
 	}
 	public String getRvCntnt() {
 		return rvCntnt;

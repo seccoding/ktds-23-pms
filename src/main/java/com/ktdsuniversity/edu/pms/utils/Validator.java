@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.utils;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.Map;
 public class Validator<T> {
 
 	public enum Type {
-		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN
+		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DATE
 	}
 
 	private T object;
@@ -67,6 +69,8 @@ public class Validator<T> {
 					result = !StringUtil.isEmpty(value);
 				} else if (type == Type.EMAIL) {
 					result = StringUtil.isEmailFormat(value);
+				} else if (type == Type.EMPID) {
+					result = StringUtil.isEmpIdFormat(value);
 				} else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {
 						Object otherObjectValue = this.getRefValue(key, type);
@@ -94,6 +98,18 @@ public class Validator<T> {
 						Object otherObjectValue = this.getRefValue(key, type);
 						int maxValue = this.toInt(otherObjectValue);
 						result = iValue <= maxValue;
+					}
+				} else if (type == Type.DATE) {
+					if (this.hasRefValue(key, type)) {
+						String otherValue = this.getRefStringValue(key, type,
+								null);
+						if (StringUtil.isEmpty(otherValue)) {
+							result = false;
+						} else {
+                            LocalDate valueLocalDate = LocalDate.parse(value,DateTimeFormatter.ISO_DATE);
+							LocalDate refValueLocalDate = LocalDate.parse(otherValue,DateTimeFormatter.ISO_DATE);
+							result = !valueLocalDate.isEqual(refValueLocalDate) || !valueLocalDate.isAfter(refValueLocalDate);
+						}
 					}
 				}
 
@@ -165,18 +181,33 @@ public class Validator<T> {
 	}
 
 	private Field getField(String fieldName) {
-		Field field = null;
-		try {
-			field = this.object.getClass().getDeclaredField(fieldName);
-		} catch (NoSuchFieldException | SecurityException e) {
+		return getField(fieldName, this.object.getClass());
+	}
+
+	private Field getField(String fieldName, Class<?> cls) {
+		if (cls == Object.class) {
 			return null;
 		}
-		field.setAccessible(true);
+		Field field = null;
+		try {
+			field = cls.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			field = getField(fieldName, cls.getSuperclass());
+		}
+
+		if (field != null) {
+			field.setAccessible(true);
+		}
 
 		return field;
 	}
 
 	private String getValue(Field field) {
+
+		if (field == null) {
+			return null;
+		}
+
 		Object fieldValue = null;
 		try {
 			fieldValue = field.get(this.object);

@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.borrow.vo;
 
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+
 public class BorrowVO {
 	
 	private String brrwHistId;
@@ -9,6 +12,22 @@ public class BorrowVO {
 	private String rtnDt;
 	private String delYn;
 	
+	private ProductManagementVO productManagementVO;
+	
+	private ProductVO productVO;
+	
+	public ProductVO getProductVO() {
+		return productVO;
+	}
+	public void setProductVO(ProductVO productVO) {
+		this.productVO = productVO;
+	}
+	public ProductManagementVO getProductManagementVO() {
+		return productManagementVO;
+	}
+	public void setProductManagementVO(ProductManagementVO productManagementVO) {
+		this.productManagementVO = productManagementVO;
+	}
 	public String getBrrwHistId() {
 		return brrwHistId;
 	}

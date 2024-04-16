@@ -11,6 +11,14 @@ public class ProductManagementVO {
 	private String prdtId;
 	private String delYn;
 	
+	private ProductVO productVO;
+	
+	public ProductVO getProductVO() {
+		return productVO;
+	}
+	public void setProductVO(ProductVO productVO) {
+		this.productVO = productVO;
+	}
 	public String getPrdtMngId() {
 		return prdtMngId;
 	}
