@@ -24,7 +24,12 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	}
 
 	@Override
-	public int getOneReview(String rvId) {
+	public List<ReviewVO> viewReviewCntnt() {
+		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".viewReviewCntnt");
+	}
+	
+	@Override
+	public ReviewVO getOneReview(String rvId) {
 		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".seleceOneReview", rvId);
 	}
 	
@@ -40,12 +45,14 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	
 	@Override
 	public int updateOneReview(ReviewVO reviewVO) {
-		return getSqlSession().update(ReviewDao.NAME_SPACE + ".updateOneReview");
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".updateOneReview", reviewVO);
 	}
 
 	@Override
 	public int deleteOneReview(String rvId) {
-		return getSqlSession().update(ReviewDao.NAME_SPACE + ".deleteOneReview");
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".deleteOneReview", rvId);
 	}
+
+	
 
 }

@@ -10,6 +10,8 @@ public interface ReviewDao {
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.review.dao.ReviewDao";
 
 	public List<ReviewVO> selectAllReview();
+		
+	public List<ReviewVO> viewReviewCntnt();
 
 	/**
 	 * 후기 작성 요청 전송(PM)
@@ -18,7 +20,7 @@ public interface ReviewDao {
 	 */
 	public int insertNewReviewQuestion(ReviewVO reviewVO);
 	
-	public int getOneReview(String rvId);
+	public ReviewVO getOneReview(String rvId);
 	
 	/**
 	 * PM, 팀원 후기 작성
