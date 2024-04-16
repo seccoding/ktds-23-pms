@@ -29,9 +29,8 @@
 </head>
 <body>
     <h1>설문 작성</h1>
-    <form action="/survey/write" method="post">
+    <form>
         <div class="survey-body" data-id="${surveyQuestionVO.prjId}">
-            <div></div>
             <!-- <div class="survey-question">
                 <div class="survey-question-top">
                     <div>질문 1</div>
@@ -67,14 +66,15 @@
                         </li>
                     </ul>
                     <button> 답변 항목 추가 </button>
-                </div>
-                <div>   
                     <button id="btn-insert-srv-qst">문항 완성</button>
                     <button id="btn-delete-srv-qst">문항 삭제</button>
+                </div>
+                <div>   
                 </div>
             </div> -->
         </div>
     </form>
     <button id="btn-add-srv-qst">문항 추가</button>
+    <button id="btn-compl-srv">설문 완성</button>
 </body>
 </html>
