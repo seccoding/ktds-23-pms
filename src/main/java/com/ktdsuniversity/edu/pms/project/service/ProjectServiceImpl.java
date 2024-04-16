@@ -4,6 +4,7 @@ import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -81,4 +84,32 @@ public class ProjectServiceImpl implements ProjectService {
         return deleteCount > 0;
     }
 
+    @Override
+    public int getProjectTeammateCount(String projectId) {
+        return projectDao.selectProjectTeammateCount(projectId);
+    }
+
+    public List<ProjectTeammateVO> getAllProjectTeammateByProjectId(String projectId) {
+        List<ProjectTeammateVO> projectTeammateList = projectDao.findAllProjectTeammateByProjectId(projectId);
+
+        if (projectTeammateList == null || projectTeammateList.isEmpty()) {
+            throw new PageNotFoundException();
+        }
+
+        return projectTeammateList;
+    }
+
+    @Override
+    public Map<String, List<ProjectStatusVO>> getProjectStatus(String projectId) {
+
+        List<ProjectStatusVO> projectRequirementStatusList = projectDao.getProjectRequirementStatusList(projectId);
+        List<ProjectStatusVO> projectIssueStatusList = projectDao.getProjectIssueStatusList(projectId);
+
+        Map<String, List<ProjectStatusVO>> chartData = new HashMap<>();
+
+        chartData.put("requirement", projectRequirementStatusList);
+        chartData.put("issue", projectIssueStatusList);
+
+        return chartData;
+    }
 }

@@ -119,7 +119,7 @@
 		, NULL
 		, NULL
 		, 'N'
-		, 1
+		, #{seq}
 		, #{typeYn}
 		, 'N')
 	</insert>

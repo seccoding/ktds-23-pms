@@ -26,12 +26,24 @@
 
         <%-- 게시판 생성 여부 --%>
         <div>
-            <label><input type="checkbox" id="requirement-check" name="reqYn" value="Y"> 요구사항 관리 필요여부</label>
-            <label><input type="checkbox" id="output-check" name="outYn" value="Y"> 산출물 관리 필요여부</label>
             <div>
-                <label><input type="checkbox" id="issue-check" name="isYn" value="Y" disabled> 이슈관리</label>
-                <label><input type="checkbox" id="knowledge-check" name="knlYn" value="Y" disabled> 지식관리</label>
-                <label><input type="checkbox" id="qna-check" name="qaYn" value="Y" disabled> 묻고 답하기</label>
+            <input type="checkbox" id="requirement-check" name="reqYn" value="Y"/>
+            <label for="requirement-check"></label>
+            <label for="requirement-check">요구사항 관리 필요여부</label>
+            <input type="checkbox" id="output-check" name="outYn" value="Y"/>
+            <label for="output-check"></label>
+            <label for="output-check">산출물 관리 필요여부</label>
+            </div>
+            <div>
+                <input type="checkbox" id="issue-check" name="isYn" value="Y" disabled/>
+                <label for="issue-check"></label>
+                <label for="issue-check">이슈관리</label>
+                <input type="checkbox" id="knowledge-check" name="knlYn" value="Y" disabled/>
+                <label for="knowledge-check"></label>
+                <label for="knowledge-check">지식관리</label>
+                <input type="checkbox" id="qna-check" name="qaYn" value="Y" disabled/>
+                <label for="qna-check"></label>
+                <label for="qna-check">묻고 답하기</label>
             </div>
         </div>
 

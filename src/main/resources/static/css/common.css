@@ -476,6 +476,7 @@ select {
 /**  메뉴 탭  **/
 .menu-tab-wrapper {
   display: flex;
+  width: 100%;
 }
 
 .menu-tab-prev {
@@ -489,6 +490,15 @@ select {
   flex-shrink: 0;
   text-align: right;
   display: none;
+}
+iframe {
+  /* width: 113.75rem;
+  height: 54.375rem; */
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding: 0.5rem;
+  display: block;
+  border: none;
 }
 
 .frame-list,
@@ -618,7 +628,7 @@ select {
 /* content */
 .content {
   padding-left: var(--sidebar-size);
-  margin: 5rem 10rem 0rem 10rem;
+  margin: 0;
 }
 
 .main {

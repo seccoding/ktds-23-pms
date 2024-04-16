@@ -57,7 +57,7 @@
                 <c:forEach items="${projectList.projectList}" var="project">
                     <tr class="project-row" data-project-id="${project.prjId}">
                         <td>
-                            <a href="/project/view?projectId=${project.prjId}">${project.prjName}</a>
+                            <a href="/project/view?prjId=${project.prjId}">${project.prjName}</a>
                         </td>
                         <td>${project.clntInfo}</td>
                         <td>${project.deptVO.deptName}</td>

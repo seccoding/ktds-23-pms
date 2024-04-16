@@ -19,7 +19,7 @@ $().ready(function () {
         // 클릭한 행의 프로젝트 ID 가져오기
         var projectId = $(this).data("project-id");
         // 프로젝트 페이지로 이동
-        location.href = "/project/view?projectId=" + projectId;
+        location.href = "/project/view?prjId=" + projectId;
     });
 
     $("#status").on("change", function () {

@@ -1,11 +1,23 @@
 package com.ktdsuniversity.edu.pms.department.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
+
 public class DepartmentVO {
 	private String deptId;
 	private String deptName;
 	private String deptCrDt;
 	private String delYn;
 	private String deptLeadId;
+	private EmployeeVO employeeVO;
+	private TeamVO teamVO;
+	private JobVO jobVO;
+	private CommonCodeVO commonCodeVO;
+	
+	
+
 
 	public String getDeptId() {
 		return deptId;
@@ -45,6 +57,38 @@ public class DepartmentVO {
 
 	public void setDeptLeadId(String deptLeadId) {
 		this.deptLeadId = deptLeadId;
+	}
+
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
+
+	public TeamVO getTeamVO() {
+		return teamVO;
+	}
+
+	public void setTeamVO(TeamVO teamVO) {
+		this.teamVO = teamVO;
+	}
+
+	public JobVO getJobVO() {
+		return jobVO;
+	}
+
+	public void setJobVO(JobVO jobVO) {
+		this.jobVO = jobVO;
+	}
+
+	public CommonCodeVO getCommonCodeVO() {
+		return commonCodeVO;
+	}
+
+	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
+		this.commonCodeVO = commonCodeVO;
 	}
 
 

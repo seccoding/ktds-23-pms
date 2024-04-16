@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.utils.StringUtil;
 
 @Controller
 public class DepartmentController {
@@ -21,6 +24,25 @@ public class DepartmentController {
 		model.addAttribute("departmentList", departmentListVO);
 		
 		return "department/departmentlist";
+	}
+	
+	@PostMapping("/department/create")
+	public String doCreateNewDepartment(DepartmentVO departmentVO, Model model) {
+		boolean isEmptyName = StringUtil.isEmpty(departmentVO.getDeptName());
+		boolean isEmptyLeaderId = StringUtil.isEmpty(departmentVO.getDeptLeadId());
+		
+		if (isEmptyName) {
+			model.addAttribute("errorMessage", "부서 이름은 필수 입력 값입니다.");
+			model.addAttribute("departmentVO", departmentVO);
+			return "/department/departmentcreate";
+		}
+		if (isEmptyLeaderId) {
+			model.addAttribute("errorMessage", "부서장 이름은 필수 입력 값입니다.");
+			model.addAttribute("departmentVO", departmentVO);
+			return "/department/departmentcreate";
+		}
+		
+		return "redirect:/department/search";
 	}
 
 }
