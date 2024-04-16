@@ -16,6 +16,8 @@ public interface ProductService {
 
 	public ProductVO getOneProduct(String id);
 
+	public boolean updateOneProduct(String prdtId);
+
 
 	
 	

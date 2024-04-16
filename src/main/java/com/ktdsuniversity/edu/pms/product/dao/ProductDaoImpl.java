@@ -38,4 +38,9 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".selectOneProduct", id);
 	}
 
+	@Override
+	public int updateOneProduct(String prdtId) {
+		return getSqlSession().update(ProductDao.NAME_SPACE+".updateOneProduct" ,prdtId);
+	}
+
 }

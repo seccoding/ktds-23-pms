@@ -16,4 +16,6 @@ public interface ProductDao {
 
 	public ProductVO selectOneProduct(String id);
 
+	public int updateOneProduct(String prdtId);
+
 }

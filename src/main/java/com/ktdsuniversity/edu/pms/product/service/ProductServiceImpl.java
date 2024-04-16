@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService{
 		return productVO;
 	}
 
+	@Override
+	public boolean updateOneProduct(String prdtId) {
+		
+		return productDao.updateOneProduct(prdtId) > 0;
+	}
+
 	
 
 }
