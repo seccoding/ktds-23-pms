@@ -28,11 +28,19 @@ public class IssueServiceImpl implements IssueService {
 		
 		return issueListVO;
 	}
-	@Override
-	public IssueListVO searchIssue(SearchIssueVO searchIssueVO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public IssueListVO searchIssue(SearchIssueVO searchIssueVO) {
+//		int issueCount = this.issueDao.searchIssueCount(searchIssueVO);
+//		searchIssueVO.setPageCount(issueCount);
+//		
+//		List<IssueVO> issueList = this.issueDao.searchIssue(searchIssueVO);
+//		
+//		IssueListVO issueListVO = new IssueListVO();
+//		issueListVO.setIssueCnt(issueCount);
+//		issueListVO.setIssueList(issueList);
+//		
+//		return issueListVO;
+//	}
 
 	@Transactional
 	@Override
@@ -72,6 +80,4 @@ public class IssueServiceImpl implements IssueService {
 		
 		return deletedCount > 0;
 	}
-
-	
 }

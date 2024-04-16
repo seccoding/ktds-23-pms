@@ -12,7 +12,7 @@ public interface IssueService {
 	 */
 	public IssueListVO getAllIssue();
 	
-	public IssueListVO searchIssue(SearchIssueVO searchIssueVO);
+//	public IssueListVO searchIssue(SearchIssueVO searchIssueVO);
 	
 	/**
 	 * 전달받은 파라미터의 이슈 번호를 조회해 반환한다

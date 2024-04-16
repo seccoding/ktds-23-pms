@@ -3,10 +3,18 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.issue.dao.IssueDao">
-
 	<resultMap type="com.ktdsuniversity.edu.pms.issue.vo.IssueVO"
 			   id="issueVOMap" autoMapping="true">
 		<id column="IS_ID" property="isId"/>
+		<result column="RQM_ID" property="rqmId" />
+		<result column="PRJ_ID" property="prjId" />
+		<result column="EMP_ID" property="empId" />
+		
+		<association property="requirementVO"
+					 javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+			<id column="RQM_ID" property="rqmId"/>
+			<result column="RQM_TTL" property="rqmTtl"/>
+		</association>
 		<association property="projectVO"
 					 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
 			<id column="PRJ_ID" property="prjId"/>
@@ -27,22 +35,101 @@
 	</select>
 	
 	<select id="getAllIssue"
-			resultType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
-		SELECT IS_ID
-		     , RQM_ID
-		     , IS_TTL
-		     , IS_CNT
-		     , IS_LV
-		     , IS_FILE
-		     , IS_CNTNT
-		     , IS_MNGR
-		     , IS_STS
-		     , TO_CHAR(CRT_DT, 'YYYY-MM-DD') AS CRT_DT
-		     , CRTR_ID
-		     , TO_CHAR(MDF_DT, 'YYYY-MM-DD') AS MDF_DT
-		     , MDFR_ID
-		     , DEL_YN
-		  FROM ISSUE
-		 WHERE DEL_YN = 'N';
+			resultMap="issueVOMap">
+		SELECT P.PRJ_NAME
+		     , R.RQM_TTL 
+		     , I.IS_ID
+		     , I.RQM_ID
+		     , I.IS_TTL
+		     , I.IS_CNT
+		     , I.IS_LV
+		     , I.IS_FILE
+		     , I.IS_CNTNT
+		     , I.IS_MNGR
+		     , I.IS_STS
+		     , TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		     , I.CRTR_ID
+		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		     , I.MDFR_ID
+		     , I.DEL_YN
+		  FROM ISSUE I
+		 INNER JOIN REQUIREMENT R
+		    ON I.RQM_ID = R.RQM_ID
+		 INNER JOIN PROJECT P
+		    ON R.PRJ_ID = P.PRJ_ID 
+		 WHERE I.DEL_YN = 'N'
+		   AND R.DEL_YN = 'N'
 	</select>
+	
+	<select id="selectOneIssue"
+			resultMap="issueVOMap">
+		SELECT P.PRJ_NAME
+		     , R.RQM_TTL 
+		     , I.IS_ID
+		     , I.RQM_ID
+		     , I.IS_TTL
+		     , I.IS_CNT
+		     , I.IS_LV
+		     , I.IS_FILE
+		     , I.IS_CNTNT
+		     , I.IS_MNGR
+		     , I.IS_STS
+		     , TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		     , I.CRTR_ID
+		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		     , I.MDFR_ID
+		     , I.DEL_YN
+		  FROM ISSUE I
+		 INNER JOIN REQUIREMENT R
+		    ON I.RQM_ID = R.RQM_ID
+		 INNER JOIN PROJECT P
+		    ON R.PRJ_ID = P.PRJ_ID 
+		 INNER JOIN EMPLOYEE E
+		    ON E.EMP_ID = I.CRTR_ID 
+		 WHERE I.DEL_YN = 'N'
+		   AND R.DEL_YN = 'N'
+		   AND I.IS_ID = #{_parameter}
+	</select>
+	
+	<update id="increaseViewCount"
+			parameterType="String">
+		UPDATE ISSUE 
+		   SET IS_CNT = IS_CNT + 1
+		 WHERE DEL_YN = 'N'
+		   AND IS_ID = #{_parameter}
+	</update>
+	
+	<insert id="insertNewIssue"
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		INSERT INTO ISSUE 
+		 (IS_ID
+		, RQM_ID
+		, IS_TTL
+		, IS_CNT
+		, IS_LV
+		, IS_FILE
+		, IS_CNTNT
+		, IS_MNGR
+		, IS_STS
+		, CRT_DT
+		, CRTR_ID
+		, MDF_DT
+		, MDFR_ID
+		, DEL_YN)
+		VALUES 
+		 (('IS_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ISSUE_PK.NEXTVAL, 6, '0'))
+		, #{rqmId}
+		, #{isTtl}
+		, 0
+		, #{isLv}
+		, #{isFile}
+		, #{isCntnt}
+		, #{isMngr}
+		, #{isSts}
+		, SYSDATE
+		, #{crtrId}
+		, NULL
+		, #{mdfrId}
+		, 'N')
+	</insert>
 </mapper>
