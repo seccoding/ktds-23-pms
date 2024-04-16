@@ -8,6 +8,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
   </head>
   <body>
+    <jsp:include page="../layout/layout.jsp"></jsp:include>
+    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
     <table>
       <colgroup>
         <col width="160px" />
@@ -58,7 +60,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     <div>
       <p>
-        <a href="/project/requirement/write">신규</a>
+        <button><a href="/project/requirement/write">신규</a></button>
       </p>
     </div>
   </body>

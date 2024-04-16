@@ -4,20 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< Updated upstream
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
-=======
->>>>>>> Stashed changes
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
-<<<<<<< Updated upstream
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -25,24 +21,14 @@ import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 import jakarta.servlet.http.HttpSession;
-=======
-import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
->>>>>>> Stashed changes
 
 @Controller
 public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
-	
-<<<<<<< Updated upstream
-	
-	
-	
 
-=======
 	@Autowired
 	private FileHandler fileHandler;
->>>>>>> Stashed changes
 	
 	@GetMapping("/employee/search")
 	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
@@ -52,7 +38,6 @@ public class EmployeeController {
 		return "employee/employeelist"; //employeelist JSP에 보낸다.
 	}
 	
-<<<<<<< Updated upstream
 //	@GetMapping("/employee/regist") 
 //	public String viewRegistEmployeePage() {
 //		return "employee/employeeregist";
@@ -138,9 +123,7 @@ public class EmployeeController {
 	
 									
 }
-=======
 	
 	
 
-}
->>>>>>> Stashed changes
+

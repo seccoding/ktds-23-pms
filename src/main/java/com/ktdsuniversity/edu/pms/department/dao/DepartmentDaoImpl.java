@@ -1,31 +1,18 @@
 package com.ktdsuniversity.edu.pms.department.dao;
 
-<<<<<<< Updated upstream
-=======
+
 import java.util.List;
 
->>>>>>> Stashed changes
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-<<<<<<< Updated upstream
-
-@Repository
-public class DepartmentDaoImpl extends SqlSessionDaoSupport implements DepartmentDao {
-
-    @Autowired
-    @Override
-    public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-        super.setSqlSessionTemplate(sqlSessionTemplate);
-    }
-=======
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 
 @Repository
 public class DepartmentDaoImpl extends SqlSessionDaoSupport implements DepartmentDao{
->>>>>>> Stashed changes
+
 
 	@Autowired
 	@Override
