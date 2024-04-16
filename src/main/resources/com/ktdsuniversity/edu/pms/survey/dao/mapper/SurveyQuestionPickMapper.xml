@@ -3,5 +3,20 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao">
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVo"
+			   id="SurveyQuestionPickVoMap"
+			   autoMapping="true">
+		<id column="SQP_ID" property="sqpId" />
+		<association property="surveyQuestionVO"
+					 javaType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+			<id column="SRV_ID" property="srvId" />
+		</association>
+	</resultMap>
+	
+	<insert id="createNewAnswer" 
+			parameterType="com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao">
+	
+	</insert>
 
 </mapper>
