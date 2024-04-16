@@ -14,12 +14,8 @@ public interface SurveyQuestionDao {
 	
 	public SurveyQuestionVO selectOneSurvey(String prjId);
 	
-	public int updateOneSurvey(SurveyQuestionVO surveyQuestionVO);
-	
-	public int updateOneSurveyQuestion(SurveyQuestionVO surveyQuestionVO);
-	
-	public int deleteOneSurvey(String prjId);
-	
-	public int deleteOneSurveyQuestion(String srvId);
+	public SurveyQuestionVO getOneSurvey(String srvId);
+
+	public int modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
 
 }

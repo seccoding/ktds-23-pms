@@ -34,23 +34,13 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public int updateOneSurvey(SurveyQuestionVO surveyQuestionVO) {
-		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".updateOneSurvey", surveyQuestionVO);
+	public SurveyQuestionVO getOneSurvey(String srvId) {
+		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".getOneSurvey", srvId);
 	}
 
 	@Override
-	public int updateOneSurveyQuestion(SurveyQuestionVO surveyQuestionVO) {
-		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".updateOneSurveyQuestion", surveyQuestionVO);
-	}
-
-	@Override
-	public int deleteOneSurvey(String prjId) {
-		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".deleteOneSurvey", prjId);
-	}
-
-	@Override
-	public int deleteOneSurveyQuestion(String srvId) {
-		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".deleteOneSurveyQuestion", srvId);
+	public int modifyOneSurvey(SurveyQuestionVO surveyQuestionVO) {
+		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".modifyOneSurvey", surveyQuestionVO);
 	}
 
 }
