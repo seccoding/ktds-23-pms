@@ -22,16 +22,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div class="grid">
         <input type="hidden" id="rvId" name="rvId" value="RV_20240412_000001" />
 
-        <label for="prjId">프로젝트 ID</label>
+        <label for="prjId">프로젝트명</label>
         <input type="text" id="prjId" name="prjId" value="PRJ_240409_000012" />
 
-        <label for="crtrId">후기 작성하는 사람 ID</label>
+        <label for="crtrId">작성인 ID</label>
         <input type="text" id="crtrId" name="crtrId" value="0005020" />
 
-        <label for="crtDt">후기 작성 날짜</label>
+        <label for="crtDt">작성 날짜</label>
         <input type="date" name="crtDt" value="2024-04-12" />
 
-        <label for="mdfDt">후기 수정 날짜</label>
+        <label for="mdfDt">수정 날짜</label>
         <input type="date" name="mdfDt" value="2024-04-12 14:38:47.000" />
 
         <input type="hidden" id="delYn" name="delYn" value="N" />
