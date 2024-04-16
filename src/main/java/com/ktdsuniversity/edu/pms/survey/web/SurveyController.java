@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionService;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
@@ -45,15 +43,21 @@ public class SurveyController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/ajax/survey/write/{prjId}")
-	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO,
-									  @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	@PostMapping("/ajax/survey/write/{prjId}")
+	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setPrjId(prjId);
-		surveyQuestionVO.setCrtrId(employeeVO.getEmpId());
 		
 		boolean isSuccess = this.surveyQuestionService.createNewSurveyQuestion(surveyQuestionVO);
 		return new AjaxResponse().append("result", isSuccess);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/modify/{prjId}")
+	public AjaxResponse doModifySurvey(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
+		surveyQuestionVO.setPrjId(prjId);
 		
+		boolean isSuccess = this.surveyQuestionService.modifyOneSurvey(surveyQuestionVO);
+		return new AjaxResponse().append("result", isSuccess);
 	}
 
 }

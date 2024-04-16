@@ -1,5 +1,9 @@
 package com.ktdsuniversity.edu.pms.issue.vo;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+
 public class IssueVO {
 
 	private String isId;
@@ -16,6 +20,12 @@ public class IssueVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String delYn;
+	
+	private RequirementVO requirementVO; 
+	
+	private ProjectVO  projectVO;
+	
+	private EmployeeVO employeeVO;
 	
 	public String getIsId() {
 		return isId;
@@ -100,5 +110,23 @@ public class IssueVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public RequirementVO getRequirementVO() {
+		return requirementVO;
+	}
+	public void setRequirementVO(RequirementVO requirementVO) {
+		this.requirementVO = requirementVO;
+	}
+	public ProjectVO getProjectVO() {
+		return projectVO;
+	}
+	public void setProjectVO(ProjectVO projectVO) {
+		this.projectVO = projectVO;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
 	}
 }

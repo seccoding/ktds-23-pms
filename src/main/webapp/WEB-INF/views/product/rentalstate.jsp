@@ -18,6 +18,26 @@
         </div>
     </div>
     <div class="grid">
+        <div>
+            <form id="search-form">
+                <input type="hidden" id="page-no" name="pageNo" value="0" />
+                <div class="right-align">
+                    <input type="checkbox" id="product-exist">
+                    <label for="product-exist"></label>
+                    
+                    <select id="search-type" name="searchType" >
+                        <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
+                        <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                        <option value="category" ${productVO.searchType eq 'category' ? 'selected' : ''}>카테고리</option>
+                        <option value="noSelect" ${productVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
+                    </select>
+        
+                    <input type="text" name="searchKeyword" value="${productVO.searchKeyword}"/>
+                    <button type="button" id="search-btn">검색</button>
+                </div>
+            </form>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -28,38 +48,38 @@
                     <th>반납신청</th>
                 </tr>
             </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty userRentalState.borrowList}">
+                        <c:forEach items="${userRentalState.borrowList}" var="product">
+                            <tr>
+                                <td>${product.productVO.prdtName}</td>
+                                <td>${product.prdtMngId}</td>
+                                <td>${product.brrwDt}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${not empty product.rtnDt}">
+                                            ${product.rtnDt}
+                                        </c:when>
+                                        <c:otherwise>-</c:otherwise>
+                                    </c:choose>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${empty product.rtnDt}">
+                                            <button>반납</button>
+                                        </c:when>
+                                        <c:otherwise>반납완료</c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+    
+                    </c:when>
+                    
+                </c:choose>
+    
+            </tbody>
         </table>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty userRentalState.borrowList}">
-                    <c:forEach items="${userRentalState.borrowList}" var="product">
-                        <tr>
-                            <td>${product.productVO.prdtName}</td>
-                            <td>${product.prdtMngId}</td>
-                            <td>${product.brrwDt}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${not empty product.rtnDt}">
-                                        ${product.rtnDt}
-                                    </c:when>
-                                    <c:otherwise>-</c:otherwise>
-                                </c:choose>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${empty product.rtnDt}">
-                                        <button>반납</button>
-                                    </c:when>
-                                    <c:otherwise>반납완료</c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                    </c:forEach>
-
-                </c:when>
-                
-            </c:choose>
-
-        </tbody>
     </div>
     <jsp:include page="../layout/layout_close.jsp" />
 </body>

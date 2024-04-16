@@ -473,6 +473,76 @@ select {
   color: var(--main-color);
 }
 
+/**  메뉴 탭  **/
+.menu-tab-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.menu-tab-prev {
+  flex-basis: 1.5rem;
+  flex-shrink: 0;
+  text-align: left;
+  display: none;
+}
+.menu-tab-next {
+  flex-basis: 1.5rem;
+  flex-shrink: 0;
+  text-align: right;
+  display: none;
+}
+iframe {
+  /* width: 113.75rem;
+  height: 54.375rem; */
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding: 0.5rem;
+  display: block;
+  border: none;
+}
+
+.frame-list,
+.menu-tab {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.menu-tab {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.menu-tab li {
+  display: inline-block;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  background-color: var(--box-sub-bg);
+}
+
+.menu-tab li > .close-tab {
+  margin-left: 0.5rem;
+}
+
+.menu-tab li:first-child {
+  margin-left: 0;
+}
+
+.menu-tab li.active-tab {
+  background-color: var(--sub-color);
+  font-weight: bold;
+}
+
+/**  메뉴 프레임  **/
+.frame-list li:frame-active {
+  display: block;
+}
+
+.frame-list li:not(.frame-active) {
+  display: none;
+}
+
 .dropdown-icon {
   font-size: 1.5rem;
   margin-right: 10px;
@@ -558,7 +628,7 @@ select {
 /* content */
 .content {
   padding-left: var(--sidebar-size);
-  margin: 5rem 10rem 0rem 10rem;
+  margin: 0;
 }
 
 .main {
@@ -665,7 +735,7 @@ input[type="text"].input-text-title {
     padding-left: 0;
     display: block;
   }
-  
+
   .content {
     padding-left: 0;
     display: block;

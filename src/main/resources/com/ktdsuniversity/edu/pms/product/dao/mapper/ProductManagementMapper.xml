@@ -12,13 +12,33 @@
 		</association>
 	</resultMap>
 
-	<select id="getProductManagementCount" resultType="_int">
+	<select id="getProductManagementCount" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO"
+			resultType="_int">
 		SELECT COUNT(1)
-		  FROM PRODUCT_MANAGEMENT
-		 WHERE DEL_YN = 'N'
+		  FROM PRODUCT_MANAGEMENT PM
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE PM.DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productManagementId"'>
+		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productName"'>
+		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "noSelect"'>
+		   AND (PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+		   OR P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%')
+				</when>
+			</choose>
+		</if>
 	</select>
 	
-	<select id="getAllProductManagement" resultMap="ProductManagementVOMap">
+	<select id="getAllProductManagement" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO"
+			resultMap="ProductManagementVOMap">
 		SELECT PM.PRDT_MNG_ID
 			 , PM.PRDT_PRICE
 			 , TO_CHAR(PM.BUY_DT, 'YYYY-MM-DD') BUY_DT
@@ -32,6 +52,20 @@
 		 INNER JOIN PRODUCT P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE PM.DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productManagementId"'>
+		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productName"'>
+		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "noSelect"'>
+		   AND (PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+		   OR P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%')
+				</when>
+			</choose>
+		</if>
 	</select>
 	
 	<select id="getFilteringProductManagementCount" resultType="_int" parameterType="string">
@@ -56,6 +90,26 @@
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE PM.DEL_YN = 'N'
 		   AND PM.PRDT_ID = #{_parameter}
+	</select>
+	
+	<update id="deleteOneProductManagement" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT 
+		   SET DEL_YN = 'Y'
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</update>
+	
+
+	<select id="getOneProductManagement" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO" parameterType="string">
+		SELECT PRDT_MNG_ID
+			 , PRDT_PRICE
+			 , BUY_DT
+			 , LOST_YN
+			 , LOST_DT
+			 , BRRW_YN
+			 , PRDT_ID
+			 , DEL_YN
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE PRDT_MNG_ID = #{_parameter}
 	</select>
 	
 </mapper>

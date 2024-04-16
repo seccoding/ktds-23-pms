@@ -113,35 +113,41 @@
 		VALUES
 		 (('SRV_QST_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PK.NEXTVAL, 6, '0'))
 		, #{prjId}
-		, #{srvQst}
+		, ' '
 		, #{crtrId}
 		, SYSDATE
 		, NULL
 		, NULL
 		, 'N'
-		, 1
+		, #{seq}
 		, #{typeYn}
 		, 'N')
 	</insert>
 	
-	<update id="updateOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+	<select id="getOneSurvey" parameterType="String" resultMap="SurveyQuestionVOMap">
+		SELECT SRV_ID
+			 , PRJ_ID
+			 , SRV_QST
+			 , CRTR_ID
+			 , TO_CHAR(CRT_DT, 'YYYY/MM/DD') CRT_DT
+			 , MDFR_ID
+			 , TO_CHAR(MDF_DT, 'YYYY/MM/DD') MDF_DT
+			 , DEL_YN
+			 , SEQ
+			 , TYPE_YN
+			 , SRV_STS
+		  FROM SURVEY_QUESTION
+		 WHERE DEL_YN = 'N'
+		   AND SRV_ID = #{_parameter}
+	</select>
+	
+	<update id="modifyOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
 		UPDATE SURVEY_QUESTION
 		   SET SRV_QST = #{srvQst}
-			 , MDFR_ID = #{mdfrId}
-			 , MDF_DT = SYSDATE
+		     , MDFR_ID = #{mdfrId}
+		     , MDF_DT = SYSDATE
+		     , TYPE_YN = #{typeYn}
 		 WHERE SRV_ID = #{srvId}
-	</update>
-	
-	<update id="deleteOneSurvey" parameterType="String">
-		UPDATE SURVEY_QUESTION
-		   SET DEL_YN = 'Y'
-		 WHERE PRJ_ID = #{_parameter}
-	</update>
-	
-	<update id="deleteOneSurveyQuestion" parameterType="String">
-		UPDATE SURVEY_QUESTION
-		   SET DEL_YN = 'Y'
-		 WHERE PRJ_ID = #{_parameter}
 	</update>
 
 </mapper>

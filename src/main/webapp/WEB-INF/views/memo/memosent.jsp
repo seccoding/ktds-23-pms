@@ -9,7 +9,7 @@
 <jsp:include page="../commonheader.jsp" />
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp" />
+
 
      <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.>>>>>>>>>>>>>>>>></div>
     <table>
@@ -36,14 +36,17 @@
 		</tr>
       </thead>
 
-    <c:forEach items="${memoList.memoList}" var="memo">
+    <c:forEach items="${memoList.memoList}" var="memo" varStatus="loop">
      	<tr>
                <td>
-                 <input type="checkbox" class="target-board-id" name="targetBoardId" value="${board.id}">
+                 <input type="checkbox" id="target-memo-id-${loop.index}" name="targetBoardId" value="${memo.memoId}" />
+     	 		 <label for="target-memo-id-${loop.index}"></label>
                </td>
              <td class="center-align">${memo.rcvId}</td>
              <td class="left-align">
-               ${memo.memoCntnt}
+             	<a class="ellipsis" href="/memo/view?id=${memo.memoId}">
+             		${memo.memoCntnt}
+             	</a>
              </td>
              <td class="center-align">${memo.crtDt}</td>
              <td class="center-align">${memo.readYn}</td>
@@ -52,6 +55,6 @@
          </tr>
     </c:forEach>
     </table>
-<jsp:include page="../layout/layout_close.jsp" />
+
 </body>
 </html>

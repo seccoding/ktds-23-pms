@@ -4,13 +4,35 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.product.dao.ProductDao">
 	
-	<select id="getProductAllCount" resultType="_int">
+	<select id="getProductAllCount" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+			resultType="_int">
 		SELECT COUNT(1)
 		  FROM PRODUCT
 		 WHERE DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productId"'>
+		   AND PRDT_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productName"'>
+		   AND PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "category"'>
+		   AND PRDT_CTGR LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "noSelect"'>
+		   AND (PRDT_ID LIKE '%' || #{searchKeyword} || '%'
+		   OR PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   OR PRDT_CTGR LIKE '%' || #{searchKeyword} || '%')
+				</when>
+			</choose>
+		</if>
 	</select>
 	
-	<select id="getAllProduct" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+	<select id="getAllProduct" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 		SELECT PRDT_ID
 			 , PRDT_NAME
 			 , PRDT_CTGR
@@ -19,6 +41,24 @@
 			 , DEL_YN
 		  FROM PRODUCT
 		 WHERE DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productId"'>
+		   AND PRDT_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productName"'>
+		   AND PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "category"'>
+		   AND PRDT_CTGR LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "noSelect"'>
+		   AND (PRDT_ID LIKE '%' || #{searchKeyword} || '%'
+		   OR PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   OR PRDT_CTGR LIKE '%' || #{searchKeyword} || '%')
+				</when>
+			</choose>
+		</if>
 	</select>
 	
 	<insert id="insertNewProduct" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
@@ -48,4 +88,11 @@
 		  FROM PRODUCT
 		 WHERE PRDT_ID = #{_parameter}
 	</select>
+	
+	<update id="updateOneProduct" parameterType="string">
+		UPDATE PRODUCT 
+		   SET CUR_STR = CUR_STR - 1
+		 WHERE PRDT_ID = #{_parameter}
+	</update>
+	
 </mapper>

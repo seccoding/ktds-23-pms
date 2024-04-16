@@ -20,13 +20,13 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 
 
 	@Override
-	public int getProductManagementCount() {
-		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductManagementCount");
+	public int getProductManagementCount(ProductManagementVO productManagementVO) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductManagementCount", productManagementVO);
 	}
 
 	@Override
-	public List<ProductManagementVO> getAllProductManagement() {
-		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getAllProductManagement");
+	public List<ProductManagementVO> getAllProductManagement(ProductManagementVO productManagementVO) {
+		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getAllProductManagement", productManagementVO);
 	}
 
 
@@ -39,6 +39,19 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 	@Override
 	public List<ProductManagementVO> getFilteringProductManagement(String id) {
 		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getFilteringProductManagement", id);
+	}
+
+
+	@Override
+	public int deleteOneProductManagement(String productId) {
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE+".deleteOneProductManagement", productId);
+	}
+
+
+	@Override
+	public ProductManagementVO getOneProductManagement(String productId) {
+		
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getOneProductManagement",productId);
 	}
 
 }

@@ -1,11 +1,9 @@
 package com.ktdsuniversity.edu.pms.job.vo;
 
 public class JobVO {
-
 	private String jobId;
 	private String jobName;
 	private String delYn;
-	
 	
 	public String getJobId() {
 		return jobId;
@@ -25,6 +23,4 @@ public class JobVO {
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
 	}
-
-	
 }

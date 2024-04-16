@@ -27,5 +27,25 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	public List<ApprovalVO> getAllApproval() {
 		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".getAllApproval");
 	}
+
+	@Override
+	public int getAllCountByEmpId(String empId) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllCountByEmpId", empId);
+	}
 	
+	@Override
+	public List<ApprovalVO> getAllApprovalByEmpId(String empId) {
+		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".getAllApprovalByEmpId", empId);
+	}
+
+	@Override
+	public ApprovalVO getOneApproval(String id) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE +".getOneApproval", id);
+	}
+
+	@Override
+	public int deleteApproval(String id) {
+		return getSqlSession().update(ApprovalDao.NAME_SPACE +".deleteApproval", id);
+	}
+
 }

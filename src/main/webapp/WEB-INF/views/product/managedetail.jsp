@@ -7,6 +7,12 @@
 <meta charset="UTF-8">
 <title>비품 상세 목록</title>
 <jsp:include page="../commonheader.jsp" />
+<style type="text/css">
+    div.grid div.right-align {
+        text-align: right;
+    }
+</style>
+<script type="text/javascript" src="/js/product/managedetail.js"></script>
 </head>
 <body>
 <jsp:include page="../layout/layout.jsp" />
@@ -18,6 +24,25 @@
         </div>
     </div>
     <div class="grid">
+        <div>
+            <form id="search-form">
+                <input type="hidden" id="page-no" name="pageNo" value="0" />
+                <div class="right-align">
+                    <input type="checkbox" id="product-exist">
+                    <label for="product-exist"></label>
+                    
+                    <select id="search-type" name="searchType" >
+                        <option value="productManagementId" ${productManagementVO.searchType eq 'productManagementId' ? 'selected' : ''}>비품관리ID</option>
+                        <option value="productName" ${productManagementVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                        <option value="noSelect" ${productManagementVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
+                    </select>
+        
+                    <input type="text" name="searchKeyword" value="${productManagementVO.searchKeyword}"/>
+                    <button type="button" id="search-btn">검색</button>
+                </div>
+            </form>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -31,7 +56,6 @@
                     <th>관리</th>
                 </tr>
             </thead>
-        
             <tbody>
                 <c:choose>
                     <c:when test="${not empty productManagementList.productManagementList}">
@@ -65,11 +89,8 @@
                                 </td>
                             </tr>
                         </c:forEach>
-
                     </c:when>
-                    
                 </c:choose>
-
             </tbody>
         </table>
     </div>

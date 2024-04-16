@@ -11,7 +11,7 @@ import java.util.Map;
 public class Validator<T> {
 
 	public enum Type {
-		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DATE
+		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE
 	}
 
 	private T object;
@@ -29,8 +29,7 @@ public class Validator<T> {
 		return add(fieldName, type, null, errorMessage);
 	}
 
-	public Validator<T> add(String fieldName, Type type, Object refValue,
-			String errorMessage) {
+	public Validator<T> add(String fieldName, Type type, Object refValue, String errorMessage) {
 		Map<Type, String> validationType = null;
 		if (!this.validationTypes.containsKey(fieldName)) {
 			validationType = new HashMap<>();
@@ -62,7 +61,6 @@ public class Validator<T> {
 
 		this.validationTypes.forEach((key, valueMap) -> {
 			String value = this.getValue(this.getField(key));
-
 			valueMap.forEach((type, errorMessage) -> {
 				boolean result = true;
 				if (type == Type.NOT_EMPTY) {
@@ -71,6 +69,12 @@ public class Validator<T> {
 					result = StringUtil.isEmailFormat(value);
 				} else if (type == Type.EMPID) {
 					result = StringUtil.isEmpIdFormat(value);
+				} else if (type == Type.DEPTID) {
+					result = StringUtil.isDeptIdFormat(value);
+				} else if (type == Type.JOBID) {
+					result = StringUtil.isJobIdFormat(value);
+				} else if (type == Type.PSTNID) {
+					result = StringUtil.isPstnIdFormat(value);
 				} else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {
 						Object otherObjectValue = this.getRefValue(key, type);
@@ -79,8 +83,7 @@ public class Validator<T> {
 					}
 				} else if (type == Type.EQUALS) {
 					if (this.hasRefValue(key, type)) {
-						String otherValue = this.getRefStringValue(key, type,
-								null);
+						String otherValue = this.getRefStringValue(key, type, null);
 						result = value.equals(otherValue);
 					}
 				} else if (type == Type.PASSWORD) {
@@ -101,14 +104,14 @@ public class Validator<T> {
 					}
 				} else if (type == Type.DATE) {
 					if (this.hasRefValue(key, type)) {
-						String otherValue = this.getRefStringValue(key, type,
-								null);
+						String otherValue = this.getRefStringValue(key, type, null);
 						if (StringUtil.isEmpty(otherValue)) {
 							result = false;
 						} else {
-                            LocalDate valueLocalDate = LocalDate.parse(value,DateTimeFormatter.ISO_DATE);
-							LocalDate refValueLocalDate = LocalDate.parse(otherValue,DateTimeFormatter.ISO_DATE);
-							result = !valueLocalDate.isEqual(refValueLocalDate) || !valueLocalDate.isAfter(refValueLocalDate);
+							LocalDate valueLocalDate = LocalDate.parse(value, DateTimeFormatter.ISO_DATE);
+							LocalDate refValueLocalDate = LocalDate.parse(otherValue, DateTimeFormatter.ISO_DATE);
+							result = !valueLocalDate.isEqual(refValueLocalDate)
+									|| !valueLocalDate.isAfter(refValueLocalDate);
 						}
 					}
 				}
@@ -151,8 +154,7 @@ public class Validator<T> {
 	}
 
 	private boolean hasRefValue(String key, Type type) {
-		return this.refValues.containsKey(key)
-				&& this.refValues.get(key).containsKey(type);
+		return this.refValues.containsKey(key) && this.refValues.get(key).containsKey(type);
 	}
 
 	private Object getRefValue(String key, Type type) {

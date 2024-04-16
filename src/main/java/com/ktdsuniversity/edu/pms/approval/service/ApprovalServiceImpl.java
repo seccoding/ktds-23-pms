@@ -16,8 +16,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private ApprovalDao approvalDao;
 
 	@Override
-	public ApprovalListVO searchAllApproval() {
-		
+	public ApprovalListVO getAllApproval() {
 		int approvalCount = this.approvalDao.getAllCount();
 		List<ApprovalVO> approvalList = this.approvalDao.getAllApproval();
 		
@@ -27,18 +26,33 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return approvalListVO;
 	}
+	
+	@Override
+	public ApprovalListVO getAllApprovalByEmpId(String empId) {
+		int approvalCount = this.approvalDao.getAllCountByEmpId(empId);
+		List<ApprovalVO> approvalList = this.approvalDao.getAllApprovalByEmpId(empId);
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalCount);
+		approvalListVO.setApprList(approvalList);
+		
+		return approvalListVO;
+	}
 
-//	@Override
-//	public ApprovalListVO searchAllApprovalByEmpId(String empId) {
-//		// 중복 제거 필요
-//		int approvalCount = this.approvalDao.getAllCountByEmpId(empId);
-//		List<ApprovalVO> approvalList = this.approvalDao.getAllApprovalByEmpId(empId);
-//		
-//		ApprovalListVO approvalListVO = new ApprovalListVO();
-//		approvalListVO.setApprCnt(approvalCount);
-//		approvalListVO.setApprList(approvalList);
-//
-//		return approvalListVO;
-//	}
+	@Override
+	public ApprovalVO selectOneApproval(String id) {
+		// TODO Auto-generated method stub
+		ApprovalVO approvalvo=this.approvalDao.getOneApproval(id);
+			
+		return approvalvo;
+	}
+
+	@Override
+	public boolean deleteOneApproval(String id) {
+		// TODO Auto-generated method stub
+		int deleteCount=this.approvalDao.deleteApproval(id);
+		
+		return deleteCount>0;
+	}
 
 }
