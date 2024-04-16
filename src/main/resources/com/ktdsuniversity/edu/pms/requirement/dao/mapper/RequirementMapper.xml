@@ -154,11 +154,22 @@ SELECT  R.RQM_ID
 	  WHERE RQM_ID=#{rqmId}
 	</update>
 	
-<!--	<update id="deleteReRequirement"-->
-<!--	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">-->
-<!--		UPDATE PMS.REQUIREMENT SET-->
-
-<!--	</update>-->
+	<update id="updateDelayOneRequirement"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+		UPDATE PMS.REQUIREMENT SET
+		<choose>
+			<when test='#{isApprove}'><!-- 승인시 true 기간 1주일 연장 -->
+		SCD_STS='502',
+		END_DT=(SELECT (END_DT+7)
+		         FROM REQUIREMENT
+		        WHERE RQM_ID=#{rqmId})
+			</when>
+			<otherwise><!-- 거절버튼 클릭시 -->
+		SCD_STS='502'
+			</otherwise>
+		</choose>
+		 WHERE RQM_ID=#{rqmId}
+	</update>
 	
 
 	

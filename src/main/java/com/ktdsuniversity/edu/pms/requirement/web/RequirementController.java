@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
@@ -140,22 +141,17 @@ public class RequirementController {
 		return "redirect:/project/requirement?prjId=" + thisRequirement.getPrjId();
 
 	}
-
+	@ResponseBody
 	@GetMapping("/project/requirement/delayaccess")
 	public AjaxResponse accessDelay(
 			/* @SessionAttribute , */
 			@RequestParam String rqmId, @RequestParam boolean dalayApprove) {
 
-
-//		2. 승인인지 거절인지 확인 
-//		그 값에 따라 연기 요청 처리
 		boolean isSuccess = this.requirementService.updateDelayRequirement(rqmId, dalayApprove);
-
-//		3. ajax result return 
-//		AjaxResponse ajax = new AjaxResponse();
-//		ajax.append("result", isSuccess);
-//		return ajax;
-		return null;
+		
+		AjaxResponse ajax= new AjaxResponse();
+		return ajax.append("result", isSuccess).append("dalayApprove", dalayApprove);
+		
 	}
 
 }
