@@ -20,6 +20,7 @@
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
+  		 <!-- AND M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
   	</select>
   
   	<select id="getAllSentMemo"
@@ -36,7 +37,34 @@
 			 , MDFR_ID
 			 , SAVE_YN
   		  FROM MEMO
+  		  <!-- WHERE M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
   		 ORDER BY CRT_DT ASC
   	</select>
   
+  	<insert id="writeNewMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  		INSERT INTO MEMO
+			  (MEMO_ID
+			 , MEMO_PID
+			 , RCV_ID
+			 , CRTR_ID
+			 , CRT_DT
+			 , MEMO_CNTNT
+			 , READ_YN
+			 , DEL_YN
+			 , MDF_DT
+			 , MDFR_ID
+			 , SAVE_YN)
+			 VALUES
+			  ('MM_' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_MEMO_PK.NEXTVAL,6 ,'0')
+			 , NULL
+			 , #{rcvId} /* 받는사람 */
+			 , #{crtrId} /* 세션에 로그인된 사람 */
+			 , SYSDATE
+			 , #{memoCntnt} /* 세션에 적은 내용 */
+			 , 'N'
+			 , 'N'
+			 , NULL
+			 , NULL
+			 , 'N')
+  	</insert>  
 </mapper>
