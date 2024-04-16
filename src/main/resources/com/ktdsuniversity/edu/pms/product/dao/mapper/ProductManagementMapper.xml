@@ -58,4 +58,24 @@
 		   AND PM.PRDT_ID = #{_parameter}
 	</select>
 	
+	<update id="deleteOneProductManagement" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT 
+		   SET DEL_YN = 'Y'
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</update>
+	
+
+	<select id="getOneProductManagement" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO" parameterType="string">
+		SELECT PRDT_MNG_ID
+			 , PRDT_PRICE
+			 , BUY_DT
+			 , LOST_YN
+			 , LOST_DT
+			 , BRRW_YN
+			 , PRDT_ID
+			 , DEL_YN
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</select>
+	
 </mapper>

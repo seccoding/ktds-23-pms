@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
@@ -41,6 +42,19 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 		productManagementListVO.setProductManagementList(productManagementList);
 		
 		return productManagementListVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteOneDeteilProduct(String productId) {
+		
+		return productManagementDao.deleteOneProductManagement(productId) > 0;
+	}
+
+	@Override
+	public ProductManagementVO getOneProductManagement(String productId) {
+		ProductManagementVO productManagementVO = this.productManagementDao.getOneProductManagement(productId);
+		return productManagementVO;
 	}
 
 }

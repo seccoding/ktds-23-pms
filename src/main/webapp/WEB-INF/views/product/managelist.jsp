@@ -35,7 +35,7 @@
                 <c:when test="${not empty productList.productList}">
                     <c:forEach items="${productList.productList}" var="product">
                         <tr>
-                            <a href="/product/manage/view?id=${product.prdtId}">
+                            <a href="/product/manage/view?prdtId=${product.prdtId}">
                                 <td>${product.prdtId}</td>
                                 <td>${product.prdtName}</td>
                                 <td>${product.prdtCtgr}</td>

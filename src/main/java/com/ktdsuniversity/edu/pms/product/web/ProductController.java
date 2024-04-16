@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,6 +13,7 @@ import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
 import com.ktdsuniversity.edu.pms.product.service.ProductService;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
@@ -52,9 +54,9 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/manage/view")
-	public String viewProductManageViewPage(@RequestParam String id, Model model) {
-		ProductVO productVO = this.productService.getOneProduct(id);
-		ProductManagementListVO productDetailListVO= this.productManagementService.getFilteringProductdetail(id);
+	public String viewProductManageViewPage(@RequestParam String prdtId, Model model) {
+		ProductVO productVO = this.productService.getOneProduct(prdtId);
+		ProductManagementListVO productDetailListVO= this.productManagementService.getFilteringProductdetail(prdtId);
 		model.addAttribute("productVO", productVO);
 		model.addAttribute("productDetailList", productDetailListVO);
 		
@@ -72,6 +74,25 @@ public class ProductController {
 	public AjaxResponse doProductManageAdd(ProductVO productVO) {
 		 boolean isCreateSuccess = this.productService.createNewProduct(productVO);
 		return new AjaxResponse().append("result", isCreateSuccess).append("next", "/product/manage/list");
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/product/manage/view/delete/{prdtMngId}")
+	public AjaxResponse viewDeleteDatailProductPage(@PathVariable String prdtMngId) {
+		boolean isDeleteSuccess = this.productManagementService.deleteOneDeteilProduct(prdtMngId);
+		boolean isUpdateCnt = false;
+		if (isDeleteSuccess) {
+			ProductManagementVO productManagementVO = this.productManagementService.getOneProductManagement(prdtMngId);
+			isUpdateCnt = this.productService.updateOneProduct(productManagementVO.getPrdtId());
+		}
+		return new AjaxResponse().append("result", isUpdateCnt);
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/product/manage/view/modify/{prdtMngId}")
+	public AjaxResponse viewModifyDetailProduct(@PathVariable String prdtMngId) {
+		ProductManagementVO productManagementVO = this.productManagementService.getOneProductManagement(prdtMngId);
+		return new AjaxResponse().append("product", productManagementVO);
 	}
 	
 	

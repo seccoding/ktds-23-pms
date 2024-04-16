@@ -18,4 +18,8 @@ public interface ProductManagementDao {
 
 	public List<ProductManagementVO> getFilteringProductManagement(String id);
 
+	public int deleteOneProductManagement(String productId);
+
+	public ProductManagementVO getOneProductManagement(String productId);
+
 }
