@@ -12,10 +12,12 @@
 			<id column="" />
 		</association>
 	</resultMap>
+	<!--
 <select id="getAllEmployeeCount" resultType="_int">
 	SELECT COUNT(1)
 	  FROM EMPLOYEE E
 </select>
+
 
 <select id="searchEmployeeAllCount" 
 		parameterType="com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO"
@@ -65,6 +67,7 @@ SELECT E.EMP_ID
   FROM EMPLOYEE e  
 </select>
 
+-->
 
 
 </mapper>
