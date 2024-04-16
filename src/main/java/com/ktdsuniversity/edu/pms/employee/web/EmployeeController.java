@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
-import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -46,6 +44,13 @@ public class EmployeeController {
 		model.addAttribute("employeeList", employeeListVO);
 		
 		return "employee/employeelist";
+	}
+	
+	@GetMapping("/employee/search/{employeeId}")
+	public String viewOneEmployeePage(@RequestParam String empId, Model model) {
+		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
+		model.addAttribute("employeeVO", employeeVO);
+		return "employee/employeeview";
 	}
 	
 //	@GetMapping("/employee/regist") 

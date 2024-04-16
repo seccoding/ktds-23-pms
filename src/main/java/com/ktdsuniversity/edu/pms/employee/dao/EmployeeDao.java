@@ -21,14 +21,11 @@ public interface EmployeeDao {
 	
 	public EmployeeVO getOneEmployee(String empId); 
 	
-	public int insertNewEmployee(EmployeeVO employeeVO);
-	
+//	public int insertNewEmployee(EmployeeVO employeeVO);
+//	
 	public int deleteEmployeeById(String empId);
 	
 	public int modifyEmployee(EmployeeVO employeeVO);
 
-	public EmployeeVO selectOneBoard(int id);
-
-
-}
+	}
 
