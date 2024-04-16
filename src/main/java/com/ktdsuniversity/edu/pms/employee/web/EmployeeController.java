@@ -15,7 +15,6 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -30,12 +29,28 @@ public class EmployeeController {
 	@Autowired
 	private FileHandler fileHandler;
 	
+//	@GetMapping("/employee/search")
+//	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
+//		EmployeeListVO employeeListVO = this.employeeService.searchAllEmployee(searchEmployeeVO);
+//		model.addAttribute("employeeList", employeeListVO);
+//		model.addAttribute("searchEmployeeVO", searchEmployeeVO);
+//		return "employee/employeelist"; //employeelist JSP에 보낸다.
+//	}
+	
 	@GetMapping("/employee/search")
-	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
-		EmployeeListVO employeeListVO = this.employeeService.searchAllEmployee(searchEmployeeVO);
+	public String viewEmployeeListPage(Model model) {
+		EmployeeListVO employeeListVO = this.employeeService.getAllEmployee();
+		
 		model.addAttribute("employeeList", employeeListVO);
-		model.addAttribute("searchEmployeeVO", searchEmployeeVO);
-		return "employee/employeelist"; //employeelist JSP에 보낸다.
+		
+		return "employee/employeelist";
+	}
+	
+	@GetMapping("/employee/search/{employeeId}")
+	public String viewOneEmployeePage(@RequestParam String empId, Model model) {
+		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
+		model.addAttribute("employeeVO", employeeVO);
+		return "employee/employeeview";
 	}
 	
 //	@GetMapping("/employee/regist") 

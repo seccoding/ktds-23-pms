@@ -24,7 +24,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public int getAllEmployeeCount() {
 	
-		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getEmployeeAllCount");
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getAllEmployeeCount");
 	}
 
 	@Override
@@ -57,11 +57,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getOneEmployee", empId);
 	}
 
-	@Override
-	public int insertNewEmployee(EmployeeVO employeeVO) {
-		
-		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createNewEmployee", employeeVO);
-	}
+//	@Override
+//	public int insertNewEmployee(EmployeeVO employeeVO) {
+//		
+//		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createNewEmployee", employeeVO);
+//	}
 
 	@Override
 	public int modifyEmployee(EmployeeVO employeeVO) {
@@ -70,12 +70,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 
-	@Override
-	public EmployeeVO selectOneBoard(int id) {
-		
-		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".selectOneBoard", id);
-	}
-
+	
 
 	
 	

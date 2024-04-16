@@ -18,10 +18,12 @@ public class ProductServiceImpl implements ProductService{
 	private ProductDao productDao;
 
 	@Override
-	public ProductListVO getAllProduct() {
-		int productCount = this.productDao.getProductAllCount();
+	public ProductListVO getAllProduct(ProductVO productVO) {
+		int productCount = this.productDao.getProductAllCount(productVO);
 		
-		List<ProductVO> productList = this.productDao.getAllProduct();
+		productVO.setPageCount(productCount);
+		
+		List<ProductVO> productList = this.productDao.getAllProduct(productVO);
 		
 		ProductListVO productListVO = new ProductListVO();
 		productListVO.setProductCnt(productCount);
@@ -44,6 +46,12 @@ public class ProductServiceImpl implements ProductService{
 			throw new PageNotFoundException();
 		}
 		return productVO;
+	}
+
+	@Override
+	public boolean updateOneProduct(String prdtId) {
+		
+		return productDao.updateOneProduct(prdtId) > 0;
 	}
 
 	

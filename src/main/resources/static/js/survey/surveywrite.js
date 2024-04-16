@@ -67,24 +67,9 @@ $().ready(function() {
         secondLiDom.append(secondLiDivDom);
         secondLiDom.append(secondLiFirstInputDom);
         secondLiDom.append(secondLiSecondInputDom);
-        
-        var thirdLiDom = $("<li></li>");
-        var thirdLiDivDom = $("<div></div>");
-        thirdLiDivDom.text("답변 3");
-        var thirdLiFirstInputDom = $("<input/>");
-        thirdLiFirstInputDom.attr('type', 'text');
-        thirdLiFirstInputDom.attr('placeholder', '답변명');
-        var thirdLiSecondInputDom = $("<input/>");
-        thirdLiSecondInputDom.attr('type', 'text');
-        thirdLiSecondInputDom.attr('placeholder', '연결');
-
-        thirdLiDom.append(thirdLiDivDom);
-        thirdLiDom.append(thirdLiFirstInputDom);
-        thirdLiDom.append(thirdLiSecondInputDom);
 
         ulDom.append(firstLiDom);
         ulDom.append(secondLiDom);
-        ulDom.append(thirdLiDom);
 
         var addSrvQstButtonDom = $("<button></button>");
         addSrvQstButtonDom.attr('type', 'button');
@@ -174,30 +159,15 @@ $().ready(function() {
             secondLiDom.append(secondLiDivDom);
             secondLiDom.append(secondLiFirstInputDom);
             secondLiDom.append(secondLiSecondInputDom);
-            
-            var thirdLiDom = $("<li></li>");
-            var thirdLiDivDom = $("<div></div>");
-            thirdLiDivDom.text("답변 3");
-            var thirdLiFirstInputDom = $("<input/>");
-            thirdLiFirstInputDom.attr('type', 'text');
-            thirdLiFirstInputDom.attr('placeholder', '답변명');
-            var thirdLiSecondInputDom = $("<input/>");
-            thirdLiSecondInputDom.attr('type', 'text');
-            thirdLiSecondInputDom.attr('placeholder', '연결');
-    
-            thirdLiDom.append(thirdLiDivDom);
-            thirdLiDom.append(thirdLiFirstInputDom);
-            thirdLiDom.append(thirdLiSecondInputDom);
     
             ulDom.append(firstLiDom);
             ulDom.append(secondLiDom);
-            ulDom.append(thirdLiDom);
     
             var addSrvQstButtonDom = $("<button></button>");
             addSrvQstButtonDom.attr('type', 'button');
             addSrvQstButtonDom.text("답변 항목 추가");
     
-            var qstNum = 3;
+            var qstNum = 2;
             $(addSrvQstButtonDom).on("click", function() {
                 qstNum++;
                 var nextLiDom = $("<li></li>");

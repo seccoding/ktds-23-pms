@@ -36,10 +36,11 @@
 		</tr>
       </thead>
 
-    <c:forEach items="${memoList.memoList}" var="memo">
+    <c:forEach items="${memoList.memoList}" var="memo" varStatus="loop">
      	<tr>
                <td>
-                 <input type="checkbox" class="target-board-id" name="targetBoardId" value="${board.id}">
+                 <input type="checkbox" id="target-memo-id-${loop.index}" name="targetBoardId" value="${memo.memoId}" />
+     	 		 <label for="target-memo-id-${loop.index}"></label>
                </td>
              <td class="center-align">${memo.rcvId}</td>
              <td class="left-align">

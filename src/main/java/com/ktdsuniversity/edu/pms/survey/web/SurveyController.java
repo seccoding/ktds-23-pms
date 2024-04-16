@@ -51,7 +51,6 @@ public class SurveyController {
 		
 		boolean isSuccess = this.surveyQuestionService.createNewSurveyQuestion(surveyQuestionVO);
 		return new AjaxResponse().append("result", isSuccess);
-		
 	}
 
 }

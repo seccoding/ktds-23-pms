@@ -3,4 +3,58 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.output.dao.OutputDao">
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.output.vo.OutputVO" 
+	id="outputVOMap" autoMapping="true">
+	<id column="OUT_ID" property="outId" /><!-- pk -->
+	 
+	</resultMap>
+
+	<select id="getAllOutputList"
+	resultMap="outputVOMap">
+		SELECT OUT_ID
+		     <!-- , OUT_TYPE
+		     , OUT_TTL
+		     , OUT_VER
+		     , OUT_FILE
+		     , CRT_DT
+		     , CRTR_ID
+		     , MDF_DT
+		     , MDFR_ID
+		     , PRJ_ID
+		     , DEL_YN  -->
+		  FROM PMS."OUTPUT"
+		 WHERE DEL_YN='N'  
+	</select>
+	
+	<select id="getOutputCnt">
+	SELECT	count(1) AS LIST_CNT
+ 	  FROM	"OUTPUT"
+ 	 WHERE	DEL_YN='N'
+	</select>
+	
+	<insert id="updateOneOutput"
+	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
+		INSERT INTO PMS."OUTPUT"
+		( OUT_ID
+		, OUT_TYPE
+		, OUT_TTL
+		, OUT_VER
+		, OUT_FILE
+		, CRT_DT
+		, CRTR_ID
+		
+		, PRJ_ID
+		, DEL_YN)
+		VALUES
+		( ('OUT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_OUTPUT_PK.NEXTVAL, 6, '0'))
+		, #{outType}
+		, #{outTtl}
+		, 0
+		, 'ASDSDASD'
+		, SYSDATE
+		, '00000'
+		, #{prjId}
+		, 'N' )
+	</insert>
 </mapper>

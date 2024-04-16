@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.project.dao.ProjectDao">
 
     <resultMap type="com.ktdsuniversity.edu.pms.project.vo.ProjectVO"
@@ -52,24 +52,24 @@
             resultMap="projectVOMap">
         <!--            resultMap="projectVOMap">-->
         SELECT P.PRJ_ID
-	         , P.PRJ_NAME
-	         , P.CLNT_INFO
-	         , P.DEPT_ID
-	         , P.PRJ_STS
-	         , P.STRT_DT
-	         , P.END_DT
-	         , P.DEL_YN
-	         , P.REQ_YN
-	         , P.IS_YN
-	         , P.KNL_YN
-	         , P.QA_YN
-	         , P.OUT_YN
-	         , P.CRTR_ID
-	         , P.CRT_DT
-	         , P.MDFR_ID
-	         , P.MDF_DT
-	         , C.CMCD_NAME
-	         , D.DEPT_NAME
+        , P.PRJ_NAME
+        , P.CLNT_INFO
+        , P.DEPT_ID
+        , P.PRJ_STS
+        , P.STRT_DT
+        , P.END_DT
+        , P.DEL_YN
+        , P.REQ_YN
+        , P.IS_YN
+        , P.KNL_YN
+        , P.QA_YN
+        , P.OUT_YN
+        , P.CRTR_ID
+        , P.CRT_DT
+        , P.MDFR_ID
+        , P.MDF_DT
+        , C.CMCD_NAME
+        , D.DEPT_NAME
         FROM PROJECT P
         INNER JOIN DEPARTMENT D
         ON P.DEPT_ID = D.DEPT_ID
@@ -88,7 +88,7 @@
     <select id="searchBoard"
             parameterType="com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO"
             resultMap="projectVOMap">
-        <include refid="Common.pagenate_header" />
+        <include refid="Common.pagenate_header"/>
         SELECT P.PRJ_ID
         , P.PRJ_NAME
         , P.CLNT_INFO
@@ -128,18 +128,18 @@
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
                 <when test='searchType == "project"'>
-                    AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                    AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "client"'>
-                    AND P.CLNT_INFO LIKE '%' ||  #{searchKeyword} || '%'
+                    AND P.CLNT_INFO LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "department"'>
-                    AND D.DEPT_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                    AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
             </choose>
         </if>
         ORDER BY P.CRT_DT DESC
-        <include refid="Common.pagenate_footer" />
+        <include refid="Common.pagenate_footer"/>
     </select>
 
     <select id="searchProjectCount"
@@ -166,13 +166,13 @@
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
                 <when test='searchType == "project"'>
-                    AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                    AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "client"'>
-                    AND P.CLNT_INFO LIKE '%' ||  #{searchKeyword} || '%'
+                    AND P.CLNT_INFO LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "department"'>
-                    AND D.DEPT_NAME LIKE '%' ||  #{searchKeyword} || '%'
+                    AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
             </choose>
         </if>
@@ -223,13 +223,13 @@
         FROM PROJECT
         WHERE PRJ_ID = #{_parameter}
         ) P
-        LEFT JOIN DEPARTMENT D
+        INNER JOIN DEPARTMENT D
         ON P.DEPT_ID = D.DEPT_ID
-        LEFT JOIN COMMON_CODE C
+        INNER JOIN COMMON_CODE C
         ON P.PRJ_STS = C.CMCD_ID
-        LEFT JOIN PROJECT_TEAMMATE PT
+        INNER JOIN PROJECT_TEAMMATE PT
         ON P.PRJ_ID = PT.PRJ_ID
-        LEFT JOIN EMPLOYEE E
+        INNER JOIN EMPLOYEE E
         ON PT.TM_ID = E.EMP_ID
         WHERE P.DEL_YN = 'N'
     </select>
@@ -247,10 +247,10 @@
         END_DT,
         DEL_YN,
         <if test='reqYn != null and reqYn != ""'>
-        REQ_YN,
-        IS_YN,
-        KNL_YN,
-        QA_YN,
+            REQ_YN,
+            IS_YN,
+            KNL_YN,
+            QA_YN,
         </if>
         OUT_YN,
         CRTR_ID)
@@ -266,19 +266,19 @@
         <if test='reqYn != null and reqYn != ""'>
             #{reqYn},
             <choose>
-                <when test='isYn == null and isYn != ""'> 'N',
+                <when test='isYn == null and isYn != ""'>'N',
                 </when>
                 <otherwise>#{isYn},
                 </otherwise>
             </choose>
             <choose>
-                <when test='knlYn == null and knlYn != ""'> 'N',
+                <when test='knlYn == null and knlYn != ""'>'N',
                 </when>
                 <otherwise>#{knlYn},
                 </otherwise>
             </choose>
             <choose>
-                <when test='qaYn == null and qaYn != ""'> 'N',
+                <when test='qaYn == null and qaYn != ""'>'N',
                 </when>
                 <otherwise>#{qaYn},
                 </otherwise>
@@ -311,4 +311,66 @@
         MDF_DT = SYSDATE
         WHERE PRJ_ID = #{_parameter}
     </update>
+
+    <select id="selectProjectTeammateCount"
+            parameterType="String">
+        SELECT COUNT(1)
+        FROM PROJECT_TEAMMATE PT
+        INNER JOIN EMPLOYEE E
+        ON PT.TM_ID = E.EMP_ID
+        WHERE PT.PRJ_ID = #{_parameter}
+        AND PT.DEL_YN = 'N'
+        AND E.WORK_STS != '204'
+    </select>
+
+    <select id="findAllProjectTeammateByProjectId"
+            parameterType="String">
+        SELECT PRJ_TM_ID,
+        PRJ_ID ,
+        TM_ID,
+        "ROLE",
+        DEL_YN
+        FROM PROJECT_TEAMMATE
+        WHERE DEL_YN = 'N'
+        AND PRJ_ID = #{_parameter}
+        ORDER BY "ROLE" DESC
+    </select>
+
+    <select id="getProjectRequirementStatusList"
+            parameterType="String"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO">
+        SELECT C.CMCD_NAME ,
+        COUNT(R.RQM_ID) AS CMCD_ID_COUNT
+        FROM PROJECT P
+        INNER JOIN REQUIREMENT R
+        ON P.PRJ_ID =R.PRJ_ID
+        RIGHT OUTER JOIN COMMON_CODE C
+        ON R.RQM_STS = C.CMCD_ID
+        WHERE C.CMCD_PID = '600'
+        AND P.PRJ_ID = #{_parameter}
+        AND P.DEL_YN = 'N'
+        AND R.DEL_YN = 'N'
+        GROUP BY C.CMCD_NAME
+    </select>
+
+
+    <select id="getProjectIssueStatusList"
+            parameterType="String"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO">
+        SELECT C.CMCD_NAME ,
+        COUNT(I.IS_ID) AS CMCD_ID_COUNT
+        FROM PROJECT P
+        INNER JOIN REQUIREMENT R
+        ON P.PRJ_ID = R.PRJ_ID
+        INNER JOIN ISSUE I
+        ON R.RQM_ID = I.RQM_ID
+        RIGHT OUTER JOIN COMMON_CODE C
+        ON I.IS_STS = C.CMCD_ID
+        WHERE C.CMCD_PID = '700'
+        AND P.PRJ_ID = #{_parameter}
+        AND P.DEL_YN = 'N'
+        AND R.DEL_YN = 'N'
+        AND I.DEL_YN = 'N'
+        GROUP BY C.CMCD_NAME
+    </select>
 </mapper>

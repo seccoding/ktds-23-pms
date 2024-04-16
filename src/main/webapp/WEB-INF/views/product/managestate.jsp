@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>비품 대여 현황</title>
+<title>비품 대여 현황(관리자)</title>
 <jsp:include page="../commonheader.jsp" />
 <style type="text/css">
     div.grid div.right-align {
@@ -15,7 +15,7 @@
 </head>
 <body>
     <jsp:include page="../layout/layout.jsp" />
-    <h2>비품 대여 현황</h2>
+    <h2>비품 대여 현황(관리자)</h2>
     <div class="flex">
         <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
         <div class="flex">
@@ -23,20 +23,24 @@
         </div>
     </div>
     <div class="grid">
-
-        <div class="right-align">
-            <input type="checkbox" id="product-exist">
-            <label for="product-exist"></label>
-            
-            <select name="categoryType" id="category-type">
-                <option value="productName">비품명</option>
-                <option value="product_manage_id">비품 관리 ID</option>
-                <option value="borrow_id">대여자 ID</option>
-                <option value="no_select">선택 안함</option>
-            </select>
-
-            <input type="text" name="searchKeyword" />
-            <button type="button" id="search-btn">검색</button>
+        <div>
+            <form id="search-form">
+                <input type="hidden" id="page-no" name="pageNo" value="0" />
+                <div class="right-align">
+                    <input type="checkbox" id="product-exist">
+                    <label for="product-exist"></label>
+                    
+                    <select id="search-type" name="searchType" >
+                        <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
+                        <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                        <option value="category" ${productVO.searchType eq 'category' ? 'selected' : ''}>카테고리</option>
+                        <option value="noSelect" ${productVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
+                    </select>
+        
+                    <input type="text" name="searchKeyword" value="${productVO.searchKeyword}"/>
+                    <button type="button" id="search-btn">검색</button>
+                </div>
+            </form>
         </div>
 
         <table class="table">

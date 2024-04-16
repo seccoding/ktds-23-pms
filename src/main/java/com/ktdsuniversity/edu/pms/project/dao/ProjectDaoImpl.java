@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.project.dao;
 
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
@@ -58,5 +59,25 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     @Override
     public int deleteById(String projectId) {
         return getSqlSession().update(ProjectDao.NAME_SPACE + ".deleteById", projectId);
+    }
+
+    @Override
+    public int selectProjectTeammateCount(String projectId) {
+        return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".selectProjectTeammateCount", projectId);
+    }
+
+    @Override
+    public List<ProjectTeammateVO> findAllProjectTeammateByProjectId(String projectId) {
+        return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".findAllProjectTeammateByProjectId", projectId);
+    }
+
+    @Override
+    public List<ProjectStatusVO> getProjectRequirementStatusList(String projectId) {
+        return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".getProjectRequirementStatusList", projectId);
+    }
+
+    @Override
+    public List<ProjectStatusVO> getProjectIssueStatusList(String projectId) {
+        return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".getProjectIssueStatusList", projectId);
     }
 }

@@ -10,12 +10,16 @@ public interface ProductManagementDao {
 
 
 
-	public int getProductManagementCount();
+	public int getProductManagementCount(ProductManagementVO productManagementVO);
 
-	public List<ProductManagementVO> getAllProductManagement();
+	public List<ProductManagementVO> getAllProductManagement(ProductManagementVO productManagementVO);
 
 	public int getFilteringProductManagementCount(String id);
 
 	public List<ProductManagementVO> getFilteringProductManagement(String id);
+
+	public int deleteOneProductManagement(String productId);
+
+	public ProductManagementVO getOneProductManagement(String productId);
 
 }

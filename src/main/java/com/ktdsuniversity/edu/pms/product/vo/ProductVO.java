@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.product.vo;
 
-public class ProductVO {
+import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
+
+public class ProductVO extends PaginateVO {
 	
 	private String prdtId;
 	private String prdtName;
@@ -8,6 +10,9 @@ public class ProductVO {
 	private String onceYn;
 	private int curStr;
 	private String delYn;
+	
+	private String searchType; // option 선택
+	private String searchKeyword; // 검색어
 	
 	public String getPrdtId() {
 		return prdtId;
@@ -45,7 +50,17 @@ public class ProductVO {
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
 	}
-	
-	
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
 
 }

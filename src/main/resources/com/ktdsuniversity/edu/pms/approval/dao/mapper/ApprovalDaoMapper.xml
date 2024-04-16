@@ -7,9 +7,14 @@
 	<resultMap type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" id="approvalVOMap" autoMapping="true">
 		<id column="APPR_ID" property="apprId"/>
 		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-			<id column="EMP_ID" property="empId" />
-			<result column="EMP_NAME" property="empName"/>
-		</association>
+            <id column="EMP_ID" property="empId"/>
+            <result column="EMP_NAME" property="empName"/>
+            <result column="PRFL" property="prfl"/>
+        </association>
+        <association property="commonCodeVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+        	<id column="CMCD_ID" property="cmcdId"/>
+        	<result column="CMCD_NAME" property="cmcdName"/>
+        </association>
 	</resultMap>
 
 	<select id="getAllCount" resultType="_int">	
@@ -20,26 +25,57 @@
 		 WHERE A.DEL_YN = 'N'
 	</select>
 	
-	<select id="getAllApproval" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO">
+	<select id="getAllApproval" resultMap="approvalVOMap">
 		SELECT A.APPR_ID
-	     , A.DMD_DT
-	     , A.APPR_CTGR
-	     , A.APPR_STS
-	     , A.APPR_TTL
-	     , A.APPR_CNTNT
-	     , A.DMD_ID
-	     , A.APPR_MNG_ID
-	     , A.ARRP_RJCT
-	     , A.LAST_CN_DT
-	     , A.APPR_FNSH_DT
-	     , E.EMP_NAME 
-	  FROM APPROVAL A
-	 INNER JOIN EMPLOYEE E
-	    ON A.DMD_ID = E.EMP_ID 
-	 WHERE A.DEL_YN = 'N'
+	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MM') DMD_DT 
+	         , A.APPR_CTGR
+	         , A.APPR_STS
+	         , A.APPR_TTL
+	         , A.APPR_CNTNT
+	         , A.DMD_ID
+	         , A.APPR_MNG_ID
+	         , A.ARRP_RJCT
+	         , A.LAST_CN_DT
+	         , A.APPR_FNSH_DT
+	         , E.EMP_NAME
+	         , E.PRFL
+	      FROM APPROVAL A
+	     INNER JOIN EMPLOYEE E
+	        ON A.DMD_ID = E.EMP_ID 
+	     WHERE A.DEL_YN = 'N'
 	</select>
 	
+	<select id="getAllCountByEmpId" parameterType="string" resultType="_int">
+		SELECT COUNT(1)
+	      FROM APPROVAL A
+	     INNER JOIN EMPLOYEE E
+	        ON A.DMD_ID = E.EMP_ID 
+	     WHERE A.DMD_ID = #{_parameter}
+	       AND A.DEL_YN = 'N'
+	</select>
 	
+	<select id="getAllApprovalByEmpId" parameterType="string" resultMap="approvalVOMap">
+		SELECT A.APPR_ID
+	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MM') DMD_DT 
+	         , A.APPR_CTGR
+	         , A.APPR_STS
+	         , A.APPR_TTL
+	         , A.APPR_CNTNT
+	         , A.DMD_ID
+	         , A.APPR_MNG_ID
+	         , A.ARRP_RJCT
+	         , A.LAST_CN_DT
+	         , A.APPR_FNSH_DT
+	         , E.EMP_NAME 
+	         , CC.CMCD_NAME 
+	      FROM APPROVAL A
+	     INNER JOIN EMPLOYEE E
+	        ON A.DMD_ID = E.EMP_ID 
+	     INNER JOIN COMMON_CODE CC
+	        ON E.PSTN_ID = CC.CMCD_ID 
+	     WHERE A.DMD_ID = #{_parameter}
+	       AND A.DEL_YN = 'N'
+	</select>
 	
 	
 	<update id="deleteApproval" parameterType="string">

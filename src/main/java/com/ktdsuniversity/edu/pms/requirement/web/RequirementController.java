@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +21,7 @@ import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
@@ -33,25 +33,30 @@ public class RequirementController {
 	private ProjectService projectService;
 	@Autowired
 	private CommonCodeService commonCodeService;
+	@Autowired
+	private TeamService teamService ;
 
 	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	@GetMapping("/project/requirement")
+	@GetMapping("/requirement")
 	public String viewAllRequirement(
 			/* @SessionAttribute , */
-			@RequestParam("prjId") String prjId, Model model) {
+			@RequestParam String prjId,
+			 Model model) {
 
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
 
-		List<RequirementVO> requirementList = requirementService.getAllRequirement().stream()
-				.filter((requirement) -> requirement.getPrjId().equals(prjId)).collect(Collectors.toList());
+		List<RequirementVO> requirementList = requirementService.getAllRequirement();
+				
+//				.stream()
+//				.filter((requirement) -> requirement.getPrjId().equals(prjId)).collect(Collectors.toList());
 
 		model.addAttribute("resultList", requirementList);
 
 		return "requirement/requirementlist";
 	}
 
-	@GetMapping("/project/requirement/view")
+	@GetMapping("/requirement/view")
 	public String viewOneRequirement(
 			/* @SessionAttribute , */
 			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId, Model model) {
@@ -64,14 +69,14 @@ public class RequirementController {
 
 	}
 
-	@GetMapping("/project/requirement/write")
+	@GetMapping("/requirement/write")
 	public String viewwritePage(Model model
 	/* @SessionAttribute , */) {
-
-		ProjectListVO projectList = projectService.getAllProject();
-		List<CommonCodeVO> scdStsList = commonCodeService.getAllCommonCodeListByPId("500");
-		List<CommonCodeVO> rqmStsList = commonCodeService.getAllCommonCodeListByPId("600");
 		// TODO 사원리스트도 보내줘야 담당자, 테스터, 확인자 체크가능 ->현재는 임의의 사원번호를 넣는중
+		ProjectListVO projectList = this.projectService.getAllProject();
+		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
+		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
+
 		model.addAttribute("projectList", projectList).addAttribute("scdSts", scdStsList).addAttribute("rqmSts",
 				rqmStsList);
 
@@ -129,16 +134,17 @@ public class RequirementController {
 
 		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
 	}
-
+	@ResponseBody
 	@GetMapping("/project/requirement/delaycall")
-	public String delayRequirement(/* @SessionAttribute , */
+	public AjaxResponse delayRequirement(/* @SessionAttribute , */
 			@RequestParam String rqmId) {
 //		2. 연기요청 처리
 		RequirementVO thisRequirement = this.requirementService.getOneRequirement(rqmId);
 		// setter 로 정보 변경후 업데이트
 		boolean isSuccess = this.requirementService.delayRequirement(thisRequirement);
-
-		return "redirect:/project/requirement?prjId=" + thisRequirement.getPrjId();
+		
+		 AjaxResponse ajax = new AjaxResponse();
+		return ajax.append("result", isSuccess);
 
 	}
 	@ResponseBody
