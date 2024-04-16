@@ -13,6 +13,8 @@
 			<result column="NAME" property="name"/>
 			<result column="D_DEL_YN" property="delYn"/>
 		</association>
+		
+		<!-- 
 		<association property="jobVO"
 					 javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
 			<id column="DEPT_ID" property="deptId"/>
@@ -20,6 +22,8 @@
 			<result column="D_DEL_YN" property="delYn"/>
 		</association>
 	</resultMap>
+	 -->
+	 
 <select id="getAllEmployeeCount" resultType="_int">
 	SELECT COUNT(1)
 	  FROM EMPLOYEE E
