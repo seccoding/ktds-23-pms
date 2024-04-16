@@ -27,5 +27,20 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	public List<MemoVO> getAllSentMemo() {
 		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllSentMemo");
 	}
+
+	@Override
+	public int writeNewMemo(MemoVO memoVO) {
+		return getSqlSessionTemplate().insert(MemoDao.NAME_SPACE + ".writeNewMemo", memoVO);
+	}
+
+	@Override
+	public MemoVO selectOneMemo(String memoId) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".selectOneMemo", memoId);
+	}
+
+	@Override
+	public int changeViewStatus(String memoId) {
+		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".changeViewStatus", memoId);
+	}
 	
 }

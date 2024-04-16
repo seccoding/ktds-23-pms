@@ -14,19 +14,7 @@
 			<result column="NAME" property="name"/>
 			<result column="D_DEL_YN" property="delYn"/>
 		</association>
-<<<<<<< HEAD
-		
-		<!-- 
-		<association property="jobVO"
-					 javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
-			<id column="DEPT_ID" property="deptId"/>
-			<result column="NAME" property="name"/>
-			<result column="D_DEL_YN" property="delYn"/>
-		</association>
-=======
->>>>>>> a17692017af613679a47915bb1fead31c6830336
 	</resultMap>
-	 -->
 	 
 <select id="getAllEmployeeCount" resultType="_int">
 	SELECT COUNT(1)

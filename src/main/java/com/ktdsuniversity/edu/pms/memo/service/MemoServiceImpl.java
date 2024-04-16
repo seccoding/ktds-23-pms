@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.memo.dao.MemoDao;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
@@ -27,6 +28,29 @@ public class MemoServiceImpl implements MemoService{
 		memoListVO.setMemoList(memoList);
 		
 		return memoListVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean writeNewMemo(MemoVO memoVO) {
+		
+		int insertedCount = this.memoDao.writeNewMemo(memoVO);
+		
+		return insertedCount > 0;
+	}
+
+	// 조회한 결과가 없다면? 설정해주기
+	@Transactional
+	@Override
+	public MemoVO getOneMemo(String memoId) {
+		MemoVO memoVO = this.memoDao.selectOneMemo(memoId);
+		
+		
+		if(memoVO.getReadYn().equals("N")) {
+			this.memoDao.changeViewStatus(memoId);
+		}
+		
+		return memoVO;
 	}
 	
 	
