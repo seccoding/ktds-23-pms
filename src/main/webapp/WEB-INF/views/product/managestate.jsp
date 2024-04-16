@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>비품 대여 현황</title>
 <jsp:include page="../commonheader.jsp" />
+<style type="text/css">
+    div.grid div.right-align {
+        text-align: right;
+    }
+</style>
 </head>
 <body>
     <jsp:include page="../layout/layout.jsp" />
@@ -18,6 +23,22 @@
         </div>
     </div>
     <div class="grid">
+
+        <div class="right-align">
+            <input type="checkbox" id="product-exist">
+            <label for="product-exist"></label>
+            
+            <select name="categoryType" id="category-type">
+                <option value="productName">비품명</option>
+                <option value="product_manage_id">비품 관리 ID</option>
+                <option value="borrow_id">대여자 ID</option>
+                <option value="no_select">선택 안함</option>
+            </select>
+
+            <input type="text" name="searchKeyword" />
+            <button type="button" id="search-btn">검색</button>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -29,34 +50,31 @@
                     <th>대여상태</th>
                 </tr>
             </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty userRentalState.borrowList}">
+                        <c:forEach items="${userRentalState.borrowList}" var="product">
+                            <tr>
+                                <td>${product.prdtMngId}</td>
+                                <td>${product.productVO.prdtName}</td>
+                                <td>${product.brrwId}</td>
+                                <td>${product.brrwDt}</td>
+                                <c:choose>
+                                    <c:when test="${not empty product.rtnDt}">
+                                        <td>${product.rtnDt}</td>
+                                        <td>반납완료</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>-</td>
+                                        <td>대여중</td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                </c:choose>
+            </tbody>
         </table>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty userRentalState.borrowList}">
-                    <c:forEach items="${userRentalState.borrowList}" var="product">
-                        <tr>
-                            <td>${product.prdtMngId}</td>
-                            <td>${product.productVO.prdtName}</td>
-                            <td>${product.brrwId}</td>
-                            <td>${product.brrwDt}</td>
-                            <c:choose>
-                                <c:when test="${not empty product.rtnDt}">
-                                    <td>${product.rtnDt}</td>
-                                    <td>반납완료</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td>-</td>
-                                    <td>대여중</td>
-                                </c:otherwise>
-                            </c:choose>
-                        </tr>
-                    </c:forEach>
-
-                </c:when>
-                
-            </c:choose>
-
-        </tbody>
     </div>
     <jsp:include page="../layout/layout_close.jsp" />
 </body>
