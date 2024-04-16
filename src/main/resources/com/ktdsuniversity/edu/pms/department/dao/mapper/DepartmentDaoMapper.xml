@@ -22,7 +22,7 @@
 			<result column="J_JOB_NAME"	property="jobName" />		 
 		</association>
 		<association property="commoncodeVO"
-					 javaType="com.ktdsuniversity.edu.pms.commomncode.vo.CommonCodeVO">
+					 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
 			<id column="CMCD_ID" property="cmcdId" />
 			<result column="C_CMCD_NAME"	property="cmcdName" />		 
 		</association>

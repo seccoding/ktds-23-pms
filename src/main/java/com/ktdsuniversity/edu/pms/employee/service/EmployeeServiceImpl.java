@@ -1,9 +1,5 @@
 package com.ktdsuniversity.edu.pms.employee.service;
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,22 +24,18 @@ import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
-<<<<<<< Updated upstream
 	private SHA sha;
 	
 	@Autowired
-=======
->>>>>>> Stashed changes
 	private EmployeeDao employeeDao;
 	
 	@Autowired
 	private FileHandler fileHandler;
-<<<<<<< Updated upstream
+
 	
 	@Autowired
 	private DepartmentDao departmentDao;
-=======
->>>>>>> Stashed changes
+
 
 	@Override
 	public EmployeeListVO getAllEmployee() {
@@ -71,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeListVO;
 	}
 
-<<<<<<< Updated upstream
+
 //	@Override (로그인에서 사용)
 //	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile picture) {
 //		
@@ -114,7 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 
-=======
+
 	@Override
 	public EmployeeVO getOneEmployee(int id) {
 		EmployeeVO employeeVO = this.employeeDao.selectOneBoard(id);
@@ -122,11 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeVO;
 	}
 
-	@Override
-	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile file) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 //	@Override
 //	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile file) {
@@ -141,6 +129,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 //		
 //		return insertedCount > 0;
 //	}
->>>>>>> Stashed changes
+
 
 }
