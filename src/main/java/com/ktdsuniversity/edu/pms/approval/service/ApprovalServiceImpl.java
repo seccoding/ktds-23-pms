@@ -16,8 +16,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private ApprovalDao approvalDao;
 
 	@Override
-	public ApprovalListVO searchAllApproval() {
-		
+	public ApprovalListVO getAllApproval() {
 		int approvalCount = this.approvalDao.getAllCount();
 		List<ApprovalVO> approvalList = this.approvalDao.getAllApproval();
 		
@@ -27,30 +26,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return approvalListVO;
 	}
-
-//	@Override
-//	public ApprovalListVO searchAllApprovalByEmpId(String empId) {
-//		// 중복 제거 필요
-//		int approvalCount = this.approvalDao.getAllCountByEmpId(empId);
-//		List<ApprovalVO> approvalList = this.approvalDao.getAllApprovalByEmpId(empId);
-//		
-//		ApprovalListVO approvalListVO = new ApprovalListVO();
-//		approvalListVO.setApprCnt(approvalCount);
-//		approvalListVO.setApprList(approvalList);
-//
-//		return approvalListVO;
-//	}
 	
 	@Override
-	public ApprovalListVO getAllApproval() {
-		// TODO Auto-generated method stub
-		ApprovalListVO approvalList=new ApprovalListVO();
+	public ApprovalListVO getAllApprovalByEmpId(String empId) {
+		int approvalCount = this.approvalDao.getAllCountByEmpId(empId);
+		List<ApprovalVO> approvalList = this.approvalDao.getAllApprovalByEmpId(empId);
 		
-		approvalList.setApprCnt(approvalDao.getAllCount());
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalCount);
+		approvalListVO.setApprList(approvalList);
 		
-		approvalList.setApprList(approvalDao.getAllApproval());
-				
-		return approvalList;
+		return approvalListVO;
 	}
 
 	@Override
