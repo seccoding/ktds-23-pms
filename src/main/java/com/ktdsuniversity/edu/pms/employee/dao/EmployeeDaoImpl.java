@@ -2,9 +2,11 @@ package com.ktdsuniversity.edu.pms.employee.dao;
 
 import java.util.List;
 
+<<<<<<< Updated upstream
 import org.mybatis.spring.SqlSessionTemplate;
+=======
+>>>>>>> Stashed changes
 import org.mybatis.spring.support.SqlSessionDaoSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -13,12 +15,15 @@ import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 @Repository
 public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao{
 
+<<<<<<< Updated upstream
 	@Autowired
 	@Override
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		super.setSqlSessionTemplate(sqlSessionTemplate);
 	}
 
+=======
+>>>>>>> Stashed changes
 	@Override
 	public int getAllEmployeeCount() {
 	
@@ -44,6 +49,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 	@Override
+<<<<<<< Updated upstream
 	public int deleteEmployeeById(String empId) {
 		
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".deleteEmployeeByName", empId);
@@ -68,6 +74,13 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 
+=======
+	public EmployeeVO selectOneBoard(int id) {
+		
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".selectOneBoard", id);
+	}
+
+>>>>>>> Stashed changes
 	
 	
 	
