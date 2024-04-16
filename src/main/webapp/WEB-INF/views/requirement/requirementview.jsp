@@ -39,22 +39,32 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </div>
 
     <div>
-      <a
-        href="/project/requirement/modify?prjId=${requirement.prjId}&rqmId=${requirement.rqmId}"
-        >수정</a
-      >
-      <a href="/project/requirement/delete?rqmId=${requirement.rqmId}">삭제</a>
-      <c:choose>
-        <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
-          <a href="/project/requirement/delaycall?rqmId=${requirement.rqmId}"
-            >연기요청</a
-          >
-        </c:when>
-        <c:otherwise>
-          <a id="approve" href="javascript:void(0)">승인</a>
-          <a id="refuse" href="javascript:void(0)">거절</a>
-        </c:otherwise>
-      </c:choose>
+      <div>
+        <a
+          href="/project/requirement/modify?prjId=${requirement.prjId}&rqmId=${requirement.rqmId}"
+          >수정</a
+        >
+        <a href="/project/requirement/delete?rqmId=${requirement.rqmId}"
+          >삭제</a
+        >
+      </div>
+      <div class="approve-btn">
+        <c:choose>
+          <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
+            <a href="/project/requirement/delaycall?rqmId=${requirement.rqmId}"
+              >연기요청</a
+            >
+          </c:when>
+          <c:otherwise>
+            <a id="approve" href="javascript:void(0)" data-approve="true"
+              >승인</a
+            >
+            <a id="refuse" href="javascript:void(0)" data-approve="false"
+              >거절</a
+            >
+          </c:otherwise>
+        </c:choose>
+      </div>
     </div>
   </body>
 </html>

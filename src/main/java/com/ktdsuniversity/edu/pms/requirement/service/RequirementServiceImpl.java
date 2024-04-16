@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.requirement.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,14 +65,14 @@ public class RequirementServiceImpl implements RequirementService{
 	@Transactional
 	@Override
 	public boolean updateDelayRequirement(String rqmId, boolean isApprove) {
+		//TODO 올바른 요구사항인지 체크 필요
+		RequirementVO thisVO = this.requirementDao.getOneRequirement(rqmId);
 		
-		DelayAcessVO delayAcessVO = (DelayAcessVO) this.requirementDao.getOneRequirement(rqmId);
-		delayAcessVO.setApprove(isApprove);
-		
-		
+		 DelayAcessVO delayAcessVO = new DelayAcessVO();
+		 delayAcessVO.setRqmId(rqmId);
+		 delayAcessVO.setApprove(isApprove);
+	
 		return this.requirementDao.updateDelayOneRequirement(delayAcessVO)>0;
-
-		 
 	}
 
 	@Override

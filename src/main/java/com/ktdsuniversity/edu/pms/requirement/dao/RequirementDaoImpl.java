@@ -45,7 +45,6 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 
 	@Override
 	public int deleteReRequirement(RequirementVO requirementVO) {
-		// TODO Auto-generated method stub
 		return getSqlSession().update(NAME_SPACE+".deleteReRequirement", requirementVO);
 	}
 	
