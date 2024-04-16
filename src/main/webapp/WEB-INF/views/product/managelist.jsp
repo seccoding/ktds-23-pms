@@ -34,12 +34,14 @@
             <c:choose>
                 <c:when test="${not empty productList.productList}">
                     <c:forEach items="${productList.productList}" var="product">
-                        <tr id="product">
-                            <td>${product.prdtId}</td>
-                            <td>${product.prdtName}</td>
-                            <td>${product.prdtCtgr}</td>
-                            <td>${product.onceYn}</td>
-                            <td>${product.curStr}</td>
+                        <tr>
+                            <a href="/product/manage/view?id=${product.prdtId}">
+                                <td>${product.prdtId}</td>
+                                <td>${product.prdtName}</td>
+                                <td>${product.prdtCtgr}</td>
+                                <td>${product.onceYn}</td>
+                                <td>${product.curStr}</td>
+                            </a>
                         </tr>
                     </c:forEach>
 

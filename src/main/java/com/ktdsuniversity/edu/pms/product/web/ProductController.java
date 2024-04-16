@@ -54,9 +54,9 @@ public class ProductController {
 	@GetMapping("/product/manage/view")
 	public String viewProductManageViewPage(@RequestParam String id, Model model) {
 		ProductVO productVO = this.productService.getOneProduct(id);
-		ProductManagementListVO productDetailList= this.productManagementService.getFilteringProductdetail(id);
+		ProductManagementListVO productDetailListVO= this.productManagementService.getFilteringProductdetail(id);
 		model.addAttribute("productVO", productVO);
-		model.addAttribute("productDetailList", productDetailList);
+		model.addAttribute("productDetailList", productDetailListVO);
 		
 		return "product/manageview";
 	}
