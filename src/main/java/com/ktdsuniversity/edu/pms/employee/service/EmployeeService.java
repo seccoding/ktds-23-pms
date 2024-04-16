@@ -11,6 +11,7 @@ public interface EmployeeService {
 	public EmployeeListVO getAllEmployee();
 	
 	public EmployeeListVO searchAllEmployee(SearchEmployeeVO searchEmployeeVO);
+<<<<<<< Updated upstream
 	 
 	
 	public boolean deleteEmployee(String empId);
@@ -24,3 +25,13 @@ public interface EmployeeService {
 	
 	
 }
+=======
+	
+	public EmployeeVO getOneEmployee(int id);
+	
+	//사원 추가 ?
+	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile file); 
+	
+	
+}
+>>>>>>> Stashed changes

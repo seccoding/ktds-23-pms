@@ -4,4 +4,84 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.department.dao.DepartmentDao">
 
+	<resultMap type="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO" id="departmentVOMap" autoMapping="true">
+		<id column="DEPT_ID" property="deptId"/>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="DEPT_ID" property="deptId" />
+			<result column="E_EMP_NAME"	property="empName" />		 
+		</association>
+		<association property="teamVO"
+					 javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+			<id column="DEPT_ID" property="deptId" />
+			<result column="T_TM_NAME"	property="tmName" />		 
+		</association>
+		<association property="jobVO"
+					 javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
+			<id column="JOB_ID" property="jobId" />
+			<result column="J_JOB_NAME"	property="jobName" />		 
+		</association>
+		<association property="commoncodeVO"
+					 javaType="com.ktdsuniversity.edu.pms.commomncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="C_CMCD_NAME"	property="cmcdName" />		 
+		</association>
+		
+	</resultMap>
+	<select id="getDepartmentCount" resultType="_int">
+		SELECT COUNT(1)
+		  FROM DEPARTMENT
+	</select>
+
+	<select id="getAllDepartment" resultMap="departmentVOMap">
+		SELECT D.DEPT_NAME
+		     , T.TM_NAME T_TM_NAME
+		     , E.EMP_NAME E_EMP_NAME
+		     , J.JOB_NAME J_JOB_NAME
+		     , C.CMCD_NAME C_CMCD_NAME
+		  FROM DEPARTMENT D
+		 INNER JOIN EMPLOYEE E
+		    ON D.DEPT_ID = E.DEPT_ID
+		 INNER JOIN TEAM T
+		    ON D.DEPT_ID = T.DEPT_ID
+		 INNER JOIN JOB J
+		    ON E.JOB_ID = J.JOB_ID
+		 INNER JOIN COMMON_CODE C
+		    ON E.PSTN_ID = C.CMCD_ID
+	</select>
+	
+	<insert id="createNewDepartment"
+			parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+		INSERT IN TO DEPARTMENT (
+			   DEPT_ID
+			 , DEPT_NAME
+			 , DEPT_CR_DT
+			 , DEL_YN
+			 , DEPT_LEAD_ID)
+			VALUES (
+			   SEQ_DEPT_PK.NEXTVAL
+			 , #{deptName}
+			 , SYSDATE
+			 , 'N'
+			 , #{deptLeadId})
+	</insert>
+	
+	<update id="deleteOneDepartment"
+			parameterType="string">
+		UPDATE BOARD
+		   SET DEL_YN = 'Y'
+		 WHERE ID IN
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+	
+	<update id="updateOneDepartment"
+			parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+		UPDATE DEPARTMENT
+		   SET DEPT_NAME = #{deptName}
+		     , DEPT_LEAD_ID	= #{deptLeadId}
+		 WHERE ID = #{id}
+	</update>
+
 </mapper>
