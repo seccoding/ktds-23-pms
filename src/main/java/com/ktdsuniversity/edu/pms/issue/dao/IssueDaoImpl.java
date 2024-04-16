@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
+import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
 
 @Repository
 public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
@@ -51,5 +52,11 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	@Override
 	public int deleteOneIssue(String isId) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue");
+	}
+
+	@Override
+	public int searchIssueCount(SearchIssueVO searchIssueVO) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

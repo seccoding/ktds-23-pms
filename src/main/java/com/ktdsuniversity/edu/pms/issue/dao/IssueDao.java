@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.issue.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
+import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
 
 public interface IssueDao {
 
@@ -56,4 +57,6 @@ public interface IssueDao {
 	 * @return 삭제 영향을 받은 데이터의 건수
 	 */
 	public int deleteOneIssue(String isId);
+
+	public int searchIssueCount(SearchIssueVO searchIssueVO);
 }

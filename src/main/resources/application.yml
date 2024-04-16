@@ -26,6 +26,7 @@ app:
             /js/**,
             /css/**,
             /html/**,
+            /images/**,
             /error/**
     multipart:
         #파일 업로드 위치 지정

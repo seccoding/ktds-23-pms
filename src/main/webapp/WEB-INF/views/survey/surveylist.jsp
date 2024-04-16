@@ -50,7 +50,7 @@
                         <tr>
                             <td colspan="7">
                                 <a href="/survey/write/${survey.prjId}">
-                                    설문 작성 ㄱㄱ
+                                    설문 작성
                                 </a>
                             </td>
                         </tr>
