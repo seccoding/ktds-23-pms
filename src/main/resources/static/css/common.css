@@ -625,6 +625,10 @@ iframe {
   color: var(--main-color);
 }
 
+.dropdown-menu > a.active {
+  color: var(--main-color);
+}
+
 /* content */
 .content {
   padding-left: var(--sidebar-size);
