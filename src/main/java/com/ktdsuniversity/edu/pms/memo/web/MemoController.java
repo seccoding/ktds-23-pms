@@ -34,7 +34,7 @@ public class MemoController {
 		
 		model.addAttribute("memoList", memoListVO );
 		
-		return "/memo/memosent";
+		return "memo/memosent";
 	}
 	
 	// 수정필요
@@ -45,7 +45,7 @@ public class MemoController {
 		
 		model.addAttribute("memoList", memoListVO );
 		
-		return "/memo/memostorage";
+		return "memo/memostorage";
 	}
 	
 	// 수정필요
@@ -56,7 +56,7 @@ public class MemoController {
 		
 		model.addAttribute("memoList", memoListVO );
 		
-		return "/memo/memoreceive";
+		return "memo/memoreceive";
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class MemoController {
 	 */
 	@GetMapping("/memo/write")
 	public String viewMemoWritePage(HttpSession session) {
-		return "/memo/memowrite";
+		return "memo/memowrite";
 	}
 	
 	/**
@@ -86,15 +86,11 @@ public class MemoController {
 	
 	
 	@GetMapping("/memo/view")
-	public String viewBoardDetailPage(@RequestParam String memoId, Model model) {
-		
-		// 1. boardService 에게 파라미터로 전달받은 id 값을 보내준다.
-		// 2. boardService 는 파라미터로 전달받은 id 의 게시글 정보를 조회해서 반환해주면
-		MemoVO memoVO = this.memoService.getOneMemo(memoId);
-		// 3. boardview 페이지에 데이터를 전송해준다. 
+	public String viewBoardDetailPage(@RequestParam() String id, Model model) {
+		MemoVO memoVO = this.memoService.getOneMemo(id);
+	
 		model.addAttribute("memoVO", memoVO);
-		// 4. 화면을 보여준다.
-		
+
 		return "memo/memoview";
 	}
 	

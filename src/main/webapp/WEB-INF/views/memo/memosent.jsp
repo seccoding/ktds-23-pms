@@ -9,7 +9,7 @@
 <jsp:include page="../commonheader.jsp" />
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp" />
+
 
      <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.>>>>>>>>>>>>>>>>></div>
     <table>
@@ -44,7 +44,9 @@
                </td>
              <td class="center-align">${memo.rcvId}</td>
              <td class="left-align">
-               ${memo.memoCntnt}
+             	<a class="ellipsis" href="/memo/view?id=${memo.memoId}">
+             		${memo.memoCntnt}
+             	</a>
              </td>
              <td class="center-align">${memo.crtDt}</td>
              <td class="center-align">${memo.readYn}</td>
@@ -53,6 +55,6 @@
          </tr>
     </c:forEach>
     </table>
-<jsp:include page="../layout/layout_close.jsp" />
+
 </body>
 </html>

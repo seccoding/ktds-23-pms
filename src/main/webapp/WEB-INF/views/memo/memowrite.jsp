@@ -9,7 +9,7 @@
 <jsp:include page="../commonheader.jsp" />
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp" />
+
 	<h1>쪽지 쓰기</h1>
     <form action="/memo/write" method="post" enctype="multipart/form-data">
       <div class="grid">
@@ -36,6 +36,6 @@
       </div>
     </form>
     
-<jsp:include page="../layout/layout_close.jsp" />
+
 </body>
 </html>
