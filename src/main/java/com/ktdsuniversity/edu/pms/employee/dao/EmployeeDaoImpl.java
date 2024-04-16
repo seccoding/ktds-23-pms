@@ -49,6 +49,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".selectOneBoard", id);
 	}
 
+	@Override
+	public int createEmployee(EmployeeVO employeeVO) {
+		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createEmployee", employeeVO);
+	}
+
 	
 	
 	

@@ -4,4 +4,38 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao">
 
+	<insert id="createEmployee"
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO EMPLOYEE
+		 (EMP_ID
+		, EMP_NAME
+		, PRFL
+		, HIRE_DT
+		, CNTCT
+		, ADDR
+		, BRTH
+		, EMAIL
+		, MNGR_YN
+		, DEPT_ID
+		, JOB_ID
+		, PSTN_ID
+		, PWD
+		, SALT)
+		VALUES
+		 (#{empId}
+		, #{empName}
+		, #{prfl}
+		, #{hireDt}
+		, #{cntct}
+		, #{addr}
+		, #{brth}
+		, #{email}
+		, #{mngrYn}
+		, #{deptId}
+		, #{jobId}
+		, #{pstnId}
+		, #{pwd}
+		, #{salt})
+	</insert>
+
 </mapper>

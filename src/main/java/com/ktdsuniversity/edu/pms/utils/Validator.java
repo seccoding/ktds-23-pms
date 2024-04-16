@@ -9,7 +9,7 @@ import java.util.Map;
 public class Validator<T> {
 
 	public enum Type {
-		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID
+		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID
 	}
 
 	private T object;
@@ -60,7 +60,6 @@ public class Validator<T> {
 
 		this.validationTypes.forEach((key, valueMap) -> {
 			String value = this.getValue(this.getField(key));
-
 			valueMap.forEach((type, errorMessage) -> {
 				boolean result = true;
 				if (type == Type.NOT_EMPTY) {
@@ -69,6 +68,12 @@ public class Validator<T> {
 					result = StringUtil.isEmailFormat(value);
 				} else if (type == Type.EMPID) {
 					result = StringUtil.isEmpIdFormat(value);
+				} else if (type == Type.DEPTID) {
+					result = StringUtil.isDeptIdFormat(value);
+				} else if (type == Type.JOBID) {
+					result = StringUtil.isJobIdFormat(value);
+				} else if (type == Type.PSTNID) {
+					result = StringUtil.isPstnIdFormat(value);
 				} else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {
 						Object otherObjectValue = this.getRefValue(key, type);

@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
-import com.ktdsuniversity.edu.pms.beans.FileHandler;
-import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -21,7 +19,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDao employeeDao;
 	
 	@Autowired
-	private FileHandler fileHandler;
+	private SHA sha;
+	
 
 	@Override
 	public EmployeeListVO getAllEmployee() {
@@ -56,24 +55,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeVO;
 	}
 
+	
 	@Override
-	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile file) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createEmployee(EmployeeVO employeeVO) {
+		String pwd = employeeVO.getPwd();
+		String salt = this.sha.generateSalt();
+		if (salt == null) {
+			System.out.println("salt null");
+		} else {
+			System.out.println("SALT 있음");
+		}
+		pwd = this.sha.getEncrypt(pwd, salt);
+		
+		employeeVO.setPwd(pwd);
+		employeeVO.setSalt(salt);
+		
+		int createSuccessCount = employeeDao.createEmployee(employeeVO);
+		
+		return createSuccessCount > 0;
 	}
 
-//	@Override
-//	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile file) {
-//		if(file != null && !file.isEmpty()) {
-//			if(StoredFile != null) {
-//				employeeVO.setFileName(StoredFile.getRealFileName());
-//				employeeVO.setOriginFileName(StoredFile.getFileName());
-//			}
-//			
-//		}
-//		int insertedCount = this.employeeDao.insertNewEmployee(employeeVO);
-//		
-//		return insertedCount > 0;
-//	}
 
 }
