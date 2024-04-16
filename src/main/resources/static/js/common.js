@@ -38,9 +38,137 @@ window.onload = function () {
   });
 };
 
-
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+  var menuTabQueue = [];
+
+  $(".menu-tab-prev").on("click", function () {
+    var menuTabList = $(".content").find(".menu-tab");
+    var scrollLeft = menuTabList.scrollLeft();
+
+    if (scrollLeft < 0) {
+      menuTabList.scrollLeft(0);
+    } else {
+      menuTabList.scrollLeft(scrollLeft - 50);
+    }
+  });
+
+  $(".menu-tab-next").on("click", function () {
+    var menuTabList = $(".content").find(".menu-tab");
+    var scrollLeft = menuTabList.scrollLeft();
+
+    menuTabList.scrollLeft(scrollLeft + 50);
+  });
+
+  $(".sidebar")
+    .find("a")
+    .on("click", function () {
+      var frameList = $(".content").find(".frame-list");
+      var menuTabList = $(".content").find(".menu-tab");
+
+      var menuId = $(this).data("menu-id");
+      var existsFrame =
+        menuTabList.find("li[data-menu-id=" + menuId + "]").length > 0;
+
+      if (existsFrame) {
+        menuTabList.find("li[data-menu-id=" + menuId + "]").click();
+        return;
+      }
+
+      var menuName = $(this).text();
+      var menuUrl = $(this).data("menu-url");
+
+      var menuTabItem = $("<li></li>");
+      menuTabItem.addClass("active-tab");
+      menuTabItem.text(menuName);
+      menuTabItem.attr("data-menu-id", menuId);
+      menuTabItem.attr("id", menuId);
+
+      var menuTabCloseButton = $("<span>X</span>");
+      menuTabCloseButton.addClass("close-tab");
+      menuTabCloseButton.on("click", function () {
+        var tabItemLength = menuTabList.find("li").length;
+        if (tabItemLength == 1) {
+          return;
+        }
+
+        var clickedTabItem = $(this).closest("li");
+        clickedTabItem.remove();
+        frameList
+          .find("li[data-menu-id=" + clickedTabItem.data("menu-id") + "]")
+          .remove();
+
+        menuTabQueue = menuTabQueue.filter((id) => id != menuId);
+
+        var latestMenuId = menuTabQueue[menuTabQueue.length - 1];
+        menuTabList.find("li[data-menu-id=" + latestMenuId + "]").click();
+
+        var itemTotalWidth = 0;
+        menuTabList.find("li").each(function () {
+          itemTotalWidth += $(this).outerWidth(true);
+        });
+
+        var needScroll = itemTotalWidth > $(".frame-list").innerWidth();
+        if (needScroll) {
+          $(".menu-tab-prev, .menu-tab-next").show();
+        } else {
+          $(".menu-tab-prev, .menu-tab-next").hide();
+        }
+      });
+      menuTabItem.append(menuTabCloseButton);
+
+      menuTabItem.on("click", function () {
+        var menuId = $(this).data("menu-id");
+        menuTabList.find("li").removeClass("active-tab");
+        menuTabList
+          .find("li[data-menu-id=" + menuId + "]")
+          .addClass("active-tab");
+
+        frameList.find("li").removeClass("frame-active");
+        frameList
+          .find("li[data-menu-id=" + menuId + "]")
+          .addClass("frame-active");
+
+        if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
+          menuTabQueue.push(menuId);
+        }
+        location.href = "/#";
+        location.href = "/#" + menuId;
+      });
+
+      menuTabList.find("li").removeClass("active-tab");
+      menuTabList.append(menuTabItem);
+
+      var menuFrameItem = $("<li></li>");
+      menuFrameItem.addClass("frame-active");
+      menuFrameItem.attr("data-menu-id", menuId);
+      menuFrameItem.attr("data-menu-name", menuName);
+
+      var menuFrame = $("<iframe></iframe>");
+      menuFrame.attr("src", menuUrl);
+      menuFrameItem.append(menuFrame);
+
+      frameList.find("li").removeClass("frame-active");
+      frameList.append(menuFrameItem);
+
+      if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
+        menuTabQueue.push(menuId);
+      }
+
+      var itemTotalWidth = 0;
+      menuTabList.find("li").each(function () {
+        itemTotalWidth += $(this).outerWidth(true);
+      });
+
+      var needScroll = itemTotalWidth > $(".frame-list").innerWidth();
+      if (needScroll) {
+        menuTabList.scrollLeft(Number.MAX_SAFE_INTEGER);
+        $(".menu-tab-prev, .menu-tab-next").show();
+      } else {
+        $(".menu-tab-prev, .menu-tab-next").hide();
+      }
+    });
+
   $(".sidebar-submenu").each(function () {
     $(this)
       .find(".sidebar-submenu-content")
@@ -63,65 +191,60 @@ $().ready(function () {
 });
 
 $().ready(function () {
+  // 날짜 체크 1, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
+  // 프로젝트 종료일을 초기화한다.
+  $("#end-date").on("change", function () {
+    var startDate = $("#start-date").val();
+    var endDate = $("#end-date").val();
 
-    // 날짜 체크 1, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
-    // 프로젝트 종료일을 초기화한다.
-    $('#end-date').on("change", function () {
-        var startDate = $('#start-date').val();
-        var endDate = $('#end-date').val();
+    // 시작일과 종료일을 비교
+    if (startDate && endDate && endDate <= startDate) {
+      // 종료일이 시작일보다 이전이거나 같다면 경고를 표시하고 초기화
+      alert("종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요.");
+      $("#end-date").val(""); // 종료일 초기화
+    }
+  });
 
-        // 시작일과 종료일을 비교
-        if (startDate && endDate && endDate <= startDate) {
-            // 종료일이 시작일보다 이전이거나 같다면 경고를 표시하고 초기화
-            alert('종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요.');
-            $('#end-date').val(''); // 종료일 초기화
-        }
-    });
+  // 날짜 체크 2, 프로젝트 종료일이 선택된 후, 프로젝트 시작일을 수정하는 경우 alert 발생
+  // 프로젝트 시작일 유지
+  $("#start-date").on("change", function () {
+    var startDate = $("#start-date").val();
+    var endDate = $("#end-date").val();
 
-    // 날짜 체크 2, 프로젝트 종료일이 선택된 후, 프로젝트 시작일을 수정하는 경우 alert 발생
-    // 프로젝트 시작일 유지
-    $('#start-date').on("change", function () {
-            var startDate = $('#start-date').val();
-            var endDate = $('#end-date').val();
+    if (startDate && endDate && endDate <= startDate) {
+      alert("시작일은 종료일보다 이전이여야 합니다. 날짜를 다시 설정해주세요.");
+      $("#start-date").val(""); // 시작일 초기화
+    }
+  });
 
-            if (startDate && endDate && endDate <= startDate) {
-                alert('시작일은 종료일보다 이전이여야 합니다. 날짜를 다시 설정해주세요.');
-                $('#start-date').val(''); // 시작일 초기화
-            }
-        }
-    );
+  // 날짜 최소, 최대 값 설정
+  var today = new Date();
+  var startOfYear = new Date(today.getFullYear(), 0, 1); // 올해의 1월 1일
+  var endOfFiveYears = new Date(today.getFullYear() + 5, 11, 31); // 5년 후의 12월 31일
 
-    // 날짜 최소, 최대 값 설정
-    var today = new Date();
-    var startOfYear = new Date(today.getFullYear(), 0, 1); // 올해의 1월 1일
-    var endOfFiveYears = new Date(today.getFullYear() + 5, 11, 31); // 5년 후의 12월 31일
+  // 날짜를 YYYY-MM-DD 형식으로 변환
+  var minStartDate = startOfYear.toISOString().slice(0, 10);
+  var maxEndDate = endOfFiveYears.toISOString().slice(0, 10);
 
-    // 날짜를 YYYY-MM-DD 형식으로 변환
-    var minStartDate = startOfYear.toISOString().slice(0, 10);
-    var maxEndDate = endOfFiveYears.toISOString().slice(0, 10);
+  // 시작일(input#start-date)에 min 속성 설정
+  $("#start-date").attr("min", minStartDate);
+  $("#start-date").attr("max", maxEndDate); // 시작일의 max를 종료일의 max와 동일하게 설정할 수 있습니다.
 
-    // 시작일(input#start-date)에 min 속성 설정
-    $('#start-date').attr('min', minStartDate);
-    $('#start-date').attr('max', maxEndDate); // 시작일의 max를 종료일의 max와 동일하게 설정할 수 있습니다.
-
-    // 종료일(input#end-date)에 min과 max 속성 설정
-    $('#end-date').attr('min', minStartDate); // 종료일의 min을 시작일의 min과 동일하게 설정할 수 있습니다.
-    $('#end-date').attr('max', maxEndDate);
-
-})
+  // 종료일(input#end-date)에 min과 max 속성 설정
+  $("#end-date").attr("min", minStartDate); // 종료일의 min을 시작일의 min과 동일하게 설정할 수 있습니다.
+  $("#end-date").attr("max", maxEndDate);
+});
 
 function handleValidationErrors(ajaxResponse, fnHandlerCallback) {
-    if (ajaxResponse && ajaxResponse.data && ajaxResponse.data.errors) {
-        fnHandlerCallback(ajaxResponse.data.errors);
-    }
+  if (ajaxResponse && ajaxResponse.data && ajaxResponse.data.errors) {
+    fnHandlerCallback(ajaxResponse.data.errors);
+  }
 }
-
-
 
 // 검색
 function search(pageNo) {
-    var searchForm = $("#search-form");
-    $("#page-no").val(pageNo);
+  var searchForm = $("#search-form");
+  $("#page-no").val(pageNo);
 
-    searchForm.attr("method", "get").submit();
+  searchForm.attr("method", "get").submit();
 }
