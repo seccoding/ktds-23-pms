@@ -20,6 +20,7 @@
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
+  		   AND M.CRTR_ID = '1010001'
   		 <!-- AND M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
   	</select>
   
@@ -37,6 +38,7 @@
 			 , MDFR_ID
 			 , SAVE_YN
   		  FROM MEMO
+  		 WHERE CRTR_ID = '1010001'
   		  <!-- WHERE M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
   		 ORDER BY CRT_DT ASC
   	</select>
@@ -67,4 +69,28 @@
 			 , NULL
 			 , 'N')
   	</insert>  
+  	
+  	<select id="selectOneMemo" parameterType="string" resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  		SELECT MEMO_ID
+			 , MEMO_PID
+			 , RCV_ID
+			 , CRTR_ID
+			 , TO_CHAR(CRT_DT, 'YYYY-MM-DD') CRT_DT
+			 , MEMO_CNTNT
+			 , READ_YN
+			 , DEL_YN
+			 , TO_CHAR(MDF_DT, 'YYYY-MM-DD') MDF_DT
+			 , MDFR_ID
+			 , SAVE_YN
+		  FROM MEMO
+		 WHERE DEL_YN = 'N'
+		   AND MEMO_ID = #{_parameter}
+  	</select>
+  	
+  	<update id="changeViewStatus" parameterType="string">
+  		UPDATE MEMO
+		   SET READ_YN = 'Y'
+		 WHERE DEL_YN = 'N'
+		   AND MEMO_ID = #{_parameter}
+  	</update>
 </mapper>

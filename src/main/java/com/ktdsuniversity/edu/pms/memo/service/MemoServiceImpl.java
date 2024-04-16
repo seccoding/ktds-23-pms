@@ -45,7 +45,7 @@ public class MemoServiceImpl implements MemoService{
 	public MemoVO getOneMemo(String memoId) {
 		MemoVO memoVO = this.memoDao.selectOneMemo(memoId);
 		
-		
+		// 조회하면 읽음으로 바뀜
 		if(memoVO.getReadYn().equals("N")) {
 			this.memoDao.changeViewStatus(memoId);
 		}
