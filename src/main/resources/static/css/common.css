@@ -556,6 +556,11 @@ select {
 }
 
 /* content */
+.content {
+  padding-left: var(--sidebar-size);
+  margin: 5rem 10rem 0rem 10rem;
+}
+
 .main {
   padding-left: var(--sidebar-size);
   display: grid;
@@ -659,6 +664,13 @@ input[type="text"].input-text-title {
   .main {
     padding-left: 0;
     display: block;
+  }
+  
+  .content {
+    padding-left: 0;
+    display: block;
+    margin: 5rem 10rem 0rem 10rem;
+    /* 블럭 크기 고정할 필요 있음 */
   }
 
   /* 화면을 줄였을 때 컨텐트별 크기 지정하는 법 */
