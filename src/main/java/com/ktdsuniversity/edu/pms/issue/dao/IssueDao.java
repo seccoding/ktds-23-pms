@@ -21,6 +21,10 @@ public interface IssueDao {
 	 */
 	public List<IssueVO> getAllIssue();
 	
+//	public int searchIssueCount(SearchIssueVO searchIssueVO);
+//	
+//	public List<IssueVO> searchIssue(SearchIssueVO searchIssueVO);
+	
 	/**
 	 * 전달받은 파라미터로 DB에서 이슈를 조회해 반환한다
 	 * @param isId 조회하려는 이슈의 번호
@@ -58,5 +62,4 @@ public interface IssueDao {
 	 */
 	public int deleteOneIssue(String isId);
 
-	public int searchIssueCount(SearchIssueVO searchIssueVO);
 }

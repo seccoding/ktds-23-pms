@@ -11,13 +11,13 @@
 <body>
 <jsp:include page="../layout/layout.jsp"></jsp:include>
 <div>
-	총 ${issueList.isCnt}건의 게시글이 검색되었습니다.
+	총 ${issueList.issueCnt}건의 게시글이 검색되었습니다.
 </div>
 <table>
     <thead>
         <tr>
-            <th>프로젝트명</th>
-            <th>요구사항ID</th>
+            <th>프로젝트</th>
+            <th>요구사항명</th>
             <th>제목</th>
             <th>등록자</th>
             <th>등록일</th>
@@ -31,9 +31,9 @@
             <c:when test="${not empty issueList.issueList}">
                 <c:forEach items="${issueList.issueList}" var="issue">
                     <tr>
-                        <td></td>
-                        <td>${issue.rqmId}</td>
-                        <td>${issue.isTtl}</td>
+                        <td>${issue.projectVO.prjName}</td>
+                        <td>${issue.requirementVO.rqmTtl}</td>
+                        <td><a href="/issue/view?isId=${issue.isId}">${issue.isTtl}</a></td>
                         <td>${issue.crtrId}</td>
                         <td>${issue.crtDt}</td>
                         <td>${issue.isSts}</td>
@@ -52,8 +52,10 @@
                 </tr>
             </c:otherwise>
         </c:choose>
-        
     </tbody>
 </table>
+<div>
+    <a class="register" href="/issue/write">이슈 등록</a>
+</div>
 </body>
 </html>

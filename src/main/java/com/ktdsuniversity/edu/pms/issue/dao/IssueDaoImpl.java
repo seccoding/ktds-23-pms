@@ -29,34 +29,39 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".getAllIssue");
 	}
 
+//	@Override
+//	public int searchIssueCount(SearchIssueVO searchIssueVO) {
+//		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".searchIssueCount", searchIssueVO);
+//	}
+//	
+//	@Override
+//	public List<IssueVO> searchIssue(SearchIssueVO searchIssueVO) {
+//		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".searchIssue", searchIssueVO);
+//	}
+	
 	@Override
 	public IssueVO selectOneIssue(String isId) {
-		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".selectOneIssue");
+		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".selectOneIssue", isId);
 	}
 
 	@Override
 	public int increaseViewCount(String isId) {
-		return getSqlSession().update(IssueDao.NAME_SPACE + ".increaseViewCount");
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".increaseViewCount", isId);
 	}
 
 	@Override
 	public int insertNewIssue(IssueVO issueVO) {
-		return getSqlSession().insert(IssueDao.NAME_SPACE + ".insertNewIssue");
+		return getSqlSession().insert(IssueDao.NAME_SPACE + ".insertNewIssue", issueVO);
 	}
 
 	@Override
 	public int updateOneIssue(IssueVO issueVO) {
-		return getSqlSession().update(IssueDao.NAME_SPACE + ".updateOneIssue");
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".updateOneIssue", issueVO);
 	}
 
 	@Override
 	public int deleteOneIssue(String isId) {
-		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue");
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue", isId);
 	}
 
-	@Override
-	public int searchIssueCount(SearchIssueVO searchIssueVO) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
