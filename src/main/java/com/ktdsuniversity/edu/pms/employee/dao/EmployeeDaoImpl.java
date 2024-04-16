@@ -24,7 +24,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public int getAllEmployeeCount() {
 	
-		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getEmployeeAllCount");
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getAllEmployeeCount");
 	}
 
 	@Override

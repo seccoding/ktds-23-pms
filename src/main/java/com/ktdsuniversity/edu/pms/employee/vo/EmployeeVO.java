@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+
 public class EmployeeVO {
 
 
@@ -29,6 +31,13 @@ public class EmployeeVO {
     private String lgnTryDt;
     private String lgnYn;
     private String fileName;
+    private DepartmentVO departmentVO;
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
 	public String getEmpId() {
 		return empId;
 	}

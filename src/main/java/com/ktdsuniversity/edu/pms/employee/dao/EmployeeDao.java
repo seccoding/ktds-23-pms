@@ -8,7 +8,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 
 public interface EmployeeDao {
 	
-	public String NAME_SPACE = "com.ktdsuniversity.edu.employee.dao.EmployeeDao";
+	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao";
 
 
 	public int getAllEmployeeCount ();
