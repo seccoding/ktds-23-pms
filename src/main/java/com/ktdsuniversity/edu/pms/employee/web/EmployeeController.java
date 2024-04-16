@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -30,12 +31,21 @@ public class EmployeeController {
 	@Autowired
 	private FileHandler fileHandler;
 	
+//	@GetMapping("/employee/search")
+//	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
+//		EmployeeListVO employeeListVO = this.employeeService.searchAllEmployee(searchEmployeeVO);
+//		model.addAttribute("employeeList", employeeListVO);
+//		model.addAttribute("searchEmployeeVO", searchEmployeeVO);
+//		return "employee/employeelist"; //employeelist JSP에 보낸다.
+//	}
+	
 	@GetMapping("/employee/search")
-	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
-		EmployeeListVO employeeListVO = this.employeeService.searchAllEmployee(searchEmployeeVO);
+	public String viewEmployeeListPage(Model model) {
+		EmployeeListVO employeeListVO = this.employeeService.getAllEmployee();
+		
 		model.addAttribute("employeeList", employeeListVO);
-		model.addAttribute("searchEmployeeVO", searchEmployeeVO);
-		return "employee/employeelist"; //employeelist JSP에 보낸다.
+		
+		return "employee/employeelist";
 	}
 	
 //	@GetMapping("/employee/regist") 
