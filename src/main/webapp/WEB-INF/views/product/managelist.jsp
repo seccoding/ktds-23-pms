@@ -31,7 +31,7 @@
             <select name="categoryType" id="category-type">
                 <option value="computer">컴퓨터기기</option>
                 <option value="printer">프린터용품</option>
-                <option value="no_select">선택 암함</option>
+                <option value="no_select">선택 안함</option>
             </select>
 
             <input type="text" name="searchKeyword" />
@@ -61,11 +61,8 @@
                                 <td>${product.curStr}</td>
                             </tr>
                         </c:forEach>
-    
                     </c:when>
-                    
                 </c:choose>
-    
             </tbody>
         </table>
     </div>

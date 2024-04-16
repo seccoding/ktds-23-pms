@@ -29,9 +29,10 @@
             <label for="product-exist"></label>
             
             <select name="categoryType" id="category-type">
-                <option value="computer">컴퓨터기기</option>
-                <option value="printer">프린터용품</option>
-                <option value="no_select">선택 암함</option>
+                <option value="productName">비품명</option>
+                <option value="product_manage_id">비품 관리 ID</option>
+                <option value="borrow_id">대여자 ID</option>
+                <option value="no_select">선택 안함</option>
             </select>
 
             <input type="text" name="searchKeyword" />
@@ -84,11 +85,8 @@
                                 </td>
                             </tr>
                         </c:forEach>
-    
                     </c:when>
-                    
                 </c:choose>
-    
             </tbody>
         </table>
     </div>
