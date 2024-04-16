@@ -32,11 +32,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	private FileHandler fileHandler;
 
-	
-	@Autowired
-	private DepartmentDao departmentDao;
-
-
 	@Override
 	public EmployeeListVO getAllEmployee() {
 		
@@ -107,12 +102,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 
-	@Override
-	public EmployeeVO getOneEmployee(int id) {
-		EmployeeVO employeeVO = this.employeeDao.selectOneBoard(id);
-		
-		return employeeVO;
-	}
 
 
 

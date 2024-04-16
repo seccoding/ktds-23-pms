@@ -17,16 +17,6 @@ public interface EmployeeService {
 	public boolean modifyEmployee(EmployeeVO employeeVO);
 	
 	public EmployeeVO getOneEmployee(String empId);
-		
-	
-	
-	
-	
-
-
-	
-	public EmployeeVO getOneEmployee(int id);
-	
  
 	
 	
