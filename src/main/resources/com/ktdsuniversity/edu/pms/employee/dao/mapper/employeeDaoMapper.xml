@@ -15,8 +15,6 @@
 		</association>
 		</resultMap>
 
-	 
-
 <select id="getAllEmployeeCount" resultType="_int">
 	SELECT COUNT(1)
 	  FROM EMPLOYEE E
@@ -152,12 +150,40 @@ SELECT E.EMP_ID
 	OR D.DEPT_ID = #{_parameter}  
 </select>
 
-<!--
-<update id="modifyEmployee" 
-		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-	UPADATE 
-</update>
 
-  -->
-  
+	<insert id="createEmployee"
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO EMPLOYEE
+		 (EMP_ID
+		, EMP_NAME
+		, PRFL
+		, HIRE_DT
+		, CNTCT
+		, ADDR
+		, BRTH
+		, EMAIL
+		, MNGR_YN
+		, DEPT_ID
+		, JOB_ID
+		, PSTN_ID
+		, PWD
+		, SALT)
+		VALUES
+		 (#{empId}
+		, #{empName}
+		, #{prfl}
+		, #{hireDt}
+		, #{cntct}
+		, #{addr}
+		, #{brth}
+		, #{email}
+		, #{mngrYn}
+		, #{deptId}
+		, #{jobId}
+		, #{pstnId}
+		, #{pwd}
+		, #{salt})
+	</insert>
+
+
 </mapper>

@@ -5,27 +5,26 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 
-
 public interface EmployeeDao {
-	
+
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao";
 
+	public int getAllEmployeeCount();
 
-	public int getAllEmployeeCount ();
-	
-	public int searchEmployeeAllCount (SearchEmployeeVO searchEmployeeVO);
-	
+	public int searchEmployeeAllCount(SearchEmployeeVO searchEmployeeVO);
+
 	public List<EmployeeVO> getAllEmployee();
-	
+
 	public List<EmployeeVO> searchAllEmployee(SearchEmployeeVO searchEmployeeVO);
-	
-	public EmployeeVO getOneEmployee(String empId); 
-	
-//	public int insertNewEmployee(EmployeeVO employeeVO);
-//	
+
+	public EmployeeVO getOneEmployee(String empId);
+
 	public int deleteEmployeeById(String empId);
-	
+
 	public int modifyEmployee(EmployeeVO employeeVO);
 
-	}
+	public EmployeeVO selectOneBoard(int id);
 
+	public int createEmployee(EmployeeVO employeeVO);
+
+}
