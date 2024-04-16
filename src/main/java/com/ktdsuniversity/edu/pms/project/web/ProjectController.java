@@ -2,10 +2,13 @@ package com.ktdsuniversity.edu.pms.project.web;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 import org.slf4j.Logger;
@@ -72,20 +75,53 @@ public class ProjectController {
     /**
      * /project/view?projectId=PRJ_240409_000012
      *
-     * @param projectId
+     * @param prjId
      * @return
      */
-    @ResponseBody
     @GetMapping("/project/view")
-    public AjaxResponse viewProjectDetailPage(@RequestParam String projectId) {
-        ProjectVO projectVO = projectService.getOneProject(projectId);
+    public String viewProjectDetailPage(@RequestParam String prjId, Model model) {
+        ProjectVO projectVO = projectService.getOneProject(prjId);
+        int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
 
         // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
         // boolean isTeammate = projectVO.getProjectTeammateList().stream()
         // .anyMatch(teammate -> teammate.getTmId().equals(세션에 있는 사원 아이디));
 
-        return new AjaxResponse().append("project", projectVO);
+        // PM 뽑기
+        Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
+                .filter(projectTeammateVO -> "PM".equals(projectTeammateVO.getRole()))
+                .findFirst();
+
+        if (pmOptional.isPresent()) {
+            ProjectTeammateVO pm = pmOptional.get();
+            model.addAttribute("project", projectVO);
+            model.addAttribute("teammateCount", projectTeammateCount);
+            model.addAttribute("pm", pm);
+        } else {
+            throw new PageNotFoundException();
+        }
+
+        return "project/projectview";
     }
+
+    // chart.js api data
+    @ResponseBody
+    @GetMapping("/ajax/project/status/{projectId}")
+    public AjaxResponse responseProjectStatus(@PathVariable String projectId) {
+        return new AjaxResponse().append("chartData", projectService.getProjectStatus(projectId));
+    }
+
+    @GetMapping("/project/team")
+    public String viewProjectTeamPage(@RequestParam String prjId, Model model) {
+        int teammateCount = projectService.getProjectTeammateCount(prjId);
+        List<ProjectTeammateVO> teammate = projectService.getAllProjectTeammateByProjectId(prjId);
+
+        model.addAttribute("teammateCount", teammateCount);
+        model.addAttribute("teammate", teammate);
+
+        return null;
+    }
+
 
     @GetMapping("/project/write")
     public String viewProjectWritePage(Model model) {
@@ -117,9 +153,7 @@ public class ProjectController {
                 .add("strtDt", Type.NOT_EMPTY, "시작일을 입력해주세요.")
                 .add("endDt", Type.NOT_EMPTY, "종료일을 입력해주세요.")
                 .add("strtDt", Type.DATE, createProjectVO.getEndDt(), "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요")
-        ;
-
-        validator.start();
+                .start();
 
         if (validator.hasErrors()) {
             Map<String, List<String>> errors = validator.getErrors();
