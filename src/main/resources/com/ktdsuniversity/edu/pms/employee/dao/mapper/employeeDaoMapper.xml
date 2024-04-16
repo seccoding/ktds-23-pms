@@ -36,6 +36,34 @@
 	  	</choose>
 	  </if>
 </select>
+<select id="getAllEmployee" resultType="employeeVO">
+SELECT E.EMP_ID
+	 , E.EMP_NAME
+	 , E.WORK_STS
+	 , E.SAL_YEAR
+	 , E.PRFL
+	 , TO_CHAR(E.HIRE_DT, 'YYYY-MM-DD')HIRE_DT 
+	 , E.HIRE_YEAR
+	 , TO_CHAR(E.END_DT, 'YYYY-MM-DD')END_DT
+	 , TO_CHAR(E.REST_ST_DT,'YYYY-MM-DD' ) END_DT
+	 , TO_CHAR(E.REST_END_DT,'YYYY-MM-DD' ) END_DT 
+	 , E.CNTCT
+	 , E.ADDR
+	 , TO_CHAR(E.BRTH,'YYYY-MM-DD' )BRTH  
+	 , E.EMAIL
+	 , E.MNGR_YN
+	 , E.ADMN_CODE
+	 , E.DEPT_ID
+	 , E.JOB_ID
+	 , E.PSTN_ID
+	 , E.PWD
+	 , E.LGN_TRY
+	 , E.SALT
+	 , TO_CHAR(E.PWD_CN_DT,'YYYY-MM-DD' ) PWD_CN_DT
+	 , TO_CHAR(E.LGN_TRY_DT,'YYYY-MM-DD HH:MM:SS' ) LGN_TRY_DT
+	 , E.LGN_YN
+  FROM EMPLOYEE e  
+</select>
 
 
 
