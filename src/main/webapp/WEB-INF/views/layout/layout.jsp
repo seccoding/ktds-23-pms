@@ -3,6 +3,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <div id="layout">
   <jsp:include page="./header.jsp" />
   <jsp:include page="./aside.jsp" />
-  <div>
+  <div class="content">
     
  

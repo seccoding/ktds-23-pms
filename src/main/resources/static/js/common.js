@@ -1,3 +1,44 @@
+// grid
+window.onload = function () {
+  var gridArray = document.querySelectorAll(".grid");
+
+  gridArray.forEach((_, index) => {
+    var dom = gridArray[index];
+    var data = dom.dataset;
+
+    dom.style["display"] = "grid";
+    dom.style["grid-template-columns"] = data["gridColumns"];
+    dom.style["grid-template-rows"] = data["gridRows"];
+
+    if (data["gap"]) {
+      dom.style["gap"] = data["gap"];
+    }
+
+    if (!data["gap"] && data["columnGap"]) {
+      dom.style["column-gap"] = data["columnGap"];
+    }
+
+    if (!data["gap"] && data["rowGap"]) {
+      dom.style["row-gap"] = data["rowGap"];
+    }
+  });
+
+  var gridItemArray = document.querySelectorAll(".grid > *");
+  gridItemArray.forEach((_, index) => {
+    var dom = gridItemArray[index];
+    var data = dom.dataset;
+
+    if (data["columns"]) {
+      dom.style["grid-column"] = data["columns"];
+    }
+
+    if (data["rows"]) {
+      dom.style["grid-row"] = data["rows"];
+    }
+  });
+};
+
+
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
   $(".sidebar-submenu").each(function () {
