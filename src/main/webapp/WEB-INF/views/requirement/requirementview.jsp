@@ -21,6 +21,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
 
   <body>
+    <jsp:include page="../layout/layout.jsp"></jsp:include>
     <div class="grid">
       <div>프로젝트명</div>
       <div>${requirement.projectVO.prjName}</div>
@@ -39,32 +40,38 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </div>
 
     <div>
-      <div>
+      <button>
         <a
           href="/project/requirement/modify?prjId=${requirement.prjId}&rqmId=${requirement.rqmId}"
           >수정</a
         >
+      </button>
+      <button>
         <a href="/project/requirement/delete?rqmId=${requirement.rqmId}"
           >삭제</a
         >
-      </div>
-      <div class="approve-btn">
-        <c:choose>
-          <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
-            <a href="/project/requirement/delaycall?rqmId=${requirement.rqmId}"
-              >연기요청</a
-            >
-          </c:when>
-          <c:otherwise>
+      </button>
+
+      <c:choose>
+        <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
+          <button>
+            <a id="delay-request" href="javascript:void(0)">연기요청</a>
+          </button>
+        </c:when>
+        <c:otherwise>
+          <button>
             <a id="approve" href="javascript:void(0)" data-approve="true"
               >승인</a
             >
+          </button>
+          <button>
             <a id="refuse" href="javascript:void(0)" data-approve="false"
               >거절</a
             >
-          </c:otherwise>
-        </c:choose>
-      </div>
+          </button>
+        </c:otherwise>
+      </c:choose>
     </div>
+    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
   </body>
 </html>
