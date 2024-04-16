@@ -2,239 +2,239 @@ package com.ktdsuniversity.edu.pms.employee.vo;
 
 public class EmployeeVO {
 
-   private int empId;
-   private String empName;
-   private String workSts;
-   private int salYear;
-   private String prfl;
-   private String hireDt;
-   private String hireYear;
-   private String endDt;
-   private String restStDt;
-   private String restEndDt;
-   private String cntct;
-   private String addr;
-   private String brth;
-   private String email;
-   private String mngrYn;
-   private String admnCode;
-   private String deptId;
-   private String jobId;
-   private String pstnId;
-   private String pwd;
-   private String salt;
-   private int lgnTry;
-   private String pwdCnDt;
-   private String lgnTryDt;
-   private String lgnYn;
-   private String fileName;
+    private String empId;
+    private String empName;
+    private String workSts;
+    private int salYear;
+    private String prfl;
+    private String hireDt;
+    private String hireYear;
+    private String endDt;
+    private String restStDt;
+    private String restEndDt;
+    private String cntct;
+    private String addr;
+    private String brth;
+    private String email;
+    private String mngrYn;
+    private String admnCode;
+    private String deptId;
+    private String jobId;
+    private String pstnId;
+    private String pwd;
+    private String salt;
+    private int lgnTry;
+    private String pwdCnDt;
+    private String lgnTryDt;
+    private String lgnYn;
+    private String fileName;
 
-   
-   public String getFileName() {
-	return fileName;
-}
 
-public void setFileName(String fileName) {
-	this.fileName = fileName;
-}
+    public String getFileName() {
+        return fileName;
+    }
 
-public int getEmpId() {
-      return empId;
-   }
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-   public void setEmpId(int empId) {
-      this.empId = empId;
-   }
+    public String getEmpId() {
+        return empId;
+    }
 
-   public String getEmpName() {
-      return empName;
-   }
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
 
-   public void setEmpName(String empName) {
-      this.empName = empName;
-   }
+    public String getEmpName() {
+        return empName;
+    }
 
-   public String getWorkSts() {
-      return workSts;
-   }
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
 
-   public void setWorkSts(String workSts) {
-      this.workSts = workSts;
-   }
+    public String getWorkSts() {
+        return workSts;
+    }
 
-   public int getSalYear() {
-      return salYear;
-   }
+    public void setWorkSts(String workSts) {
+        this.workSts = workSts;
+    }
 
-   public void setSalYear(int salYear) {
-      this.salYear = salYear;
-   }
+    public int getSalYear() {
+        return salYear;
+    }
 
-   public String getPrfl() {
-      return prfl;
-   }
+    public void setSalYear(int salYear) {
+        this.salYear = salYear;
+    }
 
-   public void setPrfl(String prfl) {
-      this.prfl = prfl;
-   }
+    public String getPrfl() {
+        return prfl;
+    }
 
-   public String getHireDt() {
-      return hireDt;
-   }
+    public void setPrfl(String prfl) {
+        this.prfl = prfl;
+    }
 
-   public void setHireDt(String hireDt) {
-      this.hireDt = hireDt;
-   }
+    public String getHireDt() {
+        return hireDt;
+    }
 
-   public String getHireYear() {
-      return hireYear;
-   }
+    public void setHireDt(String hireDt) {
+        this.hireDt = hireDt;
+    }
 
-   public void setHireYear(String hireYear) {
-      this.hireYear = hireYear;
-   }
+    public String getHireYear() {
+        return hireYear;
+    }
 
-   public String getEndDt() {
-      return endDt;
-   }
+    public void setHireYear(String hireYear) {
+        this.hireYear = hireYear;
+    }
 
-   public void setEndDt(String endDt) {
-      this.endDt = endDt;
-   }
+    public String getEndDt() {
+        return endDt;
+    }
 
-   public String getRestStDt() {
-      return restStDt;
-   }
+    public void setEndDt(String endDt) {
+        this.endDt = endDt;
+    }
 
-   public void setRestStDt(String restStDt) {
-      this.restStDt = restStDt;
-   }
+    public String getRestStDt() {
+        return restStDt;
+    }
 
-   public String getRestEndDt() {
-      return restEndDt;
-   }
+    public void setRestStDt(String restStDt) {
+        this.restStDt = restStDt;
+    }
 
-   public void setRestEndDt(String restEndDt) {
-      this.restEndDt = restEndDt;
-   }
+    public String getRestEndDt() {
+        return restEndDt;
+    }
 
-   public String getCntct() {
-      return cntct;
-   }
+    public void setRestEndDt(String restEndDt) {
+        this.restEndDt = restEndDt;
+    }
 
-   public void setCntct(String cntct) {
-      this.cntct = cntct;
-   }
+    public String getCntct() {
+        return cntct;
+    }
 
-   public String getAddr() {
-      return addr;
-   }
+    public void setCntct(String cntct) {
+        this.cntct = cntct;
+    }
 
-   public void setAddr(String addr) {
-      this.addr = addr;
-   }
+    public String getAddr() {
+        return addr;
+    }
 
-   public String getBrth() {
-      return brth;
-   }
+    public void setAddr(String addr) {
+        this.addr = addr;
+    }
 
-   public void setBrth(String brth) {
-      this.brth = brth;
-   }
+    public String getBrth() {
+        return brth;
+    }
 
-   public String getEmail() {
-      return email;
-   }
+    public void setBrth(String brth) {
+        this.brth = brth;
+    }
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
+    public String getEmail() {
+        return email;
+    }
 
-   public String getMngrYn() {
-      return mngrYn;
-   }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-   public void setMngrYn(String mngrYn) {
-      this.mngrYn = mngrYn;
-   }
+    public String getMngrYn() {
+        return mngrYn;
+    }
 
-   public String getAdmnCode() {
-      return admnCode;
-   }
+    public void setMngrYn(String mngrYn) {
+        this.mngrYn = mngrYn;
+    }
 
-   public void setAdmnCode(String admnCode) {
-      this.admnCode = admnCode;
-   }
+    public String getAdmnCode() {
+        return admnCode;
+    }
 
-   public String getDeptId() {
-      return deptId;
-   }
+    public void setAdmnCode(String admnCode) {
+        this.admnCode = admnCode;
+    }
 
-   public void setDeptId(String deptId) {
-      this.deptId = deptId;
-   }
+    public String getDeptId() {
+        return deptId;
+    }
 
-   public String getJobId() {
-      return jobId;
-   }
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
-   public void setJobId(String jobId) {
-      this.jobId = jobId;
-   }
+    public String getJobId() {
+        return jobId;
+    }
 
-   public String getPstnId() {
-      return pstnId;
-   }
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
 
-   public void setPstnId(String pstnId) {
-      this.pstnId = pstnId;
-   }
+    public String getPstnId() {
+        return pstnId;
+    }
 
-   public String getPwd() {
-      return pwd;
-   }
+    public void setPstnId(String pstnId) {
+        this.pstnId = pstnId;
+    }
 
-   public void setPwd(String pwd) {
-      this.pwd = pwd;
-   }
+    public String getPwd() {
+        return pwd;
+    }
 
-   public String getSalt() {
-      return salt;
-   }
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
 
-   public void setSalt(String salt) {
-      this.salt = salt;
-   }
+    public String getSalt() {
+        return salt;
+    }
 
-   public int getLgnTry() {
-      return lgnTry;
-   }
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
-   public void setLgnTry(int lgnTry) {
-      this.lgnTry = lgnTry;
-   }
+    public int getLgnTry() {
+        return lgnTry;
+    }
 
-   public String getPwdCnDt() {
-      return pwdCnDt;
-   }
+    public void setLgnTry(int lgnTry) {
+        this.lgnTry = lgnTry;
+    }
 
-   public void setPwdCnDt(String pwdCnDt) {
-      this.pwdCnDt = pwdCnDt;
-   }
+    public String getPwdCnDt() {
+        return pwdCnDt;
+    }
 
-   public String getLgnTryDt() {
-      return lgnTryDt;
-   }
+    public void setPwdCnDt(String pwdCnDt) {
+        this.pwdCnDt = pwdCnDt;
+    }
 
-   public void setLgnTryDt(String lgnTryDt) {
-      this.lgnTryDt = lgnTryDt;
-   }
+    public String getLgnTryDt() {
+        return lgnTryDt;
+    }
 
-   public String getLgnYn() {
-      return lgnYn;
-   }
+    public void setLgnTryDt(String lgnTryDt) {
+        this.lgnTryDt = lgnTryDt;
+    }
 
-   public void setLgnYn(String lgnYn) {
-      this.lgnYn = lgnYn;
-   }
+    public String getLgnYn() {
+        return lgnYn;
+    }
+
+    public void setLgnYn(String lgnYn) {
+        this.lgnYn = lgnYn;
+    }
 }

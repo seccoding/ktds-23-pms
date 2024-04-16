@@ -13,7 +13,7 @@ public interface EmployeeService {
 	public EmployeeListVO searchAllEmployee(SearchEmployeeVO searchEmployeeVO);
 	 
 	
-	public boolean deleteEmployee(int empId);
+	public boolean deleteEmployee(String empId);
 	
 	public boolean modifyEmployee(EmployeeVO employeeVO);
 	

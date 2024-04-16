@@ -24,7 +24,7 @@ public interface EmployeeDao {
 	
 	public int insertNewEmployee(EmployeeVO employeeVO);
 	
-	public int deleteEmployeeById(int empId);
+	public int deleteEmployeeById(String empId);
 	
 	public int modifyEmployee(EmployeeVO employeeVO);
 

@@ -89,7 +89,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/employee/modify/{empId}")
-	public AjaxResponse modifyEmp(@PathVariable int empId, Model model,
+	public AjaxResponse modifyEmp(@PathVariable String empId, Model model,
 			@SessionAttribute("_EMPLOYEE_") EmployeeVO employeeVO,
 			@RequestParam MultipartFile picture) {
 			Validator<EmployeeVO> validator = new Validator<>(employeeVO);

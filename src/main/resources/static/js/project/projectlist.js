@@ -7,6 +7,21 @@ $().ready(function () {
         }
     });
 
+    $(".project-row").on( "mouseenter", function() {
+        // 마우스가 해당 행 위에 올라갔을 때 스타일 변경
+        $(this).addClass("hovered-row");
+    }).on("mouseleave", function() {
+        // 마우스가 해당 행 위에서 벗어났을 때 스타일 변경 해제
+        $(this).removeClass("hovered-row");
+    });
+
+    $(".project-row").on("click", function() {
+        // 클릭한 행의 프로젝트 ID 가져오기
+        var projectId = $(this).data("project-id");
+        // 프로젝트 페이지로 이동
+        location.href = "/project/view?projectId=" + projectId;
+    });
+
     $("#status").on("change", function () {
         search(0);
     });

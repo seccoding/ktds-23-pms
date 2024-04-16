@@ -44,7 +44,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 	@Override
-	public int deleteEmployeeById(int empId) {
+	public int deleteEmployeeById(String empId) {
 		
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".deleteEmployeeByName", empId);
 	}
