@@ -3,16 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao">
+
 	<resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
 			   id="employeeVOMap"
 			   autoMapping="true">
-		<id column="ID" property="id"/>
+		<id column="EMP_ID" property="empId"/>
 		<association property="departmentVO"
 					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 			<id column="DEPT_ID" property="deptId"/>
 			<result column="NAME" property="name"/>
 			<result column="D_DEL_YN" property="delYn"/>
 		</association>
+<<<<<<< HEAD
 		
 		<!-- 
 		<association property="jobVO"
@@ -21,6 +23,8 @@
 			<result column="NAME" property="name"/>
 			<result column="D_DEL_YN" property="delYn"/>
 		</association>
+=======
+>>>>>>> a17692017af613679a47915bb1fead31c6830336
 	</resultMap>
 	 -->
 	 
@@ -28,7 +32,7 @@
 	SELECT COUNT(1)
 	  FROM EMPLOYEE E
 </select>
-
+<!-- 
 <select id="searchEmployeeAllCount" 
 		parameterType="com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO"
 		resultType="_int">
@@ -52,8 +56,9 @@
 	  		</when>
 	  	</choose>
 	  </if>
-</select>
-<select id="getAllEmployee" parameterType="EmployeeVOMap">
+</select> 
+ -->
+<select id="getAllEmployee" resultMap="employeeVOMap">
 	 SELECT E.EMP_ID
 	 , E.EMP_NAME
 	 , E.WORK_STS
