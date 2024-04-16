@@ -43,6 +43,7 @@ public class OutputController {
 //	};
 	@GetMapping("/output/write")
 	public String viewCreateOutput(Model model) {
+//		TODO 파일 넣기
 		ProjectListVO projectList = this.projectService.getAllProject();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		model.addAttribute("projectList",projectList)
@@ -52,7 +53,7 @@ public class OutputController {
 	}
 	@PostMapping("/output/write")
 	public String  createOutput( MultipartFile file,OutputVO outputVO, Model model){
-		
+//		TODO 파일 넣기
 		boolean isSuccess = this.outputService.updateOneOutput(outputVO);
 		
 		return "redirect:/output";

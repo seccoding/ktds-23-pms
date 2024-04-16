@@ -1,9 +1,12 @@
 package com.ktdsuniversity.edu.pms.output.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
+
 public class OutputVO {
 	
 	private String outId; 	//산출물 아이디
-	private String outType; //산출물 종료
+	private String outType; //산출물 종류
 	private String outTtl; 	//제목
 	private String outVer; 	//버전
 	private String outFile; // 산출믈 파일명
@@ -13,6 +16,10 @@ public class OutputVO {
 	private String mdfrId;	//수정자 아이디
 	private String prjId;	//프로젝트 id
 	private String delYn;	//삭제여부
+	
+	private CommonCodeVO outTypeVO;
+	
+	private ProjectVO project;
 	
 	public String getOutId() {
 		return outId;
@@ -79,6 +86,18 @@ public class OutputVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public CommonCodeVO getOutTypeVO() {
+		return outTypeVO;
+	}
+	public void setOutTypeVO(CommonCodeVO outTypeVO) {
+		this.outTypeVO = outTypeVO;
+	}
+	public ProjectVO getProject() {
+		return project;
+	}
+	public void setProject(ProjectVO project) {
+		this.project = project;
 	}
 	
 	
