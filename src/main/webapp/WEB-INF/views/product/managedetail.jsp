@@ -31,46 +31,47 @@
                     <th>관리</th>
                 </tr>
             </thead>
+        
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty productManagementList.productManagementList}">
+                        <c:forEach items="${productManagementList.productManagementList}" var="product">
+                            <tr>
+                                <td>${product.prdtMngId}</td>
+                                <td>${product.productVO.prdtName}</td>
+                                <td>${product.prdtPrice}</td>
+                                <td>${product.buyDt}</td>
+                                <c:choose>
+                                    <c:when test="${product.brrwYn eq 'Y'}">
+                                        <td>O</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>X</td>
+                                    </c:otherwise>
+                                </c:choose>
+                                <c:choose>
+                                    <c:when test="${product.lostYn eq 'Y'}">
+                                        <td>O</td>
+                                        <td>${product.lostDt}</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </c:otherwise>
+                                </c:choose>
+                                <td class="flex">
+                                    <button>수정</button>
+                                    <button>삭제</button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+
+                    </c:when>
+                    
+                </c:choose>
+
+            </tbody>
         </table>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty productManagementList.productManagementList}">
-                    <c:forEach items="${productManagementList.productManagementList}" var="product">
-                        <tr>
-                            <td>${product.prdtMngId}</td>
-                            <td>${product.productVO.prdtName}</td>
-                            <td>${product.prdtPrice}</td>
-                            <td>${product.buyDt}</td>
-                            <c:choose>
-                                <c:when test="${product.brrwYn eq 'Y'}">
-                                    <td>O</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td>X</td>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:choose>
-                                <c:when test="${product.lostYn eq 'Y'}">
-                                    <td>O</td>
-                                    <td>${product.lostDt}</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </c:otherwise>
-                            </c:choose>
-                            <td>
-                                <button>수정</button>
-                                <button>삭제</button>
-                            </td>
-                        </tr>
-                    </c:forEach>
-
-                </c:when>
-                
-            </c:choose>
-
-        </tbody>
     </div>
 <jsp:include page="../layout/layout_close.jsp" />
 </body>
