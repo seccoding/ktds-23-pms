@@ -46,10 +46,8 @@ public class SurveyController {
 	
 	@ResponseBody
 	@GetMapping("/ajax/survey/write/{prjId}")
-	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO,
-									  @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setPrjId(prjId);
-		surveyQuestionVO.setCrtrId(employeeVO.getEmpId());
 		
 		boolean isSuccess = this.surveyQuestionService.createNewSurveyQuestion(surveyQuestionVO);
 		return new AjaxResponse().append("result", isSuccess);

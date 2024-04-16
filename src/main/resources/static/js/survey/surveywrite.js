@@ -1,33 +1,39 @@
 $().ready(function() {
+    var seqNum = 0;
+    var prjId = $(".survey-body").data("id");
     $("#btn-add-srv-qst").on("click", function() {
+        seqNum++;
         var srvQstDom = $("<div></div>");
         srvQstDom.addClass("survey-question");
 
         var srvQstTopDom = $("<div></div>");
         srvQstTopDom.addClass("survey-question-top");
 
-        var seqDom = $("<div></div>");
-        seqDom.text(1);
-        srvQstTopDom.append(seqDom);
+        var spanDom = $("<span></span>");
+        spanDom.text("문항 형태");
+        var selectiveTypeButtonDom = $("<button></button>");
+        selectiveTypeButtonDom.attr("type", "button");
+        selectiveTypeButtonDom.text("선택형");
+        var descriptiveTypeButtonDom = $("<button></button>");
+        descriptiveTypeButtonDom.attr("type", "button");
+        descriptiveTypeButtonDom.text("서술형");
 
-        var srvQstInputDom = $("<input/>")
-        srvQstInputDom.attr('type', 'text');
-        srvQstInputDom.attr('placeholder', '질문 입력');
-        srvQstTopDom.append(srvQstInputDom);
+        srvQstTopDom.append(spanDom);
+        srvQstTopDom.append(selectiveTypeButtonDom);
+        srvQstTopDom.append(descriptiveTypeButtonDom);
 
         var srvQstMiddleDom = $("<div></div>");
         srvQstMiddleDom.addClass("survey-question-middle");
 
-        var spanDom = $("<span></span>");
-        spanDom.text("문항 형태");
-        var selectiveTypeButtonDom = $("<button></button>");
-        selectiveTypeButtonDom.text("선택형");
-        var descriptiveTypeButtonDom = $("<button></button>");
-        descriptiveTypeButtonDom.text("서술형");
+        var seqDom = $("<div></div>");
+        seqDom.text(seqNum);
+        
+        var srvQstInputDom = $("<input/>")
+        srvQstInputDom.attr('type', 'text');
+        srvQstInputDom.attr('placeholder', '질문 입력');
 
-        srvQstMiddleDom.append(spanDom);
-        srvQstMiddleDom.append(selectiveTypeButtonDom);
-        srvQstMiddleDom.append(descriptiveTypeButtonDom);
+        srvQstMiddleDom.append(seqDom);
+        srvQstMiddleDom.append(srvQstInputDom);
 
         var srvQstBottomDom = $("<div></div>");
         srvQstBottomDom.addClass("survey-question-bottom");
@@ -81,12 +87,15 @@ $().ready(function() {
         ulDom.append(thirdLiDom);
 
         var addSrvQstButtonDom = $("<button></button>");
+        addSrvQstButtonDom.attr('type', 'button');
         addSrvQstButtonDom.text("답변 항목 추가");
 
+        var qstNum = 3;
         $(addSrvQstButtonDom).on("click", function() {
+            qstNum++;
             var nextLiDom = $("<li></li>");
             var nextLiDivDom = $("<div></div>");
-            nextLiDivDom.text("답변 4");
+            nextLiDivDom.text("답변 " + qstNum);
             var nextLiFirstInputDom = $("<input/>");
             nextLiFirstInputDom.attr('type', 'text');
             nextLiFirstInputDom.attr('placeholder', '답변명');
@@ -94,7 +103,12 @@ $().ready(function() {
             nextLiSecondInputDom.attr('type', 'text');
             nextLiSecondInputDom.attr('placeholder', '연결');
             var deleteSrvQstButtonDom = $("<button></button>");
+            deleteSrvQstButtonDom.attr("type", "button");
             deleteSrvQstButtonDom.text("제거");
+
+            $(deleteSrvQstButtonDom).on("click", function() {
+                $(this).closest(nextLiDom).remove();
+            });
 
             nextLiDom.append(nextLiDivDom);
             nextLiDom.append(nextLiFirstInputDom);
@@ -103,23 +117,146 @@ $().ready(function() {
             ulDom.append(nextLiDom);
         });
 
-        srvQstBottomDom.append(ulDom);
-        srvQstBottomDom.append(addSrvQstButtonDom);
-
-        var lastDivDom = $("<div></div>");
-
         var insertSrvQstButtonDom = $("<button></button>");
+        insertSrvQstButtonDom.attr("type", "button");
         insertSrvQstButtonDom.text("문항 완성");
         var deleteSrvQstButtonDom = $("<button></button>");
+        deleteSrvQstButtonDom.attr("type", "button");
         deleteSrvQstButtonDom.text("문항 삭제");
 
-        lastDivDom.append(insertSrvQstButtonDom);
-        lastDivDom.append(deleteSrvQstButtonDom);
+        $(deleteSrvQstButtonDom).on("click", function() {
+            var chooseValue = confirm("정말 삭제하시겠습니까?");
+            if (chooseValue) {
+                $(this).closest(srvQstDom).remove();
+            }
+        });
+
+        srvQstBottomDom.append(ulDom);
+        srvQstBottomDom.append(addSrvQstButtonDom);
+        srvQstBottomDom.append(deleteSrvQstButtonDom);
+        srvQstBottomDom.append(insertSrvQstButtonDom);
 
         srvQstDom.append(srvQstTopDom);
         srvQstDom.append(srvQstMiddleDom);
         srvQstDom.append(srvQstBottomDom);
-        srvQstDom.append(lastDivDom);
         $(".survey-body").append(srvQstDom);
+
+        $(selectiveTypeButtonDom).on("click", function() {
+            $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
+            var ulDom = $("<ul></ul>");
+
+            var firstLiDom = $("<li></li>");
+            var firstLiDivDom = $("<div></div>");
+            firstLiDivDom.text("답변 1");
+            var firstLiFirstInputDom = $("<input/>");
+            firstLiFirstInputDom.attr('type', 'text');
+            // firstLiFirstInputDom.val('${surveyQuestionVO.srvQst}')
+            firstLiFirstInputDom.attr('placeholder', '답변명');
+            var firstLiSecondInputDom = $("<input/>");
+            firstLiSecondInputDom.attr('type', 'text');
+            firstLiSecondInputDom.attr('placeholder', '연결');
+    
+            firstLiDom.append(firstLiDivDom);
+            firstLiDom.append(firstLiFirstInputDom);
+            firstLiDom.append(firstLiSecondInputDom);
+    
+            var secondLiDom = $("<li></li>");
+            var secondLiDivDom = $("<div></div>");
+            secondLiDivDom.text("답변 2");
+            var secondLiFirstInputDom = $("<input/>");
+            secondLiFirstInputDom.attr('type', 'text');
+            secondLiFirstInputDom.attr('placeholder', '답변명');
+            var secondLiSecondInputDom = $("<input/>");
+            secondLiSecondInputDom.attr('type', 'text');
+            secondLiSecondInputDom.attr('placeholder', '연결');
+    
+            secondLiDom.append(secondLiDivDom);
+            secondLiDom.append(secondLiFirstInputDom);
+            secondLiDom.append(secondLiSecondInputDom);
+            
+            var thirdLiDom = $("<li></li>");
+            var thirdLiDivDom = $("<div></div>");
+            thirdLiDivDom.text("답변 3");
+            var thirdLiFirstInputDom = $("<input/>");
+            thirdLiFirstInputDom.attr('type', 'text');
+            thirdLiFirstInputDom.attr('placeholder', '답변명');
+            var thirdLiSecondInputDom = $("<input/>");
+            thirdLiSecondInputDom.attr('type', 'text');
+            thirdLiSecondInputDom.attr('placeholder', '연결');
+    
+            thirdLiDom.append(thirdLiDivDom);
+            thirdLiDom.append(thirdLiFirstInputDom);
+            thirdLiDom.append(thirdLiSecondInputDom);
+    
+            ulDom.append(firstLiDom);
+            ulDom.append(secondLiDom);
+            ulDom.append(thirdLiDom);
+    
+            var addSrvQstButtonDom = $("<button></button>");
+            addSrvQstButtonDom.attr('type', 'button');
+            addSrvQstButtonDom.text("답변 항목 추가");
+    
+            var qstNum = 3;
+            $(addSrvQstButtonDom).on("click", function() {
+                qstNum++;
+                var nextLiDom = $("<li></li>");
+                var nextLiDivDom = $("<div></div>");
+                nextLiDivDom.text("답변 " + qstNum);
+                var nextLiFirstInputDom = $("<input/>");
+                nextLiFirstInputDom.attr('type', 'text');
+                nextLiFirstInputDom.attr('placeholder', '답변명');
+                var nextLiSecondInputDom = $("<input/>");
+                nextLiSecondInputDom.attr('type', 'text');
+                nextLiSecondInputDom.attr('placeholder', '연결');
+                var deleteSrvQstButtonDom = $("<button></button>");
+                deleteSrvQstButtonDom.attr("type", "button");
+                deleteSrvQstButtonDom.text("제거");
+    
+                $(deleteSrvQstButtonDom).on("click", function() {
+                    qstNum--;
+                    $(this).closest(nextLiDom).remove();
+                });
+    
+                nextLiDom.append(nextLiDivDom);
+                nextLiDom.append(nextLiFirstInputDom);
+                nextLiDom.append(nextLiSecondInputDom);
+                nextLiDom.append(deleteSrvQstButtonDom);
+                ulDom.append(nextLiDom);
+            });
+    
+            var insertSrvQstButtonDom = $("<button></button>");
+            insertSrvQstButtonDom.attr("type", "button");
+            insertSrvQstButtonDom.text("문항 완성");
+            var deleteSrvQstButtonDom = $("<button></button>");
+            deleteSrvQstButtonDom.attr("type", "button");
+            deleteSrvQstButtonDom.text("문항 삭제");
+    
+            $(deleteSrvQstButtonDom).on("click", function() {
+                var chooseValue = confirm("정말 삭제하시겠습니까?");
+                if (chooseValue) {
+                    $(this).closest(srvQstDom).remove();
+                }
+            });
+    
+            srvQstBottomDom.append(ulDom);
+            srvQstBottomDom.append(addSrvQstButtonDom);
+            srvQstBottomDom.append(deleteSrvQstButtonDom);
+            srvQstBottomDom.append(insertSrvQstButtonDom);
+        });
+
+        $(descriptiveTypeButtonDom).on("click", function() {
+            $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
+            srvQstBottomDom.append(deleteSrvQstButtonDom);
+            srvQstBottomDom.append(insertSrvQstButtonDom);
+        });
+
+        // $(insertSrvQstButtonDom).on("click", function() {
+        //     var content = $(firstLiFirstInputDom).val();
+        //     body = {srvQst: content.trim()};
+            
+        //     $.post("/ajax/survey/write/" + prjId, body, function(response) {
+        //         console.log(response);
+        //     });
+        // });
     });
 });
