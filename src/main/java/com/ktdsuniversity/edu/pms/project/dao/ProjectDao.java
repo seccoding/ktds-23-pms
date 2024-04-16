@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.project.dao;
 
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
@@ -26,4 +27,12 @@ public interface ProjectDao {
     int insertNewPm(ProjectTeammateVO pm);
 
     int deleteById(String projectId);
+
+    int selectProjectTeammateCount(String projectId);
+
+    List<ProjectTeammateVO> findAllProjectTeammateByProjectId(String projectId);
+
+    List<ProjectStatusVO> getProjectRequirementStatusList(String projectId);
+
+    List<ProjectStatusVO> getProjectIssueStatusList(String projectId);
 }
