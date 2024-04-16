@@ -40,4 +40,12 @@
 	</select>
 	
 	
+	
+	
+	<update id="deleteApproval" parameterType="string">
+  		UPDATE APPROVAL
+		SET  DEL_YN='Y'	
+		WHERE APPR_ID= #{_parameter}
+  	</update>
+	
 </mapper> 

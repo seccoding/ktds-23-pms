@@ -20,8 +20,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#">사원 조회</a>
-            <a href="#">이력 조회</a>
+            <a href="javascript:void(0);" data-menu-id="1" data-menu-url="/1">사원 조회</a>
+            <a href="javascript:void(0);" data-menu-id="2" data-menu-url="/2">이력 조회</a>
           </div>
         </div>
         <div class="sidebar-submenu">
@@ -45,11 +45,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#" class="active">비품 조회</a>
-            <a href="#" class="active">비품 대여</a>
-            <a href="#" class="active">비품 관리(admin)</a>
-            <a href="#" class="active">비품 상세(admin)</a>
-            <a href="#" class="active">비품 대여현황(admin)</a>
+            <a href="javascript:void(0);" class="active" data-menu-id="3" data-menu-url="/3">비품 조회</a>
+            <a href="javascript:void(0);" class="active" data-menu-id="4" data-menu-url="/4">비품 대여</a>
+            <a href="javascript:void(0);" class="active" data-menu-id="5" data-menu-url="/5">비품 관리(admin)</a>
+            <a href="javascript:void(0);" class="active" data-menu-id="6" data-menu-url="/6">비품 상세(admin)</a>
+            <a href="javascript:void(0);" class="active" data-menu-id="7" data-menu-url="/7">비품 대여현황(admin)</a>
           </div>
         </div>
         <div class="sidebar-submenu">
@@ -63,9 +63,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#">결재 조회</a>
-            <a href="#">결재 상신</a>
-            <a href="#">결재 수신(admin)</a>
+            <a href="javascript:void(0);">결재 조회</a>
+            <a href="javascript:void(0);">결재 상신</a>
+            <a href="javascript:void(0);">결재 수신(admin)</a>
           </div>
         </div>
         <div class="sidebar-submenu">
@@ -79,14 +79,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#">프로젝트 관리</a>
-            <a href="#">요구사항 관리</a>
-            <a href="#">이슈 관리</a>
-            <a href="#">QnA</a>
-            <a href="#">지식 관리</a>
-            <a href="#">산출물 관리</a>
-            <a href="#">설문 관리</a>
-            <a href="#">후기 관리</a>
+            <a href="javascript:void(0);" data-menu-id="11" data-menu-url="/project">프로젝트 관리</a>
+            <a href="javascript:void(0);">요구사항 관리</a>
+            <a href="javascript:void(0);">이슈 관리</a>
+            <a href="javascript:void(0);">QnA</a>
+            <a href="javascript:void(0);">지식 관리</a>
+            <a href="javascript:void(0);">산출물 관리</a>
+            <a href="javascript:void(0);">설문 관리</a>
+            <a href="javascript:void(0);">후기 관리</a>
           </div>
         </div>
         <div class="sidebar-submenu">
@@ -100,10 +100,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#">쪽지 작성</a>
-            <a href="#">받은 쪽지함</a>
-            <a href="#">보낸 쪽지함</a>
-            <a href="#">쪽지 보관함</a>
+            <a href="javascript:void(0);">쪽지 작성</a>
+            <a href="javascript:void(0);">받은 쪽지함</a>
+            <a href="javascript:void(0);">보낸 쪽지함</a>
+            <a href="javascript:void(0);">쪽지 보관함</a>
           </div>
         </div>
         <div class="sidebar-submenu">
@@ -117,8 +117,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <div class="dropdown-icon"></div>
           </div>
           <div class="dropdown-menu">
-            <a href="#">출퇴근 조회</a>
-            <a href="#">사원 출퇴근 조회</a>
+            <a href="javascript:void(0);">출퇴근 조회</a>
+            <a href="javascript:void(0);">사원 출퇴근 조회</a>
           </div>
         </div>
       </div>

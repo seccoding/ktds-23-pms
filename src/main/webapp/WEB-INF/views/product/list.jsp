@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>비품 목록</title>
 <jsp:include page="../commonheader.jsp" />
+<style type="text/css">
+    div.grid div.right-align {
+        text-align: right;
+    }
+</style>
 </head>
 <body>
 <jsp:include page="../layout/layout.jsp" />
@@ -18,6 +23,21 @@
         </div>
     </div>
     <div class="grid">
+
+        <div class="right-align">
+            <input type="checkbox" id="product-exist">
+            <label for="product-exist"></label>
+            
+            <select name="categoryType" id="category-type">
+                <option value="computer">컴퓨터기기</option>
+                <option value="printer">프린터용품</option>
+                <option value="no_select">선택 안함</option>
+            </select>
+
+            <input type="text" name="searchKeyword" />
+            <button type="button" id="search-btn">검색</button>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -28,25 +48,25 @@
                     <th>재고</th>
                 </tr>
             </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty productList.productList}">
+                        <c:forEach items="${productList.productList}" var="product">
+                            <tr>
+                                <td>${product.prdtId}</td>
+                                <td>${product.prdtName}</td>
+                                <td>${product.prdtCtgr}</td>
+                                <td>${product.onceYn}</td>
+                                <td>${product.curStr}</td>
+                            </tr>
+                        </c:forEach>
+    
+                    </c:when>
+                    
+                </c:choose>
+    
+            </tbody>
         </table>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty productList.productList}">
-                    <c:forEach items="${productList.productList}" var="product">
-                        <tr>
-                            <td>${product.prdtId}</td>
-                            <td>${product.prdtName}</td>
-                            <td>${product.prdtCtgr}</td>
-                            <td>${product.onceYn}</td>
-                            <td>${product.curStr}</td>
-                        </tr>
-                    </c:forEach>
-
-                </c:when>
-                
-            </c:choose>
-
-        </tbody>
     </div>
 <jsp:include page="../layout/layout_close.jsp" />
 </body>

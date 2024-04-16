@@ -40,5 +40,33 @@ public class ApprovalServiceImpl implements ApprovalService {
 //
 //		return approvalListVO;
 //	}
+	
+	@Override
+	public ApprovalListVO getAllApproval() {
+		// TODO Auto-generated method stub
+		ApprovalListVO approvalList=new ApprovalListVO();
+		
+		approvalList.setApprCnt(approvalDao.getAllCount());
+		
+		approvalList.setApprList(approvalDao.getAllApproval());
+				
+		return approvalList;
+	}
+
+	@Override
+	public ApprovalVO selectOneApproval(String id) {
+		// TODO Auto-generated method stub
+		ApprovalVO approvalvo=this.approvalDao.getOneApproval(id);
+			
+		return approvalvo;
+	}
+
+	@Override
+	public boolean deleteOneApproval(String id) {
+		// TODO Auto-generated method stub
+		int deleteCount=this.approvalDao.deleteApproval(id);
+		
+		return deleteCount>0;
+	}
 
 }

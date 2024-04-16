@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.approval.service;
 
+
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
 public interface ApprovalService {
 
@@ -15,5 +17,12 @@ public interface ApprovalService {
 	 * @return
 	 */
 //	public ApprovalListVO searchAllApprovalByEmpId(String empId);
+	
+	public ApprovalListVO getAllApproval();
+    
+    public ApprovalVO selectOneApproval(String id);
+    
+    public boolean deleteOneApproval(String id);
+	
 
 }

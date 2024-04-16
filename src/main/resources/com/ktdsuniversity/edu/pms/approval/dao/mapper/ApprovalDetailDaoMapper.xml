@@ -3,4 +3,16 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.approval.dao.ApprovalDetailDao">
+
+	<select id="getAllApprovalDetail" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO">
+  		SELECT 
+  		APPR_DTL_ID
+  		,APPR_ID 
+  		,PRDT_ID 
+  		,CUR_STR
+  		,DEL_YN
+		FROM APPROVAL_DETAIL
+		WHERE  DEL_YN='N'
+  	</select>
+  	
 </mapper>
