@@ -75,7 +75,7 @@ $().ready(function() {
         addSrvQstButtonDom.attr('type', 'button');
         addSrvQstButtonDom.text("답변 항목 추가");
 
-        var qstNum = 3;
+        var qstNum = 2;
         $(addSrvQstButtonDom).on("click", function() {
             qstNum++;
             var nextLiDom = $("<li></li>");
@@ -184,8 +184,8 @@ $().ready(function() {
                 deleteSrvQstButtonDom.text("제거");
     
                 $(deleteSrvQstButtonDom).on("click", function() {
-                    qstNum--;
                     $(this).closest(nextLiDom).remove();
+                    qstNum--;
                 });
     
                 nextLiDom.append(nextLiDivDom);
@@ -203,10 +203,10 @@ $().ready(function() {
             deleteSrvQstButtonDom.text("문항 삭제");
 
             $(deleteSrvQstButtonDom).on("click", function() {
-                seqNum--;
                 var chooseValue = confirm("정말 삭제하시겠습니까?");
                 if (chooseValue) {
                     $(this).closest(srvQstDom).remove();
+                    seqNum--;
                 }
             });
     
@@ -223,28 +223,49 @@ $().ready(function() {
             srvQstBottomDom.append(insertSrvQstButtonDom);
         });
 
-        $(insertSrvQstButtonDom).on("click", function() {
-            var srvQst = $(srvQstInputDom).val();
-            var closestQstNum = $(this).closest(srvQstBottomDom)
-                         .closest(srvQstDom).find(srvQstMiddleDom)
-                         .find(seqDom).text();
+        $.post("/ajax/survey/write/" + prjId, {
+            crtrId: '0509004',
+            seq: seqDom.text(),
+            typeYn: typeYn
+        });
 
-            $.post("/ajax/survey/write/" + prjId, {
-                srvQst: srvQst,
-                crtrId: '0509004',
-                seq: closestQstNum,
-                typeYn: typeYn,
-            }, 
-            function(response) {
-                var result = response.data.result;
-                if(result){
-                    alert("성공!")
-                }
-                else{
-                    alert("실패!")
-                }
-                
-            });
+        // $(insertSrvQstButtonDom).on("click", function() {
+        //     var srvId = $(this).
+        //     var srvQst = $(srvQstInputDom).val();
+        //     $.post("/ajax/survey/modify/" + prjId, {
+        //         srvId: srvId,
+        //         srvQst: srvQst,
+        //         typeYn: typeYn
+        //     });
+        // }); 아직 미완
+
+        // $(insertSrvQstButtonDom).on("click", function() {
+        //     var srvQst = $(srvQstInputDom).val();
+        //     var closestQstNum = $(this).closest(srvQstBottomDom)
+        //                  .closest(srvQstDom).find(srvQstMiddleDom)
+        //                  .find(seqDom).text();
+                    
+        //     $.post("/ajax/survey/write/" + prjId, {
+        //         srvQst: srvQst,
+        //         crtrId: '0509004',
+        //         seq: closestQstNum,
+        //         typeYn: typeYn,
+        //     }, 
+        //     function(response) {
+        //         var result = response.data.result;
+        //         if(result){
+        //             alert("성공!")
+        //         }
+        //         else{
+        //             alert("실패!")
+        //         }             
+        //     });
+        // });
+
+        $(insertSrvQstButtonDom).on("click", function() {
+            var firstQstAns = $(firstLiFirstInputDom).val();
+            var secondQstAns = $(secondLiFirstInputDom).val();
+            $.post("/ajax/survey/answer/" + srvId, {});
         });
     });
 });

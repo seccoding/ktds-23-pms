@@ -11,4 +11,6 @@ public interface SurveyQuestionService {
 	
 	public boolean createNewSurveyQuestion(SurveyQuestionVO surveyQuestionVO);
 
+	public boolean modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
 }
