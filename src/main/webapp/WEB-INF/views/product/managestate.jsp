@@ -29,34 +29,34 @@
                     <th>대여상태</th>
                 </tr>
             </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${not empty userRentalState.borrowList}">
+                        <c:forEach items="${userRentalState.borrowList}" var="product">
+                            <tr>
+                                <td>${product.prdtMngId}</td>
+                                <td>${product.productVO.prdtName}</td>
+                                <td>${product.brrwId}</td>
+                                <td>${product.brrwDt}</td>
+                                <c:choose>
+                                    <c:when test="${not empty product.rtnDt}">
+                                        <td>${product.rtnDt}</td>
+                                        <td>반납완료</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>-</td>
+                                        <td>대여중</td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                        </c:forEach>
+    
+                    </c:when>
+                    
+                </c:choose>
+    
+            </tbody>
         </table>
-        <tbody>
-            <c:choose>
-                <c:when test="${not empty userRentalState.borrowList}">
-                    <c:forEach items="${userRentalState.borrowList}" var="product">
-                        <tr>
-                            <td>${product.prdtMngId}</td>
-                            <td>${product.productVO.prdtName}</td>
-                            <td>${product.brrwId}</td>
-                            <td>${product.brrwDt}</td>
-                            <c:choose>
-                                <c:when test="${not empty product.rtnDt}">
-                                    <td>${product.rtnDt}</td>
-                                    <td>반납완료</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td>-</td>
-                                    <td>대여중</td>
-                                </c:otherwise>
-                            </c:choose>
-                        </tr>
-                    </c:forEach>
-
-                </c:when>
-                
-            </c:choose>
-
-        </tbody>
     </div>
     <jsp:include page="../layout/layout_close.jsp" />
 </body>
