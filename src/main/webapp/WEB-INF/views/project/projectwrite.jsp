@@ -57,7 +57,7 @@
                 </c:forEach>
             </datalist>
         </div>
-            
+
         <%--    html date type 사용으로 해결, datepicker는 미사용    --%>
         <div>
             <label for="start-date">시작일</label>

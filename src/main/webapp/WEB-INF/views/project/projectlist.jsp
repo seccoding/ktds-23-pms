@@ -16,6 +16,10 @@
             grid-template-rows: 28px 1fr auto 28px;
             row-gap: 10px;
         }
+
+        .hovered-row {
+            cursor: pointer; /* 마우스 커서 모양 변경 */
+        }
     </style>
 </head>
 <body>
@@ -51,7 +55,7 @@
             <c:when test="${not empty projectList.projectList}">
                 <%-- 내용을 반복해서 보여줌 --%>
                 <c:forEach items="${projectList.projectList}" var="project">
-                    <tr>
+                    <tr class="project-row" data-project-id="${project.prjId}">
                         <td>
                             <a href="/project/view?projectId=${project.prjId}">${project.prjName}</a>
                         </td>

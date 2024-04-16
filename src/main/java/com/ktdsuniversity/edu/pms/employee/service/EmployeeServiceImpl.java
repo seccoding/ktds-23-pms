@@ -80,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 //	}
 	
 	@Override
-	public boolean deleteEmployee(int empId) {
+	public boolean deleteEmployee(String empId) {
 		
 		return this.employeeDao.deleteEmployeeById(empId) > 0;
 	}
