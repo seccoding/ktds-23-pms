@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+
 public class ApprovalVO {
 	
 	private String apprId;
@@ -14,6 +17,10 @@ public class ApprovalVO {
 	private String apprFnshDt;
 	private String apprTtl;
 	private String apprCntnt;
+	
+	private EmployeeVO employeeVO;
+	
+	private CommonCodeVO commonCodeVO;
 	
 	public String getApprId() {
 		return apprId;
@@ -86,6 +93,18 @@ public class ApprovalVO {
 	}
 	public String getApprCntnt() {
 		return apprCntnt;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public CommonCodeVO getCommonCodeVO() {
+		return commonCodeVO;
+	}
+	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
+		this.commonCodeVO = commonCodeVO;
 	}
 	
 }
