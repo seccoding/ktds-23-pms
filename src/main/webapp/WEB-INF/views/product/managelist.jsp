@@ -11,6 +11,9 @@
     div.grid div.right-align {
         text-align: right;
     }
+    .table-item{
+        text-align: center;
+    }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 </head>
@@ -59,15 +62,15 @@
                 <c:choose>
                     <c:when test="${not empty productList.productList}">
                         <c:forEach items="${productList.productList}" var="product">
-                            <tr>
-                                <a href="/product/manage/view?id=${product.prdtId}">
+                             <a href="/product/manage/view?prdtId=${product.prdtId}" class="table-item">
+                           		<tr>
                                     <td>${product.prdtId}</td>
                                     <td>${product.prdtName}</td>
                                     <td>${product.prdtCtgr}</td>
                                     <td>${product.onceYn}</td>
                                     <td>${product.curStr}</td>
-                                </a>
-                            </tr>
+                            	</tr>
+                             </a>
                         </c:forEach>
     
                     </c:when>
