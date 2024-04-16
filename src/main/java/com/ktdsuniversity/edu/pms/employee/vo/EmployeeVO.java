@@ -2,7 +2,7 @@ package com.ktdsuniversity.edu.pms.employee.vo;
 
 public class EmployeeVO {
 
-   private String empId;
+   private int empId;
    private String empName;
    private String workSts;
    private int salYear;
@@ -27,12 +27,22 @@ public class EmployeeVO {
    private String pwdCnDt;
    private String lgnTryDt;
    private String lgnYn;
+   private String fileName;
 
-   public String getEmpId() {
+   
+   public String getFileName() {
+	return fileName;
+}
+
+public void setFileName(String fileName) {
+	this.fileName = fileName;
+}
+
+public int getEmpId() {
       return empId;
    }
 
-   public void setEmpId(String empId) {
+   public void setEmpId(int empId) {
       this.empId = empId;
    }
 

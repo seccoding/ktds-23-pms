@@ -11,11 +11,16 @@ public interface EmployeeService {
 	public EmployeeListVO getAllEmployee();
 	
 	public EmployeeListVO searchAllEmployee(SearchEmployeeVO searchEmployeeVO);
+	 
 	
-	public EmployeeVO getOneEmployee(int id);
+	public boolean deleteEmployee(int empId);
 	
-	//사원 추가 ?
-	public boolean createNewEmployee(EmployeeVO employeeVO, MultipartFile file); 
+	public boolean modifyEmployee(EmployeeVO employeeVO);
+	
+	public EmployeeVO getOneEmployee(String empId);
+		
+	
+	
 	
 	
 }

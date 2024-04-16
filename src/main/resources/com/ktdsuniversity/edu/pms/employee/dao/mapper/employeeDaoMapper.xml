@@ -3,5 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao">
+	<resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+			   id="employeeVOMap"
+			   autoMapping="true">
+		<id column="ID" property="id"/>
+		<association property="departmentVO"
+					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+			<id column="" />
+		</association>
+	</resultMap>
+<select id="getAllEmployeeCount" resultType="_int">
+	SELECT COUNT(1)
+	  FROM EMPLOYEE E
+</select>
+
+<select id="searchEmployeeAllCount" 
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO"
+		resultType="_int">
+	SELECT COUNT(1)
+	  FROM EMPLOYEE E
+	  JOIN DEPARTEMNT D
+		ON D.DEPT_ID = E.DEPT_ID
+	 WHERE D.DEL_YN = 'N'	
+	  <if test='SearchKeyWord != null and SearchKeyWord != "" '>
+	  	<choose>
+	  		<when test='searchType == "employee_name"'>
+	  		AND E.EMP_NAME LIKE '%' || #{searchKeyWord} || '%'
+	  		</when>
+	  		<when test='searchType == "department_name"'>
+	  		AND D.DEPT_NAME LIKE '%' || #{searchKeyWord} || '%'
+	  		</when>
+	  	</choose>
+	  </if>
+</select>
+
+
 
 </mapper>

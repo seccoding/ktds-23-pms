@@ -10,6 +10,8 @@ public interface EmployeeDao {
 	
 	public String NAME_SPACE = "com.ktdsuniversity.edu.employee.dao.EmployeeDao";
 
+	
+	
 	public int getAllEmployeeCount ();
 	
 	public int searchEmployeeAllCount (SearchEmployeeVO searchEmployeeVO);
@@ -18,7 +20,13 @@ public interface EmployeeDao {
 	
 	public List<EmployeeVO> searchAllEmployee(SearchEmployeeVO searchEmployeeVO);
 	
-	public EmployeeVO selectOneBoard(int id); 
+	public EmployeeVO getOneEmployee(String empId); 
+	
+	public int insertNewEmployee(EmployeeVO employeeVO);
+	
+	public int deleteEmployeeById(int empId);
+	
+	public int modifyEmployee(EmployeeVO employeeVO);
 
 }
 

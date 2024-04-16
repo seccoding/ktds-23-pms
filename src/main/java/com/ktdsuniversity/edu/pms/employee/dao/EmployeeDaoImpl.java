@@ -44,10 +44,29 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 	@Override
-	public EmployeeVO selectOneBoard(int id) {
+	public int deleteEmployeeById(int empId) {
 		
-		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".selectOneBoard", id);
+		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".deleteEmployeeByName", empId);
 	}
+
+	@Override
+	public EmployeeVO getOneEmployee(String empId) {
+		
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getOneEmployee", empId);
+	}
+
+	@Override
+	public int insertNewEmployee(EmployeeVO employeeVO) {
+		
+		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createNewEmployee", employeeVO);
+	}
+
+	@Override
+	public int modifyEmployee(EmployeeVO employeeVO) {
+		
+		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyEmployee", employeeVO);
+	}
+
 
 	
 	
