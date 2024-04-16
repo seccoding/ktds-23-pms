@@ -25,7 +25,12 @@ public class DepartmentController {
 		
 		return "department/departmentlist";
 	}
+	@GetMapping("/department/create")
+	public String viewCreateNewDepartmentPage() {
+		return "department/departmentcreate";
+	}
 	
+
 	@PostMapping("/department/create")
 	public String doCreateNewDepartment(DepartmentVO departmentVO, Model model) {
 		boolean isEmptyName = StringUtil.isEmpty(departmentVO.getDeptName());

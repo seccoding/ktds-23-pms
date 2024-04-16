@@ -14,7 +14,9 @@
 			<result column="DEPT_NAME" property="deptName"/>
 		</association>
 		</resultMap>
-		
+
+	 
+
 <select id="getAllEmployeeCount" resultType="_int">
 	SELECT COUNT(1)
 	  FROM EMPLOYEE E
