@@ -12,6 +12,7 @@
         text-align: right;
     }
 </style>
+<script type="text/javascript" src="/js/product/list.js"></script>
 </head>
 <body>
 <jsp:include page="../layout/layout.jsp" />
@@ -23,19 +24,24 @@
         </div>
     </div>
     <div class="grid">
-
-        <div class="right-align">
-            <input type="checkbox" id="product-exist">
-            <label for="product-exist"></label>
-            
-            <select name="categoryType" id="category-type">
-                <option value="computer">컴퓨터기기</option>
-                <option value="printer">프린터용품</option>
-                <option value="no_select">선택 안함</option>
-            </select>
-
-            <input type="text" name="searchKeyword" />
-            <button type="button" id="search-btn">검색</button>
+        <div>
+            <form id="search-form">
+                <input type="hidden" id="page-no" name="pageNo" value="0" />
+                <div class="right-align">
+                    <input type="checkbox" id="product-exist">
+                    <label for="product-exist"></label>
+                    
+                    <select id="search-type" name="searchType" >
+                        <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
+                        <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                        <option value="category" ${productVO.searchType eq 'category' ? 'selected' : ''}>카테고리</option>
+                        <option value="noSelect" ${productVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
+                    </select>
+        
+                    <input type="text" name="searchKeyword" value="${productVO.searchKeyword}"/>
+                    <button type="button" id="search-btn">검색</button>
+                </div>
+            </form>
         </div>
 
         <table class="table">

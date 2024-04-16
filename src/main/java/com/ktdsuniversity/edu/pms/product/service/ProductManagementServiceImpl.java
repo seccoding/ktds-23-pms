@@ -18,13 +18,15 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 	private ProductManagementDao productManagementDao;
 
 	@Override
-	public ProductManagementListVO getAllProductdetail() {
-		int productCount = this.productManagementDao.getProductManagementCount();
+	public ProductManagementListVO getAllProductdetail(ProductManagementVO productManagementVO) {
+		int productManagementCount = this.productManagementDao.getProductManagementCount(productManagementVO);
 		
-		List<ProductManagementVO> productManagementList = this.productManagementDao.getAllProductManagement();
+		productManagementVO.setPageCount(productManagementCount);
+		
+		List<ProductManagementVO> productManagementList = this.productManagementDao.getAllProductManagement(productManagementVO);
 		
 		ProductManagementListVO productManagementListVO = new ProductManagementListVO();
-		productManagementListVO.setProductManagementCnt(productCount);
+		productManagementListVO.setProductManagementCnt(productManagementCount);
 		productManagementListVO.setProductManagementList(productManagementList);
 		
 		return productManagementListVO;

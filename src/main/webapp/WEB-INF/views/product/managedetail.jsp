@@ -12,6 +12,7 @@
         text-align: right;
     }
 </style>
+<script type="text/javascript" src="/js/product/managedetail.js"></script>
 </head>
 <body>
 <jsp:include page="../layout/layout.jsp" />
@@ -23,20 +24,23 @@
         </div>
     </div>
     <div class="grid">
-
-        <div class="right-align">
-            <input type="checkbox" id="product-exist">
-            <label for="product-exist"></label>
-            
-            <select name="categoryType" id="category-type">
-                <option value="productName">비품명</option>
-                <option value="product_manage_id">비품 관리 ID</option>
-                <option value="borrow_id">대여자 ID</option>
-                <option value="no_select">선택 안함</option>
-            </select>
-
-            <input type="text" name="searchKeyword" />
-            <button type="button" id="search-btn">검색</button>
+        <div>
+            <form id="search-form">
+                <input type="hidden" id="page-no" name="pageNo" value="0" />
+                <div class="right-align">
+                    <input type="checkbox" id="product-exist">
+                    <label for="product-exist"></label>
+                    
+                    <select id="search-type" name="searchType" >
+                        <option value="productManagementId" ${productManagementVO.searchType eq 'productManagementId' ? 'selected' : ''}>비품관리ID</option>
+                        <option value="productName" ${productManagementVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                        <option value="noSelect" ${productManagementVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
+                    </select>
+        
+                    <input type="text" name="searchKeyword" value="${productManagementVO.searchKeyword}"/>
+                    <button type="button" id="search-btn">검색</button>
+                </div>
+            </form>
         </div>
 
         <table class="table">

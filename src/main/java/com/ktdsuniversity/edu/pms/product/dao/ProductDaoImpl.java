@@ -19,13 +19,13 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	}
 
 	@Override
-	public List<ProductVO> getAllProduct() {
-		return getSqlSession().selectList(ProductDao.NAME_SPACE + ".getAllProduct");
+	public List<ProductVO> getAllProduct(ProductVO productVO) {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE + ".getAllProduct", productVO);
 	}
 
 	@Override
-	public int getProductAllCount() {
-		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".getProductAllCount");
+	public int getProductAllCount(ProductVO productVO) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".getProductAllCount", productVO);
 	}
 
 	@Override
@@ -37,5 +37,4 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	public ProductVO selectOneProduct(String id) {
 		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".selectOneProduct", id);
 	}
-
 }

@@ -10,7 +10,7 @@ public interface ProductService {
 	 * 비픔 목록과 비품 수를 모두 조회
 	 * @return
 	 */
-	public ProductListVO getAllProduct();
+	public ProductListVO getAllProduct(ProductVO productVO);
 
 	public boolean createNewProduct(ProductVO productVO);
 
