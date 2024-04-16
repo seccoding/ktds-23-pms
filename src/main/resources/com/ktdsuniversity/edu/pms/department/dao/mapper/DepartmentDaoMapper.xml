@@ -21,7 +21,7 @@
 			<id column="JOB_ID" property="jobId" />
 			<result column="J_JOB_NAME"	property="jobName" />		 
 		</association>
-		<association property="commoncodeVO"
+		<association property="commonCodeVO"
 					 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
 			<id column="CMCD_ID" property="cmcdId" />
 			<result column="C_CMCD_NAME"	property="cmcdName" />		 
@@ -52,7 +52,7 @@
 	
 	<insert id="createNewDepartment"
 			parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
-		INSERT IN TO DEPARTMENT (
+		INSERT INTO DEPARTMENT (
 			   DEPT_ID
 			 , DEPT_NAME
 			 , DEPT_CR_DT
