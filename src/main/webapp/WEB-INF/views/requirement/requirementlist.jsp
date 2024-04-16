@@ -9,7 +9,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
   <body>
     <jsp:include page="../layout/layout.jsp"></jsp:include>
-    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
+
     <table>
       <colgroup>
         <col width="160px" />
@@ -38,7 +38,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 <td>${requirememt.rqmId}</td>
                 <td>
                   <a
-                    href="/project/requirement/view?prjId=${requirememt.prjId}&rqmId=${requirememt.rqmId}"
+                    href="/requirement/view?prjId=${requirememt.prjId}&rqmId=${requirememt.rqmId}"
                     >${requirememt.rqmTtl}</a
                   >
                 </td>
@@ -60,8 +60,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     <div>
       <p>
-        <button><a href="/project/requirement/write">신규</a></button>
+        <button><a href="/requirement/write">신규</a></button>
       </p>
     </div>
+
+    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
   </body>
 </html>
