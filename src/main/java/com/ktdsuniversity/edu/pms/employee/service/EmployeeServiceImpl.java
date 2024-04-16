@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
-import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;

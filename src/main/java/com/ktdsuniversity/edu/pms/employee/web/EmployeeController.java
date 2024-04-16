@@ -27,11 +27,10 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	@Autowired
-	private FileHandler fileHandler;
 	
 	
 	
+
 	
 	@GetMapping("/employee/search")
 	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
@@ -88,6 +87,15 @@ public class EmployeeController {
 											: "/employee/failed-delete-emp");
 	}
 
+	@GetMapping("/employee/modify/{empId}")
+	public String viewEmpModifyPage(@PathVariable String empId, Model model, 
+									@SessionAttribute("_Employee_") EmployeeVO employeeVO) {
+		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
+		model.addAttribute("employeeVO", employee);
+		return "employee/employeemodify";
+	}
+		
+	
 	@PostMapping("/employee/modify/{empId}")
 	public AjaxResponse modifyEmp(@PathVariable String empId, Model model,
 			@SessionAttribute("_EMPLOYEE_") EmployeeVO employeeVO,
