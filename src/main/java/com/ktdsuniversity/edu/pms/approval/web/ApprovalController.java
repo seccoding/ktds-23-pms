@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
 
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalDetailService;
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalService;
@@ -16,6 +20,7 @@ import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
 public class ApprovalController {
@@ -68,4 +73,25 @@ public class ApprovalController {
 
 		return "redirect:/approval/approvallist";
 	}
+	
+	// 버튼 클릭시 승인 상태로 변화	
+	@ResponseBody
+	@PostMapping("/approval/approve")
+	public AjaxResponse doApproval(@RequestBody String apprId) {
+//		apprid=형식으로 들어오기 때문에 replace로 해서 id값  출력
+		String apprid = apprId.replace("apprid=", "");
+		System.out.println("Received apprid: " + apprid);
+		 		 
+		boolean updateState=this.approvalService.updatesOneApproval(apprid);;
+		
+		return new AjaxResponse().append("next","/approval/home");
+	}
+	
+	@GetMapping("/approval/approvalchanage")
+	public String doApproval(Model model) {
+		ApprovalDetailListVO approvalDetailList = this.approvaldetailservice.getPersonApprovalDetail("APPR_202304_000008");
+		model.addAttribute("approvalDetailList", approvalDetailList);
+		return "approval/approvalchanage";
+	}
+	
 }

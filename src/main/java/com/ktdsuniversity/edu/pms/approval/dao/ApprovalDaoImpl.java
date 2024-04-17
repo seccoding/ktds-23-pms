@@ -7,6 +7,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
 @Repository
@@ -47,5 +49,14 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	public int deleteApproval(String id) {
 		return getSqlSession().update(ApprovalDao.NAME_SPACE +".deleteApproval", id);
 	}
+
+	@Override
+	public int updateApproval(String id) {
+		// TODO Auto-generated method stub
+		return  getSqlSession().update(ApprovalDao.NAME_SPACE+".updateApproval", id);
+	}
+
+	
+	
 
 }

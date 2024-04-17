@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.approval.service;
 
 
+
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
@@ -22,6 +24,14 @@ public interface ApprovalService {
     public ApprovalVO selectOneApproval(String id);
     
     public boolean deleteOneApproval(String id);
+    
+    /**
+	 * 클릭시 결재 상태로 바뀐다 
+	*/
+   public boolean updatesOneApproval(String id);
+   
+   
+   
 
 	
 

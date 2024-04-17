@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+
 public class ApprovalDetailVO {
 	
 	private String apprDtlId;
@@ -7,6 +10,13 @@ public class ApprovalDetailVO {
 	private String prdtId;
 	private int curStr;
 	private String delYn;
+	
+	private EmployeeVO employeeVO;
+	
+	private ApprovalVO approvalVO;
+	
+	private ProductVO productVO;
+	
 	public String getApprDtlId() {
 		return apprDtlId;
 	}

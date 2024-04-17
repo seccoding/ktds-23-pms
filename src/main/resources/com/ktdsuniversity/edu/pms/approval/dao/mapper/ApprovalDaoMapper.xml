@@ -16,6 +16,9 @@
         	<result column="CMCD_NAME" property="cmcdName"/>
         </association>
 	</resultMap>
+	
+	
+	
 
 	<select id="getAllCount" resultType="_int">	
 		SELECT COUNT(*)
@@ -83,5 +86,19 @@
 		SET  DEL_YN='Y'	
 		WHERE APPR_ID= #{_parameter}
   	</update>
-	
+  	
+
+  	<update id="updateApproval" parameterType="string">
+  		UPDATE APPROVAL
+			SET 
+			ARRP_RJCT='품목 변경'  
+			,APPR_FNSH_DT=SYSDATE 
+			WHERE APPR_ID='';
+  	</update>
+  	
+  	
+  	
+  	
+  	
+  	
 </mapper> 

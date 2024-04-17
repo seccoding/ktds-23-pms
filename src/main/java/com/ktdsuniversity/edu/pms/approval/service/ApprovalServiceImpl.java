@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
@@ -54,5 +55,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return deleteCount>0;
 	}
+	
+	@Override
+	public boolean updatesOneApproval(String id) {
+		// TODO Auto-generated method stub
+		
+		int updateCount=this.approvalDao.updateApproval(id);
+	
+		return updateCount>0;
+	}
+
+	
+
+	
 
 }
