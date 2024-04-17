@@ -5,6 +5,7 @@
 <head>
 <meta charset="EUC-KR">
 <title>메모 상세 페이지</title>
+<jsp:include page="../commonheader.jsp" />
 </head>
 <body>
 	<h1>메모 조회</h1>

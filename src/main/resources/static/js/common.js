@@ -40,6 +40,37 @@ window.onload = function () {
 
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+	
+  var isMainLayout = window.location.pathname === "/";
+  if (!isMainLayout) {
+	
+	var framePath = window.parent.getLocationPathInFrame();
+	var menuObject = window.parent.findMenuObject(framePath);
+	var menuTree = window.parent.makeTree(menuObject);
+	var menuPath = window.parent.makePath(menuTree);
+	window.parent.console.log(menuPath);
+	
+	var parentDocument = $(window.parent.document);
+	var locationTree = parentDocument.find(".location-tree");
+	locationTree.html("");
+	
+	menuPath.forEach(function(data, i) {
+		var listItem = $("<li></li>");
+		listItem.text(data.name);
+		listItem.css("cursor", "pointer")
+		if (data.url && menuPath.length - 1 > i) {
+			listItem.on("click", function() {
+				var frame = window.parent.document.querySelector(".frame-active > iframe");
+				frame.contentDocument.location.href = data.url;
+			});
+		}
+		
+		locationTree.append(listItem);
+	});
+	
+  }
+  
+	
   $(".menu-tab-prev").on("click", function () {
     var menuTabList = $(".content").find(".menu-tab");
     var scrollLeft = menuTabList.scrollLeft();
