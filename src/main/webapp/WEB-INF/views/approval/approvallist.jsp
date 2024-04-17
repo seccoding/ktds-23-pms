@@ -87,7 +87,11 @@
                                     </c:if>
                                 </td>
                                 <td>${approval.apprId}</td>
-                                <td>${approval.apprTtl}</td>
+                                <td>
+                                    <a href="/approval/approvalview?apprId=${approval.apprId}">
+                                        ${approval.apprTtl}
+                                    </a>
+                                </td>
                                 <td>${approval.employeeVO.empName}</td>
                                 <td>
                                     <c:if test="${approval.apprSts eq '801'}">

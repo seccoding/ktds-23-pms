@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
@@ -19,8 +21,9 @@ public class ApprovalVO {
 	private String apprCntnt;
 	
 	private EmployeeVO employeeVO;
-	
+	private EmployeeVO employeeManagerVO;
 	private CommonCodeVO commonCodeVO;
+	private List<ApprovalDetailVO> approvalDetailVOList;
 	
 	public String getApprId() {
 		return apprId;
@@ -105,6 +108,18 @@ public class ApprovalVO {
 	}
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
+	}
+	public EmployeeVO getEmployeeManagerVO() {
+		return employeeManagerVO;
+	}
+	public void setEmployeeManagerVO(EmployeeVO employeeManagerVO) {
+		this.employeeManagerVO = employeeManagerVO;
+	}
+	public List<ApprovalDetailVO> getApprovalDetailVOList() {
+		return approvalDetailVOList;
+	}
+	public void setApprovalDetailVOList(List<ApprovalDetailVO> approvalDetailVOList) {
+		this.approvalDetailVOList = approvalDetailVOList;
 	}
 	
 }

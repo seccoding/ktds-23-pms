@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
-	
+
 	@Autowired
 	private ApprovalDao approvalDao;
 
@@ -40,19 +41,28 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public ApprovalVO selectOneApproval(String id) {
-		// TODO Auto-generated method stub
-		ApprovalVO approvalvo=this.approvalDao.getOneApproval(id);
-			
-		return approvalvo;
+	public ApprovalVO selectOneApproval(String apprId) {
+		return this.approvalDao.selectOneApproval(apprId);
 	}
 
 	@Override
-	public boolean deleteOneApproval(String id) {
-		// TODO Auto-generated method stub
-		int deleteCount=this.approvalDao.deleteApproval(id);
-		
-		return deleteCount>0;
+	public ApprovalVO selectOneApprovalAll(String apprId) {
+		ApprovalVO approvalVO=this.approvalDao.selectOneApprovalAll(apprId);
+		if(approvalVO == null) {
+			throw new PageNotFoundException(); // 적당한 error를 찾아보자.
+		}
+		return approvalVO;
 	}
 
+	@Override
+	public boolean approvalStatusChange(ApprovalVO approvalVO) {
+		int updateCount = this.approvalDao.updateApprovalStatus(approvalVO);
+		return updateCount > 0;
+	}
+
+	@Override
+	public boolean deleteOneApproval(String apprId) {
+		int deleteCount=this.approvalDao.deleteApproval(apprId);
+		return deleteCount>0;
+	}
 }

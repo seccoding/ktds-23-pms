@@ -6,7 +6,7 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
 public interface ApprovalDao {
-	
+
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao";
 
 	/**
@@ -34,19 +34,23 @@ public interface ApprovalDao {
 	 * @return 사원이 신청한 결재 목록
 	 */
 	public List<ApprovalVO> getAllApprovalByEmpId(String empId);
-	
+
+	public ApprovalVO selectOneApproval(String apprId);
+
 	/**
      * 파라미터로 전달받은 게시글 ID의 게시글 정보를 조회한다.
-     * @param id 게시글 ID (번호)
+     * @param apprId 게시글 ID (번호)
      * @return
      */
-    public ApprovalVO getOneApproval(String id);
+    public ApprovalVO selectOneApprovalAll(String apprId);
+
+	public int updateApprovalStatus(ApprovalVO approvalVO);
     
     /**
      * 파라미터로 전달받은 게시글 ID의 게시글을 삭제한다.
      * @param id 게시글 ID (번호)
      * @return DB에 Delete한 게시글의 수
      */
-    public int deleteApproval(String id);
+    public int deleteApproval(String apprId);
 
 }

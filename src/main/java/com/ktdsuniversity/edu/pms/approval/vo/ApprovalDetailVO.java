@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+
 public class ApprovalDetailVO {
 	
 	private String apprDtlId;
@@ -7,6 +9,9 @@ public class ApprovalDetailVO {
 	private String prdtId;
 	private int curStr;
 	private String delYn;
+	private ApprovalVO approvalVO;
+	private ProductVO productVO;
+	
 	public String getApprDtlId() {
 		return apprDtlId;
 	}
@@ -36,6 +41,18 @@ public class ApprovalDetailVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public ApprovalVO getApprovalVO() {
+		return approvalVO;
+	}
+	public void setApprovalVO(ApprovalVO approvalVO) {
+		this.approvalVO = approvalVO;
+	}
+	public ProductVO getProductVO() {
+		return productVO;
+	}
+	public void setProductVO(ProductVO productVO) {
+		this.productVO = productVO;
 	}
 	
 	

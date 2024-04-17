@@ -18,11 +18,12 @@ public interface ApprovalService {
 	 */
 	public ApprovalListVO getAllApprovalByEmpId(String empId);
 
-    
-    public ApprovalVO selectOneApproval(String id);
-    
-    public boolean deleteOneApproval(String id);
+	public ApprovalVO selectOneApproval(String apprId);
 
-	
+    public ApprovalVO selectOneApprovalAll(String apprId);
+
+	public boolean approvalStatusChange(ApprovalVO approvalVO);
+
+    public boolean deleteOneApproval(String apprId);
 
 }
