@@ -172,7 +172,7 @@ function menuClickHandler(event) {
     );
 }
 
-function menuAnchorCli  ckHandler(event, target) {
+function menuAnchorClickHandler(event, target) {
   var anchor = event ? $(this) : target;
   var frameList = $(".content").find(".frame-list");
   var menuTabList = $(".content").find(".menu-tab");
