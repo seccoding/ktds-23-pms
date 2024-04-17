@@ -32,4 +32,15 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 		return this.surveyQuestionPickDao.modifyOneAnswer(surveyQuestionPickVO) > 0;
 	}
 
+	@Override
+	public boolean modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO) {
+		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
+								.getOneAnswerSequence(surveyQuestionPickVO.getSqpId());
+		
+		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
+			throw new PageNotFoundException();
+		}
+		return this.surveyQuestionPickDao.modifyOneAnswerSequence(surveyQuestionPickVO) > 0;
+	}
+
 }

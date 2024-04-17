@@ -70,5 +70,18 @@
 		     , MDF_DT = SYSDATE
 		 WHERE SQP_ID = #{sqpId}
 	</update>
+	
+	<select id="getOneAnswerSequence" parameterType="String" resultMap="SurveyQuestionPickVoMap">
+		SELECT SEQ
+		  FROM SURVEY_QUESTION_PICK
+		 WHERE DEL_YN = 'N'
+		   AND SQP_ID = #{_parameter}
+	</select>
+	
+	<update id="modifyOneAnswerSequence" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
+		UPDATE SURVEY_QUESTION_PICK
+		   SET SEQ = #{seq}
+		 WHERE SQP_ID = #{sqpId}
+	</update>
 
 </mapper>
