@@ -18,7 +18,7 @@ public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements S
 
 	@Override
 	public int createNewAnswer(SurveyQuestionPickVO surveyQuestionPickVO) {
-		return getSqlSession().insert(SurveyQuestionPickDao.NAME_SPACE + "createNewAnswer", surveyQuestionPickVO);
+		return getSqlSession().insert(SurveyQuestionPickDao.NAME_SPACE + ".createNewAnswer", surveyQuestionPickVO);
 	}
 
 }

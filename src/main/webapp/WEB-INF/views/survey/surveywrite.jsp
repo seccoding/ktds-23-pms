@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>설문 작성</title>
-<jsp:include page="../commonheader.jsp" />
+<jsp:include page="../commonheader.jsp"></jsp:include>
 <style type="text/css">
     div {
         border: 1px solid #000;

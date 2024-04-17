@@ -47,14 +47,14 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 
 	@Transactional
 	@Override
-	public boolean modifyOneSurvey(SurveyQuestionVO surveyQuestionVO) {
+	public boolean createSurveyBody(SurveyQuestionVO surveyQuestionVO) {
 		SurveyQuestionVO originalSurveyQuestionVO = this.surveyQuestionDao
 							.getOneSurvey(surveyQuestionVO.getSrvId());
 		
 		if (!originalSurveyQuestionVO.getPrjId().equals(surveyQuestionVO.getPrjId())) {
 			throw new PageNotFoundException();
 		}
-		return this.surveyQuestionDao.modifyOneSurvey(surveyQuestionVO) > 0;
+		return this.surveyQuestionDao.insertSurveyBody(surveyQuestionVO) > 0;
 	}
 
 }

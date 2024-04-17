@@ -16,6 +16,6 @@ public interface SurveyQuestionDao {
 	
 	public SurveyQuestionVO getOneSurvey(String srvId);
 
-	public int modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
+	public int insertSurveyBody(SurveyQuestionVO surveyQuestionVO);
 
 }

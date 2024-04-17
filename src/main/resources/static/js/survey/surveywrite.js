@@ -42,7 +42,7 @@ $().ready(function() {
 
         var firstLiDom = $("<li></li>");
         var firstLiDivDom = $("<div></div>");
-        firstLiDivDom.text("답변 1");
+        firstLiDivDom.text(1);
         var firstLiFirstInputDom = $("<input/>");
         firstLiFirstInputDom.attr('type', 'text');
         firstLiFirstInputDom.attr('placeholder', '답변명');
@@ -56,7 +56,7 @@ $().ready(function() {
 
         var secondLiDom = $("<li></li>");
         var secondLiDivDom = $("<div></div>");
-        secondLiDivDom.text("답변 2");
+        secondLiDivDom.text(2);
         var secondLiFirstInputDom = $("<input/>");
         secondLiFirstInputDom.attr('type', 'text');
         secondLiFirstInputDom.attr('placeholder', '답변명');
@@ -75,16 +75,16 @@ $().ready(function() {
         addSrvQstButtonDom.attr('type', 'button');
         addSrvQstButtonDom.text("답변 항목 추가");
 
-        var qstNum = 2;
+        var qstNum = 3;
         $(addSrvQstButtonDom).on("click", function() {
-            qstNum++;
             var nextLiDom = $("<li></li>");
             var nextLiDivDom = $("<div></div>");
-            nextLiDivDom.text("답변 " + qstNum);
+            nextLiDivDom.text(qstNum);
+            qstNum++;
             var nextLiFirstInputDom = $("<input/>");
             nextLiFirstInputDom.attr('type', 'text');
             nextLiFirstInputDom.attr('placeholder', '답변명');
-            var nextLiSecondInputDom = $("<input/>");
+            nextLiSecondInputDom = $("<input/>");
             nextLiSecondInputDom.attr('type', 'text');
             nextLiSecondInputDom.attr('placeholder', '연결');
             var deleteSrvQstButtonDom = $("<button></button>");
@@ -134,7 +134,7 @@ $().ready(function() {
 
             var firstLiDom = $("<li></li>");
             var firstLiDivDom = $("<div></div>");
-            firstLiDivDom.text("답변 1");
+            firstLiDivDom.text(1);
             var firstLiFirstInputDom = $("<input/>");
             firstLiFirstInputDom.attr('type', 'text');
             firstLiFirstInputDom.attr('placeholder', '답변명');
@@ -148,7 +148,7 @@ $().ready(function() {
     
             var secondLiDom = $("<li></li>");
             var secondLiDivDom = $("<div></div>");
-            secondLiDivDom.text("답변 2");
+            secondLiDivDom.text(2);
             var secondLiFirstInputDom = $("<input/>");
             secondLiFirstInputDom.attr('type', 'text');
             secondLiFirstInputDom.attr('placeholder', '답변명');
@@ -167,16 +167,16 @@ $().ready(function() {
             addSrvQstButtonDom.attr('type', 'button');
             addSrvQstButtonDom.text("답변 항목 추가");
     
-            var qstNum = 2;
+            qstNum = 3;
             $(addSrvQstButtonDom).on("click", function() {
-                qstNum++;
                 var nextLiDom = $("<li></li>");
                 var nextLiDivDom = $("<div></div>");
-                nextLiDivDom.text("답변 " + qstNum);
+                nextLiDivDom.text(qstNum);
+                qstNum++;
                 var nextLiFirstInputDom = $("<input/>");
                 nextLiFirstInputDom.attr('type', 'text');
                 nextLiFirstInputDom.attr('placeholder', '답변명');
-                var nextLiSecondInputDom = $("<input/>");
+                nextLiSecondInputDom = $("<input/>");
                 nextLiSecondInputDom.attr('type', 'text');
                 nextLiSecondInputDom.attr('placeholder', '연결');
                 var deleteSrvQstButtonDom = $("<button></button>");
@@ -227,17 +227,64 @@ $().ready(function() {
             crtrId: '0509004',
             seq: seqDom.text(),
             typeYn: typeYn
+        },
+        function(response) {
+            srvQstDom.attr("data-srv-id", response.data.srvId);
         });
 
-        // $(insertSrvQstButtonDom).on("click", function() {
-        //     var srvId = $(this).
-        //     var srvQst = $(srvQstInputDom).val();
-        //     $.post("/ajax/survey/modify/" + prjId, {
-        //         srvId: srvId,
-        //         srvQst: srvQst,
-        //         typeYn: typeYn
-        //     });
-        // }); 아직 미완
+        $(insertSrvQstButtonDom).on("click", function() {
+            var srvQst = $(srvQstInputDom).val();
+            var that = this;
+            $.post("/ajax/survey/writebody/" + prjId, {
+                srvId: srvQstDom.data("srv-id"),
+                srvQst: srvQst,
+                typeYn: typeYn
+            }, function(response) {
+                //
+                //var ansList = [];
+                $(that).closest(".survey-question-bottom").find("li").each(function() {
+                    var answerDom = $(this).find("input").first();
+                    var answer = answerDom.val();
+
+                    var nextQuestionIdDom = $(this).find("input").last();
+                    var nextQuestionId = nextQuestionIdDom.val();
+
+                    if ((answerDom.data("sqp-id") && answerDom.data("data-answer") !== answer) 
+                            || (nextQuestionIdDom.data("sqp-id") && nextQuestionIdDom.data("next-question-id") !== nextQuestionId)) {
+                        // 답변이 수정되었다!
+                        $.post("수정 코드....");
+                    }
+                    else if(!answerDom.data("sqp-id")) {
+                        $.post("/ajax/survey/answer/" + srvQstDom.data("srv-id"), {
+                            srvId: srvQstDom.data("srv-id"),
+                            sqpCntnt: answer,
+                            crtrId: '0509004',
+                            seq: firstLiDivDom.text()
+                        }, function(resonse) {
+                            // answer input 에 data를 추가.
+                            answerDom.attr({"data-sqp-id": response.data.sqpId, "data-answer": answer});
+                            nextQuestionIdDom.attr({"data-sqp-id": response.data.sqpId, "data-next-question-id": nextQuestionId});
+                        });
+                    }
+                });
+
+                // var firstAns = $(firstLiFirstInputDom).val();
+                // var secondAns = $(secondLiFirstInputDom).val();
+
+                // for (var j = 0; j < ansList.length; j++) {
+                //     $.post("/ajax/survey/answer/" + srvQstDom.data("srv-id"), {
+                //         srvId: srvQstDom.data("srv-id"),
+                //         sqpCntnt: ansList[j],
+                //         crtrId: '0509004',
+                //         seq: firstLiDivDom.text()
+                //     }, function() {
+                //         // answer input 에 data를 추가.
+                //     });
+                // }
+            });
+            
+            
+        });
 
         // $(insertSrvQstButtonDom).on("click", function() {
         //     var srvQst = $(srvQstInputDom).val();
@@ -261,11 +308,5 @@ $().ready(function() {
         //         }             
         //     });
         // });
-
-        $(insertSrvQstButtonDom).on("click", function() {
-            var firstQstAns = $(firstLiFirstInputDom).val();
-            var secondQstAns = $(secondLiFirstInputDom).val();
-            $.post("/ajax/survey/answer/" + srvId, {});
-        });
     });
 });
