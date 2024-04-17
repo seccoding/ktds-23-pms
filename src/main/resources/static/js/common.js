@@ -231,7 +231,10 @@ function menuAnchorClickHandler() {
       .find("a[data-menu-id=" + menuId + "]")
       .addClass("active");
 
-    frameList.find("li").find("iframe").attr("src", menuUrl);
+    frameList
+      .find("li[data-menu-id=" + menuId + "]")
+      .find("iframe")
+      .attr("src", menuUrl);
 
     if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
       menuTabQueue.push(menuId);
