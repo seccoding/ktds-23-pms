@@ -4,6 +4,18 @@
 <html>
 <head>
     <title>Title</title>
+    <script type="text/javascript" src="/js/lib/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+
+            var pwdMessage = "${pwdMessage}";
+
+            if (pwdMessage) {
+                alert(pwdMessage);
+            }
+
+        })
+    </script>
 </head>
 <body>
 <h1>메인페이지입니다.</h1>

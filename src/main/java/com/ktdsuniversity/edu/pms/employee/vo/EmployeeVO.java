@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
+
 public class EmployeeVO {
 
    private String empId;
@@ -27,6 +29,16 @@ public class EmployeeVO {
    private String pwdCnDt;
    private String lgnTryDt;
    private String lgnYn;
+
+   private LoginLogVO loginLogVO;
+
+   public LoginLogVO getLoginLogVO() {
+      return loginLogVO;
+   }
+
+   public void setLoginLogVO(LoginLogVO loginLogVO) {
+      this.loginLogVO = loginLogVO;
+   }
 
    public String getEmpId() {
       return empId;
