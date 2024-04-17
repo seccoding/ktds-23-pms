@@ -36,6 +36,18 @@ public class ProductController {
 	}
 	
 	
+	@GetMapping("/product/apply")
+	public String viewProductApplyPage() {
+		return "product/apply";
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/ajax/product/apply")
+	public AjaxResponse doProductApply(ProductVO productVO) {
+		return new AjaxResponse().append("result", productVO).append("next", "/product/list");
+	}
+	
 	@GetMapping("/product/manage/list")
 	public String viewProductManageListPage(Model model, ProductVO productVO) {
 		ProductListVO productListVO = this.productService.getAllProduct(productVO);

@@ -11,18 +11,6 @@
     div.grid div.right-align {
         text-align: right;
     }
-    input[type="checkbox"] {
-        display: inline-block;
-    }
-    input[type="checkbox"]:hover {
-        pointer-events: none;
-    }
-
-    input[type="checkbox"] + label {
-        width: 9rem;
-        border: none;
-        background-color: #fafafb;
-    }
 </style>
 <script type="text/javascript" src="/js/product/list.js"></script>
 </head>
@@ -42,6 +30,7 @@
                 <div class="right-align">
                     <div class="check-option">
                         <input type="checkbox" id="product-exist-search" />
+                        <label for="product-exist-search"></label>
                         <label for="product-exist-search">재고가 있는 비품만 조회</label>
                     </div>
                     

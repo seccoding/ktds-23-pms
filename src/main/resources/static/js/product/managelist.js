@@ -16,12 +16,14 @@ $().ready(function(){
                 event.preventDefault();
             }
         }
-    })
+    });
 
     $(".product-item").on("click", function(){
         var id = $(this).data("product")
         location.href = "/product/manage/view?prdtId=" + id
-    })
+    });
 
-    
+    $(".create-product").on("click", function () {
+        location.href = "/product/manage/add";
+    });
 })

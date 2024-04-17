@@ -1,10 +1,23 @@
 $().ready(function(){
+    
+    $(".product-add").on("click", function(){
+        $.post("/ajax/product/manage/add", function(res){
+            
+        })
+    });
+
+    $(".product-cancel").on("click", function() {
+        var reConfirm = confirm("취소하시겠습니까?");
+        if(reConfirm){
+            location.href="/product/manage/list"
+        }
+    });
 
     $(".plus-btn").on("click", function () {
         /* 새로운 form 추가 */
-        /* <form action="/product/manage/add" method="post" enctype="multipart/form-data"></form> */
+        /* <form action="/product/apply" method="post" enctype="multipart/form-data"></form> */
         var formDom = $("<form></form>");
-        formDom.attr("action", "/product/manage/add");
+        formDom.attr("action", "/product/apply");
         formDom.attr("method", "post");
         formDom.attr("enctype", "multipart/form-data");
 
@@ -16,7 +29,7 @@ $().ready(function(){
         <div>
             <label for="product-name">비품명</label>
             <input type="text" id="product-name" />
-        </div> 
+        </div>
         */
         var productNameDom = $("<div></div>");
 
@@ -75,41 +88,7 @@ $().ready(function(){
 
         /* 
         <div>
-            <label for="product-type">소모품 분류</label>
-            <select id="search-type" name="searchType" >
-                <option value="productId" >소모품</option>
-                <option value="productId" >비소모품</option>
-            </select>
-        </div>
-        */
-        var productTypeDom = $("<div></div>");
-
-        var productTypeLabel = $("<label></label>");
-        productTypeLabel.attr("for", "onceYn");
-        productTypeLabel.text("소모품 분류");
-
-        var productTypeSelect = $("<select></select>");
-        productTypeSelect.attr("id", "onceYn");
-        productTypeSelect.attr("name", "onceYn");
-
-        var productTypeOption1 = $("<option></option>");
-        productTypeOption1.attr("value", "onceYn");
-        productTypeOption1.text("소모품");
-
-        var productTypeOption2 = $("<option></option>");
-        productTypeOption2.attr("value", "onceYn");
-        productTypeOption2.text("비소모품");
-
-        productTypeSelect.append(productTypeOption1);
-        productTypeSelect.append(productTypeOption2);
-
-        productTypeDom.append(productTypeLabel);
-        productTypeDom.append(productTypeSelect);
-
-
-        /* 
-        <div>
-            <label for="quantity">재고수</label>
+            <label for="quantity">신청 수량</label>
             <input type="number" id="quantity" />
         </div>
         */
@@ -117,7 +96,7 @@ $().ready(function(){
 
         var quantityLabel = $("<label></label>");
         quantityLabel.attr("for", "curStr");
-        quantityLabel.text("재고수");
+        quantityLabel.text("신청 수량");
 
         var quantityInput = $("<input />");
         quantityInput.attr("type", "number");
@@ -130,53 +109,29 @@ $().ready(function(){
 
         /* 
         <div>
-            <label for="first-buy-date">초기 구매일</label>
-            <input type="date" id="first-buy-date" />
+            <label for="first-buy-date">신청일</label>
+            <input type="date" id="first-apply-date" />
         </div>
         */
-        var buyDateDom = $("<div></div>");
+        var applyDateDom = $("<div></div>");
 
-        var buyDateLabel = $("<label></label>");
-        buyDateLabel.attr("for", "buyDt");
-        buyDateLabel.text("구매일");
+        var applyDateLabel = $("<label></label>");
+        applyDateLabel.attr("for", "first-apply-date");
+        applyDateLabel.text("신청일");
 
-        var buyDateInput = $("<input />");
-        buyDateInput.attr("type", "date");
-        buyDateInput.attr("id", "buyDt");
-        buyDateInput.attr("name", "buyDt");
+        var applyDateInput = $("<input />");
+        applyDateInput.attr("type", "date");
+        applyDateInput.attr("id", "first-apply-date");
 
-        buyDateDom.append(buyDateLabel);
-        buyDateDom.append(buyDateInput);
-
-
-        /* 
-        <div>
-            <label for="first-price">초기 가격</label>
-            <input type="text" id="first-price" />
-        </div>
-        */
-        var firstPriceDom = $("<div></div>");
-
-        var firstPriceLabel = $("<label></label>");
-        firstPriceLabel.attr("for", "prdtPrice");
-        firstPriceLabel.text("가격");
-
-        var firstPriceInput = $("<input />");
-        firstPriceInput.attr("type", "text");
-        firstPriceInput.attr("id", "prdtPrice");
-        firstPriceInput.attr("name", "prdtPrice");
-
-        firstPriceDom.append(firstPriceLabel);
-        firstPriceDom.append(firstPriceInput);
+        applyDateDom.append(applyDateLabel);
+        applyDateDom.append(applyDateInput);
 
 
 
         formGridDom.append(productNameDom);
         formGridDom.append(categoryDom);
-        formGridDom.append(productTypeDom);
         formGridDom.append(quantityDom);
-        formGridDom.append(buyDateDom);
-        formGridDom.append(firstPriceDom);
+        formGridDom.append(applyDateDom);
 
         
         var hrTag = $("<hr />");
@@ -194,24 +149,14 @@ $().ready(function(){
             $("form:last").remove();
         }
         else{
-            var deleteConfirm = confirm("비품 추가를 취소하시겠습니까?");
+            var deleteConfirm = confirm("비품 신청을 취소하시겠습니까?");
             if(deleteConfirm){
-                location.href = "/product/manage/list";
+                location.href = "/product/list";
             }
         }
     })
+    
 
-
-    $(".product-add").on("click", function(){
-        $("!");
-    });
-
-    $(".product-cancel").on("click", function() {
-        var reConfirm = confirm("취소하시겠습니까?");
-        if(reConfirm){
-            location.href="/product/manage/list";
-        }
-    });
     
 
 })
