@@ -63,6 +63,11 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".changeViewStatus", memoId);
 	}
 
+	@Override
+	public int deleteOneMemo(String memoId) {
+		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".deleteOneMemo", memoId);
+	}
+
 	
 	
 }

@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.memo.vo;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+
 public class MemoVO {
 
 	private String memoId;
@@ -13,6 +15,34 @@ public class MemoVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String saveYn;
+
+	private EmployeeVO employeeVO;
+	private String email;
+	private String empName;
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
 
 	public String getMemoId() {
 		return memoId;

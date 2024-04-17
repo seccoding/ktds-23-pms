@@ -99,22 +99,10 @@ public class MemoController {
 		return "memo/memoview";
 	}
 	
-	@GetMapping("/memo/delete/{id}")
-	public String doDeleteBoard(@PathVariable int id
-			,HttpServletRequest request) {
-		
-		boolean isDeletedSuccess = this.memoService.deleteOneMemo(id);
-		
-		if(isDeletedSuccess) {
-			logger.info("게시글 삭제 완료.");
-		}
-		else {
-			logger.info("게시글 삭제 실패.");
-		}
-		
-		String previousPageUrl = request.getHeader("Referer");
-		
-		return "redirect:" + previousPageUrl;
+	@ResponseBody
+	@GetMapping("/ajax/memo/delete/{id}")
+	public AjaxResponse reviewViewResultDelete(@PathVariable String id) {
+		return new AjaxResponse().append("result", memoService.deleteOneMemo(id));
 	}
 	
 //	@ResponseBody

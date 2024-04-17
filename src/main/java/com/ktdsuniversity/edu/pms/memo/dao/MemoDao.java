@@ -26,5 +26,7 @@ public interface MemoDao {
 
 	public int changeViewStatus(String memoId);
 
+	public int deleteOneMemo(String memoId);
+
 	
 }

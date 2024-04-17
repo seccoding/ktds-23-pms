@@ -11,16 +11,16 @@
 <body>
 
 
-     <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.>>>>>>>>>>>>>>>>></div>
+     <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.</div>
     <table>
 	  <colgroup>
-          <col width="20px" />
-          <col width="90px" />
-          <col width="200px" />
-          <col width="150px" />
-          <col width="80px" />
-          <col width="150px" />
-          <col width="150px" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
         </colgroup>
 	  <thead>
         <tr>
@@ -28,11 +28,10 @@
                 <input type="checkbox" id="checkbox1" />
      	 		<label for="checkbox1"></label>
             </th>
-            <th>받는사람</th>
+            <th>보낸 사람</th>
             <th>내용</th>
             <th>보낸 날짜</th>
             <th>확인 여부</th>
-            <th>전송 여부</th>
 		</tr>
       </thead>
 
@@ -42,12 +41,14 @@
                  <input type="checkbox" id="target-memo-id-${loop.index}" name="targetBoardId" value="${memo.memoId}" />
      	 		 <label for="target-memo-id-${loop.index}"></label>
                </td>
-             <td class="center-align">${memo.rcvId}</td>
+             <td class="center-align">${memo.crtrId}</td>
              <td class="left-align">
-               ${memo.memoCntnt}
+              <a class="ellipsis" href="/memo/view?id=${memo.memoId}">
+             		쪽지를 받았습니다.
+               </a>
              </td>
+             <td class="center-align">${memo.empName} : (${memo.email})</td>
              <td class="center-align">${memo.crtDt}</td>
-             <td class="center-align">${memo.readYn}</td>
              <td class="center-align">${memo.readYn}</td>
      
          </tr>

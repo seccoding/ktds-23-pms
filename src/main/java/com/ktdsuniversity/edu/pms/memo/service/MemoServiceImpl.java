@@ -80,11 +80,13 @@ public class MemoServiceImpl implements MemoService{
 		return memoVO;
 	}
 
-
+	@Transactional
 	@Override
-	public boolean deleteOneMemo(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteOneMemo(String id) {
+		
+		int deletedCount = this.memoDao.deleteOneMemo(id);
+		
+		return deletedCount > 0;
 	}
 	
 	

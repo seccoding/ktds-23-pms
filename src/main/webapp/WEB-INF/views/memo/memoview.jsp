@@ -1,30 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>ÂÊÁö »ó¼¼ ÆäÀÌÁö</title>
+<title>ìª½ì§€ ìƒì„¸ íŽ˜ì´ì§€</title>
 <jsp:include page="../commonheader.jsp" />
+<script type="text/javascript" src="/js/memo/memoview.js"></script>
 </head>
 <body>
-	<h1>ÂÊÁö Á¶È¸</h1>
+	          
+	<h1>ìª½ì§€ ì¡°íšŒ</h1>
     <div class="grid" data-id="${memoVO.memoId}">
-      <label for="name">¹ÞÀº »ç¶÷</label>
+      <label for="name">ë°›ì€ ì‚¬ëžŒ</label>
       <div>${memoVO.rcvId}</div>
 
-      <label for="crtDt">º¸³½ ³¯Â¥</label>
+      <label for="crtDt">ë³´ë‚¸ ë‚ ì§œ</label>
       <div>${memoVO.crtDt}</div>
 
-      <label for="content">³»¿ë</label>
+      <label for="content">ë‚´ìš©</label>
       <div>${memoVO.memoCntnt}</div>
 
-        <div class="btn-group">
-          <div class="right-align">
-            
-            <a class="delete-board" href="javascript:void(0);">»èÁ¦</a>
-          </div>
-        </div>
+     
+	  <a href="#" class="delete-button">ì‚­ì œ</a>
+      
+     
     </div>
 </body>
 </html>
