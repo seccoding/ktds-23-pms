@@ -1,4 +1,6 @@
 $().ready(function () {
+	
+	
   $("#login-btn").on("click", function () {
     $(".errorEndDt").remove();
     $(".errorRestDt").remove();
@@ -13,7 +15,12 @@ $().ready(function () {
       function (response) {
         var errors = response.data.errors;
         var errorUseNow = response.data.errorUseNow;
+        // var errorCountFive = response.data.errorCountFive;
+        var errorMessage = response.data.errorMessage;
         var next = response.data.next;
+
+        
+
 
         if (errors) {
 
@@ -28,10 +35,15 @@ $().ready(function () {
             alert(errors.pwd);
           }
         }
+        
+        if (errorMessage) {
+          alert(errorMessage);
+        }
 
         if (errorUseNow) {
           alert(errorUseNow);
         }
+
 
         var errorEndDt = response.data.errorEndDt;
 

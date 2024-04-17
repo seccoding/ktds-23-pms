@@ -32,6 +32,7 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpIdNotUseNow", employeeVO);
 	}
 
+
     @Override
     public void updateLoginLog(EmployeeVO employee) {
         getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateLoginLog", employee);
@@ -46,6 +47,24 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     public void updateEmpLogout(EmployeeVO employee) {
         getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", employee);
     }
+
+
+	@Override
+	public void updateOneEmpLgnTryPlusOne(String empId) {
+		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryPlusOne", empId);
+	}
+
+	@Override
+	public void updateOneEmpLgnTryZero(String empId) {
+		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryZero", empId);
+	}
+
+	@Override
+	public int getOneEmpLgnTryCount(String empId) {
+		return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpLgnTryCount", empId);
+	}
+
+	
 
 
 }

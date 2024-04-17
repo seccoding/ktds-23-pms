@@ -27,4 +27,6 @@ public interface EmployeeDao {
 
 	public int createEmployee(EmployeeVO employeeVO);
 
+	public String saltByEmp(String empId);
+
 }

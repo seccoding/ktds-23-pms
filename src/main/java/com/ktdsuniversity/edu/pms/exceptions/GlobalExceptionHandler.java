@@ -2,9 +2,17 @@ package com.ktdsuniversity.edu.pms.exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.google.gson.Gson;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.RequestUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * "Base Packge (com.ktdsuniversity.edu.pms)" 아래에서 발생하는 처리되지 않은 모든 예외들을
@@ -29,13 +37,25 @@ public class GlobalExceptionHandler {
 
 	}
 
-	@ExceptionHandler(CreationException.class)
+	@ExceptionHandler({CreationException.class, EmpIdAndPwdIsNotMatchException.class, LimitLoginException.class})
 	public Object viewErrorPage(RuntimeException re, Model model) {
 
 		logger.error(re.getMessage(), re);
 
+		HttpServletRequest request = RequestUtil.getRequest();
+		String uri = request.getRequestURI();
+		
+		if (uri.startsWith("/ajax/")) {
+			AjaxResponse ar = new AjaxResponse();
+			ar.append("errorMessage", re.getMessage());
+			
+			Gson gson = new Gson();
+			String ajaxJsonResponse = gson.toJson(ar);
+			
+			return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ajaxJsonResponse);
+		}
+		
 		model.addAttribute("message", re.getMessage());
-
 		return "error/500";
 
 	}
