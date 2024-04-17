@@ -30,6 +30,11 @@
 			<result column="TM_ID" property="tmId" />
 			<result column="ROLE" property="role" />
 		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+		</association>
 	</resultMap>
 
 
@@ -45,40 +50,92 @@
 			, DEL_YN
 			)
 		VALUES
-		 (('PRJ_RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REVIEW_PK.NEXTVAL, 6, '0'))
+		 (('RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))
 			, #{rvCntnt}
 			, #{prjId}
-			, #{crtDt}
 			, SYSDATE
+			, #{crtrId}
 			, NULL
 			, NULL
 			, 'N')
 	</insert>
-	
-	
+
+	<!-- <insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
+		<selectKey resultType="string" keyProperty="rvId" order="BEFORE">
+	        SELECT (('RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))) FROM DUAL;       
+	    </selectKey> 
+		INSERT INTO PROJECT_REVIEW
+			 (RV_ID
+			, RV_CNTNT
+			, PRJ_ID
+			, CRT_DT
+			, CRTR_ID
+			, MDF_DT
+			, MDFR_ID
+			, DEL_YN
+			)
+		VALUES
+		 	 (#{rvId}
+			, #{rvCntnt}
+			, #{prjId}
+			, SYSDATE
+			, #{crtrId}
+			, NULL
+			, NULL
+			, 'N')
+	</insert> -->
 
 	<select id="selectAllReview" resultMap="ReviewVOMap">
-		SELECT
-			PR.RV_ID,
-			PR.RV_ID,
-			PR.RV_CNTNT,
-			PR.PRJ_ID,
-			PR.CRT_DT,
-			PR.CRTR_ID,
-			PR.MDF_DT,
-			PR.MDFR_ID,
-			PR.DEL_YN,
-			P.PRJ_ID,
-			P.PRJ_NAME,
-			P.CLNT_INFO,
-			P.DEPT_ID,
-			P.PRJ_STS,
-			P.STRT_DT,
-			P.END_DT
-		FROM
-			PROJECT_REVIEW PR
-			LEFT JOIN PROJECT P ON PR.PRJ_ID = P.PRJ_ID
+	SELECT DISTINCT sq.PRJ_ID
+          , p.PRJ_NAME
+          , p.CLNT_INFO
+          , p.DEPT_ID
+          , p.PRJ_STS
+          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
+          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
+          , d.DEPT_NAME
+        FROM PROJECT_REVIEW sq
+        JOIN PROJECT p
+          ON p.PRJ_ID = sq.PRJ_ID
+        JOIN DEPARTMENT d
+          ON d.DEPT_ID = p.DEPT_ID
+       WHERE p.DEL_YN = 'N'
 	</select>
+	
+	<select  id="viewReviewCntnt" resultMap="ReviewVOMap">
+	SELECT p.PRJ_NAME
+		 , pr.RV_CNTNT 
+		 , pr.RV_ID 
+	  FROM PROJECT_REVIEW pr
+	  JOIN PROJECT p
+	    ON p.PRJ_ID = pr.PRJ_ID
+	 WHERE pr.DEL_YN = 'N'
+	</select>
+
+	<!-- <update id="deleteOneReview" 
+			parameterType="string">
+		UPDATE PROJECT_REVIEW
+		   SET DEL_YN = 'Y'
+		 WHERE RV_ID = #{_parameter}
+	</update> -->
+	
+	
+	<update id="deleteReviewViewResult" 
+			parameterType="string">
+		UPDATE PROJECT_REVIEW
+		   SET DEL_YN = 'Y'
+		 WHERE RV_ID = #{_parameter}
+	</update>
+	
+	<!-- 
+	<update id="updateOneReview" 
+			parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
+		UPDATE PROJECT_REVIEW
+		   SET RV_CNTNT = #{content}
+		     , MDF_DT = SYSDATE
+		 WHERE RV_ID = #{rvId}
+	</update>
+	 -->
 	
 	
 </mapper>
