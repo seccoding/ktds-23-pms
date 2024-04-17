@@ -30,6 +30,33 @@ public class MemoServiceImpl implements MemoService{
 		return memoListVO;
 	}
 
+	@Override
+	public MemoListVO getStorageMemoAllsearch() {
+		int sentMemoCount = this.memoDao.getStorageMemoAllCount();
+		
+		List<MemoVO> memoList = this.memoDao.getAllStorageMemo();
+		
+		MemoListVO memoListVO = new MemoListVO();
+		memoListVO.setMemoCnt(sentMemoCount);
+		memoListVO.setMemoList(memoList);
+		
+		return memoListVO;
+	}
+
+	@Override
+	public MemoListVO getReceiveMemoAllsearch() {
+		int sentMemoCount = this.memoDao.getReceiveMemoAllCount();
+		
+		List<MemoVO> memoList = this.memoDao.getAllReceiveMemo();
+		
+		MemoListVO memoListVO = new MemoListVO();
+		memoListVO.setMemoCnt(sentMemoCount);
+		memoListVO.setMemoList(memoList);
+		
+		return memoListVO;
+	}
+	
+	
 	@Transactional
 	@Override
 	public boolean writeNewMemo(MemoVO memoVO) {
@@ -52,6 +79,7 @@ public class MemoServiceImpl implements MemoService{
 		
 		return memoVO;
 	}
+
 	
 	
 }

@@ -41,7 +41,7 @@ public class MemoController {
 	@GetMapping("/memo/storage")
 	public String viewStorageMemoListPage(Model model) {
 		
-		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch();
 		
 		model.addAttribute("memoList", memoListVO );
 		
@@ -52,7 +52,7 @@ public class MemoController {
 	@GetMapping("/memo/receive")
 	public String viewReceiveMemoListPage(Model model) {
 		
-		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch();
 		
 		model.addAttribute("memoList", memoListVO );
 		
