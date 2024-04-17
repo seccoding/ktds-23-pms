@@ -254,6 +254,11 @@ function menuAnchorClickHandler(event, target) {
       .find("a[data-menu-id=" + menuId + "]")
       .addClass("active");
 
+    $(".sidebar")
+      .find(".dropdown-menu")
+      .find("a[data-menu-id=" + menuId + "]")
+      .focus();
+
     frameList
       .find("li[data-menu-id=" + menuId + "]")
       .find("iframe")
