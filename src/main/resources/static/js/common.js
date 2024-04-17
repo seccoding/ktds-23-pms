@@ -46,8 +46,7 @@ $().ready(function () {
     var menuObject = window.parent.findMenuObject(framePath);
 
     var activeFrameDataset = window.parent.getActiveFrameDataset();
-    console.log("menuObject", menuObject);
-    console.log("activeFrameDataset", activeFrameDataset);
+
     if (menuObject.role && menuObject.id && menuObject.url) {
       var menuId = activeFrameDataset.menuId;
 
@@ -56,16 +55,14 @@ $().ready(function () {
         .find("a[data-menu-id=" + menuId + "]")
         .data("menu-url");
 
-      console.log("url", url);
-      console.log("menuObject.url", menuObject.url);
-
       if (menuObject.url !== url) {
-        $(window.parent.document)
-          .find(".dropdown-menu")
-          .find("a[data-menu-id=" + menuId + "]")
-          .click();
-
-        return;
+        window.parent.menuAnchorClickHandler(
+          null,
+          $(window.parent.document)
+            .find(".dropdown-menu")
+            .find("a[data-menu-id=" + menuObject.id + "]")
+        );
+        //return;
       }
     }
 
@@ -175,14 +172,15 @@ function menuClickHandler(event) {
     );
 }
 
-function menuAnchorClickHandler() {
+function menuAnchorCli  ckHandler(event, target) {
+  var anchor = event ? $(this) : target;
   var frameList = $(".content").find(".frame-list");
   var menuTabList = $(".content").find(".menu-tab");
 
   $(".sidebar").find(".dropdown-menu").find("a").removeClass("active");
-  $(this).addClass("active");
+  anchor.addClass("active");
 
-  var menuId = $(this).data("menu-id");
+  var menuId = anchor.data("menu-id");
   var existsFrame =
     menuTabList.find("li[data-menu-id=" + menuId + "]").length > 0;
 
@@ -191,8 +189,8 @@ function menuAnchorClickHandler() {
     return;
   }
 
-  var menuName = $(this).text();
-  var menuUrl = $(this).data("menu-url");
+  var menuName = anchor.text();
+  var menuUrl = anchor.data("menu-url");
 
   var menuTabItem = $("<li></li>");
   menuTabItem.addClass("active-tab");
