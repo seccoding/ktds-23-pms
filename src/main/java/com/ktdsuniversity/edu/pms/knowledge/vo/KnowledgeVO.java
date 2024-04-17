@@ -22,7 +22,7 @@ public class KnowledgeVO {
 	// file - 난독화
 	private String fileName;
 	// file - 난독화X
-	private String originalFileName;
+	private String originFileName;
 	
 	
 //	클래스를 선언
@@ -106,11 +106,11 @@ public class KnowledgeVO {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public String getOriginalFileName() {
-		return originalFileName;
+	public String getOriginFileName() {
+		return originFileName;
 	}
-	public void setOriginalFileName(String originalFileName) {
-		this.originalFileName = originalFileName;
+	public void setOriginFileName(String originFileName) {
+		this.originFileName = originFileName;
 	}
 	public RequirementVO getRequirementVO() {
 		return requirementVO;

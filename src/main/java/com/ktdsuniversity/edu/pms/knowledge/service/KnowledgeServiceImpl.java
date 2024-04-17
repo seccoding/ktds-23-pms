@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.knowledge.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,8 @@ import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 
 @Service
 public class KnowledgeServiceImpl implements KnowledgeService {
+	
+	Logger logger = LoggerFactory.getLogger(KnowledgeServiceImpl.class);
 	
 	@Autowired
 	private KnowledgeDao knowledgeDao;
@@ -44,7 +48,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	 * @return 게시글 정보
 	 */
 	@Override
-	public KnowledgeVO getOneKnowledge(String knowledgeId, boolean isIncrease, boolean isRecIncrease) {	
+	public KnowledgeVO getOneKnowledge(String knowledgeId, boolean isIncrease) {	
 		
 		KnowledgeVO knowledgeVO = this.knowledgeDao.selectOneKnowledge(knowledgeId);
 		
@@ -59,10 +63,10 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 			int updatedCount = this.knowledgeDao.increaseViewCount(knowledgeId);
 		}
 		
-		// 추천을 눌렀다면 추천 1 증가
-		if (isRecIncrease) {
-			int updatedCount2 = this.knowledgeDao.increaseViewCount(knowledgeId);
-		}
+//		// 추천을 눌렀다면 추천 1 증가
+//		if (isRecIncrease) {
+//			int updatedCount2 = this.knowledgeDao.increaseViewCount(knowledgeId);
+//		}
 		
 		return knowledgeVO;
 	}
@@ -80,7 +84,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 				// 난독화 파일
 				knowledgeVO.setFileName(storedfile.getRealFileName());
 				// 사용자가 업로드한 파일
-				knowledgeVO.setOriginalFileName(storedfile.getFileName());
+				knowledgeVO.setOriginFileName(storedfile.getFileName());
 			}
 		}
 		
@@ -93,7 +97,6 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	@Override
 	public boolean updateOneKnowledge(KnowledgeVO knowledgeVO, MultipartFile file) {
 
-		
 		// 파일 업로드 확인
 		if(file != null && !file.isEmpty()) {
 			// 기존의 게시글 내용을 확인
