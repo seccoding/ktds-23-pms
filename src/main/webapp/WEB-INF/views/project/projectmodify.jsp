@@ -40,7 +40,7 @@
         }
 
         .datalist-custom {
-            margin-left: 48px;
+            margin-left: 49px;
             position: absolute;
             background-color: white;
             border: 1px solid #CCCCCC;
@@ -51,12 +51,10 @@
             max-height: 200px; /* 드롭다운의 최대 높이 조정 */
             width: 25%; /* 드롭다운의 폭을 입력 필드와 일치시킵니다. */
             z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 조정 */
-            padding: 2px 10px; /* 패딩을 줄입니다. */
         }
 
         .option-custom {
             background-color: white;
-            margin-bottom: 1px;
             cursor: pointer;
             border-bottom: 1px solid #ddd;
             padding: 8px 10px; /* 옵션의 패딩 조정 */
@@ -141,12 +139,13 @@
             <%-- 담당자 (PM) 선택 --%>
             <div>
                 <label for="hidden-pm-id">담당자 </label>
-                <input id="pm-search" autocomplete="off" placeholder="담당자 검색" class="input-custom" value="${pm.employeeVO.empName}">
-                <input id="hidden-pm-id" type="hidden" name="pmId" value="${pm.employeeVO.empId}"/>
+                <input id="pm-search" autocomplete="off" placeholder="담당자 검색" class="input-custom"
+                       value="${pm.employeeVO.empName}-${project.deptVO.deptName}">
+                <input id="hidden-pm-id" type="hidden" name="pmId" value="${pm.tmId}"/>
                 <div id="employee-list" class="datalist-custom">
                     <c:forEach items="${employee}" var="employee">
-                        <div class="option-custom" data-emp-id="${employee.empId}">${employee.empName}
-                            : ${employee.departmentVO.deptName}</div>
+                        <div class="option-custom"
+                             data-emp-id="${employee.empId}">${employee.empName}-${employee.departmentVO.deptName}</div>
                     </c:forEach>
                 </div>
             </div>
@@ -165,7 +164,7 @@
 
             <div>
                 <div>
-                    <button id="btn-modify" type="button">수정</button>
+                    <button id="btn-modify" type="button" value="${project.prjId}">수정</button>
                 </div>
             </div>
         </div>

@@ -7,20 +7,39 @@ $().ready(function () {
         }
     });
 
+    // 요구사항 체크박스
+    // 페이지 로드 시 change 이벤트를 수동으로 트리거하여 초기 상태를 적용
+    $('#requirement-check').on("change", function () {
+        // 체크 상태에 따라 하위 체크박스 활성화/비활성화
+        var isChecked = $(this).is(':checked');
+        $('#issue-check').prop('disabled', !isChecked);
+        $('#knowledge-check').prop('disabled', !isChecked);
+        $('#qna-check').prop('disabled', !isChecked);
+        if (!isChecked) {
+            // 상위 체크박스 해제 시 하위 체크박스들도 해제
+            $('#issue-check').prop('checked', false);
+            $('#knowledge-check').prop('checked', false);
+            $('#qna-check').prop('checked', false);
+        }
+    });
+
+    $('#requirement-check').trigger('change');
+
+    // 부서 값 히든 인풋 적용
     $("#dept-list").on("change", function () {
         var selectedDeptValue = $(this).val();
         $("#hidden-dept-id").val(selectedDeptValue);
     })
 
-    // 드롭다운을 숨깁니다.
+    // 담당자 부분
     $('#employee-list').hide();
 
-    // 인풋 필드에 포커스가 생기면 드롭다운을 보여줍니다.
+    // 인풋 필드에 포커스가 생기면 드롭다운을 보여줌
     $('#pm-search').on('focus', function () {
         $('#employee-list').show();
     });
 
-    // 인풋 필드에 텍스트를 입력하면 필터링합니다.
+    // 인풋 필드에 텍스트를 입력하면 필터링
     $('#pm-search').on('input', function () {
         var value = $(this).val().toLowerCase();
         $('#employee-list .option-custom').filter(function () {
@@ -28,7 +47,7 @@ $().ready(function () {
         });
     });
 
-    // 옵션 클릭 시 인풋 필드에 텍스트를 채우고, 숨겨진 필드에 empId를 저장합니다.
+    // 옵션 클릭 시 인풋 필드에 텍스트를 채우고, 숨겨진 필드에 empId를 저장
     $('#employee-list').on('click', '.option-custom', function () {
         var text = $(this).text();
         var empId = $(this).data('emp-id');
@@ -37,17 +56,20 @@ $().ready(function () {
         $('#employee-list').hide();
     });
 
-    // 인풋 필드 외부를 클릭하면 드롭다운을 숨깁니다.
+    // 인풋 필드 외부를 클릭하면 드롭다운을 숨김
     $(document).on('click', function (e) {
         if (!$(e.target).closest('#pm-search').length) {
             $('#employee-list').hide();
         }
     });
 
-    var params = new URLSearchParams(window.location.search);
-    var projectId = params.get("prjId");
+    // 수정
+    // var params = new URLSearchParams(window.location.search);
+    // var projectId = params.get("prjId");
 
-    $("#btn-create").on("click", function () {
+    var projectId = $("#btn-modify").val();
+
+    $("#btn-modify").on("click", function () {
         var reqYn = $("#requirement-check").is(":checked") ? "Y" : "N";
         var outYn = $("#output-check").is(":checked") ? "Y" : "N";
         var isYn = $("#issue-check").is(":checked") ? "Y" : "N";
@@ -96,20 +118,6 @@ $().ready(function () {
                     }
                 }
             });
-    });
-
-    $('#requirement-check').on("change", function () {
-        // 체크 상태에 따라 하위 체크박스 활성화/비활성화
-        var isChecked = $(this).is(':checked');
-        $('#issue-check').prop('disabled', !isChecked);
-        $('#knowledge-check').prop('disabled', !isChecked);
-        $('#qna-check').prop('disabled', !isChecked);
-        if (!isChecked) {
-            // 상위 체크박스 해제 시 하위 체크박스들도 해제
-            $('#issue-check').prop('checked', false);
-            $('#knowledge-check').prop('checked', false);
-            $('#qna-check').prop('checked', false);
-        }
     });
 
     // data-list Employee 기능 추가시 주석 해제

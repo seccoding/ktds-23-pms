@@ -48,6 +48,23 @@
         </collection>
     </resultMap>
 
+    <resultMap type="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO"
+               id="projectTeammateListMap"
+               autoMapping="true">
+        <id column="PRJ_TM_ID" property="prjTmId"/>
+        <association property="employeeVO"
+                     javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="EMP_ID" property="empId"/>
+            <result column="EMP_NAME" property="empName"/>
+            <result column="EMAIL" property="email"/>
+            <association property="departmentVO"
+                         javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+                <id column="DEPT_ID" property="deptId"/>
+                <result column="DEPT_NAME" property="deptName"/>
+            </association>
+        </association>
+    </resultMap>
+
     <select id="selectAllProject"
             resultMap="projectVOMap">
         <!--            resultMap="projectVOMap">-->
@@ -232,6 +249,7 @@
         INNER JOIN EMPLOYEE E
         ON PT.TM_ID = E.EMP_ID
         WHERE P.DEL_YN = 'N'
+        AND PT.DEL_YN = 'N'
     </select>
 
     <insert id="insertNewProject"
@@ -308,6 +326,7 @@
             parameterType="String">
         UPDATE PROJECT
         SET DEL_YN = 'Y',
+        /* 수정자 추가 */
         MDF_DT = SYSDATE
         WHERE PRJ_ID = #{_parameter}
     </update>
@@ -324,15 +343,25 @@
     </select>
 
     <select id="findAllProjectTeammateByProjectId"
-            parameterType="String">
-        SELECT PRJ_TM_ID,
-        PRJ_ID ,
-        TM_ID,
-        "ROLE",
-        DEL_YN
-        FROM PROJECT_TEAMMATE
-        WHERE DEL_YN = 'N'
-        AND PRJ_ID = #{_parameter}
+            parameterType="String"
+            resultMap="projectTeammateListMap">
+        SELECT PT.PRJ_TM_ID,
+        PT.PRJ_ID,
+        PT.TM_ID,
+        PT."ROLE",
+        PT.DEL_YN,
+        E.EMP_ID,
+        E.EMP_NAME,
+        E.EMAIL,
+        D.DEPT_ID,
+        D.DEPT_NAME
+        FROM PROJECT_TEAMMATE PT
+        INNER JOIN EMPLOYEE E
+        ON PT.TM_ID = E.EMP_ID
+        INNER JOIN DEPARTMENT D
+        ON E.DEPT_ID = D.DEPT_ID
+        WHERE PT.DEL_YN = 'N'
+        AND PT.PRJ_ID = #{_parameter}
         ORDER BY "ROLE" DESC
     </select>
 
@@ -373,4 +402,72 @@
         AND I.DEL_YN = 'N'
         GROUP BY C.CMCD_NAME
     </select>
+
+    <update id="updateOneProject"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO">
+        UPDATE PROJECT
+        SET PRJ_NAME=#{prjName},
+        CLNT_INFO=#{clntInfo},
+        DEPT_ID=#{deptId},
+        PRJ_STS=#{prjSts},
+        STRT_DT=#{strtDt},
+        END_DT=#{endDt},
+        REQ_YN=#{reqYn},
+        IS_YN=#{isYn},
+        KNL_YN=#{knlYn},
+        QA_YN=#{qaYn},
+        OUT_YN=#{outYn},
+        /** 수정자 작성해야함 **/
+        MDF_DT=SYSDATE
+        WHERE PRJ_ID=#{prjId}
+    </update>
+
+    <update id="deletePm"
+            parameterType="String">
+        UPDATE PROJECT_TEAMMATE
+        SET DEL_YN = 'Y'
+        WHERE PRJ_ID=#{_parameter}
+        AND "ROLE"='PM'
+        AND DEL_YN = 'N'
+    </update>
+
+    <select id="findPmByProjectId"
+            parameterType="String"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        SELECT PRJ_TM_ID,
+        PRJ_ID,
+        TM_ID,
+        "ROLE",
+        DEL_YN,
+        RV_YN,
+        SRV_YN
+        FROM PROJECT_TEAMMATE
+        WHERE PRJ_ID = #{_parameter}
+        AND DEL_YN = 'N'
+    </select>
+
+    <select id="selectDeletedPm"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO">
+        SELECT PRJ_TM_ID,
+        PRJ_ID,
+        TM_ID,
+        "ROLE",
+        DEL_YN,
+        RV_YN,
+        SRV_YN
+        FROM PROJECT_TEAMMATE
+        WHERE PRJ_ID = #{prjId}
+        AND TM_ID = #{pmId}
+        AND ROLE = 'PM'
+    </select>
+
+    <update id="restoreDeletedPm"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO">
+        UPDATE PROJECT_TEAMMATE
+        SET DEL_YN = 'N'
+        WHERE PRJ_ID = #{prjId}
+        AND TM_ID = #{pmId}
+        AND ROLE = 'PM'
+    </update>
 </mapper>
