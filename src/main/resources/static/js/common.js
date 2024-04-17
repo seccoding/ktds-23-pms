@@ -38,8 +38,53 @@ window.onload = function () {
   });
 };
 
+/*
+function loadDataList(dataListId) {
+  if (dataListId === "employee-list") {
+    // 사원데이터 불러오기, ajax
+
+
+    // 사원데이터 반환하기
+
+  }
+}
+
+ */
+
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+  /* 검색기능
+  $("input[data-list]")
+      .on("click", function() {
+
+        $("div[data-id="+$(this).attr("id")+"]").remove();
+
+        var dataListDom = $("<div>TestDiv</div>");
+        dataListDom.attr("data-id", $(this).attr("id"))
+
+        var dataListId = $(this).data("list");
+        var dataList = loadDataList(dataListId);
+        dataList.forEach(function(data, i) {
+
+        })
+
+
+
+
+        var {top, left} = $(this).offset();
+        top += 20;
+
+        dataListDom.css({
+          top, left, position: "absolute"
+        })
+
+
+
+        $("body").append(dataListDom);
+      })
+      .on("keyup", function() {});
+  */
+
   $(".menu-tab-prev").on("click", function () {
     var menuTabList = $(".content").find(".menu-tab");
     var scrollLeft = menuTabList.scrollLeft();

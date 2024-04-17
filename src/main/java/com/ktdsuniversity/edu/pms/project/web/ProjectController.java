@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -43,8 +45,11 @@ public class ProjectController {
     @Autowired
     private CommonCodeService commonCodeService;
 
-//    @Autowired
-//    private EmployeeService employeeService;
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("/project")
     public String redirectToProjectSearchPage() {
@@ -89,7 +94,7 @@ public class ProjectController {
 
         // PM 뽑기
         Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
-                .filter(projectTeammateVO -> "PM".equals(projectTeammateVO.getRole()))
+                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
                 .findFirst();
 
         if (pmOptional.isPresent()) {
@@ -125,10 +130,12 @@ public class ProjectController {
 
     @GetMapping("/project/write")
     public String viewProjectWritePage(Model model) {
+        // 검증로직 추가 필요
+        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
+        List<DepartmentVO> departmentList = departmentService.getAllDepartment().getDepartmentList();
 
-//        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
-//
-//        model.addAttribute("employee", employeeList);
+        model.addAttribute("employee", employeeList);
+        model.addAttribute("department", departmentList);
 
         return "project/projectwrite";
     }
@@ -137,7 +144,6 @@ public class ProjectController {
     // MemberVO
     // memberVO
     // form action 추가 필요
-
     @ResponseBody
     @PostMapping("/ajax/project/write")
     public AjaxResponse writeProject(CreateProjectVO createProjectVO) {
@@ -149,8 +155,9 @@ public class ProjectController {
 
         validator.add("prjName", Type.NOT_EMPTY, "프로젝트명을 입력해주세요.")
                 .add("clntInfo", Type.NOT_EMPTY, "고객사를 입력해주세요.")
-                .add("deptId", Type.NOT_EMPTY, "부서를 선택해주세요.")
+                .add("deptId", Type.NOT_EMPTY, "담당부서를 선택해주세요.")
                 .add("strtDt", Type.NOT_EMPTY, "시작일을 입력해주세요.")
+                .add("pmId", Type.NOT_EMPTY, "담당자를 입력해주세요.")
                 .add("endDt", Type.NOT_EMPTY, "종료일을 입력해주세요.")
                 .add("strtDt", Type.DATE, createProjectVO.getEndDt(), "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요")
                 .start();
@@ -182,30 +189,60 @@ public class ProjectController {
 
         String prjId = createProjectVO.getPrjId();
 
-        return new AjaxResponse().append("next", "/project/view?projectId=" + prjId);
+        return new AjaxResponse().append("next", "/project/view?prjId=" + prjId);
     }
 
     /**
-     * TODO
+     * NOW
      */
-    @GetMapping("/project/modify/{projectId}")
-    public String viewProjectModifyPage(@PathVariable String projectId,
+    @GetMapping("/project/modify/{prjId}")
+    public String viewProjectModifyPage(@PathVariable String prjId,
                                         Model model) {
 
-        ProjectVO projectVO = projectService.getOneProject(projectId);
-
+        ProjectVO projectVO = projectService.getOneProject(prjId);
+        List<DepartmentVO> departmentList = departmentService.getAllDepartment().getDepartmentList();
+        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
+        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
         // 작성자 또는 PM인지를 검증하는 로직 작성 필요
 
-        model.addAttribute("projectVO", projectVO);
+        // PM 뽑기
+        Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
+                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
+                .findFirst();
+
+        if (pmOptional.isPresent()) {
+            ProjectTeammateVO pm = pmOptional.get();
+            model.addAttribute("project", projectVO);
+            model.addAttribute("pm", pm);
+            model.addAttribute("department", departmentList);
+            model.addAttribute("employee", employeeList);
+            model.addAttribute("commonCodeList", projectCommonCodeList);
+        } else {
+            throw new PageNotFoundException();
+        }
 
         return "project/projectmodify";
     }
 
     // 수정자 추가를 위해 SessionAttribute 추가 필요
-    @PostMapping("/project/modify/{projectId}")
-    public String modifyProject(@PathVariable String projectId) {
+    @ResponseBody
+    @PostMapping("/ajax/project/modify/{prjId}")
+    public AjaxResponse modifyProject(@PathVariable String prjId, CreateProjectVO modifyProjectVO) {
         // 1. 프로젝트를 가져와서 있는지 확인
-        ProjectVO originalProjectVO = projectService.getOneProject(projectId);
+        ProjectVO originalProjectVO = projectService.getOneProject(prjId);
+
+        Validator<CreateProjectVO> validator = new Validator<>(modifyProjectVO);
+
+        validator.add("prjName", Type.NOT_EMPTY, "프로젝트명을 입력해주세요.")
+                .add("clntInfo", Type.NOT_EMPTY, "고객사를 입력해주세요.")
+                .add("deptId", Type.NOT_EMPTY, "담당부서를 선택해주세요.")
+                .add("strtDt", Type.NOT_EMPTY, "시작일을 선택해주세요.")
+                .add("prjSts", Type.NOT_EMPTY, "상태코드를 선택해주세요.")
+                .add("pmId", Type.NOT_EMPTY, "담당자를 선택해주세요.")
+                .add("endDt", Type.NOT_EMPTY, "종료일을 선택해주세요.")
+                .add("strtDt", Type.DATE, modifyProjectVO.getEndDt(), "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요")
+                .start();
+
 
         // 2. 세션으로 관리자 판별 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw
         // new
@@ -213,9 +250,14 @@ public class ProjectController {
 
         // 3. 데이터 수정 여부 확인
 
-        return "redirect:/project/view?projectId=" + projectId;
+
+        return new AjaxResponse().append("next", "/project/view?prjId=" + prjId);
     }
 
+
+    /**
+     * TODO
+     */
     // 수정자 추가를 위해 SessionAttribute 추가 필요,
     // 수정자 추가 시, Mapper 에도 컬럼 추가 필요 Parameter 도 Id에서 VO로 변경 필요
     @GetMapping("/project/delete/{projectId}")

@@ -186,8 +186,8 @@
         , P.CLNT_INFO
         , P.DEPT_ID
         , P.PRJ_STS
-        , P.STRT_DT
-        , P.END_DT
+        , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') STRT_DT
+        , TO_CHAR(P.END_DT, 'YYYY-MM-DD') END_DT
         , P.DEL_YN
         , P.REQ_YN
         , P.IS_YN

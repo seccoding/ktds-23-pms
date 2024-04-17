@@ -31,13 +31,18 @@
             display: inline-block;
             justify-content: center;
         }
+
+        .btn-group {
+            margin: 15px;
+            float: right;
+        }
     </style>
 </head>
 <body>
 <div>
 
     <%--  상단 탭  --%>
-    <%--  기본정보, 구성원, 산출물  --%>
+    <%-- 기본정보, 구성원, 산출물, 요구사항 id를 js에서 QueryParam을 뽑아서 Control 해야할 듯 --%>
     <div class="tabs">
         <ul>
             <li>
@@ -124,7 +129,13 @@
             </tr>
         </table>
     </div>
-</div>
+
+    <div class="btn-group">
+        <div>
+            <button id="btn-modify" type="button" onclick="location.href='/project/modify/${project.prjId}'">수정</button>
+            <button id="btn-delete" type="button">삭제</button>
+        </div>
+    </div>
 </div>
 </body>
 </html>
