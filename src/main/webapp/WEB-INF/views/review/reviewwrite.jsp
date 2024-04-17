@@ -24,10 +24,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <h1>후기 작성</h1>
       <form action="/review/write" method="post">
         <div class="grid">
-          <input type="hidden" id="rvId" name="rvId" value="RV_20240412_000001" />
+          <input type="hidden" id="prjId" name="prjId" value="${project.prjId}" />
   
           <label for="prjId">프로젝트명</label>
-          <input type="text" id="prjId" name="prjId" value="PRJ-240409-000012" />
+          <input type="text" id="prjName" name="prjName" value="${project.prjName}"/>
   
           <!-- <label for="crtrId">작성인</label> -->
           <input type="hidden" id="crtrId" name="crtrId" value="0005020" />

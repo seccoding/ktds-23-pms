@@ -52,6 +52,14 @@ public interface ReviewService {
 	 * @param id 삭제할 후기의 번호
 	 * @return 후기 삭제 성공 여부
 	 */
-	public boolean deleteOneReview(String rvId, String email);
+//	public boolean deleteOneReview(String rvId, String email);
+
+
+	/**
+	 * 후기 삭제
+	 * @param id 삭제하는 후기 id
+	 * @return 후기삭제성공여부
+	 */
+	public boolean reviewViewResultDelete(String id);
 	
 }

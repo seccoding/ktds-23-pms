@@ -48,9 +48,15 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().update(ReviewDao.NAME_SPACE + ".updateOneReview", reviewVO);
 	}
 
+	/*
+	 * @Override public int deleteOneReview(String rvId) { return
+	 * getSqlSession().update(ReviewDao.NAME_SPACE + ".deleteOneReview", rvId); }
+	 */
+
 	@Override
-	public int deleteOneReview(String rvId) {
-		return getSqlSession().update(ReviewDao.NAME_SPACE + ".deleteOneReview", rvId);
+	public int deleteReviewViewResult(String id) {
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".deleteReviewViewResult", id);
+
 	}
 
 	

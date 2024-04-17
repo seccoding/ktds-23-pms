@@ -60,6 +60,31 @@
 			, 'N')
 	</insert>
 
+	<!-- <insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
+		<selectKey resultType="string" keyProperty="rvId" order="BEFORE">
+	        SELECT (('RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))) FROM DUAL;       
+	    </selectKey> 
+		INSERT INTO PROJECT_REVIEW
+			 (RV_ID
+			, RV_CNTNT
+			, PRJ_ID
+			, CRT_DT
+			, CRTR_ID
+			, MDF_DT
+			, MDFR_ID
+			, DEL_YN
+			)
+		VALUES
+		 	 (#{rvId}
+			, #{rvCntnt}
+			, #{prjId}
+			, SYSDATE
+			, #{crtrId}
+			, NULL
+			, NULL
+			, 'N')
+	</insert> -->
+
 	<select id="selectAllReview" resultMap="ReviewVOMap">
 	SELECT DISTINCT sq.PRJ_ID
           , p.PRJ_NAME
@@ -84,9 +109,18 @@
 	  FROM PROJECT_REVIEW pr
 	  JOIN PROJECT p
 	    ON p.PRJ_ID = pr.PRJ_ID
+	 WHERE pr.DEL_YN = 'N'
 	</select>
 
-	<update id="deleteOneReview" 
+	<!-- <update id="deleteOneReview" 
+			parameterType="string">
+		UPDATE PROJECT_REVIEW
+		   SET DEL_YN = 'Y'
+		 WHERE RV_ID = #{_parameter}
+	</update> -->
+	
+	
+	<update id="deleteReviewViewResult" 
 			parameterType="string">
 		UPDATE PROJECT_REVIEW
 		   SET DEL_YN = 'Y'

@@ -34,7 +34,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <c:when test="${not empty reviewlist.reviewList}">
               <c:forEach items="${reviewlist.reviewList}" var="review">
                 <tr>
-                  <td>${review.projectVO.prjName}</td>
+                  <td>
+                    <a href="/review/prjId/${review.projectVO.prjId}/write"
+                      >${review.projectVO.prjName}</a
+                    >
+                  </td>
                   <td>${review.projectVO.clntInfo}</td>
                   <td>${review.projectVO.deptId}</td>
                   <td>${review.projectVO.prjSts}</td>
@@ -49,11 +53,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               </c:forEach>
             </c:when>
             <c:otherwise>
-              <tr>
-                <td colspan="7">
-                  <a href="/review/write"> 후기작성~ </a>
-                </td>
-              </tr>
+              <!-- <tr>
+                  <td colspan="1">
+                    <a href="/review/write"> 후기작성~ </a>
+                  </td>
+                </tr> -->
             </c:otherwise>
           </c:choose>
         </tbody>

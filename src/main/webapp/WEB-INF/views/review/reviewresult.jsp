@@ -19,6 +19,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
   <body>
     <jsp:include page="../layout/layout.jsp" />
+    <!-- <dialog></dialog> -->
     <div class="main">
       <div class="grid">
         <table class="table">
@@ -29,19 +30,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </colgroup>
           <thead>
             <tr>
-              <th>프로젝트 Id</th>
+              <th>리뷰 Id</th>
               <th>후기 내용</th>
               <th>삭제</th>
             </tr>
           </thead>
           <tbody>
             <c:forEach items="${reviewList.reviewList}" var="review">
-              <tr>
+              <tr id="${review.rvId}">
                 <td>${review.rvId}</td>
                 <td class="center-align">${review.rvCntnt}</td>
                 <td class="btn-group">
                   <div class="right-align">
-                    <a href="/review/delete/${review.rvId}">삭제</a>
+                    <%-- <a href="/review/delete/${review.rvId}">삭제</a> --%>
+                    <a href="#" class="delete-button">삭제</a>
                   </div>
                 </td>
               </tr>
@@ -63,4 +65,5 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
     </div>
   </body>
+  <script type="text/javascript" src="/js/review/reviewresult.js"></script>
 </html>

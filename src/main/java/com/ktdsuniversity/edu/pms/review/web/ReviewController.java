@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
@@ -14,9 +18,19 @@ import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 @Controller
 public class ReviewController {
 
+	private Logger logger = LoggerFactory.getLogger(ReviewController.class);
+
 	@Autowired
 	private ReviewService reviewService;
 	
+	@Autowired
+	private ProjectService projectService;
+	
+	/*
+	 * [프로젝트명, 고객사, 수행부소, 상태, 시작일, 종료일, (후기결과보기)] 표로 보여주는 페이지
+	 * - 프로젝트명 선택시 -> 후기작성 페이지로 이동(/review/write)
+	 * - 후기결과보기 선택시 -> 해당 프로젝트의 후기결과 목록으로 이동(/review/viewwresult)
+	 */
 	@GetMapping("/review")
 	public String viewReviewListPage(Model model) {
 		ReviewListVO reviewListVO = reviewService.getAllReview();
@@ -24,20 +38,29 @@ public class ReviewController {
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
 	}
 	
-	@GetMapping("/review/write")
-	public String viewReviewWritePage() {
+	/*
+	 * 후기작성을 사용자에게 보여주는 페이지
+	 * - id값으로 해당 후기의 흐로젝트명을 가져와서 후기작성페이지에 바로 노출되도록 하기위함
+	 */
+	@GetMapping("/review/prjId/{id}/write")
+	public String viewReviewWritePage(@PathVariable String id, Model model) {
+		ProjectVO projectVO = projectService.getOneProject(id);
+		model.addAttribute("project", projectVO);
 		return "review/reviewwrite"; // reviewList.jsp 파일 이름
 	}
+	
+	/*
+	 * 사용자가 후기를 작성하는 페이지
+	 * - 후기 작성 후 '저장' 버튼을 누르면 db로 전송되고, 
+	 *   '저장'버튼을 누른 이후 후기는 수정할 수 없음
+	 */
 	@PostMapping("/review/write")
 	public String ReviewWritePage(Model model, ReviewVO reviewVO) {
-		
 		this.reviewService.insertNewReview(reviewVO);
-		model.addAttribute("reviewVO", reviewVO);
-		
+//		logger.debug(">>>>>>>>> {}", reviewVO);
 		return "redirect:/review"; 
 	}
-	
-	
+		
 	
 	@GetMapping("/review/viewresult")
 	public String viewReviewCntnt(Model model) {
@@ -60,16 +83,16 @@ public class ReviewController {
 //	}
 	
 	
-	@GetMapping("/board/delete/{id}")
-	public String deleteOneReview(@PathVariable String rvId, String email) {
-		
-		ReviewVO originalBoardVO = this.reviewService.getOneReview(rvId, false);
-		//삭제 요청
-		boolean isDeletedSuccess = this.reviewService.deleteOneReview(rvId, email);
-		//게시글 목록으로 이동
-		return "redirect:/review/viewresult";
-		
-	}
+	/*
+	 * @GetMapping("/board/delete/{id}") public String deleteOneReview(@PathVariable
+	 * String rvId, String email) {
+	 * 
+	 * ReviewVO originalBoardVO = this.reviewService.getOneReview(rvId, false); //삭제
+	 * 요청 boolean isDeletedSuccess = this.reviewService.deleteOneReview(rvId,
+	 * email); //게시글 목록으로 이동 return "redirect:/review/viewresult";
+	 * 
+	 * }
+	 */
 	
 //	@GetMapping("/review/delete")
 //	public String viewDeletePage() {
@@ -86,9 +109,6 @@ public class ReviewController {
 	
 	
 
-	
-	
-	
 	
 	
 //	@PostMapping("ajax/review/modify/{reviewId}")
