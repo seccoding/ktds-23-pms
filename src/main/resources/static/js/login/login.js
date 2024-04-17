@@ -16,6 +16,7 @@ $().ready(function () {
         var next = response.data.next;
 
         if (errors) {
+
           // 사번 + 비번 둘다 입력되지 않을때
           if (!$("#empId").val() && !$("#pwd").val()) {
             alert(errors.empId[0] + "\n" + errors.pwd[0]);

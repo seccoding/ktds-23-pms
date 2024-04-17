@@ -1,9 +1,9 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 
 public class EmployeeVO {
-
 
     private String empId;
     private String empName;
@@ -32,6 +32,17 @@ public class EmployeeVO {
     private String lgnYn;
     private String fileName;
     private DepartmentVO departmentVO;
+
+    private LoginLogVO loginLogVO;
+
+    public LoginLogVO getLoginLogVO() {
+        return loginLogVO;
+    }
+
+    public void setLoginLogVO(LoginLogVO loginLogVO) {
+        this.loginLogVO = loginLogVO;
+    }
+
 	public DepartmentVO getDepartmentVO() {
 		return departmentVO;
 	}
@@ -194,4 +205,5 @@ public class EmployeeVO {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+
 }
