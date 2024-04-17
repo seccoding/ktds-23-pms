@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.login.service;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
+import java.util.List;
+
 public interface LoginLogService {
     /**
      * 로그인 메서드
@@ -14,10 +16,15 @@ public interface LoginLogService {
 
 	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO);
 
-	
 
-	
+    /**
+     * 로그인 시 로그인 기록 DB 저장
+     * @param employee 로그인 되어 있는 사원정보를 갖고 있는 객체
+     * @return
+     */
+    public void updateLoginLog(EmployeeVO employee);
 
-	
+    public EmployeeVO updateEmpLog(EmployeeVO employee);
 
+    public void updateEmpLogout(EmployeeVO employee);
 }

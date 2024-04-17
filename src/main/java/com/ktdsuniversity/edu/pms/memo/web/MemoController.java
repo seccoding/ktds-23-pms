@@ -1,19 +1,24 @@
 package com.ktdsuniversity.edu.pms.memo.web;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.memo.service.MemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -41,7 +46,7 @@ public class MemoController {
 	@GetMapping("/memo/storage")
 	public String viewStorageMemoListPage(Model model) {
 		
-		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch();
 		
 		model.addAttribute("memoList", memoListVO );
 		
@@ -52,7 +57,7 @@ public class MemoController {
 	@GetMapping("/memo/receive")
 	public String viewReceiveMemoListPage(Model model) {
 		
-		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch();
 		
 		model.addAttribute("memoList", memoListVO );
 		
@@ -81,7 +86,7 @@ public class MemoController {
 			logger.info("쪽지 쓰기 실패!");			
 		}
 
-		return "redirect:/memo/memosent";
+		return "redirect:/memo/sent";
 	}
 	
 	
@@ -94,5 +99,33 @@ public class MemoController {
 		return "memo/memoview";
 	}
 	
+	@GetMapping("/memo/delete/{id}")
+	public String doDeleteBoard(@PathVariable int id
+			,HttpServletRequest request) {
+		
+		boolean isDeletedSuccess = this.memoService.deleteOneMemo(id);
+		
+		if(isDeletedSuccess) {
+			logger.info("게시글 삭제 완료.");
+		}
+		else {
+			logger.info("게시글 삭제 실패.");
+		}
+		
+		String previousPageUrl = request.getHeader("Referer");
+		
+		return "redirect:" + previousPageUrl;
+	}
+	
+//	@ResponseBody
+//	@PostMapping("/ajax/memo/delete/massive")
+//	public AjaxResponse doDeleteMassive(@RequestParam("deleteItems[]") List<Integer> deleteItems
+//										/*, @SessionAttribute("_LOGIN_USER_") MemberVO memberVO */) {
+//					
+////		boolean deleteResult = this.memoService.deleteManyBoard(deleteItems);
+//		
+//		return new AjaxResponse().append("result", deleteResult);
+//	}
+//	
 	
 }

@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.issue.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
 import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
@@ -26,16 +28,17 @@ public interface IssueService {
 	/**
 	 * 새로운 이슈를 등록한다
 	 * @param issueVO 사용자가 입력한 이슈의 내용
+	 * @param file 
 	 * @return 이슈 등록 성공 여부
 	 */
-	public boolean createNewIssue(IssueVO issueVO);
+	public boolean createNewIssue(IssueVO issueVO, MultipartFile file);
 	
 	/**
 	 * 전달받은 이슈 정보로 이슈를 수정한다
 	 * @param issueVO 수정할 이슈의 정보
 	 * @return 수정 성공 여부
 	 */
-	public boolean updateOneIssue(IssueVO issueVO);
+	public boolean updateOneIssue(IssueVO issueVO, MultipartFile file);
 	
 	/**
 	 * 전달받은 이슈의 번호로 이슈를 삭제한다

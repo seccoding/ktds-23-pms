@@ -31,8 +31,8 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 	}
 
 	@Override
-	public int createNewDepartment(DepartmentVO deparmentVO) {
-		return getSqlSession().insert(DepartmentDao.NAME_SPACE + ".createNewDepartment");
+	public int createNewDepartment(DepartmentVO departmentVO) {
+		return getSqlSession().insert(DepartmentDao.NAME_SPACE + ".createNewDepartment", departmentVO);
 	}
 
 	@Override
@@ -44,5 +44,17 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 	public int updateOneDepartment(DepartmentVO departmentVO) {
 		return getSqlSession().update(DepartmentDao.NAME_SPACE + ".updateOneDepartment", departmentVO);
 	}
+
+	@Override
+	public List<DepartmentVO> getOnlyDepartment() {
+		return getSqlSession().selectList(DepartmentDao.NAME_SPACE + ".getOnlyDepartment");
+	}
+
+	@Override
+	public DepartmentVO getOneDepartment(String departmentId) {
+		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE + ".getOneDepartment", departmentId);
+	}
+
+
 
 }

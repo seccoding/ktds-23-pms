@@ -30,7 +30,7 @@
         ></textarea>
         <div class="btn-group">
           <div class="right-align">
-            <input type="submit" value="보내기" />
+            <input type="submit" value="보내기"/>
           </div>
         </div>
       </div>

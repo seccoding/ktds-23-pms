@@ -98,6 +98,12 @@
 	</select>
 	
 	<insert id="insertNewSurveyQuestion" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+	
+		<selectKey keyProperty="srvId" order="BEFORE" resultType="string">
+			SELECT 'SRV_QST_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PK.NEXTVAL, 6, '0')
+			  FROM DUAL
+		</selectKey>
+	
 		INSERT INTO SURVEY_QUESTION
 		 (SRV_ID
 		, PRJ_ID
@@ -111,7 +117,7 @@
 		, TYPE_YN
 		, SRV_STS)
 		VALUES
-		 (('SRV_QST_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PK.NEXTVAL, 6, '0'))
+		 (#{srvId}
 		, #{prjId}
 		, ' '
 		, #{crtrId}
@@ -141,11 +147,9 @@
 		   AND SRV_ID = #{_parameter}
 	</select>
 	
-	<update id="modifyOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+	<update id="insertSurveyBody" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
 		UPDATE SURVEY_QUESTION
 		   SET SRV_QST = #{srvQst}
-		     , MDFR_ID = #{mdfrId}
-		     , MDF_DT = SYSDATE
 		     , TYPE_YN = #{typeYn}
 		 WHERE SRV_ID = #{srvId}
 	</update>

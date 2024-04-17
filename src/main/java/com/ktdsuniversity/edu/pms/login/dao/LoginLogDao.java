@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.login.dao;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
+import java.util.List;
+
 public interface LoginLogDao {
     public String LOGIN_SPACE = "com.ktdsuniversity.edu.pms.login.dao.LoginLogDao";
 
@@ -16,8 +18,10 @@ public interface LoginLogDao {
 
 	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO);
 
-	
 
-	
+    public void updateLoginLog(EmployeeVO employee);
 
+    public EmployeeVO updateEmpLog(EmployeeVO employee);
+
+    public void updateEmpLogout(EmployeeVO employee);
 }

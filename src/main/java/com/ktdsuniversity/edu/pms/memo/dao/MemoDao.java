@@ -11,11 +11,20 @@ public interface MemoDao {
 	public int getSentMemoAllCount();
 
 	public List<MemoVO> getAllSentMemo();
+	
+	public int getStorageMemoAllCount();
 
+	public List<MemoVO> getAllStorageMemo();
+
+	public int getReceiveMemoAllCount();
+
+	public List<MemoVO> getAllReceiveMemo();
+	
 	public int writeNewMemo(MemoVO memoVO);
 
 	public MemoVO selectOneMemo(String memoId);
 
 	public int changeViewStatus(String memoId);
+
 	
 }

@@ -11,4 +11,10 @@ public interface MemoService {
 
 	public MemoVO getOneMemo(String memoId);
 
+	MemoListVO getStorageMemoAllsearch();
+
+	MemoListVO getReceiveMemoAllsearch();
+
+	boolean deleteOneMemo(int id);
+
 }

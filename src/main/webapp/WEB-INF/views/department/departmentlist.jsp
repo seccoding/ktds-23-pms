@@ -7,15 +7,29 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <title>부서/팀 조회</title>
     <jsp:include page="../commonheader.jsp" />
     <style>
-      .create-modal {
+      .create-modal,
+      .create-modal-team {
         position: absolute;
 
         justify-content: center;
-        top: 40%;
+        top: 30%;
         left: 30%;
 
         width: 40%;
-        height: 40%;
+        height: 45%;
+        padding: 2rem;
+
+        background-color: rgba(F, F, F, 0.8);
+      }
+      .modify-modal-dept {
+        position: absolute;
+
+        justify-content: center;
+        top: 20%;
+        left: 30%;
+
+        width: 40%;
+        height: 55%;
         padding: 2rem;
 
         background-color: rgba(F, F, F, 0.8);
@@ -28,6 +42,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         display: grid;
         grid-template-columns: 0.5fr 1fr;
         grid-template-rows: 1fr 1fr;
+        margin-bottom: 6rem;
+      }
+      .grid-team {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
         margin-bottom: 6rem;
       }
       .flex {
@@ -46,10 +66,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         margin-right: 2rem;
       }
       .grid > input,
-      div {
+      div,
+      p {
         align-items: center;
-        text-align: center;
-        margin-top: 1rem;
+        text-align: left;
+        margin-top: 2rem;
       }
       .table-div {
         padding: 1rem;
@@ -71,15 +92,80 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <h4>부서 등록</h4>
       <div class="grid">
         <div class="grid-item">부서명</div>
-        <input type="text" class="grid-item" />
-        <div class="grid-item">부서장</div>
-        <input type="text" class="grid-item" />
+        <input id="depratment-name" type="text" class="grid-item" />
+        <div class="grid-item">부서장ID</div>
+        <input id="depratment-leader" type="text" class="grid-item" />
       </div>
       <div class="flex">
-        <input class="button" type="button" value="취소" />
-        <input class="button" type="submit" value="등록" />
+        <input
+          class="button"
+          id="dep-cancel-button"
+          type="button"
+          value="취소"
+        />
+        <input class="button dep-submit-button" type="button" value="등록" />
       </div>
     </dialog>
+
+    <dialog class="create-modal-team">
+      <h4>팀 등록</h4>
+      <div class="grid">
+        <div class="grid-item">팀명</div>
+        <input id="team-name" type="text" class="grid-item" />
+        <div class="grid-item">팀장ID</div>
+        <input id="team-leader" type="text" class="grid-item" />
+        <div class="grid-item">담당부서</div>
+        <input id="team-department" type="text" class="grid-item" />
+      </div>
+      <div class="flex">
+        <input
+          class="button"
+          id="team-cancel-button"
+          type="button"
+          value="취소"
+        />
+        <input class="button team-submit-button" type="button" value="등록" />
+      </div>
+    </dialog>
+
+    <dialog class="modify-modal-dept">
+      <select id="modify-select-box">
+        <c:forEach
+          items="${onlyDepartmentList.departmentList}"
+          var="department"
+        >
+          <option class="modify-data-id" value="${department.deptId}">
+            ${department.deptName}
+          </option>
+        </c:forEach>
+      </select>
+      <div class="grid">
+        <p>부서번호</p>
+        <p id="mod-dept-id"></p>
+        <div class="grid-item">부서명</div>
+        <input id="department-name-mod" type="text" class="grid-item" />
+        <p>부서생성날짜</p>
+        <p id="mod-dept-crd-dt"></p>
+        <div class="grid-item">부서장ID</div>
+        <input id="department-leader-mod" type="text" class="grid-item" />
+      </div>
+
+      <div class="flex">
+        <input
+          class="button"
+          id="dep-modify-cancel-button"
+          type="button"
+          value="취소"
+        />
+        <input
+          class="button"
+          id="dep-modify-submit-button"
+          type="button"
+          value="수정"
+        />
+      </div>
+    </dialog>
+
     <h1>부서/팀 조회</h1>
     <div class="table-div">
       <table class="table">
@@ -114,5 +200,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </table>
     </div>
     <input type="button" class="department-create button" value="부서 등록" />
+    <input type="button" class="team-create button" value="팀 등록" />
+    <input type="button" class="department-modify button" value="부서 변경" />
   </body>
 </html>

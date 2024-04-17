@@ -473,6 +473,38 @@ select {
   color: var(--main-color);
 }
 
+.location-tree {
+  margin: 0;
+  height: 2rem;
+  align-content: center;
+  padding: 0 0.5rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+}
+
+.location-tree li {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.location-tree li::after {
+  content: ">";
+  margin: 0 0.5rem;
+}
+
+.location-tree li:last-child::after {
+  content: "";
+  margin: 0;
+}
+
+.location-tree li:hover {
+  color: var(--main-color);
+}
+
+.location-tree li:nth-child(1) {
+  color: #000;
+  cursor: default !important;
+}
 /**  메뉴 탭  **/
 .menu-tab-wrapper {
   display: flex;
@@ -495,7 +527,7 @@ iframe {
   /* width: 113.75rem;
   height: 54.375rem; */
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 80px - 2rem - 2rem);
   padding: 0.5rem;
   display: block;
   border: none;
@@ -512,13 +544,25 @@ iframe {
   flex-grow: 1;
   overflow: hidden;
   white-space: nowrap;
+  height: 2rem;
+  font-size: 0.825rem;
+  border-bottom: 1px solid #000;
 }
 
 .menu-tab li {
   display: inline-block;
-  margin-left: 0.5rem;
   cursor: pointer;
-  background-color: var(--box-sub-bg);
+  height: 100%;
+  padding: 0.3rem;
+  border: 1px solid #000;
+  border-bottom: 0;
+  border-radius: val(--box-border-radius);
+  text-align: center;
+  align-content: center;
+  border-top-left-radius: var(--box-border-radius);
+  border-top-right-radius: var(--box-border-radius);
+  margin: -0.5px;
+  background-color: #e9e9e9;
 }
 
 .menu-tab li > .close-tab {
@@ -530,8 +574,21 @@ iframe {
 }
 
 .menu-tab li.active-tab {
-  background-color: var(--sub-color);
   font-weight: bold;
+  height: 100%;
+  padding: 0.3rem;
+  color: var(--main-color);
+  border: 1px solid #000;
+  border-bottom: 0;
+  text-align: center;
+  align-content: center;
+  border-top-left-radius: var(--box-border-radius);
+  border-top-right-radius: var(--box-border-radius);
+  background-color: var(--body-bg);
+}
+
+.menu-tab li.active-tab .close-tab {
+  color: #000;
 }
 
 /**  메뉴 프레임  **/
@@ -718,20 +775,76 @@ input[type="text"].input-text-title {
   width: 40rem;
 }
 
+.backboard {
+  display: none;
+}
+
 @media only screen and (max-width: 1280px) {
   .sidebar {
     transition: transform 0.3s ease-in-out;
     max-width: 100%;
     z-index: 99;
-    transform: translateX(-100%);
+    transform: translateX(-80%);
+  }
+
+  .dropdown-menu {
+    display: none;
+  }
+
+  .dropdown-icon {
+    display: none;
   }
 
   .sidebar.active {
     transform: translateX(0);
   }
 
-  .header {
+  .sidebar-common-icon {
+    position: absolute;
+    right: 0;
+    margin: 0 19px;
+  }
+
+  .sidebar-wrapper:hover {
+    .backboard {
+      display: block;
+      position: fixed;
+      z-index: 90;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #0005;
+    }
+
+    .backboard:hover {
+      display: none;
+    }
+
+    .sidebar {
+      transition: transform 0.3s ease-in-out;
+      max-width: 100%;
+      z-index: 99;
+      transform: translateX(0);
+    }
+
+    .sidebar-common-icon {
+      position: static;
+    }
+
+    .dropdown-icon {
+      display: block;
+    }
+
+    .dropdown-menu {
+      display: block;
+    }
+  }
+
+  .header,
+  .content {
     padding: 0;
+    padding-left: 60px;
   }
 
   /* 화면이 줄었을때 grid 에서 block으로 바뀜 */
@@ -741,9 +854,8 @@ input[type="text"].input-text-title {
   }
 
   .content {
-    padding-left: 0;
+    padding-left: 60px;
     display: block;
-    margin: 5rem 10rem 0rem 10rem;
     /* 블럭 크기 고정할 필요 있음 */
   }
 

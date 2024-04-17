@@ -22,4 +22,10 @@ public interface ProductManagementDao {
 
 	public ProductManagementVO getOneProductManagement(String productId);
 
+	public int modifyOneProductManagement(ProductManagementVO productManagementVO);
+
+	public int changeOneItemBrrwState(String prdtMngId);
+
+	public String getProductId(String prdtMngId);
+
 }

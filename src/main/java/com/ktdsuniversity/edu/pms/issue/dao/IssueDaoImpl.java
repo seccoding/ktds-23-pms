@@ -63,5 +63,4 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	public int deleteOneIssue(String isId) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue", isId);
 	}
-
 }

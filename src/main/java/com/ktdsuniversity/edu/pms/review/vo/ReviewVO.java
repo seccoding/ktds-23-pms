@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.review.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class ReviewVO {
@@ -14,8 +17,28 @@ public class ReviewVO {
 	private String delYn;
 		
 	private ProjectVO projectVO;
+	private DepartmentVO departmentVO;
+	private ProjectTeammateVO projectTeammateVO;
+	private EmployeeVO employeeVO;
 	
-	
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
+	public ProjectTeammateVO getProjectTeammateVO() {
+		return projectTeammateVO;
+	}
+	public void setProjectTeammateVO(ProjectTeammateVO projectTeammateVO) {
+		this.projectTeammateVO = projectTeammateVO;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
 	public ProjectVO getProjectVO() {
 		return projectVO;
 	}

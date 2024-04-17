@@ -29,6 +29,26 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	}
 
 	@Override
+	public int getStorageMemoAllCount() {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getStorageMemoAllCount");
+	}
+
+	@Override
+	public List<MemoVO> getAllStorageMemo() {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllStorageMemo");
+	}
+
+	@Override
+	public int getReceiveMemoAllCount() {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReceiveMemoAllCount");
+	}
+
+	@Override
+	public List<MemoVO> getAllReceiveMemo() {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllReceiveMemo");
+	}
+	
+	@Override
 	public int writeNewMemo(MemoVO memoVO) {
 		return getSqlSessionTemplate().insert(MemoDao.NAME_SPACE + ".writeNewMemo", memoVO);
 	}
@@ -42,5 +62,7 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	public int changeViewStatus(String memoId) {
 		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".changeViewStatus", memoId);
 	}
+
+	
 	
 }

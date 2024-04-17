@@ -8,6 +8,8 @@ public interface BorrowService {
 	public BorrowListVO getUserRentalState(EmployeeVO employeeVO);
 
 	public BorrowListVO getProductManageState();
+
+	public boolean returnOneItem(String brrwHistId);
 	
 	
 

@@ -62,21 +62,20 @@
                 <c:choose>
                     <c:when test="${not empty productList.productList}">
                         <c:forEach items="${productList.productList}" var="product">
-                             <a href="/product/manage/view?prdtId=${product.prdtId}" class="table-item">
-                           		<tr>
-                                    <td>${product.prdtId}</td>
-                                    <td>${product.prdtName}</td>
-                                    <td>${product.prdtCtgr}</td>
-                                    <td>${product.onceYn}</td>
-                                    <td>${product.curStr}</td>
-                            	</tr>
-                             </a>
+                            <tr class="product-item" data-product="${product.prdtId}">
+                                <td>${product.prdtId}</td>
+                                <td>${product.prdtName}</td>
+                                <td>${product.prdtCtgr}</td>
+                                <td>${product.onceYn}</td>
+                                <td>${product.curStr}</td>
+                            </tr>
+                            
                         </c:forEach>
-    
+                        
                     </c:when>
                     
                 </c:choose>
-    
+                
             </tbody>
         </table>
     </div>

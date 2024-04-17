@@ -27,6 +27,7 @@
 		     , O.OUT_TTL
 		     , O.OUT_VER
 		     , O.OUT_FILE
+		     , O.OUT_ENCODE_FILE
 		     , O.CRT_DT
 		     , O.CRTR_ID
 		     , O.MDF_DT
@@ -41,6 +42,7 @@
 		  JOIN PROJECT P
 		    ON O.PRJ_ID = P.PRJ_ID
 		 WHERE O.DEL_YN='N'  
+		 ORDER BY  O.OUT_ID DESC
 	</select>
 	
 	<select id="getOutputCnt">
@@ -49,7 +51,32 @@
  	 WHERE	DEL_YN='N'
 	</select>
 	
-	<insert id="updateOneOutput"
+	<select id="getOneOutput"
+	parameterType="String"
+	resultMap="outputVOMap">
+	SELECT O.OUT_ID
+		     , O.OUT_TYPE
+		     , O.OUT_TTL
+		     , O.OUT_VER
+		     , O.OUT_FILE
+		     , O.OUT_ENCODE_FILE
+		     , O.CRT_DT
+		     , O.CRTR_ID
+		     , O.MDF_DT
+		     , O.MDFR_ID
+		     , O.PRJ_ID
+		     , CC.CMCD_NAME AS OUTPUT_TYPE_NAME
+		     , P.PRJ_NAME
+		  FROM PMS."OUTPUT" O
+		  JOIN COMMON_CODE cc
+		    ON O.OUT_TYPE = CC.CMCD_ID
+		  JOIN PROJECT P
+		    ON O.PRJ_ID = P.PRJ_ID
+		 WHERE O.DEL_YN='N'
+		   AND O.OUT_ID = #{_parameter}  
+	</select>
+	
+	<insert id="insertOneOutput"
 	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
 		INSERT INTO PMS."OUTPUT"
 		( OUT_ID
@@ -57,9 +84,9 @@
 		, OUT_TTL
 		, OUT_VER
 		, OUT_FILE
+		, OUT_ENCODE_FILE
 		, CRT_DT
 		, CRTR_ID
-		
 		, PRJ_ID
 		, DEL_YN)
 		VALUES
@@ -67,10 +94,33 @@
 		, #{outType}
 		, #{outTtl}
 		, 0
-		, 'ASDSDASD'
+		, #{outFile}
+		, #{outEncodeFile}
 		, SYSDATE
 		, '00000'
 		, #{prjId}
 		, 'N' )
 	</insert>
+	
+	<update id="deleteOneOutput"
+	parameterType="String">
+		UPDATE PMS."OUTPUT"
+		SET  
+		DEL_YN='Y'
+		WHERE OUT_ID=#{_parameter}
+	</update>
+	
+	<update id="updateOneOutput"
+	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
+	UPDATE PMS."OUTPUT"
+	  SET  OUT_TYPE=#{outType} 
+	     , OUT_TTL=#{outTtl} 
+	     , OUT_VER=0 
+	     , OUT_FILE=#{outFile}
+	     , MDF_DT= SYSDATE
+	     , MDFR_ID='00000'  
+	     , OUT_ENCODE_FILE=#{outEncodeFile}  
+	 WHERE OUT_ID=#{outId}
+ 
+	</update>
 </mapper>

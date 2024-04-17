@@ -30,6 +30,7 @@
 		javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
 			<id column="PRJ_ID" property="prjId" />
 			<result column="PRJ_NAME" property="prjName" />
+			<result column="REQ_YN" property="reqYn" />
 	</association>
 	 
 	</resultMap>
@@ -54,6 +55,8 @@
 	  JOIN	PROJECT p 
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
+	   AND	P.REQ_YN= 'Y'
+	 ORDER	BY  R.RQM_ID DESC
 	</select>
 	
 	<select id="getOneRequirement" 
@@ -78,6 +81,7 @@ SELECT  R.RQM_ID
   JOIN	PROJECT p 
   	ON	r.PRJ_ID = p.PRJ_ID 
  WHERE	R.RQM_ID = #{_PARAMETER}
+   AND	P.REQ_YN= 'Y'
 	</select>
 	
 	

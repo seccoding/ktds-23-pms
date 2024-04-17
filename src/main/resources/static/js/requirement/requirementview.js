@@ -4,10 +4,6 @@ $().ready(function () {
     var url = window.location.href;
     var rqmId = $("#rqmId").data("rqmId");
 
-    // console.log(dalayApprove);
-    // console.log(url);
-    // console.log(rqmId);
-
     $.get(
       "/project/requirement/delayaccess?rqmId=" + rqmId,
       { dalayApprove: dalayApprove },

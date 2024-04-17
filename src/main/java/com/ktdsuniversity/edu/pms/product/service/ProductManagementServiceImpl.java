@@ -6,17 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
-import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
-import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Service
 public class ProductManagementServiceImpl implements ProductManagementService{
 	
 	@Autowired
 	private ProductManagementDao productManagementDao;
+	
+	@Autowired
+	private ProductDao productDao;
 
 	@Override
 	public ProductManagementListVO getAllProductdetail(ProductManagementVO productManagementVO) {
@@ -57,6 +59,25 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 	public ProductManagementVO getOneProductManagement(String productId) {
 		ProductManagementVO productManagementVO = this.productManagementDao.getOneProductManagement(productId);
 		return productManagementVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean modifyOneProductManagement(ProductManagementVO productManagementVO) {
+		
+		return productManagementDao.modifyOneProductManagement(productManagementVO) > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean changeOneItemBrrwState(String prdtMngId) {
+		int changeStateCnt = this.productManagementDao.changeOneItemBrrwState(prdtMngId);
+		String prdtId = this.productManagementDao.getProductId(prdtMngId);
+		int changeProductCnt = 0;
+		if(changeStateCnt>0) {
+			changeProductCnt = this.productDao.changeOneProductCnt(prdtId);
+		}
+		return changeProductCnt > 0;
 	}
 
 }

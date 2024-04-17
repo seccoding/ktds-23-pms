@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
 
 public abstract class SessionUtil {
 
@@ -22,7 +23,11 @@ public abstract class SessionUtil {
 	
 	private SessionUtil() {
 	}
-	
+
+	public static Map<String, HttpSession> getSessionMap() {
+		return sessionMap;
+	}
+
 	/**
 	 * sessionMap에 입력받은 세션이 있는지 확인하는 메소드
 	 * @param employeeId 입력받은 사원번호

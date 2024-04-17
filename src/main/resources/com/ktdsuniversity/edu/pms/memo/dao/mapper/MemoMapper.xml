@@ -20,27 +20,108 @@
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
-  		   AND M.CRTR_ID = '1010001'
+  		   AND M.CRTR_ID = '1010002'
+  		   AND M.SAVE_YN = 'N'
   		 <!-- AND M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
   	</select>
   
   	<select id="getAllSentMemo"
   			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
-  		SELECT MEMO_ID
-			 , MEMO_PID
-			 , RCV_ID
-			 , CRTR_ID
-			 , TO_CHAR(CRT_DT, 'YYYY-MM-DD') CRT_DT
-			 , MEMO_CNTNT
-			 , READ_YN
-			 , DEL_YN
-			 , TO_CHAR(MDF_DT, 'YYYY-MM-DD') MDF_DT
-			 , MDFR_ID
-			 , SAVE_YN
-  		  FROM MEMO
-  		 WHERE CRTR_ID = '1010001'
+  		SELECT M.MEMO_ID
+			 , M.MEMO_PID
+			 , M.RCV_ID
+			 , M.CRTR_ID
+			 , TO_CHAR(M.CRT_DT, 'YYYY-MM-DD') CRT_DT
+			 , M.MEMO_CNTNT
+			 , M.READ_YN
+			 , M.DEL_YN
+			 , TO_CHAR(M.MDF_DT, 'YYYY-MM-DD') MDF_DT
+			 , M.MDFR_ID
+			 , M.SAVE_YN
+			 , E.EMAIL
+			 , E.EMP_NAME
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE CRTR_ID = '1010002'
+  		   AND M.DEL_YN = 'N'
+  		   AND M.SAVE_YN = 'N'
   		  <!-- WHERE M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
-  		 ORDER BY CRT_DT ASC
+  		 ORDER BY M.CRT_DT DESC
+  	</select>
+  	
+  	<select id="getReceiveMemoAllCount"
+  			resultType="_int">
+  		SELECT COUNT(1)
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE M.DEL_YN = 'N'
+  		   AND M.SAVE_YN = 'N'
+  		   AND M.RCV_ID = '1010002'
+  		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  	</select>
+  
+  	<select id="getAllReceiveMemo"
+  			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  		SELECT M.MEMO_ID
+			 , M.MEMO_PID
+			 , M.RCV_ID
+			 , M.CRTR_ID
+			 , TO_CHAR(M.CRT_DT, 'YYYY-MM-DD') CRT_DT
+			 , M.MEMO_CNTNT
+			 , M.READ_YN
+			 , M.DEL_YN
+			 , TO_CHAR(M.MDF_DT, 'YYYY-MM-DD') MDF_DT
+			 , M.MDFR_ID
+			 , M.SAVE_YN
+			 , E.EMAIL
+			 , E.EMP_NAME
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE RCV_ID = '1010002'
+  		   AND M.DEL_YN = 'N'
+  		   AND M.SAVE_YN = 'N'
+  		  <!-- WHERE M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  		 ORDER BY M.CRT_DT DESC
+  	</select>
+  
+  	<select id="getStorageMemoAllCount"
+  			resultType="_int">
+  		SELECT COUNT(1)
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE M.DEL_YN = 'N'
+  		   AND M.SAVE_YN = 'Y'
+  		   AND M.RCV_ID = '1010002'
+  		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  	</select>
+  	
+  	<select id="getAllStorageMemo"
+  			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  		SELECT M.MEMO_ID
+			 , M.MEMO_PID
+			 , M.RCV_ID
+			 , M.CRTR_ID
+			 , TO_CHAR(M.CRT_DT, 'YYYY-MM-DD') CRT_DT
+			 , M.MEMO_CNTNT
+			 , M.READ_YN
+			 , M.DEL_YN
+			 , TO_CHAR(M.MDF_DT, 'YYYY-MM-DD') MDF_DT
+			 , M.MDFR_ID
+			 , M.SAVE_YN
+			 , E.EMAIL
+			 , E.EMP_NAME
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE RCV_ID = '1010002'
+  		   AND M.DEL_YN = 'N'
+  		   AND M.SAVE_YN = 'Y'
+  		  <!-- WHERE M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  		 ORDER BY M.CRT_DT DESC
   	</select>
   
   	<insert id="writeNewMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
@@ -59,8 +140,8 @@
 			 VALUES
 			  ('MM_' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_MEMO_PK.NEXTVAL,6 ,'0')
 			 , NULL
-			 , #{rcvId} /* 받는사람 */
-			 , #{crtrId} /* 세션에 로그인된 사람 */
+			 , #{rcvId} /* 받는 사람 */
+			 , '1010002' /* 세션에 로그인된 사람 보내는 사람 */
 			 , SYSDATE
 			 , #{memoCntnt} /* 세션에 적은 내용 */
 			 , 'N'

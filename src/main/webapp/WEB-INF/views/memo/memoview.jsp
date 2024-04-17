@@ -4,10 +4,11 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>메모 상세 페이지</title>
+<title>쪽지 상세 페이지</title>
+<jsp:include page="../commonheader.jsp" />
 </head>
 <body>
-	<h1>메모 조회</h1>
+	<h1>쪽지 조회</h1>
     <div class="grid" data-id="${memoVO.memoId}">
       <label for="name">받은 사람</label>
       <div>${memoVO.rcvId}</div>

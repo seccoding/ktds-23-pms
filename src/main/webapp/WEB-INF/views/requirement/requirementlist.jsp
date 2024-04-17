@@ -8,8 +8,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
   </head>
   <body>
-
-    <table class="table" >
+    <table class="table">
       <colgroup>
         <col width="160px" />
         <col width="160px" />
@@ -18,14 +17,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <col width="160px" />
         <col width="160px" />
       </colgroup>
-      <thead >
+      <thead>
         <tr>
           <th>프로젝트명</th>
           <th>요구사항 아이디</th>
           <th>요구사항 제목</th>
-          <th>요구사항 내용</th>
-          <th>요구사항 상태1</th>
-          <th>요구사항 상태2</th>
+          <th>일정상태</th>
+          <th>진행상태</th>
         </tr>
       </thead>
       <tbody>
@@ -41,7 +39,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                     >${requirememt.rqmTtl}</a
                   >
                 </td>
-                <td>${requirememt.rqmCntnt}</td>
                 <td>${requirememt.scdStsVO.cmcdName}</td>
                 <td>${requirememt.rqmStsVO.cmcdName}</td>
               </tr>
@@ -62,6 +59,5 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <button><a href="/requirement/write">신규</a></button>
       </p>
     </div>
-
   </body>
 </html>

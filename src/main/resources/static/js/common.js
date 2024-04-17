@@ -40,6 +40,56 @@ window.onload = function () {
 
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+  var isMainLayout = window.location.pathname === "/";
+  if (!isMainLayout) {
+    var framePath = window.parent.getLocationPathInFrame();
+    var menuObject = window.parent.findMenuObject(framePath);
+
+    var activeFrameDataset = window.parent.getActiveFrameDataset();
+
+    if (menuObject.role && menuObject.id && menuObject.url) {
+      var menuId = activeFrameDataset.menuId;
+
+      var url = $(window.parent.document)
+        .find(".dropdown-menu")
+        .find("a[data-menu-id=" + menuId + "]")
+        .data("menu-url");
+
+      if (menuObject.url !== url) {
+        window.parent.menuAnchorClickHandler(
+          null,
+          $(window.parent.document)
+            .find(".dropdown-menu")
+            .find("a[data-menu-id=" + menuObject.id + "]")
+        );
+        //return;
+      }
+    }
+
+    var menuTree = window.parent.makeTree(menuObject);
+    var menuPath = window.parent.makePath(menuTree);
+
+    var parentDocument = $(window.parent.document);
+    var locationTree = parentDocument.find(".location-tree");
+    locationTree.html("");
+
+    menuPath.forEach(function (data, i) {
+      var listItem = $("<li></li>");
+      listItem.text(data.name);
+      listItem.css("cursor", "pointer");
+      if (data.url && menuPath.length - 1 > i) {
+        listItem.on("click", function () {
+          var frame = window.parent.document.querySelector(
+            ".frame-active > iframe"
+          );
+          frame.contentDocument.location.href = data.url;
+        });
+      }
+
+      locationTree.append(listItem);
+    });
+  }
+
   $(".menu-tab-prev").on("click", function () {
     var menuTabList = $(".content").find(".menu-tab");
     var scrollLeft = menuTabList.scrollLeft();
@@ -122,14 +172,15 @@ function menuClickHandler(event) {
     );
 }
 
-function menuAnchorClickHandler() {
+function menuAnchorClickHandler(event, target) {
+  var anchor = event ? $(this) : target;
   var frameList = $(".content").find(".frame-list");
   var menuTabList = $(".content").find(".menu-tab");
 
   $(".sidebar").find(".dropdown-menu").find("a").removeClass("active");
-  $(this).addClass("active");
+  anchor.addClass("active");
 
-  var menuId = $(this).data("menu-id");
+  var menuId = anchor.data("menu-id");
   var existsFrame =
     menuTabList.find("li[data-menu-id=" + menuId + "]").length > 0;
 
@@ -138,8 +189,8 @@ function menuAnchorClickHandler() {
     return;
   }
 
-  var menuName = $(this).text();
-  var menuUrl = $(this).data("menu-url");
+  var menuName = anchor.text();
+  var menuUrl = anchor.data("menu-url");
 
   var menuTabItem = $("<li></li>");
   menuTabItem.addClass("active-tab");
@@ -202,6 +253,16 @@ function menuAnchorClickHandler() {
       .find(".dropdown-menu")
       .find("a[data-menu-id=" + menuId + "]")
       .addClass("active");
+
+    $(".sidebar")
+      .find(".dropdown-menu")
+      .find("a[data-menu-id=" + menuId + "]")
+      .focus();
+
+    frameList
+      .find("li[data-menu-id=" + menuId + "]")
+      .find("iframe")
+      .attr("src", menuUrl);
 
     if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
       menuTabQueue.push(menuId);

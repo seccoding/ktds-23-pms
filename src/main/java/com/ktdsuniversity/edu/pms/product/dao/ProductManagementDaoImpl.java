@@ -54,4 +54,22 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getOneProductManagement",productId);
 	}
 
+
+	@Override
+	public int modifyOneProductManagement(ProductManagementVO productManagementVO) {
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE+".modifyOneProductManagement", productManagementVO);
+	}
+
+
+	@Override
+	public int changeOneItemBrrwState(String prdtMngId) {
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE+".changeOneItemBrrwState", prdtMngId);
+	}
+
+
+	@Override
+	public String getProductId(String prdtMngId) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductId", prdtMngId);
+	}
+
 }
