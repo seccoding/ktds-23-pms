@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>이슈 관리 상세 페이지</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
+<script type="text/javascript" src="/js/issue/issueview.js"></script>
 </head>
 <body>
 	<div class="grid" data-id="${issueVO.isTtl}">
@@ -21,7 +22,7 @@
   
         <label for="originFileName">첨부파일</label>
         <div>
-            <a href="/board/file/download/${boardVO.id}">
+            <a href="/issue/file/download/${issueVO.isId}">
                 ${issueVO.originFileName}
             </a>
         </div>
@@ -35,12 +36,16 @@
         <label for="content">내용</label>
         <div>${issueVO.isCntnt}</div>
 
-        <div class="btn-group">
-            <div class="right-align">
-            <a href="/issue">목록</a>
-            <a href="/issue/modify/${issueVO.isId}">수정</a>
-            <!-- <a class="delete-board" href="javascript:void(0);">삭제</a> -->
-            </div>
+        <div>
+            <button>
+                <a href="/issue">목록</a>
+            </button>
+            <button>
+                <a href="/issue/modify/${issueVO.isId}">수정</a>
+            </button>
+            <button>
+                <a class="delete-issue" href="/issue/delete/${issueVO.isId}">삭제</a>
+            </button>
         </div>
     </div>
 </body>
