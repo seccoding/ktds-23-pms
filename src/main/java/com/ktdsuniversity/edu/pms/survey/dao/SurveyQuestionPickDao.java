@@ -8,4 +8,8 @@ public interface SurveyQuestionPickDao {
 
 	public int createNewAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
 
+	public SurveyQuestionPickVO getOneAnswer(String sqpId);
+
+	public int modifyOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
+
 }

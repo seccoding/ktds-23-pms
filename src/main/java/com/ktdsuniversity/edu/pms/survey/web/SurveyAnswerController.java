@@ -23,6 +23,20 @@ public class SurveyAnswerController {
 		surveyQuestionPickVO.setSrvId(srvId);
 		
 		boolean isSuccess = this.surveyQuestionPickService.createNewAnswer(surveyQuestionPickVO);	
+		return new AjaxResponse().append("result", isSuccess).append("sqpId", surveyQuestionPickVO.getSqpId());
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/answer/modify/{sqpId}")
+	public AjaxResponse doModifyAnswers(@PathVariable String sqpId, SurveyQuestionPickVO surveyQuestionPickVO) {
+		surveyQuestionPickVO.setSqpId(sqpId);
+		
+		boolean isSuccess = this.surveyQuestionPickService.modifyOneAnswer(surveyQuestionPickVO);
+		
+		if (!isSuccess) {
+			return new AjaxResponse().append("result", isSuccess);		
+		}
+		
 		return new AjaxResponse().append("result", isSuccess);
 	}
 

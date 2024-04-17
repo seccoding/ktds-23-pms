@@ -240,47 +240,43 @@ $().ready(function() {
                 srvQst: srvQst,
                 typeYn: typeYn
             }, function(response) {
-                //
-                //var ansList = [];
                 $(that).closest(".survey-question-bottom").find("li").each(function() {
                     var answerDom = $(this).find("input").first();
                     var answer = answerDom.val();
+                    var ansNum = $(this).find("div").text();
 
                     var nextQuestionIdDom = $(this).find("input").last();
                     var nextQuestionId = nextQuestionIdDom.val();
 
-                    if ((answerDom.data("sqp-id") && answerDom.data("data-answer") !== answer) 
+                    if ((answerDom.data("sqp-id") && answerDom.data("answer") !== answer) 
                             || (nextQuestionIdDom.data("sqp-id") && nextQuestionIdDom.data("next-question-id") !== nextQuestionId)) {
-                        // 답변이 수정되었다!
-                        $.post("수정 코드....");
+                        console.log(answer);
+                        $.post("/ajax/survey/answer/modify/" + answerDom.data("sqp-id"), {
+                            sqpCntnt: answer,
+                            nextId: nextQuestionId,
+                            mdfrId: '0509004'
+                        }, function(response) {
+                            console.log(response.data.result);
+                        });
                     }
+                    // else if((answerDom.data("sqp-id") && answerDom.data("answer") == answer) 
+                    //         && (nextQuestionIdDom.data("sqp-id") && nextQuestionIdDom.data("next-question-id") == nextQuestionId)) {
+
+                    // }
                     else if(!answerDom.data("sqp-id")) {
                         $.post("/ajax/survey/answer/" + srvQstDom.data("srv-id"), {
                             srvId: srvQstDom.data("srv-id"),
                             sqpCntnt: answer,
+                            nextId: nextQuestionId,
                             crtrId: '0509004',
-                            seq: firstLiDivDom.text()
-                        }, function(resonse) {
+                            seq: ansNum
+                        }, function(response) {
                             // answer input 에 data를 추가.
                             answerDom.attr({"data-sqp-id": response.data.sqpId, "data-answer": answer});
                             nextQuestionIdDom.attr({"data-sqp-id": response.data.sqpId, "data-next-question-id": nextQuestionId});
                         });
                     }
                 });
-
-                // var firstAns = $(firstLiFirstInputDom).val();
-                // var secondAns = $(secondLiFirstInputDom).val();
-
-                // for (var j = 0; j < ansList.length; j++) {
-                //     $.post("/ajax/survey/answer/" + srvQstDom.data("srv-id"), {
-                //         srvId: srvQstDom.data("srv-id"),
-                //         sqpCntnt: ansList[j],
-                //         crtrId: '0509004',
-                //         seq: firstLiDivDom.text()
-                //     }, function() {
-                //         // answer input 에 data를 추가.
-                //     });
-                // }
             });
             
             
