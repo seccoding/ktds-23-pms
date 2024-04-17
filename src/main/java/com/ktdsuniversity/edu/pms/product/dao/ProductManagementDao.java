@@ -22,4 +22,6 @@ public interface ProductManagementDao {
 
 	public ProductManagementVO getOneProductManagement(String productId);
 
+	public int modifyOneProductManagement(ProductManagementVO productManagementVO);
+
 }

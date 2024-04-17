@@ -13,4 +13,6 @@ public interface ProductManagementService {
 
 	public ProductManagementVO getOneProductManagement(String productId);
 
+	public boolean modifyOneProductManagement(ProductManagementVO productManagementVO);
+
 }
