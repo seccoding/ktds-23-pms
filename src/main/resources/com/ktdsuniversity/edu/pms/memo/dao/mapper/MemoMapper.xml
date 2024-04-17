@@ -140,8 +140,8 @@
 			 VALUES
 			  ('MM_' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_MEMO_PK.NEXTVAL,6 ,'0')
 			 , NULL
-			 , #{rcvId} /* 받는사람 */
-			 , #{crtrId} /* 세션에 로그인된 사람 */
+			 , #{rcvId} /* 받는 사람 */
+			 , '1010002' /* 세션에 로그인된 사람 보내는 사람 */
 			 , SYSDATE
 			 , #{memoCntnt} /* 세션에 적은 내용 */
 			 , 'N'

@@ -80,6 +80,12 @@ public class MemoServiceImpl implements MemoService{
 		return memoVO;
 	}
 
+	@Override
+	public boolean deleteOneMemo(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 	
 }

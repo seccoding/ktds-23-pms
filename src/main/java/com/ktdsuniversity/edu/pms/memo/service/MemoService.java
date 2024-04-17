@@ -15,4 +15,6 @@ public interface MemoService {
 
 	MemoListVO getReceiveMemoAllsearch();
 
+	boolean deleteOneMemo(int id);
+
 }
