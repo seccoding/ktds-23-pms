@@ -11,8 +11,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 
 @Repository
-public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao{
-
+public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao {
 
 	@Autowired
 	@Override
@@ -20,40 +19,39 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		super.setSqlSessionTemplate(sqlSessionTemplate);
 	}
 
-
 	@Override
 	public int getAllEmployeeCount() {
-	
+
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getAllEmployeeCount");
 	}
 
 	@Override
 	public int searchEmployeeAllCount(SearchEmployeeVO searchEmployeeVO) {
-			
-		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".searchEmployeeAllCount", searchEmployeeVO)  ;
+
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".searchEmployeeAllCount", searchEmployeeVO);
 	}
 
 	@Override
 	public List<EmployeeVO> getAllEmployee() {
-		
+
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".getAllEmployee");
 	}
 
 	@Override
 	public List<EmployeeVO> searchAllEmployee(SearchEmployeeVO searchEmployeeVO) {
-		
+
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".searchAllEmployee", searchEmployeeVO);
 	}
 
 	@Override
 	public int deleteEmployeeById(String empId) {
-		
+
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".deleteEmployeeByName", empId);
 	}
 
 	@Override
 	public EmployeeVO getOneEmployee(String empId) {
-		
+
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getOneEmployee", empId);
 	}
 
@@ -65,15 +63,18 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 
 	@Override
 	public int modifyEmployee(EmployeeVO employeeVO) {
-		
+
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyEmployee", employeeVO);
 	}
 
+	public int createEmployee(EmployeeVO employeeVO) {
+		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createEmployee", employeeVO);
+	}
 
-	
-
-	
-	
-	
+	@Override
+	public EmployeeVO selectOneBoard(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -8,9 +8,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
   </head>
   <body>
-    <jsp:include page="../layout/layout.jsp"></jsp:include>
 
-    <table>
+    <table class="table" >
       <colgroup>
         <col width="160px" />
         <col width="160px" />
@@ -19,7 +18,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <col width="160px" />
         <col width="160px" />
       </colgroup>
-      <thead class="table">
+      <thead >
         <tr>
           <th>프로젝트명</th>
           <th>요구사항 아이디</th>
@@ -64,6 +63,5 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </p>
     </div>
 
-    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
   </body>
 </html>

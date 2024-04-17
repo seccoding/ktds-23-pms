@@ -1,14 +1,16 @@
 package com.ktdsuniversity.edu.pms.knowledge.web;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,18 +18,29 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeService;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
-import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
+import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
 
 @Controller
 public class KnowledgeController {
 	
+	Logger logger = LoggerFactory.getLogger(KnowledgeController.class);
+	
 	@Autowired
 	private KnowledgeService knowledgeService;
 	
+	@Autowired
+	private RequirementService requirementService;
+	
+	@Autowired
+	private ProjectService projectService;
+	
 	// 목록 조회
 
-	@GetMapping("/knowledge/list")
+	@GetMapping("/knowledge")
 	public String viewKnowledgeListPage(Model model) {
 		
 		KnowledgeListVO knowledgeList = this.knowledgeService.getAllKnowledge(); 
@@ -40,9 +53,9 @@ public class KnowledgeController {
 	@GetMapping("/knowledge/view")
 	public String viewDetailKnowledgeListPage(@RequestParam String knlId, Model model) {
 		
-		System.out.println(knlId);
+		logger.info(knlId);
 		
-		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true, true);
+		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
 		
 		// knowledge/detail 페이지에 데이터를 전송.
 		model.addAttribute("knowledgeVO", knowledgeVO);
@@ -54,16 +67,21 @@ public class KnowledgeController {
 	
 	// 글 작성 페이지
 	@GetMapping("/knowledge/write")
-	public String viewKnowledgeWritePage() {
+	public String viewKnowledgeWritePage(Model model) {
+		
+		ProjectListVO projectList = projectService.getAllProject();
+		List<RequirementVO> requirementList = requirementService.getAllRequirement();
+		
+		model.addAttribute("requirement", requirementList);
 		
 		return "/knowledge/knowledgewrite";
 	}
 	
 	
-	// 글 작성 
+	// 글 작성 // TO DO!! @SessionAttribute 추가 
 	@PostMapping("/knowledge/write") 
-	public String doKnowledgeWrite(KnowledgeVO knowledgeVO, @RequestParam MultipartFile file,
-									@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,  Model model) {
+	public String doKnowledgeWrite(KnowledgeVO knowledgeVO,  @RequestParam MultipartFile file,
+										 Model model) {
 		
 		// 검사 -> Validator로 추후 수정 가능
 		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
@@ -72,36 +90,39 @@ public class KnowledgeController {
 		if(isEmptyTitle) {
 		model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
 		model.addAttribute("knowledgeVO", knowledgeVO);
-		return "knowledge/knowledgemodify";
+		return "/knowledge/knowledgewrite";
 	}
 	
 		if(isEmptyContent) {
 		model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
 		model.addAttribute("knowledgeVO", knowledgeVO);
-		return "knowledge/knowledgemodify";
+		return "knowledge/knowledgewrite";
 	}
+		// 세션 검증 시 수정해야 함!!!
+		knowledgeVO.setCrtrId("system01");
 		
 		boolean isCreateSuccess = this.knowledgeService.createNewKnowledge(knowledgeVO, file);
-		
-		if(isCreateSuccess) {
-			System.out.println("글 등록 성공!");
+		if(isCreateSuccess) { 
+			logger.info("글 등록이 완료되었습니다.");
 		} else {
-			System.out.println("글 등록 실패!");
+			logger.info("글 등록이 실패되었습니다.");
 		}
 		
 		String knlId = knowledgeVO.getKnlId();
-		return "redirect:/knowledge/list?knowledgeid=" + knlId;
+		
+		return "redirect:/knowledge?knlId=" + knlId;
+		
 	}
 
-	// 글 수정 페이지
+	// 글 수정 페이지 // @SessionAttribute 추가 예정
 	@GetMapping("/knowledge/modify/{knlId}")
-	public String doKnowledgeModify(@PathVariable String knlId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String doKnowledgeModify(@PathVariable String knlId, Model model) {
 		
-		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true, true);
+		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 		
-		if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && ! employeeVO.getAdmnCode().equals(301)) {
+//		if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && ! employeeVO.getAdmnCode().equals(301)) {
 //			throw new PageNotFoundException();
-		}
+//		}
 		
 		// 게시글의 정보를 화면에 보내준다.
 		model.addAttribute("knowledgeVO", knowledgeVO);
@@ -112,11 +133,11 @@ public class KnowledgeController {
 	
 	
 	// 글 수정 작성 페이지
-	@PostMapping("/knowledge/modify/{knlId}")
+	@PostMapping("/knowledge/modify/{knlId}") // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO 
 	public String viewKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
-								KnowledgeVO knowledgeVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+								KnowledgeVO knowledgeVO) {
 		
-		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true, true);
+		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 		
 		
 		// TO DO !!  1. 유저 검증 코드 부분 
@@ -138,18 +159,19 @@ public class KnowledgeController {
 		model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
 		model.addAttribute("knowledgeVO", knowledgeVO);
 		return "knowledge/knowledgemodify";
-	}
+	}	
+		// Command Object 에는 전달된 knlId가 없으니 @PathVariable로 전달된 knlId를 세팅해준다.
 		knowledgeVO.setKnlId(knlId);
 		
 		boolean isUpdateSuccess = this.knowledgeService.updateOneKnowledge(knowledgeVO, file);
 		
 		if(isUpdateSuccess) {
-			System.out.println("수정 성공!");
+			logger.info("수정이 완료되었습니다!");
 		} else {
-			System.out.println("수정 실패!");
+			logger.info("수정이 실패되었습니다!");
 		}
 		
-		return "redirect:/knowledge/list";
+		return "redirect:/knowledge/view?knlId=" + knlId;
 	}
 	
 	
@@ -157,18 +179,18 @@ public class KnowledgeController {
 	@PostMapping("/knowledge/delete/{knlId}")
 	public String doKnowledgeDelete(@PathVariable String knlId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true, true);
+		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
 		
 		boolean isDeleteSuccess = this.knowledgeService.deleteOneKnowledge(knlId);
 		
 		if(isDeleteSuccess) {
-			System.out.println("삭제 성공!");
+			logger.info("삭제가 성공되었습닌다!");
 		} else {
-			System.out.println("삭제 실패!");
+			logger.info("삭제가 실패되었습니다!");
 		}
 		
 		
-		return "redirect:/knowledge/list";
+		return "redirect:/knowledge";
 	}
 	
 	

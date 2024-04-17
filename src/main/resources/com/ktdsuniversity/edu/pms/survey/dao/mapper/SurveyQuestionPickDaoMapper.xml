@@ -16,7 +16,28 @@
 	
 	<insert id="createNewAnswer" 
 			parameterType="com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao">
-	
+		INSERT INTO SURVEY_QUESTION_PICK
+		 (SQP_ID
+		, SRV_ID
+		, SQP_CNTNT
+		, NEXT_ID
+		, CRTR_ID
+		, CRT_DT
+		, MDFR_ID
+		, MDF_DT
+		, DEL_YN
+		, SEQ)
+		VALUES
+		 (('SRV_QST_P_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PICK_PK.NEXTVAL, 6, '0'))
+		, #{srvId}
+		, #{sqpCntnt}
+		, #{nextId}
+		, #{crtrId}
+		, SYSDATE
+		, NULL
+		, NULL
+		, 'N'
+		, #{seq})
 	</insert>
 
 </mapper>

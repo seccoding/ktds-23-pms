@@ -7,8 +7,8 @@ public interface MemoService {
 
 	MemoListVO getSentMemoAllsearch();
 
-	boolean writeNewMemo(MemoVO memoVO);
+	public boolean writeNewMemo(MemoVO memoVO);
 
-	MemoVO getOneMemo(String memoId);
+	public MemoVO getOneMemo(String memoId);
 
 }

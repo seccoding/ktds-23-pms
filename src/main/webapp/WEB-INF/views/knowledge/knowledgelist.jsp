@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <title>지식관리 목록</title>
-    <jsp:include page="../commonheader.jsp"></jsp:include>
+    <jsp:include page="./member/member.jsp"></jsp:include>
     <script
       type="text/javascript"
       src="/js/knowledge/knowledgelist.js"
@@ -35,7 +35,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <thead>
           <tr>
             <th>프로젝트명</th>
-            <th>요구사항ID</th>
+            <th>요구사항제목</th>
             <th>등록자</th>
             <th>제목</th>
             <th>조회수</th>
@@ -49,7 +49,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <c:forEach items="${knowledgeList.knowledgeList}" var="knowledge">
                 <tr>
                   <td>${knowledge.projectVO.prjName}</td>
-                  <td>${knowledge.requirementVO.rqmId}</td>
+                  <td>${knowledge.requirementVO.rqmTtl}</td>
                   <td>${knowledge.crtrId}</td>
                   <td>
                     <a
@@ -79,7 +79,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </table>
     </div>
     <div>
-      <a class="register" href="/knowledge/write">새 글 등록</a>
+      <a class="btn-group" href="/knowledge/write">새 글 등록</a>
     </div>
 
     <!-- 엑셀 다운로드 -->
