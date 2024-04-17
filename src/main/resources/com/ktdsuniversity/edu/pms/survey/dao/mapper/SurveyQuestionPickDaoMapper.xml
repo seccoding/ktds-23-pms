@@ -15,7 +15,7 @@
 	</resultMap>
 	
 	<insert id="createNewAnswer" 
-			parameterType="com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao">
+			parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
 		INSERT INTO SURVEY_QUESTION_PICK
 		 (SQP_ID
 		, SRV_ID
