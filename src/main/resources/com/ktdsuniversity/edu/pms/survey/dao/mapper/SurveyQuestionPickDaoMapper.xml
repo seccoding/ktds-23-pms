@@ -16,6 +16,12 @@
 	
 	<insert id="createNewAnswer" 
 			parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
+		
+		<selectKey keyProperty="sqpId" order="BEFORE" resultType="string">
+			SELECT 'SRV_QST_P_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PICK_PK.NEXTVAL, 6, '0')
+			  FROM DUAL
+		</selectKey>
+		
 		INSERT INTO SURVEY_QUESTION_PICK
 		 (SQP_ID
 		, SRV_ID
@@ -28,7 +34,7 @@
 		, DEL_YN
 		, SEQ)
 		VALUES
-		 (('SRV_QST_P_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PICK_PK.NEXTVAL, 6, '0'))
+		 (#{sqpId}
 		, #{srvId}
 		, #{sqpCntnt}
 		, #{nextId}
@@ -39,5 +45,30 @@
 		, 'N'
 		, #{seq})
 	</insert>
+	
+	<select id="getOneAnswer" parameterType="String" resultMap="SurveyQuestionPickVoMap">
+		SELECT SQP_ID
+			 , SRV_ID
+			 , SQP_CNTNT
+			 , NEXT_ID
+			 , CRTR_ID
+			 , CRT_DT
+			 , MDFR_ID
+			 , MDF_DT
+			 , DEL_YN
+			 , SEQ
+		  FROM SURVEY_QUESTION_PICK
+		 WHERE DEL_YN = 'N'
+		   AND SQP_ID = #{_parameter}
+	</select>
+	
+	<update id="modifyOneAnswer" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
+		UPDATE SURVEY_QUESTION_PICK
+		   SET SQP_CNTNT = #{sqpCntnt}
+		     , NEXT_ID = #{nextId}
+		     , MDFR_ID = #{mdfrId}
+		     , MDF_DT = SYSDATE
+		 WHERE SQP_ID = #{sqpId}
+	</update>
 
 </mapper>
