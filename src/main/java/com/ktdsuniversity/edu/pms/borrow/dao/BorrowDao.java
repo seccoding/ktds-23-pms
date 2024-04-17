@@ -22,4 +22,6 @@ public interface BorrowDao {
 
 	public List<BorrowVO> getProductManageState();
 
+	public int returnOneItem(String brrwHistId);
+
 }

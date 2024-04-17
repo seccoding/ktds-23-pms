@@ -94,5 +94,10 @@
 		   SET CUR_STR = CUR_STR - 1
 		 WHERE PRDT_ID = #{_parameter}
 	</update>
-	
+
+	<update id="changeOneProductCnt" parameterType="string">
+		UPDATE PRODUCT 
+		   SET CUR_STR = CUR_STR + 1
+		 WHERE PRDT_ID = #{_parameter}
+	</update>
 </mapper>

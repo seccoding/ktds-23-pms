@@ -39,4 +39,9 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState");
 	}
 
+	@Override
+	public int returnOneItem(String brrwHistId) {
+		return getSqlSession().update(BorrowDao.NAME_SPACE+".returnOneItem", brrwHistId);
+	}
+
 }

@@ -121,4 +121,16 @@
 		 WHERE PRDT_MNG_ID = #{prdtMngId}
 	</update>
 	
+	<update id="changeOneItemBrrwState" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT
+		   SET BRRW_YN = 'N'
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</update>
+	
+	<select id="getProductId" parameterType="string" resultType="string">
+		SELECT PRDT_ID
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</select>
+	
 </mapper>

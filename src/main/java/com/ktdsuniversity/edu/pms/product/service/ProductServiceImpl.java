@@ -32,6 +32,7 @@ public class ProductServiceImpl implements ProductService{
 		return productListVO;
 	}
 
+	@Transactional
 	@Override
 	public boolean createNewProduct(ProductVO productVO) {
 		int insertCount = this.productDao.insertNewProduct(productVO);
@@ -48,6 +49,7 @@ public class ProductServiceImpl implements ProductService{
 		return productVO;
 	}
 
+	@Transactional
 	@Override
 	public boolean updateOneProduct(String prdtId) {
 		

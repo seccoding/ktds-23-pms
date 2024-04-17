@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>비품 대여 현황</title>
 <jsp:include page="../commonheader.jsp" />
+<script type="text/javascript" src="/js/product/rentalstate.js"></script>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
     <h2>비품 대여 현황</h2>
     <div class="flex">
         <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
@@ -54,7 +54,7 @@
                         <c:forEach items="${userRentalState.borrowList}" var="product">
                             <tr>
                                 <td>${product.productVO.prdtName}</td>
-                                <td>${product.prdtMngId}</td>
+                                <td class="manage-id">${product.prdtMngId}</td>
                                 <td>${product.brrwDt}</td>
                                 <td>
                                     <c:choose>
@@ -65,8 +65,11 @@
                                     </c:choose>
                                 <td>
                                     <c:choose>
+                                        <c:when test="${product.productVO.onceYn eq 'Y'}">
+                                            -
+                                        </c:when>
                                         <c:when test="${empty product.rtnDt}">
-                                            <button>반납</button>
+                                            <button class="return-btn" data-id="${product.brrwHistId}">반납</button>
                                         </c:when>
                                         <c:otherwise>반납완료</c:otherwise>
                                     </c:choose>
@@ -81,6 +84,6 @@
             </tbody>
         </table>
     </div>
-    <jsp:include page="../layout/layout_close.jsp" />
+    
 </body>
 </html>
