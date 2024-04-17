@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <title>지식관리 목록</title>
-    <jsp:include page="./member/member.jsp"></jsp:include>
+    <jsp:include page="../commonheader.jsp"></jsp:include>
     <script
       type="text/javascript"
       src="/js/knowledge/knowledgelist.js"
@@ -20,6 +20,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </style>
   </head>
   <body>
+    <jsp:include page="../layout/layout.jsp" />
+    <jsp:include page="./member/member.jsp"></jsp:include>
+
     <div class="grid">
       <div>총 ${knowledgeList.knowledgeCnt} 건의 게시글이 검색되었습니다.</div>
       <table class="table">
@@ -79,7 +82,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </table>
     </div>
     <div>
+      <button class="btn-group">
       <a class="btn-group" href="/knowledge/write">새 글 등록</a>
+    </button>
     </div>
 
     <!-- 엑셀 다운로드 -->
@@ -98,5 +103,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </c:if> -->
   </div>
   </div>
+  <jsp:include page="../layout/layout_close.jsp" />
   </body>
 </html>

@@ -72,6 +72,7 @@
 	 INNER JOIN PROJECT P
 	    ON P.PRJ_ID = R.PRJ_ID
 	  WHERE K.DEL_YN = 'N'
+	  ORDER BY CRT_DT DESC
   </select>
 	
 	
@@ -133,7 +134,7 @@
 	   AND K.KNL_ID = #{_parameter}
   </select>
 	
-	
+	<!-- 조회수 -->
 	<update id="increaseViewCount" parameterType="String">
 	UPDATE KNOWLEDGE 
 	   SET KNL_CNT = KNL_CNT + 1
@@ -141,7 +142,7 @@
 	   AND KNL_ID = #{_parameter}
 	</update>
 	
-	
+	<!-- 수정 -->
 	<update id="updateOneKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">
 		UPDATE KNOWLEDGE 
 		   SET KNL_TTL = #{knlTtl}
@@ -154,13 +155,27 @@
 		 WHERE KNL_ID = #{knlId}
 	</update>
 	
-	
-	<update id="deleteOneKnowledge" parameterType="_int">
+	<!-- 삭제 -->
+	<update id="deleteOneKnowledge" parameterType="String">
 		UPDATE KNOWLEDGE 
 		   SET DEL_YN = 'Y'
 		   	 , MDF_DT = SYSDATE
-		 WHERE KNL_ID = #{knlId}
+		 WHERE KNL_ID = #{_parameter}
 	</update>
+	
+
+	
+	<update id="recommendOneKnowledge" parameterType="String">
+		UPDATE KNOWLEDGE 
+		   SET KNL_REC_CNT = KNL_REC_CNT + 1
+		 WHERE DEL_YN = 'N'
+		   AND KNL_ID = #{knlId}
+	</update>
+	
+	
+	
+	
+	
 	
 	
 	

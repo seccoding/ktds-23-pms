@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
 
 @Controller
@@ -38,8 +40,8 @@ public class KnowledgeController {
 	@Autowired
 	private ProjectService projectService;
 	
+	
 	// 목록 조회
-
 	@GetMapping("/knowledge")
 	public String viewKnowledgeListPage(Model model) {
 		
@@ -63,6 +65,7 @@ public class KnowledgeController {
 //		return new AjaxResponse().append("oneKnowledge", knowledgeVO);
 		return "/knowledge/knowledgeview";
 	}
+	
 	
 	
 	// 글 작성 페이지
@@ -113,10 +116,27 @@ public class KnowledgeController {
 		return "redirect:/knowledge?knlId=" + knlId;
 		
 	}
+	
+	// 추천하기 // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+	@ResponseBody
+	@GetMapping("/ajax/Knowledge/recommend/{knlId}")
+	public AjaxResponse doRecommendKnowledge (@PathVariable String knlId) {
+		
+//		boolean isSuccess = this.knowledgeService.recommendOneKnowledge(knlId);
+		
+		int recommendCount = this.knowledgeService.recommendOneKnowledge(knlId);
+		
+//		if(isSuccess) {
+//			logger.info("추천!");
+//		}
+		
+		
+		return new AjaxResponse().append("result", recommendCount);
+	}
 
 	// 글 수정 페이지 // @SessionAttribute 추가 예정
 	@GetMapping("/knowledge/modify/{knlId}")
-	public String doKnowledgeModify(@PathVariable String knlId, Model model) {
+	public String viewKnowledgeModify(@PathVariable String knlId, Model model) {
 		
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 		
@@ -134,7 +154,7 @@ public class KnowledgeController {
 	
 	// 글 수정 작성 페이지
 	@PostMapping("/knowledge/modify/{knlId}") // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO 
-	public String viewKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
+	public String doKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
 								KnowledgeVO knowledgeVO) {
 		
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
@@ -176,19 +196,23 @@ public class KnowledgeController {
 	
 	
 	// 글 삭제
-	@PostMapping("/knowledge/delete/{knlId}")
-	public String doKnowledgeDelete(@PathVariable String knlId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		
-		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
+	@GetMapping("/knowledge/delete/{knlId}") // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+	public String doKnowledgeDelete(@PathVariable String knlId, Model model) {
 		
 		boolean isDeleteSuccess = this.knowledgeService.deleteOneKnowledge(knlId);
 		
+//		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
+		
+		// TO DO !!  1. 유저 검증 코드 부분 
+//		if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && ! employeeVO.getAdmnCode().equals(301)) {
+//			throw new PageNotFoundException();
+//		}
+		
 		if(isDeleteSuccess) {
-			logger.info("삭제가 성공되었습닌다!");
+			logger.info("삭제가 성공되었습니다!");
 		} else {
 			logger.info("삭제가 실패되었습니다!");
 		}
-		
 		
 		return "redirect:/knowledge";
 	}

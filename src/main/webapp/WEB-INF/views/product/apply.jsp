@@ -5,14 +5,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>비품 추가</title>
+    <title>비품 신청</title>
     <jsp:include page="../commonheader.jsp" />
-    <script type="text/javascript" src="/js/product/manageadd.js" ></script>
+    <script type="text/javascript" src="/js/product/apply.js" ></script>
     <style type="text/css">
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 15rem);
-            grid-template-rows: repeat(3, 4rem);
+            grid-template-rows: repeat(2, 4rem);
             position: relative;
             text-align: center;
             align-items: center;
@@ -25,7 +25,7 @@
         .plus-minus {
             position: absolute;
             right: 4rem;
-            bottom: 10rem;
+            bottom: 7.5rem;
         }
         .plus-btn, .minus-btn {
             width: 30px;
@@ -39,9 +39,9 @@
 </head>
 <body>
     <jsp:include page="../layout/layout.jsp" />
-        <h2>비품 추가 정보</h2>
+        <h2>비품 신청 정보</h2>
         <div class="form-group">
-            <form action="/product/manage/add" method="post" enctype="multipart/form-data">
+            <form action="/product/apply" method="post" enctype="multipart/form-data">
                 <hr />
                 <div class="form-grid">
                     <div>
@@ -59,26 +59,13 @@
                     </div>
     
                     <div>
-                        <label for="onceYn">소모품 분류</label>
-                        <select id="onceYn" name="onceYn" >
-                            <option value="onceYn" >소모품</option>
-                            <option value="onceYn" >비소모품</option>
-                        </select>
-                    </div>
-    
-                    <div>
-                        <label for="curStr">재고수</label>
+                        <label for="curStr">신청 수량</label>
                         <input type="number" id="curStr" name="curStr"/>
                     </div>
     
                     <div>
-                        <label for="buyDt">구매일</label>
-                        <input type="date" id="buyDt" name="buyDt"/>
-                    </div>
-    
-                    <div>
-                        <label for="prdtPrice">가격</label>
-                        <input type="text" id="prdtPrice" name="prdtPrice"/>
+                        <label for="first-apply-date">신청일</label>
+                        <input type="date" id="first-apply-date" />
                     </div>
     
                 </div>

@@ -77,4 +77,9 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return null;
 	}
 
+	@Override
+	public String saltByEmp(String empId) {
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".saltByEmp", empId);
+	}
+
 }

@@ -41,6 +41,7 @@
     		 WHERE EMP_ID = #{empId}
     </update>
 
+
     <insert id="updateLoginLog" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         INSERT INTO LOGIN_LOG
               (LOG_ID
@@ -83,5 +84,41 @@
          WHERE LOG_ID = #{loginLogVO.logId}
            AND LGT_DT IS NULL
     </update>
+
+
+    
+    <select id="getOneEmpLgnTryCount"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+    		resultType="_int">
+    		SELECT LGN_TRY
+			  FROM EMPLOYEE
+			 WHERE EMP_ID = #{empId}
+    </select>
+    
+    <update id="updateOneEmpLgnTryPlusOne"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    		UPDATE EMPLOYEE
+			   SET LGN_TRY = LGN_TRY + 1
+			 WHERE EMP_ID = #{empId}
+    </update>
+    
+    <update id="updateOneEmpLgnTryZero"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    		UPDATE EMPLOYEE
+			   SET LGN_TRY = 0
+			 WHERE EMP_ID = #{empId}
+    </update>
+    <!-- 수정중 -->
+<!--     <update id="updateOneEmpLgnTryDtBySysdate"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    		UPDATE EMPLOYEE 
+			   SET LGN_TRY_DT = SYSDATE + 1/24
+			 WHERE EMP_ID = #{empId}
+			   AND LGN_TRY = 5
+    </update> -->
+    
+    
+    
+    
 
 </mapper>

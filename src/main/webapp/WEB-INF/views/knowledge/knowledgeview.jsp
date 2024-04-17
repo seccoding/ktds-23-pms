@@ -5,9 +5,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <title>지식관리 상세 페이지</title>
+    <jsp:include page="../commonheader.jsp"></jsp:include>
     <script
       type="text/javascript"
-      src="/js/knowledge/knowledgedetail.js"
+      src="/js/knowledge/knowledgeview.js"
     ></script>
     <style type="text/css">
       div.grid {
@@ -19,6 +20,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </style>
   </head>
   <body>
+    <jsp:include page="../layout/layout.jsp" />
+    
+
     <h1>지식관리 게시글 조회</h1>
 
     <div class="grid" data-id="${knowledgedetail.knlTtl}">
@@ -53,13 +57,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <label for="knlRecCnt">추천수</label>
       <div>${knowledgeVO.knlRecCnt}</div>
 
-      <div>
+      <div class="btn-group">
+        <button class="recommend-knowledge">
+          <a href="/ajax/Knowledge/recommend/{knlId}">추천하기</a></button>
+        <button> 
         <a href="/knowledge/modify/${knowledgeVO.knlId}">수정</a>
-        <a  class="delete-knowledge" href="javaScript:void(0);">삭제</a>
+        <a  class="delete-knowledge" href="/knowledge/delete/${knowledgeVO.knlId}">삭제</a>
+      </button>
       </div>
 
 
-    
+      <jsp:include page="../layout/layout_close.jsp" />
 
   </body>
 </html>

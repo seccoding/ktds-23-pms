@@ -63,12 +63,28 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 			int updatedCount = this.knowledgeDao.increaseViewCount(knowledgeId);
 		}
 		
-//		// 추천을 눌렀다면 추천 1 증가
-//		if (isRecIncrease) {
-//			int updatedCount2 = this.knowledgeDao.increaseViewCount(knowledgeId);
-//		}
+		
 		
 		return knowledgeVO;
+	}
+	
+	/**
+	 * 추천하기
+	 */
+//	@Override
+//	public int recommendOneKnowledge(String knlId) {
+//		
+//		KnowledgeVO originKnowledge = this.knowledgeDao.selectOneKnowledge(knlId);
+//		
+//		return this.knowledgeDao.recommendOneKnowledge(knlId) > 0;
+//	}
+	
+	@Override
+	public int recommendOneKnowledge(String knlId) {
+		
+		KnowledgeVO originKnowledge = this.knowledgeDao.selectOneKnowledge(knlId);
+
+		return this.knowledgeDao.recommendOneKnowledge(knlId);
 	}
 
 	
@@ -155,6 +171,12 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
 		return deletedCount > 0;
 	}
+
+
+
+
+
+
 	
 	
 	

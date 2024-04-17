@@ -64,8 +64,11 @@
             <form id="search-form">
                 <input type="hidden" id="page-no" name="pageNo" value="0" />
                 <div class="right-align">
-                    <input type="checkbox" id="product-exist">
-                    <label for="product-exist"></label>
+                    <div class="check-option">
+                        <input type="checkbox" id="product-exist-search" />
+                        <label for="product-exist-search"></label>
+                        <label for="product-exist-search">재고가 있는 비품만 조회</label>
+                    </div>
                     
                     <select id="search-type" name="searchType" >
                         <option value="productManagementId" ${productManagementVO.searchType eq 'productManagementId' ? 'selected' : ''}>비품관리ID</option>

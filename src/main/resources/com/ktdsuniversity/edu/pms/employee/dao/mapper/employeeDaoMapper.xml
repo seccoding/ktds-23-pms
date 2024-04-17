@@ -186,4 +186,12 @@ SELECT E.EMP_ID
 	</insert>
 
 
+	<select id="saltByEmp"
+			parameterType="string"
+			resultType="string">
+		SELECT SALT
+		  FROM EMPLOYEE
+		 WHERE EMP_ID = #{empId}
+	</select>
+
 </mapper>

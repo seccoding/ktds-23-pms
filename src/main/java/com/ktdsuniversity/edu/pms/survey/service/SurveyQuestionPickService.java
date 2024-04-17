@@ -6,4 +6,6 @@ public interface SurveyQuestionPickService {
 
 	public boolean createNewAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
 
+	public boolean modifyOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
+
 }

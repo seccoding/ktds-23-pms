@@ -63,8 +63,6 @@ public class LoginController {
 								@RequestParam(defaultValue = "/main/mainpage") String nextUrl,
 								Model model) {
 
-		logger.info("NextUrl: " + nextUrl);
-
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 
 		validator.add("empId", Type.NOT_EMPTY, "사원번호를 입력해 주세요.")
@@ -85,31 +83,63 @@ public class LoginController {
 		} else if (loginCheck.equals("204")) {
 			return new AjaxResponse().append("errorEndDt", "퇴사한 사원입니다." + "퇴사일 : " + employee.getEndDt());
 		}
+		
+		
 
+		
+//		if (employee.getLgnTry() > 5) {
+//			return new AjaxResponse().append("errorCountFive", "5번 실패하였습니다 60분 이후에 시도해주세요.");
+//		}else {
+			if (!SessionUtil.wasLoginEmployee(employee.getEmpId())){
+				session.setAttribute("_LOGIN_USER_", employee);
+				session.setMaxInactiveInterval(20 * 60);
+				SessionUtil.addSession(employee.getEmpId(), session);
+				
+				// 로그인 성공시 LGNYN을 Y로 변경
+				employee = this.loginLogService.getOneEmpIdUseOtherPlace(employeeVO);
+				return new AjaxResponse().append("next", nextUrl);
+			}
+			else {
+				return new AjaxResponse().append("errorUseNow", "이미 로그인중인 사원번호입니다.");
+			}
+		}
+		
+		
+		
 		// 로그인 할때 lgnYN이 N일 경우 로그인 진행
-		if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
-//		if (employee.getLgnYn().equals("N")) {
 
+		
+	
 
-			// 로그인 기록 DB 저장 메서드
-			this.loginLogService.updateLoginLog(employee);
-			// LOGIN_LOG 테이블의 LOG_ID 값을 포함한 employeeVO 객체를 재대입한다.
-			employee = this.loginLogService.updateEmpLog(employee);
+		
+//		if (!SessionUtil.wasLoginEmployee(employee.getEmpId()) && employee.getLgnTry() <= 5) {
+////		if (employee.getLgnYn().equals("N")) {
+//			session.setAttribute("_LOGIN_USER_", employee);
+//			session.setMaxInactiveInterval(20 * 60);
+//			SessionUtil.addSession(employee.getEmpId(), session);
+//
+//			// 로그인 성공시 LGNYN을 Y로 변경
+//			employee = this.loginLogService.getOneEmpIdUseOtherPlace(employeeVO);
+//			return new AjaxResponse().append("next", nextUrl);
+//
+//		}
+		
+			
+		
+		
+//		else if(SessionUtil.wasLoginEmployee(employee.getEmpId())) {// 아닐경우 오류 발생
+//		}
+//		else if(employee.getLgnTry() > 5) {// 아닐경우 오류 발생
+//			return new AjaxResponse().append("errorCountFive", "5번 실패하였습니다 60분 이후에 시도해주세요.");
+//		}
+//		else {
+//			return new AjaxResponse().append("next", nextUrl);
+//		}
+	
+	
+	
+	
 
-			session.setAttribute("_LOGIN_USER_", employee);
-			session.setMaxInactiveInterval(20 * 60);
-			SessionUtil.addSession(employee.getEmpId(), session);
-
-			//로그인 성공시 LGNYN을 Y로 변경
-			employee = this.loginLogService.getOneEmpIdUseOtherPlace(employeeVO);
-
-			return new AjaxResponse().append("next", nextUrl);
-		}
-		// 아닐경우 오류 발생
-		else {
-			return new AjaxResponse().append("errorUseNow", "이미 로그인중인 사원번호입니다.");
-		}
-	}
 
 	@GetMapping("/employee/logout")
 	public String doLogout(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
