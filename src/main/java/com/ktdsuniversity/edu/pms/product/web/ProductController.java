@@ -105,7 +105,7 @@ public class ProductController {
 		System.out.println(productManagementVO.getPrdtMngId());
 		System.out.println(productManagementVO.getPrdtPrice());
 		boolean isModifySuccess = this.productManagementService.modifyOneProductManagement(productManagementVO);
-		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId());
+		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId()).append("detailUrl", "/product/manage/detail");
 	}
 	
 }
