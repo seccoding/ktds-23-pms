@@ -8,6 +8,18 @@
 <title>비품 대여 현황</title>
 <jsp:include page="../commonheader.jsp" />
 <script type="text/javascript" src="/js/product/rentalstate.js"></script>
+<style>
+    .flex{
+        display: flex;
+        justify-content: flex-end;
+    }
+    .flex > button{
+        width: auto;
+        margin: 0 0.5rem;
+        padding: 0.2rem 0.4rem;
+    }
+    
+</style>
 </head>
 <body>
     <h2>비품 대여 현황</h2>
@@ -41,6 +53,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>선택</th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>
                     <th>대여일</th>
@@ -53,7 +66,11 @@
                     <c:when test="${not empty userRentalState.borrowList}">
                         <c:forEach items="${userRentalState.borrowList}" var="product">
                             <tr>
+                                <td><input type="checkbox" id="checkbox1" />
+                                    <label for="checkbox1"></label>
+                                    <label for="checkbox1"></label></td>
                                 <td>${product.productVO.prdtName}</td>
+                                <td class="manage-id">${product.prdtMngId}</td>
                                 <td class="manage-id">${product.prdtMngId}</td>
                                 <td>${product.brrwDt}</td>
                                 <td>
@@ -83,6 +100,10 @@
     
             </tbody>
         </table>
+    </div>
+    <div class="flex">
+        <button>선택항목 변경신청</button>
+        <button>선택항목 반납</button>
     </div>
     
 </body>
