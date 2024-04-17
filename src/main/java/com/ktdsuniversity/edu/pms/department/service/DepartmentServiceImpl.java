@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
@@ -41,6 +42,29 @@ public class DepartmentServiceImpl implements DepartmentService{
 		
 		
 		return this.departmentDao.deleteOneDepartment(id) > 0;
+	}
+
+	@Override
+	public DepartmentListVO getOnlyDepartment() {
+		
+		List<DepartmentVO> onlyDepartmentListVO = this.departmentDao.getOnlyDepartment();
+		DepartmentListVO departmentListVO = new DepartmentListVO();
+		departmentListVO.setDepartmentList(onlyDepartmentListVO);
+		return departmentListVO;
+	}
+
+	@Override
+	public DepartmentVO selectOneDepartment(String departmentId) {
+		
+		DepartmentVO departmentVO = this.departmentDao.getOneDepartment(departmentId);
+		
+		return departmentVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean modifyOneDepartment(DepartmentVO departmentVO) {
+		return departmentDao.updateOneDepartment(departmentVO) > 0;
 	}
 
 	

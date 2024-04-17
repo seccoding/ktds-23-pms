@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
@@ -22,8 +23,11 @@ public class DepartmentController {
 	@GetMapping("/department/search")
 	public String viewDepartmentListPage(Model model) {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
+		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
+		
 		
 		model.addAttribute("departmentList", departmentListVO);
+		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
 		
 		return "department/departmentlist";
 	}
@@ -39,7 +43,7 @@ public class DepartmentController {
 		boolean isEmptyName = StringUtil.isEmpty(departmentVO.getDeptName());
 		boolean isEmptyLeaderId = StringUtil.isEmpty(departmentVO.getDeptLeadId());
 		
-		System.out.println(departmentVO.getDeptName() + departmentVO.getDeptLeadId()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		
 		
 		if (isEmptyName) {
 			model.addAttribute("errorMessage", "부서 이름은 필수 입력 값입니다.");
@@ -54,6 +58,22 @@ public class DepartmentController {
 		
 		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
 		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/department/show")
+	public AjaxResponse selectOptionShowDepartment(@RequestParam String departmentId) {
+		DepartmentVO departmentVO = this.departmentService.selectOneDepartment(departmentId);
+		return new AjaxResponse().append("oneDepartment", departmentVO);
+	}
+	@ResponseBody
+	@PostMapping("/ajax/department/modify")
+	public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
+		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
+		System.out.println(departmentVO.getDeptId());
+		System.out.println(departmentVO.getDeptName());
+		System.out.println(departmentVO.getDeptLeadId());
+		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 	}
 
 }
