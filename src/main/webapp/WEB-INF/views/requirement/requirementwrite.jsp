@@ -18,7 +18,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
   <body>
     <jsp:include page="../layout/layout.jsp"></jsp:include>
-    <form action="/project/requirement/write" method="post" enctype="multipart/form-data"  >
+    <form action="/requirement/write" method="post" enctype="multipart/form-data"  >
     <div class="grid">
       <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
       <label for="rqm-id">프로젝트명</label>

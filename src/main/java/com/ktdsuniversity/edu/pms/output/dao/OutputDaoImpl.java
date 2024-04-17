@@ -8,7 +8,6 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 
 
@@ -36,7 +35,25 @@ public class OutputDaoImpl extends SqlSessionDaoSupport implements OutputDao{
 
 
 	@Override
+	public int insertOneOutput(OutputVO outputVO) {
+		return getSqlSession().insert(NAME_SPACE+".insertOneOutput", outputVO);
+	}
+
+
+	@Override
+	public OutputVO getOneOutput(String outId) {
+		return getSqlSession().selectOne(NAME_SPACE+".getOneOutput", outId);
+	}
+
+
+	@Override
+	public int deleteOneOutput(String outId) {
+		return getSqlSession().update(NAME_SPACE+".deleteOneOutput", outId);
+	}
+
+
+	@Override
 	public int updateOneOutput(OutputVO outputVO) {
-		return getSqlSession().insert(NAME_SPACE+".updateOneOutput", outputVO);
+		return getSqlSession().update(NAME_SPACE+".updateOneOutput", outputVO);
 	}
 }
