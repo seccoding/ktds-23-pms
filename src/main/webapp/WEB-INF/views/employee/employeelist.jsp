@@ -9,7 +9,6 @@
     <jsp:include page="../commonheader.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
     <h2>사원 조회</h2>
     <div class="flex">
         <div>총 ${employeeList.employeeCnt}명이 검색되었습니다. </div>
@@ -43,6 +42,6 @@
         </tbody>
     </table>
     </div>
-<jsp:include page="../layout/layout_close.jsp" />
+
 </body>    
 </html>
