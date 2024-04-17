@@ -14,6 +14,10 @@
     .table-item{
         text-align: center;
     }
+    .btn-group {
+        text-align: right;
+        margin: 2rem;
+    }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 </head>
@@ -31,8 +35,11 @@
             <form id="search-form">
                 <input type="hidden" id="page-no" name="pageNo" value="0" />
                 <div class="right-align">
-                    <input type="checkbox" id="product-exist">
-                    <label for="product-exist"></label>
+                    <div class="check-option">
+                        <input type="checkbox" id="product-exist-search" />
+                        <label for="product-exist-search"></label>
+                        <label for="product-exist-search">재고가 있는 비품만 조회</label>
+                    </div>
                     
                     <select id="search-type" name="searchType" >
                         <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
@@ -79,6 +86,10 @@
     
             </tbody>
         </table>
+
+        <div class="btn-group">
+            <button class="create-product" type="button">생성</button>
+        </div>
     </div>
 <jsp:include page="../layout/layout_close.jsp" />
 </body>
