@@ -44,6 +44,31 @@ $().ready(function () {
   if (!isMainLayout) {
     var framePath = window.parent.getLocationPathInFrame();
     var menuObject = window.parent.findMenuObject(framePath);
+
+    var activeFrameDataset = window.parent.getActiveFrameDataset();
+    console.log("menuObject", menuObject);
+    console.log("activeFrameDataset", activeFrameDataset);
+    if (menuObject.role && menuObject.id && menuObject.url) {
+      var menuId = activeFrameDataset.menuId;
+
+      var url = $(window.parent.document)
+        .find(".dropdown-menu")
+        .find("a[data-menu-id=" + menuId + "]")
+        .data("menu-url");
+
+      console.log("url", url);
+      console.log("menuObject.url", menuObject.url);
+
+      if (menuObject.url !== url) {
+        $(window.parent.document)
+          .find(".dropdown-menu")
+          .find("a[data-menu-id=" + menuId + "]")
+          .click();
+
+        return;
+      }
+    }
+
     var menuTree = window.parent.makeTree(menuObject);
     var menuPath = window.parent.makePath(menuTree);
 

@@ -246,6 +246,14 @@ const menuList = [
   },
 ];
 
+window.getActiveFrameDataset = function () {
+  return window.getActiveFrame().parentElement.dataset;
+};
+
+window.getActiveFrame = function () {
+  return document.querySelector(".frame-active > iframe");
+};
+
 window.getLocationPathInFrame = function () {
   var frame = document.querySelector(".frame-active > iframe");
   var path = frame.contentDocument.location.pathname;
