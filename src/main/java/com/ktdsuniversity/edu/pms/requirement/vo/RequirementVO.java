@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.requirement.vo;
 
+import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
@@ -27,7 +28,6 @@ public class RequirementVO {
     private CommonCodeVO scdStsVO;
     private CommonCodeVO rqmStsVO;
     private ProjectVO  projectVO;
-    
     
 
     public String getRqmId() {
@@ -198,6 +198,10 @@ public class RequirementVO {
 	public void setProjectVO(ProjectVO projectVO) {
 		this.projectVO = projectVO;
 	}
+
+
+	
+	
     
     
 }

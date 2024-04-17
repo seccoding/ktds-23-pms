@@ -7,9 +7,6 @@
 	<resultMap type="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO" 
 	id="requirementVOMap" autoMapping="true">
 	<id column="RQM_ID" property="rqmId" /><!-- pk -->
-	<result column="SCD_STS" property="scdSts" /><!-- join value -->
-	<result column="RQM_STS" property="rqmSts" /><!-- join value -->
-	<result column="PRJ_ID" property="prjId" /><!-- join value -->
 	<!-- join table -->
 	<association property="scdStsVO" 
 		javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
@@ -32,8 +29,24 @@
 			<result column="PRJ_NAME" property="prjName" />
 			<result column="REQ_YN" property="reqYn" />
 	</association>
+	
+	
 	 
 	</resultMap>
+	
+	<select id="searchAllCount"
+		parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO"
+	resultMap="requirementVOMap">
+	SELECT  COUNT(1)
+	  FROM 	REQUIREMENT r  	
+	  JOIN	PROJECT p 
+	  	ON	r.PRJ_ID = p.PRJ_ID 
+	 WHERE	R.DEL_YN = 'N'	
+	   AND	P.REQ_YN= 'Y'
+	   <if test="#{prjId != null}">
+	   AND	R.PRJ_ID=#{prjId}
+	   </if>	
+	</select>
 
 
 	<select id="getAllRequirement" 
@@ -59,6 +72,34 @@
 	 ORDER	BY  R.RQM_ID DESC
 	</select>
 	
+	<select id="searchAllRequirement" 
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO"
+	resultMap="requirementVOMap">
+	SELECT  R.RQM_ID 
+		 ,	R.RQM_TTL 
+		 ,	R.RQM_CNTNT 
+		 ,	R.SCD_STS 
+		 ,	CC1.CMCD_NAME AS STS_NAME
+		 ,	R.RQM_STS 
+		 ,	cc2.CMCD_NAME AS RQM_NAME	
+		 ,	r.PRJ_ID
+		 ,	p.PRJ_NAME 
+	  FROM 	REQUIREMENT r 
+	  JOIN	COMMON_CODE cc1 
+	  	ON	R.SCD_STS =CC1.CMCD_ID
+	  JOIN  COMMON_CODE cc2
+	  	ON  r.RQM_STS  = cc2.CMCD_ID 
+	  JOIN	PROJECT p 
+	  	ON	r.PRJ_ID = p.PRJ_ID 
+	 WHERE	R.DEL_YN = 'N'	
+	   AND	P.REQ_YN= 'Y'
+	 <if test='#{prjId != "ALL"}'>
+	   AND	R.PRJ_ID=#{prjId}
+	 </if>
+	 ORDER	BY  R.RQM_ID DESC
+	</select>
+	
+	
 	<select id="getOneRequirement" 
 	parameterType="String"
 	resultMap="requirementVOMap">
@@ -82,6 +123,7 @@ SELECT  R.RQM_ID
   	ON	r.PRJ_ID = p.PRJ_ID 
  WHERE	R.RQM_ID = #{_PARAMETER}
    AND	P.REQ_YN= 'Y'
+   AND  R.DEL_YN = 'N'
 	</select>
 	
 	

@@ -21,7 +21,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
 
   <body>
-    <jsp:include page="../layout/layout.jsp"></jsp:include>
     <div class="grid">
       <div>프로젝트명</div>
       <div>${requirement.projectVO.prjName}</div>
@@ -72,6 +71,5 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:otherwise>
       </c:choose>
     </div>
-    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
   </body>
 </html>

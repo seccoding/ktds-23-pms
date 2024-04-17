@@ -13,6 +13,8 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.requirement.dao.RequirementDao;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.DelayAcessVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 
 @Service
 public class RequirementServiceImpl implements RequirementService{
@@ -21,10 +23,19 @@ public class RequirementServiceImpl implements RequirementService{
 	private RequirementDao requirementDao;
 	@Autowired
 	private FileHandler fileHandler;
+	
 	@Override
 	public List<RequirementVO> getAllRequirement() {
+		
 		return this.requirementDao.getAllRequirement();
-		 
+	}
+	
+	@Override
+	public RequirementListVO searchAllRequirement(RequirementSearchVO requirementSearchVO) {
+		
+		RequirementListVO list = new RequirementListVO();
+		list.setRequirementList(this.requirementDao.searchAllRequirement(requirementSearchVO));	
+		return list; 
 	}
 
 	@Override
@@ -87,6 +98,8 @@ public class RequirementServiceImpl implements RequirementService{
 
 		return this.requirementDao.delayRequirement(requirementVO)>0;
 	}
+
+	
 
 	
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 
 public interface RequirementService {
@@ -12,6 +14,8 @@ public interface RequirementService {
  * @return 전체 요구사항 리스트(삭제 제외)
  */
 	public List<RequirementVO> getAllRequirement();
+	
+	public RequirementListVO searchAllRequirement(RequirementSearchVO requirementSearchVO);
 /**
  * 요구사항 아이디값을 받아서 요구사항을 보내준다
  * @param rqmId 요구사항 아이디
