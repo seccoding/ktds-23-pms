@@ -26,7 +26,6 @@
 			<id column="CMCD_ID" property="cmcdId" />
 			<result column="C_CMCD_NAME"	property="cmcdName" />		 
 		</association>
-		
 	</resultMap>
 	<select id="getDepartmentCount" resultType="_int">
 		SELECT COUNT(1)
@@ -72,7 +71,7 @@
 		   SET DEL_YN = 'Y'
 		 WHERE ID IN
 		<foreach collection="list" item="id" open="(" close=")" separator=",">
-			#{id}
+			#{deptId}
 		</foreach>
 	</update>
 	
@@ -81,7 +80,27 @@
 		UPDATE DEPARTMENT
 		   SET DEPT_NAME = #{deptName}
 		     , DEPT_LEAD_ID	= #{deptLeadId}
-		 WHERE ID = #{id}
+		 WHERE DEPT_ID = #{deptId}
 	</update>
+	
+	<select id="getOnlyDepartment"
+	        resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+		SELECT DEPT_ID
+			 , DEPT_NAME
+		  FROM DEPARTMENT
+	</select>
+	
+	<select id="getOneDepartment"
+			parameterType="string"
+	        resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+		SELECT DEPT_ID
+			 , DEPT_NAME
+			 , DEPT_CR_DT
+			 , DEPT_LEAD_ID
+		  FROM DEPARTMENT
+		 WHERE DEPT_ID = #{_parameter}
+	</select>
+	
+	
 
 </mapper>
