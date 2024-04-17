@@ -31,8 +31,8 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 	}
 
 	@Override
-	public int createNewDepartment(DepartmentVO deparmentVO) {
-		return getSqlSession().insert(DepartmentDao.NAME_SPACE + ".createNewDepartment");
+	public int createNewDepartment(DepartmentVO departmentVO) {
+		return getSqlSession().insert(DepartmentDao.NAME_SPACE + ".createNewDepartment", departmentVO);
 	}
 
 	@Override
