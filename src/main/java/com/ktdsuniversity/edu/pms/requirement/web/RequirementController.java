@@ -20,6 +20,8 @@ import com.ktdsuniversity.edu.pms.login.web.LoginController;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -40,17 +42,22 @@ public class RequirementController {
 
 	@GetMapping("/requirement")
 	public String viewAllRequirement() {
-		return "redirect:/requirement/search?prjId=null";
+		return "redirect:/requirement/search?prjId=ALL";
 	}
 	
 	@GetMapping("/requirement/search")
 	public String viewSearchAllRequirement(
 			/* @SessionAttribute , */
-			@RequestParam String prjId,
+			@RequestParam String prjId,RequirementSearchVO requirementSearchVO,
 			 Model model) {
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
-		List<RequirementVO> requirementList = requirementService.getAllRequirement();
-		model.addAttribute("resultList", requirementList);
+		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
+		ProjectListVO projectList = this.projectService.getAllProject();
+		projectList.setProjectList(
+				projectList.getProjectList().stream()
+				.filter((project)->project.getReqYn().equals("Y")).toList());
+		model.addAttribute("resultList", requirementList).addAttribute("projectList", projectList)
+		.addAttribute("prjId", prjId);
 
 		return "requirement/requirementlist";
 	}

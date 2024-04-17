@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.requirement.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.DelayAcessVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 
 @Repository
 public class RequirementDaoImpl extends SqlSessionDaoSupport implements RequirementDao{
@@ -20,10 +22,23 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	}
 
 	@Override
+	public int searchAllCount(RequirementSearchVO requirementSearchVO) {
+		return getSqlSession().selectOne(NAME_SPACE+".searchAllCount",requirementSearchVO);
+	}
+	
+	@Override
 	public List<RequirementVO> getAllRequirement() {
 		
 		return getSqlSession().selectList(NAME_SPACE+".getAllRequirement");
 	}
+	
+	@Override
+	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO) {
+		
+		return getSqlSession().selectList(NAME_SPACE+".searchAllRequirement", requirementSearchVO);
+
+	}
+
 
 	@Override
 	public RequirementVO getOneRequirement(String rqmId) {
@@ -56,9 +71,13 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	}
 	@Override
 	public int updateDelayOneRequirement(DelayAcessVO delayAcessVO) {
-		return getSqlSession().update(NAME_SPACE+".updateDelayOneRequirement", delayAcessVO);
+		return getSqlSession().update(NAME_SPACE+".updateDelayOneRequirement", delayAcessVO);
+
 	}
 
+
+
+	
 	
 
 }

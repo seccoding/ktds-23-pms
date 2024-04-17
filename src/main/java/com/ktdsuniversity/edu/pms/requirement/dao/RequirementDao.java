@@ -3,12 +3,17 @@ package com.ktdsuniversity.edu.pms.requirement.dao;
 import java.util.List;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.DelayAcessVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 
 public interface RequirementDao {
 
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.requirement.dao.RequirementDao";
+	
+	public int searchAllCount(RequirementSearchVO requirementSearchVO);
 
 	public List<RequirementVO> getAllRequirement();
+	
+	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO);
 
 	public RequirementVO getOneRequirement(String rqmId);
 	
