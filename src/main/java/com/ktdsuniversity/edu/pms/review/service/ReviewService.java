@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.review.service;
 
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
+import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
 
 public interface ReviewService {
 
@@ -9,9 +10,8 @@ public interface ReviewService {
 	 * 작성해야하는 후기의 목록을 조회한다
 	 * @return
 	 */
-	ReviewListVO getAllReview();
+	ReviewListVO getAllReview(SearchReviewVO searchReviewVO);
 
-	
 	ReviewListVO viewReviewCntnt();
 //	/**
 //	 * 작성완료된 후기의 내용을 보여준다
@@ -61,5 +61,7 @@ public interface ReviewService {
 	 * @return 후기삭제성공여부
 	 */
 	public boolean reviewViewResultDelete(String id);
+
+
 	
 }
