@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>설문 작성</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
+<script type="text/javascript" src="/js/survey/surveywrite.js"></script>
 <style type="text/css">
     div {
         border: 1px solid #000;
@@ -25,7 +26,6 @@
         display: inline-block;
     }
 </style>
-<script type="text/javascript" src="/js/survey/surveywrite.js"></script>
 </head>
 <body>
     <h1>설문 작성</h1>

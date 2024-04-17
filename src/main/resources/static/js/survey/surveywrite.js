@@ -40,36 +40,36 @@ $().ready(function() {
 
         var ulDom = $("<ul></ul>");
 
-        var firstLiDom = $("<li></li>");
-        var firstLiDivDom = $("<div></div>");
-        firstLiDivDom.text(1);
-        var firstLiFirstInputDom = $("<input/>");
-        firstLiFirstInputDom.attr('type', 'text');
-        firstLiFirstInputDom.attr('placeholder', '답변명');
-        var firstLiSecondInputDom = $("<input/>");
-        firstLiSecondInputDom.attr('type', 'text');
-        firstLiSecondInputDom.attr('placeholder', '연결');
+        var firstAnsDom = $("<li></li>");
+        var firstAnsSeqDom = $("<div></div>");
+        firstAnsSeqDom.text(1);
+        var firstAnsInputDom = $("<input/>");
+        firstAnsInputDom.attr('type', 'text');
+        firstAnsInputDom.attr('placeholder', '답변명');
+        var firstLinkInputDom = $("<input/>");
+        firstLinkInputDom.attr('type', 'text');
+        firstLinkInputDom.attr('placeholder', '연결');
 
-        firstLiDom.append(firstLiDivDom);
-        firstLiDom.append(firstLiFirstInputDom);
-        firstLiDom.append(firstLiSecondInputDom);
+        firstAnsDom.append(firstAnsSeqDom);
+        firstAnsDom.append(firstAnsInputDom);
+        firstAnsDom.append(firstLinkInputDom);
 
-        var secondLiDom = $("<li></li>");
-        var secondLiDivDom = $("<div></div>");
-        secondLiDivDom.text(2);
-        var secondLiFirstInputDom = $("<input/>");
-        secondLiFirstInputDom.attr('type', 'text');
-        secondLiFirstInputDom.attr('placeholder', '답변명');
-        var secondLiSecondInputDom = $("<input/>");
-        secondLiSecondInputDom.attr('type', 'text');
-        secondLiSecondInputDom.attr('placeholder', '연결');
+        var secondAnsDom = $("<li></li>");
+        var secondAnsSeqDom = $("<div></div>");
+        secondAnsSeqDom.text(2);
+        var secondAnsInputDom = $("<input/>");
+        secondAnsInputDom.attr('type', 'text');
+        secondAnsInputDom.attr('placeholder', '답변명');
+        var secondLinkInputDom = $("<input/>");
+        secondLinkInputDom.attr('type', 'text');
+        secondLinkInputDom.attr('placeholder', '연결');
 
-        secondLiDom.append(secondLiDivDom);
-        secondLiDom.append(secondLiFirstInputDom);
-        secondLiDom.append(secondLiSecondInputDom);
+        secondAnsDom.append(secondAnsSeqDom);
+        secondAnsDom.append(secondAnsInputDom);
+        secondAnsDom.append(secondLinkInputDom);
 
-        ulDom.append(firstLiDom);
-        ulDom.append(secondLiDom);
+        ulDom.append(firstAnsDom);
+        ulDom.append(secondAnsDom);
 
         var addSrvQstButtonDom = $("<button></button>");
         addSrvQstButtonDom.attr('type', 'button');
@@ -77,29 +77,55 @@ $().ready(function() {
 
         var qstNum = 3;
         $(addSrvQstButtonDom).on("click", function() {
-            var nextLiDom = $("<li></li>");
-            var nextLiDivDom = $("<div></div>");
-            nextLiDivDom.text(qstNum);
+            var nextAnsDom = $("<li></li>");
+            var nextAnsSeqDom = $("<div></div>");
+            nextAnsSeqDom.text(qstNum);
             qstNum++;
-            var nextLiFirstInputDom = $("<input/>");
-            nextLiFirstInputDom.attr('type', 'text');
-            nextLiFirstInputDom.attr('placeholder', '답변명');
-            nextLiSecondInputDom = $("<input/>");
-            nextLiSecondInputDom.attr('type', 'text');
-            nextLiSecondInputDom.attr('placeholder', '연결');
+            var nextAnsInputDom = $("<input/>");
+            nextAnsInputDom.attr('type', 'text');
+            nextAnsInputDom.attr('placeholder', '답변명');
+            var nextLinkInputDom = $("<input/>");
+            nextLinkInputDom.attr('type', 'text');
+            nextLinkInputDom.attr('placeholder', '연결');
             var deleteSrvQstButtonDom = $("<button></button>");
             deleteSrvQstButtonDom.attr("type", "button");
             deleteSrvQstButtonDom.text("제거");
 
             $(deleteSrvQstButtonDom).on("click", function() {
-                $(this).closest(nextLiDom).remove();
+                var ansToDel = $(this).closest(nextAnsDom);
+                var closestUlDom = ansToDel.closest(ulDom);
+                ansToDel.remove();
+                
+                var allAnsSeqLength = closestUlDom.find("li").find("div").length;
+
+                var allAnsSeqList = new Array();
+
+                console.log(closestUlDom.find("li").find("div"));
+                // allAnsSeqList.push(closestUlDom.find("li").find("div"));
+
+                // for (var i = 0; i < allAnsSeq; i++){
+                    // allAnsSeqList[i].push(allAnsSeq);
+                // }
+
+                // console.log(allAnsSeqList);
+                
+                // for (var i = 0; i < allAnsSeqLength; i++) {
+                //     allAnsSeqList[i].push(i + 1);
+                // }
+
+                // nextAns.closest(ulDom).find("li").each(function(response) {
+                //     var newAnsNum = 1;
+                //     $(this).find("div").text(newAnsNum);
+                //     newAnsNum++;
+                // });
+                
             });
 
-            nextLiDom.append(nextLiDivDom);
-            nextLiDom.append(nextLiFirstInputDom);
-            nextLiDom.append(nextLiSecondInputDom);
-            nextLiDom.append(deleteSrvQstButtonDom);
-            ulDom.append(nextLiDom);
+            nextAnsDom.append(nextAnsSeqDom);
+            nextAnsDom.append(nextAnsInputDom);
+            nextAnsDom.append(nextLinkInputDom);
+            nextAnsDom.append(deleteSrvQstButtonDom);
+            ulDom.append(nextAnsDom);
         });
 
         var insertSrvQstButtonDom = $("<button></button>");
@@ -132,36 +158,36 @@ $().ready(function() {
             typeYn = 'N';
             var ulDom = $("<ul></ul>");
 
-            var firstLiDom = $("<li></li>");
-            var firstLiDivDom = $("<div></div>");
-            firstLiDivDom.text(1);
-            var firstLiFirstInputDom = $("<input/>");
-            firstLiFirstInputDom.attr('type', 'text');
-            firstLiFirstInputDom.attr('placeholder', '답변명');
-            var firstLiSecondInputDom = $("<input/>");
-            firstLiSecondInputDom.attr('type', 'text');
-            firstLiSecondInputDom.attr('placeholder', '연결');
+            var firstAnsDom = $("<li></li>");
+            var firstAnsSeqDom = $("<div></div>");
+            firstAnsSeqDom.text(1);
+            var firstAnsInputDom = $("<input/>");
+            firstAnsInputDom.attr('type', 'text');
+            firstAnsInputDom.attr('placeholder', '답변명');
+            var firstLinkInputDom = $("<input/>");
+            firstLinkInputDom.attr('type', 'text');
+            firstLinkInputDom.attr('placeholder', '연결');
     
-            firstLiDom.append(firstLiDivDom);
-            firstLiDom.append(firstLiFirstInputDom);
-            firstLiDom.append(firstLiSecondInputDom);
+            firstAnsDom.append(firstAnsSeqDom);
+            firstAnsDom.append(firstAnsInputDom);
+            firstAnsDom.append(firstLinkInputDom);
     
-            var secondLiDom = $("<li></li>");
-            var secondLiDivDom = $("<div></div>");
-            secondLiDivDom.text(2);
-            var secondLiFirstInputDom = $("<input/>");
-            secondLiFirstInputDom.attr('type', 'text');
-            secondLiFirstInputDom.attr('placeholder', '답변명');
-            var secondLiSecondInputDom = $("<input/>");
-            secondLiSecondInputDom.attr('type', 'text');
-            secondLiSecondInputDom.attr('placeholder', '연결');
+            var secondAnsDom = $("<li></li>");
+            var secondAnsSeqDom = $("<div></div>");
+            secondAnsSeqDom.text(2);
+            var secondAnsInputDom = $("<input/>");
+            secondAnsInputDom.attr('type', 'text');
+            secondAnsInputDom.attr('placeholder', '답변명');
+            var secondLinkInputDom = $("<input/>");
+            secondLinkInputDom.attr('type', 'text');
+            secondLinkInputDom.attr('placeholder', '연결');
     
-            secondLiDom.append(secondLiDivDom);
-            secondLiDom.append(secondLiFirstInputDom);
-            secondLiDom.append(secondLiSecondInputDom);
+            secondAnsDom.append(secondAnsSeqDom);
+            secondAnsDom.append(secondAnsInputDom);
+            secondAnsDom.append(secondLinkInputDom);
     
-            ulDom.append(firstLiDom);
-            ulDom.append(secondLiDom);
+            ulDom.append(firstAnsDom);
+            ulDom.append(secondAnsDom);
     
             var addSrvQstButtonDom = $("<button></button>");
             addSrvQstButtonDom.attr('type', 'button');
@@ -169,30 +195,30 @@ $().ready(function() {
     
             qstNum = 3;
             $(addSrvQstButtonDom).on("click", function() {
-                var nextLiDom = $("<li></li>");
-                var nextLiDivDom = $("<div></div>");
-                nextLiDivDom.text(qstNum);
+                var nextAnsDom = $("<li></li>");
+                var nextAnsSeqDom = $("<div></div>");
+                nextAnsSeqDom.text(qstNum);
                 qstNum++;
-                var nextLiFirstInputDom = $("<input/>");
-                nextLiFirstInputDom.attr('type', 'text');
-                nextLiFirstInputDom.attr('placeholder', '답변명');
-                nextLiSecondInputDom = $("<input/>");
-                nextLiSecondInputDom.attr('type', 'text');
-                nextLiSecondInputDom.attr('placeholder', '연결');
+                var nextAnsInputDom = $("<input/>");
+                nextAnsInputDom.attr('type', 'text');
+                nextAnsInputDom.attr('placeholder', '답변명');
+                var nextLinkInputDom = $("<input/>");
+                nextLinkInputDom.attr('type', 'text');
+                nextLinkInputDom.attr('placeholder', '연결');
                 var deleteSrvQstButtonDom = $("<button></button>");
                 deleteSrvQstButtonDom.attr("type", "button");
                 deleteSrvQstButtonDom.text("제거");
     
                 $(deleteSrvQstButtonDom).on("click", function() {
-                    $(this).closest(nextLiDom).remove();
+                    $(this).closest(nextAnsDom).remove();
                     qstNum--;
                 });
     
-                nextLiDom.append(nextLiDivDom);
-                nextLiDom.append(nextLiFirstInputDom);
-                nextLiDom.append(nextLiSecondInputDom);
-                nextLiDom.append(deleteSrvQstButtonDom);
-                ulDom.append(nextLiDom);
+                nextAnsDom.append(nextAnsSeqDom);
+                nextAnsDom.append(nextAnsInputDom);
+                nextAnsDom.append(nextLinkInputDom);
+                nextAnsDom.append(deleteSrvQstButtonDom);
+                ulDom.append(nextAnsDom);
             });
     
             var insertSrvQstButtonDom = $("<button></button>");
