@@ -18,4 +18,6 @@ public interface ProductDao {
 
 	public int updateOneProduct(String prdtId);
 
+	public int changeOneProductCnt(String prdtId);
+
 }

@@ -100,12 +100,11 @@ public class ProductController {
 	@ResponseBody
 	@PostMapping("/ajax/product/manage/view/modify")
 	public AjaxResponse doModifyDetailProduct(ProductManagementVO productManagementVO) {
-		System.out.println(productManagementVO.getBuyDt());
-		System.out.println(productManagementVO.getPrdtId());
-		System.out.println(productManagementVO.getPrdtMngId());
-		System.out.println(productManagementVO.getPrdtPrice());
+		
 		boolean isModifySuccess = this.productManagementService.modifyOneProductManagement(productManagementVO);
 		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId()).append("detailUrl", "/product/manage/detail");
 	}
+	
+	
 	
 }

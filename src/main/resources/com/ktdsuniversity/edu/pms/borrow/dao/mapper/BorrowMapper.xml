@@ -59,4 +59,10 @@
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
 	</select>
+	
+	<update id="returnOneItem" parameterType="string">
+		UPDATE BORROW_HISTORY 
+		   SET RTN_DT = SYSDATE 
+		 WHERE BRRW_HIST_ID = #{_parameter}
+	</update>
 </mapper>

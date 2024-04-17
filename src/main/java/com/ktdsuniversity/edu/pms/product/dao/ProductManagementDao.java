@@ -24,4 +24,8 @@ public interface ProductManagementDao {
 
 	public int modifyOneProductManagement(ProductManagementVO productManagementVO);
 
+	public int changeOneItemBrrwState(String prdtMngId);
+
+	public String getProductId(String prdtMngId);
+
 }

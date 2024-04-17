@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
@@ -38,6 +39,12 @@ public class BorrowServiceImpl implements BorrowService{
 		borrowListVO.setBorrowList(borrowList);
 		
 		return borrowListVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean returnOneItem(String brrwHistId) {
+		return this.borrowDao.returnOneItem(brrwHistId) > 0;
 	}
 
 }
