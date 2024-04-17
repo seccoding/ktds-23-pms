@@ -6,14 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>이슈 목록 페이지</title>
-<jsp:include page="../commonheader.jsp"></jsp:include>
+<jsp:include page="../commonheader.jsp" />
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp"></jsp:include>
 <div>
 	총 ${issueList.issueCnt}건의 게시글이 검색되었습니다.
 </div>
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>프로젝트</th>

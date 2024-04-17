@@ -5,17 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.issue.dao.IssueDao;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
-import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
 
 @Service
 public class IssueServiceImpl implements IssueService {
 
 	@Autowired
 	private IssueDao issueDao;
+	
+	@Autowired
+	private FileHandler fileHandler;
 
 	@Override
 	public IssueListVO getAllIssue() {
@@ -48,8 +53,8 @@ public class IssueServiceImpl implements IssueService {
 		IssueVO issueVO = this.issueDao.selectOneIssue(isId);
 		
 		if (issueVO == null) {
-            throw new RuntimeException("잘못된 접근입니다.");
-        }
+			throw new RuntimeException("잘못된 접근입니다.");
+		}
 		
 		if (isIncrease) {
 			this.issueDao.increaseViewCount(isId);
@@ -59,7 +64,16 @@ public class IssueServiceImpl implements IssueService {
 	
 	@Transactional
 	@Override
-	public boolean createNewIssue(IssueVO issueVO) {
+	public boolean createNewIssue(IssueVO issueVO, MultipartFile file) {
+		
+		if (file != null && ! file.isEmpty()) {
+			StoredFile storedFile = fileHandler.storeFile(file);
+			
+			if (storedFile != null) {
+				issueVO.setFileName(storedFile.getRealFileName());
+				issueVO.setOriginFileName(storedFile.getFileName());
+			}
+		}
 		int insertedCount = this.issueDao.insertNewIssue(issueVO);
 		
 		return insertedCount > 0;
@@ -67,7 +81,19 @@ public class IssueServiceImpl implements IssueService {
 
 	@Transactional
 	@Override
-	public boolean updateOneIssue(IssueVO issueVO) {
+	public boolean updateOneIssue(IssueVO issueVO, MultipartFile file) {
+		if (file != null && ! file.isEmpty()) {
+			IssueVO originalIssueVO = this.issueDao.selectOneIssue(issueVO.getIsId());
+			if ( originalIssueVO != null ) {
+				String storedFileName = originalIssueVO.getFileName();
+				if (storedFileName != null && storedFileName.length() > 0) {
+					this.fileHandler.deleteFileByFileName(storedFileName);
+				}
+			}
+			StoredFile storedFile = this.fileHandler.storeFile(file);
+			issueVO.setFileName(storedFile.getRealFileName());
+			issueVO.setOriginFileName(storedFile.getFileName());
+		}
 		int updatedCount = this.issueDao.updateOneIssue(issueVO);
 		
 		return updatedCount > 0;

@@ -20,6 +20,8 @@ public class IssueVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String delYn;
+	private String fileName;
+	private String originFileName;
 	
 	private RequirementVO requirementVO; 
 	
@@ -128,5 +130,17 @@ public class IssueVO {
 	}
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getOriginFileName() {
+		return originFileName;
+	}
+	public void setOriginFileName(String originFileName) {
+		this.originFileName = originFileName;
 	}
 }

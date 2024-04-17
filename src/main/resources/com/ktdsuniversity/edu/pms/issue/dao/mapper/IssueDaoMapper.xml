@@ -106,30 +106,41 @@
 		, RQM_ID
 		, IS_TTL
 		, IS_CNT
-		, IS_LV
 		, IS_FILE
 		, IS_CNTNT
 		, IS_MNGR
-		, IS_STS
 		, CRT_DT
 		, CRTR_ID
 		, MDF_DT
 		, MDFR_ID
-		, DEL_YN)
+		, FILE_NAME
+		, ORIGIN_FILE_NAME)
 		VALUES 
 		 (('IS_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ISSUE_PK.NEXTVAL, 6, '0'))
 		, #{rqmId}
 		, #{isTtl}
 		, 0
-		, #{isLv}
 		, #{isFile}
 		, #{isCntnt}
 		, #{isMngr}
-		, #{isSts}
 		, SYSDATE
 		, #{crtrId}
 		, NULL
 		, #{mdfrId}
-		, 'N')
+		, #{fileName}
+	    , #{originFileName})
 	</insert>
+	
+	<update id="updateOneIssue"
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		UPDATE ISSUE
+		   SET IS_TTL = #{isTtl}
+		     , IS_CNTNT = #{isCntnt}
+		     , MDF_DT = SYSDATE
+		     <if test='fileName != null and fileName != ""'>
+		     , FILE_NAME = #{fileName}
+		     , ORIGIN_FILE_NAME = #{originFileName}
+		     </if>
+		 WHERE IS_ID = #{isId}
+	</update>
 </mapper>
