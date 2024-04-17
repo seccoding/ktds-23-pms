@@ -80,4 +80,29 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     public List<ProjectStatusVO> getProjectIssueStatusList(String projectId) {
         return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".getProjectIssueStatusList", projectId);
     }
+
+    @Override
+    public int updateOneProject(CreateProjectVO modifyProjectVO) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneProject", modifyProjectVO);
+    }
+
+    @Override
+    public int deletePm(String prePmEmployeeId) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".deletePm", prePmEmployeeId);
+    }
+
+    @Override
+    public ProjectTeammateVO findPmByProjectId(String prjId) {
+        return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".findPmByProjectId", prjId);
+    }
+
+    @Override
+    public CreateProjectVO selectDeletedPm(CreateProjectVO modifyProjectVO) {
+        return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".selectDeletedPm", modifyProjectVO);
+    }
+
+    @Override
+    public int restoreDeletedPm(CreateProjectVO modifyProjectVO) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".restoreDeletedPm", modifyProjectVO);
+    }
 }

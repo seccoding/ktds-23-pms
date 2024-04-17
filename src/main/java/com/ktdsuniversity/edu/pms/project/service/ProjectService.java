@@ -26,4 +26,6 @@ public interface ProjectService {
     List<ProjectTeammateVO> getAllProjectTeammateByProjectId(String projectId);
 
     Map<String ,List<ProjectStatusVO>> getProjectStatus(String projectId);
+
+    boolean updateOneProject(CreateProjectVO modifyProjectVO);
 }

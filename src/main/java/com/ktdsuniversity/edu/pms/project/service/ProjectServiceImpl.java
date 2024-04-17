@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.project.service;
 
+import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
@@ -111,5 +112,47 @@ public class ProjectServiceImpl implements ProjectService {
         chartData.put("issue", projectIssueStatusList);
 
         return chartData;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateOneProject(CreateProjectVO modifyProjectVO) {
+        // 1. 프로젝트를 업데이트 한다.
+        boolean isModifySuccess = projectDao.updateOneProject(modifyProjectVO) > 0;
+
+        // 2-1. 성공 시, PM을 가져온다. projectDao.findPmByProjectId(modifyProjectVO.getPrjId()), SELECT WHERE DEL_YN = 'N'
+        if (isModifySuccess) {
+            ProjectTeammateVO prePm = projectDao.findPmByProjectId(modifyProjectVO.getPrjId());
+
+            // 2-2. 이전의 PM과 변경된 PM의 ID를 비교한다
+            if (prePm.getTmId().equals(modifyProjectVO.getPmId())) {
+                // 변경점이 없으면 PM은 업데이트하지 않는다.
+                return true;
+            } else {
+                // 3. PM이 변경됐다면, 해당 프로젝트의 PM을 논리적 삭제한다.
+                // UPDATE WHERE DEL_YN = 'Y'
+                boolean isDeleteSuccess = projectDao.deletePm(prePm.getPrjId()) > 0;
+
+                // 4. 기존 PM 업데이트(논리적 삭제)가 성공되면, 새로운 PM을 INSERT 한다.
+                if (isDeleteSuccess) {
+                    CreateProjectVO selectedPreDeletedPm = projectDao.selectDeletedPm(modifyProjectVO);
+                    if (selectedPreDeletedPm != null) {
+                        // 4-1. 만약 새로운 PM이 기존에 있던 PM이라면, DEL_YN만 UPDATE 한다 DEL_YN = 'N'
+                        return projectDao.restoreDeletedPm(modifyProjectVO) > 0;
+                    } else {
+                        // 4-2. 없다면 새로운 PM을 INSERT 한다.
+                        ProjectTeammateVO newPm = new ProjectTeammateVO();
+                        newPm.setPrjId(modifyProjectVO.getPrjId());
+                        newPm.setTmId(modifyProjectVO.getPmId());
+                        newPm.setRole("PM");
+
+                        return projectDao.insertNewPm(newPm) > 0;
+                    }
+                }
+            }
+        }
+
+        // 5. 종료
+        return isModifySuccess;
     }
 }

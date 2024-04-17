@@ -49,7 +49,7 @@
                 <a id="tab-show" href="/project/view?prjId=${project.prjId}">기본정보</a>
             </li>
             <li>
-                <a id="tab-member" href="#">구성원</a>
+                <a id="tab-member" href="/project/team?prjId=${project.prjId}">구성원</a>
             </li>
             <li>
                 <a id="tab-output" href="#">산출물</a>
@@ -133,7 +133,7 @@
     <div class="btn-group">
         <div>
             <button id="btn-modify" type="button" onclick="location.href='/project/modify/${project.prjId}'">수정</button>
-            <button id="btn-delete" type="button">삭제</button>
+            <button id="btn-delete" type="button" onclick="location.href='/project/delete/${project.prjId}'">삭제</button>
         </div>
     </div>
 </div>

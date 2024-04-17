@@ -29,9 +29,6 @@ $().ready(function () {
             requireAllCount += requirement.cmcdIdCount;
         });
 
-        console.log(requirementChartDataValueList);
-        console.log(issueChartDataValueList);
-
         var requirementChart = $("#requirement-chart").get(0).getContext('2d');
         var issueChart = $("#issue-chart").get(0).getContext('2d');
 

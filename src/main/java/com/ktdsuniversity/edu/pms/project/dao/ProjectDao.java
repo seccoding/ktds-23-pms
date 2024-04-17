@@ -35,4 +35,14 @@ public interface ProjectDao {
     List<ProjectStatusVO> getProjectRequirementStatusList(String projectId);
 
     List<ProjectStatusVO> getProjectIssueStatusList(String projectId);
+
+    int updateOneProject(CreateProjectVO modifyProjectVO);
+
+    int deletePm(String prePmEmployeeId);
+
+    ProjectTeammateVO findPmByProjectId(String prjId);
+
+    CreateProjectVO selectDeletedPm(CreateProjectVO modifyProjectVO);
+
+    int restoreDeletedPm(CreateProjectVO modifyProjectVO);
 }
