@@ -3,49 +3,51 @@ package com.ktdsuniversity.edu.pms.employee.web;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 import jakarta.servlet.http.HttpSession;
 
-import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
-import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
-import com.ktdsuniversity.edu.pms.utils.Validator;
-import com.ktdsuniversity.edu.pms.utils.Validator.Type;
-
 
 @Controller
 public class EmployeeController {
 
+	private Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+	
 	@Autowired
 	private EmployeeService employeeService;
 
 	@Autowired
 	private FileHandler fileHandler;
 
+//	@GetMapping("/employee/search")
+//	public String viewEmployeeListPage(Model model, SearchEmployeeVO searchEmployeeVO) {
+//	EmployeeListVO employeeListVO = this.employeeService.searchAllEmployee(searchEmployeeVO);
+//	model.addAttribute("employeeList", employeeListVO);
+//	model.addAttribute("searchEmployeeVO", searchEmployeeVO);
+//	return "employee/employeelist";
+//	}
+	
+	//조회
 	@GetMapping("/employee/search")
 	public String viewEmployeeListPage(Model model) {
 		EmployeeListVO employeeListVO = this.employeeService.getAllEmployee();
@@ -56,36 +58,38 @@ public class EmployeeController {
 		return "employee/employeelist";
 	}
 	
-	@GetMapping("/employee/search/{employeeId}")
-	public String viewOneEmployeePage(@RequestParam String empId, Model model) {
+	//검색
+	@GetMapping("/employee/view")
+	public String viewOneEmployeePage(String empId, Model model) {
 		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employeeVO);
 		return "employee/employeeview";
 	}
 	
+	//삭제 
 	@ResponseBody
 	@GetMapping("ajax/employee/delete")
-	public AjaxResponse deleteEmp(HttpSession session, @SessionAttribute("_EMPLOYEE_") 
-									EmployeeVO employeeVO) {
+	public AjaxResponse deleteEmp(EmployeeVO employeeVO) {
 		boolean isSuccess = this.employeeService.deleteEmployee(employeeVO.getEmpId());
-		if(isSuccess) {
-			session.invalidate();
-		}
+//		if(isSuccess) {
+//			session.invalidate();
+//		}
 		return new AjaxResponse().append("next", isSuccess ? "/employee/success-delete-emp"
 											: "/employee/failed-delete-emp");
 	}
 
+	//수정
 	@GetMapping("/employee/modify/{empId}")
 	public String viewEmpModifyPage(@PathVariable String empId, Model model, 
-									@SessionAttribute("_Employee_") EmployeeVO employeeVO) {
+									 EmployeeVO employeeVO) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
 		return "employee/employeemodify";
 	}
 		
-	
+	//수정
 	@PostMapping("/employee/modify/{empId}")
-	public AjaxResponse modifyEmp(@PathVariable String empId, Model model,
+	public String modifyEmp(@PathVariable String empId, Model model,
 			@SessionAttribute("_EMPLOYEE_") EmployeeVO employeeVO,
 			@RequestParam MultipartFile picture) {
 			Validator<EmployeeVO> validator = new Validator<>(employeeVO);
@@ -107,7 +111,15 @@ public class EmployeeController {
 			 
 			 employeeVO.setEmpId(empId);
 			 boolean isUpdateSuccess = this.employeeService.modifyEmployee(employeeVO);
-			 return new AjaxResponse().append("result", isUpdateSuccess);
+			 if(isUpdateSuccess) {
+				 logger.info("등록 성공");
+			 }
+			 else {
+				 logger.info("등록 실패");
+			 }
+			 model.addAttribute("employeeVO", employeeVO);
+			 
+			 return "redirect:/employee/view?empId=" + empId;
 			
 		}
 	

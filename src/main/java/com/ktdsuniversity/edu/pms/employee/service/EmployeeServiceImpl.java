@@ -55,15 +55,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public boolean modifyEmployee(EmployeeVO employeeVO) {
 		
-		
-		return this.employeeDao.modifyEmployee(employeeVO) > 0;
+		int updatedCount = this.employeeDao.modifyEmployee(employeeVO);
+		return updatedCount > 0;
 	}
 
 	
 	@Override
 	public EmployeeVO getOneEmployee(String empId) {
 		
-		return this.employeeDao.getOneEmployee(empId);
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
+		return employeeVO;
+		
 	}
 
 	public boolean createEmployee(EmployeeVO employeeVO) {

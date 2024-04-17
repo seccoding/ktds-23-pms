@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class EmployeeVO {
 
@@ -32,6 +34,21 @@ public class EmployeeVO {
     private String lgnYn;
     private String fileName;
     private DepartmentVO departmentVO;
+    private JobVO jobVO;
+    private TeamVO teamVO;
+    
+	public TeamVO getTeamVO() {
+		return teamVO;
+	}
+	public void setTeamVO(TeamVO teamVO) {
+		this.teamVO = teamVO;
+	}
+	public JobVO getJobVO() {
+		return jobVO;
+	}
+	public void setJobVO(JobVO jobVO) {
+		this.jobVO = jobVO;
+	}
 	public DepartmentVO getDepartmentVO() {
 		return departmentVO;
 	}
