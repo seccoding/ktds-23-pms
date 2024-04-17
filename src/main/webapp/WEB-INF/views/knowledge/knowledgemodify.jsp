@@ -4,9 +4,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>지식관리 작성 페이지</title>
+    <title>지식관리 수정 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
-    <script type="text/javascript" src="/js/knowledgewrite.js"></script>
+    <!-- <script type="text/javascript" src="/js/knowledgemodify.js"></script> -->
     <style type="text/css">
       /* div인데 클래스가 grid 인 것 */
       div.grid {
@@ -23,38 +23,30 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </dialog>
       </c:if>
 
-      <h1>지식관리 작성</h1>
+      <h1>지식관리 수정</h1>
+      7
       <form
-        action="/knowledge/write"
+        action="/knowledge/modify/${knowledgeVO.knlId}"
         method="post"
         enctype="multipart/form-data"
       >
-        <!-- 요구사항 ID 선택창 -->
-        <div>
-          <label for="=rqm-id">요구사항제목</label>
-          <select name="rqmId" id="rqm-id">
-            <c:forEach items="${requirement}" var="requirement">
-              <option value="${requirement.rqmId}">
-                ${requirement.rqmTtl}
-              </option>
-            </c:forEach>
-          </select>
-        </div>
-
         <div class="grid">
           <label for="title">제목</label>
           <input
-            id="knlTtl"
+            id="title"
             type="text"
             name="knlTtl"
             value="${knowledgeVO.knlTtl}"
           />
 
           <label for="file">첨부파일</label>
-          <input type="file" name="file" id="file" />
+          <div>
+            <input type="file" name="file" id="file" />
+            현재 업로드 된 파일: ${knowledgeVO.originFileName}
+          </div>
 
           <label for="content">내용</label>
-          <textarea id="knlCntnt" name="knlCntnt" style="height: 300px">
+          <textarea id="content" name="knlCntnt" style="height: 300px">
   ${knowledgeVO.knlCntnt}</textarea
           >
 
