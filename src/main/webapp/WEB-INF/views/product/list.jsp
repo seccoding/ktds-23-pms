@@ -11,6 +11,18 @@
     div.grid div.right-align {
         text-align: right;
     }
+    input[type="checkbox"] {
+        display: inline-block;
+    }
+    input[type="checkbox"]:hover {
+        pointer-events: none;
+    }
+
+    input[type="checkbox"] + label {
+        width: 9rem;
+        border: none;
+        background-color: #fafafb;
+    }
 </style>
 <script type="text/javascript" src="/js/product/list.js"></script>
 </head>
@@ -28,8 +40,10 @@
             <form id="search-form">
                 <input type="hidden" id="page-no" name="pageNo" value="0" />
                 <div class="right-align">
-                    <input type="checkbox" id="product-exist">
-                    <label for="product-exist"></label>
+                    <div class="check-option">
+                        <input type="checkbox" id="product-exist-search" />
+                        <label for="product-exist-search">재고가 있는 비품만 조회</label>
+                    </div>
                     
                     <select id="search-type" name="searchType" >
                         <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
