@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.product.vo;
 
+import java.util.List;
+
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 
 public class ProductVO extends PaginateVO {
@@ -11,6 +14,14 @@ public class ProductVO extends PaginateVO {
 	private int curStr;
 	private String delYn;
 	
+	private List<ApprovalDetailVO> approvalDetailVOList;
+	
+	public List<ApprovalDetailVO> getApprovalDetailVOList() {
+		return approvalDetailVOList;
+	}
+	public void setApprovalDetailVOList(List<ApprovalDetailVO> approvalDetailVOList) {
+		this.approvalDetailVOList = approvalDetailVOList;
+	}
 	private String searchType; // option 선택
 	private String searchKeyword; // 검색어
 	

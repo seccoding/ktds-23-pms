@@ -18,7 +18,7 @@
 	<association property="requirementVO" 
 		javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
 			<id column="RQM_ID" property="rqmId" />
-			<result column="RQM_ID" property="rqmId" />
+			<result column="RQM_TTL" property="rqmTtl" />
 	</association> 
 	<!-- join table -->
 	
@@ -63,8 +63,9 @@
 		 , K.DEL_YN
 		 , K.CRTR_ID
 		 , K.MDFR_ID
-	     , R.RQM_ID 
+	     , k.RQM_ID 
 	     , P.PRJ_NAME
+	     , R.RQM_TTL
 	  FROM KNOWLEDGE K
 	 INNER JOIN REQUIREMENT R
 	    ON R.RQM_ID = K.RQM_ID
@@ -75,9 +76,36 @@
 	
 	
 
-  <!-- <insert id="insertNewKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO"> 
-
-   </insert> -->	
+  <insert id="insertNewKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO"> 
+	INSERT INTO KNOWLEDGE
+		 ( KNL_ID
+		 , RQM_ID
+		 , KNL_TTL
+		 , KNL_CNTNT
+		 , KNL_CNT
+		 , KNL_REC_CNT
+		 , CRT_DT
+		 , MDF_DT
+		 , DEL_YN
+		 , CRTR_ID
+		 , MDFR_ID
+		 , FILE_NAME
+		 , ORIGIN_FILE_NAME)
+	VALUES
+	     ( SEQ_KNOWLEDGE_PK.NEXTVAL
+	     , #{rqmId}
+	     , #{knlTtl}
+	     , #{knlCntnt}
+	     , 0
+	     , 0
+	     , SYSDATE
+	     , NULL
+	     , 'N'
+	     , #{crtrId}
+	     , NULL
+	     , #{fileName}
+	     , #{originFileName})
+   </insert>
 	
   
   <select id="selectOneKnowledge"  resultMap="knowledgeVOMap">
@@ -114,10 +142,25 @@
 	</update>
 	
 	
+	<update id="updateOneKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">
+		UPDATE KNOWLEDGE 
+		   SET KNL_TTL = #{knlTtl}
+		   	 , KNL_CNTNT = #{knlCntnt}
+		   	 , MDF_DT = SYSDATE
+		   	 <if test='fileName != null and fileName != ""'>
+		   	 , FILE_NAME = #{fileName}
+		   	 , ORIGIN_FILE_NAME = #{originFileName}
+		   	 </if>
+		 WHERE KNL_ID = #{knlId}
+	</update>
 	
 	
-	
-	
+	<update id="deleteOneKnowledge" parameterType="_int">
+		UPDATE KNOWLEDGE 
+		   SET DEL_YN = 'Y'
+		   	 , MDF_DT = SYSDATE
+		 WHERE KNL_ID = #{knlId}
+	</update>
 	
 	
 	

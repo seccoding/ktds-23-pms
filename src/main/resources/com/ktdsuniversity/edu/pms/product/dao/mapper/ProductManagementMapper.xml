@@ -112,4 +112,13 @@
 		 WHERE PRDT_MNG_ID = #{_parameter}
 	</select>
 	
+	<update id="modifyOneProductManagement" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO">
+		UPDATE PRODUCT_MANAGEMENT 
+		   SET PRDT_PRICE = #{prdtPrice}
+			 , BUY_DT = #{buyDt}
+			 , LOST_YN = #{lostYn}
+			 , LOST_DT = #{lostDt}
+		 WHERE PRDT_MNG_ID = #{prdtMngId}
+	</update>
+	
 </mapper>

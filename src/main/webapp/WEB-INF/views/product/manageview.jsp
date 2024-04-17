@@ -32,7 +32,7 @@
         grid-template-columns: 6rem 1fr;
         grid-template-rows: repeat(6, 3rem);
         gap: .3rem;
-        margin: 2rem 1rem;
+        margin: 4rem 2rem;
     }
 </style>
 </head>
@@ -47,18 +47,19 @@
                     <p>비품명</p>
                     <p class="product-name"></p>
                     <p>구매가격</p>
-                    <input type="number" class="price"></input>
+                    <input type="number" class="price" />
                     <p>구매일</p>
-                    <input type="date" class="buy-day"></input>
+                    <input type="date" class="buy-day" />
                     <p>분실상태</p>
                     <select class="select">
                         <option value="O">O</option>
                         <option value="X">X</option>
                     </select>
                     <p>분실신고일</p>
-                    <input type="date" class="lost-day"></input>
+                    <input type="date" class="lost-day" />
                 </div>
-                <input type="submit" />
+                <input type="button" value="취소" id="cancel-btn"/>
+                <input type="button" value="수정" id="modify-btn"/>
             </form>
         </dialog>
         <h2>비품관리 정보</h2>

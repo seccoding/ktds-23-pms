@@ -3,6 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.login.dao.LoginLogDao">
+
+    <resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" id="employeeVOMap" autoMapping="true">
+        <id column="EMP_ID" property="empId"/>
+        <association property="loginLogVO" javaType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
+            <id column="LOG_ID" property="logId"/>
+        </association>
+    </resultMap>
+
     <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         SELECT EMP_ID
              , WORK_STS
@@ -32,5 +40,48 @@
     		   SET LGN_YN = 'N'
     		 WHERE EMP_ID = #{empId}
     </update>
-    
+
+    <insert id="updateLoginLog" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        INSERT INTO LOGIN_LOG
+              (LOG_ID
+             , EMP_ID
+             , LGN_SCC_DT
+             , LGT_DT
+             , DEL_YN)
+        VALUES
+              (SEQ_LGN_LG_PK.NEXTVAL
+             , #{empId}
+             , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+             , NULL
+             , 'N')
+    </insert>
+
+    <select id="updateEmpLog" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+            resultMap="employeeVOMap">
+        SELECT E.EMP_ID
+             , E.WORK_STS
+             , E.EMP_NAME
+             , E.PWD
+             , E.SALT
+             , E.ADMN_CODE
+             , E.LGN_YN
+             , E.END_DT
+             , E.REST_ST_DT
+             , E.REST_END_DT
+             , E.PWD_CN_DT
+             , L.LOG_ID
+          FROM EMPLOYEE E
+          JOIN LOGIN_LOG L
+            ON E.EMP_ID = L.EMP_ID
+         WHERE E.EMP_ID = #{empId}
+           AND L.LGT_DT IS NULL
+    </select>
+
+    <update id="updateEmpLogout" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        UPDATE LOGIN_LOG
+           SET LGT_DT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+         WHERE LOG_ID = #{loginLogVO.logId}
+           AND LGT_DT IS NULL
+    </update>
+
 </mapper>

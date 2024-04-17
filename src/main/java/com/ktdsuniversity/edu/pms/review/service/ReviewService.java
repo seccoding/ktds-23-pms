@@ -6,11 +6,19 @@ import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 public interface ReviewService {
 
 	/**
-	 * 후기의 목록을 조회한다
+	 * 작성해야하는 후기의 목록을 조회한다
 	 * @return
 	 */
 	ReviewListVO getAllReview();
+
 	
+	ReviewListVO viewReviewCntnt();
+//	/**
+//	 * 작성완료된 후기의 내용을 보여준다
+//	 * @return
+//	 */
+//	ReviewListVO viewReviewCntnt();
+//	
 	/**
 	 * 후기 작성 요청 전송(PM)
 	 * @param reviewVO
@@ -23,7 +31,7 @@ public interface ReviewService {
 	 * @param reviewVO
 	 * @return
 	 */
-	public boolean getOneReview(String rvId);
+	public ReviewVO getOneReview(String rvId, boolean isdeleted);
 	
 	/**
 	 * 후기를 등록한다
@@ -44,6 +52,14 @@ public interface ReviewService {
 	 * @param id 삭제할 후기의 번호
 	 * @return 후기 삭제 성공 여부
 	 */
-	public boolean deleteOneReview(String rvId);
+//	public boolean deleteOneReview(String rvId, String email);
+
+
+	/**
+	 * 후기 삭제
+	 * @param id 삭제하는 후기 id
+	 * @return 후기삭제성공여부
+	 */
+	public boolean reviewViewResultDelete(String id);
 	
 }

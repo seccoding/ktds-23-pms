@@ -2,8 +2,6 @@ package com.ktdsuniversity.edu.pms.review.vo;
 
 import java.util.List;
 
-import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
-
 public class ReviewListVO {
 
 	private List<ReviewVO> reviewList;

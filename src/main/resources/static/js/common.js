@@ -40,6 +40,37 @@ window.onload = function () {
 
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+	
+  var isMainLayout = window.location.pathname === "/";
+  if (!isMainLayout) {
+	
+	var framePath = window.parent.getLocationPathInFrame();
+	var menuObject = window.parent.findMenuObject(framePath);
+	var menuTree = window.parent.makeTree(menuObject);
+	var menuPath = window.parent.makePath(menuTree);
+	window.parent.console.log(menuPath);
+	
+	var parentDocument = $(window.parent.document);
+	var locationTree = parentDocument.find(".location-tree");
+	locationTree.html("");
+	
+	menuPath.forEach(function(data, i) {
+		var listItem = $("<li></li>");
+		listItem.text(data.name);
+		listItem.css("cursor", "pointer")
+		if (data.url && menuPath.length - 1 > i) {
+			listItem.on("click", function() {
+				var frame = window.parent.document.querySelector(".frame-active > iframe");
+				frame.contentDocument.location.href = data.url;
+			});
+		}
+		
+		locationTree.append(listItem);
+	});
+	
+  }
+  
+	
   $(".menu-tab-prev").on("click", function () {
     var menuTabList = $(".content").find(".menu-tab");
     var scrollLeft = menuTabList.scrollLeft();
@@ -57,138 +88,6 @@ $().ready(function () {
 
     menuTabList.scrollLeft(scrollLeft + 50);
   });
-
-  /*
-  $(".sidebar")
-    .find("a")
-    .on("click", function () {
-      var frameList = $(".content").find(".frame-list");
-      var menuTabList = $(".content").find(".menu-tab");
-
-      var menuId = $(this).data("menu-id");
-      var existsFrame =
-        menuTabList.find("li[data-menu-id=" + menuId + "]").length > 0;
-
-      if (existsFrame) {
-        menuTabList.find("li[data-menu-id=" + menuId + "]").click();
-        return;
-      }
-
-      var menuName = $(this).text();
-      var menuUrl = $(this).data("menu-url");
-
-      var menuTabItem = $("<li></li>");
-      menuTabItem.addClass("active-tab");
-      menuTabItem.text(menuName);
-      menuTabItem.attr("data-menu-id", menuId);
-      menuTabItem.attr("id", menuId);
-
-      var menuTabCloseButton = $("<span>X</span>");
-      menuTabCloseButton.addClass("close-tab");
-      menuTabCloseButton.on("click", function () {
-        var tabItemLength = menuTabList.find("li").length;
-        if (tabItemLength == 1) {
-          return;
-        }
-
-        var clickedTabItem = $(this).closest("li");
-        clickedTabItem.remove();
-        frameList
-          .find("li[data-menu-id=" + clickedTabItem.data("menu-id") + "]")
-          .remove();
-
-        menuTabQueue = menuTabQueue.filter((id) => id != menuId);
-
-        var latestMenuId = menuTabQueue[menuTabQueue.length - 1];
-        menuTabList.find("li[data-menu-id=" + latestMenuId + "]").click();
-
-        var itemTotalWidth = 0;
-        menuTabList.find("li").each(function () {
-          itemTotalWidth += $(this).outerWidth(true);
-        });
-
-        var needScroll = itemTotalWidth > $(".frame-list").innerWidth();
-        if (needScroll) {
-          $(".menu-tab-prev, .menu-tab-next").show();
-        } else {
-          $(".menu-tab-prev, .menu-tab-next").hide();
-        }
-      });
-      menuTabItem.append(menuTabCloseButton);
-
-      menuTabItem.on("click", function () {
-        var menuId = $(this).data("menu-id");
-        menuTabList.find("li").removeClass("active-tab");
-        menuTabList
-          .find("li[data-menu-id=" + menuId + "]")
-          .addClass("active-tab");
-
-        frameList.find("li").removeClass("frame-active");
-        frameList
-          .find("li[data-menu-id=" + menuId + "]")
-          .addClass("frame-active");
-
-        if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
-          menuTabQueue.push(menuId);
-        }
-        location.href = "/#";
-        location.href = "/#" + menuId;
-      });
-
-      menuTabList.find("li").removeClass("active-tab");
-      menuTabList.append(menuTabItem);
-
-      var menuFrameItem = $("<li></li>");
-      menuFrameItem.addClass("frame-active");
-      menuFrameItem.attr("data-menu-id", menuId);
-      menuFrameItem.attr("data-menu-name", menuName);
-
-      var menuFrame = $("<iframe></iframe>");
-      menuFrame.attr("src", menuUrl);
-      menuFrameItem.append(menuFrame);
-
-      frameList.find("li").removeClass("frame-active");
-      frameList.append(menuFrameItem);
-
-      if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
-        menuTabQueue.push(menuId);
-      }
-
-      var itemTotalWidth = 0;
-      menuTabList.find("li").each(function () {
-        itemTotalWidth += $(this).outerWidth(true);
-      });
-
-      var needScroll = itemTotalWidth > $(".frame-list").innerWidth();
-      if (needScroll) {
-        menuTabList.scrollLeft(Number.MAX_SAFE_INTEGER);
-        $(".menu-tab-prev, .menu-tab-next").show();
-      } else {
-        $(".menu-tab-prev, .menu-tab-next").hide();
-      }
-    });
-  */
-  /*
-  $(".sidebar-submenu").each(function () {
-    $(this)
-      .find(".sidebar-submenu-content")
-      .on("click", function (event) {
-        event.preventDefault();
-        $(this).find(".dropdown-icon").toggleClass("active");
-        var dropdown_content = $(this).siblings(".dropdown-menu");
-        var dropdown_content_lis = dropdown_content.find("a");
-        var active_height =
-          dropdown_content_lis.eq(0).outerHeight() *
-          dropdown_content_lis.length;
-        dropdown_content
-          .toggleClass("active")
-          .css(
-            "height",
-            dropdown_content.hasClass("active") ? active_height + "px" : "0"
-          );
-      });
-  });
-  */
 });
 
 $().ready(function () {
@@ -258,6 +157,9 @@ function menuAnchorClickHandler() {
   var frameList = $(".content").find(".frame-list");
   var menuTabList = $(".content").find(".menu-tab");
 
+  $(".sidebar").find(".dropdown-menu").find("a").removeClass("active");
+  $(this).addClass("active");
+
   var menuId = $(this).data("menu-id");
   var existsFrame =
     menuTabList.find("li[data-menu-id=" + menuId + "]").length > 0;
@@ -316,6 +218,21 @@ function menuAnchorClickHandler() {
 
     frameList.find("li").removeClass("frame-active");
     frameList.find("li[data-menu-id=" + menuId + "]").addClass("frame-active");
+
+    var sidebarMenu = $(".sidebar")
+      .find(".dropdown-menu")
+      .find("a[data-menu-id=" + menuId + "]")
+      .closest(".sidebar-submenu");
+    var dropdownMenu = sidebarMenu.find(".dropdown-menu");
+    if (dropdownMenu.not(".active").length > 0) {
+      sidebarMenu.find(".sidebar-submenu-content").click();
+    }
+
+    $(".sidebar").find(".dropdown-menu").find("a").removeClass("active");
+    $(".sidebar")
+      .find(".dropdown-menu")
+      .find("a[data-menu-id=" + menuId + "]")
+      .addClass("active");
 
     if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
       menuTabQueue.push(menuId);

@@ -473,6 +473,26 @@ select {
   color: var(--main-color);
 }
 
+.location-tree {
+	margin: 0;
+	padding: 0;
+}
+
+.location-tree li {
+	list-style-type:none;
+	display:inline-block
+}
+
+.location-tree li::after {
+	content: ">";
+	margin: 0 0.5rem;
+}
+
+.location-tree li:last-child::after {
+	content: "";
+	margin: 0;
+} 
+
 /**  메뉴 탭  **/
 .menu-tab-wrapper {
   display: flex;
@@ -495,7 +515,7 @@ iframe {
   /* width: 113.75rem;
   height: 54.375rem; */
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   padding: 0.5rem;
   display: block;
   border: none;
@@ -622,6 +642,10 @@ iframe {
   padding-left: 100px;
 }
 .dropdown-menu > a:hover {
+  color: var(--main-color);
+}
+
+.dropdown-menu > a.active {
   color: var(--main-color);
 }
 

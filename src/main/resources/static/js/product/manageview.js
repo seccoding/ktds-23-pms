@@ -1,6 +1,6 @@
 $().ready(function(){
+    var paramId = $(".body").data("paramid");
     $(".remove").on("click", function(){
-        var paramId = $(".body").data("paramid");
         var productId = $(this).data("product");
         
         
@@ -27,8 +27,8 @@ $().ready(function(){
             $(".manage-id").text(product.prdtMngId)
             $(".product-name").text(name)
             $(".price").val(product.prdtPrice)
-            $(".buy-day").val(product.buyDt)
-            $(".lost-day").val(product.lostDt)
+            $(".buy-day").val(product.buyDt.split(" ")[0])
+            $(".lost-day").val(product.lostDt?product.lostDt.split(" ")[0]:"")
             console.log(product.lostYn)
             if(product.lostYn==='Y'){
                 $(".select").val("O")
@@ -39,5 +39,23 @@ $().ready(function(){
 
         modifyModal[0].showModal()
 
+    })
+
+    $("#cancel-btn").on("click", function(){
+        location.reload()
+    })
+
+    $("#modify-btn").on("click", function(){
+        console.log($(".buy-day").val())
+        $.post("/ajax/product/manage/view/modify",{
+            prdtMngId:$(".manage-id").text(),
+            prdtPrice:$(".price").val(),
+            buyDt:$(".buy-day").val(),
+            lostYn:$(".select").val()==="O"?"Y":"N",
+            lostDt:$(".lost-day").val(),
+            prdtId:paramId
+        }, function(res){
+            location.href = res.data.next
+        })
     })
 })

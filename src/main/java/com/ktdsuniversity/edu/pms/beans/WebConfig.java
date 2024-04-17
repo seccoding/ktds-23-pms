@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.beans;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -48,6 +50,7 @@ public class WebConfig implements WebMvcConfigurer {
 //		registry.addInterceptor(new BlockDuplicateLoginInterceptor())
 //				.addPathPatterns("/member/login", "/ajax/member/login",
 //						"/member/regist", "/ajax/member/regist");
+		registry.addInterceptor(new LoginInterceptor())
+				.addPathPatterns(this.authCheckIgnoreUrlPatterns);
 	}
-
 }

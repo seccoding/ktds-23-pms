@@ -8,6 +8,8 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdAndPwdIsNotMatchException;
 import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
 
+import java.util.List;
+
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
 
@@ -22,17 +24,17 @@ public class LoginLogServiceImpl implements LoginLogService {
 	public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO) {
 
 		employeeVO.setPwd(employeeVO.getPwd());
-		
-		
+
+
 		EmployeeVO employee = loginLogDao.getOneEmployeeByEmpIdAndPwd(employeeVO);
-		
-		
+
+
 		if (employee == null) {
 			// exception 패키지에서 exception 처리 해야 한다.
 			throw new EmpIdAndPwdIsNotMatchException();
 		}
-		
-		
+
+
 //		employee.setLgnYn("Y");
 		return employee;
 	}
@@ -41,7 +43,7 @@ public class LoginLogServiceImpl implements LoginLogService {
 	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
 		employeeVO.setLgnYn("Y");
 		this.loginLogDao.getOneEmpIdUseOtherPlace(employeeVO);
-		
+
 		return null;
 	}
 
@@ -51,6 +53,21 @@ public class LoginLogServiceImpl implements LoginLogService {
 		this.loginLogDao.getOneEmpIdNotUseNow(employeeVO);
 	}
 
-	
+	@Override
+	public void updateLoginLog(EmployeeVO employee) {
+		this.loginLogDao.updateLoginLog(employee);
+	}
+
+	@Override
+	public EmployeeVO updateEmpLog(EmployeeVO employee) {
+
+		return this.loginLogDao.updateEmpLog(employee);
+	}
+
+	@Override
+	public void updateEmpLogout(EmployeeVO employee) {
+		this.loginLogDao.updateEmpLogout(employee);
+	}
+
 
 }

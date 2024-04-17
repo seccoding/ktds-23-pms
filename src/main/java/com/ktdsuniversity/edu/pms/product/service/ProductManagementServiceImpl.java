@@ -59,4 +59,11 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 		return productManagementVO;
 	}
 
+	@Transactional
+	@Override
+	public boolean modifyOneProductManagement(ProductManagementVO productManagementVO) {
+		
+		return productManagementDao.modifyOneProductManagement(productManagementVO) > 0;
+	}
+
 }

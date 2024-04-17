@@ -6,6 +6,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao {
 
@@ -30,7 +32,20 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpIdNotUseNow", employeeVO);
 	}
 
-	
+    @Override
+    public void updateLoginLog(EmployeeVO employee) {
+        getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateLoginLog", employee);
+    }
 
-	
+    @Override
+    public EmployeeVO updateEmpLog(EmployeeVO employee) {
+        return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateEmpLog", employee);
+    }
+
+    @Override
+    public void updateEmpLogout(EmployeeVO employee) {
+        getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", employee);
+    }
+
+
 }
