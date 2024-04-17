@@ -138,4 +138,20 @@ public class IssueController {
 		}
 		return "redirect:/issue/view?isId=" + isId;
 	}
+	
+	@GetMapping("/issue/delete/{isId}")
+	public String doDeleteIssue(@PathVariable String isId, Model model) {
+//		IssueVO issueVO = this.issueService.getOneIssue(isId, false);
+//		issueVO.setIsId(isId);
+		
+		boolean isSuccess = this.issueService.deleteOneIssue(isId);
+		
+		if (isSuccess) {
+			logger.info("삭제 성공!");
+		}
+		else {
+			logger.info("삭제 실패!");
+		}
+		return "redirect:/issue";
+	}
 }

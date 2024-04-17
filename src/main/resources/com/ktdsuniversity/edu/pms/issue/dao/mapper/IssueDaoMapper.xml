@@ -143,4 +143,11 @@
 		     </if>
 		 WHERE IS_ID = #{isId}
 	</update>
+	
+	<update id="deleteOneIssue"
+			parameterType="_int">
+		UPDATE ISSUE
+		   SET DEL_YN = 'Y'
+		 WHERE IS_ID = #{isId}
+	</update>
 </mapper>
