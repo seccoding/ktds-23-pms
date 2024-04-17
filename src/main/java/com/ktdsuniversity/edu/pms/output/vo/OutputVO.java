@@ -9,13 +9,14 @@ public class OutputVO {
 	private String outType; //산출물 종류
 	private String outTtl; 	//제목
 	private String outVer; 	//버전
-	private String outFile; // 산출믈 파일명
+	private String outFile; // 산출믈  원본 파일명
 	private String crtDt;	//등록일
 	private String crtrId;	//등록자 id
 	private String mdfDt;	//수정일
 	private String mdfrId;	//수정자 아이디
 	private String prjId;	//프로젝트 id
 	private String delYn;	//삭제여부
+	private String outEncodeFile;//산출물 인코딩 파일명
 	
 	private CommonCodeVO outTypeVO;
 	
@@ -45,6 +46,7 @@ public class OutputVO {
 	public void setOutVer(String outVer) {
 		this.outVer = outVer;
 	}
+	
 	public String getOutFile() {
 		return outFile;
 	}
@@ -99,6 +101,13 @@ public class OutputVO {
 	public void setProject(ProjectVO project) {
 		this.project = project;
 	}
+	public String getOutEncodeFile() {
+		return outEncodeFile;
+	}
+	public void setOutEncodeFile(String outEncodeFile) {
+		this.outEncodeFile = outEncodeFile;
+	}
+	
 	
 	
 }

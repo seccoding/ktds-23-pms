@@ -77,12 +77,6 @@ public class ProjectController {
         return "project/projectlist";
     }
 
-    /**
-     * /project/view?projectId=PRJ_240409_000012
-     *
-     * @param prjId
-     * @return
-     */
     @GetMapping("/project/view")
     public String viewProjectDetailPage(@RequestParam String prjId, Model model) {
         ProjectVO projectVO = projectService.getOneProject(prjId);

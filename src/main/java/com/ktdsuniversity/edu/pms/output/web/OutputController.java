@@ -3,6 +3,8 @@ package com.ktdsuniversity.edu.pms.output.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,8 @@ import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 @Controller
 public class OutputController {
 	@Autowired
@@ -31,16 +35,18 @@ public class OutputController {
 	private CommonCodeService commonCodeService;
 	
 	@GetMapping("/output")
-	public String getAllOutput(Model model) {
+	public String viewOutputList() {
+		return "redirect:output/search?prjId=null";
+	}
+	@GetMapping("/output/search")
+	public String viewOutputSearhList(@RequestParam String prjId, Model model) {
 		OutputListVO outputList = this.outputService.getAllOutputList();
-		model.addAttribute("outputList",outputList);
+		model.addAttribute("outputList",outputList).addAttribute("prjId",prjId);
 		
 		return "output/outputlist";
 	}
-//	public AjaxResponse getOneOutputment() {
-//		return null;
-//
-//	};
+	
+	
 	@GetMapping("/output/write")
 	public String viewCreateOutput(Model model) {
 //		TODO 파일 넣기
@@ -52,21 +58,65 @@ public class OutputController {
 		return "output/outputwrite";
 	}
 	@PostMapping("/output/write")
-	public String  createOutput( MultipartFile file,OutputVO outputVO, Model model){
-//		TODO 파일 넣기
-		boolean isSuccess = this.outputService.updateOneOutput(outputVO);
+	public String  createOutput(@RequestParam MultipartFile file
+			,OutputVO outputVO, Model model){
+		Validator<OutputVO> validator = new Validator<>(outputVO);
+		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+		.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.")
+		.start();
+		
+		boolean isSuccess = this.outputService.insertOneOutput(outputVO, file);
 		
 		return "redirect:/output";
 		
 	}
 	
-//	public AjaxResponse modifyOutputment() {
-//		return null;
-//
-//	};
-//	public AjaxResponse deleteOutputment() {
-//		return null;
+	@GetMapping("output/downloadFile/{outId}")
+	public ResponseEntity<Resource> fileDownload(@PathVariable String outId) {
+		
+		OutputVO Output= this.outputService.getOneOutput(outId);
+		
+		return this.outputService.getDownloadFile(Output);
+		
+	}
+	
+	@GetMapping("/output/modify/{outId}")
+	public String viewModifyOutputPage(@PathVariable String outId
+			, Model model) {
+		ProjectListVO projectList = this.projectService.getAllProject();
+		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
+		OutputVO output = this.outputService.getOneOutput(outId);
+		
+		model.addAttribute("projectList",projectList)
+		.addAttribute("outputType",outputType).addAttribute("output", output);
+		
+		return "/output/outputmodify";
 
-//	};
+	}
+	
+	@PostMapping("/output/modify/{outId}")
+	public String ModifyOutputPage(@PathVariable String outId,
+			@RequestParam MultipartFile file, OutputVO outputVO) {
+		
+		Validator<OutputVO> validator = new Validator<>(outputVO);
+		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+		.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.")
+		.start();
+		
+		
+		boolean isSuccess = this.outputService.updateOneOutput(outputVO, file);
+		return "redirect:/output";
+	}
+	@GetMapping("/output/delete/{outId}")
+	public String deleteOutputment(@PathVariable String outId,
+			@RequestParam String prjId) {
+		
+		boolean isSuccess = this.outputService.deleteOneOutput(outId);
+		
+		return "redirect:/output/search?prjId="+prjId;
+
+	}
 
 }

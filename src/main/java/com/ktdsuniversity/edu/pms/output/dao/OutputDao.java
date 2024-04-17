@@ -12,6 +12,12 @@ public interface OutputDao {
 	
 	public int getOutputCnt ();
 
+	public int insertOneOutput(OutputVO outputVO);
+
+	public OutputVO getOneOutput(String outId);
+
+	public int deleteOneOutput(String outId);
+
 	public int updateOneOutput(OutputVO outputVO); 
 	
 }

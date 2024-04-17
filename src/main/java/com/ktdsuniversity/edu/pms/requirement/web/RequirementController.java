@@ -39,18 +39,17 @@ public class RequirementController {
 	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@GetMapping("/requirement")
-	public String viewAllRequirement(
+	public String viewAllRequirement() {
+		return "redirect:/requirement/search?prjId=null";
+	}
+	
+	@GetMapping("/requirement/search")
+	public String viewSearchAllRequirement(
 			/* @SessionAttribute , */
 			@RequestParam String prjId,
 			 Model model) {
-
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
-
 		List<RequirementVO> requirementList = requirementService.getAllRequirement();
-				
-//				.stream()
-//				.filter((requirement) -> requirement.getPrjId().equals(prjId)).collect(Collectors.toList());
-
 		model.addAttribute("resultList", requirementList);
 
 		return "requirement/requirementlist";
@@ -74,6 +73,9 @@ public class RequirementController {
 	/* @SessionAttribute , */) {
 		// TODO 사원리스트도 보내줘야 담당자, 테스터, 확인자 체크가능 ->현재는 임의의 사원번호를 넣는중
 		ProjectListVO projectList = this.projectService.getAllProject();
+		projectList.setProjectList(
+				projectList.getProjectList().stream()
+				.filter((project)->project.getReqYn().equals("Y")).toList());
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
 
@@ -84,12 +86,12 @@ public class RequirementController {
 
 	}
 
-	@PostMapping("/project/requirement/write")
+	@PostMapping("/requirement/write")
 	public String createRequirement(/* @SessionAttribute , */
-			RequirementVO requirementVO, @RequestParam MultipartFile file, Model model) {
+			RequirementVO requirementVO, Model model) {
 		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, null);
 
-		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
+		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
 	}
 
 	@GetMapping("/project/requirement/modify")
@@ -100,6 +102,9 @@ public class RequirementController {
 
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		ProjectListVO projectList = this.projectService.getAllProject();
+		projectList.setProjectList(
+				projectList.getProjectList().stream()
+				.filter((project)->project.getReqYn().equals("Y")).toList());
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 
@@ -118,7 +123,7 @@ public class RequirementController {
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.updateRequirement(requirementVO, file);
 
-		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
+		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
 
 	}
 
