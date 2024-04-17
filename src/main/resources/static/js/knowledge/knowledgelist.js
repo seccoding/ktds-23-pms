@@ -1,3 +1,3 @@
 $().ready(function () {
-  $(".register").on("click", function () {});
+  $("").on("click", function () {});
 });

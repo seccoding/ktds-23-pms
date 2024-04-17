@@ -22,6 +22,8 @@ public interface KnowledgeDao {
 
 	public int deleteOneKnowledge(String knlId);
 
+	public int recommendOneKnowledge(String knlId);
+
 
 
 }

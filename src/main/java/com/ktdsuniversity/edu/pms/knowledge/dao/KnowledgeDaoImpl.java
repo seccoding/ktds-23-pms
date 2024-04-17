@@ -62,6 +62,12 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 	}
 
 
+	@Override
+	public int recommendOneKnowledge(String knlId) {
+		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".recommendOneKnowledge", knlId);
+	}
+
+
 	
 	
 
