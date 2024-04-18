@@ -10,6 +10,8 @@ import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
+import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 import org.slf4j.Logger;
@@ -56,6 +58,9 @@ public class ProjectController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private RequirementService requirementService;
+
     // 세션에 따라서 보여줘야할 프로젝트 리스트를 바꿔야함
     // getAllProject + getAllProjectByProjectTeammateRole
     @GetMapping("/project/search")
@@ -79,6 +84,7 @@ public class ProjectController {
     public String viewProjectDetailPage(@RequestParam String prjId, Model model) {
         ProjectVO projectVO = projectService.getOneProject(prjId);
         int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
+        List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId);
 
         // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
         // boolean isTeammate = projectVO.getProjectTeammateList().stream()
@@ -94,6 +100,7 @@ public class ProjectController {
             model.addAttribute("project", projectVO);
             model.addAttribute("teammateCount", projectTeammateCount);
             model.addAttribute("pm", pm);
+            model.addAttribute("requirement", projectRequirementsList);
         } else {
             throw new PageNotFoundException();
         }

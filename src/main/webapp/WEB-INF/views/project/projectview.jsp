@@ -6,6 +6,7 @@
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/project/projectview.js"></script>
     <script type="text/javascript" src="/js/lib/chart.js"></script>
+    <link rel="stylesheet" href="/css/project/modal.css" />
     <style>
         .chart-table {
             width: 100%;
@@ -36,9 +37,20 @@
             margin: 15px;
             float: right;
         }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .not-bottom-line {
+            border-collapse : unset;
+        }
     </style>
 </head>
 <body>
+
+<jsp:include page="modal.jsp"/>
+
 <div>
 
     <%--  상단 탭  --%>
@@ -84,7 +96,7 @@
     </div>
 
     <div id="chart_package">
-        <table class="chart-table">
+        <table class="not-bottom-line chart-table">
             <tr>
                 <td>
                     <div class="chart-container">
@@ -130,10 +142,35 @@
         </table>
     </div>
 
+    <div>
+        <table class="table text-center">
+        <thead>
+        <tr>
+            <th>요구사항</th>
+            <th>시작일</th>
+            <th>종료일</th>
+            <th>일정상태</th>
+            <th>요구사항 진행상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${requirement}" var="requirement">
+            <tr class="project-row" data-project-id="${requirement.rqmId}">
+                <td>${requirement.rqmTtl}</td>
+                <td>${requirement.strtDt}</td>
+                <td>${requirement.endDt}</td>
+                <td>${requirement.scdStsVO.cmcdName}</td>
+                <td>${requirement.rqmStsVO.cmcdName}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+        </table>
+    </div>
+
     <div class="btn-group">
         <div>
             <button id="btn-modify" type="button" onclick="location.href='/project/modify/${project.prjId}'">수정</button>
-            <button id="btn-delete" type="button" onclick="location.href='/project/delete/${project.prjId}'">삭제</button>
+            <button id="btn-delete" type="button" value="${project.prjId}">삭제</button>
         </div>
     </div>
 </div>
