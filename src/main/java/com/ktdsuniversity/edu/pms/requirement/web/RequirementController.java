@@ -48,17 +48,24 @@ public class RequirementController {
 	@GetMapping("/requirement/search")
 	public String viewSearchAllRequirement(
 			/* @SessionAttribute , */
-			@RequestParam String prjId,RequirementSearchVO requirementSearchVO,
-			 Model model) {
+			@RequestParam String prjId,Model model, 
+			RequirementSearchVO requirementSearchVO) {
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
+		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
+		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
 				projectList.getProjectList().stream()
 				.filter((project)->project.getReqYn().equals("Y")).toList());
-		model.addAttribute("resultList", requirementList).addAttribute("projectList", projectList)
-		.addAttribute("prjId", prjId);
-
+		
+		model.addAttribute("resultList", requirementList)
+		.addAttribute("projectList", projectList)
+		.addAttribute("prjId", prjId)
+		.addAttribute("scdSts", scdSts)
+		.addAttribute("rqmSts", rqmSts)
+		.addAttribute("searchOption", requirementSearchVO);
+		
 		return "requirement/requirementlist";
 	}
 

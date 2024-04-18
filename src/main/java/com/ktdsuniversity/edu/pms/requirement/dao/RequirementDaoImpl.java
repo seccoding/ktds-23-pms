@@ -30,7 +30,14 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	public List<RequirementVO> getAllRequirement() {
 		
 		return getSqlSession().selectList(NAME_SPACE+".getAllRequirement");
+	}	
+	
+	@Override
+	public List<RequirementVO> getAllRequirementByprjId(String prjId) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList(NAME_SPACE+".getAllRequirementByprjId",prjId);
 	}
+
 	
 	@Override
 	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO) {
@@ -75,6 +82,7 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 
 	}
 
+	
 
 
 	

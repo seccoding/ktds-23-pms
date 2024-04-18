@@ -29,6 +29,11 @@ public class RequirementServiceImpl implements RequirementService{
 		
 		return this.requirementDao.getAllRequirement();
 	}
+	@Override
+	public List<RequirementVO> getAllRequirement(String prjId) {
+		
+		return this.requirementDao.getAllRequirementByprjId(prjId);
+	}
 	
 	@Override
 	public RequirementListVO searchAllRequirement(RequirementSearchVO requirementSearchVO) {

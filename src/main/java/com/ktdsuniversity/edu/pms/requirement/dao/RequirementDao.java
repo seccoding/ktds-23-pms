@@ -30,5 +30,7 @@ public interface RequirementDao {
 	
 	public int updateDelayOneRequirement(DelayAcessVO delayAcessVO);
 
+	public List<RequirementVO> getAllRequirementByprjId(String prjId);
+
 
 }

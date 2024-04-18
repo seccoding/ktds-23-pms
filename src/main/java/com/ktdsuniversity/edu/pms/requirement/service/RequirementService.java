@@ -14,6 +14,7 @@ public interface RequirementService {
  * @return 전체 요구사항 리스트(삭제 제외)
  */
 	public List<RequirementVO> getAllRequirement();
+	public List<RequirementVO> getAllRequirement(String prjId);
 	
 	public RequirementListVO searchAllRequirement(RequirementSearchVO requirementSearchVO);
 /**
