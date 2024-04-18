@@ -241,6 +241,15 @@
 		, #{pwd}
 		, #{salt})
 	</insert>
+	
+	<select id="searchEmpDeptId"
+			parameterType="string"
+			resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT *
+		  FROM EMPLOYEE E
+		 WHERE DEPT_ID = #{_parameter}
+		   AND WORK_STS = '201'
+	</select>
 
 
 </mapper>

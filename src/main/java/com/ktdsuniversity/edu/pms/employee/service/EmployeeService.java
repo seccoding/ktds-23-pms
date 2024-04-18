@@ -18,4 +18,6 @@ public interface EmployeeService {
 
 	public boolean createEmployee(EmployeeVO employeeVO);
 
+	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
+
 }
