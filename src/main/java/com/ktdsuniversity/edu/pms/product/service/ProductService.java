@@ -18,6 +18,11 @@ public interface ProductService {
 
 	public boolean updateOneProduct(String prdtId);
 
+	/**
+	 * 모든 비품 목록을 중복없이 조회
+	 */
+	public ProductListVO getAllProductCategory();
+
 
 	
 	

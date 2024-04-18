@@ -15,8 +15,7 @@
         text-align: center;
     }
     .btn-group {
-        text-align: right;
-        margin: 2rem;
+        margin: 0 0 1rem 2rem;;
     }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
@@ -54,6 +53,10 @@
             </form>
         </div>
 
+        <div class="btn-group">
+            <button type="button" class="create-product">생성</button>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>
@@ -85,10 +88,6 @@
                 
             </tbody>
         </table>
-
-        <div class="btn-group">
-            <button class="create-product" type="button">생성</button>
-        </div>
     </div>
 <jsp:include page="../layout/layout_close.jsp" />
 </body>

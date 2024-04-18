@@ -1,9 +1,10 @@
 package com.ktdsuniversity.edu.pms.borrow.vo;
 
+import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
-public class BorrowVO {
+public class BorrowVO extends PaginateVO {
 	
 	private String brrwHistId;
 	private String brrwId;
@@ -11,6 +12,9 @@ public class BorrowVO {
 	private String brrwDt;
 	private String rtnDt;
 	private String delYn;
+	
+	private String searchType; // option 선택
+	private String searchKeyword; // 검색어
 	
 	private ProductManagementVO productManagementVO;
 	
@@ -63,6 +67,18 @@ public class BorrowVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
 	}
 	
 	

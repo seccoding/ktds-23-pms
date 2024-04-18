@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface BorrowDao {
 	
@@ -18,9 +19,9 @@ public interface BorrowDao {
 
 	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO);
 
-	public int getProductManageStateAllCount();
+	public int getProductManageStateAllCount(ProductVO productVO);
 
-	public List<BorrowVO> getProductManageState();
+	public List<BorrowVO> getProductManageState(ProductVO productVO);
 
 	public int returnOneItem(String brrwHistId);
 

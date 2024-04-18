@@ -100,4 +100,9 @@
 		   SET CUR_STR = CUR_STR + 1
 		 WHERE PRDT_ID = #{_parameter}
 	</update>
+	
+	<select id="getAllProductCategory" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT DISTINCT PRDT_CTGR, 1
+		  FROM PRODUCT
+	</select>
 </mapper>

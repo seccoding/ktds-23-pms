@@ -203,7 +203,20 @@ $().ready(function(){
 
 
     $(".product-add").on("click", function(){
-        $("!");
+        var url = "/ajax/product/manage/add";
+        $.post(url, 
+            {
+                prdtName: $("#prdtName").val(),
+                prdtCtgr: $("#prdtCtgr").val(),
+                onceYn: $("#onceYn").val(),
+                curStr: $("#curStr").val(),
+                buyDt: $("#buyDt").val(),
+                prdtPrice: $("#prdtPrice").val(),
+
+        }, 
+        function (response) {
+            location.href = response.data.next;
+        });
     });
 
     $(".product-cancel").on("click", function() {

@@ -10,6 +10,7 @@ import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Service
 public class BorrowServiceImpl implements BorrowService{
@@ -30,9 +31,12 @@ public class BorrowServiceImpl implements BorrowService{
 	}
 
 	@Override
-	public BorrowListVO getProductManageState() {
-		int borrowCount = this.borrowDao.getProductManageStateAllCount();
-		List<BorrowVO> borrowList = this.borrowDao.getProductManageState();
+	public BorrowListVO getProductManageState(ProductVO productVO) {
+		int borrowCount = this.borrowDao.getProductManageStateAllCount(productVO);
+		
+		productVO.setPageCount(borrowCount);
+		
+		List<BorrowVO> borrowList = this.borrowDao.getProductManageState(productVO);
 		
 		BorrowListVO borrowListVO = new BorrowListVO();
 		borrowListVO.setBorrowCnt(borrowCount);

@@ -56,6 +56,15 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.updateOneProduct(prdtId) > 0;
 	}
 
+	@Override
+	public ProductListVO getAllProductCategory() {
+		List<ProductVO> productList = this.productDao.getAllProductCategory();
+		ProductListVO productListVO = new ProductListVO();
+		productListVO.setProductList(productList);
+		
+		return productListVO;
+	}
+
 	
 
 }
