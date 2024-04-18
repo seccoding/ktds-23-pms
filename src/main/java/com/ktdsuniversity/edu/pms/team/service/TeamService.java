@@ -1,9 +1,16 @@
 package com.ktdsuniversity.edu.pms.team.service;
 
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public interface TeamService {
 
-	boolean createNewTeam(TeamVO teamVO);
+	public boolean createNewTeam(TeamVO teamVO);
+
+	public TeamVO selectOneTeam(String teamId);
+
+	public boolean modifyOneTeam(TeamVO teamVO);
+	
+	public TeamListVO getOnlyTeam();
 
 }

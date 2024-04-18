@@ -22,5 +22,35 @@
 		     , #{tmLeadId})
 		      
 	</insert>
+	
+	<select id="getOneTeam"
+	        parameterType="string"
+	        resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		SELECT TM_ID
+			 , TM_CR_DT
+			 , TM_NAME
+			 , DEPT_ID
+			 , DEL_YN
+			 , TM_LEAD_ID
+		  FROM TEAM
+		 WHERE TM_ID = #{_parameter}    
+	        
+	</select>
+	<select id="getOnlyTeam"
+	        resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		SELECT TM_ID
+			 , TM_NAME
+		  FROM TEAM    
+	        
+	</select>
+	
+	<update id="updateOneTeam"
+			parameterType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		UPDATE TEAM
+		   SET TM_NAME = #{tmName}
+		   	 , TM_LEAD_ID = #{tmLeadId}
+		   	 , DEPT_ID = #{deptId}
+		 WHERE TM_ID = #{tmId}
+	</update>
 
 </mapper>
