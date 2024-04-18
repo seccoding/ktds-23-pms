@@ -143,7 +143,7 @@
                                     </c:choose>
                                     <td class="flex">
                                         <button class="modify" data-product="${product.prdtMngId}" data-name="${product.productVO.prdtName}">수정</button>
-                                        <button class="remove" data-product="${product.prdtMngId}">삭제</button>
+                                        <button class="remove" data-product="${product.prdtMngId}" data-brrwyn="${product.brrwYn}" data-lostyn="${product.lostYn}" data-onceyn="${productVO.onceYn}">삭제</button>
                                     </td>
                                 </tr>
                             </c:forEach>

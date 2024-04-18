@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
@@ -37,14 +39,39 @@ public class BorrowController {
 		return "product/managestate";
 	}
 	
+	@ResponseBody
 	@GetMapping("/ajax/product/rentalstate/return")
-	public AjaxResponse returnOneItem(BorrowVO borrowVo) {
-		boolean isReturnSuccess = this.borrowService.returnOneItem(borrowVo.getBrrwHistId());
+	public AjaxResponse returnOneItem(BorrowVO borrowVO) {
+		boolean isReturnSuccess = this.borrowService.returnOneItem(borrowVO.getBrrwHistId());
 		boolean isProductManageBrrwChange = false;
 		if(isReturnSuccess) {
-			isProductManageBrrwChange = this.productManagementService.changeOneItemBrrwState(borrowVo.getPrdtMngId());
+			isProductManageBrrwChange = this.productManagementService.changeOneItemBrrwState(borrowVO.getPrdtMngId());
 		}
 		return new AjaxResponse().append("isSuccess", isProductManageBrrwChange);
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/product/rentalstate/selectedreturn")
+	public AjaxResponse returnSelectItem(BorrowListVO borrowListVO) {
+		int successCount = 0;
+		int listSize = borrowListVO.getBorrowList().size();
+		for (BorrowVO borrowVO:borrowListVO.getBorrowList()) {
+			System.out.println(borrowVO.getBrrwHistId());
+			boolean isReturnSuccess = this.borrowService.returnOneItem(borrowVO.getBrrwHistId());
+			System.out.println("!!!!!!!!controller!!!!!!!!"+isReturnSuccess);
+			boolean isProductManageBrrwChange = false;
+			if(isReturnSuccess) {
+				isProductManageBrrwChange = this.productManagementService.changeOneItemBrrwState(borrowVO.getPrdtMngId());
+			}
+			if(isProductManageBrrwChange) {
+				successCount++;
+			}
+			
+		}
+		System.out.println("!!!!!!!!controller!!!!!!!!"+successCount);
+		System.out.println("!!!!!!!!controller!!!!!!!!"+listSize);
+		
+		return new AjaxResponse().append("isSuccess", successCount==listSize).append("next", "/product/rentalstate");
 	}
 
 }

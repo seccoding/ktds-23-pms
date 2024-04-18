@@ -93,12 +93,12 @@
                 <c:choose>
                     <c:when test="${not empty productList.productList}">
                         <c:forEach items="${productList.productList}" var="product">
-                            <tr class="product-item-tr" data-product="${product.prdtId}">
-                                <td class="product-item">${product.prdtId}</td>
-                                <td class="product-item">${product.prdtName}</td>
-                                <td class="product-item">${product.prdtCtgr}</td>
-                                <td class="product-item">${product.onceYn}</td>
-                                <td class="product-item">${product.curStr}</td>
+                            <tr >
+                                <td class="product-item" data-product="${product.prdtId}">${product.prdtId}</td>
+                                <td class="product-item" data-product="${product.prdtId}">${product.prdtName}</td>
+                                <td class="product-item" data-product="${product.prdtId}">${product.prdtCtgr}</td>
+                                <td class="product-item" data-product="${product.prdtId}">${product.onceYn}</td>
+                                <td class="product-item" data-product="${product.prdtId}">${product.curStr}</td>
                                 <td>
                                     <button class="add-product-count" data-productname="${product.prdtName}" data-productid="${product.prdtId}">재고추가</button>
                                     <button class="remove-product" data-product="${product.prdtId}">삭제</button>

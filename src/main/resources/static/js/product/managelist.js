@@ -19,7 +19,8 @@ $().ready(function(){
     });
 
     $(".product-item").on("click", function(){
-        var id = $(".product-item-tr").data("product")
+        var id = $(this).data("product")
+        console.log(id)
         location.href = "/product/manage/view?prdtId=" + id
     });
 

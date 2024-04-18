@@ -9,6 +9,7 @@
 		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 			<id column="PRDT_ID" property="prdtId" />
 			<result column="PRDT_NAME" property="prdtName" />
+			<result column="PRDT_CTGR" property="prdtCtgr" />
 		</association>
 	</resultMap>
 
@@ -28,6 +29,7 @@
 			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
 			 , BH.DEL_YN
 			 , P.PRDT_NAME 
+			 , P.PRDT_CTGR
 		  FROM BORROW_HISTORY BH
 		 INNER JOIN PRODUCT_MANAGEMENT PM
 		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
@@ -51,7 +53,8 @@
 			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
 			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
 			 , BH.DEL_YN
-			 , P.PRDT_NAME 
+			 , P.PRDT_NAME
+			 , P.PRDT_CTGR
 		  FROM BORROW_HISTORY BH
 		 INNER JOIN PRODUCT_MANAGEMENT PM
 		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
