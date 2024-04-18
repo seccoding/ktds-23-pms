@@ -59,7 +59,6 @@ function state(apprid) {
 </script>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
     <div class="container">
         <div class="title">
             <h2>결재 목록조회</h2>
@@ -142,6 +141,5 @@ function state(apprid) {
             </table>
         </div>
     </div>
-    <jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>

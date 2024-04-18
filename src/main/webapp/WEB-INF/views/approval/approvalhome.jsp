@@ -71,7 +71,6 @@
 	</style>
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp"></jsp:include>
 	<div class="container">
         <div class="title">
             <h2>결재 현황</h2>
@@ -104,7 +103,7 @@
 				<c:choose>
 					<c:when test="${not empty apprList.apprList}">
 						<c:forEach items="${apprList.apprList}" var="approval">
-							<div class="card-list">
+							<div class="card-list"">
 								<div class="card-list-category">
 									<div class="category">
 										<img src="" alt="img">
@@ -114,8 +113,10 @@
 									</div>
 								</div>
 								<div class="card-list-title">
-									<h6>${approval.apprTtl}</h6>
-									<span>${approval.dmdDt}</span>
+                                    <a href="/approval/approvalview?apprId=${approval.apprId}">
+									    <h6>${approval.apprTtl}</h6>
+                                        <span>${approval.dmdDt}</span>
+                                    </a>
 								</div>
 								<div class="card-list-user">
 									<img src="" alt="img">
@@ -142,6 +143,5 @@
             </div>
         </div>
     </div>
-<jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>
