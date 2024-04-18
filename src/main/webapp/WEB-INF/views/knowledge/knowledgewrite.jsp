@@ -5,22 +5,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <head>
     <meta charset="UTF-8" />
     <title>지식관리 작성 페이지</title>
-    \
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/modal.js"></script>
     <script type="text/javascript" src="/js/knowledgewrite.js"></script>
-    <style type="text/css">
-      /* div인데 클래스가 grid 인 것 */
-      div.grid {
-        display: grid;
-        grid-template-columns: 80px 1fr;
-        grid-template-rows: 28px 28px 320px 1fr;
-        row-gap: 10px;
-      }
-    </style>
     <body>
-      <jsp:include page="../layout/layout.jsp" />
-
       <c:if test="${not empty errorMessage}">
         <dialog class="alert-dialog">
           <h1>${errorMessage}</h1>
@@ -69,7 +57,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </div>
         </div>
       </form>
-      <jsp:include page="../layout/layout_close.jsp" />
     </body>
   </head>
 </html>
