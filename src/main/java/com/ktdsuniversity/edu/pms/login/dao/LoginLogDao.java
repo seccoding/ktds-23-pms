@@ -30,4 +30,8 @@ public interface LoginLogDao {
 	public EmployeeVO updateEmpLog(EmployeeVO employee);
 
 	public void updateEmpLogout(EmployeeVO employee);
+
+	public void updateOneEmpLgnTryDt(String empId);
+
+	public int getCountPossibleLogin(String empId);
 }

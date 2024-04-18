@@ -64,6 +64,16 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 		return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpLgnTryCount", empId);
 	}
 
+	@Override
+	public void updateOneEmpLgnTryDt(String empId) {
+		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryDt", empId);
+	}
+
+	@Override
+	public int getCountPossibleLogin(String empId) {
+		return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getCountPossibleLogin", empId);
+	}
+
 	
 
 
