@@ -14,6 +14,7 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
+import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
 
 @Controller
 public class ReviewController {
@@ -31,11 +32,20 @@ public class ReviewController {
 	 * - 프로젝트명 선택시 -> 후기작성 페이지로 이동(/review/write)
 	 * - 후기결과보기 선택시 -> 해당 프로젝트의 후기결과 목록으로 이동(/review/viewwresult)
 	 */
-	@GetMapping("/review")
-	public String viewReviewListPage(Model model) {
-		ReviewListVO reviewListVO = reviewService.getAllReview();
+	@GetMapping("/review/search")
+	public String viewReviewListPage(SearchReviewVO searchReviewVO, Model model) {
+		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
 		model.addAttribute("reviewlist", reviewListVO);
+		model.addAttribute("SearchReviewVO", searchReviewVO);
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
+	}
+	
+	@GetMapping("/review/viewresult")
+	public String viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) {
+		ReviewListVO reviewListVO = this.reviewService.getAllReviewResult(searchReviewVO);
+		model.addAttribute("reviewList", reviewListVO);
+		model.addAttribute("SearchReviewVO", searchReviewVO);
+		return "review/reviewresult"; // reviewList.jsp 파일 이름
 	}
 	
 	/*
@@ -58,17 +68,33 @@ public class ReviewController {
 	public String ReviewWritePage(Model model, ReviewVO reviewVO) {
 		this.reviewService.insertNewReview(reviewVO);
 //		logger.debug(">>>>>>>>> {}", reviewVO);
-		return "redirect:/review"; 
+		return "redirect:/review/search"; 
 	}
 		
 	
-	@GetMapping("/review/viewresult")
-	public String viewReviewCntnt(Model model) {
-		ReviewListVO reviewListVO = this.reviewService.viewReviewCntnt();
-		model.addAttribute("reviewList", reviewListVO);
-		
-		return "review/reviewresult"; // reviewList.jsp 파일 이름
-	}
+	/*
+	 * @GetMapping("/review/viewresult") public String
+	 * viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) { ReviewListVO
+	 * reviewListVO = this.reviewService.viewReviewCntnt();
+	 * model.addAttribute("reviewList", reviewListVO);
+	 * model.addAttribute("SearchReviewVO", searchReviewVO); return
+	 * "review/reviewresult"; // reviewList.jsp 파일 이름 }
+	 */
+	
+	
+	/*
+	 * @GetMapping("/review/viewresult") public String viewReviewCntnt(Model model)
+	 * { ReviewListVO reviewListVO = this.reviewService.viewReviewCntnt();
+	 * model.addAttribute("reviewList", reviewListVO);
+	 * 
+	 * return "review/reviewresult"; // reviewList.jsp 파일 이름 }
+	 */
+	
+	
+	
+	
+	
+	
 //	@GetMapping("/review/modify")
 //	public String viewModifyPage() {
 //		return "review/reviewwrite";   // reviewList.jsp 파일 이름

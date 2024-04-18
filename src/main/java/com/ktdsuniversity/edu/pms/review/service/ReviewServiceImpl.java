@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.review.dao.ReviewDao;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
-import com.ktdsuniversity.edu.pms.review.web.ReviewApiController;
+import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -26,16 +25,37 @@ public class ReviewServiceImpl implements ReviewService {
 	private ReviewDao reviewDao;
 
 	@Override
-	public ReviewListVO getAllReview() {
-		List<ReviewVO> reviewList = reviewDao.selectAllReview();
+	public ReviewListVO getAllReview(SearchReviewVO searchReviewVO) {
 
-        ReviewListVO reviewListVO = new ReviewListVO();
-        reviewListVO.setReviewList(reviewList);
-
+		int reviewCount = this.reviewDao.searchReviewAllCount(searchReviewVO);
+		searchReviewVO.setPageCount(reviewCount);
+		
+		List<ReviewVO> reviewList = this.reviewDao.searchReview(searchReviewVO);
+		
+		ReviewListVO reviewListVO = new ReviewListVO();
+		reviewListVO.setReviewList(reviewList);
+		reviewListVO.setReviewCnt(reviewCount);
+		
         return reviewListVO;
 	}
 	
-
+	@Override
+	public ReviewListVO getAllReviewResult(SearchReviewVO searchReviewVO) {
+		
+		int reviewCount = this.reviewDao.searchviewReviewCntntAllCount(searchReviewVO);
+		searchReviewVO.setPageCount(reviewCount);
+		
+		List<ReviewVO> reviewList = this.reviewDao.searchViewReviewCntnt(searchReviewVO);
+		
+		ReviewListVO reviewListVO = new ReviewListVO();
+		reviewListVO.setReviewList(reviewList);
+		reviewListVO.setReviewCnt(reviewCount);
+		
+        return reviewListVO;
+	}
+	
+	
+	
 	@Override
 	public ReviewListVO viewReviewCntnt() {
 		List<ReviewVO> reviewList = reviewDao.viewReviewCntnt();

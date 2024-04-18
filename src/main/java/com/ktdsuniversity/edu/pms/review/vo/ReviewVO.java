@@ -18,9 +18,16 @@ public class ReviewVO {
 		
 	private ProjectVO projectVO;
 	private DepartmentVO departmentVO;
+	private String deptName;
 	private ProjectTeammateVO projectTeammateVO;
 	private EmployeeVO employeeVO;
 	
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	public DepartmentVO getDepartmentVO() {
 		return departmentVO;
 	}
