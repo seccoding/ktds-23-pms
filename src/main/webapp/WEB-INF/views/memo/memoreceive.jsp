@@ -43,7 +43,7 @@
                </td>
              <td class="center-align">${memo.crtrId}</td>
              <td class="left-align">
-              <a class="ellipsis" href="/memo/view?id=${memo.memoId}">
+              <a class="ellipsis" href="/memo/receive/view?id=${memo.memoId}">
              		쪽지를 받았습니다.
                </a>
              </td>

@@ -90,7 +90,7 @@ public class MemoController {
 	}
 	
 	
-	@GetMapping("/memo/view")
+	@GetMapping({"/memo/sent/view", "/memo/receive/view", "/memo/storage/view"})
 	public String viewBoardDetailPage(@RequestParam() String id, Model model) {
 		MemoVO memoVO = this.memoService.getOneMemo(id);
 	

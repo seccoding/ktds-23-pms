@@ -44,7 +44,7 @@
                </td>
              <td class="center-align">${memo.rcvId}</td>
              <td class="left-align">
-             	<a class="ellipsis" href="/memo/view?id=${memo.memoId}">
+             	<a class="ellipsis" href="/memo/sent/view?id=${memo.memoId}">
              		쪽지를 보냈습니다.
              	</a>
              </td>
