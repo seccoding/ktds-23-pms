@@ -410,4 +410,7 @@ $().ready(function() {
             });
         });
     });
+    setInterval(function() {
+        $("#btn-compl-srv").trigger("click");
+    }, 10000);
 });
