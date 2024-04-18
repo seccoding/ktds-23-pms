@@ -45,4 +45,8 @@ public interface ProjectDao {
     CreateProjectVO selectDeletedPm(CreateProjectVO modifyProjectVO);
 
     int restoreDeletedPm(CreateProjectVO modifyProjectVO);
+
+    int deleteManyTeammate(List<String> deleteItems);
+
+    int deleteByTeammateId(String prjTmId);
 }

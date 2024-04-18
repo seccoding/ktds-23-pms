@@ -105,4 +105,14 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     public int restoreDeletedPm(CreateProjectVO modifyProjectVO) {
         return getSqlSession().update(ProjectDao.NAME_SPACE + ".restoreDeletedPm", modifyProjectVO);
     }
+
+    @Override
+    public int deleteManyTeammate(List<String> deleteItems) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".deleteManyTeammate", deleteItems);
+    }
+
+    @Override
+    public int deleteByTeammateId(String prjTmId) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".deleteByTeammateId", prjTmId);
+    }
 }
