@@ -113,6 +113,11 @@ input[type="checkbox"]:checked + label {
   background: var(--btn-color);
 }
 
+input[type="checkbox"]:disabled + label {
+  /* 체크되었을 때 */
+  background: var(--secondary);
+}
+
 input[type="checkbox"] + label + label {
   font-size: 1rem;
   position: relative;
@@ -303,6 +308,7 @@ button {
   font-weight: bold;
   border-radius: 0.25rem;
   background-color: var(--btn-color);
+  cursor: pointer;
 }
 
 button:hover {
