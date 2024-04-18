@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.approval.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
+	
+	Logger logger = LoggerFactory.getLogger(ApprovalDao.class);
 
 	@Autowired
 	private ApprovalDao approvalDao;
