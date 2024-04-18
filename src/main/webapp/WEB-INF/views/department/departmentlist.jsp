@@ -114,7 +114,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <input id="team-name" type="text" class="grid-item" />
         <div class="grid-item">팀장ID</div>
         <input id="team-leader" type="text" class="grid-item" />
-        <div class="grid-item">담당부서</div>
+        <div class="grid-item">담당부서ID</div>
         <input id="team-department" type="text" class="grid-item" />
       </div>
       <div class="flex">

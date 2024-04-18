@@ -28,6 +28,21 @@ $().ready(function () {
     location.reload();
   });
 
+  $(".team-submit-button").on("click", function () {
+    var teamName = $("#team-name").val();
+    console.log(teamName);
+    var teamLeader = $("#team-leader").val();
+    var teamDepartment = $("#team-department").val();
+    $.post(
+      "/ajax/team/create",
+      { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
+      function (response) {
+        location.href = response.data.nextUrl;
+      }
+    );
+  });
+
+
   $(".department-modify").on("click", function () {
     var modal = $(".modify-modal-dept");
 
