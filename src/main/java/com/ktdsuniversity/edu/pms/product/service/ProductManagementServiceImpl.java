@@ -10,6 +10,7 @@ import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Service
 public class ProductManagementServiceImpl implements ProductManagementService{
@@ -78,6 +79,23 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 			changeProductCnt = this.productDao.changeOneProductCnt(prdtId);
 		}
 		return changeProductCnt > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean addSomeProductManagement(ProductManagementVO productManagementVO, int count) {
+		int successCount = 0;
+		for(var i=0; i < count; i++) {
+			successCount += productManagementDao.addProductManagement(productManagementVO);
+		}
+		
+		return successCount == count;
+	}
+
+	@Override
+	public Boolean isProductCanDel(String prdtId) {
+		int delNCount = this.productManagementDao.getDelNCount(prdtId);
+		return delNCount == 0;
 	}
 
 }

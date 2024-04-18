@@ -20,4 +20,10 @@ public interface ProductDao {
 
 	public int changeOneProductCnt(String prdtId);
 
+	public int updateOneProductCount(ProductVO productVO);
+
+	public int deleteOneProduct(String prdtId);
+
+	public int modifyProduct(ProductVO productVO);
+
 }

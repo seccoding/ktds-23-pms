@@ -56,6 +56,19 @@ public class ProductController {
 		return "product/managelist";
 	}
 	
+	@ResponseBody
+	@GetMapping("/product/manage/list/iscandel")
+	public AjaxResponse isproductCanDel(@RequestParam String prdtId) {
+		Boolean canDel = this.productManagementService.isProductCanDel(prdtId);
+		return new AjaxResponse().append("canDel", canDel);
+	}
+	
+	@ResponseBody
+	@GetMapping("/product/manage/list/del")
+	public AjaxResponse delProduct(@RequestParam String prdtId) {
+		boolean isDelSuccess =  productService.deleteOneProduct(prdtId);
+		return new AjaxResponse().append("result", isDelSuccess).append("next", "/product/manage/list");
+	}
 	
 	@GetMapping("/product/manage/detail")
 	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO) {
@@ -117,6 +130,24 @@ public class ProductController {
 		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId()).append("detailUrl", "/product/manage/detail");
 	}
 	
+	@ResponseBody
+	@PostMapping("/ajax/product/manage/list/add")
+	public AjaxResponse addProductCount(ProductManagementVO productManagementVO) {
+		int count = productManagementVO.getProductVO().getCurStr();
+		boolean isSomeProductManageAddSuccess = this.productManagementService.addSomeProductManagement(productManagementVO, count);
+		boolean isCountAddSuccess = false;
+		if(isSomeProductManageAddSuccess) {
+			isCountAddSuccess = this.productService.addProductCount(productManagementVO.getProductVO());
+		}
+		return new AjaxResponse().append("result", isCountAddSuccess).append("next", "/product/manage/list");
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/product/manage/view/modifymain")
+	public AjaxResponse modifyProduct(ProductVO productVO) {
+		boolean isModifySuccess = this.productService.modifyProduct(productVO);
+		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productVO.getPrdtId());
+	}
 	
 	
 }

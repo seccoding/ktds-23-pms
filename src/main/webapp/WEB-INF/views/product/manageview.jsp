@@ -12,7 +12,7 @@
     .main-grid{
         display: grid;
         grid-template-columns: 6rem 1fr 6rem 1fr;
-        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-rows: repeat(3, 2rem);
         gap: 1rem;
         margin: 2rem 0;
     }
@@ -34,7 +34,12 @@
         gap: .3rem;
         margin: 4rem 2rem;
     }
+    .hidden{
+        display: none;
+    }
 </style>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css'>
 </head>
 <body >
     <jsp:include page="../layout/layout.jsp" />
@@ -58,23 +63,41 @@
                     <p>분실신고일</p>
                     <input type="date" class="lost-day" />
                 </div>
-                <input type="button" value="취소" id="cancel-btn"/>
                 <input type="button" value="수정" id="modify-btn"/>
+                <input type="button" value="취소" id="cancel-btn"/>
             </form>
         </dialog>
         <h2>비품관리 정보</h2>
-        <div class="bar">수정저장 아이콘</div>
+        <div class="bar">
+            <i class="fi fi-rr-pencil"></i>
+            <i class="fi fi-rs-disk hidden"></i>
+        </div>
+        <div class="main-grid hidden">
+            <div>비품 ID</div>
+            <div>${productVO.prdtId}</div>
+            <div>재고수</div>
+            <div>${productVO.curStr}</div>
+            <div>비품명</div>
+            <input type="text" class="product-name-modify" />
+            <div>소모품 분류</div>
+            <select class="product-onceyn-modify" >
+                <option value="Y">소모품</option>
+                <option value="N">비소모품</option>
+            </select>
+            <div>카테고리</div>
+            <input type="text" class="product-ctgr-modify" />
+        </div>
         <div class="main-grid">
             <div>비품 ID</div>
             <div>${productVO.prdtId}</div>
             <div>재고수</div>
             <div>${productVO.curStr}</div>
             <div>비품명</div>
-            <div>${productVO.prdtName}</div>
+            <div class="product-name-origin">${productVO.prdtName}</div>
             <div>소모품 분류</div>
-            <div>${productVO.onceYn}</div>
+            <div class="product-onceyn-origin">${productVO.onceYn}</div>
             <div>카테고리</div>
-            <div>${productVO.prdtCtgr}</div>
+            <div  class="product-ctgr-origin">${productVO.prdtCtgr}</div>
         </div>
         
         <div>${productVO.prdtName}에 대한 상세 정보가 ${productDetailList.productManagementCnt}건 존재합니다.</div>

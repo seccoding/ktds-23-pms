@@ -100,4 +100,24 @@
 		   SET CUR_STR = CUR_STR + 1
 		 WHERE PRDT_ID = #{_parameter}
 	</update>
+	
+	<update id="updateOneProductCount" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		UPDATE PRODUCT 
+		   SET CUR_STR = CUR_STR + #{curStr}
+		 WHERE PRDT_ID = #{prdtId}
+	</update>
+	
+	<update id="deleteOneProduct" parameterType="string">
+		UPDATE PRODUCT 
+		   SET DEL_YN = 'Y'
+		 WHERE PRDT_ID = #{_parameter}
+	</update>
+	
+	<update id="modifyProduct" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		UPDATE PRODUCT 
+		   SET PRDT_NAME = #{prdtName}
+		     , PRDT_CTGR = #{prdtCtgr}
+		     , ONCE_YN = #{onceYn}
+		 WHERE PRDT_ID = #{prdtId}
+	</update>
 </mapper>

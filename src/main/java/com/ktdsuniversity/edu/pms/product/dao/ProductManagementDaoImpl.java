@@ -72,4 +72,16 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductId", prdtMngId);
 	}
 
+
+	@Override
+	public int addProductManagement(ProductManagementVO productManagementVO) {
+		return getSqlSession().insert(ProductManagementDao.NAME_SPACE+".addProductManagement", productManagementVO);
+	}
+
+
+	@Override
+	public int getDelNCount(String prdtId) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getDelNCount", prdtId);
+	}
+
 }

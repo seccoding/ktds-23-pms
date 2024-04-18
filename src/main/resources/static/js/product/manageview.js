@@ -46,7 +46,6 @@ $().ready(function(){
     })
 
     $("#modify-btn").on("click", function(){
-        console.log($(".buy-day").val())
         $.post("/ajax/product/manage/view/modify",{
             prdtMngId:$(".manage-id").text(),
             prdtPrice:$(".price").val(),
@@ -58,4 +57,30 @@ $().ready(function(){
             location.href = res.data.next
         })
     })
+    $(".product-name-modify").val($(".product-name-origin").text())
+    if($(".product-onceyn-origin").text()==='Y'){
+        $(".product-onceyn-modify").val('Y').prop('seleted')
+    }else{
+        $(".product-onceyn-modify").val('N').prop('seleted')
+    }
+    $(".product-ctgr-modify").val($(".product-ctgr-origin").text())
+    
+    $(".fi-rr-pencil").on("click", function(){
+        $(".main-grid").toggleClass("hidden")
+        $(".fi-rr-pencil").toggleClass("hidden")
+        $(".fi-rs-disk").toggleClass("hidden")
+
+    })
+    $(".fi-rs-disk").on("click", function(){
+        $.post("/ajax/product/manage/view/modifymain", {
+            prdtId:paramId,
+            prdtName:$(".product-name-modify").val(), 
+            prdtCtgr:$(".product-ctgr-modify").val(),
+            onceYn:$(".product-onceyn-modify").val()
+        }, function(res){
+            location.href = res.data.next
+        })
+        
+    })
+    
 })
