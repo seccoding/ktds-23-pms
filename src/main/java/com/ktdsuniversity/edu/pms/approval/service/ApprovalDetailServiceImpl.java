@@ -30,7 +30,7 @@ public class ApprovalDetailServiceImpl implements ApprovalDetailService {
 		
 		int insertCount=this.approvaldetaildao.insertApproval(approvaldetailVo);
 		
-		return false;
+		return insertCount>0;
 	}
 
 	@Override

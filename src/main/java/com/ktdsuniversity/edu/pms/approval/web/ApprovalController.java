@@ -34,6 +34,16 @@ public class ApprovalController {
 	public String doApprovalHomePage(Model model) {
 		ApprovalListVO apprList = this.approvalService.getAllApproval();
 		model.addAttribute("apprList", apprList);
+		
+		ApprovalListVO approveList=this.approvalService.getAllApprove();
+		model.addAttribute("approveList", approveList);
+		
+		ApprovalListVO OneWeekApprovalList =this.approvalService.getAllOneWeekApproval();
+		model.addAttribute("OneWeekApprovalList", OneWeekApprovalList);
+		
+		ApprovalListVO monthApprovalList=this.approvalService.getAllMonthApproval();
+		model.addAttribute("monthApprovalList",monthApprovalList);
+		
 		return "approval/approvalhome";
 	}
 

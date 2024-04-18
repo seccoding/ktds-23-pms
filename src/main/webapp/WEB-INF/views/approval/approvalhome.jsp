@@ -80,21 +80,21 @@
                 <div class="card-body">
                     <div class="card-icon">⚫</div>
                     <span>승인되지 않은 결재</span>
-                    <h2>4</h2>
+                    <h2>${approveList.getApprCnt()}</h2>
                 </div>
             </div>
             <div class="card col-1-3">
                 <div class="card-body">
                     <div class="card-icon">⚫</div>
                     <span>일주일 이상 지연된 결재</span>
-                    <h2>0</h2>
+                    <h2>${OneWeekApprovalList.getApprCnt()}</h2>
                 </div>
             </div>
             <div class="card col-1-3">
                 <div class="card-body">
                     <div class="card-icon">⚫</div>
                     <span>한 달 이내 결재내역</span>
-                    <h2>10</h2>
+                    <h2>${monthApprovalList.getApprCnt()}</h2>
                 </div>
             </div>
         </div>

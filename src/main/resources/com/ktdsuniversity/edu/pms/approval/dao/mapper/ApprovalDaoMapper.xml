@@ -188,9 +188,33 @@
 			WHERE APPR_ID='';
   	</update>
   	
+  	<select id="getAllApproveCount" resultType="_int">
+  		SELECT COUNT(1)
+			FROM APPROVAL A
+			INNER JOIN EMPLOYEE e 
+			ON e.EMP_ID =A.DMD_ID
+			WHERE A.DEL_YN = 'N'
+			AND APPR_STS  IN ('801','803') 
+  	</select>
   	
+  	<select id="getAllOneWeekApprovalCount" resultType="_int"> 
+  		SELECT COUNT(1)
+			FROM APPROVAL A
+			INNER JOIN EMPLOYEE e 
+			ON e.EMP_ID = A.DMD_ID
+			<![CDATA[WHERE DMD_DT < SYSDATE - 7]]>
+			AND APPR_STS  IN ('801','803') 
+  	</select>
   	
-  	
+   <select id="getAllMonthApprovalCount" resultType="_int">
+   		SELECT COUNT(1)
+		FROM APPROVAL a
+		INNER JOIN EMPLOYEE e 
+		ON e.EMP_ID =a.DMD_ID
+		<![CDATA[WHERE DMD_DT >= TRUNC(SYSDATE) - INTERVAL '1' MONTH]]> 
+		AND APPR_STS  IN ('802') 
+   </select>
+   
   	
   	
 </mapper> 

@@ -52,6 +52,31 @@ public interface ApprovalDao {
      * @param id 게시글 ID (번호)
      * @return DB에 Delete한 게시글의 수
      */
+
     public int deleteApproval(String apprId);
+
+    /**
+     * 버튼 클릭시 승인 상태로 바뀐다
+     */
+    public int updateApproval(String id);
+    
+    
+    
+    
+    /**
+     * 승인되지 않은 결재 내역 개수
+     */
+    public int getAllApproveCount();
+    
+    /**
+     * 일주일이상 지연된 결재 개수
+     */
+    public int  getAllOneWeekApprovalCount();
+    
+    /**
+     * 한 달 이내 결재내역
+     */
+    public int  getAllMonthApprovalCount();
+    
 
 }
