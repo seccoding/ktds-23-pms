@@ -36,9 +36,11 @@
 			resultType="_int">
 		SELECT COUNT(1)
 		  FROM EMPLOYEE E
-		  JOIN DEPARTEMNT D
+		  JOIN DEPARTMENT D
 			ON D.DEPT_ID = E.DEPT_ID
-		  <if test='searchKeyWord != null and SearchKeyWord != "" '>
+		  JOIN JOB J 
+		    ON J.JOB_ID = E.JOB_ID
+		  <if test='searchKeyWord != null and searchKeyWord != "" '>
 		  	<choose>
 		  		<when test='searchType == "employee_name"'>
 		  		AND E.EMP_NAME LIKE '%' || #{searchKeyWord} || '%'
@@ -46,13 +48,16 @@
 		  		<when test='searchType == "department_name"'>
 		  		AND D.DEPT_NAME LIKE '%' || #{searchKeyWord} || '%'
 		  		</when>
+		  		<when test='searchType == "job_name"'>
+		  		AND J.JOB_NAME LIKE '%' || #{searchKeyWord} || '%'
+		  		</when>
 		  	</choose>
 		  </if>
 	</select> 
 
 	<select id="getAllEmployee" 
 			resultMap="employeeVOMap">
-		SELECT E.EMP_ID
+	SELECT E.EMP_ID
 		 , E.EMP_NAME
 		 , E.WORK_STS
 		 , E.SAL_YEAR
@@ -86,6 +91,7 @@
 	<select id="searchAllEmployee" 
 			parameterType="com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO"
 			resultMap="employeeVOMap">
+	<include refid="Common.pagenate_header" />
 	SELECT E.EMP_ID
 		 , E.EMP_NAME
 		 , E.WORK_STS
@@ -118,7 +124,7 @@
 	    ON D.DEPT_ID = E.DEPT_ID
 	  JOIN JOB J
 	    ON J.JOB_ID = E.JOB_ID 
-	 <if test='searchKeyWord != null and SearchKeyWord !="" '>
+	 <if test='searchKeyWord != null and searchKeyWord !="" '>
 		  	<choose>
 		  		<when test='searchType == "employee_name"'>
 		  		AND E.EMP_NAME LIKE '%' || #{searchKeyWord} || '%'
@@ -131,6 +137,7 @@
 		  		</when>
 		  	</choose>
 		  </if>
+	<include refid="Common.pagenate_footer" />
 	</select>
 
 	

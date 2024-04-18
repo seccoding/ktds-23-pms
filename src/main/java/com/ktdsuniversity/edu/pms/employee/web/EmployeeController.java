@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -21,11 +20,10 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
-
-import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -47,24 +45,28 @@ public class EmployeeController {
 //	return "employee/employeelist";
 //	}
 	
-	//조회
+//	//조회
+//	@GetMapping("/employee/search")
+//	public String viewEmployeeListPage(Model model) {
+//		EmployeeListVO employeeListVO = this.employeeService.getAllEmployee();
+//		
+//		model.addAttribute("employeeList", employeeListVO);
+//
+//		
+//		return "employee/employeelist";
+//	}
+	
+	//검색결과 
 	@GetMapping("/employee/search")
-	public String viewEmployeeListPage(Model model) {
-		EmployeeListVO employeeListVO = this.employeeService.getAllEmployee();
-		
+	public String viewEmployeePage(SearchEmployeeVO searchEmployeeVO, Model model) {
+		EmployeeListVO employeeListVO = this.employeeService.searchAllEmployee(searchEmployeeVO);
 		model.addAttribute("employeeList", employeeListVO);
-
-		
+		model.addAttribute("searchEmployeeVO", searchEmployeeVO);
 		return "employee/employeelist";
 	}
 	
-	//검색
-	@GetMapping("/employee/view")
-	public String viewOneEmployeePage(String empId, Model model) {
-		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
-		model.addAttribute("employeeVO", employeeVO);
-		return "employee/employeeview";
-	}
+	//상제정보 
+	
 	
 	//삭제 
 	@ResponseBody
