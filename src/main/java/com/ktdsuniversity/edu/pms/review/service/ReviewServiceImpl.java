@@ -26,10 +26,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public ReviewListVO getAllReview(SearchReviewVO searchReviewVO) {
-//		List<ReviewVO> reviewList = reviewDao.searchReview(searchReviewVO);
-//
-//        ReviewListVO reviewListVO = new ReviewListVO();
-//        reviewListVO.setReviewList(reviewList);
+
 		int reviewCount = this.reviewDao.searchReviewAllCount(searchReviewVO);
 		searchReviewVO.setPageCount(reviewCount);
 		
@@ -42,7 +39,23 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewListVO;
 	}
 	
-
+	@Override
+	public ReviewListVO getAllReviewResult(SearchReviewVO searchReviewVO) {
+		
+		int reviewCount = this.reviewDao.searchviewReviewCntntAllCount(searchReviewVO);
+		searchReviewVO.setPageCount(reviewCount);
+		
+		List<ReviewVO> reviewList = this.reviewDao.searchViewReviewCntnt(searchReviewVO);
+		
+		ReviewListVO reviewListVO = new ReviewListVO();
+		reviewListVO.setReviewList(reviewList);
+		reviewListVO.setReviewCnt(reviewCount);
+		
+        return reviewListVO;
+	}
+	
+	
+	
 	@Override
 	public ReviewListVO viewReviewCntnt() {
 		List<ReviewVO> reviewList = reviewDao.viewReviewCntnt();

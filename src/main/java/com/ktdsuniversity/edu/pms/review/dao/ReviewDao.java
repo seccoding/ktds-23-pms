@@ -17,16 +17,22 @@ public interface ReviewDao {
 	 * @return
 	 */
 	public int searchReviewAllCount(SearchReviewVO searchReviewVO);
+	
+	public int searchviewReviewCntntAllCount(SearchReviewVO searchReviewVO);
+
 	/**
 	* DB에 저장된 모든 후기의 목록을 조회 - pagination을 위함
 	* @param searchReviewVO 검색할 조건 (페이지번호, 노출할 목록개수 등)
 	* @return DB에서 조회된 후기의 목록
 	*/
 	public List<ReviewVO> searchReview(SearchReviewVO searchReviewVO);
-	
+		
+	public List<ReviewVO> searchViewReviewCntnt(SearchReviewVO searchReviewVO);
+
 	
 	
 	public List<ReviewVO> viewReviewCntnt();
+
 
 	
 	/**

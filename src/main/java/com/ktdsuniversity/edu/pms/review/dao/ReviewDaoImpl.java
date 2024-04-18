@@ -33,6 +33,8 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".searchReview", searchReviewVO);
 	}
 	
+	
+	
 	/**
 	 * 후기 작성된 내용 목록을 조회
 	 */
@@ -86,6 +88,19 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".searchReviewAllCount", searchReviewVO);
 
 	}
+	
+	@Override
+	public int searchviewReviewCntntAllCount(SearchReviewVO searchReviewVO) {
+		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".searchviewReviewCntntAllCount", searchReviewVO);
+
+	}
+
+	@Override
+	public List<ReviewVO> searchViewReviewCntnt(SearchReviewVO searchReviewVO) {
+		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".searchViewReviewCntnt", searchReviewVO);
+	}
+
+
 
 	
 

@@ -33,10 +33,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <input type="hidden" id="crtrId" name="crtrId" value="0005020" />
   
           <!-- <label for="crtDt">작성 날짜</label> -->
-          <input type="hidden" name="crtDt" value="2024-04-12 14:38:47.000" />
+          <input type="hidden" name="crtDt" value="" />
   
           <!-- <label for="mdfDt">수정 날짜</label> -->
-          <input type="hidden" name="mdfDt" value="2024-04-12 14:38:47.000" />
+          <input type="hidden" name="mdfDt" value="" />
   
           <input type="hidden" id="delYn" name="delYn" value="N" />
   

@@ -40,6 +40,14 @@ public class ReviewController {
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
 	}
 	
+	@GetMapping("/review/viewresult")
+	public String viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) {
+		ReviewListVO reviewListVO = this.reviewService.getAllReviewResult(searchReviewVO);
+		model.addAttribute("reviewList", reviewListVO);
+		model.addAttribute("SearchReviewVO", searchReviewVO);
+		return "review/reviewresult"; // reviewList.jsp 파일 이름
+	}
+	
 	/*
 	 * 후기작성을 사용자에게 보여주는 페이지
 	 * - id값으로 해당 후기의 흐로젝트명을 가져와서 후기작성페이지에 바로 노출되도록 하기위함
@@ -64,13 +72,29 @@ public class ReviewController {
 	}
 		
 	
-	@GetMapping("/review/viewresult")
-	public String viewReviewCntnt(Model model) {
-		ReviewListVO reviewListVO = this.reviewService.viewReviewCntnt();
-		model.addAttribute("reviewList", reviewListVO);
-		
-		return "review/reviewresult"; // reviewList.jsp 파일 이름
-	}
+	/*
+	 * @GetMapping("/review/viewresult") public String
+	 * viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) { ReviewListVO
+	 * reviewListVO = this.reviewService.viewReviewCntnt();
+	 * model.addAttribute("reviewList", reviewListVO);
+	 * model.addAttribute("SearchReviewVO", searchReviewVO); return
+	 * "review/reviewresult"; // reviewList.jsp 파일 이름 }
+	 */
+	
+	
+	/*
+	 * @GetMapping("/review/viewresult") public String viewReviewCntnt(Model model)
+	 * { ReviewListVO reviewListVO = this.reviewService.viewReviewCntnt();
+	 * model.addAttribute("reviewList", reviewListVO);
+	 * 
+	 * return "review/reviewresult"; // reviewList.jsp 파일 이름 }
+	 */
+	
+	
+	
+	
+	
+	
 //	@GetMapping("/review/modify")
 //	public String viewModifyPage() {
 //		return "review/reviewwrite";   // reviewList.jsp 파일 이름

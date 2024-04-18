@@ -89,45 +89,67 @@
    <select id="searchReviewAllCount" 
    		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
            resultType="_int">
-		SELECT COUNT(DISTINCT PRJ_ID)
-		  FROM PROJECT_REVIEW 
+		<!-- SELECT COUNT(DISTINCT PRJ_ID)
+		  FROM PROJECT  -->
 		  
-		  <!-- FROM PROJECT_REVIEW pr
-		  JOIN EMPLOYEE e
-		    ON e.EMP_ID = pr.CRTR_ID
-		 WHERE pr.DEL_YN = 'N' -->
-      
+		SELECT COUNT(DISTINCT PRJ_NAME)
+          FROM PROJECT 
+  		 WHERE PRJ_STS = '409'
+  
    </select>
 	
 	<select id="searchReview" 
 	        parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO" 
 	        resultMap="ReviewVOMap">
 		<include refid ="Common.pagenate_header"/>
-			SELECT DISTINCT sq.PRJ_ID
-		          , p.PRJ_NAME
-		          , p.CLNT_INFO
-		          , p.DEPT_ID
-		          , p.PRJ_STS
-		          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
-		          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
-		          , d.DEPT_NAME
-		        FROM PROJECT_REVIEW sq
-		        JOIN PROJECT p
-		          ON p.PRJ_ID = sq.PRJ_ID
-		        JOIN DEPARTMENT d
-		          ON d.DEPT_ID = p.DEPT_ID
-		       WHERE p.DEL_YN = 'N'
-		     <!-- <if test = 'searchKeyword != null and searchKeyword !=""'>
-               <choose>
-                 <when test='searchType == "title"'>
-             		AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
-                 </when>
-                 <when test='searchType == "department"'>
-                    AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
-                </when>
-               </choose>
-           </if> -->
+		SELECT DISTINCT p.PRJ_ID
+	          , p.PRJ_NAME
+	          , p.CLNT_INFO
+	          , p.DEPT_ID
+	          , p.PRJ_STS
+	          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
+	          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
+	          , d.DEPT_NAME
+	        FROM PROJECT p
+	        JOIN DEPARTMENT d
+	          ON p.DEPT_ID = d.DEPT_ID  
+	       WHERE p.DEL_YN = 'N' 
+	         AND p.PRJ_STS = '409'
+	       
     	<include refid ="Common.pagenate_footer"/>
+	</select>
+
+
+   <select id="searchviewReviewCntntAllCount" 
+   		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
+           resultType="_int">
+		SELECT COUNT(RV_ID)
+		  FROM PROJECT_REVIEW 
+   </select>
+
+	<select id="searchViewReviewCntnt" 
+	        parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO" 
+	        resultMap="ReviewVOMap">
+		<include refid ="Common.pagenate_header"/>
+			SELECT pr.RV_ID
+	             , pr.RV_CNTNT
+	             , pr.DEL_YN
+	          FROM PROJECT_REVIEW pr
+	          JOIN PROJECT p
+	            ON p.PRJ_ID = pr.PRJ_ID
+	         WHERE p.DEL_YN = 'N'
+	           AND pr.DEL_YN = 'N'
+    	<include refid ="Common.pagenate_footer"/>
+	</select>
+
+	<select id="viewReviewCntnt" resultMap="ReviewVOMap">
+			SELECT p.PRJ_NAME
+				 , pr.RV_CNTNT 
+				 , pr.RV_ID 
+			  FROM PROJECT_REVIEW pr
+			  JOIN PROJECT p
+			    ON p.PRJ_ID = pr.PRJ_ID
+			 WHERE pr.DEL_YN = 'N'
 	</select>
 
 	<!-- <select id="selectAllReview" 
@@ -152,7 +174,7 @@
 	
 	
 	
-	<select id="viewReviewCntnt" resultMap="ReviewVOMap">
+<!-- 	<select id="viewReviewCntnt" resultMap="ReviewVOMap">
 			SELECT p.PRJ_NAME
 				 , pr.RV_CNTNT 
 				 , pr.RV_ID 
@@ -160,7 +182,7 @@
 			  JOIN PROJECT p
 			    ON p.PRJ_ID = pr.PRJ_ID
 			 WHERE pr.DEL_YN = 'N'
-	</select>
+	</select> -->
 
 
 

@@ -11,7 +11,9 @@ public interface ReviewService {
 	 * @return
 	 */
 	ReviewListVO getAllReview(SearchReviewVO searchReviewVO);
+	ReviewListVO getAllReviewResult(SearchReviewVO searchReviewVO);
 
+	
 	ReviewListVO viewReviewCntnt();
 //	/**
 //	 * 작성완료된 후기의 내용을 보여준다
