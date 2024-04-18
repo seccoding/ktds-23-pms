@@ -20,6 +20,10 @@ mybatis:
 
 # 사용자 설정
 app:
+    tempsession:
+        empId: system01
+        empName: 관리자
+        enable: true
     authentication:
         check-url-pattern: /**
         ignore-url-patterns:

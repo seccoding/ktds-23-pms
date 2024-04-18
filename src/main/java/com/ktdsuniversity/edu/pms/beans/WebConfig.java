@@ -2,8 +2,6 @@ package com.ktdsuniversity.edu.pms.beans;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +15,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configurable
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
+
+	@Value("${app.tempsession.enable:false}")
+	private boolean enableTempSession;
+
+	@Value("${app.tempsession.empId}")
+	private String empId;
+
+	@Value("${app.tempsession.empName}")
+	private String empName;
 
 	@Value("${app.authentication.check-url-pattern:/**}")
 	private String authCheckUrlPattern;
@@ -43,6 +50,17 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+
+		if (this.enableTempSession) {
+			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
+			tempSessionInterceptor.setEnableTempSession(enableTempSession);
+			tempSessionInterceptor.setTempEmpId(empId);
+			tempSessionInterceptor.setTempEmpName(empName);
+
+			registry.addInterceptor(tempSessionInterceptor)
+					.addPathPatterns("/**");
+		}
+
 //		registry.addInterceptor(new CheckSessionInterceptor())
 //				.addPathPatterns(this.authCheckUrlPattern)
 //				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);

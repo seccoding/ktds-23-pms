@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.commoncode.dao.CommonCodeDao;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
@@ -15,8 +16,8 @@ public class CommonCodeServiceImpl implements CommonCodeService {
 	public static boolean NEED_RELOAD;
 	private static Object LOCK;
 
-	public static void needReload() {
-		NEED_RELOAD = true;
+	public static void needReload(boolean needReload) {
+		NEED_RELOAD = needReload;
 	}
 
 	static {
@@ -50,6 +51,31 @@ public class CommonCodeServiceImpl implements CommonCodeService {
 				.filter(code -> code.getCmcdPid() != null)
 				.filter(code -> code.getCmcdPid().equals(pid)).toList();
 
+	}
+
+	@Transactional
+	@Override
+	public boolean saveNewCommonCode(CommonCodeVO commonCodeVO) {
+		int insertedCount = this.commonCodeDao
+				.insertNewCommonCode(commonCodeVO);
+		needReload(insertedCount > 0);
+		return insertedCount > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean updateCommonCode(CommonCodeVO commonCodeVO) {
+		int insertedCount = this.commonCodeDao.updateCommonCode(commonCodeVO);
+		needReload(insertedCount > 0);
+		return insertedCount > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteCommonCode(CommonCodeVO commonCodeVO) {
+		int insertedCount = this.commonCodeDao.deleteCommonCode(commonCodeVO);
+		needReload(insertedCount > 0);
+		return insertedCount > 0;
 	}
 
 }

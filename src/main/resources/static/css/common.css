@@ -261,6 +261,23 @@ table {
   border-collapse: collapse;
 }
 
+.overflow-scroll {
+  overflow: auto;
+}
+
+table.fit-parent {
+  width: 100%;
+}
+
+table tr.active td {
+  color: var(--main-color);
+}
+
+.fixed {
+  position: sticky;
+  top: 0;
+}
+
 /* caption {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
@@ -310,6 +327,10 @@ button:hover {
   background-color: var(--main-color);
 }
 
+button:disabled {
+  background-color: var(--border-color);
+}
+
 input[type="text"] {
   width: 16rem;
   height: 2rem;
@@ -318,6 +339,15 @@ input[type="text"] {
   padding-left: 10px;
   outline: none;
   background-color: var(--border-color);
+}
+
+.code-info input[type="text"] {
+  width: 100%;
+}
+
+.code-info label,
+.code-info div {
+  padding: 7px;
 }
 
 input[type="submit"] {

@@ -17,5 +17,44 @@
 		  FROM COMMON_CODE
 		 WHERE DEL_YN = 'N'
 	</select>
+	
+	<insert id="insertNewCommonCode" parameterType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+		INSERT INTO COMMON_CODE 
+		 (CMCD_ID
+	    , CMCD_PID
+	    , CMCD_NAME
+	    , CRT_DT
+	    , CRTR_ID
+	    , MDF_DT
+	    , MDFR_ID
+	    , DEL_YN)
+	    VALUES
+	     (#{cmcdId}
+	    , #{cmcdPid}
+	    , #{cmcdName}
+	    , SYSDATE
+	    , #{crtrId}
+	    , SYSDATE
+	    , #{mdfrId}
+	    , 'N')
+	</insert>
+	
+	<update id="updateCommonCode" parameterType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+		UPDATE COMMON_CODE
+		   SET CMCD_PID = #{cmcdPid}
+		     , CMCD_NAME = #{cmcdName}
+		     , MDF_DT = SYSDATE
+		     , MDFR_ID = #{mdfrId}
+		 WHERE CMCD_ID = #{cmcdId}
+		   AND DEL_YN = 'N'
+	</update>
+	
+	<update id="deleteCommonCode" parameterType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+		UPDATE COMMON_CODE
+		   SET DEL_YN = 'Y'
+		     , MDF_DT = SYSDATE
+		     , MDFR_ID = #{mdfrId}
+		 WHERE CMCD_ID = #{cmcdId}
+	</update>
 
 </mapper>

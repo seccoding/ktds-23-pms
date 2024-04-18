@@ -40,6 +40,14 @@ window.onload = function () {
 
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+  $(".fixed[data-fixed-top]").each(function () {
+    var top = $(this).data("fixed-top");
+    if (top === "fix") {
+      top = $(this).offset().top;
+    }
+    $(this).css("top", top);
+  });
+
   var isMainLayout = window.location.pathname === "/";
   if (!isMainLayout) {
     var framePath = window.parent.getLocationPathInFrame();

@@ -10,4 +10,10 @@ public interface CommonCodeDao {
 
 	public List<CommonCodeVO> selectAllCommonCodeList();
 
+	public int insertNewCommonCode(CommonCodeVO commonCodeVO);
+
+	public int updateCommonCode(CommonCodeVO commonCodeVO);
+
+	public int deleteCommonCode(CommonCodeVO commonCodeVO);
+
 }

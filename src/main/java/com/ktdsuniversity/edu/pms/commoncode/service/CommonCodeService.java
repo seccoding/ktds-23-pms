@@ -10,4 +10,10 @@ public interface CommonCodeService {
 
 	public List<CommonCodeVO> getAllCommonCodeListByPId(String pid);
 
+	public boolean saveNewCommonCode(CommonCodeVO commonCodeVO);
+
+	public boolean updateCommonCode(CommonCodeVO commonCodeVO);
+
+	public boolean deleteCommonCode(CommonCodeVO commonCodeVO);
+
 }

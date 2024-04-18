@@ -25,4 +25,22 @@ public class CommonCodeDaoImpl extends SqlSessionDaoSupport
 				.selectList(NAME_SPACE + ".selectAllCommonCodeList");
 	}
 
+	@Override
+	public int insertNewCommonCode(CommonCodeVO commonCodeVO) {
+		return getSqlSession().insert(NAME_SPACE + ".insertNewCommonCode",
+				commonCodeVO);
+	}
+
+	@Override
+	public int updateCommonCode(CommonCodeVO commonCodeVO) {
+		return getSqlSession().update(NAME_SPACE + ".updateCommonCode",
+				commonCodeVO);
+	}
+
+	@Override
+	public int deleteCommonCode(CommonCodeVO commonCodeVO) {
+		return getSqlSession().update(NAME_SPACE + ".deleteCommonCode",
+				commonCodeVO);
+	}
+
 }

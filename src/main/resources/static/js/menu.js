@@ -225,7 +225,11 @@ const menuList = [
         url: "/memo/receive",
         parent: { id: "6" },
         children: [
-          { name: "쪽지상세", url: "/memo/receive/view", parent: { id: "6-2" } },
+          {
+            name: "쪽지상세",
+            url: "/memo/receive/view",
+            parent: { id: "6-2" },
+          },
         ],
       },
       {
@@ -245,8 +249,29 @@ const menuList = [
         url: "/memo/storage",
         parent: { id: "6" },
         children: [
-          { name: "쪽지상세", url: "/memo/storage/view", parent: { id: "6-4" } },
+          {
+            name: "쪽지상세",
+            url: "/memo/storage/view",
+            parent: { id: "6-4" },
+          },
         ],
+      },
+    ],
+  },
+  {
+    id: "7",
+    name: "시스템관리",
+    role: "ADMIN",
+    url: null,
+    icon: "/images/sidebar-memo.png",
+    parent: undefined,
+    children: [
+      {
+        id: "7-1",
+        name: "공통코드 관리",
+        role: "ADMIN",
+        url: "/commoncode",
+        parent: { id: "7" },
       },
     ],
   },
