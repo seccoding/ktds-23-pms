@@ -48,7 +48,11 @@ $().ready(function () {
     $(this).css("top", top);
   });
 
-  var isMainLayout = window.location.pathname === "/";
+  var isMainLayout =
+    window.location.pathname === "/" || window.location.pathname === "";
+  window.name = isMainLayout ? "main" : "sub";
+  sessionTimer();
+
   if (!isMainLayout) {
     var framePath = window.parent.getLocationPathInFrame();
     var menuObject = window.parent.findMenuObject(framePath);
@@ -324,4 +328,53 @@ function search(pageNo) {
   $("#page-no").val(pageNo);
 
   searchForm.attr("method", "get").submit();
+}
+
+function callMainFunction(fnCallback) {
+  var isMainLayout = window.location.pathname === "/";
+  if (!isMainLayout) {
+    fnCallback(window.parent, $(window.parent.document));
+  }
+}
+
+if (window.name !== "main") {
+  $(window.parent.document)
+    .find("iframe")
+    .each(function () {
+      $(this.contentDocument)
+        .ajaxStart(function () {
+          // TODO Ajax Start 처리
+        })
+        .ajaxComplete(function () {
+          // Ajax가 완료되면 세션 타이머를 초기화한다.
+          sessionTimer();
+        });
+    });
+}
+
+var sessionTimerObject;
+function sessionTimer() {
+  console.log("window.name", window.name);
+
+  var target = window.name === "main" ? window : window.parent;
+
+  if (target.sessionTimerObject) {
+    target.clearTimeout(target.sessionTimerObject);
+  }
+
+  var time = 20 * 60;
+  target.sessionTimerObject = target.setTimeout(function logoutTimer() {
+    time--;
+
+    if (time <= 0) {
+      target.location.href = "/employee/logout";
+    }
+    var minutes = parseInt(time / 60);
+    var seconds = time % 60;
+    $(target.document)
+      .find(".header-timer")
+      .text(minutes + "분 " + seconds + "초");
+
+    target.sessionTimerObject = target.setTimeout(logoutTimer, 1000);
+  }, 1000);
 }
