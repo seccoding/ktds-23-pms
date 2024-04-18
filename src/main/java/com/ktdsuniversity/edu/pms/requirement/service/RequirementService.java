@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.requirement.service;
 
 import java.util.List;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
@@ -51,5 +53,6 @@ public interface RequirementService {
 	public boolean updateDelayRequirement(String rqmId,  boolean isApprove);
 
 	public boolean deleteOneRequirement(RequirementVO RequirementVO);
+	public ResponseEntity<Resource> getDownloadFile(RequirementVO requirement);
 
 }

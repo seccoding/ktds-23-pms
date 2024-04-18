@@ -2,43 +2,50 @@ package com.ktdsuniversity.edu.pms.requirement.vo;
 
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class RequirementVO {
-    
-    private String rqmId;	//요구사항 아이디
-    private String rqmTtl;	//요구사항 제목
-    private String rqmCntnt;//요구사항 내용
-    private String strtDt;	//시작일
-    private String endDt;	//종료예정일
-    private String rqmFile;	//파일명
-    private String dvlrp;	//담당개발자
-    private String cfrmr;	//확인자
-    private String tstr;	//테스터
-    private String testRslt;//테스트결과
-    private String scdSts;	//일정상태
-    private String rqmSts;	//요구사항 진행상태
-    private String crtDt;	//등록일
-    private String crtrId;	//등록자
-    private String mdfDt;	//수정일
-    private String mdfrId;	//수정자
-    private String prjId;	//프로젝트 아이디
-    private String delYn;	//삭제여부
-    
-    private CommonCodeVO scdStsVO;
-    private CommonCodeVO rqmStsVO;
-    private ProjectVO  projectVO;
-    
 
-    public String getRqmId() {
-        return rqmId;
-    }
+	private String rqmId; // 요구사항 아이디
+	private String rqmTtl; // 요구사항 제목
+	private String rqmCntnt;// 요구사항 내용
+	private String strtDt; // 시작일
+	private String endDt; // 종료예정일
+	private String rqmFile; // 실제 파일명
+	private String dvlrp; // 담당개발자
+	private String cfrmr; // 확인자
+	private String tstr; // 테스터
+	private String testRslt;// 테스트결과
+	private String scdSts; // 일정상태
+	private String rqmSts; // 요구사항 진행상태
+	private String crtDt; // 등록일
+	private String crtrId; // 등록자
+	private String mdfDt; // 수정일
+	private String mdfrId; // 수정자
+	private String prjId; // 프로젝트 아이디
+	private String delYn; // 삭제여부
+	private String rqmEncodeFile;// 인코딩된 파일명
 
-    public void setRqmId(String rqmId) {
-        this.rqmId = rqmId;
-    }
+	private CommonCodeVO scdStsVO;
+	private CommonCodeVO rqmStsVO;
+	private ProjectVO projectVO;
+	private EmployeeVO dvlrpVO; 	//담당개발자 vo
+	private EmployeeVO cfrmrVO; 	//확인자 vo
+	private EmployeeVO tstrVO; 		//테스터 vo
+	private EmployeeVO crtrIdVO; 	//등록자 vo
+	private EmployeeVO mdfrVO; 		//수정자 vo
+	
+	
 
-    
+	public String getRqmId() {
+		return rqmId;
+	}
+
+	public void setRqmId(String rqmId) {
+		this.rqmId = rqmId;
+	}
+
 	public String getRqmTtl() {
 		return rqmTtl;
 	}
@@ -48,76 +55,76 @@ public class RequirementVO {
 	}
 
 	public String getRqmCntnt() {
-        return rqmCntnt;
-    }
+		return rqmCntnt;
+	}
 
-    public void setRqmCntnt(String rqmCntnt) {
-        this.rqmCntnt = rqmCntnt;
-    }
+	public void setRqmCntnt(String rqmCntnt) {
+		this.rqmCntnt = rqmCntnt;
+	}
 
-    public String getStrtDt() {
-        return strtDt;
-    }
+	public String getStrtDt() {
+		return strtDt;
+	}
 
-    public void setStrtDt(String strtDt) {
-        this.strtDt = strtDt;
-    }
+	public void setStrtDt(String strtDt) {
+		this.strtDt = strtDt;
+	}
 
-    public String getEndDt() {
-        return endDt;
-    }
+	public String getEndDt() {
+		return endDt;
+	}
 
-    public void setEndDt(String endDt) {
-        this.endDt = endDt;
-    }
+	public void setEndDt(String endDt) {
+		this.endDt = endDt;
+	}
 
-    public String getRqmFile() {
-        return rqmFile;
-    }
+	public String getRqmFile() {
+		return rqmFile;
+	}
 
-    public void setRqmFile(String rqmFile) {
-        this.rqmFile = rqmFile;
-    }
+	public void setRqmFile(String rqmFile) {
+		this.rqmFile = rqmFile;
+	}
 
-    public String getDvlrp() {
-        return dvlrp;
-    }
+	public String getDvlrp() {
+		return dvlrp;
+	}
 
-    public void setDvlrp(String dvlrp) {
-        this.dvlrp = dvlrp;
-    }
+	public void setDvlrp(String dvlrp) {
+		this.dvlrp = dvlrp;
+	}
 
-    public String getCfrmr() {
-        return cfrmr;
-    }
+	public String getCfrmr() {
+		return cfrmr;
+	}
 
-    public void setCfrmr(String cfrmr) {
-        this.cfrmr = cfrmr;
-    }
+	public void setCfrmr(String cfrmr) {
+		this.cfrmr = cfrmr;
+	}
 
-    public String getTstr() {
-        return tstr;
-    }
+	public String getTstr() {
+		return tstr;
+	}
 
-    public void setTstr(String tstr) {
-        this.tstr = tstr;
-    }
+	public void setTstr(String tstr) {
+		this.tstr = tstr;
+	}
 
-    public String getTestRslt() {
-        return testRslt;
-    }
+	public String getTestRslt() {
+		return testRslt;
+	}
 
-    public void setTestRslt(String testRslt) {
-        this.testRslt = testRslt;
-    }
+	public void setTestRslt(String testRslt) {
+		this.testRslt = testRslt;
+	}
 
-    public String getScdSts() {
-        return scdSts;
-    }
+	public String getScdSts() {
+		return scdSts;
+	}
 
-    public void setScdSts(String scdSts) {
-        this.scdSts = scdSts;
-    }
+	public void setScdSts(String scdSts) {
+		this.scdSts = scdSts;
+	}
 
 	public String getRqmSts() {
 		return rqmSts;
@@ -175,6 +182,15 @@ public class RequirementVO {
 		this.delYn = delYn;
 	}
 
+	
+	public String getRqmEncodeFile() {
+		return rqmEncodeFile;
+	}
+
+	public void setRqmEncodeFile(String rqmEncodeFile) {
+		this.rqmEncodeFile = rqmEncodeFile;
+	}
+
 	public CommonCodeVO getScdStsVO() {
 		return scdStsVO;
 	}
@@ -199,9 +215,45 @@ public class RequirementVO {
 		this.projectVO = projectVO;
 	}
 
+	public EmployeeVO getDvlrpVO() {
+		return dvlrpVO;
+	}
 
+	public void setDvlrpVO(EmployeeVO dvlrpVO) {
+		this.dvlrpVO = dvlrpVO;
+	}
+
+	public EmployeeVO getCfrmrVO() {
+		return cfrmrVO;
+	}
+
+	public void setCfrmrVO(EmployeeVO cfrmrVO) {
+		this.cfrmrVO = cfrmrVO;
+	}
+
+	public EmployeeVO getTstrVO() {
+		return tstrVO;
+	}
+
+	public void setTstrVO(EmployeeVO tstrVO) {
+		this.tstrVO = tstrVO;
+	}
+
+	public EmployeeVO getCrtrIdVO() {
+		return crtrIdVO;
+	}
+
+	public void setCrtrIdVO(EmployeeVO crtrIdVO) {
+		this.crtrIdVO = crtrIdVO;
+	}
+
+	public EmployeeVO getMdfrVO() {
+		return mdfrVO;
+	}
+
+	public void setMdfrVO(EmployeeVO mdfrVO) {
+		this.mdfrVO = mdfrVO;
+	}
 	
-	
-    
-    
+
 }

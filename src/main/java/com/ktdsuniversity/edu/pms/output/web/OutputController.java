@@ -25,6 +25,8 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
+
+import ch.qos.logback.core.filter.Filter;
 @Controller
 public class OutputController {
 	@Autowired
@@ -41,7 +43,15 @@ public class OutputController {
 	@GetMapping("/output/search")
 	public String viewOutputSearhList(@RequestParam String prjId, Model model) {
 		OutputListVO outputList = this.outputService.getAllOutputList();
-		model.addAttribute("outputList",outputList).addAttribute("prjId",prjId);
+		ProjectListVO projectList = this.projectService.getAllProject();
+		projectList.setProjectList(
+				projectList.getProjectList().stream().
+				filter(project -> project.getOutYn().equals("Y")).toList());
+		List<CommonCodeVO>  commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
+		
+		model.addAttribute("outputList",outputList).addAttribute("prjId",prjId)
+		.addAttribute("projectList", projectList)
+		.addAttribute("commonCodeList", commonCodeList);
 		
 		return "output/outputlist";
 	}

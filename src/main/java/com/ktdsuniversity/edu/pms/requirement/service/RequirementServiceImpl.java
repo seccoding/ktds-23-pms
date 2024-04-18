@@ -4,6 +4,8 @@ package com.ktdsuniversity.edu.pms.requirement.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +57,8 @@ public class RequirementServiceImpl implements RequirementService{
 		if( file !=null &&! file.isEmpty() ) {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if(storedFile !=null) {
-				requirementVO.setRqmFile(storedFile.getRealFileName());
+				requirementVO.setRqmFile(storedFile.getFileName());
+				requirementVO.setRqmEncodeFile(storedFile.getRealFileName());
 			}
 		}
 		
@@ -70,7 +73,8 @@ public class RequirementServiceImpl implements RequirementService{
 		if(! file.isEmpty() && ! file.equals(null)) {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if(storedFile !=null) {
-				requirementVO.setRqmFile(storedFile.getRealFileName());
+				requirementVO.setRqmFile(storedFile.getFileName());
+				requirementVO.setRqmEncodeFile(storedFile.getRealFileName());
 			}
 		}
 		return this.requirementDao.updateOneRequirement(requirementVO)>0;
@@ -93,7 +97,9 @@ public class RequirementServiceImpl implements RequirementService{
 
 	@Override
 	public boolean deleteOneRequirement(RequirementVO RequirementVO) {
-		
+		if(! RequirementVO.getRqmEncodeFile().equals(null)) {
+			this.fileHandler.deleteFileByFileName(RequirementVO.getRqmEncodeFile());
+		}
 		
 		return this.requirementDao.deleteReRequirement(RequirementVO)>0;
 	}
@@ -102,6 +108,12 @@ public class RequirementServiceImpl implements RequirementService{
 	public boolean delayRequirement(RequirementVO requirementVO) {
 
 		return this.requirementDao.delayRequirement(requirementVO)>0;
+	}
+	@Override
+	public ResponseEntity<Resource> getDownloadFile(RequirementVO requirement) {
+		ResponseEntity<Resource> downloadFile=
+				 this.fileHandler.download(requirement.getRqmFile(), requirement.getRqmEncodeFile());
+		return downloadFile;
 	}
 
 	
