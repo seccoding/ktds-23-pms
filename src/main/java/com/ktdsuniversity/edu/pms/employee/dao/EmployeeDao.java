@@ -26,6 +26,8 @@ public interface EmployeeDao {
 	public EmployeeVO selectOneBoard(int id);
 
 	public int createEmployee(EmployeeVO employeeVO);
+	
+	public List<EmployeeVO> searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
 	public String saltByEmp(String empId);
 

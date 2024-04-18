@@ -45,6 +45,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeListVO.setEmployeeList(employeeList);
 		return employeeListVO;
 	}
+	
+	
 
 	@Override
 	public boolean deleteEmployee(String empId) {
@@ -84,6 +86,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		int createSuccessCount = employeeDao.createEmployee(employeeVO);
 		
 		return createSuccessCount > 0;
+	}
+
+	@Override
+	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO) {
+		
+		List<EmployeeVO> employeeList = this.employeeDao.searchEmpDeptId(searchEmployeeVO);
+		
+		EmployeeListVO employeeListVO = new EmployeeListVO();
+		employeeListVO.setEmployeeList(employeeList);
+		
+		return employeeListVO;
 	}
 
 }
