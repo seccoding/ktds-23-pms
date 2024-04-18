@@ -47,11 +47,9 @@
         <div class="editor" data-tag="dataTag"></div><br>
         <input type="hidden" name="memoCntnt" id="memoCntnt" />
 
-        <div class="btn-group">
-          <div class="right-align">
-            <button type="button">보내기</button>
-          </div>
-        </div>
+        
+          <button type="button">보내기</button>
+          
       </div>
     </form>
     

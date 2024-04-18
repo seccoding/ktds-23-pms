@@ -157,20 +157,24 @@
   	</insert>  
   	
   	<select id="selectOneMemo" parameterType="string" resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
-  		SELECT MEMO_ID
-			 , MEMO_PID
-			 , RCV_ID
-			 , CRTR_ID
-			 , TO_CHAR(CRT_DT, 'YYYY-MM-DD') CRT_DT
-			 , MEMO_CNTNT
-			 , READ_YN
-			 , DEL_YN
-			 , TO_CHAR(MDF_DT, 'YYYY-MM-DD') MDF_DT
-			 , MDFR_ID
-			 , SAVE_YN
-		  FROM MEMO
-		 WHERE DEL_YN = 'N'
-		   AND MEMO_ID = #{_parameter}
+  		SELECT M.MEMO_ID
+			 , M.MEMO_PID
+			 , M.RCV_ID
+			 , M.CRTR_ID
+			 , TO_CHAR(M.CRT_DT, 'YYYY-MM-DD') CRT_DT
+			 , M.MEMO_CNTNT
+			 , M.READ_YN
+			 , M.DEL_YN
+			 , TO_CHAR(M.MDF_DT, 'YYYY-MM-DD') MDF_DT
+			 , M.MDFR_ID
+			 , M.SAVE_YN
+			 , E.EMAIL
+			 , E.EMP_NAME
+		  FROM MEMO M
+		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+		 WHERE M.DEL_YN = 'N'
+		   AND M.MEMO_ID = #{_parameter}
   	</select>
   	
   	<update id="changeViewStatus" parameterType="string">
@@ -208,5 +212,12 @@
 			#{memoId}
 		</foreach> 
 	</update>
+  	
+  	<update id="saveOneMemo" parameterType="string">
+  		UPDATE MEMO
+		   SET SAVE_YN = 'Y'
+		 WHERE DEL_YN = 'N'
+		   AND MEMO_ID = #{_parameter}
+  	</update>
   	
 </mapper>

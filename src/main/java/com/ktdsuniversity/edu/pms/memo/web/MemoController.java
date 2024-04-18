@@ -18,6 +18,7 @@ import com.ktdsuniversity.edu.pms.memo.service.MemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.RequestUtil;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -77,7 +78,7 @@ public class MemoController {
 	 */
 	@PostMapping("/memo/write")
 	public String doBoardWrite(@RequestParam String rcvId,
-			@RequestParam("memoCntnt") String memoCntnt,
+			@RequestParam String memoCntnt,
 			Model model) {
 		
 		boolean isCreateSuccess = this.memoService.writeNewMemo(rcvId, memoCntnt);
@@ -97,13 +98,14 @@ public class MemoController {
 		MemoVO memoVO = this.memoService.getOneMemo(id);
 	
 		model.addAttribute("memoVO", memoVO);
-
+		model.addAttribute("url", RequestUtil.getRequest().getRequestURI());
+		
 		return "memo/memoview";
 	}
 	
 	@ResponseBody
 	@GetMapping("/ajax/memo/delete/{id}")
-	public AjaxResponse reviewViewResultDelete(@PathVariable String id) {
+	public AjaxResponse deleteMemo(@PathVariable String id) {
 		return new AjaxResponse().append("result", memoService.deleteOneMemo(id));
 	}
 	
@@ -117,5 +119,11 @@ public class MemoController {
 		return new AjaxResponse().append("result", deleteResult);
 	}
 	
+	
+	@ResponseBody
+	@GetMapping("/ajax/memo/save/{id}")
+	public AjaxResponse saveMemo(@PathVariable String id) {
+		return new AjaxResponse().append("result", memoService.saveOneMemo(id));
+	}
 	
 }

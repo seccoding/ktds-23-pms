@@ -12,8 +12,11 @@
 	          
 	<h1>쪽지 조회</h1>
     <div class="grid" data-id="${memoVO.memoId}">
-      <label for="name">받은 사람</label>
-      <div>${memoVO.rcvId}</div>
+      <label for="rcvId">받은 사람</label>
+      <div>${memoVO.rcvId} ${memoVO.empName} ${memoVO.email}</div>
+      
+      <label for="crtrId">보낸 사람</label>
+      <div>${memoVO.crtrId} ${memoVO.empName} ${memoVO.email}</div>
 
       <label for="crtDt">보낸 날짜</label>
       <div>${memoVO.crtDt}</div>
@@ -21,9 +24,20 @@
       <label for="content">내용</label>
       <div>${memoVO.memoCntnt}</div>
 
-     
-	  <a href="#" class="delete-button">삭제</a>
+      <div class="flex">
+      <c:if test="${url eq '/memo/receive/view'}">
+      <button href="" class="write-button">답장</button>
+      </c:if>
+
+	  <button href="#" class="delete-button">삭제</button>
+
+	  <c:if test="${url eq '/memo/receive/view' || url eq '/memo/sent/view'}">
+      <button href="#" class="save-button">저장</button>
+	  </c:if>
       
+      <button href="" class="list-button">목록</button>
+      
+      <div>
      
     </div>
 </body>
