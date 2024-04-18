@@ -8,6 +8,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <!-- <link rel="stylesheet" href="/css/common.css" /> -->
     <style type="text/css">
+
       div.grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -25,6 +26,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         box-shadow: 0px 2px 5px #000000;
         z-index: 999; 
       }
+      .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 150px;
+        display: inline-block;
+      }
+
+
     </style>
   </head>
 
@@ -46,7 +56,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
          <c:forEach items="${reviewList.reviewList}" var="review">
            <tr id="${review.rvId}">
              <td>${review.rvId}</td>
-             <td class="center-align">${review.rvCntnt}</td>
+             <td class="center-align ellipsis">${review.rvCntnt}</td>
              <td class="btn-group">
                <div class="right-align">
                  <a href="#" class="delete-button">삭제하기!</a>

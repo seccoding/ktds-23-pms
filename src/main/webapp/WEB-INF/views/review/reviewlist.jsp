@@ -24,6 +24,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         box-shadow: 0px 2px 5px #000000;
         z-index: 999; 
       }
+      
+      
     </style>
     
     <!-- <script type="text/javascript">
@@ -40,11 +42,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <table class="table">
         <colgroup>
           <col width="*" />
-          <col width="150px" />
-          <col width="150px" />
-          <col width="150px" />
-          <col width="150px" />
-          <col width="150px" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
+          <col width="*" />
         </colgroup>
         <thead>
           <tr>

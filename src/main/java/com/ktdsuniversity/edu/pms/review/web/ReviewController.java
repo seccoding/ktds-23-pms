@@ -32,7 +32,7 @@ public class ReviewController {
 	 * - 프로젝트명 선택시 -> 후기작성 페이지로 이동(/review/write)
 	 * - 후기결과보기 선택시 -> 해당 프로젝트의 후기결과 목록으로 이동(/review/viewwresult)
 	 */
-	@GetMapping("/review/search")
+	@GetMapping("/review")
 	public String viewReviewListPage(SearchReviewVO searchReviewVO, Model model) {
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
 		model.addAttribute("reviewlist", reviewListVO);
@@ -68,7 +68,7 @@ public class ReviewController {
 	public String ReviewWritePage(Model model, ReviewVO reviewVO) {
 		this.reviewService.insertNewReview(reviewVO);
 //		logger.debug(">>>>>>>>> {}", reviewVO);
-		return "redirect:/review/search"; 
+		return "redirect:/review"; 
 	}
 		
 	
