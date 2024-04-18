@@ -226,6 +226,12 @@ function menuAnchorClickHandler(event, target) {
 
     menuTabQueue = menuTabQueue.filter((id) => id != menuId);
 
+    var tabs = [];
+    menuTabList.find("li").each(function () {
+      tabs.push($(this).data("menu-id"));
+    });
+    sessionStorage.setItem("activetabs", tabs);
+
     var latestMenuId = menuTabQueue[menuTabQueue.length - 1];
     menuTabList.find("li[data-menu-id=" + latestMenuId + "]").click();
 
@@ -279,12 +285,19 @@ function menuAnchorClickHandler(event, target) {
     if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
       menuTabQueue.push(menuId);
     }
+
     location.href = "/#";
     location.href = "/#" + menuId;
   });
 
   menuTabList.find("li").removeClass("active-tab");
   menuTabList.append(menuTabItem);
+
+  var tabs = [];
+  menuTabList.find("li").each(function () {
+    tabs.push($(this).data("menu-id"));
+  });
+  sessionStorage.setItem("activetabs", tabs);
 
   var menuFrameItem = $("<li></li>");
   menuFrameItem.addClass("frame-active");
@@ -354,8 +367,6 @@ if (window.name !== "main") {
 
 var sessionTimerObject;
 function sessionTimer() {
-  console.log("window.name", window.name);
-
   var target = window.name === "main" ? window : window.parent;
 
   if (target.sessionTimerObject) {

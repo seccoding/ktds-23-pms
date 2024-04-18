@@ -415,4 +415,18 @@ $().ready(function () {
 
     sidebarMenu.append(sidebarSubmenu);
   });
+
+  reloadTabs();
 });
+
+function reloadTabs() {
+  if (window.name === "main") {
+    var activetabs = sessionStorage.getItem("activetabs");
+
+    activetabs.split(",").forEach(function (menuId) {
+      $(".sidebar")
+        .find("a[data-menu-id=" + menuId + "]")
+        .click();
+    });
+  }
+}
