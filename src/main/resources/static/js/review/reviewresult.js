@@ -11,11 +11,11 @@ $().ready(function () {
         contentType: "application/json",
         success: function (data) {
           console.log(data.data.result);
-          if(data.data.result === true){
-			$("#" + id).remove();
-		  } else {
-			alert("삭제에 실패했습니다. 잠시후 재시도해주세요.")
-		  }
+          if (data.data.result === true) {
+            $("#" + id).remove();
+          } else {
+            alert("삭제에 실패했습니다. 잠시후 재시도해주세요.");
+          }
         },
         error: function (request, status, error) {
           console.log("error...");
@@ -25,5 +25,38 @@ $().ready(function () {
         },
       });
     }
+  });
+});
+
+function showModalWithReviewContent(reviewContent) {
+  $.get("/html/modal.html", function (modalHtml) {
+    // 모달의 제목 설정
+    var title = "Review Detail";
+
+    // 모달 HTML에 제목과 후기 내용 삽입
+    modalHtml = modalHtml.replaceAll("#title#", title);
+    modalHtml = modalHtml.replaceAll("#html#", reviewContent);
+
+    // 모달 요소 생성
+    var reviewModal = $(modalHtml);
+
+    // 닫기 버튼에 이벤트 리스너 추가
+    reviewModal.find("button").on("click", function (event) {
+      reviewModal[0].close();
+    });
+
+    // 모달을 body의 맨 앞에 삽입하여 보이도록 함
+    $("body").prepend(reviewModal);
+
+    // showModal() 메서드를 사용하여 모달을 표시
+    reviewModal[0].showModal();
+  });
+}
+
+$(document).ready(function () {
+  // ellipsis 클래스를 가진 요소가 클릭되었을 때 showModalWithReviewContent 함수 호출
+  $(".ellipsis").click(function () {
+    var reviewContent = $(this).text(); // 클릭된 ellipsis의 텍스트(후기 내용) 가져오기
+    showModalWithReviewContent(reviewContent); // 모달 창에 후기 내용 표시
   });
 });
