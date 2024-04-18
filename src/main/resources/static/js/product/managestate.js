@@ -17,8 +17,4 @@ $().ready(function(){
             }
         }
     });
-
-    $(".apply-product").on("click", function () {
-        location.href = "/product/apply";
-    }); 
 })

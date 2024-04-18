@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Repository
 public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
@@ -30,13 +31,13 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	}
 
 	@Override
-	public int getProductManageStateAllCount() {
-		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getProductManageStateAllCount");
+	public int getProductManageStateAllCount(ProductVO productVO) {
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getProductManageStateAllCount", productVO);
 	}
 
 	@Override
-	public List<BorrowVO> getProductManageState() {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState");
+	public List<BorrowVO> getProductManageState(ProductVO productVO) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState", productVO);
 	}
 
 	@Override

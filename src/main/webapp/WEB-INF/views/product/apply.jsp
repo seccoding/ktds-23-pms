@@ -44,30 +44,35 @@
             <form action="/product/apply" method="post" enctype="multipart/form-data">
                 <hr />
                 <div class="form-grid">
-                    <div>
-                        <label for="prdtName">비품명</label>
-                        <input type="text" id="prdtName" name="prdtName"/>
-                    </div>
-    
-                    <div>
-                        <label for="prdtCtgr">카테고리</label>
-                        <select id="prdtCtgr" name="prdtCtgr" >
-                            <option value="prdtCtgr" >컴퓨터기기</option>
-                            <option value="prdtCtgr" >사무용품</option>
-                            <option value="prdtCtgr" >프린터용품</option>
+                    <div class="productName" data-prdtList="${productListVO.productList}" data-prdtName="${product.prdtName}">
+                        <label for="select-prdtName">비품명</label>
+                        <select name="select-prdtName" id="select-prdtName">
+                            <option value="">비품명 선택</option>
+                            <c:forEach items="${productListVO.productList}" var="product">
+                                <option value="${product.prdtName}" >${product.prdtName}</option>
+                            </c:forEach>
                         </select>
                     </div>
     
                     <div>
-                        <label for="curStr">신청 수량</label>
-                        <input type="number" id="curStr" name="curStr"/>
+                        <label for="apply-quantity">신청 수량</label>
+                        <input type="number" id="apply-quantity" />
+                    </div>
+
+                    <div class="category-list" data-ctgrList="${categoryList.productList}" data-category="${category.prdtCtgr}">
+                        <label for="select-prdtCtgr">카테고리</label>
+                        <select name="select-prdtCtgr" id="select-prdtCtgr">
+                            <option value="">카테고리 선택</option>
+                            <c:forEach items="${categoryList.productList}" var="category">
+                                <option value="${category.prdtCtgr}" >${category.prdtCtgr}</option>
+                            </c:forEach>
+                        </select>
                     </div>
     
                     <div>
-                        <label for="first-apply-date">신청일</label>
-                        <input type="date" id="first-apply-date" />
+                        <label for="apply-date">신청일</label>
+                        <input type="date" id="apply-date" />
                     </div>
-    
                 </div>
                 <hr />
             </form>
@@ -79,8 +84,8 @@
         </div>
 
         <div class="btn-group">
-            <button class="product-add">추가</button>
-            <button class="product-cancel">취소</button>
+            <button class="add-button" type="button">추가</button>
+            <button class="cancel-button" type="button">취소</button>
         </div>
     <jsp:include page="../layout/layout_close.jsp" />
 </body>

@@ -14,6 +14,7 @@ import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
@@ -33,9 +34,10 @@ public class BorrowController {
 	}
 	
 	@GetMapping("/product/manage/state")
-	public String viewProductManageStatePage(Model model) {
-		BorrowListVO borrowListVO = this.borrowService.getProductManageState();
+	public String viewProductManageStatePage(Model model, ProductVO productVO) {
+		BorrowListVO borrowListVO = this.borrowService.getProductManageState(productVO);
 		model.addAttribute("productState", borrowListVO);
+		model.addAttribute("productVO", productVO);
 		return "product/managestate";
 	}
 	

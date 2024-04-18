@@ -73,6 +73,15 @@ public class ProductServiceImpl implements ProductService{
 	public boolean modifyProduct(ProductVO productVO) {
 		return productDao.modifyProduct(productVO) > 0;
 	}
+	
+	@Override
+	public ProductListVO getAllProductCategory() {
+		List<ProductVO> productList = this.productDao.getAllProductCategory();
+		ProductListVO productListVO = new ProductListVO();
+		productListVO.setProductList(productList);
+		
+		return productListVO;
+	}
 
 	
 
