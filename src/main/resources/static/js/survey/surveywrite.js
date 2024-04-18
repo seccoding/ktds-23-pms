@@ -1,11 +1,12 @@
 $().ready(function() {
-    var seqNum = 0;
     var prjId = $(".survey-body").data("id");
+    var seqNum = 0;
     var typeYn = 'N';
-    $("#btn-add-srv-qst").on("click", function() {
+    $("#btn-add-srv-qst").on("click", function () {
         seqNum++;
         var srvQstDom = $("<div></div>");
         srvQstDom.addClass("survey-question");
+        srvQstDom.attr("data-type-yn", typeYn);
 
         var srvQstTopDom = $("<div></div>");
         srvQstTopDom.addClass("survey-question-top");
@@ -125,9 +126,6 @@ $().ready(function() {
             ulDom.append(nextAnsDom);
         });
 
-        var insertSrvQstButtonDom = $("<button></button>");
-        insertSrvQstButtonDom.attr("type", "button");
-        insertSrvQstButtonDom.text("문항 완성");
         var deleteSrvQstButtonDom = $("<button></button>");
         deleteSrvQstButtonDom.attr("type", "button");
         deleteSrvQstButtonDom.text("문항 삭제");
@@ -176,18 +174,17 @@ $().ready(function() {
         srvQstBottomDom.append(ulDom);
         srvQstBottomDom.append(addSrvQstButtonDom);
         srvQstBottomDom.append(deleteSrvQstButtonDom);
-        srvQstBottomDom.append(insertSrvQstButtonDom);
 
         srvQstDom.append(srvQstTopDom);
         srvQstDom.append(srvQstMiddleDom);
         srvQstDom.append(srvQstBottomDom);
         $(".survey-body").append(srvQstDom);
 
-        
         $(selectiveTypeButtonDom).on("click", function() {
             $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
             typeYn = 'N';
-            $(this).closest(srvQstDom).attr("data-type-yn", typeYn);
+            $(this).closest(srvQstDom).data("type-yn", typeYn);
+            
             var ulDom = $("<ul></ul>");
 
             var firstAnsDom = $("<li></li>");
@@ -253,17 +250,47 @@ $().ready(function() {
                 ulDom.append(nextAnsDom);
             });
     
-            var insertSrvQstButtonDom = $("<button></button>");
-            insertSrvQstButtonDom.attr("type", "button");
-            insertSrvQstButtonDom.text("문항 완성");
             var deleteSrvQstButtonDom = $("<button></button>");
             deleteSrvQstButtonDom.attr("type", "button");
             deleteSrvQstButtonDom.text("문항 삭제");
 
             $(deleteSrvQstButtonDom).on("click", function() {
+                var qstToDel = $(this).closest(srvQstDom);
+                var nextQst = qstToDel.nextAll(srvQstDom);
+     
                 var chooseValue = confirm("정말 삭제하시겠습니까?");
                 if (chooseValue) {
-                    $(this).closest(srvQstDom).remove();
+                    nextQst.each(function() {
+                        var srvId = $(this).data("srv-id");
+                        var newSrvQst = $(this).children("div").eq(1).children("input").val();
+                        var currentSrvSeqNum = $(this).children("div").eq(1).children("div").text();
+                        
+                        var newSrvSeqNum = currentSrvSeqNum - 1;
+    
+                        $(this).children("div").eq(1).children("div").text(newSrvSeqNum);
+    
+                        var currentTypeYn = $(this).data("type-yn");
+                        var newTypeYn = 'N';
+                        if (currentTypeYn) {
+                            newTypeYn = currentTypeYn;
+                        }
+        
+                        if (!newSrvQst) {
+                            $.post("/ajax/survey/modify/next/" + srvId, {
+                                seq: newSrvSeqNum,
+                                typeYn: newTypeYn
+                            });
+                        }
+                        else {
+                            $.post("/ajax/survey/modify/" + srvId, {
+                                srvQst: newSrvQst,
+                                mdfrId: "0509004",
+                                seq: newSrvSeqNum,
+                                typeYn: newTypeYn
+                            });
+                        }                 
+                    });
+                    qstToDel.remove();
                     seqNum--;
                 }
             });
@@ -271,15 +298,55 @@ $().ready(function() {
             srvQstBottomDom.append(ulDom);
             srvQstBottomDom.append(addSrvQstButtonDom);
             srvQstBottomDom.append(deleteSrvQstButtonDom);
-            srvQstBottomDom.append(insertSrvQstButtonDom);
+
         });
 
         $(descriptiveTypeButtonDom).on("click", function() {
             $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
             typeYn = 'Y';
-            $(this).closest(srvQstDom).attr("data-type-yn", typeYn);
+            $(this).closest(srvQstDom).data("type-yn", typeYn);
             srvQstBottomDom.append(deleteSrvQstButtonDom);
-            srvQstBottomDom.append(insertSrvQstButtonDom);
+
+            $(deleteSrvQstButtonDom).on("click", function() {
+                var qstToDel = $(this).closest(srvQstDom);
+                var nextQst = qstToDel.nextAll(srvQstDom);
+     
+                var chooseValue = confirm("정말 삭제하시겠습니까?");
+                if (chooseValue) {
+                    nextQst.each(function() {
+                        var srvId = $(this).data("srv-id");
+                        var newSrvQst = $(this).children("div").eq(1).children("input").val();
+                        var currentSrvSeqNum = $(this).children("div").eq(1).children("div").text();
+                        
+                        var newSrvSeqNum = currentSrvSeqNum - 1;
+    
+                        $(this).children("div").eq(1).children("div").text(newSrvSeqNum);
+    
+                        var currentTypeYn = $(this).data("type-yn");
+                        var newTypeYn = 'N';
+                        if (currentTypeYn) {
+                            newTypeYn = currentTypeYn;
+                        }
+        
+                        if (!newSrvQst) {
+                            $.post("/ajax/survey/modify/next/" + srvId, {
+                                seq: newSrvSeqNum,
+                                typeYn: newTypeYn
+                            });
+                        }
+                        else {
+                            $.post("/ajax/survey/modify/" + srvId, {
+                                srvQst: newSrvQst,
+                                mdfrId: "0509004",
+                                seq: newSrvSeqNum,
+                                typeYn: newTypeYn
+                            });
+                        }                 
+                    });
+                    qstToDel.remove();
+                    seqNum--;
+                }
+            });
         });
 
         $.post("/ajax/survey/write/" + prjId, {
@@ -290,60 +357,57 @@ $().ready(function() {
         function(response) {
             srvQstDom.attr("data-srv-id", response.data.srvId);
         });
+    });
 
-        $("#btn-compl-srv").on("click", function() {
-            
+    $("#btn-compl-srv").on("click", function() {
+        $(this).parent().find("form").children("div").children("div").each(function() {
+            var that = this;
+            var srvId = $(this).data("srv-id");
+            var srvQst = $(this).children("div").eq(1).find("input").val();
+            var newTypeYn = $(this).data("type-yn");
 
-            console.log(this.closest("body"));
-            
-            // .each(function() {
-            //     var srvQst = $(this).children("div").first().find("input").val();
-            //     console.log(srvQst);
-            // });
+            if (newTypeYn) {
+                typeYn = newTypeYn;
+            }
+
+            $.post("/ajax/survey/writebody/" + prjId, {
+                srvId: srvId,
+                srvQst: srvQst,
+                typeYn: typeYn
+            }, function(response) {
+                $(that).children("div").last().find("li").each(function() {
+                    var ansDom = $(this).find("input").first();
+                    var answer = ansDom.val();
+                    var ansNum = $(this).find("div").text();
+
+                    var nextQstIdDom = $(this).find("input").last();
+                    var nextQstId = nextQstIdDom.val();
+
+                    if ((ansDom.data("sqp-id") && ansDom.data("answer") !== answer) 
+                            || (nextQstIdDom.data("sqp-id") && nextQstIdDom.data("next-question-id") !== nextQstId)) {
+                        $.post("/ajax/survey/answer/modify/" + ansDom.data("sqp-id"), {
+                            sqpCntnt: answer,
+                            nextId: nextQstId,
+                            mdfrId: '0509004',
+                            seq: ansNum
+                        }, function(response) {
+                            console.log(response.data.result);
+                        });
+                    }
+                    else if(!ansDom.data("sqp-id")) {
+                        $.post("/ajax/survey/answer/" + srvId, {
+                            srvId: srvId,
+                            sqpCntnt: answer,
+                            nextId: nextQstId,
+                            crtrId: '0509004',
+                            seq: ansNum
+                        }, function(response) {
+                            ansDom.attr({"data-sqp-id": response.data.sqpId, "data-answer": answer});
+                            nextQstIdDom.attr({"data-sqp-id": response.data.sqpId, "data-next-question-id": nextQstId});
+                        });
+                    }
+                });
+            });
         });
-
-        // $(insertSrvQstButtonDom).on("click", function() {
-        //     var srvQst = $(srvQstInputDom).val();
-        //     var that = this;
-        //     $.post("/ajax/survey/writebody/" + prjId, {
-        //         srvId: srvQstDom.data("srv-id"),
-        //         srvQst: srvQst,
-        //         typeYn: typeYn
-        //     }, function(response) {
-        //         $(that).closest(".survey-question-bottom").find("li").each(function() {
-        //             var answerDom = $(this).find("input").first();
-        //             var answer = answerDom.val();
-        //             var ansNum = $(this).find("div").text();
-
-        //             var nextQuestionIdDom = $(this).find("input").last();
-        //             var nextQuestionId = nextQuestionIdDom.val();
-
-        //             if ((answerDom.data("sqp-id") && answerDom.data("answer") !== answer) 
-        //                     || (nextQuestionIdDom.data("sqp-id") && nextQuestionIdDom.data("next-question-id") !== nextQuestionId)) {
-        //                 $.post("/ajax/survey/answer/modify/" + answerDom.data("sqp-id"), {
-        //                     sqpCntnt: answer,
-        //                     nextId: nextQuestionId,
-        //                     mdfrId: '0509004',
-        //                     seq: ansNum
-        //                 }, function(response) {
-        //                     console.log(response.data.result);
-        //                 });
-        //             }
- 
-        //             else if(!answerDom.data("sqp-id")) {
-        //                 $.post("/ajax/survey/answer/" + srvQstDom.data("srv-id"), {
-        //                     srvId: srvQstDom.data("srv-id"),
-        //                     sqpCntnt: answer,
-        //                     nextId: nextQuestionId,
-        //                     crtrId: '0509004',
-        //                     seq: ansNum
-        //                 }, function(response) {
-        //                     answerDom.attr({"data-sqp-id": response.data.sqpId, "data-answer": answer});
-        //                     nextQuestionIdDom.attr({"data-sqp-id": response.data.sqpId, "data-next-question-id": nextQuestionId});
-        //                 });
-        //             }
-        //         });
-        //     });
-        // });
     });
 });
