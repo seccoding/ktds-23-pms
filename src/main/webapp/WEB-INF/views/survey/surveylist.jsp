@@ -9,7 +9,6 @@
 <jsp:include page="../commonheader.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
     <div>
         <table>
             <colgroup>
@@ -60,6 +59,5 @@
             </tbody>
         </table>
     </div>
-    <jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>

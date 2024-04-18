@@ -194,7 +194,7 @@ const menuList = [
         id: "5-7",
         name: "설문 관리",
         role: "USER",
-        url: "/survey",
+        url: "/survey/list",
         parent: { id: "5" },
       },
       {
