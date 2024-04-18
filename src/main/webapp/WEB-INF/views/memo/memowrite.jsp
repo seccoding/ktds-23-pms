@@ -40,6 +40,7 @@
           type="text"
           name="rcvId"
           value="${memoVO.rcvId}"
+          placeholder="여러 명은 쉼표(,)로 구분해주세요."
         />
 		<button type="button" onclick="alert('주소록 구현필요')">주소록</button>
         
