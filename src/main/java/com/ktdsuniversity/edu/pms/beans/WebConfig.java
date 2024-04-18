@@ -16,14 +16,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-	@Value("${app.tempsession.enable:false}")
-	private boolean enableTempSession;
-
-	@Value("${app.tempsession.empId}")
-	private String empId;
-
-	@Value("${app.tempsession.empName}")
-	private String empName;
+//	@Value("${app.tempsession.enable:false}")
+//	private boolean enableTempSession;
+//
+//	@Value("${app.tempsession.empId}")
+//	private String empId;
+//
+//	@Value("${app.tempsession.empName}")
+//	private String empName;
 
 	@Value("${app.authentication.check-url-pattern:/**}")
 	private String authCheckUrlPattern;
@@ -51,25 +51,28 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-		if (this.enableTempSession) {
-			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
-			tempSessionInterceptor.setEnableTempSession(enableTempSession);
-			tempSessionInterceptor.setTempEmpId(empId);
-			tempSessionInterceptor.setTempEmpName(empName);
-
-			registry.addInterceptor(tempSessionInterceptor)
-					.addPathPatterns("/**");
-		}
-
-//		registry.addInterceptor(new CheckSessionInterceptor())
-//				.addPathPatterns(this.authCheckUrlPattern)
-//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+//		if (this.enableTempSession) {
+//			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
+//			tempSessionInterceptor.setEnableTempSession(enableTempSession);
+//			tempSessionInterceptor.setTempEmpId(empId);
+//			tempSessionInterceptor.setTempEmpName(empName);
 //
-//		registry.addInterceptor(new BlockDuplicateLoginInterceptor())
-//				.addPathPatterns("/member/login", "/ajax/member/login",
-//						"/member/regist", "/ajax/member/regist");
-//		registry.addInterceptor(new LoginInterceptor())
-//				.addPathPatterns(this.authCheckIgnoreUrlPatterns)
-//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+//			registry.addInterceptor(tempSessionInterceptor)
+//					.addPathPatterns("/**");
+//		}
+
+		registry.addInterceptor(new LoginInterceptor())
+				.addPathPatterns(this.authCheckUrlPattern)
+				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+		
+		//로그인 이후 접근 제한할 페이지
+		registry.addInterceptor(new RestrictAccessAfterLoginException())
+				.addPathPatterns("/employee/login", "/ajax/employee/login");
+		
+		//로그인 이후 화면 접근한 기록을 db에 저장
+		registry.addInterceptor(new RecordScreenAccessAfterLoginException())
+				.addPathPatterns(this.authCheckUrlPattern)
+				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+		
 	}
 }

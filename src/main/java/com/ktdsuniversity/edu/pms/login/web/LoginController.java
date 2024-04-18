@@ -52,7 +52,7 @@ public class LoginController {
 	@ResponseBody
 	@PostMapping("/ajax/employee/login")
 	public AjaxResponse doLogin(HttpSession session, EmployeeVO employeeVO,
-			@RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
+			@RequestParam(defaultValue = "/") String nextUrl, Model model) {
 
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 
@@ -101,7 +101,7 @@ public class LoginController {
 		this.loginLogService.updateEmpLogout(employeeVO);
 		SessionUtil.removeSession(employeeVO.getEmpId());
 
-		session.invalidate();
+//		session.invalidate();
 
 		return "redirect:/employee/login";
 	}

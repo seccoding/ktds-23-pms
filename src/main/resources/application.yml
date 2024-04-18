@@ -20,10 +20,10 @@ mybatis:
 
 # 사용자 설정
 app:
-    tempsession:
-        empId: system01
-        empName: 관리자
-        enable: true
+#    tempsession:
+#        empId: system01
+#        empName: 관리자
+#        enable: true
     authentication:
         check-url-pattern: /**
         ignore-url-patterns:
@@ -31,7 +31,9 @@ app:
             /css/**,
             /html/**,
             /images/**,
-            /error/**
+            /error/**,
+            /ajax/employee/login,
+            /employee/login
     multipart:
         #파일 업로드 위치 지정
         base-dir: Z:\uploadfile

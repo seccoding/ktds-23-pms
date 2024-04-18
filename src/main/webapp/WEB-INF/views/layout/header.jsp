@@ -8,11 +8,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="header-items-right">
           <div class="header-timer">20분</div>
           <img class="header-login-icon" src="/images/header-login.png" />
-          <img
-            class="header-logout-icon"
-            src="/images/header-logout.png"
-            style="height: 20px"
-          />
+          <a href="/employee/logout">
+	          <img
+	            class="header-logout-icon"
+	            src="/images/header-logout.png"
+	            style="height: 20px"
+	          />
+          </a>
         </div>
       </div>
 </div>
