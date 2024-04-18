@@ -68,6 +68,7 @@
 		     , NEXT_ID = #{nextId}
 		     , MDFR_ID = #{mdfrId}
 		     , MDF_DT = SYSDATE
+		     , SEQ = #{seq}
 		 WHERE SQP_ID = #{sqpId}
 	</update>
 	

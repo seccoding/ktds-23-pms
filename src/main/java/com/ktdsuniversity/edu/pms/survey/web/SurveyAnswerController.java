@@ -39,15 +39,5 @@ public class SurveyAnswerController {
 		
 		return new AjaxResponse().append("result", isSuccess);
 	}
-	
-	@ResponseBody
-	@PostMapping("/ajax/survey/answer/modify/sequence/{sqpId}")
-	public AjaxResponse doModifyAnswerSequence(@PathVariable String sqpId, SurveyQuestionPickVO surveyQuestionPickVO) {
-		surveyQuestionPickVO.setSqpId(sqpId);
-		
-		boolean isSuccess = this.surveyQuestionPickService.modifyOneAnswerSequence(surveyQuestionPickVO);
-		
-		return new AjaxResponse().append("result", isSuccess);
-	}
 
 }

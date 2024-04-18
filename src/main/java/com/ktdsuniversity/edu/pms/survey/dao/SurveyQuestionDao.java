@@ -18,4 +18,8 @@ public interface SurveyQuestionDao {
 
 	public int insertSurveyBody(SurveyQuestionVO surveyQuestionVO);
 
+	public int modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
+	public int modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO);
+
 }
