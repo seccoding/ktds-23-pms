@@ -56,6 +56,24 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.updateOneProduct(prdtId) > 0;
 	}
 
+	@Transactional
+	@Override
+	public boolean addProductCount(ProductVO productVO) {
+		return productDao.updateOneProductCount(productVO) > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteOneProduct(String prdtId) {
+		return productDao.deleteOneProduct(prdtId) > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean modifyProduct(ProductVO productVO) {
+		return productDao.modifyProduct(productVO) > 0;
+	}
+
 	
 
 }

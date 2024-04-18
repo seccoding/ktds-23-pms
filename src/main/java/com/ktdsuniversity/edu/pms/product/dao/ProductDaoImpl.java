@@ -47,4 +47,19 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	public int changeOneProductCnt(String prdtId) {
 		return getSqlSession().update(ProductDao.NAME_SPACE+".changeOneProductCnt", prdtId);
 	}
+
+	@Override
+	public int updateOneProductCount(ProductVO productVO) {
+		return getSqlSession().update(ProductDao.NAME_SPACE+".updateOneProductCount", productVO);
+	}
+
+	@Override
+	public int deleteOneProduct(String prdtId) {
+		return getSqlSession().update(ProductDao.NAME_SPACE+".deleteOneProduct", prdtId);
+	}
+
+	@Override
+	public int modifyProduct(ProductVO productVO) {
+		return getSqlSession().update(ProductDao.NAME_SPACE+".modifyProduct", productVO);
+	}
 }

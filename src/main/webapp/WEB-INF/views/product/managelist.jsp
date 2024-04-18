@@ -18,11 +18,35 @@
         text-align: right;
         margin: 2rem;
     }
+    .add-grid{
+        display: grid;
+        grid-template-columns: 5rem 1fr;
+        grid-template-rows: repeat(4, 1fr);
+        gap: 1rem;
+    }
+    #add-modal{
+        padding: 3rem;
+    }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 </head>
 <body>
 <jsp:include page="../layout/layout.jsp" />
+<dialog id="add-modal">
+    <h4>비품 재고 추가</h3>
+    <div class="add-grid">
+        <p>비품</p>
+        <p class="add-product"></p>
+        <p>추가수량</p>
+        <input type="number" min="1" class="add-count"/>
+        <p>구매가격</p>
+        <input type="number" min="0" class="buy-price"/>
+        <p>구매일</p>
+        <input type="date" class="buy-day"/>
+    </div>
+    <input type="button" value="추가" id="add-count-btn"/>
+    <input type="button" value="취소" id="cancel-btn"/>
+</dialog>
     <h2>비품 관리 목록</h2>
     <div class="flex">
         <div>총 ${productList.productCnt}건의 비품이 조회되었습니다.</div>
@@ -69,12 +93,16 @@
                 <c:choose>
                     <c:when test="${not empty productList.productList}">
                         <c:forEach items="${productList.productList}" var="product">
-                            <tr class="product-item" data-product="${product.prdtId}">
-                                <td>${product.prdtId}</td>
-                                <td>${product.prdtName}</td>
-                                <td>${product.prdtCtgr}</td>
-                                <td>${product.onceYn}</td>
-                                <td>${product.curStr}</td>
+                            <tr class="product-item-tr" data-product="${product.prdtId}">
+                                <td class="product-item">${product.prdtId}</td>
+                                <td class="product-item">${product.prdtName}</td>
+                                <td class="product-item">${product.prdtCtgr}</td>
+                                <td class="product-item">${product.onceYn}</td>
+                                <td class="product-item">${product.curStr}</td>
+                                <td>
+                                    <button class="add-product-count" data-productname="${product.prdtName}" data-productid="${product.prdtId}">재고추가</button>
+                                    <button class="remove-product" data-product="${product.prdtId}">삭제</button>
+                                </td>
                             </tr>
                             
                         </c:forEach>

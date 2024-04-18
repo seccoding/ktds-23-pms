@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.product.service;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface ProductManagementService {
 
@@ -16,5 +17,9 @@ public interface ProductManagementService {
 	public boolean modifyOneProductManagement(ProductManagementVO productManagementVO);
 
 	public boolean changeOneItemBrrwState(String prdtMngId);
+
+	public boolean addSomeProductManagement(ProductManagementVO productManagementVO, int count);
+
+	public Boolean isProductCanDel(String prdtId);
 
 }

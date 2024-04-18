@@ -133,4 +133,32 @@
 		 WHERE PRDT_MNG_ID = #{_parameter}
 	</select>
 	
+	<insert id="addProductManagement" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO">
+		INSERT INTO PRODUCT_MANAGEMENT
+			 (PRDT_MNG_ID
+			, PRDT_PRICE
+			, BUY_DT
+			, LOST_YN
+			, LOST_DT
+			, BRRW_YN
+			, PRDT_ID
+			, DEL_YN)
+			VALUES 
+			 ('PRDT_MN_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_MN_PK.NEXTVAL, 6, '0')
+			, #{prdtPrice}
+			, #{buyDt}
+			, 'N'
+			, NULL
+			, 'N'
+			, #{prdtId}
+			, 'N')
+	</insert>
+	
+	<select id="getDelNCount" resultType="_int" parameterType="string">
+		SELECT COUNT(1)
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE DEL_YN = 'N'
+		   AND PRDT_ID = #{_parameter}
+	</select>
+	
 </mapper>

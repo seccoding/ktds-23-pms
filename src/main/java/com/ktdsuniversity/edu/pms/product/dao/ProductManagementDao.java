@@ -28,4 +28,8 @@ public interface ProductManagementDao {
 
 	public String getProductId(String prdtMngId);
 
+	public int addProductManagement(ProductManagementVO productManagementVO);
+
+	public int getDelNCount(String prdtId);
+
 }
