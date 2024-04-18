@@ -6,9 +6,12 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.login.web.LoginController;
+import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
@@ -101,12 +105,21 @@ public class RequirementController {
 	}
 
 	@PostMapping("/requirement/write")
-	public String createRequirement(/* @SessionAttribute , */
-			RequirementVO requirementVO, Model model) {
-		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, null);
+	public String createRequirement(@RequestParam MultipartFile file /* @SessionAttribute , */
+			,RequirementVO requirementVO, Model model) {
+		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
 
 		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
 	}
+	@GetMapping("/requirement/downloadFile/{rqmId}")
+	public ResponseEntity<Resource> fileDownload(@PathVariable String rqmId) {
+		
+		RequirementVO Requirement= this.requirementService.getOneRequirement(rqmId);
+
+		return this.requirementService.getDownloadFile(Requirement);
+		
+	}
+	
 
 	@GetMapping("/project/requirement/modify")
 	public String viewModifyPage(/* @SessionAttribute , */
@@ -128,16 +141,16 @@ public class RequirementController {
 		return "requirement/requirementmodify";
 	}
 
-	@PostMapping("/project/requirement/modify")
+	@PostMapping("/requirement/modify")
 	public String modifyRequirement(@RequestParam String rqmId,
 			/* @SessionAttribute , */
 			RequirementVO requirementVO, @RequestParam MultipartFile file) {
-//		TODO 입력된 정보가 올바른지 확인 필요,  파일 업로드 체크(아직 체크 안함)
+//		TODO 입력된 정보가 올바른지 확인 필요
 
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.updateRequirement(requirementVO, file);
 
-		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
+		return "redirect:/requirement";
 
 	}
 
@@ -157,9 +170,8 @@ public class RequirementController {
 	@GetMapping("/project/requirement/delaycall")
 	public AjaxResponse delayRequirement(/* @SessionAttribute , */
 			@RequestParam String rqmId) {
-//		2. 연기요청 처리
+		
 		RequirementVO thisRequirement = this.requirementService.getOneRequirement(rqmId);
-		// setter 로 정보 변경후 업데이트
 		boolean isSuccess = this.requirementService.delayRequirement(thisRequirement);
 		
 		 AjaxResponse ajax = new AjaxResponse();

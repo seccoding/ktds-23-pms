@@ -10,8 +10,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       window.onload = function () {
         var editors = loadEditor(".editor", "내용을 입력하세요.");
         var rqmCntnt = "";
-        editors.setData("dataTag", $("#rqm-cntnt").val());
-        
+
+        $(".ck-content").append($("#rqm-cntnt").val());
+
+        // editors.setData($("#rqm-cntnt").val());
+
         $("button").on("click", function (event) {
           event.preventDefault();
 
@@ -36,7 +39,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
   <body>
     <form
-      action="/project/requirement/modify?rqmId=${requirement.rqmId}"
+      id="writeForm"
+      action="/requirement/modify?rqmId=${requirement.rqmId}"
       method="post"
       enctype="multipart/form-data"
     >

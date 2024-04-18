@@ -30,8 +30,41 @@
 			<result column="REQ_YN" property="reqYn" />
 	</association>
 	
+	<!-- join table -->
+	<association property="dvlrpVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="DVLRP_NAME" property="empName" />
+	</association>
 	
-	 
+	<!-- join table -->
+	<association property="cfrmrVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="CFRMR_NAME" property="empName" />
+	</association>
+	
+	<!-- join table -->
+	<association property="tstrVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="TSTR_NAME" property="empName" />
+	</association>
+	
+	<!-- join table -->
+	<association property="crtrIdVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="CRTR_NAME" property="empName" />
+	</association>
+	
+	<!-- join table -->
+	<association property="mdfrVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="MDFR_NAME" property="empName" />
+	</association>
+
 	</resultMap>
 	
 	<select id="searchAllCount"
@@ -55,18 +88,33 @@
 		 ,	R.RQM_TTL 
 		 ,	R.RQM_CNTNT 
 		 ,	R.SCD_STS 
-		 ,	CC1.CMCD_NAME AS STS_NAME
-		 ,	R.RQM_STS 
-		 ,	cc2.CMCD_NAME AS RQM_NAME	
-		 ,	r.PRJ_ID
-		 ,	p.PRJ_NAME 
+		 ,	R.RQM_STS 	
+		 ,	R.PRJ_ID
+		 ,	STS.CMCD_NAME 	AS STS_NAME
+		 ,	RQM.CMCD_NAME 	AS RQM_NAME
+		 ,	P.PRJ_NAME    	AS PRJ_NAME
+		 ,	DVLRP.EMP_NAME 	AS DVLRP_NAME
+		 ,	CFRMR.EMP_NAME	AS CFRMR_NAME
+		 ,	TSTR.EMP_NAME	AS TSTR_NAME
+		 ,	CRTR.EMP_NAME	AS CRTR_NAME
+		 ,	MDFR.EMP_NAME	AS MDFR_NAME
 	  FROM 	REQUIREMENT r 
-	  JOIN	COMMON_CODE cc1 
-	  	ON	R.SCD_STS =CC1.CMCD_ID
-	  JOIN  COMMON_CODE cc2
-	  	ON  r.RQM_STS  = cc2.CMCD_ID 
+	  JOIN	COMMON_CODE STS 
+	  	ON	R.SCD_STS =STS.CMCD_ID
+	  JOIN  COMMON_CODE RQM
+	  	ON  r.RQM_STS  = RQM.CMCD_ID 
 	  JOIN	PROJECT p 
 	  	ON	r.PRJ_ID = p.PRJ_ID 
+	  JOIN	EMPLOYEE DVLRP
+	    ON  R.dvlrp	= DVLRP.EMP_ID
+	  JOIN	EMPLOYEE CFRMR
+	    ON  R.CFRMR	= CFRMR.EMP_ID
+	  JOIN	EMPLOYEE TSTR
+	    ON  R.TSTR	= TSTR.EMP_ID
+	  JOIN	EMPLOYEE CRTR
+	    ON  R.CRTR	= CRTR.EMP_ID
+	  JOIN	EMPLOYEE MDFR
+	    ON  R.MDFR	= MDFR.EMP_ID  	
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
 	 ORDER	BY  R.RQM_ID DESC
@@ -79,18 +127,35 @@
 		 ,	R.RQM_TTL 
 		 ,	R.RQM_CNTNT 
 		 ,	R.SCD_STS 
-		 ,	CC1.CMCD_NAME AS STS_NAME
 		 ,	R.RQM_STS 
-		 ,	cc2.CMCD_NAME AS RQM_NAME	
-		 ,	r.PRJ_ID
-		 ,	p.PRJ_NAME 
+		 ,	R.PRJ_ID
+		 ,  R.STRT_DT
+		 , 	R.END_DT
+		 ,	STS.CMCD_NAME 	AS STS_NAME
+		 ,	RQM.CMCD_NAME 	AS RQM_NAME
+		 ,	P.PRJ_NAME    	AS PRJ_NAME
+		 ,	DVLRP.EMP_NAME 	AS DVLRP_NAME
+		 ,	CFRMR.EMP_NAME	AS CFRMR_NAME
+		 ,	TSTR.EMP_NAME	AS TSTR_NAME
+		 ,	CRTR.EMP_NAME	AS CRTR_NAME
+		 ,	MDFR.EMP_NAME	AS MDFR_NAME	
 	  FROM 	REQUIREMENT r 
-	  JOIN	COMMON_CODE cc1 
-	  	ON	R.SCD_STS =CC1.CMCD_ID
-	  JOIN  COMMON_CODE cc2
-	  	ON  r.RQM_STS  = cc2.CMCD_ID 
+	  JOIN	COMMON_CODE STS 
+	  	ON	R.SCD_STS =STS.CMCD_ID
+	  JOIN  COMMON_CODE RQM
+	  	ON  r.RQM_STS  = RQM.CMCD_ID 
 	  JOIN	PROJECT p 
 	  	ON	r.PRJ_ID = p.PRJ_ID 
+	  JOIN	EMPLOYEE DVLRP
+	    ON  R.dvlrp	= DVLRP.EMP_ID
+	  JOIN	EMPLOYEE CFRMR
+	    ON  R.CFRMR	= CFRMR.EMP_ID
+	  JOIN	EMPLOYEE TSTR
+	    ON  R.TSTR	= TSTR.EMP_ID
+	  JOIN	EMPLOYEE CRTR
+	    ON  R.CRTR	= CRTR.EMP_ID
+	  JOIN	EMPLOYEE MDFR
+	    ON  R.MDFR	= MDFR.EMP_ID  	
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
 	   AND 	P.PRJ_ID = #{_parameter}
@@ -128,7 +193,6 @@
 	 <if test='rqmSts != null and rqmSts != ""'>
 	   AND	R.RQM_STS=#{rqmSts}
 	 </if>
-	 
 	 ORDER	BY  R.RQM_ID DESC
 	 <include refid="Common.pagenate_footer"/>
 	</select>
@@ -141,6 +205,8 @@ SELECT  R.RQM_ID
 	 ,	R.RQM_TTL 
 	 ,	R.RQM_CNTNT 
 	 ,	R.SCD_STS 
+	 ,	R.RQM_FILE
+	 ,	R.RQM_ENCODE_FILE
 	 ,	CC1.CMCD_NAME AS STS_NAME
 	 ,	R.RQM_STS 
 	 ,	cc2.CMCD_NAME AS RQM_NAME	
@@ -181,7 +247,8 @@ SELECT  R.RQM_ID
 	, MDF_DT
 	, MDFR_ID
 	, PRJ_ID
-	, DEL_YN)
+	, DEL_YN
+	, RQM_ENCODE_FILE)
 	VALUES
 	( ('RQM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RQM_PK.NEXTVAL, 6, '0'))
 	, #{rqmTtl}
@@ -200,7 +267,8 @@ SELECT  R.RQM_ID
 	, ''
 	, ''
 	, #{prjId}
-	, 'N' )
+	, 'N'
+	, #{rqmEncodeFile} )
 		
 	</insert>
 	
@@ -211,6 +279,7 @@ SELECT  R.RQM_ID
 	, STRT_DT=#{strtDt}
 	, END_DT=#{endDt}
 	, RQM_FILE=#{rqmFile}
+	, RQM_ENCODE_FILE=#{rqmEncodeFile}
 	, SCD_STS=#{scdSts}
 	, RQM_STS=#{rqmSts}
 	, MDF_DT=SYSDATE
@@ -251,8 +320,36 @@ SELECT  R.RQM_ID
 		 WHERE RQM_ID=#{rqmId}
 	</update>
 	
-
-	
-	
+	<!-- 참고용 사용X -->
+	<sql id="join">
+	  JOIN	COMMON_CODE STS 
+	  	ON	R.SCD_STS =STS.CMCD_ID
+	  JOIN  COMMON_CODE RQM
+	  	ON  r.RQM_STS  = RQM.CMCD_ID 
+	  JOIN	PROJECT p 
+	  	ON	r.PRJ_ID = p.PRJ_ID 
+	  JOIN	EMPLOYEE DVLRP
+	    ON  R.dvlrp	= DVLRP.EMP_ID
+	  JOIN	EMPLOYEE CFRMR
+	    ON  R.CFRMR	= CFRMR.EMP_ID
+	  JOIN	EMPLOYEE TSTR
+	    ON  R.TSTR	= TSTR.EMP_ID
+	  JOIN	EMPLOYEE CRTR
+	    ON  R.CRTR	= CRTR.EMP_ID
+	  JOIN	EMPLOYEE MDFR
+	    ON  R.MDFR	= MDFR.EMP_ID  	
+	 </sql>
+	 
+	 <!-- 참고용 사용X -->
+	 <sql id="joinValue">
+		 ,	STS.CMCD_NAME 	AS STS_NAME
+		 ,	RQM.CMCD_NAME 	AS RQM_NAME
+		 ,	P.PRJ_NAME    	AS PRJ_NAME
+		 ,	DVLRP.EMP_NAME 	AS DVLRP_NAME
+		 ,	CFRMR.EMP_NAME	AS CFRMR_NAME
+		 ,	TSTR.EMP_NAME	AS TSTR_NAME
+		 ,	CRTR.EMP_NAME	AS CRTR_NAME
+		 ,	MDFR.EMP_NAME	AS MDFR_NAME
+	 </sql>
 	
 </mapper>

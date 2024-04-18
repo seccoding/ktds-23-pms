@@ -9,16 +9,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/requirement/requirementlist.js"
     ></script>
-    <script
-      type="text/javascript"
-      src="/js/requirement/requirementview.js"
-    ></script>
     <title>요구사항 리스트 페이지</title>
   </head>
   <body>
-    <label for="prj-id">요구사항 검색</label>
+    <label for="prj-id"></label>
     <select name="prjId" id="prj-id">
-      <option value="ALL" selected>모두선택</option>
+      <option value="ALL" selected>프로젝트</option>
       <c:forEach items="${projectList.projectList}" var="project">
         <c:choose>
           <c:when test="${project.prjId eq prjId}">
@@ -35,7 +31,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     <label for="scd-sts"></label>
     <select name="scdSts" id="scd-sts" value="${requirement.rqmSts}">
-      <option value="" selected>모두선택</option>
+      <option value="" selected>일정상태</option>
       <c:forEach items="${scdSts}" var="scdSts">
         <c:choose>
           <c:when test="${searchOption.scdSts eq scdSts.cmcdId}">
@@ -53,7 +49,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <!--체크박스 진행상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
     <label for="rqm-sts"></label>
     <select name="rqmSts" id="rqm-sts" value="${requirement.rqmSts}">
-      <option value="" selected>모두선택</option>
+      <option value="" selected>진행상태</option>
       <c:forEach items="${rqmSts}" var="rqmSts">
         <c:choose>
           <c:when test="${searchOption.rqmSts eq rqmSts.cmcdId}">
@@ -68,7 +64,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </c:forEach>
     </select>
 
-    <button id="search-prj-id">검색</button>
+    <button id="search">검색</button>
+    <button id="reset">초기화</button>
 
     <table class="table">
       <colgroup>
