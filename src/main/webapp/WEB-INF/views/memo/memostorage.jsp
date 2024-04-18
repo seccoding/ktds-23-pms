@@ -7,11 +7,13 @@
 <meta charset="UTF-8">
 <title>보낸 편지함 목록</title>
 <jsp:include page="../commonheader.jsp" />
+<script type="text/javascript" src="/js/memo/memolist.js"></script>
 </head>
 <body>
 
 
      <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.</div>
+      <a id="deleteMassiveMemo" href="javascript:void(0)">삭제</a>
     <table>
 	  <colgroup>
           <col width="*" />
@@ -25,8 +27,8 @@
 	  <thead>
         <tr>
             <th>
-                <input type="checkbox" id="checkbox1" />
-     	 		<label for="checkbox1"></label>
+                <input type="checkbox" id="checked-all" data-target-class="target-memo-id" />
+     	 		      <label for="checked-all"></label>
             </th>
             <th>받는 사람</th>
             <th>내용</th>
@@ -40,8 +42,8 @@
     <c:forEach items="${memoList.memoList}" var="memo" varStatus="loop">
      	<tr>
                <td>
-                 <input type="checkbox" id="target-memo-id-${loop.index}" name="targetMemoId" value="${memo.memoId}" />
-     	 		 <label for="target-memo-id-${loop.index}"></label>
+                 <input type="checkbox" class = "target-memo-id" id="target-memo-id-${loop.index}" name="targetMemoId" value="${memo.memoId}" />
+     	 		       <label for="target-memo-id-${loop.index}"></label>
                </td>
              <td class="center-align">${memo.rcvId}</td>
              <td class="left-align">

@@ -28,5 +28,9 @@ public interface MemoDao {
 
 	public int deleteOneMemo(String memoId);
 
+	public List<MemoVO> selectManyMemo(List<String> memoIds);
+
+	public int deleteManyMemo(List<String> memoIds);
+
 	
 }

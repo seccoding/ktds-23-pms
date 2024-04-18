@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.memo.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,21 @@ public class MemoServiceImpl implements MemoService{
 	
 	@Transactional
 	@Override
-	public boolean writeNewMemo(MemoVO memoVO) {
+	public boolean writeNewMemo(String rcvId, String memoCntnt) {
+	
+		List<String> rcvIdList = Arrays.asList(rcvId.split(","));
+		MemoVO memoVO = new MemoVO();
+		memoVO.setMemoCntnt(memoCntnt);
 		
-		int insertedCount = this.memoDao.writeNewMemo(memoVO);
+		int insertedCount = 0;
+        for (String id : rcvIdList) {
+            // 각 이메일 주소에 쪽지를 보냅니다.
+        	memoVO.setRcvId(id);
+        	insertedCount += this.memoDao.writeNewMemo(memoVO);
+        }
+        // 모든 쪽지를 성공적으로 보냈을 경우에만 커밋합니다.
+        return rcvIdList.size() == insertedCount;
 		
-		return insertedCount > 0;
 	}
 
 	// 조회한 결과가 없다면? 설정해주기
@@ -85,6 +96,15 @@ public class MemoServiceImpl implements MemoService{
 	public boolean deleteOneMemo(String id) {
 		
 		int deletedCount = this.memoDao.deleteOneMemo(id);
+		
+		return deletedCount > 0;
+	}
+
+	@Override
+	public boolean deleteManyMemo(List<String> memoIds) {
+		List<MemoVO> originalBoardList = this.memoDao.selectManyMemo(memoIds);
+		
+		int deletedCount = this.memoDao.deleteManyMemo(memoIds);
 		
 		return deletedCount > 0;
 	}

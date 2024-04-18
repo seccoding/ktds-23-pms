@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.memo.web;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,7 +19,6 @@ import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -76,16 +76,18 @@ public class MemoController {
 	 * 쪽찌 쓰기 기능 쓰기 완료시 보낸쪽지함으로 이동
 	 */
 	@PostMapping("/memo/write")
-	public String doBoardWrite(MemoVO memoVO,Model model) {
+	public String doBoardWrite(@RequestParam String rcvId,
+			@RequestParam("memoCntnt") String memoCntnt,
+			Model model) {
 		
-		boolean isCreateSuccess = this.memoService.writeNewMemo(memoVO);
+		boolean isCreateSuccess = this.memoService.writeNewMemo(rcvId, memoCntnt);
 		if(isCreateSuccess) {
 			logger.info("쪽지 쓰기 성공!");
 		}
 		else {
 			logger.info("쪽지 쓰기 실패!");			
 		}
-
+		
 		return "redirect:/memo/sent";
 	}
 	
@@ -105,15 +107,15 @@ public class MemoController {
 		return new AjaxResponse().append("result", memoService.deleteOneMemo(id));
 	}
 	
-//	@ResponseBody
-//	@PostMapping("/ajax/memo/delete/massive")
-//	public AjaxResponse doDeleteMassive(@RequestParam("deleteItems[]") List<Integer> deleteItems
-//										/*, @SessionAttribute("_LOGIN_USER_") MemberVO memberVO */) {
-//					
-////		boolean deleteResult = this.memoService.deleteManyBoard(deleteItems);
-//		
-//		return new AjaxResponse().append("result", deleteResult);
-//	}
-//	
+	@ResponseBody
+	@PostMapping("/ajax/memo/delete/massive")
+	public AjaxResponse doDeleteMassive(@RequestParam("memoIds[]") List<String> memoIds
+										/*, @SessionAttribute("_LOGIN_USER_") MemberVO memberVO */) {
+					
+		boolean deleteResult = this.memoService.deleteManyMemo(memoIds);
+		
+		return new AjaxResponse().append("result", deleteResult);
+	}
+	
 	
 }

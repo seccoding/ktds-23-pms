@@ -187,5 +187,26 @@
 		   AND MEMO_ID = #{_parameter}
   	</update>
   	
+  	<select id="selectManyMemo"
+			parameterType ="list"
+			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+		SELECT MEMO_ID
+		  FROM MEMO
+		 WHERE MEMO_ID IN 
+		<foreach collection="list" item="memoId" open="(" close=")" separator=",">
+			#{memoId}
+		</foreach>
+		   AND DEL_YN = 'N'
+	</select>
+ 
+  	<update id="deleteManyMemo"
+			parameterType = "list">
+		UPDATE MEMO
+		   SET DEL_YN = 'Y'
+		 WHERE MEMO_ID IN 
+		<foreach collection="list" item="memoId" open="(" close=")" separator=",">
+			#{memoId}
+		</foreach> 
+	</update>
   	
 </mapper>
