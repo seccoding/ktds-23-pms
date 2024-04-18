@@ -39,32 +39,24 @@ public class LoginLogServiceImpl implements LoginLogService {
 //			this.loginLogDao.updateOneEmpLgnTryPlusOne(employeeVO.getEmpId());
 //			throw new EmpIdAndPwdIsNotMatchException();
 //		}
+		
 		/**
-		 * 로그인 시도횟수를 가져오고 5번 초과될 경우
-		 * 로그인 시도시간을 현재시간 + 60분 으로 업데이트하고
-		 * 로그인 시도시간이 현재시간보다 크다면 오류를 발생시키고
-		 * 로그인 시도시간이 현재시간보다 작다면 로그인 시도횟수를 0으로 초기화
-		 * 매퍼 한번에 가져오는지, 따로가져오는지
+		 * 로그인을 할때마다 현재시간을 시도시간에 기입
+		 * 
+		 * 로그인을 할때 시도횟수가 5번일 경우 오류발생
+		 * 
 		 */
-		//로그인 시도횟수를 가져오고 5번 초과일경우 오류 발생
-		//수정중
-//		int possiableLoginCount = this.loginLogDao.getCountPossibleLogin(employeeVO.getEmpId());
-//		if (possiableLoginCount > 0) {
-//			this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
-//		}
+
+		//현재시간이 로그인 시도시간 + 1/24보다 큰 경우 1을 반환하고 아니라면 0을 반환하는 쿼리를 실행
+		//실행된 값이 0보다 클경우 로그인 시도횟수를 0으로 초기화
+		int possiableLoginCount = this.loginLogDao.getCountPossibleLogin(employeeVO.getEmpId());
+		if (possiableLoginCount > 0) {
+			this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
+		}
 		
-		
+		//로그인 시도횟수를 가져오고 5번이 되면 오류 발생
 		int count = this.loginLogDao.getOneEmpLgnTryCount(employeeVO.getEmpId());
 		if (count >= 5) {
-
-
-		employeeVO.setPwd(employeeVO.getPwd());
-
-
-		EmployeeVO employee = loginLogDao.getOneEmployeeByEmpIdAndPwd(employeeVO);
-
-
-
 			throw new LimitLoginException();
 		}
 		
@@ -74,7 +66,8 @@ public class LoginLogServiceImpl implements LoginLogService {
 
 		EmployeeVO employee = loginLogDao.getOneEmployeeByEmpIdAndPwd(employeeVO);
 
-		
+		//시도 횟수가 5회가 아닐때 로그인 성공, 실패 상관없이 로그인 시도시간을 업데이트한다
+		this.loginLogDao.updateOneEmpLgnTryDt(employeeVO.getEmpId());
 
 		if (employee == null) {
 			// exception 패키지에서 exception 처리 해야 한다.
@@ -84,6 +77,7 @@ public class LoginLogServiceImpl implements LoginLogService {
 		} else {
 			// 성공하면 로그인 시도 횟수를 0으로 초기화
 			this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
+			
 			return employee;
 		}
 

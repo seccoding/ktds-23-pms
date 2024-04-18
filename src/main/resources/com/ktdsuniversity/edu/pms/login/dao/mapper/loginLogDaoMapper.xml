@@ -108,15 +108,25 @@
 			   SET LGN_TRY = 0
 			 WHERE EMP_ID = #{empId}
     </update>
-    <!-- 수정중 -->
-<!--     <update id="updateOneEmpLgnTryDtBySysdate"
+    
+    <update id="updateOneEmpLgnTryDt"
     		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
     		UPDATE EMPLOYEE 
-			   SET LGN_TRY_DT = SYSDATE + 1/24
+			   SET LGN_TRY_DT = SYSDATE
 			 WHERE EMP_ID = #{empId}
-			   AND LGN_TRY = 5
-    </update> -->
+			   AND LGN_TRY <![CDATA[ < ]]> 5
+    </update>
     
+    <select id="getCountPossibleLogin"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+    		resultType="_int">
+			SELECT COUNT(1) 
+			  FROM EMPLOYEE
+			 WHERE SYSDATE > (SELECT LGN_TRY_DT + 1 / 24
+							  FROM EMPLOYEE
+							 WHERE EMP_ID = 'system01'
+							   AND LGN_TRY = 5)
+    </select>
     
     
     
