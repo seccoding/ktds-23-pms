@@ -15,6 +15,9 @@
 		.title {
             margin-bottom: 3rem;
         }
+        .col-1-1 {
+            width: 99%;
+        }
         .col-1-2 {
             width: 50%;
         }

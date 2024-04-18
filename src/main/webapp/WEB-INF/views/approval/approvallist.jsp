@@ -116,7 +116,7 @@ function state(apprid) {
                                 </td>
                                 <td>${approval.employeeVO.empName}</td>
                                 <td>
-                                	 <c:if test="${approval.apprSts ne '802'}">
+                                	<c:if test="${approval.apprSts ne '802'}">
 										<button onclick="state('${approval.apprId}')">
 											결재
 										</button>
