@@ -155,4 +155,18 @@ public class ProjectServiceImpl implements ProjectService {
         // 5. 종료
         return isModifySuccess;
     }
+
+    @Transactional
+    @Override
+    public boolean deleteManyTeammate(List<String> deleteItems) {
+        int deletedCount = projectDao.deleteManyTeammate(deleteItems);
+
+        return deletedCount > 0;
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteOneTeammate(String prjTmId) {
+        return projectDao.deleteByTeammateId(prjTmId) > 0;
+    }
 }

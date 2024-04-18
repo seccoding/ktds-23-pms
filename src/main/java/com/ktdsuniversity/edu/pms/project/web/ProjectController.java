@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -282,5 +283,22 @@ public class ProjectController {
 //            실패로그
             return "redirect:/project/view?prjId=" + projectId;
         }
+    }
+
+    // 세션 추가 필요
+    @ResponseBody
+    @PostMapping("/ajax/teammate/delete/massive")
+    public AjaxResponse doDeleteMassiveTeammate(@RequestParam("deleteItems[]") List<String> deleteItems) {
+       boolean deleteResult = projectService.deleteManyTeammate(deleteItems);
+
+        return new AjaxResponse().append("result", deleteResult);
+    }
+
+    @ResponseBody
+    @GetMapping("/ajax/teammate/delete/{prjTmId}")
+    public AjaxResponse doDeleteTeammate(@PathVariable String prjTmId) {
+        boolean deleteResult = projectService.deleteOneTeammate(prjTmId);
+
+        return new AjaxResponse().append("result", deleteResult);
     }
 }

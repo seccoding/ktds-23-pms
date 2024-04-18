@@ -470,4 +470,21 @@
         AND TM_ID = #{pmId}
         AND ROLE = 'PM'
     </update>
+
+    <update id="deleteManyTeammate"
+            parameterType="list">
+        UPDATE PROJECT_TEAMMATE
+        SET DEL_YN = 'Y'
+        WHERE PRJ_TM_ID IN
+        <foreach collection="list" item="id" open="(" close=")" separator=", ">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="deleteByTeammateId"
+            parameterType="String">
+        UPDATE PROJECT_TEAMMATE
+        SET DEL_YN = 'Y'
+        WHERE PRJ_TM_ID = #{_parameter}
+    </update>
 </mapper>

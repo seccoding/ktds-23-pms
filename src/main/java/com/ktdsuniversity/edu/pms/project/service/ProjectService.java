@@ -28,4 +28,8 @@ public interface ProjectService {
     Map<String ,List<ProjectStatusVO>> getProjectStatus(String projectId);
 
     boolean updateOneProject(CreateProjectVO modifyProjectVO);
+
+    boolean deleteManyTeammate(List<String> deleteItems);
+
+    boolean deleteOneTeammate(String prjTmId);
 }
