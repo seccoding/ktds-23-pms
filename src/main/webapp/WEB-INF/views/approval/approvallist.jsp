@@ -34,6 +34,29 @@
             padding-right: 0.825rem;
         }
     </style>
+<script type="text/javascript">
+function state(apprid) {
+	console.log(apprid);
+	var params = {
+			apprid:apprid
+	}
+
+	$.ajax({
+		type : "POST", 
+		url : "/approval/approve",
+		data : params,
+		success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+            // 응답코드 > 0000
+            alert("결제 승인이 완료되어 습니다");
+            
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+            alert("결제 승인을 취소 하였습니다");
+        }
+	})
+	
+}
+</script>
 </head>
 <body>
     <jsp:include page="../layout/layout.jsp" />
@@ -94,7 +117,14 @@
                                 </td>
                                 <td>${approval.employeeVO.empName}</td>
                                 <td>
-                                    <c:if test="${approval.apprSts eq '801'}">
+                                	 <c:if test="${approval.apprSts ne '802'}">
+										<button onclick="state('${approval.apprId}')">
+											결재
+										</button>
+										
+									</c:if>
+																		
+									<c:if test="${approval.apprSts eq '801'}">
 										<button>결재대기</button>
 									</c:if>
 									<c:if test="${approval.apprSts eq '802'}">

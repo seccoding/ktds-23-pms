@@ -13,4 +13,18 @@ public interface ApprovalDetailDao {
      * @return
      */
     public List<ApprovalDetailVO> getAllApprovalDetail();
+    
+    /**
+     * 비품 번경시 새로운 물품 추가 및 삭제를 진행한다
+     */
+    public int insertApproval(ApprovalDetailVO approvaldetailVo);
+    
+    /**
+     * 신청 비품 정보를 가지고 온다
+     */
+    public List<ApprovalDetailVO> getpersonApproval(String id);
+    
+    
+    
+    
 }

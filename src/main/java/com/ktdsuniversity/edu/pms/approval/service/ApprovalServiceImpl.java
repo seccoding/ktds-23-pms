@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
@@ -53,6 +54,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		return approvalVO;
 	}
+
 
 	@Override
 	public boolean approvalStatusChange(ApprovalVO approvalVO) {

@@ -16,6 +16,9 @@
         	<result column="CMCD_NAME" property="cmcdName"/>
         </association>
 	</resultMap>
+	
+	
+	
 
 	<resultMap id="approvalDetailVOMap" type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" autoMapping="true">
 		<id column="APPR_ID" property="apprId"/>
@@ -175,5 +178,19 @@
 		   SET DEL_YN='Y'
 		 WHERE APPR_ID= #{_parameter}
   	</update>
-	
+  	
+
+  	<update id="updateApproval" parameterType="string">
+  		UPDATE APPROVAL
+			SET 
+			ARRP_RJCT='품목 변경'  
+			,APPR_FNSH_DT=SYSDATE 
+			WHERE APPR_ID='';
+  	</update>
+  	
+  	
+  	
+  	
+  	
+  	
 </mapper> 

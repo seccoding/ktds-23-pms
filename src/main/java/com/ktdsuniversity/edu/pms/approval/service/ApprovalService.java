@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.approval.service;
 
 
+
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 

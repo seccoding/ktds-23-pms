@@ -23,7 +23,21 @@ public class ApprovalDetailDaoImpl extends SqlSessionDaoSupport implements Appro
 	@Override
 	public List<ApprovalDetailVO> getAllApprovalDetail() {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectList(ApprovalDao.NAME_SPACE+".getAllApprovalDetail");
+		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE+".getAllApprovalDetail");
 	}
+	
+	@Override
+	public int insertApproval(ApprovalDetailVO approvaldetailVo) {
+		// TODO Auto-generated method stub
+		return getSqlSession().insert(ApprovalDetailDao.NAME_SPACE+".insertNewBoard", approvaldetailVo);
+	}
+
+	@Override
+	public List<ApprovalDetailVO> getpersonApproval(String id) {
+		// TODO Auto-generated method stub
+
+		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE+".getpersonApproval", id);
+	}
+	
 	
 }
