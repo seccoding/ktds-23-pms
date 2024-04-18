@@ -1,4 +1,23 @@
 $().ready(function () {
+    // 삭제버튼 모달 로직 구현, onclick="location.href='/project/delete/${project.prjId}'"
+    $("#btn-delete").on("click", function() {
+        // Save the teammate ID in data attribute
+        $("#delete-alert-modal").data('projectId', $(this).val());
+        $(".modal-text").text("프로젝트를 삭제하시겠습니까?");
+        $("#delete-alert-modal").show();
+    });
+
+    $("#modal-delete-button").click(function() {
+        var deleteProjectId = $("#delete-alert-modal").data('projectId');
+
+        location.href = '/project/delete/' + deleteProjectId;
+
+        $("#delete-alert-modal").hide();
+    });
+
+    $("#modal-cancel-button").click(function() {
+        $("#delete-alert-modal").hide();
+    });
 
     var params = new URLSearchParams(window.location.search);
     var projectId = params.get("prjId");

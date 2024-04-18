@@ -9,12 +9,21 @@
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/project/projectlist.js"></script>
     <script type="text/javascript" src="/js/modal.js"></script>
+    <style>
+        .btn-group {
+            float: right;
+        }
+
+        .submit-btn {
+            width: 7rem;
+        }
+    </style>
 </head>
 <body>
 <div>
 
     <div>
-        총 ${projectList.projectCount} 건의 게시글이 검색되었습니다.
+        총 ${projectList.projectCount} 건의 프로젝트가 검색되었습니다.
     </div>
 
     <div>
@@ -94,6 +103,8 @@
             <button type="button" id="search-btn">검색</button>
             <button type="button" id="cancel-search-btn">초기화</button>
 
+            <button class="submit-btn btn-group" type="button" onclick="location.href='/project/write'">프로젝트 등록</button>
+
             <ul class="page-nav">
                 <c:if test="${searchProjectVO.hasPrevGroup}">
                     <li><a href="javascript:search(0);">처음</a></li>
@@ -135,10 +146,6 @@
     </div>
 
     <!-- Paginator 끝 -->
-
-    <div>
-        <a href="/project/write">프로젝트 등록</a>
-    </div>
 </div>
 </body>
 

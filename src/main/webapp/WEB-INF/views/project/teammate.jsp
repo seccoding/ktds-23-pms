@@ -5,6 +5,7 @@
     <title>팀원 페이지</title>
     <jsp:include page="../commonheader.jsp"/>
     <script type="text/javascript" src="/js/project/teammate.js"></script>
+    <link rel="stylesheet" href="/css/project/modal.css"/>
     <style>
         .btn-group {
             margin: 15px;
@@ -14,79 +15,11 @@
         .h-59 {
             height: 59px;
         }
-
-        .modal {
-            height: 190px;
-            width: 365px;
-            margin: auto;
-            border: 1px solid #777;
-            border-radius: 4px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            z-index: 1000;
-            text-align: center;
-            /* 모달 상자 내부에서 'X' 버튼이 차지하는 공간을 고려하여 상단 패딩을 조정합니다. */
-            /* 'X' 버튼의 높이 + 원하는 여백 */
-            padding: 40px 10px 10px;
-        }
-
-        .modal-content {
-            /* 적절한 패딩 값을 설정하여 모달 내용과 'X' 버튼이 겹치지 않도록 합니다. */
-            padding-top: 20px;
-        }
-
-        .modal-text {
-            font-size: 20px;
-            font-weight: bold;
-            padding-top: 10px;
-            padding-bottom: 30px;
-        }
-
-        #modal-cancel-button {
-            line-height: 1; /* 높이를 정확히 조절하려면 'line-height'를 '1'로 설정합니다. */
-            position: absolute;
-            right: 20px; /* 오른쪽 테두리로부터 20px 떨어진 위치 */
-            top: 20px; /* 상단 테두리로부터 20px 떨어진 위치 */
-            background: none; /* 기본 버튼 배경 제거 */
-            border: none; /* 기본 버튼 테두리 제거 */
-            padding: 0; /* 내부 패딩 제거 */
-            width: 30px; /* 'X' 버튼의 너비 */
-            height: 30px; /* 'X' 버튼의 높이 */
-        }
-
-        .close:after {
-            content: "\00d7";
-            font-size: 25pt;
-            position: absolute;
-            left: 100%;
-            transform: translate(-50%, -50%);
-            width: 30px; /* 'X' 버튼과 같은 너비로 설정 */
-            height: 30px; /* 'X' 버튼과 같은 높이로 설정 */
-            text-align: center;
-            vertical-align: middle;
-            line-height: 30px; /* 'X' 문자의 라인 높이를 버튼 높이와 동일하게 설정 */
-            color: #000;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
 
-<div class="modal" id="delete-alert-modal" style="display:none;">
-
-
-    <div id="modal-cancel-button" class="close"></div>
-
-    <div class="modal-content">
-        <div class="modal-text">팀원을 삭제하시겠습니까?</div>
-        <button id="modal-delete-button">삭제</button>
-    </div>
-
-</div>
+<jsp:include page="modal.jsp"/>
 
 <div>
     <div>
