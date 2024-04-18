@@ -52,10 +52,10 @@
                 <a id="tab-member" href="/project/team?prjId=${project.prjId}">구성원</a>
             </li>
             <li>
-                <a id="tab-output" href="#">산출물</a>
+                <a id="tab-output" href="/output?prjId=${project.prjId}">산출물</a>
             </li>
             <li>
-                <a id="tab-requirement" href="#">요구사항</a>
+                <a id="tab-requirement" href="/requirement/search?prjId=${project.prjId}">요구사항</a>
             </li>
         </ul>
     </div>

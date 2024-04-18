@@ -136,13 +136,23 @@ const menuList = [
             url: "/project/write",
             parent: { id: "5-1" },
           },
+          {
+                name: "프로젝트 상세",
+                url: "/project/view",
+                parent: { id: "5-1" },
+          },
+          {
+                name: "프로젝트 팀",
+                url: "/project/team",
+                parent: { id: "5-1" },
+          },
         ],
       },
       {
         id: "5-2",
         name: "요구사항 관리",
         role: "USER",
-        url: "/requirement",
+        url: "/requirement/search?prjId=all",
         parent: { id: "5" },
       },
       {
