@@ -63,7 +63,9 @@
 		 , K.DEL_YN
 		 , K.CRTR_ID
 		 , K.MDFR_ID
-	     , k.RQM_ID 
+	     , K.RQM_ID
+	     , K.FILE_NAME
+	     , ORIGIN_FILE_NAME
 	     , P.PRJ_NAME
 	     , R.RQM_TTL
 	  FROM KNOWLEDGE K
@@ -72,7 +74,94 @@
 	 INNER JOIN PROJECT P
 	    ON P.PRJ_ID = R.PRJ_ID
 	  WHERE K.DEL_YN = 'N'
-	  ORDER BY CRT_DT DESC
+	  ORDER BY K.CRT_DT DESC
+  </select>
+  
+  
+  <select id="searchAllKnowledgeCount" resultType="_int">
+  	SELECT COUNT(1) 
+	  FROM KNOWLEDGE K
+	 INNER JOIN REQUIREMENT R
+	    ON R.RQM_ID = K.RQM_ID
+	 INNER JOIN PROJECT P
+	    ON P.PRJ_ID = R.PRJ_ID
+	 WHERE K.DEL_YN = 'N'
+	 <if test='searchKeyword != null and searchKeyword != ""'>
+	 <choose>
+	 	<when test='searchType == "prjName"'>
+	   AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "rqmTtl"'>
+	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "knlTtl"'>
+	   AND K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "knlCntnt"'>
+	   AND K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%'		
+	 	</when>
+	 	<when test='searchType == "knlTtl_knlCntnt"'>
+	   AND (K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
+    	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+	 	</when>
+	 	<when test='searchType == "crtrId"'>
+	   AND K.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
+	 	</when>
+	 </choose>
+	 </if>
+  
+  </select>
+  
+  
+    <select id="searchAllKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO" resultMap="knowledgeVOMap">
+    <include refid="Common.pagenate_header" />
+  	SELECT K.KNL_ID
+         , K.RQM_ID
+         , K.KNL_TTL
+         , K.KNL_CNTNT
+         , K.KNL_CNT
+         , K.KNL_REC_CNT
+         , TO_CHAR(K.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+         , TO_CHAR(K.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+         , K.DEL_YN
+         , K.CRTR_ID
+         , K.MDFR_ID
+         , K.FILE_NAME 
+         , K.ORIGIN_FILE_NAME
+         , P.PRJ_NAME 
+     FROM KNOWLEDGE K
+    INNER JOIN REQUIREMENT R
+       ON R.RQM_ID = K.RQM_ID
+    INNER JOIN PROJECT P
+       ON P.PRJ_ID = R.PRJ_ID
+    INNER JOIN EMPLOYEE E
+       ON E.EMP_ID = K.CRTR_ID 
+    WHERE K.DEL_YN = 'N' 
+ <if test='searchKeyword != null and searchKeyword != ""'>
+ <choose>
+	<when test='searchType == "prjName"'>
+ AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+ </when>
+		 	<when test='searchType == "rqmTtl"'>
+		   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
+		 	</when>
+		 	<when test='searchType == "knlTtl"'>
+		   AND K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
+		 	</when>
+		 <when test='searchType == "knlCntnt"'>
+		   AND K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%'		
+		 </when>
+		 <when test='searchType == "knlTtl_knlCntnt"'>
+		   AND (K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
+	    	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+		 </when>
+		 <when test='searchType == "crtrId"'>
+		   AND K.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
+		 </when>
+		 </choose>
+	 </if>
+ ORDER BY K.CRT_DT DESC 
+ <include refid="Common.pagenate_footer" />
   </select>
 	
 	
@@ -93,7 +182,7 @@
 		 , FILE_NAME
 		 , ORIGIN_FILE_NAME)
 	VALUES
-	     ( SEQ_KNOWLEDGE_PK.NEXTVAL
+	     (('KNL' || '_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD (SEQ_KNOWLEDGE_PK.NEXTVAL, 6, '0'))
 	     , #{rqmId}
 	     , #{knlTtl}
 	     , #{knlCntnt}
@@ -122,7 +211,9 @@
 		 , K.CRTR_ID
 		 , K.MDFR_ID
 	     , R.RQM_ID 
-	     , P.PRJ_NAME 
+	     , P.PRJ_NAME
+	     , K.FILE_NAME
+	     , K.ORIGIN_FILE_NAME
 	  FROM KNOWLEDGE K
 	 INNER JOIN REQUIREMENT R
 	    ON R.RQM_ID = K.RQM_ID
@@ -156,11 +247,11 @@
 	</update>
 	
 	<!-- 삭제 -->
-	<update id="deleteOneKnowledge" parameterType="String">
+	<update id="deleteOneKnowledge" parameterType="string">
 		UPDATE KNOWLEDGE 
 		   SET DEL_YN = 'Y'
 		   	 , MDF_DT = SYSDATE
-		 WHERE KNL_ID = #{_parameter}
+		 WHERE KNL_ID = #{knlId}
 	</update>
 	
 
@@ -173,8 +264,24 @@
 	</update>
 	
 	
+	<select id="selectManyBoard" parameterType="list" resultType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">
+		SELECT FILE_NAME
+		  FROM KNOWLEDGE
+		 WHERE KNL_ID IN
+		 <foreach collection="list" item="knlId" open="(" close=")" separator=", ">
+		 	#{knlId}
+		 </foreach>
+	</select>
 	
-	
+	<update id="deleteManyBoard" parameterType="list">
+		UPDATE KNOWLEDGE
+		   SET DEL_YN = 'Y'
+		     , MDF_DT = SYSDATE
+		 WHERE KNL_ID IN
+		 <foreach collection="list" item="knlId" open="(" close=")" separator=", ">
+		 	#{knlId}
+		 </foreach>
+	</update>
 	
 	
 	
