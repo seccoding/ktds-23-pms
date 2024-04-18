@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.issue.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
@@ -14,7 +16,7 @@ public interface IssueService {
 	 */
 	public IssueListVO getAllIssue();
 	
-//	public IssueListVO searchIssue(SearchIssueVO searchIssueVO);
+	public IssueListVO searchAllIssue(SearchIssueVO searchIssueVO);
 	
 	/**
 	 * 전달받은 파라미터의 이슈 번호를 조회해 반환한다
@@ -47,4 +49,6 @@ public interface IssueService {
 	 * @return 삭제 성공 여부
 	 */
 	public boolean deleteOneIssue(String isId);
+
+	public boolean deleteManyIssue(List<Integer> deleteItems);
 }
