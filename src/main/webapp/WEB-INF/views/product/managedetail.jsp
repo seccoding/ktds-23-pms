@@ -37,7 +37,7 @@
                 <p>비품명</p>
                 <p class="product-name"></p>
                 <p>구매가격</p>
-                <input type="number" class="price" />
+                <input type="number" class="price" min="0"/>
                 <p>구매일</p>
                 <input type="date" class="buy-day" />
                 <p>분실상태</p>

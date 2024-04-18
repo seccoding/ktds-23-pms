@@ -92,6 +92,7 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 		return successCount == count;
 	}
 
+	@Transactional
 	@Override
 	public Boolean isProductCanDel(String prdtId) {
 		int delNCount = this.productManagementDao.getDelNCount(prdtId);

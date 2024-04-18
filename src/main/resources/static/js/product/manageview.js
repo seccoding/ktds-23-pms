@@ -2,15 +2,20 @@ $().ready(function(){
     var paramId = $(".body").data("paramid");
     $(".remove").on("click", function(){
         var productId = $(this).data("product");
-        
-        
-        // var prdtId = $(this).closest("detail-table").data("prdt")
+        var brrwYn = $(this).data("brrwyn");
+        var lostYn = $(this).data("lostyn");
+        var onceYn = $(this).data("onceyn");
         var url = "/ajax/product/manage/view/delete/"+productId
-        if(confirm("정말 삭제하시겠습니까?")){
-            $.get(url, function(){
-                location.href = "/product/manage/view?prdtId="+paramId
+        if(brrwYn=='Y'&& lostYn=='N'&&onceYn=='N'){
+            alert("대여중인 비품은 삭제할 수 없습니다.")
+        }else{
+            if(confirm("정말 삭제하시겠습니까?")){
+                $.get(url, function(){
+                    location.href = "/product/manage/view?prdtId="+paramId
+    
+                })
+            }
 
-            })
         }
         
     })

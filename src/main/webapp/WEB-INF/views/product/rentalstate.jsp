@@ -21,6 +21,26 @@
     div.grid div.right-align {
         text-align: right;
     }
+    
+    .disabled-check {
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 1px solid #000;
+        /* background-color: var(--secondary); */
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 0.3rem;
+        user-select: none; /* 드래그 금지 */
+        margin: 0.3rem;
+        font-size: 1rem;
+        position: relative;
+        top: 3px;
+
+    }
+    input[type="checkbox"] {
+  
+  display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -71,11 +91,18 @@
                     <c:when test="${not empty userRentalState.borrowList}">
                         <c:forEach items="${userRentalState.borrowList}" var="product">
                             <tr>
-                                <td><input type="checkbox" id="checkbox1" />
-                                    <label for="checkbox1"></label>
-                                    <label for="checkbox1"></label></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${product.productVO.onceYn eq 'Y' || not empty product.rtnDt}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="checkbox" class="checkbox" value="${product.brrwHistId}"/>
+                                            <!-- <label for="checkbox1"></label>
+                                            <label for="checkbox1"></label> -->
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td>${product.productVO.prdtName}</td>
-                                <td class="manage-id">${product.prdtMngId}</td>
                                 <td class="manage-id">${product.prdtMngId}</td>
                                 <td>${product.brrwDt}</td>
                                 <td>
@@ -108,7 +135,7 @@
     </div>
     <div class="flex">
         <button>선택항목 변경신청</button>
-        <button>선택항목 반납</button>
+        <button class="selected-return">선택항목 반납</button>
     </div>
     
 </body>
