@@ -78,6 +78,11 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".deleteManyMemo", Items);
 	}
 
+	@Override
+	public int saveOneMemo(String memoId) {
+		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".saveOneMemo", memoId);
+	}
+
 	
 	
 }

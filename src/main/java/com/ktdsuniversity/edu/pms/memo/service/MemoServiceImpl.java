@@ -108,6 +108,12 @@ public class MemoServiceImpl implements MemoService{
 		
 		return deletedCount > 0;
 	}
+
+	@Override
+	public boolean saveOneMemo(String id) {
+		int savedCount = this.memoDao.saveOneMemo(id);
+		return savedCount > 0;
+	}
 	
 	
 }
