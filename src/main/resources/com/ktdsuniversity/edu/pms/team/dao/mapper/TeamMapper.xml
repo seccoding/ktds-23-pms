@@ -3,5 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.team.dao.TeamDao">
+	
+	<insert id="createNewTeam"
+			parameterType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		INSERT INTO TEAM (
+			   TM_ID
+		     , TM_CR_DT
+		     , TM_NAME
+		     , DEPT_ID
+		     , DEL_YN
+		     , TM_LEAD_ID)
+			VALUES (
+		       'TEAM_' || TO_CHAR(SYSDATE, 'YYMMDD')|| '_' ||LPAD(SEQ_TEAM_PK.NEXTVAL,6,0)
+		     , SYSDATE
+		     , #{tmName}
+		     , #{deptId}
+		     , 'N'
+		     , #{tmLeadId})
+		      
+	</insert>
 
 </mapper>
