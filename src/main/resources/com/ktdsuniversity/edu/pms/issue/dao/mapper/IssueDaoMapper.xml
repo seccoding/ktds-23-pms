@@ -61,6 +61,95 @@
 		   AND R.DEL_YN = 'N'
 	</select>
 	
+	<select id="searchIssueAllCount"
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM ISSUE I
+		 INNER JOIN REQUIREMENT R
+		    ON I.RQM_ID = R.RQM_ID
+		 INNER JOIN PROJECT P
+		    ON R.PRJ_ID = P.PRJ_ID 
+		 WHERE I.DEL_YN = 'N'
+		 <if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "project"'>
+		   AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "requirement"'>
+		   AND R.RQM_TTL LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "title"'>
+		   AND I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "content"'>
+		   AND I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "title_content"'>
+		   AND (I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
+		    OR  I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%')
+				</when>
+				<when test='searchType == "creator"'>
+		   AND I.CRTR_ID LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+			</choose>
+		 </if>
+	</select>
+	
+	<select id="searchAllIssue"
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO"
+			resultMap="issueVOMap">
+		<include refid="Common.pagenate_header" />
+		SELECT P.PRJ_NAME
+		     , R.RQM_TTL 
+		     , I.IS_ID
+		     , I.RQM_ID
+		     , I.IS_TTL
+		     , I.IS_CNT
+		     , I.IS_LV
+		     , I.IS_FILE
+		     , I.IS_CNTNT
+		     , I.IS_MNGR
+		     , I.IS_STS
+		     , TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		     , I.CRTR_ID
+		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		     , I.MDFR_ID
+		     , I.DEL_YN
+		  FROM ISSUE I
+		 INNER JOIN REQUIREMENT R
+		    ON I.RQM_ID = R.RQM_ID
+		 INNER JOIN PROJECT P
+		    ON R.PRJ_ID = P.PRJ_ID 
+		 WHERE I.DEL_YN = 'N'
+		   AND R.DEL_YN = 'N'
+		 <if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "project"'>
+		   AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "requirement"'>
+		   AND R.RQM_TTL LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "title"'>
+		   AND I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "content"'>
+		   AND I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "title_content"'>
+		   AND (I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
+		    OR  I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%')
+				</when>
+				<when test='searchType == "creator"'>
+		   AND I.CRTR_ID LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+			</choose>
+		 </if>
+		 ORDER BY I.IS_ID DESC
+		<include refid="Common.pagenate_footer" />
+	</select>
+	
 	<select id="selectOneIssue"
 			resultMap="issueVOMap">
 		SELECT P.PRJ_NAME
@@ -79,6 +168,8 @@
 		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
 		     , I.MDFR_ID
 		     , I.DEL_YN
+		     , I.FILE_NAME
+		     , I.ORIGIN_FILE_NAME
 		  FROM ISSUE I
 		 INNER JOIN REQUIREMENT R
 		    ON I.RQM_ID = R.RQM_ID
@@ -145,9 +236,32 @@
 	</update>
 	
 	<update id="deleteOneIssue"
-			parameterType="_int">
+			parameterType="string">
 		UPDATE ISSUE
 		   SET DEL_YN = 'Y'
 		 WHERE IS_ID = #{isId}
 	</update>
+	
+	<select id="selectManyIssue" 
+  			parameterType="list" 
+  			resultType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+  		SELECT FILE_NAME
+  		  FROM ISSUE
+  		 WHERE IS_ID IN 
+  		<foreach collection="list" item="isId" open="(" close=")" separator=", ">
+  			#{isId}
+  		</foreach>
+  		   AND DEL_YN = 'N'
+  	</select>
+  	
+  	<update id="deleteManyIssue" 
+  			parameterType="list">
+  		UPDATE ISSUE
+  		   SET DEL_YN = 'Y'
+  		     , MDF_DT = SYSDATE
+  		 WHERE IS_ID IN 
+  		<foreach collection="list" item="isId" open="(" close=")" separator=", ">
+  			#{isId}
+  		</foreach>
+  	</update>
 </mapper>
