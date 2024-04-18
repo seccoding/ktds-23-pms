@@ -3,7 +3,9 @@ package com.ktdsuniversity.edu.pms.team.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
@@ -43,6 +45,21 @@ public class TeamController {
 		
 		boolean isSuccess = this.teamService.createNewTeam(teamVO);
 		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
+		
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/team/show")
+	public AjaxResponse selectOptionShowTeam(@RequestParam String teamId) {
+		TeamVO teamVO = this.teamService.selectOneTeam(teamId);
+		return new AjaxResponse().append("oneTeam", teamVO);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/team/modify")
+	public AjaxResponse modifyOneTeam(TeamVO teamVO) {
+		boolean isModifySuccess = this.teamService.modifyOneTeam(teamVO);
+		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 		
 	}
 

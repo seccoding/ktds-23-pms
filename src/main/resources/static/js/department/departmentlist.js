@@ -89,4 +89,55 @@ $().ready(function () {
       }
     );
   });
+
+  $(".team-modify").on("click", function () {
+    var modal = $(".modify-modal-team");
+
+    var teamId = modal.find("#modify-team-select-box").val();
+    $.get(
+      "/ajax/team/show?teamId=" + teamId,
+      function (response) {
+        var dataTm = response.data.oneTeam;
+        console.log(dataTm);
+        modal.find("#mod-team-id").text(dataTm.tmId);
+        modal.find("#team-name-mod").val(dataTm.tmName);
+        modal.find("#mod-team-crd-dt").text(dataTm.tmCrDt);
+        modal.find("#team-leader-mod").val(dataTm.tmLeadId);
+        modal.find("#team-dept-mod").val(dataTm.deptId);
+      }
+    );
+
+    modal[0].showModal();
+  });
+
+  $("#modify-team-select-box").on("change", function () {
+
+    var teamId = $(this).val();
+    $.get("/ajax/team/show?teamId=" + teamId, function (response) {
+      var dataTm = response.data.oneTeam;
+      $("#mod-team-id").text(dataTm.tmId);
+      $("#team-name-mod").val(dataTm.tmName);
+      $("#mod-team-crd-dt").text(dataTm.deptCrDt);
+      $("#team-leader-mod").val(dataTm.tmLeadId);
+      $("#team-dept-mod").val(dataTm.deptId);
+    });
+  });
+  $("#tm-modify-cancel-button").on("click", function () {
+    location.reload();
+  });
+  $("#tm-modify-submit-button").on("click", function () {
+    $.post(
+      "/ajax/team/modify",
+      {
+        tmId: $("#mod-team-id").text(),
+        tmName: $("#team-name-mod").val(),
+        tmLeadId: $("#team-leader-mod").val(),
+        deptId: $("#team-dept-mod").val(),
+      },
+      function (response) {
+        var returnUrl = response.data.next;
+        location.href = returnUrl;
+      }
+    );
+  });
 });

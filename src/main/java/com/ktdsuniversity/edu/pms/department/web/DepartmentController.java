@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.team.service.TeamService;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
 
@@ -20,14 +22,19 @@ public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;
 	
+	@Autowired
+	private TeamService teamService;
+	
 	@GetMapping("/department/search")
 	public String viewDepartmentListPage(Model model) {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
 		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
+		TeamListVO getOnlyTeamListVO = this.teamService.getOnlyTeam();
 		
 		
 		model.addAttribute("departmentList", departmentListVO);
 		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
+		model.addAttribute("onlyTeamList", getOnlyTeamListVO);
 		
 		return "department/departmentlist";
 	}

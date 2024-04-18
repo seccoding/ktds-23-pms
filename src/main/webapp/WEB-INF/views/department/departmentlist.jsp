@@ -21,7 +21,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
         background-color: rgba(F, F, F, 0.8);
       }
-      .modify-modal-dept {
+      .modify-modal-dept,
+      .modify-modal-team {
         position: absolute;
 
         justify-content: center;
@@ -140,7 +141,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:forEach>
       </select>
       <div class="grid">
-        <p>부서번호</p>
+        <p>부서 ID</p>
         <p id="mod-dept-id"></p>
         <div class="grid-item">부서명</div>
         <input id="department-name-mod" type="text" class="grid-item" />
@@ -160,6 +161,45 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <input
           class="button"
           id="dep-modify-submit-button"
+          type="button"
+          value="수정"
+        />
+      </div>
+    </dialog>
+    <dialog class="modify-modal-team">
+      <select id="modify-team-select-box">
+        <c:forEach
+          items="${onlyTeamList.teamList}"
+          var="team"
+        >
+          <option class="modify-team-data-id" value="${team.tmId}">
+            ${team.tmName}
+          </option>
+        </c:forEach>
+      </select>
+      <div class="grid">
+        <p>팀 ID</p>
+        <p id="mod-team-id"></p>
+        <div class="grid-item">팀명</div>
+        <input id="team-name-mod" type="text" class="grid-item" />
+        <p>팀생성날짜</p>
+        <p id="mod-team-crd-dt"></p>
+        <div class="grid-item">팀장ID</div>
+        <input id="team-leader-mod" type="text" class="grid-item" />
+        <div class="grid-item">담당부서ID</div>
+        <input id="team-dept-mod" type="text" class="grid-item" />
+      </div>
+
+      <div class="flex">
+        <input
+          class="button"
+          id="tm-modify-cancel-button"
+          type="button"
+          value="취소"
+        />
+        <input
+          class="button"
+          id="tm-modify-submit-button"
           type="button"
           value="수정"
         />
@@ -202,5 +242,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <input type="button" class="department-create button" value="부서 등록" />
     <input type="button" class="team-create button" value="팀 등록" />
     <input type="button" class="department-modify button" value="부서 변경" />
+    <input type="button" class="team-modify button" value="팀 변경" />
   </body>
 </html>
