@@ -31,14 +31,14 @@ public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements S
 		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".modifyOneAnswer", surveyQuestionPickVO);
 	}
 
-	@Override
-	public SurveyQuestionPickVO getOneAnswerSequence(String sqpId) {
-		return getSqlSession().selectOne(SurveyQuestionPickDao.NAME_SPACE + ".getOneAnswerSequence", sqpId);
-	}
-
-	@Override
-	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO) {
-		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".modifyOneAnswerSequence", surveyQuestionPickVO);
-	}
+//	@Override
+//	public SurveyQuestionPickVO getOneAnswerSequence(String sqpId) {
+//		return getSqlSession().selectOne(SurveyQuestionPickDao.NAME_SPACE + ".getOneAnswerSequence", sqpId);
+//	}
+//
+//	@Override
+//	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO) {
+//		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".modifyOneAnswerSequence", surveyQuestionPickVO);
+//	}
 
 }
