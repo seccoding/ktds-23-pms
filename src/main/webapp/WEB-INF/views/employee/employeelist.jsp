@@ -62,7 +62,9 @@
                     <c:forEach items="${employeeList.employeeList}" var="employee">
                         <tr>
                             <td>${employee.empId}</td>
-                            <td>${employee.empName}</td>
+                            <td>
+                                <a href="/employee/view?empId=${employee.empId}">${employee.empName}</a>
+                            </td>
                             <td>${employee.departmentVO.deptName}</td>
                             <td>${employee.jobVO.jobName}</td>
                             <td>${employee.brth}</td>

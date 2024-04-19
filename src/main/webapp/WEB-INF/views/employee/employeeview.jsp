@@ -7,6 +7,14 @@
     <meta charset="UTF-8">
     <title>사원 상세정보 </title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    <style type="text/css">
+        div.grid {
+          display: grid;
+          grid-template-columns: 80px 1fr;
+          grid-template-rows: repeat(6, 28px) auto auto 1fr;
+          row-gap: 10px;
+        }
+      </style>
     <script type="text/javascript" src="/js/employeeview.js"></script>
 </head>
 <body>
@@ -54,16 +62,19 @@
 
         <label for="email">이메일</label>
         <div>${employeeVO.email}</div>
-        <c:if 
-        test="${sessionScope._EMPLOYEE_.empId eq employeeVO.empId || sessionScope._EMPLOYEE_.adminYn eq 'Y'}">
-
-        <div class="btn-group">
-            <div class="right-align">
-                <a href="/employee/modify/${employeeVO.empId}">수정</a>
-                <a class="delete-employee" href="javascript:void(0);">삭제</a>
-            </div>
-        </div>
-        </c:if>
+        
+        <c:if
+        test="${sessionScope._LOGIN_USER_.email eq boardVO.email || sessionScope._LOGIN_USER_.mngrYn eq 'Y'}"
+      >
+      <div class="btn-group">
+        <button class="backto-list">
+          <a href="/employee/search">목록</a>
+        </button>
+        <button> 
+        <a href="/employee/modify/${employeeVO.empId}">수정</a>
+      </button>
+      </div>
+      </c:if>
     </div>
 </body>
 </html>
