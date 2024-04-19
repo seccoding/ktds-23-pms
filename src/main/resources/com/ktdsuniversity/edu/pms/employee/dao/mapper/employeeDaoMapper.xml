@@ -170,9 +170,15 @@
 		 , TO_CHAR(E.LGN_TRY_DT,'YYYY-MM-DD HH:MM:SS' ) LGN_TRY_DT
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
+		 , J.JOB_NAME
+		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D
 	    ON D.DEPT_ID = E.DEPT_ID
+	  JOIN JOB J
+	    ON J.JOB_ID = E.JOB_ID
+	  JOIN TEAM T
+	    ON T.DEPT_ID = E.DEPT_ID
 	 WHERE E.EMP_ID = #{_parameter}
 		OR D.DEPT_ID = #{_parameter}  
 	</select>

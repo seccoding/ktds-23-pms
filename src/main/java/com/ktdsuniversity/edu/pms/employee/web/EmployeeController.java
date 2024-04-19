@@ -66,6 +66,13 @@ public class EmployeeController {
 	}
 	
 	//상제정보 
+	@GetMapping("/employee/view")
+	public String viewEmployeeDetail(@RequestParam String empId, Model model) {
+		
+		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
+		model.addAttribute("employeeVO", employeeVO);
+		return "employee/employeeview";
+	}
 	
 	
 	//삭제 
@@ -92,7 +99,7 @@ public class EmployeeController {
 	//수정
 	@PostMapping("/employee/modify/{empId}")
 	public String modifyEmp(@PathVariable String empId, Model model,
-			@SessionAttribute("_EMPLOYEE_") EmployeeVO employeeVO,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam MultipartFile picture) {
 			Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 			validator.add("empName", Type.NOT_EMPTY, "이름을 입력해주세요.")
@@ -137,7 +144,7 @@ public class EmployeeController {
 
 	@ResponseBody
 	@PostMapping("/ajax/employee/regist")
-	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/") String nextUrl, Model model) {
+	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
 		/**
 		 * 수정해야할 사항 
 		 * 비밀번호를 직접 받지않고 사원번호 + 입사일 이런식으로 기본 비번 설정
@@ -178,5 +185,3 @@ public class EmployeeController {
 		return new AjaxResponse().append("errorMessage", "실패사유");
 	}
 }
-
-
