@@ -112,17 +112,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:choose>
       </tbody>
     </table>
-
-        <ul class="page-nav">
+    <!--pagination-->
+    <ul class="page-nav">
       <c:if test="${resultList.count > 0}">
-        <!--처음 그룹링크-->
+        <!--처음-->
         <c:if test="${requirementSearch.hasPrevGroup}">
           <li><a href="javascript:search(0)">처음</a></li>
         </c:if>
-        <!--이전 그룹링크-->
+        <!--이전-->
         <c:if test="${requirementSearch.hasPrevGroup}">
           <li>
-            <a href="${requirementSearch.prevGroupStartPageNo}">이전</a>
+            <a
+              href="javascript:search(${requirementSearch.prevGroupStartPageNo})"
+              >이전</a
+            >
           </li>
         </c:if>
         <!-- 각 페이지 링크 -->
@@ -138,18 +141,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             >
           </li>
         </c:forEach>
+        <!--다음-->
         <c:if test="${requirementSearch.hasNextGroup}">
           <a href="javascript:search(${requirementSearch.nextGroupStartPageNo})"
             >다음</a
           ></c:if
         >
+        <!--마지막-->
         <c:if test="${requirementSearch.hasNextGroup}"
           ><a href="javascript:search(${requirementSearch.pageCount})"
             >마지막</a
           ></c:if
         >
       </c:if>
-</ul>
+    </ul>
 
     <div>
       <p>
