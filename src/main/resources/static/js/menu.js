@@ -137,14 +137,14 @@ const menuList = [
             parent: { id: "5-1" },
           },
           {
-                name: "프로젝트 상세",
-                url: "/project/view",
-                parent: { id: "5-1" },
+            name: "프로젝트 상세",
+            url: "/project/view",
+            parent: { id: "5-1" },
           },
           {
-                name: "프로젝트 팀",
-                url: "/project/team",
-                parent: { id: "5-1" },
+            name: "프로젝트 팀",
+            url: "/project/team",
+            parent: { id: "5-1" },
           },
         ],
       },
@@ -273,7 +273,7 @@ const menuList = [
     name: "시스템관리",
     role: "ADMIN",
     url: null,
-    icon: "/images/sidebar-memo.png",
+    icon: "/images/sidebar-settings.png",
     parent: undefined,
     children: [
       {
