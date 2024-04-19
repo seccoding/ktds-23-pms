@@ -49,4 +49,10 @@ public interface ProjectDao {
     int deleteManyTeammate(List<String> deleteItems);
 
     int deleteByTeammateId(String prjTmId);
+
+    ProjectTeammateVO findTeammateByProjectIdAndEmployeeId(ProjectTeammateVO newProjectTeammate);
+
+    int updateTeammateDeleteYnByProjectTeammateId(String prjTmId);
+
+    int insertNewProjectTeammate(ProjectTeammateVO newProjectTeammate);
 }

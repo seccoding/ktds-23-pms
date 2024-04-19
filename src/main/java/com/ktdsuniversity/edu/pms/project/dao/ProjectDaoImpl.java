@@ -115,4 +115,19 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     public int deleteByTeammateId(String prjTmId) {
         return getSqlSession().update(ProjectDao.NAME_SPACE + ".deleteByTeammateId", prjTmId);
     }
+
+    @Override
+    public ProjectTeammateVO findTeammateByProjectIdAndEmployeeId(ProjectTeammateVO newProjectTeammate) {
+        return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".findTeammateByProjectIdAndEmployeeId", newProjectTeammate);
+    }
+
+    @Override
+    public int updateTeammateDeleteYnByProjectTeammateId(String prjTmId) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateTeammateDeleteYnByProjectTeammateId", prjTmId);
+    }
+
+    @Override
+    public int insertNewProjectTeammate(ProjectTeammateVO newProjectTeammate) {
+        return getSqlSession().insert(ProjectDao.NAME_SPACE + ".insertNewProjectTeammate", newProjectTeammate);
+    }
 }

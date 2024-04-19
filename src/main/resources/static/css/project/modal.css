@@ -1,6 +1,6 @@
 .modal {
-    height: 190px;
-    width: 365px;
+    height: 210px;
+    width: 401px;
     margin: auto;
     border: 1px solid #777;
     border-radius: 4px;
@@ -26,10 +26,10 @@
     font-size: 20px;
     font-weight: bold;
     padding-top: 10px;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
 }
 
-#modal-cancel-button {
+.modal-cancel-button {
     line-height: 1; /* 높이를 정확히 조절하려면 'line-height'를 '1'로 설정합니다. */
     position: absolute;
     right: 20px; /* 오른쪽 테두리로부터 20px 떨어진 위치 */
