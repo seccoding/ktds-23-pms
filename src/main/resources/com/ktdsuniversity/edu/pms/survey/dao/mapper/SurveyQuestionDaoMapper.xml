@@ -127,7 +127,7 @@
 		, 'N'
 		, #{seq}
 		, #{typeYn}
-		, 'N')
+		, 'W')
 	</insert>
 	
 	<select id="getOneSurvey" parameterType="String" resultMap="SurveyQuestionVOMap">
@@ -150,6 +150,24 @@
 	<update id="insertSurveyBody" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
 		UPDATE SURVEY_QUESTION
 		   SET SRV_QST = #{srvQst}
+		     , TYPE_YN = #{typeYn}
+		     , SRV_STS = 'Y'
+		 WHERE SRV_ID = #{srvId}
+	</update>
+	
+	<update id="modifyOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+		UPDATE SURVEY_QUESTION
+		   SET SRV_QST = #{srvQst}
+		     , MDFR_ID = #{mdfrId}
+		     , MDF_DT = SYSDATE
+		     , SEQ = #{seq}
+		     , TYPE_YN = #{typeYn}
+		 WHERE SRV_ID = #{srvId}
+	</update>
+	
+	<update id="modifyOneSurveyExceptBody" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+		UPDATE SURVEY_QUESTION
+		   SET SEQ = #{seq}
 		     , TYPE_YN = #{typeYn}
 		 WHERE SRV_ID = #{srvId}
 	</update>

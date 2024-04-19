@@ -9,7 +9,6 @@
 <jsp:include page="../commonheader.jsp"></jsp:include>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
     <div>
         <table>
             <colgroup>
@@ -36,7 +35,7 @@
                 <c:choose>
                     <c:when test="${not empty surveyList.surveyList}">
                         <c:forEach items="${surveyList.surveyList}" var="survey">
-                            <tr onclick="location.href='/survey/view?prjId=${survey.prjId}'">
+                            <tr onclick="location.href='/survey/write/${survey.prjId}'">
                                 <td>${survey.projectVO.prjName}</td>
                                 <td>${survey.projectVO.clntInfo}</td>
                                 <td>${survey.departmentVO.deptName}</td>
@@ -50,9 +49,7 @@
                     <c:otherwise>
                         <tr>
                             <td colspan="7">
-                                <a href="/survey/write/${survey.prjId}">
-                                    설문 작성
-                                </a>
+                                <div>담당 중인 프로젝트가 없거나 담당 중인 프로젝트의 설문 생성이 불가능한 상태인 것 같습니다.</div>
                             </td>
                         </tr>
                     </c:otherwise>
@@ -60,6 +57,5 @@
             </tbody>
         </table>
     </div>
-    <jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>
