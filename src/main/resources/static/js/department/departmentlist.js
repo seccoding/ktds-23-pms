@@ -1,4 +1,17 @@
 $().ready(function () {
+  $(".departmentListClickFunction").on("click", function () {
+    clearCodeInfo();
+    clearSubCodeInfo();
+
+    $(this).closest("tbody").find("tr").removeClass("active");
+    $(this).addClass("active");
+
+    clearSubCodeInfo();
+
+    var commonCodeInfo = $(".code-info");
+    commonCodeInfo.find("#codeDeptId").text("내일부터할것");
+  });
+
   function reloadSubTeam(deptId) {
     $.get("/ajax/department/search/" + deptId, function (response) {
       var subTeamTable = $(".sub-team").find("tbody");
@@ -20,10 +33,26 @@ $().ready(function () {
 
           clearSubCodeInfo();
 
-          var 
-        })
+          var departmentInfo = $(".sub-code-info");
+          departmentInfo.find("#codeTmId").text($(this).data("id"));
+          departmentInfo.find("#codeTmName").text($(this).data("name"));
+          departmentInfo
+            .find("#codeTmDepartment")
+            .text($(this).data("tmDeptId"));
+          departmentInfo.find("#codeTmLeadId").text($(this).data("tmLeadId"));
+          departmentInfo.find("#codeTmCrtDt").text($(this).data("crdt"));
+        });
 
+        var tmIdTdDom = $("<td></td>");
+        tmIdTdDom.text(subTeam.tmId);
 
+        var tmNameTdDom = $("<td></td>");
+        tmNameTdDom.text(subTeam.tmName);
+
+        trDom.append(tmIdTdDom);
+        trDom.append(tmNameTdDom);
+
+        subCodeTable.append(trDom);
       });
     });
   }
