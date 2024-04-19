@@ -33,7 +33,9 @@ app:
             /images/**,
             /error/**,
             /ajax/employee/login,
-            /employee/login
+            /employee/login,
+            /employee/regist,
+            /ajax/employee/regist
     multipart:
         #파일 업로드 위치 지정
         base-dir: Z:\uploadfile

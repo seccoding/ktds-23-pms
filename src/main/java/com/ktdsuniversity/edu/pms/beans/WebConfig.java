@@ -38,6 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
+
 		registry.jsp("/WEB-INF/views/", ".jsp");
 	}
 
@@ -55,6 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+
 
 		if (this.enableTempSession) {
 			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();

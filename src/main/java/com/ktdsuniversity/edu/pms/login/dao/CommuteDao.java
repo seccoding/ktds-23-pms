@@ -1,8 +1,6 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
 import java.util.List;
-
-import com.hello.forum.bbs.vo.BoardVO;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 
 public interface CommuteDao {

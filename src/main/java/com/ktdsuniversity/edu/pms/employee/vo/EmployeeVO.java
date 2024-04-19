@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
@@ -37,7 +38,17 @@ public class EmployeeVO {
 
     private LoginLogVO loginLogVO;
 
-    public LoginLogVO getLoginLogVO() {
+	private CommuteVO commuteVO;
+
+	public CommuteVO getCommuteVO() {
+		return commuteVO;
+	}
+
+	public void setCommuteVO(CommuteVO commuteVO) {
+		this.commuteVO = commuteVO;
+	}
+
+	public LoginLogVO getLoginLogVO() {
         return loginLogVO;
     }
 

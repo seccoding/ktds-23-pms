@@ -1,11 +1,13 @@
 package com.ktdsuniversity.edu.pms.login.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import com.ktdsuniversity.edu.pms.beans.SHA;
+import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
+import org.apache.tika.utils.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
@@ -47,8 +49,17 @@ public class LoginLogServiceImpl implements LoginLogService {
 		 * 
 		 */
 
-		
-		
+
+		employeeVO.setPwd(employeeVO.getPwd());
+
+		String storedSalt = this.loginLogDao.selectSalt(employeeVO.getEmpId());
+
+		employeeVO.setPwd(this.sha.getEncrypt(employeeVO.getPwd(), storedSalt));
+		// 만약, salt 값이 null 이라면, 회원정보가 없는 것이므로 사용자에게 예외를 전달한다.
+		if (StringUtils.isEmpty(storedSalt)) {
+			throw new EmpIdEndDTException();
+		}
+
 		//현재시간이 로그인 시도시간 + 1/24보다 큰 경우 1을 반환하고 아니라면 0을 반환하는 쿼리를 실행
 		//실행된 값이 0보다 클경우 로그인 시도횟수를 0으로 초기화
 		int possiableLoginCount = this.loginLogDao.getCountPossibleLogin(employeeVO.getEmpId());
@@ -61,10 +72,12 @@ public class LoginLogServiceImpl implements LoginLogService {
 		if (count >= 5) {
 			throw new LimitLoginException();
 		}
-		
-		String pwd = employeeVO.getPwd();
-//		pwd = this.sha.getEncrypt(pwd, saltOfEmp);
-		employeeVO.setPwd(pwd);
+
+
+
+
+
+
 
 		EmployeeVO employee = loginLogDao.getOneEmployeeByEmpIdAndPwd(employeeVO);
 
@@ -114,8 +127,28 @@ public class LoginLogServiceImpl implements LoginLogService {
 	}
 
 	@Override
-	public void updateEmpLogout(EmployeeVO employee) {
-		this.loginLogDao.updateEmpLogout(employee);
+	public void updateEmpLogout(String logId) {
+		this.loginLogDao.updateEmpLogout(logId);
+	}
+
+	@Override
+	public void insertCommuteIn(EmployeeVO employee) {
+		this.loginLogDao.insertCommuteIn(employee);
+	}
+
+	@Override
+	public int getCommuteDt(String empId) {
+		return this.loginLogDao.getCommuteDt(empId);
+	}
+
+	@Override
+	public void updateComuteFnsh(EmployeeVO employee) {
+		this.loginLogDao.updateCommuteFnsh(employee);
+	}
+
+	@Override
+	public int getPwdCndt(String empId) {
+		return this.loginLogDao.getPwdCndt(empId);
 	}
 
 
