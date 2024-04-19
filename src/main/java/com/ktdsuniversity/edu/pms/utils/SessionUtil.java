@@ -5,7 +5,9 @@ import java.util.Map;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
+import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 public abstract class SessionUtil {
@@ -16,6 +18,9 @@ public abstract class SessionUtil {
 	 * value: 로그인한 사원번호의 세션
 	 */
 	private static Map<String, HttpSession> sessionMap;
+
+
+	private static LoginLogService loginLogService;
 	
 	static {
 		sessionMap = new HashMap<>();
@@ -67,6 +72,7 @@ public abstract class SessionUtil {
 	public static void removeSession(String employeeId, boolean immediatleyLogout) {
 		if (wasLoginEmployee(employeeId)) {
 			if (immediatleyLogout) {
+				// 세션 제거전 로그아웃 기록 해야함.
 				sessionMap.get(employeeId).invalidate();
 			}
 			sessionMap.remove(employeeId);
@@ -85,4 +91,5 @@ public abstract class SessionUtil {
 		
 		return null;
 	}
+
 }

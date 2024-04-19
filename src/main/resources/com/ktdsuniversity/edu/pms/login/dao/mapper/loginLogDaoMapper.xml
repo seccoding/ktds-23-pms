@@ -11,77 +11,123 @@
         </association>
     </resultMap>
 
-    <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+            resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         SELECT EMP_ID
-             , WORK_STS
-             , EMP_NAME
-             , PWD
-             , SALT
-             , ADMN_CODE
-             , LGN_YN
-             , END_DT
-             , REST_ST_DT
-             , REST_END_DT
-          FROM EMPLOYEE
-         WHERE EMP_ID = #{empId}
-           AND PWD = #{pwd}
+        , WORK_STS
+        , EMP_NAME
+        , PWD
+        , SALT
+        , ADMN_CODE
+        , LGN_YN
+        , END_DT
+        , REST_ST_DT
+        , REST_END_DT
+        , MNGR_YN
+        FROM EMPLOYEE
+        WHERE EMP_ID = #{empId}
+        AND PWD = #{pwd}
     </select>
-    
+
     <update id="getOneEmpIdUseOtherPlace"
-    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-    		UPDATE EMPLOYEE
-    		   SET LGN_YN = 'Y'
-    		 WHERE EMP_ID = #{empId}
+            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        UPDATE EMPLOYEE
+        SET LGN_YN = 'Y'
+        WHERE EMP_ID = #{empId}
     </update>
-    
+
     <update id="getOneEmpIdNotUseNow"
-    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-    		UPDATE EMPLOYEE
-    		   SET LGN_YN = 'N'
-    		 WHERE EMP_ID = #{empId}
+            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        UPDATE EMPLOYEE
+        SET LGN_YN = 'N'
+        WHERE EMP_ID = #{empId}
     </update>
 
     <insert id="updateLoginLog" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         INSERT INTO LOGIN_LOG
-              (LOG_ID
-             , EMP_ID
-             , LGN_SCC_DT
-             , LGT_DT
-             , DEL_YN)
+        (LOG_ID
+        , EMP_ID
+        , LGN_SCC_DT
+        , LGT_DT
+        , DEL_YN)
         VALUES
-              (SEQ_LGN_LG_PK.NEXTVAL
-             , #{empId}
-             , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
-             , NULL
-             , 'N')
+        (SEQ_LGN_LG_PK.NEXTVAL
+        , #{empId}
+        , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        , NULL
+        , 'N')
     </insert>
 
     <select id="updateEmpLog" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
             resultMap="employeeVOMap">
         SELECT E.EMP_ID
-             , E.WORK_STS
-             , E.EMP_NAME
-             , E.PWD
-             , E.SALT
-             , E.ADMN_CODE
-             , E.LGN_YN
-             , E.END_DT
-             , E.REST_ST_DT
-             , E.REST_END_DT
-             , E.PWD_CN_DT
-             , L.LOG_ID
-          FROM EMPLOYEE E
-          JOIN LOGIN_LOG L
-            ON E.EMP_ID = L.EMP_ID
-         WHERE E.EMP_ID = #{empId}
-           AND L.LGT_DT IS NULL
+        , E.WORK_STS
+        , E.EMP_NAME
+        , E.PWD
+        , E.SALT
+        , E.ADMN_CODE
+        , E.LGN_YN
+        , E.END_DT
+        , E.REST_ST_DT
+        , E.REST_END_DT
+        , E.PWD_CN_DT
+        , E.MNGR_YN
+        , L.LOG_ID
+        FROM EMPLOYEE E
+        JOIN LOGIN_LOG L
+        ON E.EMP_ID = L.EMP_ID
+        WHERE E.EMP_ID = #{empId}
+        AND L.LGT_DT IS NULL
     </select>
 
-    <update id="updateEmpLogout" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    <update id="updateEmpLogout" parameterType="string">
         UPDATE LOGIN_LOG
-           SET LGT_DT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
-         WHERE LOG_ID = #{loginLogVO.logId}
-           AND LGT_DT IS NULL
+        SET LGT_DT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        WHERE LOG_ID = #{_parameter}
+        AND LGT_DT IS NULL
     </update>
 
+    <insert id="insertCommuteIn" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        INSERT INTO COMMUTE
+        (CMMT_ID
+        , CMMT_DATE
+        , CMMT_TIME
+        , FNSH_TIME
+        , EMP_ID
+        , DEL_YN)
+        VALUES
+        (SEQ_CMMT_PK.NEXTVAL
+        , SYSDATE
+        , SYSDATE
+        , NULL
+        , #{empId}
+        , 'N')
+    </insert>
+
+    <select id="selectSalt" parameterType="string" resultType="string">
+        SELECT SALT
+        FROM EMPLOYEE
+        WHERE EMP_ID = #{_parameter}
+    </select>
+
+    <select id="getCommuteDt" parameterType="string" resultType="_int">
+        SELECT COUNT(1)
+        FROM COMMUTE
+        WHERE TO_CHAR(CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+        AND EMP_ID = #{empId}
+    </select>
+
+    <update id="updateCommuteFnsh" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+        UPDATE COMMUTE
+        SET FNSH_TIME = SYSDATE
+        WHERE EMP_ID = #{empId}
+        AND FNSH_TIME IS NULL
+    </update>
+
+    <select id="getPwdCndt" parameterType="string" resultType="_int">
+        SELECT COUNT(1)
+          FROM EMPLOYEE
+         WHERE EMP_ID = #{_parameter}
+           AND SYSDATE > PWD_CN_DT + 90
+    </select>
 </mapper>

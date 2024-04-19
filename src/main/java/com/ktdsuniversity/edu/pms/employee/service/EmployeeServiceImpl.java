@@ -69,13 +69,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean createEmployee(EmployeeVO employeeVO) {
 		String pwd = employeeVO.getPwd();
 		String salt = this.sha.generateSalt();
-//		if (salt == null) {
-//			System.out.println("salt null");
-//		} else {
-//			System.out.println("SALT 있음");
-//		}
 		pwd = this.sha.getEncrypt(pwd, salt);
-		
+
 		employeeVO.setPwd(pwd);
 		employeeVO.setSalt(salt);
 		

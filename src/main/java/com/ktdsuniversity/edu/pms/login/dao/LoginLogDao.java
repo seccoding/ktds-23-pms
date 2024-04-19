@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 
 import java.util.List;
 
@@ -23,5 +24,15 @@ public interface LoginLogDao {
 
     public EmployeeVO updateEmpLog(EmployeeVO employee);
 
-    public void updateEmpLogout(EmployeeVO employee);
+    public void updateEmpLogout(String logId);
+
+    public void insertCommuteIn(EmployeeVO employee);
+
+    public String selectSalt(String empId);
+
+    public int getCommuteDt(String empId);
+
+    public void updateCommuteFnsh(EmployeeVO employee);
+
+    public int getPwdCndt(String empId);
 }

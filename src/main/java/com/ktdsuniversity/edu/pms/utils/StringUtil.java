@@ -26,14 +26,19 @@ public abstract class StringUtil {
 		
 		return str.matches(EmpIdFormat);
 	}
-	
-	
+
+
+	/**
+	 * 영문자, 숫자, 특수문자를 각각하나 이상 포함하고있는 10자리 문자인지 검사해주는 정규표현식
+	 * @param str 화면에서 받은 암호
+	 * @return 형식에 맞은지 여부에 따라 true false
+	 */
 	public final static boolean correctPasswordFormat(final String str) {
 		if (isEmpty(str)) {
 			return false;
 		}
 		
-		String passwordFormat = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+		String passwordFormat = "^(?=.[a-zA-Z])(?=.[0-9])(?=.[!@#$%^&()-+=])([a-zA-Z0-9!@#$%^&*()-+=]{10})$";
 		
 		return str.matches(passwordFormat);
 	}

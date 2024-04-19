@@ -25,6 +25,7 @@ public class CustomHttpSessionListener implements HttpSessionListener {
 		if (employeeVO != null) {
 			SessionUtil.removeSession(employeeVO.getEmpId(), false);
 			this.loginLogService.getOneEmpIdNotUseNow(employeeVO);
+			this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
 		}
 		
 	}

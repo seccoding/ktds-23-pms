@@ -26,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
+
 		registry.jsp("/WEB-INF/views/", ".jsp");
 	}
 
@@ -51,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
 //				.addPathPatterns("/member/login", "/ajax/member/login",
 //						"/member/regist", "/ajax/member/regist");
 		registry.addInterceptor(new LoginInterceptor())
-				.addPathPatterns(this.authCheckIgnoreUrlPatterns)
+				.addPathPatterns(this.authCheckUrlPattern)
 				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
 	}
 }
