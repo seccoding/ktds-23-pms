@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
 
 
@@ -38,6 +39,18 @@ public class ApprovalDetailDaoImpl extends SqlSessionDaoSupport implements Appro
 
 		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE+".getpersonApproval", id);
 	}
+
+//	@Override
+//	public int searchBoardDetailAllCount(ApprovalDetailVO approvaldetailvo) {
+//		// TODO Auto-generated method stub
+//		return getSqlSession().selectOne(ApprovalDetailDao.NAME_SPACE+".searchBoardDetailAllCount", approvaldetailvo);
+//	}
+//
+//	@Override
+//	public List<ApprovalVO> searchAllBoardDetail(ApprovalDetailVO approvaldetailvo) {
+//		// TODO Auto-generated method stub
+//		return getSqlSession().selectList(ApprovalDao.NAME_SPACE+".searchAllBoardDetail", approvaldetailvo);
+//	}
 	
 	
 }

@@ -1,10 +1,11 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
 
+import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
-public class ApprovalDetailVO {
+public class ApprovalDetailVO extends PaginateVO{
 	
 	private String apprDtlId;
 	private String apprId;

@@ -12,4 +12,6 @@ public interface ApprovalDetailService {
    public boolean createNewApprovalDetail( ApprovalDetailVO approvaldetailVo);
    
    public ApprovalDetailListVO getPersonApprovalDetail(String id);
+   
+   
 }

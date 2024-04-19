@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.approval.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 
 public interface ApprovalDetailDao {
 	
@@ -24,7 +25,13 @@ public interface ApprovalDetailDao {
      */
     public List<ApprovalDetailVO> getpersonApproval(String id);
     
-    
-    
-    
+//    /**
+//     * 페이지 개수 구하는 쿼리
+//     */
+//	public int searchBoardDetailAllCount(ApprovalDetailVO approvaldetailvo);
+//    
+//	/**
+//     * 전체리스트 구하는 공식
+//     */
+//	public List<ApprovalVO> searchAllBoardDetail(ApprovalDetailVO approvaldetailvo);
 }

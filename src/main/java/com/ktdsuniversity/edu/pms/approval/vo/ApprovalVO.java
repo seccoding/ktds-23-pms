@@ -2,10 +2,11 @@ package com.ktdsuniversity.edu.pms.approval.vo;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
-public class ApprovalVO {
+public class ApprovalVO extends PaginateVO{
 	
 	private String apprId;
 	private String dmdDt;

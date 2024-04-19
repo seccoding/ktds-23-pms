@@ -15,6 +15,9 @@
 		.title {
             margin-bottom: 3rem;
         }
+        .col-1-1 {
+            width: 99%;
+        }
         .col-1-2 {
             width: 50%;
         }
@@ -80,21 +83,21 @@
                 <div class="card-body">
                     <div class="card-icon">⚫</div>
                     <span>승인되지 않은 결재</span>
-                    <h2>4</h2>
+                    <h2>${approveList.getApprCnt()}</h2>
                 </div>
             </div>
             <div class="card col-1-3">
                 <div class="card-body">
                     <div class="card-icon">⚫</div>
                     <span>일주일 이상 지연된 결재</span>
-                    <h2>0</h2>
+                    <h2>${OneWeekApprovalList.getApprCnt()}</h2>
                 </div>
             </div>
             <div class="card col-1-3">
                 <div class="card-body">
                     <div class="card-icon">⚫</div>
                     <span>한 달 이내 결재내역</span>
-                    <h2>10</h2>
+                    <h2>${monthApprovalList.getApprCnt()}</h2>
                 </div>
             </div>
         </div>
@@ -142,6 +145,55 @@
 				</c:choose>		
             </div>
         </div>
+        
+
+        <!-- Paginator 시작 -->
+      <div>
+        <form id="search-form">
+          <input type="hidden" id="page-no" name="pageNo" value="0" />		
+          <ul class="page-nav">
+            <c:if test="${searchBoardVO.hasPrevGroup}">
+              <li><a href="javascript:search(0);">처음</a></li>
+              <li>
+                <a
+                  href="javascript:search(${searchBoardVO.prevGroupStartPageNo});"
+                  >이전</a
+                >
+              </li>
+            </c:if>
+
+            <!-- Page 번호를 반복하며 노출한다. -->
+            <c:forEach
+              begin="${searchBoardVO.groupStartPageNo}"
+              end="${searchBoardVO.groupEndPageNo}"
+              step="1"
+              var="p"
+            >
+              <li class="${searchBoardVO.pageNo eq p ? 'active' : ''}">
+                <a href="javascript:search(${p});">${p+1}</a>
+              </li>
+            </c:forEach>
+
+            <c:if test="${searchBoardVO.hasNextGroup}">
+              <li>
+                <a
+                  href="javascript:search(${searchBoardVO.nextGroupStartPageNo});"
+                  >다음</a
+                >
+              </li>
+              <li>
+                <a href="javascript:search(${searchBoardVO.pageCount - 1});"
+                  >마지막</a
+                >
+              </li>
+            </c:if>
+          </ul>
+        </form>
+      </div>
+      <!-- Paginator 끝 -->
+       
     </div>
+    
+    
 </body>
 </html>

@@ -188,9 +188,64 @@
 			WHERE APPR_ID='';
   	</update>
   	
+  	<select id="getAllApproveCount" resultType="_int">
+  		SELECT COUNT(1)
+			FROM APPROVAL A
+			INNER JOIN EMPLOYEE e 
+			ON e.EMP_ID =A.DMD_ID
+			WHERE A.DEL_YN = 'N'
+			AND APPR_STS  IN ('801','803') 
+  	</select>
   	
+  	<select id="getAllOneWeekApprovalCount" resultType="_int"> 
+  		SELECT COUNT(1)
+			FROM APPROVAL A
+			INNER JOIN EMPLOYEE e 
+			ON e.EMP_ID = A.DMD_ID
+			<![CDATA[WHERE DMD_DT < SYSDATE - 7]]>
+			AND APPR_STS  IN ('801','803') 
+  	</select>
   	
-  	
+   <select id="getAllMonthApprovalCount" resultType="_int">
+   		SELECT COUNT(1)
+		FROM APPROVAL a
+		INNER JOIN EMPLOYEE e 
+		ON e.EMP_ID =a.DMD_ID
+		<![CDATA[WHERE DMD_DT >= TRUNC(SYSDATE) - INTERVAL '1' MONTH]]> 
+		AND APPR_STS  IN ('802') 
+   </select>
+   
+   <select id="searchBoardAllCount" resultType="_int">
+		SELECT COUNT(1) 
+		FROM APPROVAL a
+		INNER JOIN EMPLOYEE e 
+		ON e.EMP_ID =a.DMD_ID 
+	</select>
+   
+   <select id="searchAllBoard" 
+   			parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" 
+			resultMap="approvalVOMap">
+		<include refid="Common.pagenate_header" />
+		SELECT A.APPR_ID
+	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
+	         , A.APPR_CTGR
+	         , A.APPR_STS
+	         , A.APPR_TTL
+	         , A.APPR_CNTNT
+	         , A.DMD_ID
+	         , A.APPR_MNG_ID
+	         , A.ARRP_RJCT
+	         , A.LAST_CN_DT
+	         , A.APPR_FNSH_DT
+	         , E.EMP_NAME
+	         , E.PRFL
+	      FROM APPROVAL A
+	     INNER JOIN EMPLOYEE E
+	        ON A.DMD_ID = E.EMP_ID 
+	     WHERE A.DEL_YN = 'N'
+		<include refid="Common.pagenate_footer" />
+	</select>
+   
   	
   	
 </mapper> 

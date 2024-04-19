@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
@@ -71,4 +72,63 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int deleteCount=this.approvalDao.deleteApproval(apprId);
 		return deleteCount>0;
 	}
+
+	@Override
+	public boolean updatesOneApproval(String id) {
+		// TODO Auto-generated method stub
+		
+		int updateCount=this.approvalDao.updateApproval(id);
+	
+		return updateCount>0;
+	}
+
+	@Override
+	public ApprovalListVO getAllApprove() {
+		// TODO Auto-generated method stub
+		int approveCount = this.approvalDao.getAllApproveCount();
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approveCount);
+		
+		return approvalListVO;
+	}
+
+	@Override
+	public ApprovalListVO getAllOneWeekApproval() {
+		// TODO Auto-generated method stub
+		int approvalweeKCount = this.approvalDao.getAllOneWeekApprovalCount();
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalweeKCount);
+		
+		return approvalListVO;
+	}
+	
+	@Override
+	public ApprovalListVO getAllMonthApproval() {
+		// TODO Auto-generated method stub
+		int approvalMonthCount = this.approvalDao.getAllMonthApprovalCount();
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalMonthCount);
+		
+		return approvalListVO;
+	}
+	
+
+	@Override
+	public ApprovalListVO searchAllBoard(ApprovalVO approvaVo) {
+		// TODO Auto-generated method stub
+		int boardcount=this.approvalDao.searchBoardAllCount(approvaVo);
+		approvaVo.setPageCount(boardcount);
+		
+		List<ApprovalVO> boardList=this.approvalDao.searchAllBoard(approvaVo);
+		
+		ApprovalListVO boardListVO=new ApprovalListVO();
+		boardListVO.setApprCnt(boardcount);
+		boardListVO.setApprList(boardList);
+		
+		return boardListVO;
+	}
+
 }
