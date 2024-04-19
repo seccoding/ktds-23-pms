@@ -23,6 +23,7 @@ public class SurveyController {
 	@GetMapping("/survey/list")
 	public String viewSurveyListPage(Model model) {
 		SurveyListVO surveyListVO = this.surveyQuestionService.getAllSurvey();
+//		SurveyQuestionVO surveyQuestionVO = this
 		model.addAttribute("surveyList", surveyListVO);
 		return "survey/surveylist";
 	}
