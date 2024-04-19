@@ -22,8 +22,8 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	}
 
 	@Override
-	public int searchAllCount(RequirementSearchVO requirementSearchVO) {
-		return getSqlSession().selectOne(NAME_SPACE+".searchAllCount",requirementSearchVO);
+	public int getAllCount(RequirementSearchVO requirementSearchVO) {
+		return getSqlSession().selectOne(NAME_SPACE+".getAllCount",requirementSearchVO);
 	}
 	
 	@Override
