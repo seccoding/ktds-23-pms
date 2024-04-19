@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
@@ -118,11 +119,11 @@ public class ProjectController {
     // Use Session, user 가 해당 프로젝트에 속해있는지를 검증해야함.
     @GetMapping("/project/team")
     public String viewProjectTeamPage(@RequestParam String prjId, Model model) {
-        String prjName = projectService.getOneProject(prjId).getPrjName();
+        ProjectVO project = projectService.getOneProject(prjId);
         int teammateCount = projectService.getProjectTeammateCount(prjId);
         List<ProjectTeammateVO> teammate = projectService.getAllProjectTeammateByProjectId(prjId);
 
-        model.addAttribute("projectName", prjName);
+        model.addAttribute("project", project);
         model.addAttribute("teammateCount", teammateCount);
         model.addAttribute("teammate", teammate);
 
@@ -296,7 +297,7 @@ public class ProjectController {
     @ResponseBody
     @PostMapping("/ajax/teammate/delete/massive")
     public AjaxResponse doDeleteMassiveTeammate(@RequestParam("deleteItems[]") List<String> deleteItems) {
-       boolean deleteResult = projectService.deleteManyTeammate(deleteItems);
+        boolean deleteResult = projectService.deleteManyTeammate(deleteItems);
 
         return new AjaxResponse().append("result", deleteResult);
     }
@@ -307,5 +308,17 @@ public class ProjectController {
         boolean deleteResult = projectService.deleteOneTeammate(prjTmId);
 
         return new AjaxResponse().append("result", deleteResult);
+    }
+
+    @ResponseBody
+    @GetMapping("/ajax/department-teammate/{deptId}")
+    public AjaxResponse viewDepartmentTeammate(@PathVariable String deptId) {
+        List<EmployeeVO> allEmployeeList = employeeService.getAllEmployee().getEmployeeList();
+
+        List<EmployeeVO> list = allEmployeeList.stream()
+                .filter(emp -> emp.getDeptId().equals(deptId))
+                .toList();
+
+        return new AjaxResponse().append("teammateList", list);
     }
 }

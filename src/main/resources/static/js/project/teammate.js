@@ -6,7 +6,7 @@ $().ready(function () {
         $("#delete-alert-modal").show();
     });
 
-    $("#modal-delete-button").click(function() {
+    $("#modal-delete-button").on("click" ,function() {
         var teammateId = $("#delete-alert-modal").data('teammateId');
         $.get("/ajax/teammate/delete/" + teammateId, function(response) {
             var oneDeleteResult = response.data.result;
@@ -15,11 +15,34 @@ $().ready(function () {
                 location.reload();
             }
         });
+
         $("#delete-alert-modal").hide();
+
+    });
+
+    $("button[name='new-teammate']").on("click", function () {
+        var deptId = $("#add-alert-modal").data('dept-id');
+
+        $.get("/ajax/department-teammate/" + deptId, function(response) {
+            var teammateList = response.data.teammateList;
+
+            $("#modal-add-team-list").empty();
+
+            teammateList.forEach(function(teammate) {
+                $select.append($('<option></option>').val(teammate.id).text(teammate.name));
+            });
+        })
+
+        $("#add-alert-modal").show();
+    })
+
+    $("#modal-add-button").on("click" ,function() {
+        $.post()
     });
 
     $("#modal-cancel-button").click(function() {
         $("#delete-alert-modal").hide();
+        $("#add-alert-modal").hide();
     });
 
     // 전체체크 로직
