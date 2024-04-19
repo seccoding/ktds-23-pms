@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
 
 
 @Repository
@@ -65,6 +66,31 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 	@Override
 	public int recommendOneKnowledge(String knlId) {
 		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".recommendOneKnowledge", knlId);
+	}
+
+
+	@Override
+	public int searchAllKnowledgeCount(SearchKnowledgeVO searchKnowledgeVO) {
+		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE + ".searchAllKnowledgeCount", searchKnowledgeVO);
+	}
+
+
+	@Override
+	public List<KnowledgeVO> searchAllKnowledge(SearchKnowledgeVO searchKnowledgeVO) {
+		return getSqlSession().selectList(KnowledgeDao.NAME_SPACE + ".searchAllKnowledge", searchKnowledgeVO);
+	}
+
+
+	@Override
+	public List<KnowledgeVO> selectManyKnowledge(List<String> deleteItems) {
+		return getSqlSession().selectList(KnowledgeDao.NAME_SPACE + ".selectManyKnowledge", deleteItems);
+	}
+
+
+	@Override
+	public int deleteManyKnowledge(List<String> deleteItems) {
+
+		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".deleteManyKnowledge", deleteItems);
 	}
 
 
