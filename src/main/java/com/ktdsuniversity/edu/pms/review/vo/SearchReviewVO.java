@@ -3,23 +3,25 @@ import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 
 public class SearchReviewVO extends PaginateVO {
 
-//    private String searchStatus;
+
+	private String prjId;
     private String searchType;
     private String searchKeyword;
 
-//    public String getSearchStatus() {
-//        return searchStatus;
-//    }
-//
-//    public void setSearchStatus(String searchStatus) {
-//        this.searchStatus = searchStatus;
-//    }
-
+    
     public String getSearchType() {
         return searchType;
     }
 
-    public void setSearchType(String searchType) {
+    public String getPrjId() {
+		return prjId;
+	}
+
+	public void setPrjId(String prjId) {
+		this.prjId = prjId;
+	}
+
+	public void setSearchType(String searchType) {
         this.searchType = searchType;
     }
 

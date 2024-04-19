@@ -6,15 +6,11 @@ import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
 
 public interface ReviewService {
 
-	/**
-	 * 작성해야하는 후기의 목록을 조회한다
-	 * @return
-	 */
 	ReviewListVO getAllReview(SearchReviewVO searchReviewVO);
 	ReviewListVO getAllReviewResult(SearchReviewVO searchReviewVO);
 
 	
-	ReviewListVO viewReviewCntnt();
+//	ReviewListVO viewReviewCntnt();
 //	/**
 //	 * 작성완료된 후기의 내용을 보여준다
 //	 * @return

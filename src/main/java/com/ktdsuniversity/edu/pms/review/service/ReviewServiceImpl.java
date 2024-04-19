@@ -56,15 +56,15 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	
 	
-	@Override
-	public ReviewListVO viewReviewCntnt() {
-		List<ReviewVO> reviewList = reviewDao.viewReviewCntnt();
-
-        ReviewListVO reviewListVO = new ReviewListVO();
-        reviewListVO.setReviewList(reviewList);
-
-        return reviewListVO;
-	}
+//	@Override
+//	public ReviewListVO viewReviewCntnt() {
+//		List<ReviewVO> reviewList = reviewDao.viewReviewCntnt();
+//
+//        ReviewListVO reviewListVO = new ReviewListVO();
+//        reviewListVO.setReviewList(reviewList);
+//
+//        return reviewListVO;
+//	}
 
 
 	

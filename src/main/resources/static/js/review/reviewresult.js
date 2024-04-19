@@ -13,6 +13,7 @@ $().ready(function () {
           console.log(data.data.result);
           if (data.data.result === true) {
             $("#" + id).remove();
+            alert("삭제를 성공했습니다!");
           } else {
             alert("삭제에 실패했습니다. 잠시후 재시도해주세요.");
           }
@@ -60,3 +61,12 @@ $(document).ready(function () {
     showModalWithReviewContent(reviewContent); // 모달 창에 후기 내용 표시
   });
 });
+
+
+function search(pageNo) {
+  var searchForm = $("#search-form");
+  // var listSize = $("#list-size");
+  $("#page-no").val(pageNo);
+
+  searchForm.attr("method", "get").submit();
+}

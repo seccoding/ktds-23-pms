@@ -89,12 +89,20 @@
    <select id="searchReviewAllCount" 
    		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
            resultType="_int">
-		<!-- SELECT COUNT(DISTINCT PRJ_ID)
-		  FROM PROJECT  -->
 		  
-		SELECT COUNT(DISTINCT PRJ_NAME)
-          FROM PROJECT 
-  		 WHERE PRJ_STS = '409'
+  		SELECT COUNT(DISTINCT p.PRJ_ID)
+	          , p.PRJ_NAME
+	          , p.CLNT_INFO
+	          , p.DEPT_ID
+	          , p.PRJ_STS
+	          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
+	          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
+	          , d.DEPT_NAME
+	        FROM PROJECT p
+	        JOIN DEPARTMENT d
+	          ON p.DEPT_ID = d.DEPT_ID  
+	       WHERE p.DEL_YN = 'N' 
+	         AND p.PRJ_STS = '409'
   
    </select>
 	
@@ -123,8 +131,21 @@
    <select id="searchviewReviewCntntAllCount" 
    		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
            resultType="_int">
-		SELECT COUNT(RV_ID)
-		  FROM PROJECT_REVIEW 
+		SELECT COUNT(pr.RV_ID)
+	          FROM PROJECT_REVIEW pr
+	          JOIN PROJECT p
+	            ON p.PRJ_ID = pr.PRJ_ID
+	         WHERE p.DEL_YN = 'N'
+	           AND p.PRJ_ID = #{prjId}
+	           AND pr.DEL_YN = 'N'
+	           AND p.PRJ_STS = '409'
+	           <if test='searchKeyword != null and searchKeyword !=""'>
+					<choose>
+						<when test='searchType == "content"'>
+							AND pr.RV_CNTNT LIKE '%' || #{searchKeyword} || '%'
+						</when>
+					</choose>
+				</if>
    </select>
 
 	<select id="searchViewReviewCntnt" 
@@ -133,14 +154,30 @@
 		<include refid ="Common.pagenate_header"/>
 			SELECT pr.RV_ID
 	             , pr.RV_CNTNT
-	             , pr.DEL_YN
 	          FROM PROJECT_REVIEW pr
 	          JOIN PROJECT p
 	            ON p.PRJ_ID = pr.PRJ_ID
 	         WHERE p.DEL_YN = 'N'
+	           AND p.PRJ_ID = #{prjId}
 	           AND pr.DEL_YN = 'N'
+	           AND p.PRJ_STS = '409'
+	           <if test='searchKeyword != null and searchKeyword !=""'>
+					<choose>
+						<when test='searchType == "content"'>
+							AND pr.RV_CNTNT LIKE '%' || #{searchKeyword} || '%'
+						</when>
+					</choose>
+				</if>
     	<include refid ="Common.pagenate_footer"/>
 	</select>
+
+
+
+
+
+
+
+
 
 	<select id="viewReviewCntnt" resultMap="ReviewVOMap">
 			SELECT p.PRJ_NAME
