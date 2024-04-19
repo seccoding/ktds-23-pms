@@ -137,7 +137,7 @@ public class EmployeeController {
 
 	@ResponseBody
 	@PostMapping("/ajax/employee/regist")
-	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
+	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/") String nextUrl, Model model) {
 		/**
 		 * 수정해야할 사항 
 		 * 비밀번호를 직접 받지않고 사원번호 + 입사일 이런식으로 기본 비번 설정

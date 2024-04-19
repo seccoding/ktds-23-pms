@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.beans;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +12,15 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.ktdsuniversity.edu.pms.login.service.VisitedService;
+
 @Configuration
 @Configurable
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
-
+	@Autowired
+	private VisitedService visitedService;
+	
 	@Value("${app.tempsession.enable:false}")
 	private boolean enableTempSession;
 
@@ -33,6 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
+
 		registry.jsp("/WEB-INF/views/", ".jsp");
 	}
 
@@ -51,6 +57,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
+
 		if (this.enableTempSession) {
 			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
 			tempSessionInterceptor.setEnableTempSession(enableTempSession);
@@ -61,15 +68,22 @@ public class WebConfig implements WebMvcConfigurer {
 					.addPathPatterns("/**");
 		}
 
-//		registry.addInterceptor(new CheckSessionInterceptor())
-//				.addPathPatterns(this.authCheckUrlPattern)
-//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
-//
-//		registry.addInterceptor(new BlockDuplicateLoginInterceptor())
-//				.addPathPatterns("/member/login", "/ajax/member/login",
-//						"/member/regist", "/ajax/member/regist");
-//		registry.addInterceptor(new LoginInterceptor())
-//				.addPathPatterns(this.authCheckIgnoreUrlPatterns)
-//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+		RecordScreenAccessAfterLoginInterceptor rsaalException = new RecordScreenAccessAfterLoginInterceptor();
+		rsaalException.setVisitedService(visitedService);
+		
+		//세션에 값이 있으면 해당 방문한 페이지를 DB에 저장시키는 interceptor
+		registry.addInterceptor(rsaalException)
+				.addPathPatterns(this.authCheckUrlPattern)
+				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+		
+		//세션에 값이 없으면 url로 접근을 막는 interceptor
+		registry.addInterceptor(new LoginInterceptor())
+				.addPathPatterns(this.authCheckUrlPattern)
+				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+		
+		//세션에 값이 있으면 아래 url의 접근을 막는 interceptor
+		registry.addInterceptor(new RestrictAccessAfterLoginInterceptor())
+				.addPathPatterns("/employee/login", "/ajax/employee/login");
+		
 	}
 }

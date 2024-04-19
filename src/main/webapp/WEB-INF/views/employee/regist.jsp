@@ -145,6 +145,7 @@
               type="text"
               name="pstnId"
               value="${employeeVO.pstnId}"
+              placeholder="101~110"
             />
           </div>
           <div class="deptId">
@@ -156,6 +157,7 @@
               type="text"
               name="deptId"
               value="${employeeVO.deptId}"
+              placeholder="DEPT_000000_000000"
             />
           </div>
           <div class="jobId">
@@ -167,6 +169,7 @@
               type="text"
               name="jobId"
               value="${employeeVO.jobId}"
+              placeholder="JOB_000000_000000"
             />
           </div>
           <div>

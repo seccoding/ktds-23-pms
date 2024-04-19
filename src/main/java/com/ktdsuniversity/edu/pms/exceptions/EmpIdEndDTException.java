@@ -7,6 +7,6 @@ public class EmpIdEndDTException extends RuntimeException{
     private static final long serialVersionUID = 253954379405285128L;
 
     public EmpIdEndDTException() {
-        super("퇴사한 사원입니다.");
+        super("사원정보가 없습니다.");
     }
 }
