@@ -30,12 +30,12 @@ import jakarta.servlet.http.HttpSession;
 public class LoginController {
 
 
-	@Autowired
-	private LoginLogService loginLogService;
-	
-	
-	@Autowired
-	private CommuteService commuteService;
+    @Autowired
+    private LoginLogService loginLogService;
+
+
+    @Autowired
+    private CommuteService commuteService;
 
 
     @GetMapping("/employee/login")
@@ -88,7 +88,7 @@ public class LoginController {
             }
 
             session.setAttribute("_LOGIN_USER_", employee);
-            session.setMaxInactiveInterval(20*60);
+            session.setMaxInactiveInterval(20 * 60);
             SessionUtil.addSession(employee.getEmpId(), session);
 
 

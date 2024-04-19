@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 
 	}
 
-	@ExceptionHandler({CreationException.class, EmpIdAndPwdIsNotMatchException.class, LimitLoginException.class})
+	@ExceptionHandler({EmpIdEndDTException.class, CreationException.class, EmpIdAndPwdIsNotMatchException.class, LimitLoginException.class})
 	public Object viewErrorPage(RuntimeException re, Model model) {
 
 		logger.error(re.getMessage(), re);
