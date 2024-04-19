@@ -3,5 +3,36 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.issue.dao.IssueReplyDao">
-	
+
+	<resultMap type="com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO" 
+  			   id="issueReplyVOMap"
+  			   autoMapping="true">
+  		<id column="RPL_ID" property="rplId" />
+  		<association property="employeeVO"
+  					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+  			<id column="EMP_ID" property="empId" />
+  			<result column="EMP_NAME" property="empName" />
+  		</association>
+  	</resultMap>
+  
+	<select id="getAllReplies" 
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO" 
+			resultMap="issueReplyVOMap">
+		SELECT R.RPL_ID
+		     , R.RPL_PID
+		     , R.RPL_CNTNT
+		     , R.P_POST_ID
+		     , R.PICK_YN
+		     , R.CRT_DT
+		     , R.CRTR_ID
+		     , R.MDF_DT
+		     , R.MDFR_ID
+		     , R.DEL_YN
+		     , E.EMP_ID
+		     , E.EMP_NAME
+		  FROM REPLY R
+		 INNER JOIN EMPLOYEE E
+		    ON R.CRTR_ID = E.EMP_ID
+		 WHERE R.DEL_YN = 'N'
+	</select>
 </mapper>

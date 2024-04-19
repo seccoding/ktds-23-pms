@@ -21,9 +21,9 @@ public interface IssueDao {
 	 */
 	public List<IssueVO> getAllIssue();
 	
-//	public int searchIssueCount(SearchIssueVO searchIssueVO);
-//	
-//	public List<IssueVO> searchIssue(SearchIssueVO searchIssueVO);
+	public List<IssueVO> searchAllIssue(SearchIssueVO searchIssueVO);
+	
+	public int searchIssueAllCount(SearchIssueVO searchIssueVO);
 	
 	/**
 	 * 전달받은 파라미터로 DB에서 이슈를 조회해 반환한다
@@ -61,5 +61,9 @@ public interface IssueDao {
 	 * @return 삭제 영향을 받은 데이터의 건수
 	 */
 	public int deleteOneIssue(String isId);
+
+	public List<IssueVO> selectManyIssue(List<Integer> deleteItems);
+
+	public int deleteManyIssue(List<Integer> deleteItems);
 
 }
