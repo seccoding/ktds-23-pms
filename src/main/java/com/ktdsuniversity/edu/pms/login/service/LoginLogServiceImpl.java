@@ -47,6 +47,8 @@ public class LoginLogServiceImpl implements LoginLogService {
 		 * 
 		 */
 
+		
+		
 		//현재시간이 로그인 시도시간 + 1/24보다 큰 경우 1을 반환하고 아니라면 0을 반환하는 쿼리를 실행
 		//실행된 값이 0보다 클경우 로그인 시도횟수를 0으로 초기화
 		int possiableLoginCount = this.loginLogDao.getCountPossibleLogin(employeeVO.getEmpId());
