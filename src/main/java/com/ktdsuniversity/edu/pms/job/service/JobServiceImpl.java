@@ -25,10 +25,5 @@ public class JobServiceImpl implements JobService{
 		return this.jobDao.deleteJob(jobName) > 0 ;
 	}
 
-	@Override
-	public boolean checkAvailableName(String jobName) {
-		
-		return this.jobDao.getNameCount(jobName) == 0;
-	}
 
 }

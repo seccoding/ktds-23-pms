@@ -8,7 +8,7 @@ public interface JobService {
 	
 	public boolean deleteJobByName(String jobName);
 	
-	public boolean checkAvailableName (String jobName);
+
 	
 	
 
