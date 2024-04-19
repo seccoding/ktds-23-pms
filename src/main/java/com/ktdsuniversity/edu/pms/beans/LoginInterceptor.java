@@ -44,8 +44,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 				request.setAttribute("nextUrl", nextUrl);
 			}
 
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
-			requestDispatcher.forward(request, response);
+//			RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");
+//			requestDispatcher.forward(request, response);
+			response.sendRedirect("/employee/login");
 
 			// Controller 실행 x
 			return false;
