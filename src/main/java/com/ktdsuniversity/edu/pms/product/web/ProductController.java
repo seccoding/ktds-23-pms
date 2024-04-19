@@ -48,16 +48,15 @@ public class ProductController {
 		ProductListVO categoryList = this.productService.getAllProductCategory();
 		model.addAttribute("categoryList", categoryList);
 		
-		List<ProductVO> allProduct = this.productService.getAllProductList();
-		model.addAttribute("allProduct", allProduct);
-		
 		return "product/apply";
 	}
 	
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/apply")
-	public AjaxResponse doProductApply(ProductVO productVO) {
+	public AjaxResponse doProductApply(@RequestParam String prdtName, ProductVO productVO) {
+		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
+		
 		return new AjaxResponse().append("result", productVO).append("next", "/product/list");
 	}
 	

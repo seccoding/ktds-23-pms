@@ -68,6 +68,7 @@ $().ready(function(){
 
     $("#select-prdtName").on("change", function () {
         var nameValue = $(this).val();
+        console.log(nameValue);
         
         for(var item in categories){
             if(categories[item].includes(nameValue)){
@@ -76,8 +77,13 @@ $().ready(function(){
             }
         }
 
+        $.post("/ajax/product/apply",
+            { prdtName: nameValue },
+            function (response) {
+                var quantity = response.data.curStr;
+            }
+        );
 
-        var maxQuantity = $(".product-quantity").data("prdtQuantity");
-        // $("#apply-quantity").attr("max", maxQuantity);
+
     });
 })

@@ -15,7 +15,6 @@
 <script type="text/javascript" src="/js/product/managestate.js"></script>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
     <h2>비품 대여 현황(관리자)</h2>
     <div class="flex">
         <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
@@ -84,6 +83,5 @@
             </tbody>
         </table>
     </div>
-    <jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>

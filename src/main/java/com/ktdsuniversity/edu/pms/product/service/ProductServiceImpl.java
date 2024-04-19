@@ -96,9 +96,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ProductVO> getAllProductList() {
-		List<ProductVO> productList = this.productDao.getAllProductList();
-		return productList;
+	public ProductVO getOneSelectedProduct(String prdtName) {
+		return this.productDao.selectOneProduct(prdtName);
 	}
 
 	
