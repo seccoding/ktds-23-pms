@@ -67,16 +67,16 @@
 
 	</resultMap>
 	
-	<select id="searchAllCount"
+	<select id="getAllCount"
 		parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO"
-	resultMap="requirementVOMap">
+	resultType="_int">
 	SELECT  COUNT(1)
 	  FROM 	REQUIREMENT r  	
 	  JOIN	PROJECT p 
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	   <if test="#{prjId != null}">
+	   <if test='prjId != "ALL"'>
 	   AND	R.PRJ_ID=#{prjId}
 	   </if>	
 	</select>
@@ -112,9 +112,9 @@
 	  JOIN	EMPLOYEE TSTR
 	    ON  R.TSTR	= TSTR.EMP_ID
 	  JOIN	EMPLOYEE CRTR
-	    ON  R.CRTR	= CRTR.EMP_ID
+	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  JOIN	EMPLOYEE MDFR
-	    ON  R.MDFR	= MDFR.EMP_ID  	
+	    ON  R.MDFR_ID	= MDFR.EMP_ID  	
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
 	 ORDER	BY  R.RQM_ID DESC
@@ -153,9 +153,9 @@
 	  JOIN	EMPLOYEE TSTR
 	    ON  R.TSTR	= TSTR.EMP_ID
 	  JOIN	EMPLOYEE CRTR
-	    ON  R.CRTR	= CRTR.EMP_ID
+	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  JOIN	EMPLOYEE MDFR
-	    ON  R.MDFR	= MDFR.EMP_ID  	
+	    ON  R.MDFR_ID	= MDFR.EMP_ID  	
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
 	   AND 	P.PRJ_ID = #{_parameter}
@@ -335,9 +335,9 @@ SELECT  R.RQM_ID
 	  JOIN	EMPLOYEE TSTR
 	    ON  R.TSTR	= TSTR.EMP_ID
 	  JOIN	EMPLOYEE CRTR
-	    ON  R.CRTR	= CRTR.EMP_ID
+	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  JOIN	EMPLOYEE MDFR
-	    ON  R.MDFR	= MDFR.EMP_ID  	
+	    ON  R.MDFR_ID	= MDFR.EMP_ID  	
 	 </sql>
 	 
 	 <!-- 참고용 사용X -->
