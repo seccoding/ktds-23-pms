@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.product.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +39,18 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/apply")
-	public String viewProductApplyPage() {
+	public String viewProductApplyPage(Model model, ProductVO productVO) {
+		// 비품명 선택
+		ProductListVO productListVO = this.productService.getAllProduct(productVO);
+		model.addAttribute("productListVO", productListVO);
+		
+		// 카테고리 선택
+		ProductListVO categoryList = this.productService.getAllProductCategory();
+		model.addAttribute("categoryList", categoryList);
+		
+		List<ProductVO> allProduct = this.productService.getAllProductList();
+		model.addAttribute("allProduct", allProduct);
+		
 		return "product/apply";
 	}
 	
@@ -100,7 +113,8 @@ public class ProductController {
 	@PostMapping("/ajax/product/manage/add")
 	public AjaxResponse doProductManageAdd(ProductVO productVO) {
 		 boolean isCreateSuccess = this.productService.createNewProduct(productVO);
-		return new AjaxResponse().append("result", isCreateSuccess).append("next", "/product/manage/list");
+		return new AjaxResponse().append("result", isCreateSuccess)
+								 .append("next", "/product/manage/list");
 	}
 	
 	@ResponseBody

@@ -120,4 +120,21 @@
 		     , ONCE_YN = #{onceYn}
 		 WHERE PRDT_ID = #{prdtId}
 	</update>
+
+	<select id="getAllProductCategory" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT DISTINCT PRDT_CTGR, 1
+		  FROM PRODUCT
+	</select>
+	
+	<select id="getAllProductList" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT PRDT_ID
+			 , PRDT_NAME
+			 , PRDT_CTGR
+			 , ONCE_YN
+			 , CUR_STR
+			 , DEL_YN
+		  FROM PRODUCT
+		 WHERE DEL_YN = 'N'
+	</select>
+	
 </mapper>
