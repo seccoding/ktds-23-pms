@@ -29,15 +29,15 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".getAllIssue");
 	}
 
-//	@Override
-//	public int searchIssueCount(SearchIssueVO searchIssueVO) {
-//		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".searchIssueCount", searchIssueVO);
-//	}
-//	
-//	@Override
-//	public List<IssueVO> searchIssue(SearchIssueVO searchIssueVO) {
-//		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".searchIssue", searchIssueVO);
-//	}
+	@Override
+	public List<IssueVO> searchAllIssue(SearchIssueVO searchIssueVO) {
+		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".searchAllIssue", searchIssueVO);
+	}
+	
+	@Override
+	public int searchIssueAllCount(SearchIssueVO searchIssueVO) {
+		return getSqlSession().selectOne(IssueDao.NAME_SPACE + ".searchIssueAllCount", searchIssueVO);
+	}
 	
 	@Override
 	public IssueVO selectOneIssue(String isId) {
@@ -62,5 +62,15 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	@Override
 	public int deleteOneIssue(String isId) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteOneIssue", isId);
+	}
+
+	@Override
+	public List<IssueVO> selectManyIssue(List<Integer> deleteItems) {
+		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".selectManyIssue", deleteItems);
+	}
+
+	@Override
+	public int deleteManyIssue(List<Integer> deleteItems) {
+		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteManyIssue", deleteItems);
 	}
 }

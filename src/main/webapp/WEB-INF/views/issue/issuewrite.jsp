@@ -10,14 +10,9 @@
         <script type="text/javascript" src="/js/issuewrite/js"></script>
     </head>
     <body>
-        <c:if test="${not empty errorMessage}">
-            <dialog class="alert-dialog">
-            <h1>${errorMessage}</h1>
-            </dialog>
-        </c:if>
         <form action="/issue/write" method="post" enctype="multipart/form-data">
             <div>
-                <label for="=rqm-id">요구사항제목</label>
+                <label for="=rqm-id">요구사항명</label>
                 <select name="rqmId" id="rqm-id">
                 <c:forEach items="${requirement}" var="requirement">
                     <option value="${requirement.rqmId}">

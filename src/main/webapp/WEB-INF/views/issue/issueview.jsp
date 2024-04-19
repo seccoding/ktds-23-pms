@@ -10,7 +10,7 @@
 <script type="text/javascript" src="/js/issue/issueview.js"></script>
 </head>
 <body>
-	<div class="grid" data-id="${issueVO.isTtl}">
+	<div class="grid" data-id="${issueVO.isId}">
         <label for="subject">제목</label>
         <div>${issueVO.isTtl}</div>
   
@@ -44,7 +44,7 @@
                 <a href="/issue/modify/${issueVO.isId}">수정</a>
             </button>
             <button>
-                <a class="delete-issue" href="/issue/delete/${issueVO.isId}">삭제</a>
+                <a class="delete-issue" href="javascript:void(0);">삭제</a>
             </button>
         </div>
     </div>
