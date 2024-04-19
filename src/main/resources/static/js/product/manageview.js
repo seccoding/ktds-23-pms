@@ -10,7 +10,13 @@ $().ready(function(){
             alert("대여중인 비품은 삭제할 수 없습니다.")
         }else{
             if(confirm("정말 삭제하시겠습니까?")){
-                $.get(url, function(){
+                $.get(url, function(res){
+                    if(res.data.result){
+                        alert("정상적으로 삭제되었습니다.")
+                    }else{
+                        alert("삭제 중 오류가 발생되었습니다.")
+
+                    }
                     location.href = "/product/manage/view?prdtId="+paramId
     
                 })
@@ -59,6 +65,11 @@ $().ready(function(){
             lostDt:$(".lost-day").val(),
             prdtId:paramId
         }, function(res){
+            if(res.data.result){
+                alert("정상적으로 수정되었습니다.")
+            }else{
+                alert("수정 중 오류가 발생했습니다.")
+            }
             location.href = res.data.next
         })
     })
@@ -83,6 +94,11 @@ $().ready(function(){
             prdtCtgr:$(".product-ctgr-modify").val(),
             onceYn:$(".product-onceyn-modify").val()
         }, function(res){
+            if(res.data.result){
+                alert("정상적으로 수정되었습니다.")
+            }else{
+                alert("수정 중 오류가 발생했습니다.")
+            }
             location.href = res.data.next
         })
         

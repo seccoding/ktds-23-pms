@@ -12,6 +12,7 @@
         text-align: right;
     }
 </style>
+<script type="text/javascript" src="/js/product/managestate.js"></script>
 </head>
 <body>
     <jsp:include page="../layout/layout.jsp" />
@@ -34,9 +35,9 @@
                     </div>
                     
                     <select id="search-type" name="searchType" >
-                        <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
+                        <option value="prdtMngId" ${productVO.searchType eq 'prdtMngId' ? 'selected' : ''}>비품관리ID</option>
                         <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
-                        <option value="category" ${productVO.searchType eq 'category' ? 'selected' : ''}>카테고리</option>
+                        <option value="borrowId" ${productVO.searchType eq 'borrowId' ? 'selected' : ''}>대여자ID</option>
                         <option value="noSelect" ${productVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
                     </select>
         
