@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
 import java.util.List;
+
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 
 public interface CommuteDao {
@@ -9,6 +10,9 @@ public interface CommuteDao {
 
 	public List<CommuteVO> getAllCommuteData();
 
-	public List<CommuteVO> getAllCommuteDataByEmpId();
+	
+
+//	public List<CommuteVO> getAllCommuteDataByEmpId(String empId);
+
 
 }
