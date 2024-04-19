@@ -54,7 +54,7 @@ $().ready(function () {
   }
 
   function reloadCommonCode() {
-    $.get("/commoncode/reload", function (response) {
+    $.get("/ajax/commoncode/reload", function (response) {
       var codeTable = $(".common-code").find("tbody");
       codeTable.html("");
       var codeList = response.data.codeList;

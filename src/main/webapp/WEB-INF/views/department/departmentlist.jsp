@@ -168,10 +168,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </dialog>
     <dialog class="modify-modal-team">
       <select id="modify-team-select-box">
-        <c:forEach
-          items="${onlyTeamList.teamList}"
-          var="team"
-        >
+        <c:forEach items="${onlyTeamList.teamList}" var="team">
           <option class="modify-team-data-id" value="${team.tmId}">
             ${team.tmName}
           </option>
@@ -207,37 +204,78 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </dialog>
 
     <h1>부서/팀 조회</h1>
-    <div class="table-div">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>부서명</th>
-            <th>팀명</th>
-            <th>사원명</th>
-            <th>직무명</th>
-            <th>직급</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <c:choose>
-            <c:when test="${not empty departmentList.departmentList}">
-              <c:forEach
-                items="${departmentList.departmentList}"
-                var="department"
-              >
-                <tr>
-                  <td>${department.deptName}</td>
-                  <td>${department.teamVO.tmName}</td>
-                  <td>${department.employeeVO.empName}</td>
-                  <td>${department.jobVO.jobName}</td>
-                  <td>${department.commonCodeVO.cmcdName}</td>
+    <div
+      class="grid"
+      data-gap="0.5rem"
+      data-grid-columns="1fr 1fr 1fr"
+      data-grid-rows="30.7rem 17rem"
+    >
+      <div class="overflow-scroll">
+        <h4 class="fixed" style="background-color: var(--body-bg)">부서</h4>
+        <div>
+          <table class="fit-parent find-department">
+            <thead
+              class="fixed"
+              data-fixed-top="1.52rem"
+              style="background-color: var(--body-bg)"
+            >
+              <tr>
+                <th>부서ID</th>
+                <th>부서명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach items="${departmentList}" var="department">
+                <tr
+                  data-dept-id="${department.deptId}"
+                  data-dept-name="${department.deptName}"
+                  data-dept-crdt="${department.deptCrDt}"
+                  data-dept-lead-id="${department.deptLeadId}"
+                >
+                  <td>${departmnet.deptId}</td>
+                  <td>${departmnet.deptName}</td>
                 </tr>
               </c:forEach>
-            </c:when>
-          </c:choose>
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="overflow-scroll">
+        <h4 class="fixed" style="background-color: var(--body-bg)">팀</h4>
+        <div>
+          <table class="fit-parent sub-team">
+            <thead
+              class="fixed"
+              data-fixed-top="1.52rem"
+              style="background-color: var(--body-bg)"
+            >
+              <tr>
+                <th>팀ID</th>
+                <th>팀명</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="overflow-scroll">
+        <h4 class="fixed" style="background-color: var(--body-bg)">사원</h4>
+        <div>
+          <table class="fit-parent sub-sub-employee">
+            <thead
+              class="fixed"
+              data-fixed-top="1.52rem"
+              style="background-color: var(--body-bg)"
+            >
+              <tr>
+                <th>사원ID</th>
+                <th>사원명</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <input type="button" class="department-create button" value="부서 등록" />
     <input type="button" class="team-create button" value="팀 등록" />

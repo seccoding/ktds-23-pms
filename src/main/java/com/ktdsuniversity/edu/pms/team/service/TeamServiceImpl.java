@@ -47,4 +47,12 @@ public class TeamServiceImpl implements TeamService{
 		return teamListVO;
 	}
 
+	@Override
+	public TeamListVO getAllTeamList(String deptId) {
+		List<TeamVO> getAllTeamListVO = this.teamDao.getAllTeamList(deptId);
+		TeamListVO teamListVO = new TeamListVO();
+		teamListVO.setTeamList(getAllTeamListVO);
+		return teamListVO;
+	}
+
 }

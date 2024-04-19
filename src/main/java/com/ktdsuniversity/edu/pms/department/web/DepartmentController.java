@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +31,7 @@ public class DepartmentController {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
 		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
 		TeamListVO getOnlyTeamListVO = this.teamService.getOnlyTeam();
+
 		
 		
 		model.addAttribute("departmentList", departmentListVO);
@@ -44,6 +46,13 @@ public class DepartmentController {
 	}
 	
 
+	@ResponseBody
+	@GetMapping("/ajax/department/search/{deptId}")
+	public AjaxResponse getDepartmentBydeptId(@PathVariable String deptId) {
+		TeamListVO teamListVO = this.teamService.getAllTeamList(deptId);
+		return new AjaxResponse().append("teamList", teamListVO);
+	}
+	
 	@ResponseBody
 	@PostMapping("/ajax/department/create")
 	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model) {
@@ -83,4 +92,5 @@ public class DepartmentController {
 		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 	}
 
+	
 }

@@ -35,7 +35,7 @@ public class CommonCodeController {
 	}
 
 	@ResponseBody
-	@GetMapping("/commoncode/reload")
+	@GetMapping("/ajax/commoncode/reload")
 	public AjaxResponse getCommonCode(Model model) {
 
 		List<CommonCodeVO> codeList = this.commonCodeService

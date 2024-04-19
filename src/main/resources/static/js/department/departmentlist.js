@@ -1,4 +1,32 @@
 $().ready(function () {
+  function reloadSubTeam(deptId) {
+    $.get("/ajax/department/search/" + deptId, function (response) {
+      var subTeamTable = $(".sub-team").find("tbody");
+      subTeamTable.html("");
+      var teamList = response.data.teamList;
+
+      teamList.forEach((subTeam) => {
+        var trDom = $("<tr></tr>");
+        trDom.attr({
+          "data-id": subTeam.tmId,
+          "data-name": subTeam.tmName,
+          "data-crdt": subTeam.tmCrDt,
+          "data-tm-lead-id": subTeam.tmLeadId,
+          "data-tm-dept-id": subTeam.deptId,
+        });
+        trDom.on("click", function () {
+          $(this).closest("tbody").find("tr").removeClass("active");
+          $(this).addClass("active");
+
+          clearSubCodeInfo();
+
+          var 
+        })
+
+
+      });
+    });
+  }
   $(".department-create").on("click", function () {
     var modal = $(".create-modal");
     modal[0].showModal();
@@ -41,7 +69,6 @@ $().ready(function () {
       }
     );
   });
-
 
   $(".department-modify").on("click", function () {
     var modal = $(".modify-modal-dept");
@@ -94,24 +121,20 @@ $().ready(function () {
     var modal = $(".modify-modal-team");
 
     var teamId = modal.find("#modify-team-select-box").val();
-    $.get(
-      "/ajax/team/show?teamId=" + teamId,
-      function (response) {
-        var dataTm = response.data.oneTeam;
-        console.log(dataTm);
-        modal.find("#mod-team-id").text(dataTm.tmId);
-        modal.find("#team-name-mod").val(dataTm.tmName);
-        modal.find("#mod-team-crd-dt").text(dataTm.tmCrDt);
-        modal.find("#team-leader-mod").val(dataTm.tmLeadId);
-        modal.find("#team-dept-mod").val(dataTm.deptId);
-      }
-    );
+    $.get("/ajax/team/show?teamId=" + teamId, function (response) {
+      var dataTm = response.data.oneTeam;
+      console.log(dataTm);
+      modal.find("#mod-team-id").text(dataTm.tmId);
+      modal.find("#team-name-mod").val(dataTm.tmName);
+      modal.find("#mod-team-crd-dt").text(dataTm.tmCrDt);
+      modal.find("#team-leader-mod").val(dataTm.tmLeadId);
+      modal.find("#team-dept-mod").val(dataTm.deptId);
+    });
 
     modal[0].showModal();
   });
 
   $("#modify-team-select-box").on("change", function () {
-
     var teamId = $(this).val();
     $.get("/ajax/team/show?teamId=" + teamId, function (response) {
       var dataTm = response.data.oneTeam;

@@ -13,4 +13,6 @@ public interface TeamService {
 	
 	public TeamListVO getOnlyTeam();
 
+	public TeamListVO getAllTeamList(String deptId);
+
 }

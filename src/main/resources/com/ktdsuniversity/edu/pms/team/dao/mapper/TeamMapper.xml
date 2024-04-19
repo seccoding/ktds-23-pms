@@ -52,5 +52,18 @@
 		   	 , DEPT_ID = #{deptId}
 		 WHERE TM_ID = #{tmId}
 	</update>
+	
+	<select id="getAllTeamList"
+			parameterType="string"
+			resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		SELECT TM_ID
+          	 , TM_CR_DT
+          	 , TM_NAME
+          	 , DEPT_ID
+          	 , TM_LEAD_ID
+       	  FROM TEAM
+      	 WHERE DEPT_ID = #{_parameter}
+           AND DEL_YN ='N'
+	</select>
 
 </mapper>
