@@ -11,6 +11,9 @@
     div.grid div.right-align {
         text-align: right;
     }
+    .btn-group {
+        margin: 0 0 1rem 2rem;;
+    }
 </style>
 <script type="text/javascript" src="/js/product/list.js"></script>
 </head>
@@ -45,6 +48,10 @@
                     <button type="button" id="search-btn">검색</button>
                 </div>
             </form>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="apply-product">신청</button>
         </div>
 
         <table class="table">

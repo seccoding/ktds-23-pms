@@ -96,7 +96,7 @@
                                         <c:when test="${product.productVO.onceYn eq 'Y' || not empty product.rtnDt}">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="checkbox" class="checkbox" value="${product.brrwHistId}"/>
+                                            <input type="checkbox" class="checkbox" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}"/>
                                             <!-- <label for="checkbox1"></label>
                                             <label for="checkbox1"></label> -->
                                         </c:otherwise>
@@ -118,7 +118,7 @@
                                             -
                                         </c:when>
                                         <c:when test="${empty product.rtnDt}">
-                                            <button class="return-btn" data-id="${product.brrwHistId}">반납</button>
+                                            <button class="return-btn" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}">반납</button>
                                         </c:when>
                                         <c:otherwise>반납완료</c:otherwise>
                                     </c:choose>

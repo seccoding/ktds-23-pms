@@ -147,12 +147,9 @@ public class ProductController {
 	@ResponseBody
 	@PostMapping("/ajax/product/manage/list/add")
 	public AjaxResponse addProductCount(ProductManagementVO productManagementVO) {
-		int count = productManagementVO.getProductVO().getCurStr();
-		boolean isSomeProductManageAddSuccess = this.productManagementService.addSomeProductManagement(productManagementVO, count);
-		boolean isCountAddSuccess = false;
-		if(isSomeProductManageAddSuccess) {
-			isCountAddSuccess = this.productService.addProductCount(productManagementVO.getProductVO());
-		}
+		
+		boolean isCountAddSuccess = this.productService.addProductCount(productManagementVO);
+		
 		return new AjaxResponse().append("result", isCountAddSuccess).append("next", "/product/manage/list");
 	}
 	

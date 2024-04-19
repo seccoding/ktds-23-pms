@@ -20,7 +20,7 @@ public interface ProductService {
 
 	public boolean updateOneProduct(String prdtId);
 
-	public boolean addProductCount(ProductVO productVO);
+	public boolean addProductCount(ProductManagementVO productManagementVO);
 
 	public boolean deleteOneProduct(String prdtId);
 
