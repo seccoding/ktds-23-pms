@@ -227,6 +227,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <tbody>
               <c:forEach items="${departmentList}" var="department">
                 <tr
+                  class="departmentListClickFunction"
                   data-dept-id="${department.deptId}"
                   data-dept-name="${department.deptName}"
                   data-dept-crdt="${department.deptCrDt}"
@@ -276,10 +277,65 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </table>
         </div>
       </div>
+
+      <div class="overflow-scroll">
+        <h4 style="background-color: var(--body-bg)">부서 정보</h4>
+        <div
+          class="grid code-info"
+          data-grid-columns="1fr 1fr"
+          data-grid-rows="1fr 1fr 1fr 1fr 1fr"
+        >
+          <label for="codeDeptId">부서 ID</label>
+          <div id="codeDeptId"></div>
+          <label for="codeDeptName">부서명</label>
+          <div id="codeDeptName"></div>
+
+          <label for="codeDeptLeadId">부서장 ID</label>
+          <div data-columns="2 / -1" id="codeDeptLeadId"></div>
+
+          <label for="codeDeptCrtDt">생성일</label>
+          <div id="codeDeptCrtDt"></div>
+
+          <div data-columns="1 / -1" style="text-align: right">
+            <input
+              type="button"
+              class="department-create button"
+              value="부서 등록"
+            />
+            <input
+              type="button"
+              class="department-modify button"
+              value="부서 변경"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="overflow-scroll">
+        <h4 style="background-color: var(--body-bg)">팀 정보</h4>
+        <div
+          class="grid code-info sub-code-info"
+          data-grid-columns="1fr 1fr"
+          data-grid-rows="1fr 1fr 1fr 1fr 1fr"
+        >
+          <label for="codeTmId">팀 ID</label>
+          <div id="codeTmId"></div>
+          <label for="codeTmName">팀 명</label>
+          <div id="codeTmName"></div>
+
+          <label for="codeTmDepartment">담당 부서 ID</label>
+          <div data-columns="2 / -1" id="codeTmDepartment"></div>
+          <label for="codeTmLeadId">팀장 ID</label>
+          <div data-columns="2 / -1" id="codeTmLeadId"></div>
+
+          <label for="codeTmCrtDt">생성일</label>
+          <div id="codeTmCrtDt"></div>
+
+          <div data-columns="1 / -1" style="text-align: right">
+            <input type="button" class="team-create button" value="팀 등록" />
+            <input type="button" class="team-modify button" value="팀 변경" />
+          </div>
+        </div>
+      </div>
     </div>
-    <input type="button" class="department-create button" value="부서 등록" />
-    <input type="button" class="team-create button" value="팀 등록" />
-    <input type="button" class="department-modify button" value="부서 변경" />
-    <input type="button" class="team-modify button" value="팀 변경" />
   </body>
 </html>
