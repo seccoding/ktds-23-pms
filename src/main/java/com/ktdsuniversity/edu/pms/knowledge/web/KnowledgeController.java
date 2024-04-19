@@ -77,7 +77,7 @@ public class KnowledgeController {
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
 
-		// knowledge/detail 페이지에 데이터를 전송.
+		// knowledge/view 페이지에 데이터를 전송.
 		model.addAttribute("knowledgeVO", knowledgeVO);
 
 		// return new AjaxResponse().append("oneKnowledge", knowledgeVO);
