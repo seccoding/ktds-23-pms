@@ -112,30 +112,30 @@ public class LoginController {
     }
 
 
-//	//출퇴근을 보여주는 페이지
-//	@GetMapping("/commute/view")
-//	public String viewCommutePage() {
-//		return "commute/view";
-//	}
-//	
-//	
-//	@ResponseBody
-//	@PostMapping("/commute/view")
-//	public AjaxResponse doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO) {
-//		
-//		String empIdIsSystemFormat = ".*system.*";
-//		/**
-//		 * EMP_ID가 시스템 계정인지 검사하고
-//		 * 맞다면 전체 조회
-//		 * 아니라면 입력받은 본인의 출퇴근을 조회
-//		 */
-//		if (employeeVO.getEmpId().matches(empIdIsSystemFormat)) {
-//			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
-//			return new AjaxResponse().append("commuteData", commuteListVO);
-//		} else{
-//			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId();
-//			return new AjaxResponse().append("commuteData", commuteListVO);
-//		}
-//	}
+	//출퇴근을 보여주는 페이지
+	@GetMapping("/commute/view")
+	public String viewCommutePage() {
+		return "commute/view";
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/commute/view")
+	public AjaxResponse doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO) {
+		
+		String empIdIsSystemFormat = ".*system.*";
+		/**
+		 * EMP_ID가 시스템 계정인지 검사하고
+		 * 맞다면 전체 조회
+		 * 아니라면 입력받은 본인의 출퇴근을 조회
+		 */
+		if (employeeVO.getEmpId().matches(empIdIsSystemFormat)) {
+			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
+			return new AjaxResponse().append("commuteData", commuteListVO);
+		} else{
+			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId();
+			return new AjaxResponse().append("commuteData", commuteListVO);
+		}
+	}
 
 }

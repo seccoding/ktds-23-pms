@@ -10,16 +10,16 @@
     <table>
         <colgroup>
             <col width="200px">
-            <col width="300px">
-            <col width="300px">
             <col width="100px">
+            <col width="300px">
+            <col width="300px">
         </colgroup>
         <thead>
             <tr>
                 <th>출근 날짜</th>
+                <th>사원 이름</th>
                 <th>출근 시간</th>
                 <th>퇴근 시간</th>
-                <th>사원 이름</th>
             </tr>
         </thead>
     </table>
@@ -30,10 +30,10 @@
                 <!-- 출퇴근 기록의 리스트만큼 반복 -->
                 <c:forEach test="${CommuteListVO.commuteList}">
                     <tr>
-                        <%-- <td>${}</td>
                         <td>${}</td>
                         <td>${}</td>
-                        <td>${}</td> --%>
+                        <td>${}</td>
+                        <td>${}</td>
                     </tr>
                 </c:forEach>
             </c:when>
