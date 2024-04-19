@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       .grid {
         display: grid;
         grid-template-columns: 200px 1fr;
-        grid-template-rows: repeat(6 40px);
+        grid-template-rows: repeat(9,  40px) 1fr 40px;
       }
     </style>
   </head>
@@ -57,6 +57,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           name="rqmTtl"
           value="${requirement.rqmTtl}"
         />
+		   <label for="dvlrp">담당개발자</label>
+        <select name="dvlrp" id="dvlrp">
+          <c:forEach items="teamList.teamList" var="teammate">
+            <option value="${teammate.tmId}">${teammate.tmName}</option>
+          </c:forEach>
+        </select>
+        <label for="cfrmr">확인자</label>
+        <select name="cfrmr" id="cfrmr"></select>
+        <label for="tstr">테스터</label>
+        <select name="tstr" id="tstr"></select>
 
         <!-- ckeditor를 이용한 내용넣기-->
         <label for="rqm-cntnt">요구사항 내용</label>
@@ -71,6 +81,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             value="${requirement.rqmCntnt}"
           />
         </div>
+		
 
         <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
         <label for="scd-sts">일정상태</label>

@@ -28,6 +28,7 @@ import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
@@ -56,7 +57,6 @@ public class RequirementController {
 			RequirementSearchVO requirementSearchVO) {
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
-        requirementSearchVO.setPageNo(11);//페이지 1로 강제설정 나중에 삭제예정임
         requirementSearchVO.setPageCount(requirementList.getCount()); 
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
@@ -97,11 +97,12 @@ public class RequirementController {
 		projectList.setProjectList(
 				projectList.getProjectList().stream()
 				.filter((project)->project.getReqYn().equals("Y")).toList());
+		TeamListVO teamList = this.teamService.getOnlyTeam();
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
 
 		model.addAttribute("projectList", projectList).addAttribute("scdSts", scdStsList).addAttribute("rqmSts",
-				rqmStsList);
+				rqmStsList).addAttribute("teamList", teamList);
 
 		return "requirement/requirementwrite";
 
