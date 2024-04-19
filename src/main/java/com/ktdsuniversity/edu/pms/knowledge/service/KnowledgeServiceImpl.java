@@ -1,11 +1,21 @@
 package com.ktdsuniversity.edu.pms.knowledge.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +24,8 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeDao;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
+
 
 @Service
 public class KnowledgeServiceImpl implements KnowledgeService {
@@ -38,12 +50,28 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 		
 		return knowledgeListVO;
 	}
+	
+	// 검색
+	@Override
+	public KnowledgeListVO searchAllKnowledge(SearchKnowledgeVO searchKnowledgeVO) {
+		
+		int knowledgeCount = this.knowledgeDao.searchAllKnowledgeCount(searchKnowledgeVO);
+		searchKnowledgeVO.setPageCount(knowledgeCount);
+		
+		List<KnowledgeVO> knowledgeList = this.knowledgeDao.searchAllKnowledge(searchKnowledgeVO);
+		
+		KnowledgeListVO knowledgeListVO = new KnowledgeListVO();
+		knowledgeListVO.setKnowledgeCnt(knowledgeCount);
+		knowledgeListVO.setKnowledgeList(knowledgeList);
+		
+		return knowledgeListVO;
+	}
 
 	
 	/**
-	 * 전달받은 파라미터의 게시글 정보를 조회해 반환한다.
-	 * 게시글 조회 시, 게시글 조회 수도 1 증가
-	 * @param knowledgeId 사용자가 조회하려는 id
+	 * 전달받은 파라미터의 게시글 정보를 조회해 반환
+	 * 게시글 조회 시 조회 수도 1 증가
+	 * @param knowledgeId 사용자가 조회하려는 knlId
 	 * @param isIncrease 의 값이 true일 때, 조회수가 증가한다.
 	 * @return 게시글 정보
 	 */
@@ -135,8 +163,9 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 			
 			// 사용자가 업로드한 파일을 서버에 저장한다.
 			StoredFile storedFile = this.fileHandler.storeFile(file);
-			storedFile.setFileName(storedFile.getFileName());
-			storedFile.setRealFileName(storedFile.getRealFileName());
+			knowledgeVO.setOriginFileName(storedFile.getFileName());
+			knowledgeVO.setFileName(storedFile.getRealFileName());
+			
 		}
 		
 		int updatedCount = this.knowledgeDao.updateOneKnowledge(knowledgeVO);
@@ -156,7 +185,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 			// 기존 게시글에 첨부된 파일이 있는지 확인.
 			if(originalKnowledgeVO != null) {
 				
-				// 기존 게시글에 첨부된 파일의 이름을 받아욘다.
+				// 기존 게시글에 첨부된 파일의 이름을 받아옴.
 				String storedFileName = originalKnowledgeVO.getFileName();
 				// 첨부된 파일의 이름이 있는지 확인한다.
 				// 만약 첨부된 파일의 이름이 있다면, 이 게시글은 파일이 첨부되었던 게시글이다.
@@ -171,6 +200,104 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
 		return deletedCount > 0;
 	}
+	
+	
+	// 글 한번에 삭제
+	@Override
+	public boolean deleteManyBoard(List<Integer> deleteItems) {
+		
+		List<KnowledgeVO> originalKnowledgeList = this.knowledgeDao.selectManyKnowledge(deleteItems);
+		
+		for (KnowledgeVO knowledgeVO : originalKnowledgeList ) {
+			if(knowledgeVO != null) {
+				String storedFileName = knowledgeVO.getFileName();
+				
+				if (storedFileName != null && storedFileName.length() > 0) {
+					this.fileHandler.deleteFileByFileName(storedFileName);
+				}
+			}
+		}
+		
+		int deletedCount = this.knowledgeDao.deleteManyBoard(deleteItems);
+		
+		return deletedCount > 0;
+	}
+	
+	
+
+	// 엑셀 일괄 등록
+	@Transactional
+	@Override
+	public boolean createMassiveKnowledge(MultipartFile excelFile) {
+		int insertedCount = 0;
+		int rowSize = 0;
+		
+		if(excelFile != null && !excelFile.isEmpty()) {
+			StoredFile storedExcel = this.fileHandler.storeFile(excelFile);
+			
+			if(storedExcel != null) {
+				
+				// 엑셀파일 읽기
+				InputStream excelFileInputStream = null;
+				
+				try {
+					excelFileInputStream = new FileInputStream(storedExcel.getRealFilePath());
+				} catch (FileNotFoundException e) {
+					logger.error(e.getMessage(), e);
+				}
+				
+				// InputStream의 내용을 엑셀 문서로 읽어옴
+				Workbook excelWordbook = null;
+				
+				if (excelFileInputStream != null) {
+					try {
+						excelWordbook = new XSSFWorkbook(excelFileInputStream);
+					} catch (IOException e) {
+						logger.error(e.getMessage(), e);
+					}
+				}
+				
+				// 엑셀파일의 특정 Sheet에 있는 모든 데이터를 찾아 List<KnowledgeVO>로 만들어줌
+				List<KnowledgeVO> knowledgeListInExcel = new ArrayList<>();
+				
+				if (excelWordbook != null) {
+					// Sheet 추출
+					Sheet sheet = excelWordbook.getSheet("Sheet1");
+					
+					
+					rowSize = sheet.getPhysicalNumberOfRows();
+					// Row 사이즈만큼 반복
+					for (int i = 1; i < rowSize; i++) {
+						
+						Row row = sheet.getRow(i);
+						
+						// Row에 있는 cell 정보 가져옴
+						String knlId = row.getCell(0).getStringCellValue();
+						String knlTtl = row.getCell(1).getStringCellValue();
+						String originFileName = row.getCell(2).getStringCellValue();
+						
+						KnowledgeVO knowledgeVO = new KnowledgeVO();
+						knowledgeVO.setKnlId(knlId);
+						knowledgeVO.setKnlTtl(knlTtl);
+						knowledgeVO.setOriginFileName(originFileName);
+						
+						knowledgeListInExcel.add(knowledgeVO);
+					}
+					// List<KnowledgeVO>에 insert
+					for (KnowledgeVO knowledgeVO : knowledgeListInExcel) {
+						insertedCount += this.knowledgeDao.insertNewKnowledge(knowledgeVO);
+					}
+					
+				}
+			}
+			
+		}
+		return insertedCount > 0 && insertedCount == rowSize -1;
+
+		
+	}
+
+
 
 
 

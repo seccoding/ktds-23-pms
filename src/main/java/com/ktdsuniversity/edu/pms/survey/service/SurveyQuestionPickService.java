@@ -8,6 +8,4 @@ public interface SurveyQuestionPickService {
 
 	public boolean modifyOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
 
-	public boolean modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO);
-
 }

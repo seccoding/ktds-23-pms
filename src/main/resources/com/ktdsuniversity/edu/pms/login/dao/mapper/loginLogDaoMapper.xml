@@ -11,7 +11,9 @@
         </association>
     </resultMap>
 
-    <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    <select id="getOneEmployeeByEmpIdAndPwd"
+    		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+    		resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         SELECT EMP_ID
              , WORK_STS
              , EMP_NAME

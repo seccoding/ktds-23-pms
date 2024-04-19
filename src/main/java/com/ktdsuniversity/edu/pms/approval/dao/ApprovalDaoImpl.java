@@ -61,5 +61,29 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 		return getSqlSession().update(ApprovalDao.NAME_SPACE +".deleteApproval", apprId);
 	}
 
+	@Override
+	public int getAllApproveCount() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getAllApproveCount");
+	}
+
+	@Override
+	public int getAllOneWeekApprovalCount() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getAllOneWeekApprovalCount");
+	}
+
+	@Override
+	public int getAllMonthApprovalCount() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getAllMonthApprovalCount");
+	}
+
+	@Override
+	public int updateApproval(String id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

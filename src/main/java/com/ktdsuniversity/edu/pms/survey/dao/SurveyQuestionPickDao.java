@@ -12,8 +12,8 @@ public interface SurveyQuestionPickDao {
 
 	public int modifyOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
 
-	public SurveyQuestionPickVO getOneAnswerSequence(String sqpId);
-
-	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO);
+//	public SurveyQuestionPickVO getOneAnswerSequence(String sqpId);
+//
+//	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO);
 
 }

@@ -16,5 +16,9 @@ $().ready(function(){
                 event.preventDefault();
             }
         }
-    })
+    });
+
+    $(".apply-product").on("click", function () {
+        location.href = "/product/apply";
+    }); 
 })

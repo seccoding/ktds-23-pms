@@ -52,17 +52,17 @@
                     <div>
                         <label for="prdtCtgr">카테고리</label>
                         <select id="prdtCtgr" name="prdtCtgr" >
-                            <option value="prdtCtgr" >컴퓨터기기</option>
-                            <option value="prdtCtgr" >사무용품</option>
-                            <option value="prdtCtgr" >프린터용품</option>
+                            <option value="컴퓨터기기" >컴퓨터기기</option>
+                            <option value="사무용품" >사무용품</option>
+                            <option value="프린터용품" >프린터용품</option>
                         </select>
                     </div>
     
                     <div>
                         <label for="onceYn">소모품 분류</label>
                         <select id="onceYn" name="onceYn" >
-                            <option value="onceYn" >소모품</option>
-                            <option value="onceYn" >비소모품</option>
+                            <option value="Y" >소모품</option>
+                            <option value="N" >비소모품</option>
                         </select>
                     </div>
     
@@ -92,8 +92,8 @@
         </div>
 
         <div class="btn-group">
-            <button class="product-add">추가</button>
-            <button class="product-cancel">취소</button>
+            <button class="product-add" type="button">추가</button>
+            <button class="product-cancel" type="button">취소</button>
         </div>
     <jsp:include page="../layout/layout_close.jsp" />
 </body>

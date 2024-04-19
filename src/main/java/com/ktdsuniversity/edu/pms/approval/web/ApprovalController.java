@@ -8,15 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalService;
-import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -28,12 +29,26 @@ public class ApprovalController {
 
 	@Autowired
 	private ApprovalService approvalService;
+	@Autowired
+	private EmployeeService employeeService;
+	@Autowired
+	private BorrowService borrowService;
 
 	
 	@GetMapping("/approval/approvalhome")
 	public String doApprovalHomePage(Model model) {
 		ApprovalListVO apprList = this.approvalService.getAllApproval();
-		model.addAttribute("apprList", apprList);
+        model.addAttribute("apprList", apprList);
+        
+        ApprovalListVO approveList=this.approvalService.getAllApprove();
+        model.addAttribute("approveList", approveList);
+        
+        ApprovalListVO OneWeekApprovalList =this.approvalService.getAllOneWeekApproval();
+        model.addAttribute("OneWeekApprovalList", OneWeekApprovalList);
+        
+        ApprovalListVO monthApprovalList=this.approvalService.getAllMonthApproval();
+        model.addAttribute("monthApprovalList",monthApprovalList);
+        
 		return "approval/approvalhome";
 	}
 
@@ -54,6 +69,27 @@ public class ApprovalController {
 			throw new PageNotFoundException();
 		}
 		return "/approval/approvalview";
+	}
+	
+	// 비품대여현황 jsp에서 전달받을 파라미터: @RequestParam String empId
+	@GetMapping("/approval/approvalwrite")
+	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		// test code
+		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
+		BorrowListVO borrowListVO = borrowService.getUserRentalState(dmdEmployeeVO);
+		
+//		if(dmdEmployeeVO == null || ! dmdEmployeeVO.getEmpId().equals(employeeVO.getEmpId())) {
+//			throw new PageNotFoundException();
+//		}
+		
+		if(borrowListVO == null) {
+			throw new PageNotFoundException();
+		}
+
+		model.addAttribute("employee", dmdEmployeeVO);
+		model.addAttribute("borrowList", borrowListVO);
+		return "/approval/approvalwrite";
 	}
 
 	@ResponseBody
@@ -83,25 +119,5 @@ public class ApprovalController {
 		boolean isDeleteSuccess = this.approvalService.deleteOneApproval(apprId);
 		return "redirect:/approval/approvallist";
 	}
-	
-	// 버튼 클릭시 승인 상태로 변화	
-//	@ResponseBody
-//	@PostMapping("/approval/approve")
-//	public AjaxResponse doApproval(@RequestBody String apprId) {
-////		apprid=형식으로 들어오기 때문에 replace로 해서 id값  출력
-//		String apprid = apprId.replace("apprid=", "");
-//		System.out.println("Received apprid: " + apprid);
-//		 		 
-//		boolean updateState=this.approvalService.updatesOneApproval(apprid);;
-//		
-//		return new AjaxResponse().append("next","/approval/home");
-//	}
-	
-//	@GetMapping("/approval/approvalchanage")
-//	public String doApproval(Model model) {
-//		ApprovalDetailListVO approvalDetailList = this.approvaldetailservice.getPersonApprovalDetail("APPR_202304_000008");
-//		model.addAttribute("approvalDetailList", approvalDetailList);
-//		return "approval/approvalchanage";
-//	}
-	
+
 }

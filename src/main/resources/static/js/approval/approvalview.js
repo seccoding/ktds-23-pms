@@ -5,9 +5,6 @@ $().ready(function() {
     var apprId = $(this).data('appr-id');
     var apprSts = $(this).data('appr-sts');
 
-    console.log(apprId);
-    console.log(apprSts);
-
     var chooseValue = confirm(
       "결재를 승인합니다."
     );
@@ -26,9 +23,6 @@ $().ready(function() {
     var apprId = $(this).data('appr-id');
     var apprSts = $(this).data('appr-sts');
 
-    console.log(apprId);
-    console.log(apprSts);
-    
     var chooseValue = confirm(
       "결재를 반려합니다."
     );

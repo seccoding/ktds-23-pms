@@ -56,6 +56,8 @@ public class RequirementController {
 			RequirementSearchVO requirementSearchVO) {
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
+		requirementSearchVO.setPageNo(11);//페이지 1로 강제설정 나중에 삭제예정임
+		requirementSearchVO.setPageCount(requirementList.getCount()); 
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 		ProjectListVO projectList = this.projectService.getAllProject();
@@ -64,6 +66,7 @@ public class RequirementController {
 				.filter((project)->project.getReqYn().equals("Y")).toList());
 		
 		model.addAttribute("resultList", requirementList)
+		.addAttribute("requirementSearch", requirementSearchVO)
 		.addAttribute("projectList", projectList)
 		.addAttribute("prjId", prjId)
 		.addAttribute("scdSts", scdSts)

@@ -71,4 +71,47 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int deleteCount=this.approvalDao.deleteApproval(apprId);
 		return deleteCount>0;
 	}
+
+	@Override
+	public boolean updatesOneApproval(String id) {
+		// TODO Auto-generated method stub
+		
+		int updateCount=this.approvalDao.updateApproval(id);
+	
+		return updateCount>0;
+	}
+
+	@Override
+	public ApprovalListVO getAllApprove() {
+		// TODO Auto-generated method stub
+		int approveCount = this.approvalDao.getAllApproveCount();
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approveCount);
+		
+		return approvalListVO;
+	}
+
+	@Override
+	public ApprovalListVO getAllOneWeekApproval() {
+		// TODO Auto-generated method stub
+		int approvalweeKCount = this.approvalDao.getAllOneWeekApprovalCount();
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalweeKCount);
+		
+		return approvalListVO;
+	}
+	
+	@Override
+	public ApprovalListVO getAllMonthApproval() {
+		// TODO Auto-generated method stub
+		int approvalMonthCount = this.approvalDao.getAllMonthApprovalCount();
+		
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalMonthCount);
+		
+		return approvalListVO;
+	}
+
 }

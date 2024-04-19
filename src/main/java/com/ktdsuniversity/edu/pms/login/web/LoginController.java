@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.SessionUtil;
+import com.ktdsuniversity.edu.pms.utils.StringUtil;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
@@ -28,6 +32,10 @@ public class LoginController {
 
 	@Autowired
 	private LoginLogService loginLogService;
+	
+	
+	@Autowired
+	private CommuteService commuteService;
 
 	@GetMapping("/employee/login")
 	public String viewLoginPage() {
@@ -52,7 +60,7 @@ public class LoginController {
 	@ResponseBody
 	@PostMapping("/ajax/employee/login")
 	public AjaxResponse doLogin(HttpSession session, EmployeeVO employeeVO,
-			@RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
+			@RequestParam(defaultValue = "/") String nextUrl, Model model) {
 
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 
@@ -101,9 +109,37 @@ public class LoginController {
 		this.loginLogService.updateEmpLogout(employeeVO);
 		SessionUtil.removeSession(employeeVO.getEmpId());
 
-		session.invalidate();
+//		session.invalidate();
 
 		return "redirect:/employee/login";
 	}
+	
+	
+//	//출퇴근을 보여주는 페이지
+//	@GetMapping("/commute/view")
+//	public String viewCommutePage() {
+//		return "commute/view";
+//	}
+//	
+//	
+//	@ResponseBody
+//	@PostMapping("/commute/view")
+//	public AjaxResponse doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO) {
+//		
+//		String empIdIsSystemFormat = ".*system.*";
+//		/**
+//		 * EMP_ID가 시스템 계정인지 검사하고
+//		 * 맞다면 전체 조회
+//		 * 아니라면 입력받은 본인의 출퇴근을 조회
+//		 */
+//		if (employeeVO.getEmpId().matches(empIdIsSystemFormat)) {
+//			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
+//			return new AjaxResponse().append("commuteData", commuteListVO);
+//		} else{
+//			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId();
+//			return new AjaxResponse().append("commuteData", commuteListVO);
+//		}
+//	}
+	
 
 }

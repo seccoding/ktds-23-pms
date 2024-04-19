@@ -62,4 +62,8 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	public int modifyProduct(ProductVO productVO) {
 		return getSqlSession().update(ProductDao.NAME_SPACE+".modifyProduct", productVO);
 	}
+	
+	public List<ProductVO> getAllProductCategory() {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE+".getAllProductCategory");
+	}
 }

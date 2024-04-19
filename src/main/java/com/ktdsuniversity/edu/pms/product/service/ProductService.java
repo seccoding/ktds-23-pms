@@ -18,11 +18,16 @@ public interface ProductService {
 
 	public boolean updateOneProduct(String prdtId);
 
-	public boolean addProductCount(ProductVO productVO);
+	public boolean addProductCount(ProductManagementVO productManagementVO);
 
 	public boolean deleteOneProduct(String prdtId);
 
 	public boolean modifyProduct(ProductVO productVO);
+	
+	/**
+	 * 모든 비품 목록을 중복없이 조회
+	 */
+	public ProductListVO getAllProductCategory();
 
 
 	

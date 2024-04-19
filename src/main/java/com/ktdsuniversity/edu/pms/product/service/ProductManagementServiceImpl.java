@@ -69,28 +69,7 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 		return productManagementDao.modifyOneProductManagement(productManagementVO) > 0;
 	}
 
-	@Transactional
-	@Override
-	public boolean changeOneItemBrrwState(String prdtMngId) {
-		int changeStateCnt = this.productManagementDao.changeOneItemBrrwState(prdtMngId);
-		String prdtId = this.productManagementDao.getProductId(prdtMngId);
-		int changeProductCnt = 0;
-		if(changeStateCnt>0) {
-			changeProductCnt = this.productDao.changeOneProductCnt(prdtId);
-		}
-		return changeProductCnt > 0;
-	}
-
-	@Transactional
-	@Override
-	public boolean addSomeProductManagement(ProductManagementVO productManagementVO, int count) {
-		int successCount = 0;
-		for(var i=0; i < count; i++) {
-			successCount += productManagementDao.addProductManagement(productManagementVO);
-		}
-		
-		return successCount == count;
-	}
+	
 
 	@Transactional
 	@Override
