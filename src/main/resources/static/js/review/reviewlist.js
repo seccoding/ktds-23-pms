@@ -2,9 +2,7 @@ $().ready(function () {
   $("#list-size").on("change", function () {
     search(0);
   });
-  
-  
-  
+
   $("#checked-all").on("change", function () {
     var targetClass = $(this).data("target-class");
 
@@ -14,4 +12,21 @@ $().ready(function () {
 
     $("." + targetClass).prop("checked", isChecked);
   });
+  
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
 });
+
+
+
+
+
+function search(pageNo) {
+  var searchForm = $("#search-form");
+  // var listSize = $("#list-size");
+  $("#page-no").val(pageNo);
+
+  searchForm.attr("method", "get").submit();
+}
+

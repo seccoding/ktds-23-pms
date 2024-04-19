@@ -83,7 +83,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 	  <form id="search-form">
 	    <!-- value=0 은 아무것도 안치고 엔터눌렀을때 에러나는것을 방지하는 하는 역할-->
 	    <input type="hidden" id="page-no" name="pageNo" value="0"/>
-      <input type="hidden" name="prjId" value= ${SearchReviewVO.prjId} />
+      	<input type="hidden" name="prjId" value= ${SearchReviewVO.prjId} />
 
 	    <select id="list-size" name="listSize">
 	      <option value="10" ${SearchReviewVO.listSize eq 10 ? 'selected' : ''}>10개</option>

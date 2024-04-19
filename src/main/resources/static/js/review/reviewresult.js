@@ -27,6 +27,11 @@ $().ready(function () {
       });
     }
   });
+
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
+
 });
 
 function showModalWithReviewContent(reviewContent) {
@@ -70,3 +75,4 @@ function search(pageNo) {
 
   searchForm.attr("method", "get").submit();
 }
+
