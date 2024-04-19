@@ -55,6 +55,12 @@ $().ready(function(){
                 "productVO.curStr" :$(".add-count").val()
                 
             }, function(res){
+                if (res.data.result){
+                    alert("정상적으로 추가되었습니다.")
+                }else{
+                    alert("오류가 발생되었습니다.")
+
+                }
                 location.href = res.data.next
             })
         }

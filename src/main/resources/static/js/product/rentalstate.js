@@ -1,24 +1,32 @@
 $().ready(function(){
     $(".return-btn").on("click", function(){
-        var id = $(this).data("id")
-        var manageId = $(".manage-id").text()
+        var id = $(this).val()
+        var manageId = $(this).data("prdtmgid")
         if(confirm("정말 반납하시겠습니까?")){
             $.get("/ajax/product/rentalstate/return", {
                 brrwHistId:id,
-                prdtMngId:manageId
+                prdtMngId:manageId  
+            }, function(res){
+                if(res.data.isSuccess){
+                    alert("정상적으로 반납처리되었습니다.")
+                }else{
+                    alert("반납처리 중 오류가 발생했습니다.")
+
+                }
+                location.href = res.data.next
             })
-            location.reload();
         }
     })
 
     $(".selected-return").on("click", function(){
-        //var returnList = []
         
         var brrwProducts = $(".checkbox:checked")
+        console.log(brrwProducts)
         var param = {};
         brrwProducts.each(function(idx, data){
-            //returnList.push($(data).val())
             param["borrowList["+idx+"].brrwHistId"] = $(data).val();
+            param["borrowList["+idx+"].prdtMngId"] = $(data).data("prdtmgid");
+           
         })
         console.log(param)
         

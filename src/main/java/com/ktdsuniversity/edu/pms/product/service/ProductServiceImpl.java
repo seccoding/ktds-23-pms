@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
+import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Service
@@ -16,6 +18,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private ProductManagementDao productManagementDao;
 
 	@Override
 	public ProductListVO getAllProduct(ProductVO productVO) {
@@ -58,8 +63,15 @@ public class ProductServiceImpl implements ProductService{
 
 	@Transactional
 	@Override
-	public boolean addProductCount(ProductVO productVO) {
-		return productDao.updateOneProductCount(productVO) > 0;
+	public boolean addProductCount(ProductManagementVO productManagementVO) {
+		int count = productManagementVO.getProductVO().getCurStr();
+		int successCount = 0;
+		for(var i=0; i < count; i++) {
+			successCount += productManagementDao.addProductManagement(productManagementVO);
+		}
+		boolean isSuccessPrdtCntUp = productDao.updateOneProductCount(productManagementVO.getProductVO()) > 0;
+		
+		return isSuccessPrdtCntUp && successCount == count;
 	}
 
 	@Transactional

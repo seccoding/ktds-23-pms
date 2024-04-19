@@ -10,6 +10,8 @@ import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
+import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Service
@@ -17,6 +19,12 @@ public class BorrowServiceImpl implements BorrowService{
 
 	@Autowired
 	private BorrowDao borrowDao;
+	
+	@Autowired
+	private ProductDao productDao;
+	
+	@Autowired
+	private ProductManagementDao productManagementDao;
 	
 	@Override
 	public BorrowListVO getUserRentalState(EmployeeVO employeeVO) {
@@ -47,8 +55,12 @@ public class BorrowServiceImpl implements BorrowService{
 
 	@Transactional
 	@Override
-	public boolean returnOneItem(String brrwHistId) {
-		return this.borrowDao.returnOneItem(brrwHistId) > 0;
+	public boolean returnOneItem(BorrowVO borrowVO) {
+		int returnStateChangeCnt = this.borrowDao.returnOneItem(borrowVO.getBrrwHistId()) ;
+		int changeStateCnt = this.productManagementDao.changeOneItemBrrwState(borrowVO.getPrdtMngId());
+		String prdtId = this.productManagementDao.getProductId(borrowVO.getPrdtMngId());
+		int changeProductCnt =  this.productDao.changeOneProductCnt(prdtId);
+		return  returnStateChangeCnt> 0 && changeStateCnt > 0 && changeProductCnt > 0  ;
 	}
 
 }
