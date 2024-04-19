@@ -22,8 +22,8 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	}
 
 	@Override
-	public int searchAllCount(RequirementSearchVO requirementSearchVO) {
-		return getSqlSession().selectOne(NAME_SPACE+".searchAllCount",requirementSearchVO);
+	public int getAllCount(RequirementSearchVO requirementSearchVO) {
+		return getSqlSession().selectOne(NAME_SPACE+".getAllCount",requirementSearchVO);
 	}
 	
 	@Override
@@ -41,12 +41,15 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 	
 	@Override
 	public List<RequirementVO> getAllRequirement(RequirementSearchVO requirementSearchVO) {
-		
 		return getSqlSession().selectList(NAME_SPACE+".getAllRequirement", requirementSearchVO);
-
 	}
-
-
+	
+	@Override
+	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList(NAME_SPACE+".searchAllRequirement", requirementSearchVO);
+	}
+	
 	@Override
 	public RequirementVO getOneRequirement(String rqmId) {
 		return getSqlSession().selectOne(NAME_SPACE+".getOneRequirement",rqmId);
@@ -81,6 +84,8 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 		return getSqlSession().update(NAME_SPACE+".updateDelayOneRequirement", delayAcessVO);
 
 	}
+
+	
 
 	
 

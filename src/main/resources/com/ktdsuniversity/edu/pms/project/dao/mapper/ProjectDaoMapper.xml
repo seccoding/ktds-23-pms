@@ -456,7 +456,8 @@
         DEL_YN,
         RV_YN,
         SRV_YN
-        FROM PROJECT_TEAMMATE
+        FROM PROJECT_
+
         WHERE PRJ_ID = #{prjId}
         AND TM_ID = #{pmId}
         AND ROLE = 'PM'
