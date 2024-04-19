@@ -487,4 +487,40 @@
         SET DEL_YN = 'Y'
         WHERE PRJ_TM_ID = #{_parameter}
     </update>
+
+    <select id="findTeammateByProjectIdAndEmployeeId"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        SELECT PRJ_TM_ID,
+        PRJ_ID ,
+        TM_ID,
+        "ROLE" ,
+        DEL_YN
+        FROM PROJECT_TEAMMATE
+        WHERE PRJ_ID = #{prjId}
+        AND TM_ID = #{tmId}
+    </select>
+
+    <update id="updateTeammateDeleteYnByProjectTeammateId"
+            parameterType="String">
+        UPDATE PROJECT_TEAMMATE
+        SET DEL_YN = 'N'
+        WHERE PRJ_TM_ID = #{_parameter}
+    </update>
+
+    <insert id="insertNewProjectTeammate"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        INSERT INTO PROJECT_TEAMMATE
+        (PRJ_TM_ID,
+        PRJ_ID,
+        TM_ID,
+        "ROLE")
+        VALUES
+        (
+        'PRJ_TM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0'),
+        #{prjId},
+        #{tmId},
+        'NONE'
+        )
+    </insert>
 </mapper>

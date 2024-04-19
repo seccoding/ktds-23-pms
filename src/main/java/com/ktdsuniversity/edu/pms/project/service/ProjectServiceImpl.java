@@ -169,4 +169,26 @@ public class ProjectServiceImpl implements ProjectService {
     public boolean deleteOneTeammate(String prjTmId) {
         return projectDao.deleteByTeammateId(prjTmId) > 0;
     }
+
+    @Transactional
+    @Override
+    public boolean insertOneTeammate(ProjectTeammateVO newProjectTeammate) {
+        // project id와 employee id로 한 명의 팀원을 가져온다. 팀원이 삭제된 팀원인지 아닌지를 판단하는 여부를 여기서 확인함
+        ProjectTeammateVO originTeammate = projectDao.findTeammateByProjectIdAndEmployeeId(newProjectTeammate);
+
+        // 만약 기존에 있던 팀원이라면
+        if (originTeammate != null) {
+            // del_yn을 체크해야한다!
+            // 만약 삭제되었던 팀원이라면?
+            if (originTeammate.getDelYn().equals("Y")) {
+                // del_yn을 바꿔준 후, true 를 리턴!
+                return projectDao.updateTeammateDeleteYnByProjectTeammateId(originTeammate.getPrjTmId()) > 0;
+            } else {
+                return false;
+            }
+        } else {
+            // 기존 팀원이 아니라면!
+            return projectDao.insertNewProjectTeammate(newProjectTeammate) > 0;
+        }
+    }
 }
