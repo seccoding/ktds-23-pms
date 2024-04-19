@@ -70,9 +70,17 @@ $().ready(function(){
         var id = $(this).data("product")
         $.get("/product/manage/list/iscandel?prdtId="+id, function(res){
             if(res.data.canDel){
-                $.get("/product/manage/list/del?prdtId="+id,function(res){
-                    location.href = res.data.next
-                })
+                if(confirm("정말 삭제하시겠습니까?")){
+                    $.get("/product/manage/list/del?prdtId="+id,function(res){
+                        if(res.data.result){
+                            alert("삭제가 완료되었습니다.")
+                        }else{
+                            alert("삭제 중 오류가 발생했습니다.")
+                        }
+                        location.href = res.data.next
+                    })
+
+                }
             }else{
                 alert("해당 비품은 상세 품목이 존재하여 삭제할 수 없습니다.")
             }
