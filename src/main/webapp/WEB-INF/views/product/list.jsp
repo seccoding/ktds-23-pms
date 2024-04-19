@@ -18,7 +18,6 @@
 <script type="text/javascript" src="/js/product/list.js"></script>
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp" />
     <h2>비품목록</h2>
     <div class="flex">
         <div>총 ${productList.productCnt}건의 비품이 조회되었습니다.</div>
@@ -84,6 +83,5 @@
             </tbody>
         </table>
     </div>
-<jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>

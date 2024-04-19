@@ -30,22 +30,22 @@
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 </head>
 <body>
-<jsp:include page="../layout/layout.jsp" />
-<dialog id="add-modal">
-    <h4>비품 재고 추가</h3>
-    <div class="add-grid">
-        <p>비품</p>
-        <p class="add-product"></p>
-        <p>추가수량</p>
-        <input type="number" min="1" class="add-count"/>
-        <p>구매가격</p>
-        <input type="number" min="0" class="buy-price"/>
-        <p>구매일</p>
-        <input type="date" class="buy-day"/>
-    </div>
-    <input type="button" value="추가" id="add-count-btn"/>
-    <input type="button" value="취소" id="cancel-btn"/>
-</dialog>
+    <dialog id="add-modal">
+        <h4>비품 재고 추가</h3>
+        <div class="add-grid">
+            <p>비품</p>
+            <p class="add-product"></p>
+            <p>추가수량</p>
+            <input type="number" min="1" class="add-count"/>
+            <p>구매가격</p>
+            <input type="number" min="0" class="buy-price"/>
+            <p>구매일</p>
+            <input type="date" class="buy-day"/>
+        </div>
+        <input type="button" value="추가" id="add-count-btn"/>
+        <input type="button" value="취소" id="cancel-btn"/>
+    </dialog>
+    
     <h2>비품 관리 목록</h2>
     <div class="flex">
         <div>총 ${productList.productCnt}건의 비품이 조회되었습니다.</div>
@@ -117,6 +117,5 @@
             </tbody>
         </table>
     </div>
-<jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>

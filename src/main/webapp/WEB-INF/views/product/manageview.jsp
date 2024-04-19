@@ -41,8 +41,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.3.0/uicons-regular-straight/css/uicons-regular-straight.css'>
 </head>
-<body >
-    <jsp:include page="../layout/layout.jsp" />
+<body>
     <div class="body" data-paramid="${productVO.prdtId}">
         <dialog class="modify-modal">
             <form>
@@ -154,6 +153,5 @@
                 </tbody>
             </table>
     </div>
-    <jsp:include page="../layout/layout_close.jsp" />
 </body>
 </html>
