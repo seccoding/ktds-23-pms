@@ -30,7 +30,7 @@
 <body>
     <h1>설문 작성</h1>
     <form>
-        <div class="survey-body" data-id="${surveyQuestionVO.prjId}">
+        <div class="survey-body" data-prj-id="${surveyQuestionVO.prjId}" data-srv-sts="${surveyQuestionVO.srvSts}">
             <!-- <div class="survey-question">
                 <div class="survey-question-top">
                     <div>질문 1</div>
