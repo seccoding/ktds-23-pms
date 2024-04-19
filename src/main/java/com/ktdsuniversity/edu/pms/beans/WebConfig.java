@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.beans;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,19 +12,23 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.ktdsuniversity.edu.pms.login.service.VisitedService;
+
 @Configuration
 @Configurable
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
+	@Autowired
+	private VisitedService visitedService;
+	
+	@Value("${app.tempsession.enable:false}")
+	private boolean enableTempSession;
 
-//	@Value("${app.tempsession.enable:false}")
-//	private boolean enableTempSession;
-//
-//	@Value("${app.tempsession.empId}")
-//	private String empId;
-//
-//	@Value("${app.tempsession.empName}")
-//	private String empName;
+	@Value("${app.tempsession.empId}")
+	private String empId;
+
+	@Value("${app.tempsession.empName}")
+	private String empName;
 
 	@Value("${app.authentication.check-url-pattern:/**}")
 	private String authCheckUrlPattern;
@@ -51,28 +56,32 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-//		if (this.enableTempSession) {
-//			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
-//			tempSessionInterceptor.setEnableTempSession(enableTempSession);
-//			tempSessionInterceptor.setTempEmpId(empId);
-//			tempSessionInterceptor.setTempEmpName(empName);
-//
-//			registry.addInterceptor(tempSessionInterceptor)
-//					.addPathPatterns("/**");
-//		}
+		if (this.enableTempSession) {
+			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
+			tempSessionInterceptor.setEnableTempSession(enableTempSession);
+			tempSessionInterceptor.setTempEmpId(empId);
+			tempSessionInterceptor.setTempEmpName(empName);
 
+			registry.addInterceptor(tempSessionInterceptor)
+					.addPathPatterns("/**");
+		}
+
+		RecordScreenAccessAfterLoginInterceptor rsaalException = new RecordScreenAccessAfterLoginInterceptor();
+		rsaalException.setVisitedService(visitedService);
+		
+		//세션에 값이 있으면 해당 방문한 페이지를 DB에 저장시키는 interceptor
+		registry.addInterceptor(rsaalException)
+				.addPathPatterns(this.authCheckUrlPattern)
+				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+		
+		//세션에 값이 없으면 url로 접근을 막는 interceptor
 		registry.addInterceptor(new LoginInterceptor())
 				.addPathPatterns(this.authCheckUrlPattern)
 				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
 		
-		//로그인 이후 접근 제한할 페이지
-		registry.addInterceptor(new RestrictAccessAfterLoginException())
+		//세션에 값이 있으면 아래 url의 접근을 막는 interceptor
+		registry.addInterceptor(new RestrictAccessAfterLoginInterceptor())
 				.addPathPatterns("/employee/login", "/ajax/employee/login");
-		
-		//로그인 이후 화면 접근한 기록을 db에 저장
-		registry.addInterceptor(new RecordScreenAccessAfterLoginException())
-				.addPathPatterns(this.authCheckUrlPattern)
-				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
 		
 	}
 }

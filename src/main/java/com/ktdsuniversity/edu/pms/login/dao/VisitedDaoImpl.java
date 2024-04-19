@@ -5,6 +5,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
+
 @Repository
 public class VisitedDaoImpl extends SqlSessionDaoSupport implements VisitedDao{
 
@@ -13,4 +15,9 @@ public class VisitedDaoImpl extends SqlSessionDaoSupport implements VisitedDao{
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
         super.setSqlSessionTemplate(sqlSessionTemplate);
     }
+
+	@Override
+	public void insertOneEmpVisitedHistory(VisitedVO visitedVO) {
+		getSqlSession().update(VisitedDao.VISITED_SPACE + ".insertOneEmpVisitedHistory", visitedVO);
+	}
 }
