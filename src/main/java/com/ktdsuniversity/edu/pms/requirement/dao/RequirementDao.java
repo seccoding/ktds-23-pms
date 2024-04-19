@@ -13,7 +13,7 @@ public interface RequirementDao {
 
 	public List<RequirementVO> getAllRequirement();
 	
-	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO);
+	public List<RequirementVO> getAllRequirement(RequirementSearchVO requirementSearchVO);
 
 	public RequirementVO getOneRequirement(String rqmId);
 	

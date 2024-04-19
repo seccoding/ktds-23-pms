@@ -41,7 +41,7 @@ public class RequirementServiceImpl implements RequirementService{
 	public RequirementListVO searchAllRequirement(RequirementSearchVO requirementSearchVO) {
 		
 		RequirementListVO list = new RequirementListVO();
-		list.setRequirementList(this.requirementDao.searchAllRequirement(requirementSearchVO));	
+		list.setRequirementList(this.requirementDao.getAllRequirement(requirementSearchVO));	
 		return list; 
 	}
 

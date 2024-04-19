@@ -40,9 +40,9 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 
 	
 	@Override
-	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO) {
+	public List<RequirementVO> getAllRequirement(RequirementSearchVO requirementSearchVO) {
 		
-		return getSqlSession().selectList(NAME_SPACE+".searchAllRequirement", requirementSearchVO);
+		return getSqlSession().selectList(NAME_SPACE+".getAllRequirement", requirementSearchVO);
 
 	}
 

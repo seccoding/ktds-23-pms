@@ -114,10 +114,21 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </table>
 
     <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
+      <!--처음 그룹링크-->
+
+      <!--이전 그룹링크-->
+      <c:if test="${requirementSearch.hasPrevGroup}">
+        <li>이전</li>
+      </c:if>
+      <!-- 각 페이지 링크 -->
+      <c:forEach
+        varStatus="status"
+        begin="${requirementSearch.groupStartPageNo}"
+        end="${requirementSearch.groupEndPageNo}"
+      >
+        <li>${requirementSearch.groupStartPageNo+status.count}</li>
+      </c:forEach>
+      <c:if test="${requirementSearch.hasNextGroup}">다음</c:if>
     </ul>
 
     <div>

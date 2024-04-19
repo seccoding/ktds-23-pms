@@ -67,16 +67,16 @@
 
 	</resultMap>
 	
-	<select id="searchAllCount"
+	<select id="getAllCount"
 		parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO"
-	resultMap="requirementVOMap">
+	resultType="_int">
 	SELECT  COUNT(1)
 	  FROM 	REQUIREMENT r  	
 	  JOIN	PROJECT p 
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	   <if test="#{prjId != null}">
+	   <if test='prjId != "ALL"'>
 	   AND	R.PRJ_ID=#{prjId}
 	   </if>	
 	</select>
