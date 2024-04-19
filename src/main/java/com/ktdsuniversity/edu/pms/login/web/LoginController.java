@@ -20,7 +20,6 @@ import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.SessionUtil;
-import com.ktdsuniversity.edu.pms.utils.StringUtil;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
@@ -113,29 +112,26 @@ public class LoginController {
 
 
 	//출퇴근을 보여주는 페이지
-	@GetMapping("/commute/view")
-	public String viewCommutePage() {
-		return "commute/view";
-	}
-	
-	
-	@ResponseBody
-	@PostMapping("/commute/view")
-	public AjaxResponse doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO) {
+//	@GetMapping("/commute/view")
+//	public String doCommuteSearch(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
 		
-		String empIdIsSystemFormat = ".*system.*";
+		
 		/**
 		 * EMP_ID가 시스템 계정인지 검사하고
 		 * 맞다면 전체 조회
 		 * 아니라면 입력받은 본인의 출퇴근을 조회
 		 */
-		if (employeeVO.getEmpId().matches(empIdIsSystemFormat)) {
-			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
-			return new AjaxResponse().append("commuteData", commuteListVO);
-		} else{
-			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId();
-			return new AjaxResponse().append("commuteData", commuteListVO);
-		}
-	}
+//		String AdmnCodeIsSystemFormat = "301";
+//		if (session.getAttribute(employeeVO.getAdmnCode()).equals(AdmnCodeIsSystemFormat)) {
+//			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
+//			model.addAttribute("commuteList", commuteListVO);
+//			return "commute/view";
+//		} else{
+//			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
+//			model.addAttribute("commuteList", commuteListVO);
+//			return "commute/view";
+////					new AjaxResponse().append("commuteData", commuteListVO);
+//		}
+//	}
 
 }
