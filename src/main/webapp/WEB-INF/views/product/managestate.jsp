@@ -60,8 +60,8 @@
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${not empty userRentalState.borrowList}">
-                        <c:forEach items="${userRentalState.borrowList}" var="product">
+                    <c:when test="${not empty productState.borrowList}">
+                        <c:forEach items="${productState.borrowList}" var="product">
                             <tr>
                                 <td>${product.prdtMngId}</td>
                                 <td>${product.productVO.prdtName}</td>
