@@ -137,4 +137,31 @@
 		 WHERE DEL_YN = 'N'
 	</select>
 	
+	<select id="selectOneProductByPrdtName" parameterType="string" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT PRDT_ID
+			 , PRDT_NAME
+			 , PRDT_CTGR
+			 , ONCE_YN
+			 , CUR_STR
+			 , DEL_YN
+		  FROM PRODUCT
+		 WHERE PRDT_NAME = #{_parameter}
+	</select>
+	
+	<insert id="insertManyProduct" parameterType="list">
+  		INSERT INTO PRODUCT
+		 (PRDT_ID
+		, PRDT_NAME
+		, PRDT_CTGR
+		, ONCE_YN
+		, CUR_STR
+		, DEL_YN)
+		VALUES
+  		<foreach collection="list" item="productListVO" open="(" close=")" separator=", ">
+  			('PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+  			, #{productListVO.prdtName}, #{productListVO.prdtCtgr}, #{productListVO.onceYn},
+  			  #{productListVO.curStr}, #{productListVO.delYn},)
+  		</foreach>
+  	</insert>
+	
 </mapper>

@@ -97,7 +97,12 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public ProductVO getOneSelectedProduct(String prdtName) {
-		return this.productDao.selectOneProduct(prdtName);
+		return this.productDao.selectOneProductByPrdtName(prdtName);
+	}
+
+	@Override
+	public boolean createManyProduct(List<Integer> addItems) {
+		return this.productDao.insertManyProduct(addItems) > 0;
 	}
 
 	

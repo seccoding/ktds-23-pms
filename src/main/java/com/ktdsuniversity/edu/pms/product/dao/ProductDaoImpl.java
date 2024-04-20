@@ -7,6 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Repository
@@ -70,5 +71,15 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	@Override
 	public List<ProductVO> getAllProductList() {
 		return getSqlSession().selectList(ProductDao.NAME_SPACE+".getAllProductList");
+	}
+
+	@Override
+	public ProductVO selectOneProductByPrdtName(String prdtName) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".selectOneProductByPrdtName", prdtName);
+	}
+
+	@Override
+	public int insertManyProduct(List<Integer> addItems) {
+		return getSqlSession().insert(ProductDao.NAME_SPACE+".insertManyProduct", addItems);
 	}
 }

@@ -57,8 +57,9 @@ public class ProductController {
 	public AjaxResponse doProductApply(@RequestParam String prdtName, ProductVO productVO) {
 		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
 		
-		return new AjaxResponse().append("result", productVO).append("next", "/product/list");
+		return new AjaxResponse().append("oneProduct", oneProduct).append("next", "/product/list");
 	}
+	
 	
 	@GetMapping("/product/manage/list")
 	public String viewProductManageListPage(Model model, ProductVO productVO) {
@@ -112,7 +113,8 @@ public class ProductController {
 	@PostMapping("/ajax/product/manage/add")
 	public AjaxResponse doProductManageAdd(ProductVO productVO) {
 		 boolean isCreateSuccess = this.productService.createNewProduct(productVO);
-		return new AjaxResponse().append("result", isCreateSuccess)
+		 
+		return new AjaxResponse().append("result1", isCreateSuccess)
 								 .append("next", "/product/manage/list");
 	}
 	

@@ -41,7 +41,14 @@ $().ready(function(){
         function (response) {
             var addConfirm = confirm("추가하시겠습니까?");
             if(addConfirm){
-                location.href = response.data.next;
+                var num = $(".apply-quantity").val();
+
+                if(num > curstr){
+                    alert("현재 재고수(" + curstr + ") 보다 신청 수량이 많습니다! 다시 신청해주세요");
+                }
+                else{
+                    location.href = response.data.next;
+                }
             }
         });
     });
@@ -66,6 +73,10 @@ $().ready(function(){
     };
 
 
+
+    var oneProduct;
+    var curstr;
+
     $("#select-prdtName").on("change", function () {
         var nameValue = $(this).val();
         console.log(nameValue);
@@ -80,10 +91,12 @@ $().ready(function(){
         $.post("/ajax/product/apply",
             { prdtName: nameValue },
             function (response) {
-                var quantity = response.data.curStr;
+                oneProduct = response.data.oneProduct;
+                curstr = oneProduct.curStr;
             }
         );
-
+        
 
     });
+    
 })
