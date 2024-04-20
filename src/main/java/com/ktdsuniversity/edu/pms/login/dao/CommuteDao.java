@@ -10,9 +10,6 @@ public interface CommuteDao {
 
 	public List<CommuteVO> getAllCommuteData();
 
-	
-
-//	public List<CommuteVO> getAllCommuteDataByEmpId(String empId);
-
+	public List<CommuteVO> getAllCommuteDataByEmpId(String empId);
 
 }

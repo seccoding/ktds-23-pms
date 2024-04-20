@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.login.vo;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+
 public class CommuteVO {
     private String cmmtId;
     private String cmmtDate;
@@ -7,6 +9,9 @@ public class CommuteVO {
     private String fnshTime;
     private String empId;
     private String delYn;
+    
+    private EmployeeVO employeeVO;
+    private String empName;
 
     public String getCmmtId() {
         return cmmtId;
@@ -55,4 +60,22 @@ public class CommuteVO {
     public void setDelYn(String delYn) {
         this.delYn = delYn;
     }
+
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+    
+    
 }
