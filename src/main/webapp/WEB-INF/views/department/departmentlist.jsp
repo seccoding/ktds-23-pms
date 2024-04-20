@@ -6,6 +6,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>부서/팀 조회</title>
     <jsp:include page="../commonheader.jsp" />
+    <script
+      type="text/javascript"
+      src="/js/department/departmentlist.js"
+    ></script>
     <style>
       .create-modal,
       .create-modal-team {
@@ -39,7 +43,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         text-align: center;
         margin-bottom: 2rem;
       }
-      .grid {
+      .dept-list-modal > .grid {
         display: grid;
         grid-template-columns: 0.5fr 1fr;
         grid-template-rows: 1fr 1fr;
@@ -51,10 +55,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         grid-template-rows: 1fr 1fr 1fr;
         margin-bottom: 6rem;
       }
+
       .flex {
         display: flex;
-        flex-direction: row-reverse;
+        justify-content: space-between;
       }
+
       .button {
         width: 5rem;
         height: 2rem;
@@ -66,9 +72,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         margin-left: 1rem;
         margin-right: 2rem;
       }
-      .grid > input,
-      div,
-      p {
+      .dept-list-modal > .grid > input,
+      .dept-list-modal > .grid > div,
+      .dept-list-modal > .grid > p {
         align-items: center;
         text-align: left;
         margin-top: 2rem;
@@ -89,13 +95,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     ></script>
   </head>
   <body>
-    <dialog class="create-modal">
+    <dialog class="create-modal dept-list-modal">
       <h4>부서 등록</h4>
+
       <div class="grid">
         <div class="grid-item">부서명</div>
-        <input id="depratment-name" type="text" class="grid-item" />
+        <input id="department-name" type="text" class="grid-item" />
         <div class="grid-item">부서장ID</div>
-        <input id="depratment-leader" type="text" class="grid-item" />
+        <input id="department-leader" type="text" class="grid-item" />
       </div>
       <div class="flex">
         <input
@@ -108,7 +115,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
     </dialog>
 
-    <dialog class="create-modal-team">
+    <dialog class="create-modal-team dept-list-modal">
       <h4>팀 등록</h4>
       <div class="grid">
         <div class="grid-item">팀명</div>
@@ -129,7 +136,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
     </dialog>
 
-    <dialog class="modify-modal-dept">
+    <dialog class="modify-modal-dept dept-list-modal">
       <select id="modify-select-box">
         <c:forEach
           items="${onlyDepartmentList.departmentList}"
@@ -166,7 +173,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         />
       </div>
     </dialog>
-    <dialog class="modify-modal-team">
+    <dialog class="modify-modal-team dept-list-modal">
       <select id="modify-team-select-box">
         <c:forEach items="${onlyTeamList.teamList}" var="team">
           <option class="modify-team-data-id" value="${team.tmId}">
@@ -203,7 +210,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
     </dialog>
 
-    <h1>부서/팀 조회</h1>
     <div
       class="grid"
       data-gap="0.5rem"
@@ -233,8 +239,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   data-dept-crdt="${department.deptCrDt}"
                   data-dept-lead-id="${department.deptLeadId}"
                 >
-                  <td>${departmnet.deptId}</td>
-                  <td>${departmnet.deptName}</td>
+                  <td>${department.deptId}</td>
+                  <td>${department.deptName}</td>
                 </tr>
               </c:forEach>
             </tbody>
@@ -245,6 +251,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <h4 class="fixed" style="background-color: var(--body-bg)">팀</h4>
         <div>
           <table class="fit-parent sub-team">
+            <colgroup>
+              <col style="width: 50%" />
+              <col style="width: 50%" />
+            </colgroup>
             <thead
               class="fixed"
               data-fixed-top="1.52rem"
@@ -290,24 +300,27 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <label for="codeDeptName">부서명</label>
           <div id="codeDeptName"></div>
 
-          <label for="codeDeptLeadId">부서장 ID</label>
-          <div data-columns="2 / -1" id="codeDeptLeadId"></div>
-
           <label for="codeDeptCrtDt">생성일</label>
           <div id="codeDeptCrtDt"></div>
-
-          <div data-columns="1 / -1" style="text-align: right">
-            <input
-              type="button"
-              class="department-create button"
-              value="부서 등록"
-            />
-            <input
-              type="button"
-              class="department-modify button"
-              value="부서 변경"
-            />
-          </div>
+          <label for="codeDeptLeadId">부서장 ID</label>
+          <div data-columns="2 / -1" id="codeDeptLeadId"></div>
+        </div>
+        <div data-columns="1 / -1" style="text-align: right">
+          <input
+            type="button"
+            class="department-create button"
+            value="부서 등록"
+          />
+          <input
+            type="button"
+            class="department-modify button"
+            value="부서 변경"
+          />
+          <input
+            type="button"
+            class="department-delete-button button"
+            value="부서 삭제"
+          />
         </div>
       </div>
       <div class="overflow-scroll">
@@ -329,11 +342,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
           <label for="codeTmCrtDt">생성일</label>
           <div id="codeTmCrtDt"></div>
-
-          <div data-columns="1 / -1" style="text-align: right">
-            <input type="button" class="team-create button" value="팀 등록" />
-            <input type="button" class="team-modify button" value="팀 변경" />
-          </div>
+        </div>
+        <div data-columns="1 / -1" style="text-align: right">
+          <input type="button" class="team-create button" value="팀 등록" />
+          <input type="button" class="team-modify button" value="팀 변경" />
         </div>
       </div>
     </div>

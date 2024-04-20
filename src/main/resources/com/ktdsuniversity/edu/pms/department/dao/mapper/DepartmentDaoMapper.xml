@@ -33,20 +33,12 @@
 	</select>
 
 	<select id="getAllDepartment" resultMap="departmentVOMap">
-		SELECT D.DEPT_NAME
-		     , T.TM_NAME T_TM_NAME
-		     , E.EMP_NAME E_EMP_NAME
-		     , J.JOB_NAME J_JOB_NAME
-		     , C.CMCD_NAME C_CMCD_NAME
-		  FROM DEPARTMENT D
-		 INNER JOIN EMPLOYEE E
-		    ON D.DEPT_ID = E.DEPT_ID
-		 INNER JOIN TEAM T
-		    ON D.DEPT_ID = T.DEPT_ID
-		 INNER JOIN JOB J
-		    ON E.JOB_ID = J.JOB_ID
-		 INNER JOIN COMMON_CODE C
-		    ON E.PSTN_ID = C.CMCD_ID
+		 SELECT DEPT_ID
+		 	  , DEPT_NAME 
+		 	  , TO_CHAR(DEPT_CR_DT, 'YYYY-MM-DD') DEPT_CR_DT
+		 	  , DEPT_LEAD_ID 
+		   FROM DEPARTMENT
+		  WHERE DEL_YN = 'N'
 	</select>
 	
 	<insert id="createNewDepartment"
@@ -67,12 +59,9 @@
 	
 	<update id="deleteOneDepartment"
 			parameterType="string">
-		UPDATE BOARD
+		UPDATE DEPARTMENT
 		   SET DEL_YN = 'Y'
-		 WHERE ID IN
-		<foreach collection="list" item="id" open="(" close=")" separator=",">
-			#{deptId}
-		</foreach>
+		 WHERE DEPT_ID = #{_parameter}
 	</update>
 	
 	<update id="updateOneDepartment"
@@ -95,7 +84,7 @@
 	        resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 		SELECT DEPT_ID
 			 , DEPT_NAME
-			 , DEPT_CR_DT
+			 , DEPT_CR_DT 
 			 , DEPT_LEAD_ID
 		  FROM DEPARTMENT
 		 WHERE DEPT_ID = #{_parameter}

@@ -2,7 +2,6 @@ package com.ktdsuniversity.edu.pms.team.dao;
 
 import java.util.List;
 
-import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public interface TeamDao {
@@ -18,6 +17,8 @@ public interface TeamDao {
 	public List<TeamVO> getOnlyTeam();
 
 	public List<TeamVO> getAllTeamList(String deptId);
+
+	public int countTeamInDepartement(String id);
 
 
 }
