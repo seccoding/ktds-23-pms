@@ -51,17 +51,17 @@
                 <div>
                     <label for="prdtCtgr">카테고리</label>
                     <select id="prdtCtgr" name="prdtCtgr" >
-                        <option value="prdtCtgr" >컴퓨터기기</option>
-                        <option value="prdtCtgr" >사무용품</option>
-                        <option value="prdtCtgr" >프린터용품</option>
+                        <option value="컴퓨터기기" >컴퓨터기기</option>
+                        <option value="사무용품" >사무용품</option>
+                        <option value="프린터용품" >프린터용품</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="onceYn">소모품 분류</label>
                     <select id="onceYn" name="onceYn" >
-                        <option value="onceYn" >소모품</option>
-                        <option value="onceYn" >비소모품</option>
+                        <option value="소모품" >소모품</option>
+                        <option value="비소모품" >비소모품</option>
                     </select>
                 </div>
 

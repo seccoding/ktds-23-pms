@@ -38,6 +38,13 @@ public interface ProductService {
 	 * @return 선택된 비품의 정보들
 	 */
 	public ProductVO getOneSelectedProduct(String prdtName);
+
+	/**
+	 * 여러 개의 비품 일괄등록 
+	 * @param addItems
+	 * @return
+	 */
+	public boolean createManyProduct(List<Integer> addItems);
 	
 
 }

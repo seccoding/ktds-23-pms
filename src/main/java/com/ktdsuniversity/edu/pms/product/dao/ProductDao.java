@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.product.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface ProductDao {
@@ -34,5 +35,19 @@ public interface ProductDao {
 	public List<ProductVO> getAllProductCategory();
 
 	public List<ProductVO> getAllProductList();
+
+	/**
+	 * 해당 비품명을 가진 비품의 모든 정보를 조
+	 * @param prdtName 조회할 비품
+	 * @return 비품의 정보들 
+	 */
+	public ProductVO selectOneProductByPrdtName(String prdtName);
+
+	/**
+	 * 여러 개의 비품들 일괄등록 
+	 * @param addItems
+	 * @return
+	 */
+	public int insertManyProduct(List<Integer> addItems);
 
 }
