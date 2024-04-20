@@ -12,25 +12,20 @@ import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 @Repository
 public class CommuteDaoImpl extends SqlSessionDaoSupport implements CommuteDao {
 
-    @Autowired
-    @Override
-    public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-        super.setSqlSessionTemplate(sqlSessionTemplate);
-    }
+	@Autowired
+	@Override
+	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+		super.setSqlSessionTemplate(sqlSessionTemplate);
+	}
 
 	@Override
 	public List<CommuteVO> getAllCommuteData() {
 		return getSqlSession().selectList(CommuteDao.COMMUTE_SPACE + ".getAllCommuteData");
 	}
 
+	@Override
+	public List<CommuteVO> getAllCommuteDataByEmpId(String empId) {
+		return getSqlSession().selectList(CommuteDao.COMMUTE_SPACE + ".getAllCommuteDataByEmpId", empId);
+	}
 
-//	@Override
-//	public List<CommuteVO> getAllCommuteDataByEmpId(String empId) {
-//		return getSqlSession().selectList(CommuteDao.COMMUTE_SPACE + ".getAllCommuteDataByEmpId", empId);
-//	}
-
-
-
-
-	
 }

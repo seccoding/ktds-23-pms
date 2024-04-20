@@ -19,17 +19,12 @@ public class CommuteServiceImpl implements CommuteService {
 		commuteListVO.setCommuteList(commuteDao.getAllCommuteData());
 		return commuteListVO;
 	}
-	
-	
-	
-//	@Override
-//	public CommuteListVO getAllCommuteDataByEmpId(String empId) {
-//		List<CommuteVO> commuteList = this.commuteDao.getAllCommuteDataByEmpId(empId);
-//		CommuteListVO commuteListVO = new CommuteListVO();
-//		commuteListVO.setCommuteList(commuteList);
-//		return commuteListVO;
-//	}
 
-
+	@Override
+	public CommuteListVO getAllCommuteDataByEmpId(String empId) {
+		CommuteListVO commuteListVO = new CommuteListVO();
+		commuteListVO.setCommuteList(commuteDao.getAllCommuteDataByEmpId(empId));
+		return commuteListVO;
+	}
 
 }

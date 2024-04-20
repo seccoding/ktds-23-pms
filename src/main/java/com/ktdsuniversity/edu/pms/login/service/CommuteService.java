@@ -5,11 +5,7 @@ import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
 public interface CommuteService {
 
 	CommuteListVO getAllCommuteData();
-	
 
-//	CommuteListVO getAllCommuteDataByEmpId(String empId);
-
-
-	
+	CommuteListVO getAllCommuteDataByEmpId(String empId);
 
 }

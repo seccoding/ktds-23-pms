@@ -109,29 +109,27 @@ public class LoginController {
 
         return "redirect:/employee/login";
     }
-
-
+    
 	//출퇴근을 보여주는 페이지
-//	@GetMapping("/commute/view")
-//	public String doCommuteSearch(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
-		
-		
+	@GetMapping("/commute/view")
+	public String doCommuteSearch(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
 		/**
-		 * EMP_ID가 시스템 계정인지 검사하고
-		 * 맞다면 전체 조회
-		 * 아니라면 입력받은 본인의 출퇴근을 조회
+		 * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
+		 * true: 전체 조회
+		 * false: 입력받은 본인의 출퇴근만 조회
 		 */
-//		String AdmnCodeIsSystemFormat = "301";
-//		if (session.getAttribute(employeeVO.getAdmnCode()).equals(AdmnCodeIsSystemFormat)) {
-//			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
-//			model.addAttribute("commuteList", commuteListVO);
-//			return "commute/view";
-//		} else{
-//			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
-//			model.addAttribute("commuteList", commuteListVO);
-//			return "commute/view";
-////					new AjaxResponse().append("commuteData", commuteListVO);
-//		}
-//	}
+		String AdmnCodeIsSystemFormat = "301";
+		if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
+			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
+			model.addAttribute("commuteList", commuteListVO);
+			return "commute/view";
+		} 
+		else{
+			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
+			model.addAttribute("commuteList", commuteListVO);
+			return "commute/view";
+		}
+	}
+	
 
 }
