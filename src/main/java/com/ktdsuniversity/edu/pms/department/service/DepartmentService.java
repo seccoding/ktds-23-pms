@@ -9,12 +9,14 @@ public interface DepartmentService {
 	
 	public boolean createNewDepartment(DepartmentVO departmentVO);
 	
-	public boolean deleteOneDepartment(String id);
+	public boolean isPossibleDelete(String id);
 
 	public DepartmentListVO getOnlyDepartment();
 
 	public DepartmentVO selectOneDepartment(String departmentId);
 
 	public boolean modifyOneDepartment(DepartmentVO departmentVO);
+
+	public boolean deleteOneDepartment(String deptId);
 
 }

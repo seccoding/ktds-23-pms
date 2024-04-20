@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.team.dao.TeamDao;
 
 
 @Service
@@ -16,6 +17,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 
 	@Autowired
 	private DepartmentDao departmentDao;
+	
+	@Autowired
+	private TeamDao teamDao;
 	
 	@Override
 	public DepartmentListVO getAllDepartment() {
@@ -38,10 +42,10 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 	@Override
-	public boolean deleteOneDepartment(String id) {
+	public boolean isPossibleDelete(String id) {
+		boolean isPossibleDelete = this.teamDao.countTeamInDepartement(id) == 0;
 		
-		
-		return this.departmentDao.deleteOneDepartment(id) > 0;
+		return isPossibleDelete;
 	}
 
 	@Override
@@ -65,6 +69,12 @@ public class DepartmentServiceImpl implements DepartmentService{
 	@Override
 	public boolean modifyOneDepartment(DepartmentVO departmentVO) {
 		return departmentDao.updateOneDepartment(departmentVO) > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteOneDepartment(String deptId) {
+		return departmentDao.deleteOneDepartment(deptId) > 0;
 	}
 
 	

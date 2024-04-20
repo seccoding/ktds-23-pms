@@ -7,7 +7,6 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 @Repository
@@ -43,6 +42,11 @@ public class TeamDaoImpl extends SqlSessionDaoSupport implements TeamDao{
 	@Override
 	public List<TeamVO> getAllTeamList(String deptId) {
 		return getSqlSession().selectList(TeamDao.NAME_SPACE + ".getAllTeamList", deptId);
+	}
+
+	@Override
+	public int countTeamInDepartement(String id) {
+		return getSqlSession().selectOne(TeamDao.NAME_SPACE + ".countTeamInDepartement", id);
 	}
 
 	

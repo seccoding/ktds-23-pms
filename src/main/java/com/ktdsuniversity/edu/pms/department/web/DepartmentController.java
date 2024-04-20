@@ -31,10 +31,12 @@ public class DepartmentController {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
 		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
 		TeamListVO getOnlyTeamListVO = this.teamService.getOnlyTeam();
+		
+
 
 		
 		
-		model.addAttribute("departmentList", departmentListVO);
+		model.addAttribute("departmentList", departmentListVO.getDepartmentList());
 		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
 		model.addAttribute("onlyTeamList", getOnlyTeamListVO);
 		
@@ -48,11 +50,24 @@ public class DepartmentController {
 
 	@ResponseBody
 	@GetMapping("/ajax/department/search/{deptId}")
-	public AjaxResponse getDepartmentBydeptId(@PathVariable String deptId) {
+	public AjaxResponse getTeamByDeptId(@PathVariable String deptId) {
+
+		
 		TeamListVO teamListVO = this.teamService.getAllTeamList(deptId);
-		return new AjaxResponse().append("teamList", teamListVO);
+		
+		return new AjaxResponse().append("teamList", teamListVO.getTeamList());
 	}
 	
+//	@ResponseBody
+//	@GetMapping("/ajax/department/search/{teamId}")
+//	public AjaxResponse getEmployeeByTeamId(@PathVariable String teamId) {
+//
+//		
+//		EmployeeListVO employeeList = this..getAllEmployee(teamId);
+//		
+//		return new AjaxResponse().append("teamList", teamListVO.getTeamList());
+//	}
+//	
 	@ResponseBody
 	@PostMapping("/ajax/department/create")
 	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model) {
@@ -86,11 +101,39 @@ public class DepartmentController {
 	@PostMapping("/ajax/department/modify")
 	public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
 		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
-		System.out.println(departmentVO.getDeptId());
-		System.out.println(departmentVO.getDeptName());
-		System.out.println(departmentVO.getDeptLeadId());
+
 		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
+	}
+
+	@ResponseBody
+	@GetMapping("/ajax/department/candelete/{deptId}")
+	public AjaxResponse canDeleteOneDepartment(@PathVariable String deptId) {
+		boolean isDeletePossible = this.departmentService.isPossibleDelete(deptId);
+		return new AjaxResponse().append("possible", isDeletePossible).append("next", "/department/search");
+
+	}
+	@ResponseBody
+	@GetMapping("/ajax/department/delete/{deptId}")
+	public AjaxResponse deleteOneDepartment(@PathVariable String deptId) {
+		boolean isSuccessDelete = this.departmentService.deleteOneDepartment(deptId);
+		return new AjaxResponse().append("success", isSuccessDelete).append("next", "/department/search"); 
 	}
 
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
