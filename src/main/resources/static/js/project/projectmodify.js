@@ -120,10 +120,32 @@ $().ready(function () {
             });
     });
 
-    // data-list Employee 기능 추가시 주석 해제
-    // $('#pm-selector').on('input', function() {
-    //     var value = $(this).val();
-    //     var empId = $('#employee-list').find('option[value="' + value + '"]').data('emp-id');
-    //     $('#employee-id').val(empId);
-    // });
+    // 비활성화 드롭다운
+    $('#pm-search').prop('disabled', true);
+
+    // 부서 선택 시, 드롭다운 활성화
+    $('#dept-list').change(function() {
+        var deptId = $(this).val();
+
+        if (deptId) {
+            $.get("/ajax/department-teammate/" + deptId, function (response) {
+                $("#employee-list").empty();
+
+                response.data.teammateList.forEach(function (emp) {
+                    var empElement = $("<div></div>").addClass('option-custom')
+                        .attr('data-emp-id', emp.empId)
+                        .text(emp.empName + '-' + emp.departmentVO.deptName);
+
+                    $("#employee-list").append(empElement);
+                });
+            });
+
+            $('#pm-search').prop('disabled', false).val(''); // 담당자 검색 필드 활성화 및 초기화
+            $('#hidden-dept-id').val(deptId);
+        } else {
+            $('#pm-search').prop('disabled', true);
+            $('#hidden-dept-id').val('');
+            $('#employee-list').empty();
+        }
+    });
 });

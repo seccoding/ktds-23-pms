@@ -444,6 +444,7 @@
         FROM PROJECT_TEAMMATE
         WHERE PRJ_ID = #{_parameter}
         AND DEL_YN = 'N'
+        AND "ROLE" = 'PM'
     </select>
 
     <select id="selectDeletedPm"
@@ -456,8 +457,7 @@
         DEL_YN,
         RV_YN,
         SRV_YN
-        FROM PROJECT_
-
+        FROM PROJECT_TEAMMATE
         WHERE PRJ_ID = #{prjId}
         AND TM_ID = #{pmId}
         AND ROLE = 'PM'
