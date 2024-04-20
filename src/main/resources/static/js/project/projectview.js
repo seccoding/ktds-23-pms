@@ -1,22 +1,24 @@
 $().ready(function () {
-    // 삭제버튼 모달 로직 구현, onclick="location.href='/project/delete/${project.prjId}'"
+    var alertModal = $("#alert-modal");
+    var modalButton = $("#modal-button");
+    var modalText = $(".modal-text");
+
+    // 페이지 내 삭제 버튼 클릭 시 나올 모달을 설정
     $("#btn-delete").on("click", function() {
         // Save the teammate ID in data attribute
-        $("#delete-alert-modal").data('projectId', $(this).val());
-        $(".modal-text").text("프로젝트를 삭제하시겠습니까?");
-        $("#delete-alert-modal").show();
+        modalText.text("프로젝트를 삭제하시겠습니까?");
+        modalButton.text("삭제")
+        alertModal.show();
     });
 
-    $("#modal-delete-button").click(function() {
-        var deleteProjectId = $("#delete-alert-modal").data('projectId');
-
-        location.href = '/project/delete/' + deleteProjectId;
-
-        $("#delete-alert-modal").hide();
+    // 모달의 x 버튼 클릭 시 액션
+    setCancelButton(function () {
+        alertModal.hide();
     });
 
-    $("#modal-cancel-button").click(function() {
-        $("#delete-alert-modal").hide();
+    // 삭제버튼 클릭 시 액션
+    setModalButtonClickAction(function () {
+        location.href = '/project/delete/' + projectId;
     });
 
     var params = new URLSearchParams(window.location.search);

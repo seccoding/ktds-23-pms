@@ -121,19 +121,6 @@
             </div>
 
             <%-- 담당자 (PM) 선택 --%>
-            <%--            <div>--%>
-            <%--                <label for="hidden-pm-id">담당자 </label>--%>
-            <%--                <input list="employee-list" id="pm-search" autocomplete="off" placeholder="담당자 검색">--%>
-            <%--                <input id="hidden-pm-id" type="hidden" name="pmId"/>--%>
-
-            <%--                <datalist id="employee-list">--%>
-            <%--                    <c:forEach items="${employee}" var="employee">--%>
-            <%--                        <option value="${employee.empName} : ${employee.departmentVO.deptName}" data-emp-id="${employee.empId}"></option>--%>
-            <%--                    </c:forEach>--%>
-            <%--                </datalist>--%>
-            <%--            </div>--%>
-
-            <%-- 담당자 (PM) 선택 --%>
             <div>
                 <label for="hidden-pm-id">담당자 </label>
                 <input id="pm-search" autocomplete="off" placeholder="담당자 검색" class="input-custom">

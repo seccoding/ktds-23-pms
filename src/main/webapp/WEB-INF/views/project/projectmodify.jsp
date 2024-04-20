@@ -26,17 +26,17 @@
             color: #f00;
             padding-left: 1rem;
             margin: 0;
-            animation: fadeIn 0.5s ease-out; /* 애니메이션 지속시간 및 효과 지정 */
+            animation: fadeIn 0.5s ease-out;
         }
 
         .input-custom {
             padding: 5px;
             outline: none;
-            width: 25%; /* 입력 필드의 폭을 조정합니다. */
-            height: 30px; /* 높이 조정 */
-            border: 1px solid #CCCCCC; /* 테두리 색 변경 */
-            border-radius: 4px; /* 테두리 둥근 정도 변경 */
-            color: #333333; /* 글자 색 변경 */
+            width: 25%;
+            height: 30px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            color: #333333;
         }
 
         .datalist-custom {
@@ -47,22 +47,22 @@
             border-radius: 0 0 5px 5px;
             border-top: none;
             overflow-y: auto;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* 드롭다운에 그림자 추가 */
-            max-height: 200px; /* 드롭다운의 최대 높이 조정 */
-            width: 25%; /* 드롭다운의 폭을 입력 필드와 일치시킵니다. */
-            z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 조정 */
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+            max-height: 200px;
+            width: 25%;
+            z-index: 1000;
         }
 
         .option-custom {
             background-color: white;
             cursor: pointer;
             border-bottom: 1px solid #ddd;
-            padding: 8px 10px; /* 옵션의 패딩 조정 */
-            color: #333333; /* 옵션의 글자 색 변경 */
+            padding: 8px 10px;
+            color: #333333;
         }
 
         .option-custom:hover, .option-custom:active {
-            background-color: #E6E6E6; /* 호버 및 활성 옵션 배경색 변경 */
+            background-color: #E6E6E6;
         }
 
     </style>
@@ -116,7 +116,7 @@
 
             <%-- 상태코드 변경 --%>
             <div>
-                <label for="status">고객사명</label>
+                <label for="status">프로젝트 상태</label>
                 <select id="status" name="prjSts">
                     <c:forEach items="${commonCodeList}" var="code">
                         <option value="${code.cmcdId}" ${project.prjSts == code.cmcdId ? 'selected' : ''}>${code.cmcdName}</option>
