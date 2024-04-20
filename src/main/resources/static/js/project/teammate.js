@@ -62,7 +62,7 @@ $().ready(function () {
                 });
             } else {
                 if (!selectedEmployeeId) {
-                    alert("팀원을 선택해주세요.");
+                    return;
                 } else {
                     $.post("/ajax/teammate/add",
                         {
@@ -102,9 +102,13 @@ $().ready(function () {
 
             var checkedItems = $(".target-teammate-id:checked");
 
-            // 선택된 체크박스가 없다면 early return
             if (checkedItems.length === 0) {
-                alert("삭제할 팀원을 선택하세요.");
+                modalText.text('삭제할 팀원을 선택해주세요.');
+                modalButton.text('확인');
+                setModalButtonClickAction(function () {
+                    location.reload();
+                })
+                alertModal.show();
                 return;
             }
 
@@ -123,7 +127,7 @@ $().ready(function () {
         // 팀원 등록 버튼 클릭 시 모달을 띄우는 로직
         $("#new-teammate").on("click", function () {
             var deptId = $("#new-teammate").data('dept-id');
-            modalText.text("팀원 선택");
+            modalText.text("팀원");
             modalButton.text("등록")
 
             $.get("/ajax/department-teammate/" + deptId, function (response) {
@@ -132,7 +136,7 @@ $().ready(function () {
                 selectElement = $('<select></select>', {id: 'select-teammate', name: 'teammate'});
 
                 // "팀원 선택"이라는 기본 옵션 추가
-                selectElement.append($('<option></option>').val('').text('팀원 선택').attr('disabled', true).attr('selected', true).attr('hidden', true));
+                selectElement.append($('<option></option>').val('').text('팀원을 선택하세요').attr('disabled', true).attr('selected', true).attr('hidden', true));
 
                 teammateList.forEach(function (teammate) {
                     selectElement.append($('<option></option>').val(teammate.empId).text(teammate.empName + "-" + teammate.departmentVO.deptName));
@@ -143,6 +147,7 @@ $().ready(function () {
                     selectedEmployeeId = $(this).val();
                 });
             })
+
             alertModal.show();
         })
     }
