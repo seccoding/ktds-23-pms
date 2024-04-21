@@ -174,4 +174,24 @@
            AND SYSDATE > PWD_CN_DT + 90
     </select>
 
+    <select id="getAllLoginLog" resultType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
+        SELECT LOG_ID
+             , EMP_ID
+             , LGN_SCC_DT
+             , LGT_DT
+             , DEL_YN
+          FROM LOGIN_LOG
+         ORDER BY LGN_SCC_DT
+    </select>
+
+    <select id="getAllVisitedLog" resultType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO">
+        SELECT ACCS_ID
+             , EMP_ID
+             , ACCS_URL
+             , ACCS_DT
+             , DEL_YN
+          FROM VISITED_HISTORY
+         ORDER BY ACCS_DT
+    </select>
+
 </mapper>

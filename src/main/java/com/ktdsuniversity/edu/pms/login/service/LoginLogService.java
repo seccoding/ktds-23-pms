@@ -1,7 +1,7 @@
 package com.ktdsuniversity.edu.pms.login.service;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
+import com.ktdsuniversity.edu.pms.login.vo.*;
 
 import java.util.List;
 
@@ -36,4 +36,8 @@ public interface LoginLogService {
     public void updateComuteFnsh(EmployeeVO employee);
 
     public int getPwdCndt(String empId);
+
+    public LoginLogListVO getAllLoginLog();
+
+    public VisitedListVO getAllVisitedLog();
 }

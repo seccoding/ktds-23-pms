@@ -3,7 +3,7 @@ package com.ktdsuniversity.edu.pms.login.service;
 
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
+import com.ktdsuniversity.edu.pms.login.vo.*;
 import org.apache.tika.utils.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +148,22 @@ public class LoginLogServiceImpl implements LoginLogService {
 	@Override
 	public int getPwdCndt(String empId) {
 		return this.loginLogDao.getPwdCndt(empId);
+	}
+
+	@Override
+	public LoginLogListVO getAllLoginLog() {
+		LoginLogListVO loginLogListVO = new LoginLogListVO();
+		loginLogListVO.setLoginLogList(this.loginLogDao.getAllLoginLog());
+
+		return loginLogListVO;
+	}
+
+	@Override
+	public VisitedListVO getAllVisitedLog() {
+		VisitedListVO visitedListVO = new VisitedListVO();
+		visitedListVO.setVisitedList(this.loginLogDao.getAllVisitedLog());
+
+		return visitedListVO;
 	}
 
 
