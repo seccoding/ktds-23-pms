@@ -126,9 +126,15 @@ public class ProductController {
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/manage/add")
-	public AjaxResponse doProductManageAdd(ProductVO productVO) {
-		 boolean isCreateSuccess = this.productService.createNewProduct(productVO);
-		 
+	public AjaxResponse doProductManageAdd(ProductListVO productList) {
+		
+		
+		int isCreateSuccess = this.productService.createNewProduct(productList);
+		
+		if(isCreateSuccess != productList.getProductList().size()) {
+			throw new PageNotFoundException();
+		}
+		
 		return new AjaxResponse().append("result1", isCreateSuccess)
 								 .append("next", "/product/manage/list");
 	}

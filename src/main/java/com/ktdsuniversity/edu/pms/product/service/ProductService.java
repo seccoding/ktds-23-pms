@@ -14,7 +14,7 @@ public interface ProductService {
 	 */
 	public ProductListVO getAllProduct(ProductVO productVO);
 
-	public boolean createNewProduct(ProductVO productVO);
+	public int createNewProduct(ProductListVO productList);
 
 	public ProductVO getOneProduct(String id);
 

@@ -37,36 +37,22 @@
         top: 3px;
 
     }
-    input[type="checkbox"] {
-  
-  display: inline-block;
-}
 </style>
 </head>
 <body>
     <h2>비품 대여 현황</h2>
     <div class="flex">
         <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
-        <div class="flex">
-
-        </div>
     </div>
     <div class="grid">
         <div>
             <form id="search-form">
-                <input type="hidden" id="page-no" name="pageNo" value="0" />
                 <div class="right-align">
-                    <div class="check-option">
-                        <input type="checkbox" id="product-exist-search" />
-                        <label for="product-exist-search"></label>
-                        <label for="product-exist-search">재고가 있는 비품만 조회</label>
-                    </div>
                     
                     <select id="search-type" name="searchType" >
                         <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
                         <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
                         <option value="category" ${productVO.searchType eq 'category' ? 'selected' : ''}>카테고리</option>
-                        <option value="noSelect" ${productVO.searchType eq 'noSelect' ? 'selected' : ''}>선택 안함</option>
                     </select>
         
                     <input type="text" name="searchKeyword" value="${productVO.searchKeyword}"/>
@@ -80,6 +66,8 @@
                 <tr>
                     <th>
                         <input type="checkbox" class="checkbox" id="checked-all"/>
+                        <label for="checkbox1"></label>
+                        <label for="checkbox1"></label>
                     </th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>
@@ -134,6 +122,58 @@
     
             </tbody>
         </table>
+
+        <!-- Paginator 시작 -->
+        <div class="paginator-bar">
+            <input type="hidden" id="page-no" name="pageNo" value="0" />
+            <select id="list-size" name="listSize">
+                <!-- listSize의 값이 option 값과 같다면 selected 옵션 주기 -->
+                <option value="10" ${productVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+                <option value="20" ${productVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+                <option value="30" ${productVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+                <option value="50" ${productVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+                <option value="100" ${productVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+            </select>
+
+            <ul class="page-nav">
+            <c:if test="${productVO.hasPrevGroup}">
+                <!-- javascript에 있는 search 함수를 실행해라. 0을 전달 -->
+                <li><a href="javascript:search(0);">처음</a></li>
+                <li>
+                <a
+                    href="javascript:search(${productVO.prevGroupStartPageNo});"
+                    >이전</a
+                >
+                </li>
+            </c:if>
+            <!-- Page 번호를 반복하며 노출한다. -->
+            <c:forEach
+                begin="${productVO.groupStartPageNo}"
+                end="${productVO.groupEndPageNo}"
+                step="1"
+                var="p"
+            >
+                <li class="${productVO.pageNo eq p ? 'active' : ''}">
+                <a href="javascript:search(${p});">${p+1}</a>
+                </li>
+            </c:forEach>
+
+            <c:if test="${productVO.hasNextGroup}">
+                <li>
+                <a
+                    href="javascript:search(${productVO.nextGroupStartPageNo});"
+                    >다음</a
+                >
+                </li>
+                <li>
+                <a href="javascript:search(${productVO.pageCount - 1});"
+                    >마지막</a
+                >
+                </li>
+            </c:if>
+            </ul>
+        </div>
+        <!-- Paginator 끝 -->
     </div>
     <div class="flex">
         <button>선택항목 변경신청</button>

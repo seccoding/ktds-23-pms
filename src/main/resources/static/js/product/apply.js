@@ -30,27 +30,31 @@ $().ready(function(){
 
     $(".add-button").on("click", function(){
         var url = "/ajax/product/apply";
-        $.post(url, 
-            {
-                prdtName: $("#select-prdtName").val(),
-                prdtCtgr: $("#select-prdtCtgr").val(),
-                applyQuantity: $("#apply-quantity").val(),
-                applyDate: $("#apply-date").val(),
 
-        }, 
-        function (response) {
-            var addConfirm = confirm("추가하시겠습니까?");
-            if(addConfirm){
-                var num = $(".apply-quantity").val();
+        var formData = {};
 
-                if(num > curstr){
-                    alert("현재 재고수(" + curstr + ") 보다 신청 수량이 많습니다! 다시 신청해주세요");
-                }
-                else{
-                    location.href = response.data.next;
+        $("form").each(function(index, form) {
+            formData["productList["+index+"].prdtName"] = $(form).find("#select-prdtName").val();
+            formData["productList["+index+"].prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
+            formData["productList["+index+"].applyQuantity"] = $(form).find("#apply-quantity").val();
+            formData["productList["+index+"].applyDate"] = $(form).find("#apply-date").val();
+        });
+
+        $.post(url, formData, 
+            function (response) {
+                var addConfirm = confirm("추가하시겠습니까?");
+                if(addConfirm){
+                    var num = $(".apply-quantity").val();
+
+                    if(num > curstr){
+                        alert("현재 재고수(" + curstr + ") 보다 신청 수량이 많습니다! 다시 신청해주세요");
+                    }
+                    else{
+                        location.href = response.data.next;
+                    }
                 }
             }
-        });
+        );
     });
 
     

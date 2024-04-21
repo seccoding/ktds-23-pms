@@ -39,9 +39,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Transactional
 	@Override
-	public boolean createNewProduct(ProductVO productVO) {
-		int insertCount = this.productDao.insertNewProduct(productVO);
-		return insertCount > 0;
+	public int createNewProduct(ProductListVO productList) {
+		int insertCount = 0;
+		
+		for( ProductVO productVO : productList.getProductList()) {
+			insertCount += this.productDao.insertNewProduct(productVO);			
+		}
+		
+		return insertCount;
 	}
 
 	@Override
