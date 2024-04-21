@@ -78,7 +78,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>선택</th>
+                    <th>
+                        <input type="checkbox" class="checkbox" id="checked-all"/>
+                    </th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>
                     <th>대여일</th>
@@ -96,7 +98,7 @@
                                         <c:when test="${product.productVO.onceYn eq 'Y' || not empty product.rtnDt}">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="checkbox" class="checkbox" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}"/>
+                                            <input type="checkbox" class="checkbox target-checkbox" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}"/>
                                             <!-- <label for="checkbox1"></label>
                                             <label for="checkbox1"></label> -->
                                         </c:otherwise>
