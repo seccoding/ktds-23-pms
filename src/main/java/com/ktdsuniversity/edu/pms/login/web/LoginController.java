@@ -112,7 +112,7 @@ public class LoginController {
     
 	//출퇴근을 보여주는 페이지
 	@GetMapping("/commute/view")
-	public String doCommuteSearch(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
+	public String doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
 		/**
 		 * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
 		 * true: 전체 조회
@@ -120,8 +120,9 @@ public class LoginController {
 		 */
 		String AdmnCodeIsSystemFormat = "301";
 		if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
-			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
+			CommuteListVO commuteListVO = commuteService.getAllCommuteData(commuteVO);
 			model.addAttribute("commuteList", commuteListVO);
+			model.addAttribute("commnuteVO", commuteVO);
 			return "commute/view";
 		} 
 		else{
