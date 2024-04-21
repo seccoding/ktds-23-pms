@@ -10,22 +10,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/knowledge/knowledgeview.js"
     ></script>
-    <style type="text/css">
-      div.grid {
-        display: grid;
-        grid-template-columns: 80px 1fr;
-        grid-template-rows: repeat(6, 30px) auto auto 1fr;
-        row-gap: 10px;
-      }
-    </style>
   </head>
   <body>
-    <jsp:include page="../layout/layout.jsp" />
-    
-
     <h1>지식관리 게시글 조회</h1>
 
-    <div class="grid" data-id="${knowledgedetail.knlTtl}">
+    <div class="grid" data-id="${knowledgeVO.knlId}">
       <label for="knlTtl">제목</label>
       <div>${knowledgeVO.knlTtl}</div>
 
@@ -35,9 +24,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <label for="name">수정자 ID</label>
       <div>${knowledgeVO.mdfrId}</div>
 
-      <label for="fileName">첨부파일</label>
+      <label for="originFileName">첨부파일</label>
       <div>
-        <a href="/knowledge/file/download/${knowledgeVO.knlTtl}">
+        <a href="/knowledge/file/download/${knowledgeVO.knlId}">
           ${knowledgeVO.originFileName}
         </a>
       </div>
@@ -52,22 +41,32 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div>${knowledgeVO.knlCntnt}</div>
 
       <label for="knlCnt">조회수</label>
-      <div>${knowledgeVO.knlCnt}</div>
+      <div >${knowledgeVO.knlCnt}</div>
 
       <label for="knlRecCnt">추천수</label>
-      <div>${knowledgeVO.knlRecCnt}</div>
+      <div id="knlRecCnt">${knowledgeVO.knlRecCnt}</div>
 
       <div class="btn-group">
-        <button class="recommend-knowledge">
-          <a href="/ajax/Knowledge/recommend/{knlId}">추천하기</a></button>
+        <button type="button" class= "recommend-knowledge">
+          추천하기</button>
+          
         <button> 
-        <a href="/knowledge/modify/${knowledgeVO.knlId}">수정</a>
-        <a  class="delete-knowledge" href="/knowledge/delete/${knowledgeVO.knlId}">삭제</a>
-      </button>
+          <a href="/knowledge/modify/${knowledgeVO.knlId}">수정</a>
+        </button>
+        <button>
+          <a class="delete-knowledge" href="javascript:void(0);">삭제</a>
+        </button>
       </div>
 
-
-      <jsp:include page="../layout/layout_close.jsp" />
-
+      <script>
+        $(".recommend-knowledge").on("click",(e)=> {
+          // e.preventDefault();
+          const response = $.ajax({
+            method:"PUT",
+            url:"/ajax/Knowledge/recommend/${knowledgeVO.knlId}",
+            success:({data})=> $("#knlRecCnt").html(data.result)
+          });
+        })
+      </script>
   </body>
 </html>

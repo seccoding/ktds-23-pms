@@ -10,8 +10,8 @@ public class QnaVO {
 	private String rqmId;
 	private String qaTtl;
 	private String qaCntnt;
-	private String qaCnt;
-	private String qaRecCnt;
+	private int qaCnt;
+	private int qaRecCnt;
 	private String crtDt;
 	private String mdfDt;
 	private String delYn;
@@ -29,6 +29,7 @@ public class QnaVO {
 	
 	private EmployeeVO employeeVO;
 	
+
 	
 	public String getQaId() {
 		return qaId;
@@ -54,16 +55,16 @@ public class QnaVO {
 	public void setQaCntnt(String qaCntnt) {
 		this.qaCntnt = qaCntnt;
 	}
-	public String getQaCnt() {
+	public int getQaCnt() {
 		return qaCnt;
 	}
-	public void setQaCnt(String qaCnt) {
+	public void setQaCnt(int qaCnt) {
 		this.qaCnt = qaCnt;
 	}
-	public String getQaRecCnt() {
+	public int getQaRecCnt() {
 		return qaRecCnt;
 	}
-	public void setQaRecCnt(String qaRecCnt) {
+	public void setQaRecCnt(int qaRecCnt) {
 		this.qaRecCnt = qaRecCnt;
 	}
 	public String getCrtDt() {

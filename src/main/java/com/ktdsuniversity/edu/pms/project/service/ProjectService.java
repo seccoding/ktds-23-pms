@@ -25,11 +25,13 @@ public interface ProjectService {
 
     List<ProjectTeammateVO> getAllProjectTeammateByProjectId(String projectId);
 
-    Map<String ,List<ProjectStatusVO>> getProjectStatus(String projectId);
+    Map<String, List<ProjectStatusVO>> getProjectStatus(String projectId);
 
     boolean updateOneProject(CreateProjectVO modifyProjectVO);
 
     boolean deleteManyTeammate(List<String> deleteItems);
 
     boolean deleteOneTeammate(String prjTmId);
+
+    boolean insertOneTeammate(ProjectTeammateVO newProjectTeammate);
 }

@@ -69,6 +69,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     <table class="table">
       <colgroup>
+        <col width="40px" />
         <col width="160px" />
         <col width="160px" />
         <col width="160px" />
@@ -78,6 +79,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </colgroup>
       <thead>
         <tr>
+          <th>
+            <input
+              type="checkbox"
+              id="checked-all"
+              data-target-class="target-rqm-id"
+            />
+            <label for="checked-all"></label>
+          </th>
           <th>프로젝트명</th>
           <th>요구사항 아이디</th>
           <th>요구사항 제목</th>
@@ -88,8 +97,21 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <tbody>
         <c:choose>
           <c:when test="${not empty resultList}">
-            <c:forEach items="${resultList.requirementList}" var="requirememt">
+            <c:forEach
+              items="${resultList.requirementList}"
+              var="requirememt"
+              varStatus="status"
+            >
               <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="target-rqm-id"
+                    id="checked-requirement-${status.index}"
+                    value="${requirememt.rqmId}"
+                  />
+                  <label for="checked-requirement-${status.index}"></label>
+                </td>
                 <td>${requirememt.projectVO.prjName}</td>
                 <td>${requirememt.rqmId}</td>
                 <td>
@@ -112,17 +134,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:choose>
       </tbody>
     </table>
-
-        <ul class="page-nav">
+    <!--pagination-->
+    <ul class="page-nav">
       <c:if test="${resultList.count > 0}">
-        <!--처음 그룹링크-->
+        <!--처음-->
         <c:if test="${requirementSearch.hasPrevGroup}">
           <li><a href="javascript:search(0)">처음</a></li>
         </c:if>
-        <!--이전 그룹링크-->
+        <!--이전-->
         <c:if test="${requirementSearch.hasPrevGroup}">
           <li>
-            <a href="${requirementSearch.prevGroupStartPageNo}">이전</a>
+            <a
+              href="javascript:search(${requirementSearch.prevGroupStartPageNo})"
+              >이전</a
+            >
           </li>
         </c:if>
         <!-- 각 페이지 링크 -->
@@ -138,18 +163,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             >
           </li>
         </c:forEach>
+        <!--다음-->
         <c:if test="${requirementSearch.hasNextGroup}">
           <a href="javascript:search(${requirementSearch.nextGroupStartPageNo})"
             >다음</a
           ></c:if
         >
+        <!--마지막-->
         <c:if test="${requirementSearch.hasNextGroup}"
           ><a href="javascript:search(${requirementSearch.pageCount})"
             >마지막</a
           ></c:if
         >
       </c:if>
-</ul>
+    </ul>
 
     <div>
       <p>

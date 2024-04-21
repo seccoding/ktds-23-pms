@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
 import com.ktdsuniversity.edu.pms.product.service.ProductService;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
@@ -48,21 +51,24 @@ public class ProductController {
 		ProductListVO categoryList = this.productService.getAllProductCategory();
 		model.addAttribute("categoryList", categoryList);
 		
-		List<ProductVO> allProduct = this.productService.getAllProductList();
-		model.addAttribute("allProduct", allProduct);
-		
 		return "product/apply";
 	}
 	
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/apply")
-	public AjaxResponse doProductApply(ProductVO productVO) {
-		return new AjaxResponse().append("result", productVO).append("next", "/product/list");
+	public AjaxResponse doProductApply(@RequestParam String prdtName, ProductVO productVO) {
+		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
+		
+		return new AjaxResponse().append("oneProduct", oneProduct).append("next", "/product/list");
 	}
 	
+	
 	@GetMapping("/product/manage/list")
-	public String viewProductManageListPage(Model model, ProductVO productVO) {
+	public String viewProductManageListPage(Model model, ProductVO productVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		if (employeeVO.getAdmnCode().equals("302")) {
+			throw new PageNotFoundException();
+		}
 		ProductListVO productListVO = this.productService.getAllProduct(productVO);
 		model.addAttribute("productList", productListVO);
 		model.addAttribute("productVO", productVO);
@@ -84,7 +90,10 @@ public class ProductController {
 	}
 	
 	@GetMapping("/product/manage/detail")
-	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO) {
+	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		if (employeeVO.getAdmnCode().equals("302")) {
+			throw new PageNotFoundException();
+		}
 		ProductManagementListVO productManagementListVO = this.productManagementService.getAllProductdetail(productManagementVO);
 		model.addAttribute("productManagementList", productManagementListVO);
 		model.addAttribute("productVO", productManagementVO);
@@ -94,7 +103,10 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/manage/view")
-	public String viewProductManageViewPage(@RequestParam String prdtId, Model model) {
+	public String viewProductManageViewPage(@RequestParam String prdtId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		if (employeeVO.getAdmnCode().equals("302")) {
+			throw new PageNotFoundException();
+		}
 		ProductVO productVO = this.productService.getOneProduct(prdtId);
 		ProductManagementListVO productDetailListVO= this.productManagementService.getFilteringProductdetail(prdtId);
 		model.addAttribute("productVO", productVO);
@@ -105,15 +117,25 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/manage/add")
-	public String viewProductManageAddPage() {
+	public String viewProductManageAddPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		if (employeeVO.getAdmnCode().equals("302")) {
+			throw new PageNotFoundException();
+		}
 		return "product/manageadd";
 	}
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/manage/add")
-	public AjaxResponse doProductManageAdd(ProductVO productVO) {
-		 boolean isCreateSuccess = this.productService.createNewProduct(productVO);
-		return new AjaxResponse().append("result", isCreateSuccess)
+	public AjaxResponse doProductManageAdd(ProductListVO productList) {
+		
+		
+		int isCreateSuccess = this.productService.createNewProduct(productList);
+		
+		if(isCreateSuccess != productList.getProductList().size()) {
+			throw new PageNotFoundException();
+		}
+		
+		return new AjaxResponse().append("result1", isCreateSuccess)
 								 .append("next", "/product/manage/list");
 	}
 	

@@ -1,5 +1,41 @@
 $().ready(function () {
+  function clearCodeInfo() {
+    var subCommonCodeInfo = $(".code-info");
+    subCommonCodeInfo.find("#codeDeptId").text("");
+    subCommonCodeInfo.find("#codeDeptName").text("");
+    subCommonCodeInfo.find("#codeDeptLeadId").text("");
+    subCommonCodeInfo.find("#codeDeptCrtDt").text("");
+  }
+  function clearSubCodeInfo() {
+    var subCommonCodeInfo = $(".sub-code-info");
+    subCommonCodeInfo.find("#codeTmId").text("");
+    subCommonCodeInfo.find("#codeTmName").text("");
+    subCommonCodeInfo.find("#codeTmDepartment").text("");
+    subCommonCodeInfo.find("#codeTmLeadId").text("");
+    subCommonCodeInfo.find("#codeTmCrtDt").text("");
+  }
+
+  $(".departmentListClickFunction").on("click", function () {
+    clearCodeInfo();
+    clearSubCodeInfo();
+
+    $(this).closest("tbody").find("tr").removeClass("active");
+    $(this).addClass("active");
+
+    clearSubCodeInfo();
+    reloadSubTeam($(this).data("dept-id"));
+
+    var commonCodeInfo = $(".code-info");
+
+    commonCodeInfo.find("#codeDeptId").text($(this).data("dept-id"));
+    commonCodeInfo.find("#codeDeptName").text($(this).data("dept-name"));
+    commonCodeInfo.find("#codeDeptLeadId").text($(this).data("dept-lead-id"));
+    commonCodeInfo.find("#codeDeptCrtDt").text($(this).data("dept-crdt"));
+  });
+
   function reloadSubTeam(deptId) {
+    // var deptId = $(this).data("dept-id");
+
     $.get("/ajax/department/search/" + deptId, function (response) {
       var subTeamTable = $(".sub-team").find("tbody");
       subTeamTable.html("");
@@ -20,10 +56,26 @@ $().ready(function () {
 
           clearSubCodeInfo();
 
-          var 
-        })
+          var departmentInfo = $(".sub-code-info");
+          departmentInfo.find("#codeTmId").text($(this).data("id"));
+          departmentInfo.find("#codeTmName").text($(this).data("name"));
+          departmentInfo
+            .find("#codeTmDepartment")
+            .text($(this).data("tm-dept-id"));
+          departmentInfo.find("#codeTmLeadId").text($(this).data("tm-lead-id"));
+          departmentInfo.find("#codeTmCrtDt").text($(this).data("crdt"));
+        });
 
+        var tmIdTdDom = $("<td></td>");
+        tmIdTdDom.text(subTeam.tmId);
 
+        var tmNameTdDom = $("<td></td>");
+        tmNameTdDom.text(subTeam.tmName);
+
+        trDom.append(tmIdTdDom);
+        trDom.append(tmNameTdDom);
+
+        subTeamTable.append(trDom);
       });
     });
   }
@@ -36,6 +88,26 @@ $().ready(function () {
     location.reload();
   });
 
+  $(".department-delete-button").on("click", function () {
+    var deptId = $("#codeDeptId").text();
+    $.get("/ajax/department/candelete/" + deptId, function (response) {
+      if (response.data.possible) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          $.get("/ajax/department/delete/" + deptId, function (response) {
+            if (response.data.success) {
+              alert("삭제에 성공하였습니다.");
+            } else {
+              alert("삭제중 오류가 발생했습니다.");
+            }
+            location.href = response.data.next;
+          });
+        }
+      } else {
+        alert("팀이 존재하고 있어 삭제할 수 없습니다.");
+      }
+    });
+  });
+
   $(".dep-submit-button").on("click", function () {
     var departmentName = $("#department-name").val();
     var departmentLeader = $("#department-leader").val();
@@ -43,7 +115,7 @@ $().ready(function () {
       "/ajax/department/create",
       { deptName: departmentName, deptLeadId: departmentLeader },
       function (response) {
-        location.href = response.data.nextUrl;
+        location.href = rsponese.data.nextUrl;
       }
     );
   });

@@ -10,6 +10,7 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.output.dao.OutputDao;
 import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
+import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -29,21 +30,25 @@ public class OutputServiceImpl implements OutputService{
 		outputList.setListCnt(this.outputDao.getOutputCnt());
 		return outputList;
 	}
+	
+	@Override
+	public OutputListVO serarchAllOutputList(OutputSearchVO outputSearchVO) {
+		OutputListVO outputList= new OutputListVO();
+		outputList.setListCnt(this.outputDao.searchOutputCnt(outputSearchVO));
+		outputSearchVO.setPageCount(outputList.getListCnt());
+		outputList.setOutputList(this.outputDao.searchAllOutPutList(outputSearchVO));
+		return outputList;
+	}
 
 	@Override
 	public boolean insertOneOutput(OutputVO outputVO, MultipartFile file) {
-		
-		
-		
 		if(file !=null && ! file.isEmpty()) {//파일 존재
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if(storedFile != null) {
 				outputVO.setOutFile(storedFile.getFileName());
 				outputVO.setOutEncodeFile(storedFile.getRealFileName());
 			}
-			
 		}
-		
 		return this.outputDao.insertOneOutput(outputVO)>0;
 	}
 
@@ -93,6 +98,8 @@ public class OutputServiceImpl implements OutputService{
 		
 		return this.outputDao.updateOneOutput(outputVO)>0;
 	}
+
+	
 
 	
 	

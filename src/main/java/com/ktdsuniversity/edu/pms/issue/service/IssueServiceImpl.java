@@ -12,6 +12,7 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.issue.dao.IssueDao;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
+import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO;
 
 @Service
 public class IssueServiceImpl implements IssueService {
@@ -33,19 +34,21 @@ public class IssueServiceImpl implements IssueService {
 		
 		return issueListVO;
 	}
-//	@Override
-//	public IssueListVO searchIssue(SearchIssueVO searchIssueVO) {
-//		int issueCount = this.issueDao.searchIssueCount(searchIssueVO);
-//		searchIssueVO.setPageCount(issueCount);
-//		
-//		List<IssueVO> issueList = this.issueDao.searchIssue(searchIssueVO);
-//		
-//		IssueListVO issueListVO = new IssueListVO();
-//		issueListVO.setIssueCnt(issueCount);
-//		issueListVO.setIssueList(issueList);
-//		
-//		return issueListVO;
-//	}
+	
+	@Transactional
+	@Override
+	public IssueListVO searchAllIssue(SearchIssueVO searchIssueVO) {
+		int issueCount = this.issueDao.searchIssueAllCount(searchIssueVO);
+		searchIssueVO.setPageCount(issueCount);
+		
+		List<IssueVO> issueList = this.issueDao.searchAllIssue(searchIssueVO);
+		
+		IssueListVO issueListVO = new IssueListVO();
+		issueListVO.setIssueCnt(issueCount);
+		issueListVO.setIssueList(issueList);
+		
+		return issueListVO;
+	}
 
 	@Transactional
 	@Override
@@ -102,8 +105,33 @@ public class IssueServiceImpl implements IssueService {
 	@Transactional
 	@Override
 	public boolean deleteOneIssue(String isId) {
+		IssueVO originalIssueVO = this.issueDao.selectOneIssue(isId);
+		if (originalIssueVO != null) {
+			String storedFileName = originalIssueVO.getFileName();
+			if (storedFileName != null && storedFileName.length() > 0) {
+				this.fileHandler.deleteFileByFileName(storedFileName);
+			}
+		}
 		int deletedCount = this.issueDao.deleteOneIssue(isId);
 		
+		return deletedCount > 0;
+	}
+	
+	@Transactional
+	@Override
+	public boolean deleteManyIssue(List<Integer> deleteItems) {
+		List<IssueVO> originalIssueList = this.issueDao.selectManyIssue(deleteItems);
+		
+		for (IssueVO issueVO: originalIssueList) {
+			if (issueVO != null) {
+				String storedFileName = issueVO.getFileName();
+				if (storedFileName != null && storedFileName.length() > 0) {
+					this.fileHandler.deleteFileByFileName(storedFileName);
+				}
+			}
+		}
+		int deletedCount = this.issueDao.deleteManyIssue(deleteItems);
+
 		return deletedCount > 0;
 	}
 }

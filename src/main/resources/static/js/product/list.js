@@ -3,6 +3,10 @@ $().ready(function(){
         search(0);
     });
 
+    $("#list-size").on("change", function () {
+        search(0);
+    });
+
     /* 
     엔터키 눌렀을 때 form 전송이 안되도록 함
     
@@ -18,7 +22,9 @@ $().ready(function(){
         }
     });
 
+
     $(".apply-product").on("click", function () {
         location.href = "/product/apply";
-    }); 
+    });
+
 })

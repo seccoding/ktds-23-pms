@@ -4,34 +4,58 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.login.dao.CommuteDao">
 
-    <select id="getAllCommuteData"
-            parameterType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO"
-            resultType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO">
-            SELECT CMMT_ID
-                 , CMMT_DATE
-                 , CMMT_TIME
-                 , FNSH_TIME
-                 , EMP_ID
-                 , DEL_YN
-              FROM COMMUTE
-             ORDER BY CMMT_DATE DESC
-    </select>
+	<resultMap type="com.ktdsuniversity.edu.pms.login.vo.CommuteVO" id="commuteVOMap" autoMapping="true">
+		<id column="CMMT_ID" property="cmmtId" />
+		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+		</association>
+	</resultMap>
 
-
-    <select id="getAllCommuteDataByEmpId"
-            parameterType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO"
-            resultType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO">
-            SELECT CMMT_ID
-                 , CMMT_DATE
-                 , CMMT_TIME
-                 , FNSH_TIME
-                 , EMP_ID
-                 , DEL_YN
-              FROM COMMUTE 
-             WHERE EMP_ID = '0509013'
-             ORDER BY CMMT_DATE DESC 
-    </select>
-
-
-
+	<select id="getAllCommuteData" 
+			parameterType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO"
+			resultMap="commuteVOMap">
+			SELECT C.CMMT_ID
+				 , TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') CMMT_DATE
+				 , TO_CHAR(C.CMMT_TIME, 'HH24:MI:SS') CMMT_TIME
+				 , TO_CHAR(C.FNSH_TIME, 'HH24:MI:SS') FNSH_TIME
+				 , E.EMP_NAME
+				 , C.EMP_ID
+				 , C.DEL_YN
+			  FROM COMMUTE C
+			  JOIN EMPLOYEE E
+			    ON C.EMP_ID = E.EMP_ID
+			    <if test='searchKeyword != null and searchKeyword != ""'>
+				<choose>
+					<when test='searchType == "cmmtDate"'>
+			 WHERE TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
+					</when>
+					<when test='searchType == "empName"'>
+			 WHERE E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+					</when>
+					<when test='searchType == "empId"'>
+			 WHERE C.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+					</when>
+				</choose>
+			</if>
+			 ORDER BY CMMT_DATE DESC
+	</select>
+	
+	<select id="getAllCommuteDataByEmpId"
+			parameterType="string"
+			resultMap="commuteVOMap">
+			SELECT C.CMMT_ID
+				 , TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') CMMT_DATE
+				 , TO_CHAR(C.CMMT_TIME, 'HH24:MI:SS') CMMT_TIME
+				 , TO_CHAR(C.FNSH_TIME, 'HH24:MI:SS') FNSH_TIME
+				 , E.EMP_NAME 
+				 , C.EMP_ID
+				 , C.DEL_YN
+			  FROM COMMUTE C
+			  JOIN EMPLOYEE E
+				ON C.EMP_ID = E.EMP_ID
+			 WHERE E.EMP_ID = #{empId}
+			 ORDER BY CMMT_DATE DESC
+	</select>
+	
 </mapper>

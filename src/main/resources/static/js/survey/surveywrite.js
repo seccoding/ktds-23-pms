@@ -1,8 +1,9 @@
 $().ready(function() {
-    var prjId = $(".survey-body").data("id");
+    var prjId = $(".survey-body").data("prj-id");
     var seqNum = 0;
     var typeYn = 'N';
-    $("#btn-add-srv-qst").on("click", function () {
+    var srvSts = $(".survey-body").data("srv-sts");
+    $("#btn-add-srv-qst").on("click", function() {
         seqNum++;
         var srvQstDom = $("<div></div>");
         srvQstDom.addClass("survey-question");

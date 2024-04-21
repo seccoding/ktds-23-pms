@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.issue.vo;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+
 public class IssueReplyVO {
 	
 	private String rplId;
@@ -15,6 +17,8 @@ public class IssueReplyVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String delYn;
+	
+	private EmployeeVO employeeVO;
 	
 	public String getRplId() {
 		return rplId;
@@ -75,5 +79,11 @@ public class IssueReplyVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
 	}
 }

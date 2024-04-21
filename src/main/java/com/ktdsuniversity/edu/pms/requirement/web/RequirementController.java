@@ -23,6 +23,7 @@ import com.ktdsuniversity.edu.pms.login.web.LoginController;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
@@ -40,10 +41,8 @@ public class RequirementController {
 	private ProjectService projectService;
 	@Autowired
 	private CommonCodeService commonCodeService;
-	@Autowired
-	private TeamService teamService ;
-
-	private Logger logger = LoggerFactory.getLogger(LoginController.class);
+//	@Autowired
+//	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@GetMapping("/requirement")
 	public String viewAllRequirement() {
@@ -57,7 +56,8 @@ public class RequirementController {
 			RequirementSearchVO requirementSearchVO) {
 		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
-        requirementSearchVO.setPageCount(requirementList.getCount()); 
+			
+		requirementSearchVO.setPageCount(requirementList.getCount()); 
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 		ProjectListVO projectList = this.projectService.getAllProject();
@@ -97,12 +97,15 @@ public class RequirementController {
 		projectList.setProjectList(
 				projectList.getProjectList().stream()
 				.filter((project)->project.getReqYn().equals("Y")).toList());
-		TeamListVO teamList = this.teamService.getOnlyTeam();
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
+		List<ProjectTeammateVO> prjTeammateList =this.projectService.getAllProjectTeammateByProjectId("PRJ_240409_000012");
 
-		model.addAttribute("projectList", projectList).addAttribute("scdSts", scdStsList).addAttribute("rqmSts",
-				rqmStsList).addAttribute("teamList", teamList);
+		model.addAttribute("projectList", projectList)
+		.addAttribute("scdSts", scdStsList)
+		.addAttribute("rqmSts",rqmStsList)
+		.addAttribute("prjTeammateList",prjTeammateList)
+		;
 
 		return "requirement/requirementwrite";
 
@@ -123,7 +126,13 @@ public class RequirementController {
 		return this.requirementService.getDownloadFile(Requirement);
 		
 	}
-	
+	@ResponseBody
+	@GetMapping("/requirement/teammate/{prjId}")
+	public AjaxResponse postProjectTeammate(@PathVariable String prjId) {
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
+		
+		return new AjaxResponse().append("prjTeammateList", prjTeammateList);
+	}
 
 	@GetMapping("/project/requirement/modify")
 	public String viewModifyPage(/* @SessionAttribute , */

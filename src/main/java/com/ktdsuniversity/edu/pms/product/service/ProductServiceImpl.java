@@ -39,9 +39,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Transactional
 	@Override
-	public boolean createNewProduct(ProductVO productVO) {
-		int insertCount = this.productDao.insertNewProduct(productVO);
-		return insertCount > 0;
+	public int createNewProduct(ProductListVO productList) {
+		int insertCount = 0;
+		
+		for( ProductVO productVO : productList.getProductList()) {
+			insertCount += this.productDao.insertNewProduct(productVO);			
+		}
+		
+		return insertCount;
 	}
 
 	@Override
@@ -96,9 +101,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ProductVO> getAllProductList() {
-		List<ProductVO> productList = this.productDao.getAllProductList();
-		return productList;
+	public ProductVO getOneSelectedProduct(String prdtName) {
+		return this.productDao.selectOneProductByPrdtName(prdtName);
+	}
+
+	@Override
+	public boolean createManyProduct(List<Integer> addItems) {
+		return this.productDao.insertManyProduct(addItems) > 0;
 	}
 
 	

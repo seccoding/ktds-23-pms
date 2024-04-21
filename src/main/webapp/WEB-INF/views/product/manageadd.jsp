@@ -38,63 +38,61 @@
     </style>
 </head>
 <body>
-    <jsp:include page="../layout/layout.jsp" />
-        <h2>비품 추가 정보</h2>
-        <div class="form-group">
-            <form action="/product/manage/add" method="post" enctype="multipart/form-data">
-                <hr />
-                <div class="form-grid">
-                    <div>
-                        <label for="prdtName">비품명</label>
-                        <input type="text" id="prdtName" name="prdtName"/>
-                    </div>
-    
-                    <div>
-                        <label for="prdtCtgr">카테고리</label>
-                        <select id="prdtCtgr" name="prdtCtgr" >
-                            <option value="prdtCtgr" >컴퓨터기기</option>
-                            <option value="prdtCtgr" >사무용품</option>
-                            <option value="prdtCtgr" >프린터용품</option>
-                        </select>
-                    </div>
-    
-                    <div>
-                        <label for="onceYn">소모품 분류</label>
-                        <select id="onceYn" name="onceYn" >
-                            <option value="onceYn" >소모품</option>
-                            <option value="onceYn" >비소모품</option>
-                        </select>
-                    </div>
-    
-                    <div>
-                        <label for="curStr">재고수</label>
-                        <input type="number" id="curStr" name="curStr"/>
-                    </div>
-    
-                    <div>
-                        <label for="buyDt">구매일</label>
-                        <input type="date" id="buyDt" name="buyDt"/>
-                    </div>
-    
-                    <div>
-                        <label for="prdtPrice">가격</label>
-                        <input type="text" id="prdtPrice" name="prdtPrice"/>
-                    </div>
-    
+    <h2>비품 추가 정보</h2>
+    <div class="form-group">
+        <form action="/product/manage/add" method="post" enctype="multipart/form-data">
+            <hr />
+            <div class="form-grid">
+                <div>
+                    <label for="prdtName">비품명</label>
+                    <input type="text" id="prdtName" name="prdtName"/>
                 </div>
-                <hr />
-            </form>
-        </div>
 
-        <div class="plus-minus">
-            <button class="plus-btn">+</button>
-            <button class="minus-btn">-</button>
-        </div>
+                <div>
+                    <label for="prdtCtgr">카테고리</label>
+                    <select id="prdtCtgr" name="prdtCtgr" >
+                        <option value="컴퓨터기기" >컴퓨터기기</option>
+                        <option value="사무용품" >사무용품</option>
+                        <option value="프린터용품" >프린터용품</option>
+                    </select>
+                </div>
 
-        <div class="btn-group">
-            <button class="product-add">추가</button>
-            <button class="product-cancel">취소</button>
-        </div>
-    <jsp:include page="../layout/layout_close.jsp" />
+                <div>
+                    <label for="onceYn">소모품 분류</label>
+                    <select id="onceYn" name="onceYn" >
+                        <option value="소모품" >소모품</option>
+                        <option value="비소모품" >비소모품</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="curStr">재고수</label>
+                    <input type="number" id="curStr" name="curStr"/>
+                </div>
+
+                <div>
+                    <label for="buyDt">구매일</label>
+                    <input type="date" id="buyDt" name="buyDt"/>
+                </div>
+
+                <div>
+                    <label for="prdtPrice">가격</label>
+                    <input type="text" id="prdtPrice" name="prdtPrice"/>
+                </div>
+
+            </div>
+            <hr />
+        </form>
+    </div>
+
+    <div class="plus-minus">
+        <button class="plus-btn">+</button>
+        <button class="minus-btn">-</button>
+    </div>
+
+    <div class="btn-group">
+        <button class="product-add">추가</button>
+        <button class="product-cancel">취소</button>
+    </div>
 </body>
 </html>

@@ -19,31 +19,19 @@
 </head>
 <body>
 
+<%-- 팀원 삭제, 추가 모달 영역 --%>
 <jsp:include page="modal.jsp"/>
-
-<%-- 팀원 추가 모달 영역 --%>
-<div class="modal" id="add-alert-modal" style="display:none;" data-dept-id="${project.deptId}">
-    <div id="modal-cancel-button" class="close"></div>
-
-    <div class="modal-content">
-
-        <select id="modal-add-team-list">
-        </select>
-
-        <button id="modal-add-button">등록</button>
-    </div>
-</div>
 
 <%--메인 컨텐츠--%>
 <div>
     <div>
-        <h4>
+        <h4 id="project" data-project-id="${project.prjId}">
             프로젝트 : ${project.prjName}
         </h4>
     </div>
 
     <div>
-        ${teammateCount}명
+        ${teammateCount} 명
     </div>
 
     <table class="table">
@@ -130,7 +118,7 @@
     <div class="btn-group">
         <div>
             <%--해당 버튼을 누르면 팀원 등록 모달이 생김--%>
-            <button id="new-teammate" onclick="javascript:void(0);">팀원 등록</button>
+            <button id="new-teammate" onclick="javascript:void(0);" data-dept-id="${deptId}">팀원 등록</button>
             <button id="delete-massive-teammate" onclick="javascript:void(0);">일괄 삭제</button>
         </div>
     </div>

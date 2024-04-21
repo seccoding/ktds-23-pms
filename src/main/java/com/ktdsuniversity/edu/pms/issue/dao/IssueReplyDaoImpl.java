@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO;
-import com.ktdsuniversity.edu.pms.issue.vo.SearchIssueReplyVO;
 
 @Repository
 public class IssueReplyDaoImpl extends SqlSessionDaoSupport implements IssueReplyDao{
@@ -20,8 +19,8 @@ public class IssueReplyDaoImpl extends SqlSessionDaoSupport implements IssueRepl
 	}
 
 	@Override
-	public List<IssueReplyVO> getAllReplies(SearchIssueReplyVO searchIssueReplyVO) {
-		return getSqlSession().selectList(IssueReplyDao.NAME_SPACE + ".getAllReplies", searchIssueReplyVO);
+	public List<IssueReplyVO> getAllReplies(IssueReplyVO issueReplyVO) {
+		return getSqlSession().selectList(IssueReplyDao.NAME_SPACE + ".getAllReplies", issueReplyVO);
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.output.service.OutputService;
 import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
+import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
@@ -38,11 +39,11 @@ public class OutputController {
 	
 	@GetMapping("/output")
 	public String viewOutputList() {
-		return "redirect:output/search?prjId=null";
+		return "redirect:output/search?prjId=";
 	}
 	@GetMapping("/output/search")
-	public String viewOutputSearhList(@RequestParam String prjId, Model model) {
-		OutputListVO outputList = this.outputService.getAllOutputList();
+	public String viewOutputSearhList(@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
+		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
 				projectList.getProjectList().stream().
@@ -51,7 +52,8 @@ public class OutputController {
 		
 		model.addAttribute("outputList",outputList).addAttribute("prjId",prjId)
 		.addAttribute("projectList", projectList)
-		.addAttribute("commonCodeList", commonCodeList);
+		.addAttribute("commonCodeList", commonCodeList)
+		.addAttribute("outputSearchVO", outputSearchVO);
 		
 		return "output/outputlist";
 	}

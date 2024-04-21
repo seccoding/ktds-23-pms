@@ -14,7 +14,7 @@ public interface ProductService {
 	 */
 	public ProductListVO getAllProduct(ProductVO productVO);
 
-	public boolean createNewProduct(ProductVO productVO);
+	public int createNewProduct(ProductListVO productList);
 
 	public ProductVO getOneProduct(String id);
 
@@ -31,14 +31,20 @@ public interface ProductService {
 	 */
 	public ProductListVO getAllProductCategory();
 
-	/**
-	 * 비품명이 변경될때 수량을 자동으로 변경해주기 위해서 필요한 메소드(
-	 * @return 모든 비품 목록
-	 */
-	public List<ProductVO> getAllProductList();
-
-
 	
+	/**
+	 * 선택된 비품명으로 해당 비품의 재고수를 얻기 위함
+	 * @param prdtName 선택된 비품명
+	 * @return 선택된 비품의 정보들
+	 */
+	public ProductVO getOneSelectedProduct(String prdtName);
+
+	/**
+	 * 여러 개의 비품 일괄등록 
+	 * @param addItems
+	 * @return
+	 */
+	public boolean createManyProduct(List<Integer> addItems);
 	
 
 }

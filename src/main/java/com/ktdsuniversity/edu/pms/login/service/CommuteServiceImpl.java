@@ -1,7 +1,5 @@
 package com.ktdsuniversity.edu.pms.login.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +14,17 @@ public class CommuteServiceImpl implements CommuteService {
 	private CommuteDao commuteDao;
 
 	@Override
-	public CommuteListVO getAllCommuteData() {
+	public CommuteListVO getAllCommuteData(CommuteVO commuteVO) {
 
-		List<CommuteVO> commuteList = this.commuteDao.getAllCommuteData();
 		CommuteListVO commuteListVO = new CommuteListVO();
-		commuteListVO.setCommuteList(commuteList);
+		commuteListVO.setCommuteList(commuteDao.getAllCommuteData(commuteVO));
 		return commuteListVO;
 	}
 
 	@Override
-	public CommuteListVO getAllCommuteDataByEmpId() {
-		
-		List<CommuteVO> commuteList = this.commuteDao.getAllCommuteDataByEmpId();
+	public CommuteListVO getAllCommuteDataByEmpId(String empId) {
 		CommuteListVO commuteListVO = new CommuteListVO();
-		commuteListVO.setCommuteList(commuteList);
+		commuteListVO.setCommuteList(commuteDao.getAllCommuteDataByEmpId(empId));
 		return commuteListVO;
 	}
 

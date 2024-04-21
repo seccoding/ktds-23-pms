@@ -55,6 +55,13 @@ $().ready(function () {
 
   if (!isMainLayout) {
     var framePath = window.parent.getLocationPathInFrame();
+    
+    // 자동 로그아웃되어서 로그인 페이지가 iframe에 보여질 경우
+    // Logout 한다.
+    if (framePath == "/employee/login") {
+		window.parent.location = "/employee/login";
+	}
+    
     var menuObject = window.parent.findMenuObject(framePath);
 
     var activeFrameDataset = window.parent.getActiveFrameDataset();

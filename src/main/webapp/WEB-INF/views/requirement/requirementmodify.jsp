@@ -6,19 +6,25 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <jsp:include page="../ckeditor.jsp" />
+    <script
+      type="text/javascript"
+      src="/js/requirement/requirementwrite.js"
+    ></script>
     <script type="text/javascript">
       window.onload = function () {
-        var editors = loadEditor(".editor", "내용을 입력하세요.");
+        var editors = loadEditor(
+          ".editor",
+          "내용을 입력하세요.",
+          "${requirement.rqmCntnt}"
+        );
         var rqmCntnt = "";
 
-        $(".ck-content").append($("#rqm-cntnt").val());
-
-        // editors.setData($("#rqm-cntnt").val());
+        //$(".ck-content").append($("#rqm-cntnt").val());
 
         $("button").on("click", function (event) {
           event.preventDefault();
 
-          rqmCntnt = editors.getData("dataTag");
+          rqmCntnt = editors.getData();
 
           $("#rqm-cntnt").val(rqmCntnt);
 
@@ -61,18 +67,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           value="${requirement.rqmTtl}"
         />
 
+        <label for="dvlrp">담당개발자</label>
+        <select id="dvlrp-check" name="dvlrp" id="dvlrp"></select>
+
+        <label for="cfrmr">확인자</label>
+        <select id="cfrmr-check" name="cfrmr" id="cfrmr"></select>
+
+        <label for="tstr">테스터</label>
+        <select id="tstr-check" name="tstr" id="tstr"></select>
+
         <!-- ckeditor를 이용한 내용넣기-->
         <label for="rqm-cntnt">요구사항 내용</label>
         <div class="hereCkEditor5">
           <%-- 여기가 editor 생성부 --%>
-          <div class="editor" data-tag="dataTag"></div>
-          <%-- 여기가 실제 데이터가 담기는 곳 --%>
-          <input
-            type="hidden"
-            name="rqmCntnt"
-            id="rqm-cntnt"
-            value="${requirement.rqmCntnt}"
-          />
+          <div class="editor" data-name="rqmCntnt"></div>
         </div>
 
         <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->

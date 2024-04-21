@@ -52,11 +52,12 @@ public class LoginLogServiceImpl implements LoginLogService {
 
 		String storedSalt = this.loginLogDao.selectSalt(employeeVO.getEmpId());
 
-		employeeVO.setPwd(this.sha.getEncrypt(employeeVO.getPwd(), storedSalt));
 		// 만약, salt 값이 null 이라면, 회원정보가 없는 것이므로 사용자에게 예외를 전달한다.
 		if (StringUtils.isEmpty(storedSalt)) {
 			throw new EmpIdEndDTException();
 		}
+
+		employeeVO.setPwd(this.sha.getEncrypt(employeeVO.getPwd(), storedSalt));
 
 		//현재시간이 로그인 시도시간 + 1/24보다 큰 경우 1을 반환하고 아니라면 0을 반환하는 쿼리를 실행
 		//실행된 값이 0보다 클경우 로그인 시도횟수를 0으로 초기화

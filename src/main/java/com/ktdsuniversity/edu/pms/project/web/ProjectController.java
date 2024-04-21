@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,6 +121,7 @@ public class ProjectController {
         int teammateCount = projectService.getProjectTeammateCount(prjId);
         List<ProjectTeammateVO> teammate = projectService.getAllProjectTeammateByProjectId(prjId);
 
+        model.addAttribute("deptId", project.getDeptId());
         model.addAttribute("project", project);
         model.addAttribute("teammateCount", teammateCount);
         model.addAttribute("teammate", teammate);
@@ -296,7 +295,7 @@ public class ProjectController {
     // 세션 추가 필요
     @ResponseBody
     @PostMapping("/ajax/teammate/delete/massive")
-    public AjaxResponse doDeleteMassiveTeammate(@RequestParam("deleteItems[]") List<String> deleteItems) {
+    public AjaxResponse deleteMassiveTeammate(@RequestParam("deleteItems[]") List<String> deleteItems) {
         boolean deleteResult = projectService.deleteManyTeammate(deleteItems);
 
         return new AjaxResponse().append("result", deleteResult);
@@ -304,7 +303,7 @@ public class ProjectController {
 
     @ResponseBody
     @GetMapping("/ajax/teammate/delete/{prjTmId}")
-    public AjaxResponse doDeleteTeammate(@PathVariable String prjTmId) {
+    public AjaxResponse deleteTeammate(@PathVariable String prjTmId) {
         boolean deleteResult = projectService.deleteOneTeammate(prjTmId);
 
         return new AjaxResponse().append("result", deleteResult);
@@ -320,5 +319,13 @@ public class ProjectController {
                 .toList();
 
         return new AjaxResponse().append("teammateList", list);
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/teammate/add")
+    public AjaxResponse addNewProjectTeammate(ProjectTeammateVO newProjectTeammate) {
+        boolean addResult = projectService.insertOneTeammate(newProjectTeammate);
+
+        return new AjaxResponse().append("result", addResult).append("message", "이미 존재하는 팀원입니다.");
     }
 }

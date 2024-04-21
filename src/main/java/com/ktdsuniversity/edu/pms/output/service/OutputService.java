@@ -5,11 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
+import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 
 public interface OutputService {
 
 	public OutputListVO getAllOutputList();
+	
+	public OutputListVO serarchAllOutputList(OutputSearchVO outputSearchVO);
 
 	public boolean insertOneOutput(OutputVO outputVO, MultipartFile file);
 
