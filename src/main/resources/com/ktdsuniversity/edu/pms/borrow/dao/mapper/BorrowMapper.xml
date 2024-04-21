@@ -9,16 +9,22 @@
 		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 			<id column="PRDT_ID" property="prdtId" />
 			<result column="PRDT_NAME" property="prdtName" />
+			<result column="ONCE_YN" property="onceYn" />
 			<result column="PRDT_CTGR" property="prdtCtgr" />
 		</association>
 	</resultMap>
 
 	<select id="getBorrowCount" resultType="_int" parameterType="string">
 		SELECT COUNT(1)
-		  FROM BORROW_HISTORY
-		 WHERE DEL_YN = 'N'
-		   AND BRRW_ID = #{_parameter}
-		   AND RTN_DT IS NULL
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE BH.DEL_YN = 'N'
+		   AND BH.BRRW_ID = #{_parameter}
+		   AND BH.RTN_DT IS NULL
+		   AND P.ONCE_YN = 'N'
 	</select>
 
 	<select id="getUserRentalState" resultMap="borrowVOMap" parameterType="string">
@@ -28,7 +34,8 @@
 			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
 			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
 			 , BH.DEL_YN
-			 , P.PRDT_NAME 
+			 , P.PRDT_NAME
+			 , P.ONCE_YN 
 			 , P.PRDT_CTGR
 		  FROM BORROW_HISTORY BH
 		 INNER JOIN PRODUCT_MANAGEMENT PM
@@ -43,24 +50,29 @@
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
 			resultType="_int">
 		SELECT COUNT(1)
-		  FROM BORROW_HISTORY
-		 WHERE DEL_YN ='N'
-		   AND RTN_DT IS NULL
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE BH.DEL_YN ='N'
+		   AND BH.RTN_DT IS NULL
+		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "prdtMngId"'>
-		   AND PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND BH.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "borrowId"'>
-		   AND BRRW_ID LIKE '%' || #{searchKeyword} || '%'
+		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "noSelect"'>
-		   AND (PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
-		   OR PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
-		   OR BRRW_ID LIKE '%' || #{searchKeyword} || '%')
+		   AND (BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+		   OR BH.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   OR BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%')
 				</when>
 			</choose>
 		</if>
@@ -76,6 +88,7 @@
 			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
 			 , BH.DEL_YN
 			 , P.PRDT_NAME
+			 , P.ONCE_YN 
 			 , P.PRDT_CTGR
 		  FROM BORROW_HISTORY BH
 		 INNER JOIN PRODUCT_MANAGEMENT PM
