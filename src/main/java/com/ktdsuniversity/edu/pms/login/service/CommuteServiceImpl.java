@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.ktdsuniversity.edu.pms.login.dao.CommuteDao;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
@@ -13,10 +14,10 @@ public class CommuteServiceImpl implements CommuteService {
 	private CommuteDao commuteDao;
 
 	@Override
-	public CommuteListVO getAllCommuteData() {
+	public CommuteListVO getAllCommuteData(CommuteVO commuteVO) {
 
 		CommuteListVO commuteListVO = new CommuteListVO();
-		commuteListVO.setCommuteList(commuteDao.getAllCommuteData());
+		commuteListVO.setCommuteList(commuteDao.getAllCommuteData(commuteVO));
 		return commuteListVO;
 	}
 

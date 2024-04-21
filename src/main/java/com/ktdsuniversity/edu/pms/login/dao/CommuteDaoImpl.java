@@ -19,8 +19,8 @@ public class CommuteDaoImpl extends SqlSessionDaoSupport implements CommuteDao {
 	}
 
 	@Override
-	public List<CommuteVO> getAllCommuteData() {
-		return getSqlSession().selectList(CommuteDao.COMMUTE_SPACE + ".getAllCommuteData");
+	public List<CommuteVO> getAllCommuteData(CommuteVO commuteVO) {
+		return getSqlSession().selectList(CommuteDao.COMMUTE_SPACE + ".getAllCommuteData", commuteVO);
 	}
 
 	@Override
