@@ -126,7 +126,13 @@ public class RequirementController {
 		return this.requirementService.getDownloadFile(Requirement);
 		
 	}
-	
+	@ResponseBody
+	@GetMapping("/requirement/teammate/{prjId}")
+	public AjaxResponse postProjectTeammate(@PathVariable String prjId) {
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
+		
+		return new AjaxResponse().append("prjTeammateList", prjTeammateList);
+	}
 
 	@GetMapping("/project/requirement/modify")
 	public String viewModifyPage(/* @SessionAttribute , */

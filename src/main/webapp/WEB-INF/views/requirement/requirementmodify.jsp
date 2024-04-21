@@ -6,6 +6,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <jsp:include page="../ckeditor.jsp" />
+    <script
+      type="text/javascript"
+      src="/js/requirement/requirementwrite.js"
+    ></script>
     <script type="text/javascript">
       window.onload = function () {
         var editors = loadEditor(
@@ -62,6 +66,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           name="rqmTtl"
           value="${requirement.rqmTtl}"
         />
+
+        <label for="dvlrp">담당개발자</label>
+        <select id="dvlrp-check" name="dvlrp" id="dvlrp"></select>
+
+        <label for="cfrmr">확인자</label>
+        <select id="cfrmr-check" name="cfrmr" id="cfrmr"></select>
+
+        <label for="tstr">테스터</label>
+        <select id="tstr-check" name="tstr" id="tstr"></select>
 
         <!-- ckeditor를 이용한 내용넣기-->
         <label for="rqm-cntnt">요구사항 내용</label>

@@ -8,6 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 
 
@@ -26,11 +27,21 @@ public class OutputDaoImpl extends SqlSessionDaoSupport implements OutputDao{
 	public List<OutputVO> getAllOutputList() {
 		return getSqlSession().selectList(NAME_SPACE+".getAllOutputList");
 	}
+	
+	@Override
+	public List<OutputVO> searchAllOutPutList(OutputSearchVO outputSearchVO) {
+		return getSqlSession().selectList(NAME_SPACE+".searchAllOutPutList", outputSearchVO);
+	}
 
 
 	@Override
 	public int getOutputCnt() {
 		return getSqlSession().selectOne(NAME_SPACE+".getOutputCnt");
+	}
+	
+	@Override
+	public int searchOutputCnt(OutputSearchVO outputSearchVO) {
+		return getSqlSession().selectOne(NAME_SPACE+".searchOutputCnt",outputSearchVO);
 	}
 
 
@@ -56,4 +67,10 @@ public class OutputDaoImpl extends SqlSessionDaoSupport implements OutputDao{
 	public int updateOneOutput(OutputVO outputVO) {
 		return getSqlSession().update(NAME_SPACE+".updateOneOutput", outputVO);
 	}
+
+
+
+
+
+	
 }

@@ -6,14 +6,15 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>산출물관리 리스트 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    <script type="text/javascript" src="/js/output/outputlist.js"></script>
   </head>
   <body>
     <label for="prj-id"></label>
     <select name="prjId" id="prj-id">
-      <option value="ALL" selected>프로젝트</option>
+      <option value="" selected>프로젝트</option>
       <c:forEach items="${projectList.projectList}" var="project">
         <c:choose>
-          <c:when test="${project.prjId eq prjId}">
+          <c:when test="${project.prjId eq outputSearchVO.prjId}">
             <option value="${project.prjId}" selected>
               ${project.prjName}
             </option>
@@ -30,7 +31,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <option value="" selected>산출물타입</option>
       <c:forEach items="${commonCodeList}" var="commonCode">
         <c:choose>
-          <c:when test="${commonCode.cmcdId eq prjId}">
+          <c:when test="${commonCode.cmcdId eq outputSearchVO.outType}">
             <option value="${commonCode.cmcdId}" selected>
               ${commonCode.cmcdName}
             </option>
@@ -42,12 +43,32 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </c:forEach>
     </select>
 
-    <button id="search">검색</button>
-    <button id="reset">초기화</button>
+    <button id="search-output">검색</button>
+    <button id="reset"><a href="/output/search?prjId=">초기화</a></button>
 
     <table class="table">
+      <colgroup>
+        <col width="40px" />
+        <col width="160px" />
+        <col width="160px" />
+        <col width="160px" />
+        <col width="160px" />
+        <col width="160px" />
+        <col width="160px" />
+        <col width="160px" />
+        <col width="40px" />
+        <col width="40px" />
+      </colgroup>
       <thead>
         <tr>
+          <th>
+            <input
+              type="checkbox"
+              id="checked-all"
+              data-target-class="target-out-id"
+            />
+            <label for="checked-all"></label>
+          </th>
           <th>프로젝트</th>
           <th>산출물 제목</th>
           <th>산출물 종류</th>
@@ -62,8 +83,21 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <tbody>
         <c:choose>
           <c:when test="${not empty outputList}">
-            <c:forEach var="output" items="${outputList.outputList}">
+            <c:forEach
+              var="output"
+              items="${outputList.outputList}"
+              varStatus="status"
+            >
               <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="target-out-id"
+                    id="checked-out-${status.index}"
+                    value="${output.outId}"
+                  />
+                  <label for="checked-out-${status.index}"></label>
+                </td>
                 <td>${output.project.prjName}</td>
                 <td>${output.outTtl}</td>
                 <td>${output.outTypeVO.cmcdName}</td>
@@ -96,6 +130,51 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:choose>
       </tbody>
     </table>
-    <button><a href="/output/write">신규</a></button>
+
+    <!--pagination-->
+    <ul class="page-nav">
+      <c:if test="${outputList.listCnt > 0}">
+        <!--처음-->
+        <c:if test="${outputSearchVO.hasPrevGroup}">
+          <li><a href="javascript:search(0)">처음</a></li>
+        </c:if>
+        <!--이전-->
+        <c:if test="${outputSearchVO.hasPrevGroup}">
+          <li>
+            <a href="javascript:search(${outputSearchVO.prevGroupStartPageNo})"
+              >이전</a
+            >
+          </li>
+        </c:if>
+        <!-- 각 페이지 링크 -->
+        <c:forEach
+          varStatus="status"
+          begin="${outputSearchVO.groupStartPageNo}"
+          end="${outputSearchVO.groupEndPageNo}"
+        >
+          <li>
+            <a
+              href="javascript:search(${outputSearchVO.groupStartPageNo+status.count-1})"
+              >${outputSearchVO.groupStartPageNo+status.count}</a
+            >
+          </li>
+        </c:forEach>
+        <!--다음-->
+        <c:if test="${outputSearchVO.hasNextGroup}">
+          <a href="javascript:search(${outputSearchVO.nextGroupStartPageNo})"
+            >다음</a
+          ></c:if
+        >
+        <!--마지막-->
+        <c:if test="${outputSearchVO.hasNextGroup}"
+          ><a href="javascript:search(${outputSearchVO.pageCount})"
+            >마지막</a
+          ></c:if
+        >
+      </c:if>
+    </ul>
+    <div>
+      <button><a href="/output/write">신규</a></button>
+    </div>
   </body>
 </html>
