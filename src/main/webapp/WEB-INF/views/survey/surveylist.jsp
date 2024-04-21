@@ -7,17 +7,7 @@
 <meta charset="UTF-8">
 <title>설문 목록</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
-<script type="text/javascript">
-    function redirectToURL(prjId) {
-        var srvSts = "${survey.srvSts}";   
-        if (srvSts === "N" || srvSts === "W") {
-            location.href = '/survey/write/' + prjId;
-        } 
-        else {
-            location.href = '/project/search';
-        }
-    }
-</script>
+<script type="text/javascript" src="/js/survey/surveylist.js"></script>
 </head>
 <body>
     <div>
@@ -46,7 +36,7 @@
                 <c:choose>
                     <c:when test="${not empty surveyList.surveyList}">
                         <c:forEach items="${surveyList.surveyList}" var="survey">
-                            <tr onclick="redirectToURL('${survey.prjId}')">
+                            <tr class="prj-list" data-prj-id="${survey.prjId}" data-srv-sts="${survey.srvSts}">
                                 <td>${survey.projectVO.prjName}</td>
                                 <td>${survey.projectVO.clntInfo}</td>
                                 <td>${survey.departmentVO.deptName}</td>
