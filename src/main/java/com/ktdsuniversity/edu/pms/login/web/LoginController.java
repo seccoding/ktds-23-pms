@@ -4,6 +4,7 @@ package com.ktdsuniversity.edu.pms.login.web;
 import java.util.List;
 import java.util.Map;
 
+import com.ktdsuniversity.edu.pms.login.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.SessionUtil;
 import com.ktdsuniversity.edu.pms.utils.Validator;
@@ -109,27 +108,44 @@ public class LoginController {
 
         return "redirect:/employee/login";
     }
-    
-	//출퇴근을 보여주는 페이지
-	@GetMapping("/commute/view")
-	public String doCommuteSearch(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
-		/**
-		 * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
-		 * true: 전체 조회
-		 * false: 입력받은 본인의 출퇴근만 조회
-		 */
-		String AdmnCodeIsSystemFormat = "301";
-		if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
-			CommuteListVO commuteListVO = commuteService.getAllCommuteData();
-			model.addAttribute("commuteList", commuteListVO);
-			return "commute/view";
-		} 
-		else{
-			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
-			model.addAttribute("commuteList", commuteListVO);
-			return "commute/view";
-		}
-	}
-	
 
+    //출퇴근을 보여주는 페이지
+    @GetMapping("/commute/view")
+    public String doCommuteSearch(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
+        /**
+         * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
+         * true: 전체 조회
+         * false: 입력받은 본인의 출퇴근만 조회
+         */
+        String AdmnCodeIsSystemFormat = "301";
+        if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
+            CommuteListVO commuteListVO = commuteService.getAllCommuteData();
+            model.addAttribute("commuteList", commuteListVO);
+            return "commute/view";
+        } else {
+            CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
+            model.addAttribute("commuteList", commuteListVO);
+            return "commute/view";
+        }
+    }
+
+    // 로그인 기록 확인 페이지
+    @GetMapping("/loginlog/view")
+    public String viewLoginLog(Model model) {
+
+        LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog();
+        model.addAttribute("loginLogList", loginLogListVO);
+
+        return "login/loginlogview";
+    }
+
+    // 화면 접근 기록 확인 페이지
+    @GetMapping("/visitedlog/view")
+    public String viewVisitedLog(Model model) {
+
+        VisitedListVO visitedVO = this.loginLogService.getAllVisitedLog();
+        model.addAttribute("visitedList", visitedVO);
+
+        return "login/visitedlogview";
+    }
 }

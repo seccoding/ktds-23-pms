@@ -1,7 +1,9 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
+import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +76,7 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
         return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getPwdCndt", empId);
     }
 
-
-	@Override
+    @Override
 	public void updateOneEmpLgnTryPlusOne(String empId) {
 		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryPlusOne", empId);
 	}
@@ -100,7 +101,15 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 		return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getCountPossibleLogin", empId);
 	}
 
-	
+    @Override
+    public List<LoginLogVO> getAllLoginLog() {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllLoginLog");
+    }
+
+    @Override
+    public List<VisitedVO> getAllVisitedLog() {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllVisitedLog");
+    }
 
 
 }
