@@ -6,6 +6,10 @@
     <title>로그인 페이지</title>
     <link rel="stylesheet" href="../css/common.css"/>
     <style type="text/css">
+        html {
+            background-color: #ffffff;
+        }
+
         .container {
             min-height: 100%;
             display: grid;
@@ -23,7 +27,7 @@
             height: 500px;
         }
 
-        .header, .footer, .empty {
+        .header, .footer {
             grid-column: 1 / 4;
         }
 
@@ -35,6 +39,13 @@
         .grid > div:last-child {
             width: 70%;
             padding-left: 30px;
+        }
+
+        img {
+            position: absolute;
+            margin-left: 30vw;
+
+
         }
 
         form {
@@ -50,15 +61,15 @@
         }
 
         form > div:nth-child(2) {
-            padding-top: 19vh;
-            padding-left: 7vw;
+            padding-top: 170px;
+            padding-left: 100px;
             background-color: rgba(100, 100 ,100, 0.05);
             border-bottom-right-radius: 10px;
-            border-top-right-radius: 10px
+            border-top-right-radius: 10px;
         }
 
-        #loginForm > div:nth-child(2) {
-            gap: 10px;
+        .inputText > div:nth-child(even) {
+            margin-bottom: 17px;
         }
 
         input {
@@ -93,25 +104,25 @@
 <body>
 <div class="container">
     <div class="item header">
-        <h2>홈페이지 로고 + 로그인</h2>
+        <img src="/images/logo.png" alt="" />
     </div>
     <div class="item"></div>
     <div class="item">
         <input type="hidden" name="next" id="next" value="${nextUrl}"/>
-            <form id="loginForm">
-                <div class="leftForm">
-                    <span>PMS</span>
-                </div>
+        <form id="loginForm">
+            <div class="leftForm">
+                <span>PMS</span>
+            </div>
+            <div class="inputText">
+                <div><label for="empId">사원번호</label></div>
+                <div><input id="empId" type="text" name="empId" value="${employeeVO.empId}"/></div>
+                <div><label for="pwd">비밀번호</label></div>
+                <div><input id="pwd" type="password" name="pwd" value="${employeeVO.pwd}"/></div>
                 <div>
-                    <div><label for="empId">사원번호</label></div>
-                    <div><input id="empId" type="text" name="empId" value="${employeeVO.empId}"/></div>
-                    <div><label for="pwd">비밀번호</label></div>
-                    <div><input id="pwd" type="password" name="pwd" value="${employeeVO.pwd}"/></div>
-                    <div>
-                        <button type="button" id="login-btn">로그인</button>
-                    </div>
+                    <button type="button" id="login-btn">로그인</button>
                 </div>
-            </form>
+            </div>
+        </form>
     </div>
     <div class="item"></div>
 </div>
