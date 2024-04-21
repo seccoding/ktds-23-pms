@@ -76,9 +76,15 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	   <if test='prjId != "ALL"'>
+	 <if test='prjId != "ALL"'>
 	   AND	R.PRJ_ID=#{prjId}
-	   </if>	
+	 </if>
+	 <if test='scdSts != null and scdSts != ""'>
+	   AND	R.SCD_STS=#{scdSts}
+	 </if>
+	 <if test='rqmSts != null and rqmSts != ""'>
+	   AND	R.RQM_STS=#{rqmSts}
+	 </if>	
 	</select>
 
 

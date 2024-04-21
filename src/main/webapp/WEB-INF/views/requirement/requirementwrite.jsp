@@ -6,6 +6,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <jsp:include page="../ckeditor.jsp" />
+    <script
+      type="text/javascript"
+      src="/js/requirement/requirementwrite.js"
+    ></script>
     <script type="text/javascript">
       window.onload = function () {
         var editors = loadEditor(
@@ -48,8 +52,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     >
       <div class="grid">
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
-        <label for="rqm-id">프로젝트명</label>
-        <select name="prjId" id="rqm-id">
+        <label for="prj-id">프로젝트명</label>
+        <select name="prjId" id="prj-id">
           <c:forEach items="${projectList.projectList}" var="project">
             <option value="${project.prjId}">${project.prjName}</option>
           </c:forEach>
@@ -64,15 +68,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         />
 
         <label for="dvlrp">담당개발자</label>
-        <select name="dvlrp" id="dvlrp">
-          <c:forEach items="prjTeammateList" var="team"> </c:forEach>
-        </select>
+        <select id="dvlrp-check" name="dvlrp" id="dvlrp"></select>
 
         <label for="cfrmr">확인자</label>
-        <select name="cfrmr" id="cfrmr"></select>
+        <select id="cfrmr-check" name="cfrmr" id="cfrmr"></select>
 
         <label for="tstr">테스터</label>
-        <select name="tstr" id="tstr"></select>
+        <select id="tstr-check" name="tstr" id="tstr"></select>
 
         <!--날짜선택창-->
         <label for="start-date">시작일</label>
