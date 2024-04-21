@@ -17,7 +17,7 @@
 <body>
     <h2>비품 대여 현황(관리자)</h2>
     <div class="flex">
-        <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
+        <div>대여중인 비품은 ${productState.borrowCnt}건입니다.</div>
         <div class="flex">
 
         </div>
@@ -67,6 +67,10 @@
                                 <td>${product.brrwId}</td>
                                 <td>${product.brrwDt}</td>
                                 <c:choose>
+                                    <c:when test="${product.productVO.onceYn eq 'Y'}">
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </c:when>
                                     <c:when test="${not empty product.rtnDt}">
                                         <td>${product.rtnDt}</td>
                                         <td>반납완료</td>
