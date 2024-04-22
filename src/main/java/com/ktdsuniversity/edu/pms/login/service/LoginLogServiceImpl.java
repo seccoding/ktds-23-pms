@@ -151,17 +151,17 @@ public class LoginLogServiceImpl implements LoginLogService {
 	}
 
 	@Override
-	public LoginLogListVO getAllLoginLog() {
+	public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO) {
 		LoginLogListVO loginLogListVO = new LoginLogListVO();
-		loginLogListVO.setLoginLogList(this.loginLogDao.getAllLoginLog());
+		loginLogListVO.setLoginLogList(this.loginLogDao.getAllLoginLog(loginLogVO));
 
 		return loginLogListVO;
 	}
 
 	@Override
-	public VisitedListVO getAllVisitedLog() {
+	public VisitedListVO getAllVisitedLog(VisitedVO visitedVO) {
 		VisitedListVO visitedListVO = new VisitedListVO();
-		visitedListVO.setVisitedList(this.loginLogDao.getAllVisitedLog());
+		visitedListVO.setVisitedList(this.loginLogDao.getAllVisitedLog(visitedVO));
 
 		return visitedListVO;
 	}
