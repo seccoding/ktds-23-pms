@@ -3,7 +3,7 @@ package com.ktdsuniversity.edu.pms.approval.service;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailListVO;
 
 public interface ApprovalDetailService {
-	
+
 	public ApprovalDetailListVO getAllApprovalDetail();
 
 	/**
@@ -11,9 +11,9 @@ public interface ApprovalDetailService {
 	 */
 //   public boolean createNewApprovalDetail( ApprovalDetailVO approvaldetailVo);
 
-//   public ApprovalDetailListVO getPersonApprovalDetail(String id);
-  
 	// PSH0422
-//	public boolean updateUnusablePrdt(String apprId);
+	public ApprovalDetailListVO getPersonApprovalDetail(String apprId);
+
+	public boolean updateUnusablePrdt(String apprId);
 
 }

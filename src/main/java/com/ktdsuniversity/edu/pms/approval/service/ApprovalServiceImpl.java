@@ -112,41 +112,41 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return updateCount > 0;
 	}
 	
-//	@Transactional
-//	@Override
-//	public boolean getNewPrdtBorrowForAppr(String apprId) {
-//		// 1. 기대여 비품 선택
-//		List<String> prdtNameList = this.approvalDetailDao.getPrdtNameByApprId(apprId);
-//		// 2. 신규 대여 비품 선택
-//		List<BorrowVO> borrowVOList = new ArrayList<>();
-//		int isSuccessprdtMng = 0;
-//		for (int i = 0 ; i < prdtNameList.size(); i++ ) {
-//			String newBrrwPrdtId = this.productManagementDao.getNewPrdtMngIdForBorrow(prdtNameList.get(i));
-//			isSuccessprdtMng += this.productManagementDao.changeItemBrrwStateY(newBrrwPrdtId);
-//			// 신규 대여이력정보
-//			BorrowVO borrowVO = new BorrowVO();
-//			borrowVO.setBrrwId(this.approvalDao.selectOneApproval(apprId).getDmdId());
-//			borrowVO.setPrdtMngId(newBrrwPrdtId);
-//			borrowVOList.add(i, borrowVO);
-//		}
-//		// 3. 신규 대여 대여처리
-//		int isSuccessBrrwHt = this.borrowDao.newBrrwPrdtByAppr(borrowVOList);
-//		if( (isSuccessprdtMng != isSuccessBrrwHt) && (isSuccessBrrwHt != borrowVOList.size())) {
-//			throw new PageNotFoundException();
-//		}
-//
-//		// 4. 재고 수량 감소
-//		int isSuccessChange = 0;
-//		for (String prdtName : prdtNameList) {
-//			isSuccessChange += this.productDao.changeOnePrdtStored(prdtName);
-//		}
-//		if(isSuccessChange != prdtNameList.size()) {
-//			throw new PageNotFoundException();
-//		}
-//
-//		boolean isProcessSuccess = (isSuccessprdtMng > 0) && (isSuccessBrrwHt > 0) && (isSuccessChange > 0);
-//		return isProcessSuccess;
-//	}
+	@Transactional
+	@Override
+	public boolean getNewPrdtBorrowForAppr(String apprId) {
+		// 1. 기대여 비품 선택
+		List<String> prdtNameList = this.approvalDetailDao.getPrdtNameByApprId(apprId);
+		// 2. 신규 대여 비품 선택
+		List<BorrowVO> borrowVOList = new ArrayList<>();
+		int isSuccessprdtMng = 0;
+		for (int i = 0 ; i < prdtNameList.size(); i++ ) {
+			String newBrrwPrdtId = this.productManagementDao.getNewPrdtMngIdForBorrow(prdtNameList.get(i));
+			isSuccessprdtMng += this.productManagementDao.changeItemBrrwStateY(newBrrwPrdtId);
+			// 신규 대여이력정보
+			BorrowVO borrowVO = new BorrowVO();
+			borrowVO.setBrrwId(this.approvalDao.selectOneApproval(apprId).getDmdId());
+			borrowVO.setPrdtMngId(newBrrwPrdtId);
+			borrowVOList.add(i, borrowVO);
+		}
+		// 3. 신규 대여 대여처리
+		int isSuccessBrrwHt = this.borrowDao.newBrrwPrdtByAppr(borrowVOList);
+		if( (isSuccessprdtMng != isSuccessBrrwHt) && (isSuccessBrrwHt != borrowVOList.size())) {
+			throw new PageNotFoundException();
+		}
+
+		// 4. 재고 수량 감소
+		int isSuccessChange = 0;
+		for (String prdtName : prdtNameList) {
+			isSuccessChange += this.productDao.changeOnePrdtStored(prdtName);
+		}
+		if(isSuccessChange != prdtNameList.size()) {
+			throw new PageNotFoundException();
+		}
+
+		boolean isProcessSuccess = (isSuccessprdtMng > 0) && (isSuccessBrrwHt > 0) && (isSuccessChange > 0);
+		return isProcessSuccess;
+	}
 
 	@Override
 	public boolean deleteOneApproval(String apprId) {

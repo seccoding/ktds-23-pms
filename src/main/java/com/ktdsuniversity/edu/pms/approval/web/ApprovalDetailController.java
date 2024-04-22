@@ -15,11 +15,11 @@ public class ApprovalDetailController {
     private ApprovalDetailService approvalDetailService;
 
     // 결재 승인 후 비품 사용 불가
-//    @ResponseBody
-//    @PostMapping("/ajax/apprDtl/unusablePrdt")
-//    public AjaxResponse doUnusableProduct(String apprId) {
-//        boolean isSuccessChanged = this.approvalDetailService.updateUnusablePrdt(apprId);
-//        return new AjaxResponse().append("result", isSuccessChanged)
-//                                 .append("next", "/approval/view?apprId=" + apprId);
-//    }
+    @ResponseBody
+    @PostMapping("/ajax/apprDtl/unusablePrdt")
+    public AjaxResponse doUnusableProduct(String apprId) {
+        boolean isSuccessChanged = this.approvalDetailService.updateUnusablePrdt(apprId);
+        return new AjaxResponse().append("result", isSuccessChanged)
+                                 .append("next", "/approval/view?apprId=" + apprId);
+    }
 }

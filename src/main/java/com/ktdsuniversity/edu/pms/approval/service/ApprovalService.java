@@ -27,7 +27,7 @@ public interface ApprovalService {
 
 	public boolean createApproval(ApprovalVO approvalVO);
 	
-//	public boolean getNewPrdtBorrowForAppr(String apprId);
+	public boolean getNewPrdtBorrowForAppr(String apprId);
 
 	/**
 	 * 승인되지 않은 결재 내역 개수
