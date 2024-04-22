@@ -17,5 +17,9 @@ public interface SurveyQuestionService {
 	public boolean createSurveyBody(SurveyQuestionVO surveyQuestionVO);
 
 	public List<SurveyQuestionVO> getAllSurveys(SearchSurveyVO searchSurveyVO);
+	
+	public boolean modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
+	public boolean modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO);
 
 }
