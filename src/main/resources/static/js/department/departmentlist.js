@@ -182,13 +182,16 @@ $().ready(function () {
           $.get("/ajax/department/team/delete/" + tmId, function (response) {
             if (response.data.success) {
               alert("삭제에 성공하였습니다.");
+              location.reload();
             } else {
               alert("삭제중 오류가 발생했습니다.");
+              location.reload();
             }
           });
         }
       } else {
         alert("사원이 존재하고 있어 삭제할 수 없습니다.");
+        location.reload();
       }
     });
   });
@@ -200,7 +203,7 @@ $().ready(function () {
       "/ajax/department/create",
       { deptName: departmentName, deptLeadId: departmentLeader },
       function (response) {
-        location.href = rsponese.data.nextUrl;
+        location.href = response.data.nextUrl;
       }
     );
   });
@@ -219,7 +222,9 @@ $().ready(function () {
     var teamName = $("#team-name").val();
     console.log(teamName);
     var teamLeader = $("#team-leader").val();
-    var teamDepartment = $("#team-department").val();
+    console.log(teamLeader);
+    var teamDepartment = $(".department-selectbox").val();
+    console.log(teamDepartment);
     $.post(
       "/ajax/team/create",
       { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
