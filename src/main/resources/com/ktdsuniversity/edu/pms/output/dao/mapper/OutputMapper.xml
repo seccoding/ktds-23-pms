@@ -85,9 +85,18 @@
 		    ON O.OUT_VER = OUTVERSTS.CMCD_ID
 		 WHERE O.DEL_YN='N'
 		   AND P.OUT_YN='Y'  
-		 <if test='prjId != null and prjId!= ""'>
+		<choose>
+		  <when test='prjId != null and prjId!= ""'>
 		   AND O.PRJ_ID = #{prjId}
-		 </if>
+		   </when>
+		  <otherwise>
+		  AND  O.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+		  </otherwise>
+		</choose>
 		 <if test='outType != null and outType != ""'>
 		  AND O.OUT_TYPE = #{outType}
 		 </if>
