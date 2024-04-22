@@ -20,5 +20,9 @@ public interface SurveyQuestionDao {
 	public int insertSurveyBody(SurveyQuestionVO surveyQuestionVO);
 
 	public List<SurveyQuestionVO> getAllSurveys(SearchSurveyVO searchSurveyVO);
+	
+	public int modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
+	public int modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO);
 
 }
