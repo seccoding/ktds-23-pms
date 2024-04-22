@@ -51,10 +51,9 @@ public class OutputController {
 	public String viewOutputSearhList(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
 		
-		if(! employeeVO.getAdmnCode().equals("301") ) {//관리자가 아닌경우
+		if(! employeeVO.getAdmnCode().equals("301") && employeeVO.getAdmnCode().equals("PM"))  {//관리자가 아닌경우
 			outputSearchVO.setEmpId(employeeVO.getEmpId());
 		}
-		
 		
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
