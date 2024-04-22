@@ -37,6 +37,9 @@
         top: 3px;
 
     }
+    input[type="checkbox"] {
+        display: inline-block;
+    }
 </style>
 </head>
 <body>
@@ -66,8 +69,8 @@
                 <tr>
                     <th>
                         <input type="checkbox" class="checkbox" id="checked-all"/>
-                        <label for="checkbox1"></label>
-                        <label for="checkbox1"></label>
+                        <!-- <label for="checkbox1"></label>
+                        <label for="checkbox1"></label> -->
                     </th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>

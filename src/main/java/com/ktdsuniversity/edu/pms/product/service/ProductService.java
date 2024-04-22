@@ -19,7 +19,7 @@ public interface ProductService {
 	 * @param productList
 	 * @return
 	 */
-	public int createNewProduct(ProductListVO productList, String prdtId);
+	public int createNewProduct(ProductListVO productList);
 
 	public ProductVO getOneProduct(String id);
 

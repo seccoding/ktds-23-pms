@@ -39,12 +39,24 @@ public class ProductServiceImpl implements ProductService{
 
 	@Transactional
 	@Override
-	public int createNewProduct(ProductListVO productList, String prdtId) {
+	public int createNewProduct(ProductListVO productList) {
 		int insertCount = 0;
 		
 		for( ProductVO productVO : productList.getProductList()) {
+			
+			// 추가할 비품ID의 시퀀스 값을 가져온다.
+			String prdtId = this.productDao.selectOnePrdtId();
+			
 			productVO.setPrdtId(prdtId);
-			insertCount += this.productDao.insertNewProduct(productVO);			
+			insertCount += this.productDao.insertNewProduct(productVO);
+			
+			// 수량만큼 해당 비품의 관리 상세목록에 비품을 추가
+			for(int i=0; i < productVO.getCurStr(); i++) {
+				
+				productVO.getProductManagementVO().setPrdtId(prdtId);
+				
+				this.productManagementDao.addProductManagement(productVO.getProductManagementVO());
+			}
 		}
 		
 		return insertCount;

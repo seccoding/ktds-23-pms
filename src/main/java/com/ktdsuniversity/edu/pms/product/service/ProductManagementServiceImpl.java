@@ -82,18 +82,19 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 		return changeProductCnt > 0;
 	}
 
-	@Transactional
-	@Override
-	public int addSomeProductManagement(ProductListVO productList, String prdtId) {
-		int insertedCount = 0;
-		
-		for( ProductVO productVO : productList.getProductList()) {
-			productVO.setPrdtId(prdtId);
-			insertedCount += this.productManagementDao.addProductManagement(productVO);
-		}
-		
-		return insertedCount;
-	}
+//	@Transactional
+//	@Override
+//	public int addSomeProductManagement(ProductListVO productList, String prdtId) {
+//		int insertedCount = 0;
+//		
+//		for( ProductVO productVO : productList.getProductList() ) {
+//			productVO.getProductManagementVO().setPrdtId(prdtId);
+//			productVO.setPrdtId(prdtId);
+//			insertedCount += this.productManagementDao.addProductManagement(productVO);
+//		}
+//		
+//		return insertedCount;
+//	}
 
 	@Transactional
 	@Override

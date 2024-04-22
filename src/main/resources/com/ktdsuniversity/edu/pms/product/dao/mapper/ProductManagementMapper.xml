@@ -145,12 +145,12 @@
 			, DEL_YN)
 			VALUES 
 			 ('PRDT_MN_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_MN_PK.NEXTVAL, 6, '0')
-			, #{productManagementVO.prdtPrice}
-			, #{productManagementVO.buyDt}
+			, #{prdtPrice}
+			, #{buyDt}
 			, 'N'
 			, NULL
 			, 'N'
-			, 11111
+			, #{prdtId}
 			, 'N')
 	</insert>
 	

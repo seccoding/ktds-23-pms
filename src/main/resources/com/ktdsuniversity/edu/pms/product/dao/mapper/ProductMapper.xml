@@ -66,7 +66,7 @@
 			, CUR_STR
 			, DEL_YN)
 			VALUES
-			 ('PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+			 (#{prdtId}
 			, #{prdtName}
 			, #{prdtCtgr}
 			, #{onceYn}
@@ -143,22 +143,6 @@
 		  FROM PRODUCT
 		 WHERE PRDT_NAME = #{_parameter}
 	</select>
-	
-	<insert id="insertManyProduct" parameterType="list">
-  		INSERT INTO PRODUCT
-		 (PRDT_ID
-		, PRDT_NAME
-		, PRDT_CTGR
-		, ONCE_YN
-		, CUR_STR
-		, DEL_YN)
-		VALUES
-  		<foreach collection="list" item="productListVO" open="(" close=")" separator=", ">
-  			('PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
-  			, #{productListVO.prdtName}, #{productListVO.prdtCtgr}, #{productListVO.onceYn},
-  			  #{productListVO.curStr}, #{productListVO.delYn},)
-  		</foreach>
-  	</insert>
   	
 	<select id="selectOnePrdtId" resultType="string">
 		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')

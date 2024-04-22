@@ -75,8 +75,8 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 
 
 	@Override
-	public int addProductManagement(ProductVO productVO) {
-		return getSqlSession().insert(ProductManagementDao.NAME_SPACE+".addProductManagement", productVO);
+	public int addProductManagement(ProductManagementVO productManagementVO) {
+		return getSqlSession().insert(ProductManagementDao.NAME_SPACE+".addProductManagement", productManagementVO);
 	}
 
 
