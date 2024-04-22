@@ -19,7 +19,16 @@ public class MemoVO {
 	private EmployeeVO employeeVO;
 	private String email;
 	private String empName;
+	private String empId;
 	
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+
 	public String getEmail() {
 		return email;
 	}

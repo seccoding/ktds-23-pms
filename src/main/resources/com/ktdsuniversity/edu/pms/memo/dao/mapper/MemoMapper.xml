@@ -22,7 +22,7 @@
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.RCV_ID
   		 WHERE M.DEL_YN = 'N'
-  		   AND M.CRTR_ID = '1010002'
+  		   AND M.CRTR_ID = #{empId}
   		   AND M.RCV_ID != M.CRTR_ID
   		   AND M.SAVE_YN = 'N'
   		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
@@ -71,7 +71,7 @@
   		  FROM MEMO M
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.RCV_ID
-  		 WHERE CRTR_ID = '1010002'
+  		 WHERE M.CRTR_ID = #{empId}
   		   AND M.RCV_ID != M.CRTR_ID
   		   AND M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'N'
@@ -112,7 +112,7 @@
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'N'
-  		   AND M.RCV_ID = '1010002'
+  		   AND M.RCV_ID = #{empId}
   		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
   		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
   		 <if test='searchStatus != null and searchStatus != ""'>
@@ -140,6 +140,7 @@
   	</select>
   
   	<select id="getAllReceiveMemo"
+  			parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO"
   			resultMap="MemoVOMap">
   			<include refid="Common.pagenate_header"/>
   		SELECT M.MEMO_ID
@@ -158,7 +159,7 @@
   		  FROM MEMO M
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.CRTR_ID
-  		 WHERE RCV_ID = '1010002'
+  		 WHERE M.RCV_ID = #{empId}
   		   AND M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'N'
   		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
@@ -196,7 +197,7 @@
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'Y'
-  		   AND M.RCV_ID = '1010002'
+  		   AND M.RCV_ID = #{empId}
   		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
   		  <if test='searchStatus != null and searchStatus != ""'>
             <choose>
@@ -223,7 +224,8 @@
   	</select>
   	
   	<select id="getAllStorageMemo"
-  			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  			parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO"
+  			resultMap="MemoVOMap">
   		<include refid="Common.pagenate_header"/>
   		SELECT M.MEMO_ID
 			 , M.MEMO_PID
@@ -241,7 +243,8 @@
   		  FROM MEMO M
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.RCV_ID
-  		 WHERE RCV_ID = '1010002'
+  		 WHERE (M.RCV_ID = #{empId}
+  		    OR M.CRTR_ID = #{empId})
   		   AND M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'Y'
   		  <!-- WHERE M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
@@ -288,7 +291,7 @@
 			  ('MM_' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_MEMO_PK.NEXTVAL,6 ,'0')
 			 , NULL
 			 , #{rcvId} /* 받는 사람 */
-			 , '1010002' /* 세션에 로그인된 사람 보내는 사람 */
+			 , #{empId} /* 세션에 로그인된 사람 보내는 사람 */
 			 , SYSDATE
 			 , #{memoCntnt} /* 세션에 적은 내용 */
 			 , 'N'
