@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.product.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface ProductManagementDao {
 	
@@ -28,7 +29,7 @@ public interface ProductManagementDao {
 
 	public String getProductId(String prdtMngId);
 
-	public int addProductManagement(ProductManagementVO productManagementVO);
+	public int addProductManagement(ProductVO productVO);
 
 	public int getDelNCount(String prdtId);
 

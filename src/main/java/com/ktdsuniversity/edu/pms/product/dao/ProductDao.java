@@ -13,6 +13,11 @@ public interface ProductDao {
 
 	public int getProductAllCount(ProductVO productVO);
 
+	/**
+	 * 새로운 비품 추가
+	 * @param productVO
+	 * @return
+	 */
 	public int insertNewProduct(ProductVO productVO);
 
 	public ProductVO selectOneProduct(String id);

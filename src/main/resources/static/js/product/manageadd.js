@@ -39,18 +39,32 @@ $().ready(function(){
             formData["productList["+index+"].prdtCtgr"] = $(form).find("#prdtCtgr").val();
             formData["productList["+index+"].onceYn"] = $(form).find("#onceYn").val()==="소모품" ? "Y" : "N";
             formData["productList["+index+"].curStr"] = $(form).find("#curStr").val();
-            formData["productList["+index+"].buyDt"] = $(form).find("#buyDt").val();
-            formData["productList["+index+"].prdtPrice"] = $(form).find("#prdtPrice").val();
+            formData["productList["+index+"].productManagementVO.buyDt"] = $(form).find("#buyDt").val();
+            formData["productList["+index+"].productManagementVO.prdtPrice"] = $(form).find("#prdtPrice").val();
+            
         });
 
-        $.post(url, formData, 
-            function (response) {
-                var addConfirm = confirm("추가하시겠습니까?");
-                if(addConfirm){
+        var addConfirm = confirm("추가하시겠습니까?");
+        if(addConfirm){
+            $.post(url, formData, 
+                function (response) {
                     location.href = response.data.next;
                 }
-            }
-        );
+            );
+        }
+        else{
+            location.reload();
+        }
+
+
+        // $.post(url, formData, 
+        //     function (response) {
+        //         var addConfirm = confirm("추가하시겠습니까?");
+        //         if(addConfirm){
+        //             location.href = response.data.next;
+        //         }
+        //     }
+        // );
         
     });
 

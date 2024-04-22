@@ -28,7 +28,9 @@
 	<select id="getAllProduct" 
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
 			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		<!-- 
 		<include refid="Common.pagenate_header" />
+		 -->	
 		SELECT PRDT_ID
 			 , PRDT_NAME
 			 , PRDT_CTGR
@@ -50,7 +52,9 @@
 				</when>
 			</choose>
 		</if>
+		<!-- 
 		<include refid="Common.pagenate_footer" />
+		 -->
 	</select>
 	
 	<insert id="insertNewProduct" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">

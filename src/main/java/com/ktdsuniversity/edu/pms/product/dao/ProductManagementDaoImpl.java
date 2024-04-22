@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Repository
 public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements ProductManagementDao {
@@ -74,8 +75,8 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 
 
 	@Override
-	public int addProductManagement(ProductManagementVO productManagementVO) {
-		return getSqlSession().insert(ProductManagementDao.NAME_SPACE+".addProductManagement", productManagementVO);
+	public int addProductManagement(ProductVO productVO) {
+		return getSqlSession().insert(ProductManagementDao.NAME_SPACE+".addProductManagement", productVO);
 	}
 
 

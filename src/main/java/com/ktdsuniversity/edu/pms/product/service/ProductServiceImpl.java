@@ -66,18 +66,18 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.updateOneProduct(prdtId) > 0;
 	}
 
-	@Transactional
-	@Override
-	public boolean addProductCount(ProductManagementVO productManagementVO) {
-		int count = productManagementVO.getProductVO().getCurStr();
-		int successCount = 0;
-		for(var i=0; i < count; i++) {
-			successCount += productManagementDao.addProductManagement(productManagementVO);
-		}
-		boolean isSuccessPrdtCntUp = productDao.updateOneProductCount(productManagementVO.getProductVO()) > 0;
-		
-		return isSuccessPrdtCntUp && successCount == count;
-	}
+//	@Transactional
+//	@Override
+//	public boolean addProductCount(ProductManagementVO productManagementVO) {
+//		int count = productManagementVO.getProductVO().getCurStr();
+//		int successCount = 0;
+//		for(var i=0; i < count; i++) {
+//			successCount += productManagementDao.addProductManagement(productManagementVO);
+//		}
+//		boolean isSuccessPrdtCntUp = productDao.updateOneProductCount(productManagementVO.getProductVO()) > 0;
+//		
+//		return isSuccessPrdtCntUp && successCount == count;
+//	}
 
 	@Transactional
 	@Override
@@ -104,12 +104,6 @@ public class ProductServiceImpl implements ProductService{
 	public ProductVO getOneSelectedProduct(String prdtName) {
 		return this.productDao.selectOneProductByPrdtName(prdtName);
 	}
-
-	@Override
-	public boolean createManyProduct(List<Integer> addItems) {
-		return this.productDao.insertManyProduct(addItems) > 0;
-	}
-
 	
 
 }
