@@ -7,9 +7,18 @@ public class SearchReviewVO extends PaginateVO {
 	private String prjId;
     private String searchType;
     private String searchKeyword;
+    String empId;
 
     
-    public String getSearchType() {
+    public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+
+	public String getSearchType() {
         return searchType;
     }
 

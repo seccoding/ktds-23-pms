@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
@@ -38,7 +40,8 @@ public class ReviewController {
 	 * - 후기결과보기 선택시 -> 해당 프로젝트의 후기결과 목록으로 이동(/review/viewwresult)
 	 */
 	@GetMapping("/review")
-	public String viewReviewListPage(SearchReviewVO searchReviewVO, Model model) {
+	public String viewReviewListPage(SearchReviewVO searchReviewVO, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
 		model.addAttribute("reviewlist", reviewListVO);
 		model.addAttribute("SearchReviewVO", searchReviewVO);
@@ -58,10 +61,14 @@ public class ReviewController {
 	 * - id값으로 해당 후기의 흐로젝트명을 가져와서 후기작성페이지에 바로 노출되도록 하기위함
 	 */
 	@GetMapping("/review/prjId/{id}/write")
-	public String viewReviewWritePage(@PathVariable String id, Model model) {
-		ProjectVO projectVO = projectService.getOneProject(id);
-		model.addAttribute("project", projectVO);
+	public String viewReviewWritePage(@PathVariable String id, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		if( employeeVO.getMngrYn().equals("N")) {
+			ProjectVO projectVO = projectService.getOneProject(id);
+			model.addAttribute("project", projectVO);
+		}
 		return "review/reviewwrite"; // reviewList.jsp 파일 이름
+		
 	}
 	
 	/*
@@ -80,7 +87,7 @@ public class ReviewController {
 	@ResponseBody
 	@PostMapping("/ajax/review/delete/massive")
 	public AjaxResponse doDeleteMassive(@RequestParam("reviewIds[]") List<String> reviewIds
-										/*, @SessionAttribute("_LOGIN_USER_") ReviewVO reviewVO */) {
+									  , @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 					
 		boolean deleteResult = this.reviewService.deleteManyReview(reviewIds);
 		
