@@ -119,7 +119,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 <td>${output.project.prjName}</td>
                 <td>${output.outTtl}</td>
                 <td>${output.outTypeVO.cmcdName}</td>
-                <td>${output.outVerSts.cmcdName}</td>
+                <td>${output.outVerSts.cmcdName} ${output.outVerNum}</td>
                 <td>
                   <a href="/output/downloadFile/${output.outId}"
                     >${output.outFile}</a
