@@ -144,22 +144,32 @@ public class EmployeeController {
 
 	@ResponseBody
 	@PostMapping("/ajax/employee/regist")
-	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
+	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/") String nextUrl, @RequestParam String empId) {
 		/**
 		 * 수정해야할 사항 
-		 * 비밀번호를 직접 받지않고 사원번호 + 입사일 이런식으로 기본 비번 설정
 		 * 임원여부 체크박스로 만들어서 체크 안하면 N 체크하면 Y
 		 * 프로필 사진 첨부파일 기능 만들기
 		 */
+		/**
+		 * 사원번호가 있는지 확인하고
+		 * 1: 존재하는 사원번호, 0: 없는 사원번호
+		 * 1이라면 "이미 사용중인 사원번호입니다."오류 발생
+		 */
+		int isEmpIdUseCount = this.employeeService.getOneEmpIdIsExist(empId);
+		if(isEmpIdUseCount == 1) {
+			return new AjaxResponse().append("errorMessage", "이미 사용중인 사원번호 입니다.");
+		}
 		
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 		
 		validator.add("empId", Type.NOT_EMPTY, "사원번호를 입력해 주세요.")
 				.add("empId", Type.EMPID, "사원번호 형식으로 입력해 주세요")
+				.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해 주세요")
+				.add("pwd", Type.PASSWORD, "비밀번호 형식으로 입력해 주세요")
 				.add("empName", Type.NOT_EMPTY, "사원이름을 입력해 주세요")
 				.add("hireDt", Type.NOT_EMPTY, "입사일을 지정해 주세요")
 				.add("addr", Type.NOT_EMPTY, "주소를 입력해 주세요")
-				.add("brth", Type.NOT_EMPTY, "생일을 입력해 주세요")
+				.add("brth", Type.NOT_EMPTY, "생일을 지정해 주세요")
 				.add("email", Type.NOT_EMPTY, "이메일을 입력해 주세요")
 				.add("email", Type.EMAIL, "이메일 형식으로 입력해 주세요")
 				.add("deptId", Type.NOT_EMPTY, "부서ID를 입력해 주세요")
