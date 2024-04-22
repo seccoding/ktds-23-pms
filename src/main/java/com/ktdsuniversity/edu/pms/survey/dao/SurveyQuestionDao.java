@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.survey.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 
 public interface SurveyQuestionDao {
@@ -17,5 +18,7 @@ public interface SurveyQuestionDao {
 	public SurveyQuestionVO getOneSurvey(String srvId);
 
 	public int insertSurveyBody(SurveyQuestionVO surveyQuestionVO);
+
+	public List<SurveyQuestionVO> getAllSurveys(SearchSurveyVO searchSurveyVO);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 
@@ -55,6 +56,12 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 			throw new PageNotFoundException();
 		}
 		return this.surveyQuestionDao.insertSurveyBody(surveyQuestionVO) > 0;
+	}
+
+	@Transactional
+	@Override
+	public List<SurveyQuestionVO> getAllSurveys(SearchSurveyVO searchSurveyVO) {
+		return this.surveyQuestionDao.getAllSurveys(searchSurveyVO);
 	}
 
 }
