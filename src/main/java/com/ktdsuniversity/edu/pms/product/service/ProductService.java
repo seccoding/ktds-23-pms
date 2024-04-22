@@ -19,7 +19,7 @@ public interface ProductService {
 	 * @param productList
 	 * @return
 	 */
-	public int createNewProduct(ProductListVO productList);
+	public int createNewProduct(ProductListVO productList, String prdtId);
 
 	public ProductVO getOneProduct(String id);
 
@@ -43,5 +43,11 @@ public interface ProductService {
 	 * @return 선택된 비품의 정보들
 	 */
 	public ProductVO getOneSelectedProduct(String prdtName);
+
+	/**
+	 * 새로운 prdtId 생성
+	 * @return
+	 */
+	public String selectNewPrdtId();
 
 }

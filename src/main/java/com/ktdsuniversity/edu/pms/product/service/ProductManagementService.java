@@ -19,7 +19,7 @@ public interface ProductManagementService {
 
 	public boolean changeOneItemBrrwState(String prdtMngId);
 
-	public int addSomeProductManagement(ProductListVO productList);
+	public int addSomeProductManagement(ProductListVO productList, String prdtId);
 
 	public Boolean isProductCanDel(String prdtId);
 

@@ -128,14 +128,16 @@ public class ProductController {
 	@PostMapping("/ajax/product/manage/add")
 	public AjaxResponse doProductManageAdd(ProductListVO productList) {
 		
+		String prdtId = this.productService.selectNewPrdtId();
 		
-		int isCreateSuccess = this.productService.createNewProduct(productList);
+		
+		int isCreateSuccess = this.productService.createNewProduct(productList, prdtId);
 		
 		if(isCreateSuccess != productList.getProductList().size()) {
 			throw new PageNotFoundException();
 		}
 		
-		int isCountManageSuccess = this.productManagementService.addSomeProductManagement(productList);
+		int isCountManageSuccess = this.productManagementService.addSomeProductManagement(productList, prdtId);
 		
 		if(isCountManageSuccess != productList.getProductList().size()) {
 			throw new PageNotFoundException();

@@ -39,10 +39,11 @@ public class ProductServiceImpl implements ProductService{
 
 	@Transactional
 	@Override
-	public int createNewProduct(ProductListVO productList) {
+	public int createNewProduct(ProductListVO productList, String prdtId) {
 		int insertCount = 0;
 		
 		for( ProductVO productVO : productList.getProductList()) {
+			productVO.setPrdtId(prdtId);
 			insertCount += this.productDao.insertNewProduct(productVO);			
 		}
 		
@@ -103,6 +104,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public ProductVO getOneSelectedProduct(String prdtName) {
 		return this.productDao.selectOneProductByPrdtName(prdtName);
+	}
+
+	@Override
+	public String selectNewPrdtId() {
+		return this.productDao.selectOnePrdtId();
 	}
 	
 

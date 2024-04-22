@@ -159,5 +159,10 @@
   			  #{productListVO.curStr}, #{productListVO.delYn},)
   		</foreach>
   	</insert>
+  	
+	<select id="selectOnePrdtId" resultType="string">
+		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		  FROM DUAL
+	</select>
 	
 </mapper>

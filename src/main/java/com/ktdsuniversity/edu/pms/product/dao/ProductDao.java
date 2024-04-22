@@ -55,4 +55,10 @@ public interface ProductDao {
 	 */
 	public int insertManyProduct(List<Integer> addItems);
 
+	/**
+	 * prdtId 값 조회
+	 * @return
+	 */
+	public String selectOnePrdtId();
+
 }

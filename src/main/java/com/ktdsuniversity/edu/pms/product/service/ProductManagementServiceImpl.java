@@ -84,10 +84,11 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 
 	@Transactional
 	@Override
-	public int addSomeProductManagement(ProductListVO productList) {
+	public int addSomeProductManagement(ProductListVO productList, String prdtId) {
 		int insertedCount = 0;
 		
 		for( ProductVO productVO : productList.getProductList()) {
+			productVO.setPrdtId(prdtId);
 			insertedCount += this.productManagementDao.addProductManagement(productVO);
 		}
 		
