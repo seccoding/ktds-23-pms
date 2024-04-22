@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.output.service.OutputService;
 import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
@@ -51,8 +52,12 @@ public class OutputController {
 	public String viewOutputSearhList(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
 		
-		if(! employeeVO.getAdmnCode().equals("301") && employeeVO.getAdmnCode().equals("PM"))  {//관리자가 아닌경우
-			outputSearchVO.setEmpId(employeeVO.getEmpId());
+		if(! employeeVO.getAdmnCode().equals("301") )  {//관리자가 아닌경우
+			if(employeeVO.getAdmnCode().equals("PM")) {//pm인경우
+				outputSearchVO.setEmpId(employeeVO.getEmpId());
+			}else {
+				throw new PageNotFoundException();
+			}
 		}
 		
 		ProjectListVO projectList = this.projectService.getAllProject();
