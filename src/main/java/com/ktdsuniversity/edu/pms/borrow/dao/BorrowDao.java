@@ -24,5 +24,14 @@ public interface BorrowDao {
 	public List<BorrowVO> getProductManageState(ProductVO productVO);
 
 	public int returnOneItem(String brrwHistId);
+	
+	// PSH0422
+	public int getIsNotReturnCount(String dmdId);
+
+    public int returnOneItemByAppr(String apprId);
+
+    public int newBrrwPrdtByAppr(List<BorrowVO> borrowVOList);
+
+	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
 
 }

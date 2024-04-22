@@ -60,5 +60,8 @@ public interface ProductDao {
 	 * @return
 	 */
 	public String selectOnePrdtId();
+	
+	// PSH0422
+	public int changeOnePrdtStored(String prdtName);
 
 }

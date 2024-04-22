@@ -62,5 +62,25 @@ public class BorrowServiceImpl implements BorrowService{
 		int changeProductCnt =  this.productDao.changeOneProductCnt(prdtId);
 		return  returnStateChangeCnt> 0 && changeStateCnt > 0 && changeProductCnt > 0  ;
 	}
+	
+
+	//PSH0422
+	@Override
+	public boolean getIsNotReturnCount(String dmdId) {
+		return this.borrowDao.getIsNotReturnCount(dmdId) == 0;
+	}
+
+	// 중복인데......
+	@Override
+	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO) {
+	int borrowCount = this.borrowDao.getBorrowCount(employeeVO);
+	List<BorrowVO> borrowList = this.borrowDao.getUserRentalStateForAppr(employeeVO);
+
+	BorrowListVO borrowListVO = new BorrowListVO();
+	borrowListVO.setBorrowCnt(borrowCount);
+	borrowListVO.setBorrowList(borrowList);
+
+	return borrowListVO;
+	}
 
 }

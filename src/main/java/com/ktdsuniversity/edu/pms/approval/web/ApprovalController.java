@@ -103,26 +103,26 @@ public class ApprovalController {
 
 	// PSH0422
 
-//	// 비품대여현황 jsp에서 전달받을 파라미터: @RequestParam String empId
-//	@GetMapping("/approval/write")
-//	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-//
-//		// test code
-//		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
-//		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
-//
-////		if(dmdEmployeeVO == null || ! dmdEmployeeVO.getEmpId().equals(employeeVO.getEmpId())) {
-////			throw new PageNotFoundException();
-////		}
-//
-//		if (borrowListVO == null) {
+	// 비품대여현황 jsp에서 전달받을 파라미터: @RequestParam String empId
+	@GetMapping("/approval/write")
+	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+		// test code
+		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
+		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
+
+//		if(dmdEmployeeVO == null || ! dmdEmployeeVO.getEmpId().equals(employeeVO.getEmpId())) {
 //			throw new PageNotFoundException();
 //		}
-//
-//		model.addAttribute("employee", dmdEmployeeVO);
-//		model.addAttribute("borrowList", borrowListVO);
-//		return "/approval/approvalwrite";
-//	}
+
+		if (borrowListVO == null) {
+			throw new PageNotFoundException();
+		}
+
+		model.addAttribute("employee", dmdEmployeeVO);
+		model.addAttribute("borrowList", borrowListVO);
+		return "/approval/approvalwrite";
+	}
 
 	@ResponseBody
 	@PostMapping("/ajax/approval/write")
@@ -175,7 +175,7 @@ public class ApprovalController {
 //	}
 
 //	@ResponseBody
-//	@GetMapping("/approval/delete/{apprId}")
+//	@GetMapping("/ajax/approval/delete/{apprId}")
 //	public AjaxResponse doApprovalDelete(@PathVariable String apprId, Model model) {
 //
 //		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);

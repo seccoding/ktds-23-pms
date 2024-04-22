@@ -84,5 +84,22 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 	public int getDelNCount(String prdtId) {
 		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getDelNCount", prdtId);
 	}
+	
+	// PSH0422
+	@Override
+	public int unusablePrdtByAppr(String apprId) {
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".unusablePrdtByAppr", apprId);
+	}
+
+	@Override
+	public String getNewPrdtMngIdForBorrow(String prdtName) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE + ".getNewPrdtMngIdForBorrow", prdtName);
+	}
+
+	@Override
+	public int changeItemBrrwStateY(String prdtMngId) {
+		System.out.println("changeItemBrrwStateY >>>> " + prdtMngId);
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".changeManyItemBrrwState", prdtMngId);
+	}
 
 }

@@ -32,5 +32,12 @@ public interface ProductManagementDao {
 	public int addProductManagement(ProductManagementVO productManagementVO);
 
 	public int getDelNCount(String prdtId);
+	
+	// PHS0422
+    public int unusablePrdtByAppr(String apprId);
+
+	public String getNewPrdtMngIdForBorrow(String prdtName);
+
+	public int changeItemBrrwStateY(String prdtMngId);
 
 }
