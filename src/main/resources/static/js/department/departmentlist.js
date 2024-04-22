@@ -21,13 +21,20 @@ $().ready(function () {
     subSubCommonCodeInfo.find("#codeEmpName").text("");
     subSubCommonCodeInfo.find("#codeEmpEmail").text("");
     subSubCommonCodeInfo.find("#codeEmpCntct").text("");
+    subSubCommonCodeInfo.find("#codeEmpPstn").text("");
+    $("#profile").removeAttr("src");
+    $("#profile").attr({ src: "/images/login.png" });
   }
 
   $(".departmentListClickFunction").on("click", function () {
     clearCodeInfo();
     clearSubCodeInfo();
+    clearSubSubCodeInfo();
 
     $(this).closest("tbody").find("tr").removeClass("active");
+    $(".sub-sub-employee").find("tr").removeClass("active");
+    $(".sub-sub-employee").find("tbody").html("");
+
     $(this).addClass("active");
 
     clearSubCodeInfo();
@@ -63,7 +70,7 @@ $().ready(function () {
           $(this).addClass("active");
 
           clearSubCodeInfo();
-
+          clearSubSubCodeInfo();
           var teamInfo = $(".sub-code-info");
           teamInfo.find("#codeTmId").text($(this).data("id"));
           teamInfo.find("#codeTmName").text($(this).data("name"));
@@ -102,9 +109,8 @@ $().ready(function () {
 
                   clearSubSubCodeInfo();
                   var employeeInfo = $(".sub-sub-code-info");
-                  employeeInfo
-                    .find("#profile")
-                    .attr({ src: $(this).data("emp-profile") });
+
+                  $("#profile").attr({ src: $(this).data("emp-profile") });
                   employeeInfo
                     .find("#codeEmpPstn")
                     .text($(this).data("emp-pstn"));
@@ -118,6 +124,9 @@ $().ready(function () {
                   employeeInfo
                     .find("#codeEmpCntct")
                     .text($(this).data("emp-cntct"));
+                  employeeInfo
+                    .find("#codeEmpPstn")
+                    .text($(this).data("emp-pstn"));
                 });
               });
             }
@@ -180,6 +189,8 @@ $().ready(function () {
 
   $(".team-create").on("click", function () {
     var modal = $(".create-modal-team");
+    $("#department-selectbox").val($("#codeDeptId").text());
+    console.log($("#department-selectbox").val());
     modal[0].showModal();
   });
   $("#team-cancel-button").on("click", function () {

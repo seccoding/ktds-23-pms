@@ -72,11 +72,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         font-weight: bold;
         border-radius: 0.25rem;
         background-color: var(--btn-color);
-        margin-left: 1rem;
-        margin-right: 2rem;
+        margin: 0 0.5rem;
       }
       .dept-list-modal > .grid > input,
       .dept-list-modal > .grid > div,
+      .dept-list-modal > .grid > select,
       .dept-list-modal > .grid > p {
         align-items: center;
         text-align: left;
@@ -130,7 +130,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="grid-item">팀장ID</div>
         <input id="team-leader" type="text" class="grid-item" />
         <div class="grid-item">담당부서ID</div>
-        <input id="team-department" type="text" class="grid-item" />
+        <select
+          class="grid-item department-selectbox"
+          id="department-selectbox"
+        >
+          <c:forEach
+            items="${onlyDepartmentList.departmentList}"
+            var="department"
+          >
+            <option class="enter-data-id" value="${department.deptId}">
+              ${department.deptName}
+            </option>
+          </c:forEach>
+        </select>
       </div>
       <div class="flex">
         <input
@@ -359,7 +371,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <h4 style="background-color: var(--body-bg)">사원 정보</h4>
         <div class="grid" style="display: flex" data-grid-columns="1fr 3fr">
           <div>
-            <img id="profile" alt="profile" />
+            <img
+              src="/images/login.png"
+              id="profile"
+              alt="profile"
+              width="120"
+              height="160"
+              style="margin-right: 0.5rem"
+            />
           </div>
           <div
             class="grid code-info sub-code-info sub-sub-code-info"
