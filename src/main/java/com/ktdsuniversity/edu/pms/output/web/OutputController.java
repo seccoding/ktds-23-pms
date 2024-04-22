@@ -12,16 +12,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.output.service.OutputService;
 import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
@@ -44,13 +48,23 @@ public class OutputController {
 	}
 
 	@GetMapping("/output/search")
-	public String viewOutputSearhList(@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
-		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
+	public String viewOutputSearhList(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
+		
+		if(! employeeVO.getAdmnCode().equals("301") ) {//관리자가 아닌경구 경우
+			
+		}
+		List<ProjectTeammateVO> accessList =this.projectService.getAllProjectTeammate().stream().
+				filter(tmList -> tmList.getPrjTmId().equals(employeeVO.getEmpId())).
+				filter(tmList -> tmList.getRole().equals("PM")).toList();
+		
+		
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
 				projectList.getProjectList().stream().filter(project -> project.getOutYn().equals("Y")).toList());
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
+		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
 
 		model.addAttribute("outputList", outputList).addAttribute("prjId", prjId)
 				.addAttribute("projectList", projectList).addAttribute("commonCodeList", commonCodeList)
