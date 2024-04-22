@@ -10,7 +10,6 @@ public class MenuVO {
     private String url;
     private String icon;
     private String parent;
-    private String parentId;
 
     private List<MenuVO> children;
 
@@ -68,13 +67,5 @@ public class MenuVO {
 
     public void setChildren(List<MenuVO> children) {
         this.children = children;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
     }
 }

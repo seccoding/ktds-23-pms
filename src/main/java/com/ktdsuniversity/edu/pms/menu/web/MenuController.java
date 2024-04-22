@@ -19,14 +19,25 @@ public class MenuController {
     private MenuService menuService;
 
     @ResponseBody
-    @GetMapping(value = "/menu", produces = "text/plain;charset=UTF-8")
-    public String viewMenuListPage(Model model) {
+    @GetMapping(value = "/menu", produces = "application/json;charset=UTF-8")
+    public String viewMenuList(Model model) {
 
         List<MenuVO> menuList = menuService.getAllMenuList();
 
         Gson gson = new GsonBuilder().create();
 
         return gson.toJson(menuList);
+    }
+
+    @GetMapping("/menu/manage")
+    public String viewMenuManagementPage(Model model) {
+
+        List<MenuVO> menuList = menuService.getAllMenuList();
+
+        model.addAttribute("menuList", menuList.stream()
+                .filter(menu -> menu.getParent() == null).toList());
+
+        return "menu/menulist";
     }
 
 }
