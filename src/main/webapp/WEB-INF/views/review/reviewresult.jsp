@@ -40,6 +40,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
 
   <body>
+  <div>
+	총 ${reviewList.reviewCnt}건의 후기가 검색되었습니다.
+  </div>
     <table class="table">
       <colgroup>
          <col width="150px" />

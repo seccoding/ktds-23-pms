@@ -31,6 +31,12 @@ $().ready(function () {
   $("#search-btn").on("click", function () {
     search(0);
   });
+  
+  /*  var reviewCnt = $(reviewList.reviewCnt);
+  if (reviewCnt === 0) {
+    document.querySelector(".table").style.display = "none";
+  }*/
+
 
 });
 
