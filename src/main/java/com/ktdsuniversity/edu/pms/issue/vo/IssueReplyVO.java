@@ -4,6 +4,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public class IssueReplyVO {
 	
+	private int level;
 	private String rplId;
 	private String rplPid;
 	private String rplCntnt;
@@ -20,6 +21,12 @@ public class IssueReplyVO {
 	
 	private EmployeeVO employeeVO;
 	
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
 	public String getRplId() {
 		return rplId;
 	}

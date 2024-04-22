@@ -77,6 +77,7 @@ public class IssueController {
 	public String viewIssueWritePage(Model model) {
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
 		model.addAttribute("requirement", requirementList);
 		return "/issue/issuewrite";
 	}
