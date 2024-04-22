@@ -81,8 +81,8 @@
         </div>
         <div class="btn-area">
             <div class="btn-change">
-                <button>수정이력</button>
-                <button>삭제</button>
+                <button id="btn-list-appr">목록</button>
+                <button id="btn-delete-appr">삭제</button>
             </div>
 			<c:if test="${approvalVO.apprSts eq '801'}">
 				<div class="btn-status">
@@ -91,7 +91,7 @@
 				</div>
 			</c:if>
         </div>
-        <div class="grid-container">
+        <div class="grid-container" id="grid-container" data-appr-id="${approvalVO.apprId}">
             <div class="grid-item">
                 <h5>종류</h5>
 				<span>결재 종류</span>
@@ -146,15 +146,15 @@
             </div>
             <div class="grid-item">
                 <h5>품목</h5>
-                <span>결재 대상 품목 및 수량</span>
+                <span>결재 대상 품목</span>
             </div>
             <div class="grid-item">
                 <div class="grid-appr-item">
 					<c:forEach items="${approvalVO.approvalDetailVOList}" var="approvalDetail">
 						<div class="grid-appr-item-prdt">
+                            <span><c:out value="${approvalDetail.productManagementVO.prdtMngId}"/></span>
 							<span><c:out value="${approvalDetail.productVO.prdtCtgr}"/></span>
 							<span><c:out value="${approvalDetail.productVO.prdtName}"/></span>
-							<span><c:out value="${approvalDetail.productVO.curStr}"/></span>
 						</div>
 					</c:forEach>
                 </div>

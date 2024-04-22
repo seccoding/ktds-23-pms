@@ -34,29 +34,6 @@
             padding-right: 0.825rem;
         }
     </style>
-<script type="text/javascript">
-function state(apprid) {
-	console.log(apprid);
-	var params = {
-			apprid:apprid
-	}
-
-	$.ajax({
-		type : "POST", 
-		url : "/approval/approve",
-		data : params,
-		success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-            // 응답코드 > 0000
-            alert("결제 승인이 완료되어 습니다");
-            
-        },
-        error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-            alert("결제 승인을 취소 하였습니다");
-        }
-	})
-	
-}
-</script>
 <script type="text/javascript" src=/js/approval/approvallist.js></script>
 </head>
 <body>
@@ -86,7 +63,11 @@ function state(apprid) {
             <table>
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                            <input type="checkbox" id="prdt-check-all" data-target-class="target-appr-id"/>
+                            <label for="prdt-check-all"></label>
+                            <label for="prdt-check-all"></label>
+                        </th>
                         <th>작성일자</th>
                         <th>종류</th>
                         <th>문서번호</th>
@@ -102,6 +83,8 @@ function state(apprid) {
                             <tr>
                                 <td>
                                     <input type="checkbox" class="target-appr-id" name="targetApprId" value="${approval.apprId}">
+                                    <label for="prdt-check"></label>
+									<label for="prdt-check"></label>
                                 </td>
                                 <td>${approval.dmdDt}</td>
                                 <td>
@@ -111,19 +94,12 @@ function state(apprid) {
                                 </td>
                                 <td>${approval.apprId}</td>
                                 <td>
-                                    <a href="/approval/approvalview?apprId=${approval.apprId}">
+                                    <a href="/approval/view?apprId=${approval.apprId}">
                                         ${approval.apprTtl}
                                     </a>
                                 </td>
                                 <td>${approval.employeeVO.empName}</td>
-                                <td>
-                                	 <c:if test="${approval.apprSts ne '802'}">
-										<button onclick="state('${approval.apprId}')">
-											결재
-										</button>
-										
-									</c:if>
-																		
+                                <td>									
 									<c:if test="${approval.apprSts eq '801'}">
 										<button>결재대기</button>
 									</c:if>
