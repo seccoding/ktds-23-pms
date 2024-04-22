@@ -34,4 +34,6 @@ public interface ProjectService {
     boolean deleteOneTeammate(String prjTmId);
 
     boolean insertOneTeammate(ProjectTeammateVO newProjectTeammate);
+
+    List<ProjectTeammateVO> getAllProjectTeammate();
 }
