@@ -50,7 +50,7 @@ public interface LoginLogDao {
 
     public int getPwdCndt(String empId);
 
-    public List<LoginLogVO> getAllLoginLog();
+    public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO);
 
-	public List<VisitedVO> getAllVisitedLog();
+	public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO);
 }
