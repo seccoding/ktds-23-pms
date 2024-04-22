@@ -164,6 +164,7 @@
                         SELECT PRJ_ID
                     FROM PROJECT_TEAMMATE PT
                     WHERE PT.TM_ID = #{employeeVO.empId}
+                    AND PT.DEL_YN = 'N'
                     )
                 </otherwise>
             </choose>
@@ -204,6 +205,20 @@
                 <when test='searchType == "department"'>
                     AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
+            </choose>
+        </if>
+        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+            <choose>
+                <when test='employeeVO.admnCode == "301"'>
+                </when>
+                <otherwise>
+                    AND P.PRJ_ID IN (
+                    SELECT PRJ_ID
+                    FROM PROJECT_TEAMMATE PT
+                    WHERE PT.TM_ID = #{employeeVO.empId}
+                    AND PT.DEL_YN = 'N'
+                    )
+                </otherwise>
             </choose>
         </if>
     </select>
@@ -563,7 +578,8 @@
         WHERE P.DEL_YN = 'N'
         AND PRJ_ID IN (SELECT PRJ_ID
         FROM PROJECT_TEAMMATE PT
-        WHERE PT.TM_ID = #{_parameter})
+        WHERE PT.TM_ID = #{_parameter}
+        AND PT.DEL_YN = 'N')
         ORDER BY P.CRT_DT DESC
     </select>
 </mapper>
