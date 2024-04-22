@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
+import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
@@ -81,16 +82,19 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 		return changeProductCnt > 0;
 	}
 
-	@Transactional
-	@Override
-	public boolean addSomeProductManagement(ProductManagementVO productManagementVO, int count) {
-		int successCount = 0;
-		for(var i=0; i < count; i++) {
-			successCount += productManagementDao.addProductManagement(productManagementVO);
-		}
-		
-		return successCount == count;
-	}
+//	@Transactional
+//	@Override
+//	public int addSomeProductManagement(ProductListVO productList, String prdtId) {
+//		int insertedCount = 0;
+//		
+//		for( ProductVO productVO : productList.getProductList() ) {
+//			productVO.getProductManagementVO().setPrdtId(prdtId);
+//			productVO.setPrdtId(prdtId);
+//			insertedCount += this.productManagementDao.addProductManagement(productVO);
+//		}
+//		
+//		return insertedCount;
+//	}
 
 	@Transactional
 	@Override

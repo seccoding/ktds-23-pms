@@ -43,7 +43,20 @@ public class ProductServiceImpl implements ProductService{
 		int insertCount = 0;
 		
 		for( ProductVO productVO : productList.getProductList()) {
-			insertCount += this.productDao.insertNewProduct(productVO);			
+			
+			// 추가할 비품ID의 시퀀스 값을 가져온다.
+			String prdtId = this.productDao.selectOnePrdtId();
+			
+			productVO.setPrdtId(prdtId);
+			insertCount += this.productDao.insertNewProduct(productVO);
+			
+			// 수량만큼 해당 비품의 관리 상세목록에 비품을 추가
+			for(int i=0; i < productVO.getCurStr(); i++) {
+				
+				productVO.getProductManagementVO().setPrdtId(prdtId);
+				
+				this.productManagementDao.addProductManagement(productVO.getProductManagementVO());
+			}
 		}
 		
 		return insertCount;
@@ -66,18 +79,18 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.updateOneProduct(prdtId) > 0;
 	}
 
-	@Transactional
-	@Override
-	public boolean addProductCount(ProductManagementVO productManagementVO) {
-		int count = productManagementVO.getProductVO().getCurStr();
-		int successCount = 0;
-		for(var i=0; i < count; i++) {
-			successCount += productManagementDao.addProductManagement(productManagementVO);
-		}
-		boolean isSuccessPrdtCntUp = productDao.updateOneProductCount(productManagementVO.getProductVO()) > 0;
-		
-		return isSuccessPrdtCntUp && successCount == count;
-	}
+//	@Transactional
+//	@Override
+//	public boolean addProductCount(ProductManagementVO productManagementVO) {
+//		int count = productManagementVO.getProductVO().getCurStr();
+//		int successCount = 0;
+//		for(var i=0; i < count; i++) {
+//			successCount += productManagementDao.addProductManagement(productManagementVO);
+//		}
+//		boolean isSuccessPrdtCntUp = productDao.updateOneProductCount(productManagementVO.getProductVO()) > 0;
+//		
+//		return isSuccessPrdtCntUp && successCount == count;
+//	}
 
 	@Transactional
 	@Override
@@ -106,10 +119,9 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public boolean createManyProduct(List<Integer> addItems) {
-		return this.productDao.insertManyProduct(addItems) > 0;
+	public String selectNewPrdtId() {
+		return this.productDao.selectOnePrdtId();
 	}
-
 	
 
 }

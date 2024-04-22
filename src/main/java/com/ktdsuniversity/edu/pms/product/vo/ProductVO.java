@@ -14,8 +14,17 @@ public class ProductVO extends PaginateVO {
 	private int curStr;
 	private String delYn;
 	
+	private ProductManagementVO productManagementVO;
+	
 	private List<ApprovalDetailVO> approvalDetailVOList;
 	
+	
+	public ProductManagementVO getProductManagementVO() {
+		return productManagementVO;
+	}
+	public void setProductManagementVO(ProductManagementVO productManagementVO) {
+		this.productManagementVO = productManagementVO;
+	}
 	public List<ApprovalDetailVO> getApprovalDetailVOList() {
 		return approvalDetailVOList;
 	}

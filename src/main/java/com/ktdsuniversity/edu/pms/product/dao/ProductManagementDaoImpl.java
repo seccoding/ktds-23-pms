@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Repository
 public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements ProductManagementDao {
