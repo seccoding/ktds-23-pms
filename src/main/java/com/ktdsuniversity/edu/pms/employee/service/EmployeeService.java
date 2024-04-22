@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.employee.service;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -19,5 +21,7 @@ public interface EmployeeService {
 	public boolean createEmployee(EmployeeVO employeeVO);
 
 	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
+
+	public List<EmployeeVO> findEmployeesByTeamId(String teamId);
 
 }

@@ -6,6 +6,7 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeDeptLeadId").text("");
     subCommonCodeInfo.find("#codeDeptCrtDt").text("");
   }
+
   function clearSubCodeInfo() {
     var subCommonCodeInfo = $(".sub-code-info");
     subCommonCodeInfo.find("#codeTmId").text("");
@@ -13,6 +14,13 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeTmDepartment").text("");
     subCommonCodeInfo.find("#codeTmLeadId").text("");
     subCommonCodeInfo.find("#codeTmCrtDt").text("");
+  }
+  function clearSubSubCodeInfo() {
+    var subSubCommonCodeInfo = $(".sub-sub-code-info");
+    subSubCommonCodeInfo.find("#codeEmpId").text("");
+    subSubCommonCodeInfo.find("#codeEmpName").text("");
+    subSubCommonCodeInfo.find("#codeEmpEmail").text("");
+    subSubCommonCodeInfo.find("#codeEmpCntct").text("");
   }
 
   $(".departmentListClickFunction").on("click", function () {
@@ -56,14 +64,64 @@ $().ready(function () {
 
           clearSubCodeInfo();
 
-          var departmentInfo = $(".sub-code-info");
-          departmentInfo.find("#codeTmId").text($(this).data("id"));
-          departmentInfo.find("#codeTmName").text($(this).data("name"));
-          departmentInfo
-            .find("#codeTmDepartment")
-            .text($(this).data("tm-dept-id"));
-          departmentInfo.find("#codeTmLeadId").text($(this).data("tm-lead-id"));
-          departmentInfo.find("#codeTmCrtDt").text($(this).data("crdt"));
+          var teamInfo = $(".sub-code-info");
+          teamInfo.find("#codeTmId").text($(this).data("id"));
+          teamInfo.find("#codeTmName").text($(this).data("name"));
+          teamInfo.find("#codeTmDepartment").text($(this).data("tm-dept-id"));
+          teamInfo.find("#codeTmLeadId").text($(this).data("tm-lead-id"));
+          teamInfo.find("#codeTmCrtDt").text($(this).data("crdt"));
+
+          $.get(
+            "/ajax/department/search/findemployee/" + $("#codeTmId").text(),
+            function (response) {
+              var employeeLists = response.data.employeeList;
+              var subEmployee = $(".sub-sub-employee").find("tbody");
+              subEmployee.html("");
+              employeeLists.forEach((employee) => {
+                var empTrDom = $("<tr></tr>");
+                empTrDom.attr({
+                  "data-emp-id": employee.empId,
+                  "data-emp-name": employee.empName,
+                  "data-emp-email": employee.email,
+                  "data-emp-cntct": employee.cntct,
+                  "data-emp-profile": employee.prfl,
+                  "data-emp-pstn": employee.commonCodeVO.cmcdName,
+                });
+                var empIdTdDom = $("<td></td>");
+                var empNameTdDom = $("<td></td>");
+                empIdTdDom.text(employee.empId);
+                empNameTdDom.text(employee.empName);
+                empTrDom.append(empIdTdDom);
+                empTrDom.append(empNameTdDom);
+                subEmployee.append(empTrDom);
+
+                empTrDom.on("click", function () {
+                  $(".employee-info-enter").removeClass("hidden");
+                  $(this).closest("tbody").find("tr").removeClass("active");
+                  $(this).addClass("active");
+
+                  clearSubSubCodeInfo();
+                  var employeeInfo = $(".sub-sub-code-info");
+                  employeeInfo
+                    .find("#profile")
+                    .attr({ src: $(this).data("emp-profile") });
+                  employeeInfo
+                    .find("#codeEmpPstn")
+                    .text($(this).data("emp-pstn"));
+                  employeeInfo.find("#codeEmpId").text($(this).data("emp-id"));
+                  employeeInfo
+                    .find("#codeEmpName")
+                    .text($(this).data("emp-name"));
+                  employeeInfo
+                    .find("#codeEmpEmail")
+                    .text($(this).data("emp-email"));
+                  employeeInfo
+                    .find("#codeEmpCntct")
+                    .text($(this).data("emp-cntct"));
+                });
+              });
+            }
+          );
         });
 
         var tmIdTdDom = $("<td></td>");
@@ -234,5 +292,11 @@ $().ready(function () {
         location.href = returnUrl;
       }
     );
+  });
+
+  $(".employee-info-enter").on("click", function () {
+    var id = $("#codeEmpId").text();
+    console.log(id);
+    location.href = "/employee/view?empId=" + id;
   });
 });
