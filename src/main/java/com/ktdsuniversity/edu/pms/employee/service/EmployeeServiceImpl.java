@@ -94,4 +94,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeListVO;
 	}
 
+	@Override
+	public int getOneEmpIdIsExist(String empId) {
+		return this.employeeDao.getOneEmpIdIsExist(empId);
+	}
+
 }

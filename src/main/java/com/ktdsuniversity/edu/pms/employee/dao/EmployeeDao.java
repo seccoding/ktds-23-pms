@@ -31,4 +31,6 @@ public interface EmployeeDao {
 
 	public String saltByEmp(String empId);
 
+	public int getOneEmpIdIsExist(String empId);
+
 }

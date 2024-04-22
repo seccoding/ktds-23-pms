@@ -265,5 +265,13 @@
 		  FROM EMPLOYEE
 		 WHERE EMP_ID = #{empId}
 	</select>
+	
+	<select id="getOneEmpIdIsExist"
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+			resultType="_int">
+			SELECT COUNT(1) 
+			  FROM EMPLOYEE
+			 WHERE EMP_ID = #{empId}
+	</select>
 
 </mapper>

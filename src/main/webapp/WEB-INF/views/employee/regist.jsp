@@ -9,9 +9,9 @@
       .grid {
         display: grid;
         grid-template-columns: 100px 1fr 100px 1fr;
-        grid-template-rows: 35px 35px 35px 35px 35px 1fr;
+        
         column-gap: 0;
-        gap: 0;
+        gap: 5px;
       }
       
       
@@ -24,6 +24,7 @@
         position: absolute;
         bottom: 0;
       }
+      
     </style>
     <script type="text/javascript" src="/js/lib/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="/js/employee/regist.js"></script>
@@ -46,6 +47,7 @@
               type="text"
               name="empId"
               value="${employeeVO.empId}"
+              placeholder="0000000 숫자 7자리"
             />
           </div>
           <div class="pwd">
@@ -57,6 +59,7 @@
               type="password"
               name="pwd"
               value="${employeeVO.pwd}"
+              placeholder="영문, 숫자, 특수문자로 이루어지고 한개 이상 포함, 10자리 이상"
             />
           </div>
           <div class="empName">
@@ -101,6 +104,7 @@
               type="text"
               name="cntct"
               value="${employeeVO.cntct}"
+              placeholder="000-0000-0000"
             />
           </div>
           <div class="addr">
@@ -134,6 +138,7 @@
               type="email"
               name="email"
               value="${employeeVO.email}"
+              placeholder="test@test.com"
             />
           </div>
           <div class="pstnId">
@@ -181,6 +186,7 @@
               type="text"
               name="mngrYn"
               value="${employeeVO.mngrYn}"
+              placeholder="Y or N"
             />
           </div>
           <div><button type="button" id="regist-btn">회원가입</button></div>

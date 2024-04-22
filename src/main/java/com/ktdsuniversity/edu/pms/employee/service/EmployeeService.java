@@ -20,4 +20,6 @@ public interface EmployeeService {
 
 	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
+	public int getOneEmpIdIsExist(String empId);
+
 }
