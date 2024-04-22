@@ -34,6 +34,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     
   </head>
   <body>
+  <div>
+   세션값: ${sessionScope._LOGIN_USER_.mngrYn}
+  </div>
     <div>
       <table class="table">
         <colgroup>
@@ -52,7 +55,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <th>상태</th>
             <th>시작일</th>
             <th>종료일</th>
-            <c:if test="${not empty sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+            <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
             <th>후기결과보기</th></c:if>
           </tr>
         </thead>
@@ -72,7 +75,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <td>${review.projectVO.strtDt}</td>
                   
                   <td>${review.projectVO.endDt}</td>
-                  <c:if test="${not empty sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+                  <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
                   <td
                     onclick="location.href='/review/viewresult?prjId=${review.prjId}'"
                   >
