@@ -9,6 +9,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <script type="text/javascript" src="/js/output/outputlist.js"></script>
   </head>
   <body>
+    <!--프로젝트-->
     <label for="prj-id"></label>
     <select name="prjId" id="prj-id">
       <option value="" selected>프로젝트</option>
@@ -25,7 +26,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:choose>
       </c:forEach>
     </select>
-
+    <!--산출물 타입-->
     <label for="out-type"></label>
     <select name="outType" id="out-type">
       <option value="" selected>산출물타입</option>
@@ -38,6 +39,23 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </c:when>
           <c:otherwise>
             <option value="${commonCode.cmcdId}">${commonCode.cmcdName}</option>
+          </c:otherwise>
+        </c:choose>
+      </c:forEach>
+    </select>
+    <!--버전 타입-->
+    <label for="out-ver"></label>
+    <select name="outVer" id="out-ver">
+      <option value="" selected>버전</option>
+      <c:forEach items="${verStsList}" var="verStsList">
+        <c:choose>
+          <c:when test="${verStsList.cmcdId eq outputSearchVO.outVer}">
+            <option value="${verStsList.cmcdId}" selected>
+              ${verStsList.cmcdName}
+            </option>
+          </c:when>
+          <c:otherwise>
+            <option value="${verStsList.cmcdId}">${verStsList.cmcdName}</option>
           </c:otherwise>
         </c:choose>
       </c:forEach>
@@ -101,7 +119,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 <td>${output.project.prjName}</td>
                 <td>${output.outTtl}</td>
                 <td>${output.outTypeVO.cmcdName}</td>
-                <td>${output.outVer}</td>
+                <td>${output.outVerSts.cmcdName}</td>
                 <td>
                   <a href="/output/downloadFile/${output.outId}"
                     >${output.outFile}</a
