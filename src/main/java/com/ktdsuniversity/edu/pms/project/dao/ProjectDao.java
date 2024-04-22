@@ -57,4 +57,6 @@ public interface ProjectDao {
     int insertNewProjectTeammate(ProjectTeammateVO newProjectTeammate);
 
     List<ProjectTeammateVO> findAllProjectTeammate();
+
+    List<ProjectVO> findAllProjectByEmployeeId(String empId);
 }

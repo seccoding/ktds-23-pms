@@ -36,4 +36,6 @@ public interface ProjectService {
     boolean insertOneTeammate(ProjectTeammateVO newProjectTeammate);
 
     List<ProjectTeammateVO> getAllProjectTeammate();
+
+    List<ProjectVO> getAllProjectByProjectTeammateId(String tmId);
 }
