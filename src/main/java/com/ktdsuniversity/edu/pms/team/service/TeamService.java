@@ -15,4 +15,6 @@ public interface TeamService {
 
 	public TeamListVO getAllTeamList(String deptId);
 
+	public boolean isPossibleDelete(String teamId);
+
 }

@@ -160,13 +160,13 @@ $().ready(function () {
     $.get("/ajax/department/candelete/" + deptId, function (response) {
       if (response.data.possible) {
         if (confirm("정말로 삭제하시겠습니까?")) {
-          $.get("/ajax/department/delete/" + deptId, function (response) {
-            if (response.data.success) {
+          $.get("/ajax/department/delete/" + deptId, function (delResponse) {
+            if (delResponse.data.success) {
               alert("삭제에 성공하였습니다.");
             } else {
               alert("삭제중 오류가 발생했습니다.");
             }
-            location.href = response.data.next;
+            location.href = delResponse.data.next;
           });
         }
       } else {
@@ -273,6 +273,9 @@ $().ready(function () {
     });
 
     modal[0].showModal();
+  });
+  $(".team-delete").on("click", function () {
+    var tmId = $("#codeTmId").text();
   });
 
   $("#modify-team-select-box").on("change", function () {

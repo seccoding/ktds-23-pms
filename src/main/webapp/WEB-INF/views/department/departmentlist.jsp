@@ -96,10 +96,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         width: 7rem;
       }
     </style>
-    <script
-      type="text/javascript"
-      src="/js/department/departmentlist.js"
-    ></script>
   </head>
   <body>
     <dialog class="create-modal dept-list-modal">
@@ -365,6 +361,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div data-columns="1 / -1" style="text-align: right">
           <input type="button" class="team-create button" value="팀 등록" />
           <input type="button" class="team-modify button" value="팀 변경" />
+          <input type="button" class="team-delete button" value="팀 삭제" />
         </div>
       </div>
       <div class="overflow-scroll">
