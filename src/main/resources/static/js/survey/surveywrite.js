@@ -10,7 +10,6 @@ $().ready(function() {
 
     $.get("/ajax/survey/get/" + prjId, function(response) {
         var surveys = response.data.surveys;
-        console.log(surveys);
 
         for (var i in surveys) {
             // var survey = surveys[i];
@@ -503,8 +502,9 @@ $().ready(function() {
         thisForAutoInsert.each(function() {
             var that = thisForAutoInsert;
             var srvId = thisForAutoInsert.data("srv-id");
-            var srvQst = thisForAutoInsert.children("div").eq(1).find("input").val();
+            var srvQst = thisForAutoInsert.children("div").eq(2).find("input").val();
             var newTypeYn = thisForAutoInsert.data("type-yn");
+            console.log(srvQst);
 
             if (newTypeYn) {
                 typeYn = newTypeYn;
