@@ -33,13 +33,14 @@
         <div class="survey-body" data-prj-id="${surveyQuestionVO.prjId}" data-srv-sts="${surveyQuestionVO.srvSts}">
             <!-- <div class="survey-question">
                 <div class="survey-question-top">
-                    <div>질문 1</div>
-                    <input type="text" placeholder="질문 입력" value="${surveyQuestionVO.srvQst}" />
-                </div>
-                <div class="survey-question-middle">
                     <span>질문 형태</span>
                     <button id="btn-selective-type">선택형</button>
                     <button id="btn-descriptive-type">서술형</button>
+                    
+                </div>
+                <div class="survey-question-middle">
+                    <div>질문 1</div>
+                    <input type="text" placeholder="질문 입력" value="${surveyQuestionVO.srvQst}" />
                 </div>
                 <div class="survey-question-bottom">
                     <ul>

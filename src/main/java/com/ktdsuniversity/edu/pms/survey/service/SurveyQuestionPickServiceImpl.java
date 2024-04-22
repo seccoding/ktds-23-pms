@@ -47,8 +47,8 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 	}
 
 	@Override
-	public List<SurveyQuestionPickVO> getAllpicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
-		return null;
+	public List<SurveyQuestionPickVO> getAllPicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
+		return this.surveyQuestionPickDao.getAllPicks(searchSurveyQuestionPickVO);
 	}
 
 }

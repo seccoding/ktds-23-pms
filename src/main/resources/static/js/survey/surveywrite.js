@@ -2,7 +2,6 @@ $().ready(function() {
     var prjId = $(".survey-body").data("prj-id");
     var seqNum = 0;
     var typeYn = 'N';
-    var srvSts = $(".survey-body").data("srv-sts");
     // var srvId = $(".survey-question").data("srv-id");
     // if (srvId) {
     //     $(".survey-body").append();
@@ -10,9 +9,10 @@ $().ready(function() {
 
     $.get("/ajax/survey/get/" + prjId, function(response) {
         var surveys = response.data.surveys;
-        console.log(surveys);
 
         for (var i in surveys) {
+            var srvId = surveys[i].srvId;
+            var srvQst = surveys[i].srvQst;
             // var survey = surveys[i];
             // var appendedSurvey = $(".survey-question[data-srv-id=" + survey.srvId + "]");
             // var isAppendedSurvey = appendedSurvey.length > 0;
@@ -22,8 +22,6 @@ $().ready(function() {
             // }
             var srvQstDom = $("<div></div>");
             srvQstDom.addClass("survey-question");
-            srvQstDom.attr("data-type-yn", surveys.typeYn);
-            srvQstDom.attr("data-srv-id", surveys.srvId);
 
             var srvQstTopDom = $("<div></div>");
             srvQstTopDom.addClass("survey-question-top");
@@ -42,11 +40,12 @@ $().ready(function() {
             srvQstMiddleDom.addClass("survey-question-middle");
 
             var seqDom = $("<div></div>");
-            seqDom.text(surveys.seq);
+            seqDom.text(surveys[i].seq);
             
             var srvQstInputDom = $("<input/>")
             srvQstInputDom.attr('type', 'text');
             srvQstInputDom.attr('placeholder', '질문 입력');
+            srvQstInputDom.val(srvQst);
 
             srvQstMiddleDom.append(seqDom);
             srvQstMiddleDom.append(srvQstInputDom);
@@ -54,8 +53,96 @@ $().ready(function() {
             var srvQstBottomDom = $("<div></div>");
             srvQstBottomDom.addClass("survey-question-bottom");
 
-            
-        }
+            var ulDom = $("<ul></ul>");
+
+            $.get("/ajax/survey/get/pick/" + srvId, function(srvId) {
+                return function(response) {
+                    var picks = response.data.picks;
+                    console.log(picks);
+    
+                    for (var j in picks) {
+                        var sqpCntnt = picks[j].sqpCntnt;
+                        console.log(sqpCntnt);
+                        var AnsDom = $("<li></li>");
+                        var AnsSeqDom = $("<div></div>");
+                        AnsSeqDom.text(picks[j].seq);
+                        var AnsInputDom = $("<input/>");
+                        AnsInputDom.attr('type', 'text');
+                        AnsInputDom.attr('placeholder', '답변명');
+                        AnsInputDom.val(sqpCntnt);
+                        var LinkInputDom = $("<input/>");
+                        LinkInputDom.attr('type', 'text');
+                        LinkInputDom.attr('placeholder', '연결');
+    
+                        AnsDom.append(AnsSeqDom);
+                        AnsDom.append(AnsInputDom);
+                        AnsDom.append(LinkInputDom);
+                        ulDom.append(AnsDom);
+                    }
+                }
+            }(srvId));
+
+
+
+            var addSrvQstButtonDom = $("<button></button>");
+            addSrvQstButtonDom.attr('type', 'button');
+            addSrvQstButtonDom.text("답변 항목 추가");
+
+            var deleteSrvQstButtonDom = $("<button></button>");
+            deleteSrvQstButtonDom.attr("type", "button");
+            deleteSrvQstButtonDom.text("문항 삭제");
+
+            $(deleteSrvQstButtonDom).on("click", function() {
+                var qstToDel = $(this).closest(srvQstDom);
+                var nextQst = qstToDel.nextAll(srvQstDom);
+    
+                var chooseValue = confirm("정말 삭제하시겠습니까?");
+                if (chooseValue) {
+                    nextQst.each(function() {
+                        var srvId = $(this).data("srv-id");
+                        var newSrvQst = $(this).children("div").eq(1).children("input").val();
+                        var currentSrvSeqNum = $(this).children("div").eq(1).children("div").text();
+                        
+                        var newSrvSeqNum = currentSrvSeqNum - 1;
+
+                        $(this).children("div").eq(1).children("div").text(newSrvSeqNum);
+
+                        var currentTypeYn = $(this).data("type-yn");
+                        var newTypeYn = 'N';
+                        if (currentTypeYn) {
+                            newTypeYn = currentTypeYn;
+                        }
+        
+                        if (!newSrvQst) {
+                            $.post("/ajax/survey/modify/next/" + srvId, {
+                                seq: newSrvSeqNum,
+                                typeYn: newTypeYn
+                            });
+                        }
+                        else {
+                            $.post("/ajax/survey/modify/" + srvId, {
+                                srvQst: newSrvQst,
+                                mdfrId: "0509004",
+                                seq: newSrvSeqNum,
+                                typeYn: newTypeYn
+                            });
+                        }                 
+                    });
+                    qstToDel.remove();
+                    seqNum--;
+                }
+            });
+
+            srvQstBottomDom.append(ulDom);
+            srvQstBottomDom.append(addSrvQstButtonDom);
+            srvQstBottomDom.append(deleteSrvQstButtonDom);
+
+            srvQstDom.append(srvQstTopDom);
+            srvQstDom.append(srvQstMiddleDom);
+            srvQstDom.append(srvQstBottomDom);
+            $(".survey-body").append(srvQstDom);
+                
+            }
     });
 
     $("#btn-add-srv-qst").on("click", function() {
@@ -500,6 +587,7 @@ $().ready(function() {
 
     function automaticInsert() {
         var thisForAutoInsert = $("#btn-compl-srv").parent().find("form").children("div").children("div");
+        console.log(thisForAutoInsert);
         thisForAutoInsert.each(function() {
             var that = thisForAutoInsert;
             var srvId = thisForAutoInsert.data("srv-id");

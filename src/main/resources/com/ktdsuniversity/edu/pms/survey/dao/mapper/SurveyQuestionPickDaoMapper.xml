@@ -83,5 +83,22 @@
 		   SET SEQ = #{seq}
 		 WHERE SQP_ID = #{sqpId}
 	</update>
+	
+	<select id="getAllPicks" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO"
+			resultMap="SurveyQuestionPickVoMap">
+		SELECT SQP_ID
+			 , SRV_ID
+			 , SQP_CNTNT
+			 , NEXT_ID
+			 , CRTR_ID
+			 , CRT_DT
+			 , MDFR_ID
+			 , MDF_DT
+			 , DEL_YN
+			 , SEQ
+		  FROM SURVEY_QUESTION_PICK
+		 WHERE DEL_YN = 'N'
+		   AND SRV_ID = #{srvId}
+	</select>
 
 </mapper>

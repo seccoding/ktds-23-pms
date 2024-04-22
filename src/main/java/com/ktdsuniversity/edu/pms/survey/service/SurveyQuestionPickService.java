@@ -13,6 +13,6 @@ public interface SurveyQuestionPickService {
 
 	public boolean modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO);
 
-	public List<SurveyQuestionPickVO> getAllpicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO);
+	public List<SurveyQuestionPickVO> getAllPicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO);
 
 }
