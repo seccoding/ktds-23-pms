@@ -12,14 +12,14 @@ $().ready(function() {
         console.log("searchType:", searchType);
         
         
-        $.post("/approval/approvallist", 
+        $.post("/approval/list", 
             {
                 searchKeyword: $("#searchKeyword").val(),
                 searchType: $(".search-category select").val(),
         }, 
         function (response) {
 			
-             var html = "";
+            var html = "";
             $.each(response.apprList.apprList, function(index, approval) {
                 html += "<tr>";
                 html += "<td><input type='checkbox' class='target-appr-id' name='targetApprId' value='" + approval.apprId + "'></td>";

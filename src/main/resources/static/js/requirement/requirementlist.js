@@ -24,7 +24,7 @@ $().ready(function () {
   });
 
   $("#reset").on("click", function () {
-    var prjId = "ALL";
+    var prjId = "";
     var scdSts = "";
     var rqmSts = "";
     $.get(

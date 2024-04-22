@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.web;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
@@ -15,6 +19,7 @@ import com.ktdsuniversity.edu.pms.review.service.ReviewService;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
 public class ReviewController {
@@ -71,6 +76,18 @@ public class ReviewController {
 		return "redirect:/review"; 
 	}
 		
+	
+	@ResponseBody
+	@PostMapping("/ajax/review/delete/massive")
+	public AjaxResponse doDeleteMassive(@RequestParam("reviewIds[]") List<String> reviewIds
+										/*, @SessionAttribute("_LOGIN_USER_") ReviewVO reviewVO */) {
+					
+		boolean deleteResult = this.reviewService.deleteManyReview(reviewIds);
+		
+		return new AjaxResponse().append("result", deleteResult);
+		
+		
+	}
 	
 	/*
 	 * @GetMapping("/review/viewresult") public String

@@ -71,5 +71,9 @@ public interface ReviewDao {
 	 * @return 삭제 count
 	 */
 	public int deleteReviewViewResult(String id);
+
+	public int deleteManyReview(List<String> reviewIds);
+
+	public List<ReviewVO> selectManyReview(List<String> reviewIds);
 	
 }

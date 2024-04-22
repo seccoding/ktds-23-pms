@@ -14,7 +14,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <body>
     <label for="prj-id"></label>
     <select name="prjId" id="prj-id">
-      <option value="ALL" selected>프로젝트</option>
+      <option value="" selected>프로젝트</option>
       <c:forEach items="${projectList.projectList}" var="project">
         <c:choose>
           <c:when test="${project.prjId eq prjId}">

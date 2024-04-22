@@ -28,6 +28,7 @@ import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 import ch.qos.logback.core.filter.Filter;
+
 @Controller
 public class OutputController {
 	@Autowired
@@ -36,98 +37,93 @@ public class OutputController {
 	private ProjectService projectService;
 	@Autowired
 	private CommonCodeService commonCodeService;
-	
+
 	@GetMapping("/output")
 	public String viewOutputList() {
 		return "redirect:output/search?prjId=";
 	}
+
 	@GetMapping("/output/search")
 	public String viewOutputSearhList(@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
 		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
-				projectList.getProjectList().stream().
-				filter(project -> project.getOutYn().equals("Y")).toList());
-		List<CommonCodeVO>  commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
-		
-		model.addAttribute("outputList",outputList).addAttribute("prjId",prjId)
-		.addAttribute("projectList", projectList)
-		.addAttribute("commonCodeList", commonCodeList)
-		.addAttribute("outputSearchVO", outputSearchVO);
-		
+				projectList.getProjectList().stream().filter(project -> project.getOutYn().equals("Y")).toList());
+		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
+		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
+
+		model.addAttribute("outputList", outputList).addAttribute("prjId", prjId)
+				.addAttribute("projectList", projectList).addAttribute("commonCodeList", commonCodeList)
+				.addAttribute("outputSearchVO", outputSearchVO)
+				.addAttribute("verStsList", verStsList);
+
 		return "output/outputlist";
 	}
-	
-	
+
 	@GetMapping("/output/write")
 	public String viewCreateOutput(Model model) {
 //		TODO 파일 넣기
 		ProjectListVO projectList = this.projectService.getAllProject();
+		projectList.setProjectList(
+				projectList.getProjectList().stream().filter((project) -> project.getOutYn().equals("Y")).toList());
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
-		model.addAttribute("projectList",projectList)
-		.addAttribute("outputType",outputType);
-		
+		List<CommonCodeVO> prjSts =this.commonCodeService.getAllCommonCodeListByPId("400");
+		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType)
+		.addAttribute("prjSts", prjSts);
 		return "output/outputwrite";
 	}
+
 	@PostMapping("/output/write")
-	public String  createOutput(@RequestParam MultipartFile file
-			,OutputVO outputVO, Model model){
+	public String createOutput(@RequestParam MultipartFile file, OutputVO outputVO, Model model) {
 		Validator<OutputVO> validator = new Validator<>(outputVO);
-		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
-		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
-		.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.")
-		.start();
-		
+		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
+
 		boolean isSuccess = this.outputService.insertOneOutput(outputVO, file);
-		
+
 		return "redirect:/output";
-		
+
 	}
-	
+
 	@GetMapping("output/downloadFile/{outId}")
 	public ResponseEntity<Resource> fileDownload(@PathVariable String outId) {
-		
-		OutputVO Output= this.outputService.getOneOutput(outId);
-		
+
+		OutputVO Output = this.outputService.getOneOutput(outId);
+
 		return this.outputService.getDownloadFile(Output);
-		
+
 	}
-	
+
 	@GetMapping("/output/modify/{outId}")
-	public String viewModifyOutputPage(@PathVariable String outId
-			, Model model) {
+	public String viewModifyOutputPage(@PathVariable String outId, Model model) {
 		ProjectListVO projectList = this.projectService.getAllProject();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		OutputVO output = this.outputService.getOneOutput(outId);
-		
-		model.addAttribute("projectList",projectList)
-		.addAttribute("outputType",outputType).addAttribute("output", output);
-		
+
+		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType).addAttribute("output",
+				output);
+
 		return "/output/outputmodify";
 
 	}
-	
+
 	@PostMapping("/output/modify/{outId}")
-	public String ModifyOutputPage(@PathVariable String outId,
-			@RequestParam MultipartFile file, OutputVO outputVO) {
-		
+	public String ModifyOutputPage(@PathVariable String outId, @RequestParam MultipartFile file, OutputVO outputVO) {
+
 		Validator<OutputVO> validator = new Validator<>(outputVO);
-		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
-		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
-		.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.")
-		.start();
-		
-		
+		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
+
 		boolean isSuccess = this.outputService.updateOneOutput(outputVO, file);
 		return "redirect:/output";
 	}
+
 	@GetMapping("/output/delete/{outId}")
-	public String deleteOutputment(@PathVariable String outId,
-			@RequestParam String prjId) {
-		
+	public String deleteOutputment(@PathVariable String outId, @RequestParam String prjId) {
+
 		boolean isSuccess = this.outputService.deleteOneOutput(outId);
-		
-		return "redirect:/output/search?prjId="+prjId;
+
+		return "redirect:/output/search?prjId=" + prjId;
 
 	}
 

@@ -257,15 +257,29 @@
 		 WHERE RV_ID = #{_parameter}
 	</update>
 	
-	<!-- 
-	<update id="updateOneReview" 
-			parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
+	
+	<select id="selectManyReview"
+			parameterType ="list"
+			resultType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
+		SELECT RV_ID
+		  FROM PROJECT_REVIEW
+		 WHERE RV_ID IN 
+		<foreach collection="list" item="rvId" open="(" close=")" separator=",">
+			#{rvId}
+		</foreach>
+		   AND DEL_YN = 'N'
+	</select>
+ 
+  	<update id="deleteManyReview"
+			parameterType = "list">
 		UPDATE PROJECT_REVIEW
-		   SET RV_CNTNT = #{content}
-		     , MDF_DT = SYSDATE
-		 WHERE RV_ID = #{rvId}
+		   SET DEL_YN = 'Y'
+		 WHERE RV_ID IN 
+		<foreach collection="list" item="rvId" open="(" close=")" separator=",">
+			#{rvId}
+		</foreach> 
 	</update>
-	 -->
+	
 	
 	
 </mapper>

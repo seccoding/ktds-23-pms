@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.survey.dao;
 
+import java.util.List;
+
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
 
 public interface SurveyQuestionPickDao {
@@ -15,5 +18,7 @@ public interface SurveyQuestionPickDao {
 	public SurveyQuestionPickVO getOneAnswerSequence(String sqpId);
 
 	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO);
+
+	public List<SurveyQuestionPickVO> getAllPicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO);
 
 }
