@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.service;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
@@ -59,6 +61,8 @@ public interface ReviewService {
 	 * @return 후기삭제성공여부
 	 */
 	public boolean reviewViewResultDelete(String id);
+	
+	boolean deleteManyReview(List<String> reviewIds);
 
 
 	

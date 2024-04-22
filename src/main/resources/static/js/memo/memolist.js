@@ -8,7 +8,7 @@ $().ready(function () {
       itemsArray.push($(data).val());
     });
     // 서버로 전송한다(ajax)
-    $.post(
+    $.get(
       "/ajax/memo/delete/massive",
       { memoIds: itemsArray },
       function (response) {
