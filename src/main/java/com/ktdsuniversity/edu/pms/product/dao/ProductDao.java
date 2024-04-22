@@ -49,13 +49,6 @@ public interface ProductDao {
 	public ProductVO selectOneProductByPrdtName(String prdtName);
 
 	/**
-	 * 여러 개의 비품들 일괄등록 
-	 * @param addItems
-	 * @return
-	 */
-	public int insertManyProduct(List<Integer> addItems);
-
-	/**
 	 * prdtId 값 조회
 	 * @return
 	 */

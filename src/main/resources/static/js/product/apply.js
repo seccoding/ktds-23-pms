@@ -34,27 +34,30 @@ $().ready(function(){
         var formData = {};
 
         $("form").each(function(index, form) {
-            formData["productList["+index+"].prdtName"] = $(form).find("#select-prdtName").val();
-            formData["productList["+index+"].prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
-            formData["productList["+index+"].applyQuantity"] = $(form).find("#apply-quantity").val();
-            formData["productList["+index+"].applyDate"] = $(form).find("#apply-date").val();
+            formData["borrowList["+index+"].productVO.prdtName"] = $(form).find("#select-prdtName").val();
+            formData["borrowList["+index+"].productVO.prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
+            formData["borrowList["+index+"].productVO.curStr"] = $(form).find("#apply-quantity").val();
+            formData["borrowList["+index+"].brrwDt"] = $(form).find("#apply-date").val();
         });
 
-        $.post(url, formData, 
-            function (response) {
-                var addConfirm = confirm("추가하시겠습니까?");
-                if(addConfirm){
-                    var num = $(".apply-quantity").val();
-
-                    if(num > curstr){
-                        alert("현재 재고수(" + curstr + ") 보다 신청 수량이 많습니다! 다시 신청해주세요");
-                    }
-                    else{
+        var addConfirm = confirm("추가하시겠습니까?");
+        if(addConfirm){
+            var num = $(".apply-quantity").val();
+            if(num > curstr){
+                alert("현재 재고수(" + curstr + ") 보다 신청 수량이 많습니다! 다시 신청해주세요");
+            }
+            else{
+                $.post(url, formData, 
+                    function (response) {
                         location.href = response.data.next;
                     }
-                }
+                );
             }
-        );
+        }
+        else{
+            location.reload();
+        }
+        
     });
 
     

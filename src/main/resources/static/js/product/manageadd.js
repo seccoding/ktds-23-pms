@@ -55,16 +55,6 @@ $().ready(function(){
         else{
             location.reload();
         }
-
-
-        // $.post(url, formData, 
-        //     function (response) {
-        //         var addConfirm = confirm("추가하시겠습니까?");
-        //         if(addConfirm){
-        //             location.href = response.data.next;
-        //         }
-        //     }
-        // );
         
     });
 
