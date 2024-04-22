@@ -231,4 +231,19 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return approvallistvo;
 	}
 
+	// PSH - search
+	@Override
+	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
+		int approvalCount = this.approvalDao.searchApprAllCount(searchApprovalVO);
+		searchApprovalVO.setPageCount(approvalCount);
+
+		List<ApprovalVO> approvalList = this.approvalDao.searchAllApproval(searchApprovalVO);
+
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalCount);
+		approvalListVO.setApprList(approvalList);
+
+		return approvalListVO;
+	}
+
 }

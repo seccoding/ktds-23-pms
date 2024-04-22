@@ -7,6 +7,14 @@
 	<title>결재현황</title>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
 	<style>
+    img {
+      width: 2rem;
+      height: 2%;
+    }
+    h6 {
+      margin-bottom: 0.4rem;
+      font-weight: bold;
+    }
 		.container {
 			background-color: #FFF;
 			padding: 1rem;
@@ -106,40 +114,40 @@
 				<c:choose>
 					<c:when test="${not empty apprList.apprList}">
 						<c:forEach items="${apprList.apprList}" var="approval">
-							<div class="card-list"">
-								<div class="card-list-category">
-									<div class="category">
-										<img src="" alt="img">
-										<c:if test="${approval.apprCtgr eq '902'}">
-											<span>비품변경</span>
-										</c:if>
-									</div>
-								</div>
-								<div class="card-list-title">
-                  <a href="/approval/approvalview?apprId=${approval.apprId}">
+              <a href="/approval/view?apprId=${approval.apprId}">
+                <div class="card-list"">
+                  <div class="card-list-category">
+                    <div class="category">
+                      <img src="/images/sidebar-approval.png" alt="img">
+                      <c:if test="${approval.apprCtgr eq '902'}">
+                        <span>비품변경</span>
+                      </c:if>
+                    </div>
+                  </div>
+                  <div class="card-list-title">
                     <h6>${approval.apprTtl}</h6>
                     <span>${approval.dmdDt}</span>
-                  </a>
-								</div>
-								<div class="card-list-user">
-									<img src="" alt="img">
-									<div class="user">
-										<h6>${approval.employeeVO.empName}</h6>
-										<span>직급</span>
-									</div>
-								</div>
-								<div class="card-list-status">
-									<c:if test="${approval.apprSts eq '801'}">
-										<button>결재대기</button>
-									</c:if>
-									<c:if test="${approval.apprSts eq '802'}">
-										<button>결재승인</button>
-									</c:if>
-									<c:if test="${approval.apprSts eq '803'}">
-										<button>결재반려</button>
-									</c:if>
-								</div>
-							</div>	
+                  </div>
+                  <div class="card-list-user">
+                    <img src="/images/login.png" alt="img">
+                    <div class="user">
+                      <h6>${approval.employeeVO.empName}</h6>
+                      <span>직급</span>
+                    </div>
+                  </div>
+                  <div class="card-list-status">
+                    <c:if test="${approval.apprSts eq '801'}">
+                      <button>결재대기</button>
+                    </c:if>
+                    <c:if test="${approval.apprSts eq '802'}">
+                      <button>결재승인</button>
+                    </c:if>
+                    <c:if test="${approval.apprSts eq '803'}">
+                      <button>결재반려</button>
+                    </c:if>
+                  </div>
+                </div>	
+              </a>
 						</c:forEach>
 					</c:when>
 				</c:choose>		
@@ -152,11 +160,11 @@
         <form id="search-form">
           <input type="hidden" id="page-no" name="pageNo" value="0" />		
           <ul class="page-nav">
-            <c:if test="${searchBoardVO.hasPrevGroup}">
+            <c:if test="${searchApproval.hasPrevGroup}">
               <li><a href="javascript:search(0);">처음</a></li>
               <li>
                 <a
-                  href="javascript:search(${searchBoardVO.prevGroupStartPageNo});"
+                  href="javascript:search(${searchApproval.prevGroupStartPageNo});"
                   >이전</a
                 >
               </li>
@@ -164,25 +172,25 @@
 
             <!-- Page 번호를 반복하며 노출한다. -->
             <c:forEach
-              begin="${searchBoardVO.groupStartPageNo}"
-              end="${searchBoardVO.groupEndPageNo}"
+              begin="${searchApproval.groupStartPageNo}"
+              end="${searchApproval.groupEndPageNo}"
               step="1"
               var="p"
             >
-              <li class="${searchBoardVO.pageNo eq p ? 'active' : ''}">
+              <li class="${searchApproval.pageNo eq p ? 'active' : ''}">
                 <a href="javascript:search(${p});">${p+1}</a>
               </li>
             </c:forEach>
 
-            <c:if test="${searchBoardVO.hasNextGroup}">
+            <c:if test="${searchApproval.hasNextGroup}">
               <li>
                 <a
-                  href="javascript:search(${searchBoardVO.nextGroupStartPageNo});"
+                  href="javascript:search(${searchApproval.nextGroupStartPageNo});"
                   >다음</a
                 >
               </li>
               <li>
-                <a href="javascript:search(${searchBoardVO.pageCount - 1});"
+                <a href="javascript:search(${searchApproval.pageCount - 1});"
                   >마지막</a
                 >
               </li>
