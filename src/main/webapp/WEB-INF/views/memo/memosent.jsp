@@ -65,6 +65,7 @@
     <div>
         <form id="search-form">
             <input type="hidden" id="page-no" name="pageNo" value="0"/>
+
             <select id="list-size" name="listSize">
                 <option value="10" ${searchMemoVO.listSize eq 10 ? 'selected' : ''}>10개</option>
                 <option value="20" ${searchMemoVO.listSize eq 20 ? 'selected' : ''}>20개</option>

@@ -49,23 +49,24 @@ public class MemoController {
 	
 	// 수정필요
 	@GetMapping("/memo/storage")
-	public String viewStorageMemoListPage(Model model) {
+	public String viewStorageMemoListPage(Model model, SearchMemoVO searchMemoVO) {
 		
-		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
+		model.addAttribute("searchMemoVO", searchMemoVO);
 		
 		return "memo/memostorage";
 	}
 	
 	// 수정필요
 	@GetMapping("/memo/receive")
-	public String viewReceiveMemoListPage(Model model) {
+	public String viewReceiveMemoListPage(Model model, SearchMemoVO searchMemoVO) {
 		
-		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
-		
+		model.addAttribute("searchMemoVO", searchMemoVO);
 		return "memo/memoreceive";
 	}
 	
@@ -81,7 +82,7 @@ public class MemoController {
 	 * 쪽찌 쓰기 기능 쓰기 완료시 보낸쪽지함으로 이동
 	 */
 	@PostMapping("/memo/write")
-	public String doBoardWrite(@RequestParam String rcvId,
+	public String doMemoWrite(@RequestParam String rcvId,
 			@RequestParam String memoCntnt,
 			Model model) {
 		
@@ -98,7 +99,7 @@ public class MemoController {
 	
 	
 	@GetMapping({"/memo/sent/view", "/memo/receive/view", "/memo/storage/view"})
-	public String viewBoardDetailPage(@RequestParam() String id, Model model) {
+	public String viewMemoDetailPage(@RequestParam() String id, Model model) {
 		MemoVO memoVO = this.memoService.getOneMemo(id);
 	
 		model.addAttribute("memoVO", memoVO);

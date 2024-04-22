@@ -8,6 +8,7 @@ public class SearchMemoVO extends PaginateVO {
 	private String searchType;
 	private String searchKeyword;
 
+	
 	public String getSearchStatus() {
 		return searchStatus;
 	}
