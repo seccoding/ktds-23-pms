@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ktdsuniversity.edu.pms.qna.dao.QnaDao">
+  
+    <resultMap type="com.ktdsuniversity.edu.pms.qna.vo.QnaVO" 
+	id="qnaVOMap" autoMapping="true">
+	<id column="QA_ID" property="qaId" /><!-- pk -->
+	<result column="RQM_ID" property="rqmId" /><!-- join value -->
+	<result column="PRJ_ID" property="prjId" /><!-- join value -->
+	<result column="CMCD_ID" property="cmcdId" /><!-- join value -->
+	<result column="EMP_ID" property="empId" /><!-- join value -->
+	 
+	<!-- join table -->
+	
+	<association property="requirementVO" 
+		javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+			<id column="RQM_ID" property="rqmId" />
+			<result column="RQM_TTL" property="rqmTtl" />
+	</association> 
+	<!-- join table -->
+	
+	<association property="projectVO" 
+		javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+			<id column="PRJ_ID" property="prjId" />
+			<result column="PRJ_NAME" property="prjName" />
+	</association>
+	
+	<!-- join table -->
+	<association property="commonCodeVO" 
+		javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="CMCD_ID" property="cmcdId" />
+	</association>
+	
+	<!-- join table -->
+	
+	<association property="employeeVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_ID" property="empId" />
+	</association>
+	 
+	</resultMap>
+  
+  
+  
+    <select id="getAllQnaCount" resultType="_int">
+	  	SELECT COUNT(1)
+	  	  FROM QNA
+	  	 WHERE DEL_YN = 'N'
+  	</select>
+  
+  
+  	<select id="getAllQna" resultMap="qnaVOMap">
+	    SELECT Q.QA_ID
+			 , Q.RQM_ID
+			 , Q.QA_TTL
+			 , Q.QA_CNTNT
+			 , Q.QA_CNT
+			 , Q.QA_REC_CNT
+			 , Q.CRT_DT
+			 , Q.MDF_DT
+			 , Q.DEL_YN
+			 , Q.CRTR_ID
+			 , Q.MDFR_ID
+		     , Q.FILE_NAME
+		     , Q.ORIGIN_FILE_NAME
+		     , P.PRJ_NAME
+		     , R.RQM_TTL
+		  FROM QNA Q
+		 INNER JOIN REQUIREMENT R
+		    ON R.RQM_ID = Q.RQM_ID
+		 INNER JOIN PROJECT P
+		    ON P.PRJ_ID = R.PRJ_ID
+		  WHERE Q.DEL_YN = 'N'
+		  ORDER BY Q.CRT_DT DESC
+  </select>
+  
+  
+    <select id="searchAllQnaCount" resultType="_int">
+  	SELECT COUNT(1) 
+	  FROM QNA Q
+	 INNER JOIN REQUIREMENT R
+	    ON R.RQM_ID = Q.RQM_ID
+	 INNER JOIN PROJECT P
+	    ON P.PRJ_ID = R.PRJ_ID
+	 WHERE Q.DEL_YN = 'N'
+	 <if test='searchKeyword != null and searchKeyword != ""'>
+	 <choose>
+	 	<when test='searchType == "prjName"'>
+	   AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "rqmTtl"'>
+	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "qaTtl"'>
+	   AND Q.QA_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "qaCntnt"'>
+	   AND Q.QA_CNTNT LIKE '%' || #{searchKeyword} || '%'		
+	 	</when>
+	 	<when test='searchType == "qaTtl_qaCntnt"'>
+	   AND (Q.QA_TTL LIKE '%' || #{searchKeyword} || '%'
+    	OR  Q.QA_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+	 	</when>
+	 	<when test='searchType == "crtrId"'>
+	   AND Q.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
+	 	</when>
+	 </choose>
+	 </if>
+  </select>
+  
+  
+  <select id="searchAllQna" parameterType="com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO" resultMap="qnaVOMap">
+	    SELECT Q.QA_ID
+			 , Q.RQM_ID
+			 , Q.QA_TTL
+			 , Q.QA_CNTNT
+			 , Q.QA_CNT
+			 , Q.QA_REC_CNT
+			 , Q.CRT_DT
+			 , Q.MDF_DT
+			 , Q.DEL_YN
+			 , Q.CRTR_ID
+			 , Q.MDFR_ID
+		     , Q.FILE_NAME
+		     , Q.ORIGIN_FILE_NAME
+		     , P.PRJ_NAME
+		     , R.RQM_TTL
+		  FROM QNA Q
+		 INNER JOIN REQUIREMENT R
+		    ON R.RQM_ID = Q.RQM_ID
+		 INNER JOIN PROJECT P
+		    ON P.PRJ_ID = R.PRJ_ID
+		  WHERE Q.DEL_YN = 'N'
+		  <if test='searchKeyword != null and searchKeyword != ""'>
+	 <choose>
+	 	<when test='searchType == "prjName"'>
+	   AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "rqmTtl"'>
+	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "qaTtl"'>
+	   AND Q.QA_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "qaCntnt"'>
+	   AND Q.QA_CNTNT LIKE '%' || #{searchKeyword} || '%'		
+	 	</when>
+	 	<when test='searchType == "qaTtl_qaCntnt"'>
+	   AND (Q.QA_TTL LIKE '%' || #{searchKeyword} || '%'
+    	OR  Q.QA_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+	 	</when>
+	 	<when test='searchType == "crtrId"'>
+	   AND Q.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
+	 	</when>
+	 </choose>
+	 </if>
+		ORDER BY Q.CRT_DT DESC
+  </select>
+  
+  
+    <insert id="insertNewQna" parameterType="com.ktdsuniversity.edu.pms.qna.vo.QnaVO"> 
+		INSERT INTO QNA
+			 ( QA_ID
+			 , RQM_ID
+			 , QA_TTL
+			 , QA_CNTNT
+			 , QA_CNT
+			 , QA_REC_CNT
+			 , CRT_DT
+			 , MDF_DT
+			 , DEL_YN
+			 , CRTR_ID
+			 , MDFR_ID
+			 , FILE_NAME
+			 , ORIGIN_FILE_NAME)
+		VALUES
+		     (('QA' || '_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD (SEQ_QNA_PK.NEXTVAL, 6, '0'))
+		     , #{rqmId}
+		     , #{qaTtl}
+		     , #{qaCntnt}
+		     , 0
+		     , 0
+		     , SYSDATE
+		     , NULL
+		     , 'N'
+		     , #{crtrId}
+		     , NULL
+		     , #{fileName}
+		     , #{originFileName})
+   </insert>
+  
+  
+    <select id="selectOneQna"  resultMap="qnaVOMap">
+	  SELECT Q.QA_ID
+		 , Q.RQM_ID
+		 , Q.QA_TTL
+		 , Q.QA_CNTNT
+		 , Q.QA_CNT
+		 , Q.QA_REC_CNT
+		 , TO_CHAR(Q.CRT_DT, 'YYYY-MM-DD') CRT_DT
+		 , TO_CHAR(Q.MDF_DT  , 'YYYY-MM-DD') MDF_DT
+		 , Q.DEL_YN
+		 , Q.CRTR_ID
+		 , Q.MDFR_ID
+	     , Q.FILE_NAME
+	     , Q.ORIGIN_FILE_NAME
+	     , P.PRJ_NAME
+	  FROM QNA Q
+	 INNER JOIN REQUIREMENT R
+	    ON R.RQM_ID = Q.RQM_ID
+	 INNER JOIN PROJECT P
+	    ON P.PRJ_ID = R.PRJ_ID
+	 INNER JOIN EMPLOYEE E
+        ON E.EMP_ID = Q.CRTR_ID 
+	 WHERE Q.DEL_YN = 'N'
+	   AND Q.QA_ID = #{_parameter}
+  </select>
+  
+  
+	<!-- 조회수 -->
+	<update id="increaseViewCount" parameterType="String">
+		UPDATE QNA 
+		   SET QA_CNT = QA_CNT + 1
+		 WHERE DEL_YN = 'N'
+		   AND QA_ID = #{_parameter}
+	</update>
+	
+	<!-- 수정 -->
+	<update id="updateOneQna" parameterType="com.ktdsuniversity.edu.pms.qna.vo.QnaVO">
+		UPDATE QNA 
+		   SET QA_TTL = #{qaTtl}
+		   	 , QA_CNTNT = #{qaCntnt}
+		   	 , MDF_DT = SYSDATE
+		   	 <if test='fileName != null and fileName != ""'>
+		   	 , FILE_NAME = #{fileName}
+		   	 , ORIGIN_FILE_NAME = #{originFileName}
+		   	 </if>
+		 WHERE QA_ID = #{qaId}
+	</update>
+  
+  	<!-- 삭제 -->
+	<update id="deleteOneQna" parameterType="String">
+		UPDATE QNA 
+		   SET DEL_YN = 'Y'
+		   	 , MDF_DT = SYSDATE
+		 WHERE QA_ID = #{qaId}
+	</update>
+	
+	
+	<select id="selectManyQna" parameterType="list" resultType="com.ktdsuniversity.edu.pms.qna.vo.QnaVO">
+		SELECT FILE_NAME
+		  FROM QNA
+		 WHERE QA_ID IN
+		 <foreach collection="list" item="qaId" open="(" close=")" separator=", ">
+		 	#{qaId}
+		 </foreach>
+	</select>
+	
+	<update id="deleteManyQna" parameterType="list">
+		UPDATE QNA
+		   SET DEL_YN = 'Y'
+		     , MDF_DT = SYSDATE
+		 WHERE QA_ID IN
+		 <foreach collection="list" item="qaId" open="(" close=")" separator=", ">
+		 	#{qaId}
+		 </foreach>
+	</update>
+  
+  	
+  	<update id="recommendOneQna" parameterType="String">
+		UPDATE QNA 
+		   SET QA_REC_CNT = QA_REC_CNT + 1
+		 WHERE DEL_YN = 'N'
+		   AND QA_ID = #{qaId}
+	</update>
+	
+	
+  	<update id="cancelRecommendOneQna" parameterType="String">
+	UPDATE QNA 
+	   SET QA_REC_CNT = QA_REC_CNT - 1
+	 WHERE DEL_YN = 'N'
+	   AND QA_ID = #{qaId}
+	</update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </mapper>
