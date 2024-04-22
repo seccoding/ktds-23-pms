@@ -179,6 +179,13 @@ $().ready(function () {
     $.get("/ajax/department/team/candelete/" + tmId, function (response) {
       if (response.data.possible) {
         if (confirm("정말로 삭제하시겠습니까?")) {
+          $.get("/ajax/department/team/delete/" + tmId, function (response) {
+            if (response.data.success) {
+              alert("삭제에 성공하였습니다.");
+            } else {
+              alert("삭제중 오류가 발생했습니다.");
+            }
+          });
         }
       } else {
         alert("사원이 존재하고 있어 삭제할 수 없습니다.");

@@ -54,5 +54,10 @@ public class TeamDaoImpl extends SqlSessionDaoSupport implements TeamDao{
 		return getSqlSession().selectOne(TeamDao.NAME_SPACE + ".isPossibleDelete", teamId);
 	}
 
+	@Override
+	public int deleteOneTeam(String teamId) {
+		return getSqlSession().update(TeamDao.NAME_SPACE + ".deleteOneTeam", teamId);
+	}
+
 	
 }

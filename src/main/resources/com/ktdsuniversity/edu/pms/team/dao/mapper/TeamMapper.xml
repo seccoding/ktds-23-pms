@@ -83,5 +83,13 @@
 		 WHERE DEL_YN = 'N'
 		   AND TM_ID = #{_parameter}
 	</select>
+	
+	<update id="deleteOneTeam"
+			parameterType="string">
+		UPDATE TEAM
+		   SET DEL_YN = 'Y'
+		 WHERE TM_ID = #{_parameter}
+	</update>
+	
 
 </mapper>

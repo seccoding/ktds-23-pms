@@ -17,4 +17,6 @@ public interface TeamService {
 
 	public boolean isPossibleDelete(String teamId);
 
+	public boolean deleteOneTeam(String teamId);
+
 }
