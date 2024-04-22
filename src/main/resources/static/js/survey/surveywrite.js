@@ -8,54 +8,54 @@ $().ready(function() {
     //     $(".survey-body").append();
     // }
 
-    $.get("/ajax/survey/get/" + prjId, function(response) {
-        var surveys = response.data.surveys;
+    // $.get("/ajax/survey/get/" + prjId, function(response) {
+    //     var surveys = response.data.surveys;
 
-        for (var i in surveys) {
-            // var survey = surveys[i];
-            // var appendedSurvey = $(".survey-question[data-srv-id=" + survey.srvId + "]");
-            // var isAppendedSurvey = appendedSurvey.length > 0;
+    //     for (var i in surveys) {
+    //         // var survey = surveys[i];
+    //         // var appendedSurvey = $(".survey-question[data-srv-id=" + survey.srvId + "]");
+    //         // var isAppendedSurvey = appendedSurvey.length > 0;
 
-            // if (isAppendedSurvey && survey.delYn === "N") {
-            //     appendedSurvey
-            // }
-            var srvQstDom = $("<div></div>");
-            srvQstDom.addClass("survey-question");
-            srvQstDom.attr("data-type-yn", surveys.typeYn);
-            srvQstDom.attr("data-srv-id", surveys.srvId);
+    //         // if (isAppendedSurvey && survey.delYn === "N") {
+    //         //     appendedSurvey
+    //         // }
+    //         var srvQstDom = $("<div></div>");
+    //         srvQstDom.addClass("survey-question");
+    //         srvQstDom.attr("data-type-yn", surveys.typeYn);
+    //         srvQstDom.attr("data-srv-id", surveys.srvId);
 
-            var srvQstTopDom = $("<div></div>");
-            srvQstTopDom.addClass("survey-question-top");
+    //         var srvQstTopDom = $("<div></div>");
+    //         srvQstTopDom.addClass("survey-question-top");
 
-            var selectiveTypeButtonDom = $("<button></button>");
-            selectiveTypeButtonDom.attr("type", "button");
-            selectiveTypeButtonDom.text("선택형");
-            var descriptiveTypeButtonDom = $("<button></button>");
-            descriptiveTypeButtonDom.attr("type", "button");
-            descriptiveTypeButtonDom.text("서술형");
+    //         var selectiveTypeButtonDom = $("<button></button>");
+    //         selectiveTypeButtonDom.attr("type", "button");
+    //         selectiveTypeButtonDom.text("선택형");
+    //         var descriptiveTypeButtonDom = $("<button></button>");
+    //         descriptiveTypeButtonDom.attr("type", "button");
+    //         descriptiveTypeButtonDom.text("서술형");
 
-            srvQstTopDom.append(selectiveTypeButtonDom);
-            srvQstTopDom.append(descriptiveTypeButtonDom);
+    //         srvQstTopDom.append(selectiveTypeButtonDom);
+    //         srvQstTopDom.append(descriptiveTypeButtonDom);
 
-            var srvQstMiddleDom = $("<div></div>");
-            srvQstMiddleDom.addClass("survey-question-middle");
+    //         var srvQstMiddleDom = $("<div></div>");
+    //         srvQstMiddleDom.addClass("survey-question-middle");
 
-            var seqDom = $("<div></div>");
-            seqDom.text(surveys.seq);
+    //         var seqDom = $("<div></div>");
+    //         seqDom.text(surveys.seq);
             
-            var srvQstInputDom = $("<input/>")
-            srvQstInputDom.attr('type', 'text');
-            srvQstInputDom.attr('placeholder', '질문 입력');
+    //         var srvQstInputDom = $("<input/>")
+    //         srvQstInputDom.attr('type', 'text');
+    //         srvQstInputDom.attr('placeholder', '질문 입력');
 
-            srvQstMiddleDom.append(seqDom);
-            srvQstMiddleDom.append(srvQstInputDom);
+    //         srvQstMiddleDom.append(seqDom);
+    //         srvQstMiddleDom.append(srvQstInputDom);
 
-            var srvQstBottomDom = $("<div></div>");
-            srvQstBottomDom.addClass("survey-question-bottom");
+    //         var srvQstBottomDom = $("<div></div>");
+    //         srvQstBottomDom.addClass("survey-question-bottom");
 
             
-        }
-    });
+    //     }
+    // });
 
     $("#btn-add-srv-qst").on("click", function() {
         seqNum++;
@@ -499,12 +499,12 @@ $().ready(function() {
 
     function automaticInsert() {
         var thisForAutoInsert = $("#btn-compl-srv").parent().find("form").children("div").children("div");
+        console.log(thisForAutoInsert);
         thisForAutoInsert.each(function() {
             var that = thisForAutoInsert;
             var srvId = thisForAutoInsert.data("srv-id");
-            var srvQst = thisForAutoInsert.children("div").eq(2).find("input").val();
+            var srvQst = thisForAutoInsert.children("div").eq(1).find("input").val();
             var newTypeYn = thisForAutoInsert.data("type-yn");
-            console.log(srvQst);
 
             if (newTypeYn) {
                 typeYn = newTypeYn;
