@@ -20,18 +20,6 @@ public class RestrictAccessAfterLoginInterceptor implements HandlerInterceptor {
 			response.sendRedirect("/");
 			return false;
 		}
-
-		String uri = request.getRequestURI();
-
-		System.out.println("+++++++++++++++++" + uri);
-		if (uri.equals("/ajax/employee/regist") || uri.equals("/employee/regist")) {
-			if (employeeVO.getDeptId().equals("DEPT_230101_000010")) {
-				return true;
-			} else {
-				response.sendRedirect("/");
-				return false;
-			}
-		}
 		return true;
 	}
 }
