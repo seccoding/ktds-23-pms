@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ktdsuniversity.edu.pms.memo.dao.MemoDao;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 
 @Service
 public class MemoServiceImpl implements MemoService{
@@ -18,11 +19,11 @@ public class MemoServiceImpl implements MemoService{
 	private MemoDao memoDao;
 
 	@Override
-	public MemoListVO getSentMemoAllsearch() {
+	public MemoListVO getSentMemoAllsearch(SearchMemoVO searchMemoVO) {
 		
-		int sentMemoCount = this.memoDao.getSentMemoAllCount();
+		int sentMemoCount = this.memoDao.getSentMemoAllCount(searchMemoVO);
 		
-		List<MemoVO> memoList = this.memoDao.getAllSentMemo();
+		List<MemoVO> memoList = this.memoDao.getAllSentMemo(searchMemoVO);
 		
 		MemoListVO memoListVO = new MemoListVO();
 		memoListVO.setMemoCnt(sentMemoCount);
@@ -102,7 +103,6 @@ public class MemoServiceImpl implements MemoService{
 
 	@Override
 	public boolean deleteManyMemo(List<String> memoIds) {
-		List<MemoVO> originalBoardList = this.memoDao.selectManyMemo(memoIds);
 		
 		int deletedCount = this.memoDao.deleteManyMemo(memoIds);
 		
