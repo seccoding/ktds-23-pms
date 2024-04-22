@@ -6,6 +6,7 @@ package com.ktdsuniversity.edu.pms.approval.service;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 
 
 public interface ApprovalService {
@@ -56,5 +57,9 @@ public interface ApprovalService {
      *  페이지 개수와 리스트를 구한다
      */
     public ApprovalListVO searchAllBoard(ApprovalVO approvaVo);
+    /**
+     * view 페이지 에 보여질 페이지 개수와 리스트를 출력 한다
+     */
+    public ApprovalListVO searchApprovalView(SearchApprovalVO searchapprovalvo, String id);
    
 }

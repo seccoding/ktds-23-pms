@@ -244,7 +244,64 @@
 	        ON A.DMD_ID = E.EMP_ID 
 	     WHERE A.DEL_YN = 'N'
 		<include refid="Common.pagenate_footer" />
-	</select>
+  </select>
+   
+   
+   <select id="selectAllApprovalCount" parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO" 
+			resultType="_int">
+		SELECT COUNT(*) 
+		FROM APPROVAL
+		INNER JOIN EMPLOYEE e
+		ON  e.EMP_ID=#{empId}
+		<if test='searchKeyword != null and searchKeyword != ""'>
+		    <choose>
+		        <when test='searchType == "title"'>
+		            AND APPR_TTL LIKE '%' ||  #{searchKeyword} || '%'
+		        </when>
+		        <when test='searchType == "employ"'>
+		            AND e.EMP_ID LIKE '%' ||  #{searchKeyword} || '%'
+		        </when>
+		    </choose>
+		</if>
+		
+  </select>
+ 
+  <select id="searchBoard" 
+   			parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO" 
+			resultMap="approvalVOMap">
+		<include refid="Common.pagenate_header" />
+		SELECT A.APPR_ID
+	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MM') DMD_DT 
+	         , A.APPR_CTGR
+	         , A.APPR_STS
+	         , A.APPR_TTL
+	         , A.APPR_CNTNT
+	         , A.DMD_ID
+	         , A.APPR_MNG_ID
+	         , A.ARRP_RJCT
+	         , A.LAST_CN_DT
+	         , A.APPR_FNSH_DT
+	         , E.EMP_NAME 
+	         , CC.CMCD_NAME 
+	      FROM APPROVAL A
+	     INNER JOIN EMPLOYEE E
+	        ON A.DMD_ID = E.EMP_ID 
+	     INNER JOIN COMMON_CODE CC
+	        ON E.PSTN_ID = CC.CMCD_ID 
+	     WHERE A.DMD_ID = #{empId}         
+	       AND A.DEL_YN = 'N'
+	     <if test='searchKeyword != null and searchKeyword != ""'>
+		    <choose>
+		        <when test='searchType == "title"'>
+		           AND a.APPR_TTL =  #{searchKeyword} 
+		        </when>
+		        <when test='searchType == "employ"'>
+		               AND e.EMP_ID =  #{searchKeyword}
+		        </when>
+		    </choose>
+		</if>
+		<include refid="Common.pagenate_footer" />
+  </select>
    
   	
   	

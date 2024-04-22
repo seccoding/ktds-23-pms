@@ -57,6 +57,7 @@ function state(apprid) {
 	
 }
 </script>
+<script type="text/javascript" src=/js/approval/approvallist.js></script>
 </head>
 <body>
     <div class="container">

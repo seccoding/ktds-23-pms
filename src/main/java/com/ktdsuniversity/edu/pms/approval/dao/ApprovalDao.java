@@ -6,6 +6,7 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 
 
 public interface ApprovalDao {
@@ -90,5 +91,14 @@ public interface ApprovalDao {
      */
 	public List<ApprovalVO> searchAllBoard(ApprovalVO approvaVo);
     
+	/**
+     * 검색 만큼 개수 찾기
+     */
+	public int selectAllApprovalCount(String id);
+	
+	/**
+     * 검색 리스트 출력
+     */
+    public List<ApprovalVO> searchBoard(SearchApprovalVO searchapprovalvo);
 
 }

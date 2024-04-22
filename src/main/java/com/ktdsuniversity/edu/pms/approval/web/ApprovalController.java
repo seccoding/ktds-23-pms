@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalService;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
@@ -58,11 +59,39 @@ public class ApprovalController {
 	}
 
 	@GetMapping("/approval/approvallist")
-	public String doApprovalListByEmpIdPage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		ApprovalListVO apprList = this.approvalService.getAllApprovalByEmpId(employeeVO.getEmpId());
-		model.addAttribute("apprList", apprList);
+	public String doApprovalListByEmpIdPage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			SearchApprovalVO searchapprovalvo) {
+//		ApprovalListVO apprList = this.approvalService.getAllApprovalByEmpId(employeeVO.getEmpId());
+//		model.addAttribute("apprList", apprList);
+		System.out.println(employeeVO.getEmpId());
+		 
+		 searchapprovalvo.setEmpId(employeeVO.getEmpId());
+		
+		 ApprovalListVO apprList= this.approvalService.searchApprovalView(searchapprovalvo, employeeVO.getEmpId());
+		 model.addAttribute("searchapprovalvo", searchapprovalvo);
+		 model.addAttribute("apprList",apprList);
+		
 		return "approval/approvallist";
 	}
+	
+	//검색	
+	@PostMapping("/approval/approvallist")
+	public AjaxResponse doPsostApprovalListByEmpIdPage(  @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam("searchKeyword") String searchKeyword, 
+				SearchApprovalVO searchapprovalvo, 
+				Model model,String searchType) {
+		System.out.println("searchKeyword:"+searchKeyword);
+		System.out.println("searchType:"+searchType);
+		
+		searchapprovalvo.setEmpId(employeeVO.getEmpId());
+		searchapprovalvo.setSearchType(searchType);
+		searchapprovalvo.setSearchKeyword(searchKeyword);
+		
+		ApprovalListVO apprList= this.approvalService.searchApprovalView(searchapprovalvo, employeeVO.getEmpId());
+		
+		return new AjaxResponse().append("success", "success").append("apprList", apprList).append("searchapprovalvo", searchapprovalvo);
+		
+	}
+		
 
 	@GetMapping("/approval/approvalview")
 	public String doApprovalViewPage(@RequestParam String apprId, Model model) {

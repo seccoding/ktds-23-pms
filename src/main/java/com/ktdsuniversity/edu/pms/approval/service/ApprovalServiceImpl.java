@@ -12,6 +12,7 @@ import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 
 @Service
@@ -129,6 +130,25 @@ public class ApprovalServiceImpl implements ApprovalService {
 		boardListVO.setApprList(boardList);
 		
 		return boardListVO;
+	}
+
+	@Transactional
+	@Override
+	public ApprovalListVO searchApprovalView(SearchApprovalVO searchapprovalvo, String id) {
+		// TODO Auto-generated method stub
+		int ApprovalCount=this.approvalDao.selectAllApprovalCount(id);
+		searchapprovalvo.setPageCount(ApprovalCount);
+		
+		SearchApprovalVO searchapprova=new SearchApprovalVO();
+		searchapprova.setEmpId(id);
+		
+		List<ApprovalVO> approval=approvalDao.searchBoard(searchapprovalvo);
+		
+		ApprovalListVO approvallistvo=new ApprovalListVO();
+		approvallistvo.setApprCnt(ApprovalCount);
+		approvallistvo.setApprList(approval);
+		
+		return approvallistvo;
 	}
 
 }
