@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 
 
 @Repository
@@ -97,6 +98,18 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	public List<ApprovalVO> searchAllBoard(ApprovalVO approvaVo) {
 		// TODO Auto-generated method stub
 		return getSqlSession().selectList(ApprovalDao.NAME_SPACE+".searchAllBoard", approvaVo);
+	}
+	
+	@Override
+	public int selectAllApprovalCount(String id) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".selectAllApprovalCount", id);
+	}
+
+	@Override
+	public List<ApprovalVO> searchBoard(SearchApprovalVO searchapprovalvo) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList(ApprovalDao.NAME_SPACE+".searchBoard", searchapprovalvo);
 	}
 
 

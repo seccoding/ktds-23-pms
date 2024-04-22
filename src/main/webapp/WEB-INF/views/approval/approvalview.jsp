@@ -43,6 +43,33 @@
             display: flex;
             flex-direction: column;
         }
+         #modalWrap {
+        display: none; /* 초기에는 모달창을 숨김 */
+        height: 270px;
+        width: 401px;
+        margin: auto;
+        border: 1px solid #777;
+        border-radius: 4px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        z-index: 1000;
+        text-align: center;
+        padding: 40px 10px 10px;
+        animation: slidefade 0.5s ease-in-out;
+    }
+    #closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    .modalWrap.show {
+        display: block;
+    }
 	</style>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
 	<script type="text/javascript" src="/js/approval/approvalview.js" ></script>
@@ -60,7 +87,7 @@
 			<c:if test="${approvalVO.apprSts eq '801'}">
 				<div class="btn-status">
 					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="ok">승인</button>
-					<button id="btn-appr-sts-no" data-appr-id="${approvalVO.apprId}" data-appr-sts="no">반려</button>
+					<button id="modal-button" data-appr-id="${approvalVO.apprId}" data-appr-sts="no">반려</button>
 				</div>
 			</c:if>
         </div>
@@ -143,5 +170,19 @@
             </div>
         </div>
     </div>
+    
+    <!--모달창 시작-->
+    <div id="modalWrap">
+        <div id="modalBody">
+            <span id="closeBtn">&times;</span>
+            <div class="modal-title">반려사유</div>
+            <div class="modal-body">
+                <input type="text" id="rejectionReason">
+                <button id="confirmButton">확인</button>
+                <button id="cancelButton">취소</button>
+            </div>
+        </div>
+    </div>
+    <!--모달창 끝-->
 </body>
 </html>
