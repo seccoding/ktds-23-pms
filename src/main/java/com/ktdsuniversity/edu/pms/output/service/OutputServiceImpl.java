@@ -42,6 +42,10 @@ public class OutputServiceImpl implements OutputService{
 
 	@Override
 	public boolean insertOneOutput(OutputVO outputVO, MultipartFile file) {
+	    OutputSearchVO outputSearchVO = new OutputSearchVO(outputVO.getPrjId(),outputVO.getOutType());
+	    int count =this.outputDao.searchOutputCnt(outputSearchVO)+1;
+		outputVO.setOutVerNum(count+"");
+		
 		if(file !=null && ! file.isEmpty()) {//파일 존재
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if(storedFile != null) {
