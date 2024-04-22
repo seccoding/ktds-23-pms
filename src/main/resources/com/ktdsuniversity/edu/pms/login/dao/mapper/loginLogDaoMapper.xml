@@ -98,7 +98,7 @@
 
     <update id="updateEmpLogout" parameterType="string">
         UPDATE LOGIN_LOG
-        SET LGT_DT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        SET LGT_DT = SYSDATE
         WHERE LOG_ID = #{_parameter}
         AND LGT_DT IS NULL
     </update>
@@ -192,8 +192,8 @@
         SELECT L.LOG_ID
              , L.EMP_ID
              , L.LGN_SCC_DT
-             , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH:MI:SS') L.LGT_DT
-             , TO_CHAR(L.DEL_YN, 'YYYY-MM-DD HH:MI:SS') L.DEL_YN
+             , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD') LGT_DT
+             , TO_CHAR(L.DEL_YN, 'YYYY-MM-DD') DEL_YN
              , E.EMP_NAME
           FROM LOGIN_LOG L
           JOIN EMPLOYEE E
@@ -204,17 +204,17 @@
                       WHERE L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "lgnSccDt"'>
-                      WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                      WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "lgtDt"'>
-                      WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                      WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "employeeVO.empName"'>
                       WHERE EMP_NAME LIKE '%' || #{searchKeyword} || '%'
                   </when>
               </choose>
           </if>
-         ORDER BY LGN_SCC_DT
+         ORDER BY L.LGN_SCC_DT
     </select>
 
     <select id="getAllVisitedLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO" resultMap="visitedVOMap">
