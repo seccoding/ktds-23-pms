@@ -27,5 +27,4 @@ public interface EmployeeService {
 
 	public int getOneEmpIdIsExist(String empId);
 
-
 }

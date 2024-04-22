@@ -4,6 +4,8 @@ package com.ktdsuniversity.edu.pms.login.service;
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
 import com.ktdsuniversity.edu.pms.login.vo.*;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+
 import org.apache.tika.utils.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,6 +166,13 @@ public class LoginLogServiceImpl implements LoginLogService {
 		visitedListVO.setVisitedList(this.loginLogDao.getAllVisitedLog(visitedVO));
 
 		return visitedListVO;
+	}
+
+	@Override
+	public TeamListVO getOneTeamNameByEmpId(String empId) {
+		TeamListVO teamListVO = new TeamListVO();
+		teamListVO.setTeamList(loginLogDao.getOneTeamNameByEmpId(empId));
+		return teamListVO;
 	}
 
 
