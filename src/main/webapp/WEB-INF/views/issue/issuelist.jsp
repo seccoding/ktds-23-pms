@@ -53,7 +53,7 @@
                         <td>${issue.projectVO.prjName}</td>
                         <td>${issue.requirementVO.rqmTtl}</td>
                         <td><a href="/issue/view?isId=${issue.isId}">${issue.isTtl}</a></td>
-                        <td>${issue.crtrId}</td>
+                        <td>${issue.employeeVO.empName}</td>
                         <td>${issue.crtDt}</td>
                         <td>${issue.isSts}</td>
                         <td>${issue.isCnt}</td>
@@ -89,8 +89,9 @@
         <option value="requirement" ${searchIssueVO.searchType eq 'requirement' ? 'selected' : ''}>요구사항명</option>  
         <option value="title" ${searchIssueVO.searchType eq 'title' ? 'selected' : ''}>이슈제목</option>
         <option value="content" ${searchIssueVO.searchType eq 'content' ? 'selected' : ''}>내용</option>
-        <option value="title_content" ${searchIssueVO.searchType eq 'title_content' ? 'selected' : ''}>제목 + 내용</option>
         <option value="creator" ${searchIssueVO.searchType eq 'creator' ? 'selected' : ''}>작성자</option>
+        <option value="originFileName" ${searchIssueVO.searchType eq 'originFileName' ? 'selected' : ''}>첨부파일명</option>
+        <option value="status" ${searchIssueVO.searchType eq 'status' ? 'selected' : ''}>이슈상태</option>
       </select>
 
       <input type="text" name="searchKeyword" value="${searchIssueVO.searchKeyword}" />
@@ -137,16 +138,19 @@
     </form>
   </div>
 <!-- Paginator 끝 -->
+
 <div>
     <button>
         <a href="/issue/write">신규등록</a>
     </button>
-    <button>
-        <a href="/issue/excel/download">엑셀다운</a>
-    </button>
-    <button>
-        <a id="deleteMassiveIssue" href="javascript:void(0);">일괄삭제</a>
-    </button>   
+    <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+      <button>
+          <a href="/issue/excel/download">엑셀다운</a>
+      </button>
+      <button>
+          <a id="deleteMassiveIssue" href="javascript:void(0);">일괄삭제</a>
+      </button>
+    </c:if>   
 </div>
 </body>
 </html>

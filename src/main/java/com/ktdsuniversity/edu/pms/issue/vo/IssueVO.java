@@ -28,6 +28,8 @@ public class IssueVO {
 	private ProjectVO  projectVO;
 	
 	private EmployeeVO employeeVO;
+	private String empId;
+	private String empName;
 	
 	public String getIsId() {
 		return isId;
@@ -142,5 +144,17 @@ public class IssueVO {
 	}
 	public void setOriginFileName(String originFileName) {
 		this.originFileName = originFileName;
+	}
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 }

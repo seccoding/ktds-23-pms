@@ -119,7 +119,7 @@ public class IssueServiceImpl implements IssueService {
 	
 	@Transactional
 	@Override
-	public boolean deleteManyIssue(List<Integer> deleteItems) {
+	public boolean deleteManyIssue(List<String> deleteItems) {
 		List<IssueVO> originalIssueList = this.issueDao.selectManyIssue(deleteItems);
 		
 		for (IssueVO issueVO: originalIssueList) {

@@ -9,6 +9,8 @@
 		<result column="RQM_ID" property="rqmId" />
 		<result column="PRJ_ID" property="prjId" />
 		<result column="EMP_ID" property="empId" />
+		<result column="EMP_NAME" property="empName"/>
+		<result column="MNGR_YN" property="mngrYn"/>
 		
 		<association property="requirementVO"
 					 javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
@@ -24,6 +26,7 @@
 					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 			<id column="EMP_ID" property="empId"/>
 			<result column="EMP_NAME" property="empName"/>
+			<result column="MNGR_YN" property="mngrYn"/>
 		</association>
 	</resultMap>
 
@@ -52,6 +55,8 @@
 		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
 		     , I.MDFR_ID
 		     , I.DEL_YN
+		     , I.FILE_NAME
+		     , I.ORIGIN_FILE_NAME
 		  FROM ISSUE I
 		 INNER JOIN REQUIREMENT R
 		    ON I.RQM_ID = R.RQM_ID
@@ -85,12 +90,14 @@
 				<when test='searchType == "content"'>
 		   AND I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%'
 				</when>
-				<when test='searchType == "title_content"'>
-		   AND (I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
-		    OR  I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%')
-				</when>
 				<when test='searchType == "creator"'>
 		   AND I.CRTR_ID LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "originFileName"'>
+		   AND I.ORIGIN_FILE_NAME LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "status"'>
+		   AND I.IS_STS LIKE '%' ||  #{searchKeyword} || '%'
 				</when>
 			</choose>
 		 </if>
@@ -116,11 +123,17 @@
 		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
 		     , I.MDFR_ID
 		     , I.DEL_YN
+		     , I.FILE_NAME
+		     , I.ORIGIN_FILE_NAME
+		     , E.EMP_ID
+		     , E.EMP_NAME
 		  FROM ISSUE I
 		 INNER JOIN REQUIREMENT R
 		    ON I.RQM_ID = R.RQM_ID
 		 INNER JOIN PROJECT P
 		    ON R.PRJ_ID = P.PRJ_ID 
+		 INNER JOIN EMPLOYEE E
+		    ON E.EMP_ID = I.CRTR_ID
 		 WHERE I.DEL_YN = 'N'
 		   AND R.DEL_YN = 'N'
 		 <if test='searchKeyword != null and searchKeyword != ""'>
@@ -137,16 +150,18 @@
 				<when test='searchType == "content"'>
 		   AND I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%'
 				</when>
-				<when test='searchType == "title_content"'>
-		   AND (I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
-		    OR  I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%')
-				</when>
 				<when test='searchType == "creator"'>
 		   AND I.CRTR_ID LIKE '%' ||  #{searchKeyword} || '%'
 				</when>
+				<when test='searchType == "originFileName"'>
+		   AND I.ORIGIN_FILE_NAME LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "status"'>
+		   AND I.IS_STS LIKE '%' ||  #{searchKeyword} || '%'
+				</when>
 			</choose>
 		 </if>
-		 ORDER BY I.IS_ID DESC
+		 ORDER BY I.CRT_DT DESC
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
@@ -170,6 +185,7 @@
 		     , I.DEL_YN
 		     , I.FILE_NAME
 		     , I.ORIGIN_FILE_NAME
+		     , E.EMP_NAME
 		  FROM ISSUE I
 		 INNER JOIN REQUIREMENT R
 		    ON I.RQM_ID = R.RQM_ID
