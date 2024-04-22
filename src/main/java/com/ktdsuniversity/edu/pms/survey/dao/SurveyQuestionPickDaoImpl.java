@@ -1,10 +1,13 @@
 package com.ktdsuniversity.edu.pms.survey.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
 
 @Repository
@@ -39,6 +42,11 @@ public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements S
 	@Override
 	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO) {
 		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".modifyOneAnswerSequence", surveyQuestionPickVO);
+	}
+
+	@Override
+	public List<SurveyQuestionPickVO> getAllPicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
+		return getSqlSession().selectList(SurveyQuestionPickDao.NAME_SPACE + ".getAllPicks", searchSurveyQuestionPickVO);
 	}
 
 }

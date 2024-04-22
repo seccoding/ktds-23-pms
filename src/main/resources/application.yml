@@ -23,7 +23,7 @@ app:
     tempsession:
         empId: system01
         empName: 관리자
-        enable: false
+        enable: true
     authentication:
         check-url-pattern: /**
         ignore-url-patterns:

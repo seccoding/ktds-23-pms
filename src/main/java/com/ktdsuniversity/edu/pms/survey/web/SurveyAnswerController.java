@@ -21,10 +21,10 @@ public class SurveyAnswerController {
 	private SurveyQuestionPickService surveyQuestionPickService;
 	
 	@ResponseBody
-	@GetMapping("/ajax/survey/get/{srvId}")
+	@GetMapping("/ajax/survey/get/pick/{srvId}")
 	public AjaxResponse getAllSurveyPicks(@PathVariable String srvId, SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
 		searchSurveyQuestionPickVO.setSrvId(srvId);
-		List<SurveyQuestionPickVO> surveypickList = this.surveyQuestionPickService.getAllpicks(searchSurveyQuestionPickVO);
+		List<SurveyQuestionPickVO> surveypickList = this.surveyQuestionPickService.getAllPicks(searchSurveyQuestionPickVO);
 		
 		return new AjaxResponse().append("picks", surveypickList);
 	}
