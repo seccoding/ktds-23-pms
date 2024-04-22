@@ -28,6 +28,7 @@ import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -54,10 +55,12 @@ public class OutputController {
 			@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
 		
 		this.checkAccess(employeeVO, prjId);
+		if(! employeeVO.getAdmnCode().equals("301") ) {//관리자가 아니면
+			outputSearchVO.setEmpId(employeeVO.getEmpId());
+		}
 		
-		ProjectListVO projectList = this.projectService.getAllProject();
-		projectList.setProjectList(
-				projectList.getProjectList().stream().filter(project -> project.getOutYn().equals("Y")).toList());
+		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
 		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
@@ -154,14 +157,15 @@ public class OutputController {
 					throw new PageNotFoundException();
 				}
 			}else{//프로젝트 아이디가 안주어진 경우
-				List<ProjectTeammateVO>  tmList = this.projectService.getAllProjectTeammate()
-				.stream()
-				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
-				.filter(tm -> tm.getRole().equals("PM")).toList();
-				
-				if(tmList ==null || tmList.isEmpty()) {//PM을 맏은 포지션이 없다면
-					throw new PageNotFoundException();
-				}else {}//pm을 맞은 포지션이 있다면
+				checkAccess( employeeVO);
+//				List<ProjectTeammateVO>  tmList = this.projectService.getAllProjectTeammate()
+//				.stream()
+//				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+//				.filter(tm -> tm.getRole().equals("PM")).toList();
+//				
+//				if(tmList ==null || tmList.isEmpty()) {//PM을 맏은 포지션이 없다면
+//					throw new PageNotFoundException();
+//				}else {}//pm을 맞은 포지션이 있다면
 			}
 		}
 	}
