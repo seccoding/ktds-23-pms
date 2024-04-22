@@ -13,13 +13,6 @@ $().ready(function() {
         for (var i in surveys) {
             var srvId = surveys[i].srvId;
             var srvQst = surveys[i].srvQst;
-            // var survey = surveys[i];
-            // var appendedSurvey = $(".survey-question[data-srv-id=" + survey.srvId + "]");
-            // var isAppendedSurvey = appendedSurvey.length > 0;
-
-            // if (isAppendedSurvey && survey.delYn === "N") {
-            //     appendedSurvey
-            // }
             var srvQstDom = $("<div></div>");
             srvQstDom.addClass("survey-question");
 
@@ -49,40 +42,38 @@ $().ready(function() {
 
             srvQstMiddleDom.append(seqDom);
             srvQstMiddleDom.append(srvQstInputDom);
-
+            //바텀돔
             var srvQstBottomDom = $("<div></div>");
             srvQstBottomDom.addClass("survey-question-bottom");
 
             var ulDom = $("<ul></ul>");
+            // 답변 선택지 추가
 
-            $.get("/ajax/survey/get/pick/" + srvId, function(srvId) {
-                return function(response) {
-                    var picks = response.data.picks;
-                    console.log(picks);
-    
-                    for (var j in picks) {
-                        var sqpCntnt = picks[j].sqpCntnt;
-                        console.log(sqpCntnt);
-                        var AnsDom = $("<li></li>");
-                        var AnsSeqDom = $("<div></div>");
-                        AnsSeqDom.text(picks[j].seq);
-                        var AnsInputDom = $("<input/>");
-                        AnsInputDom.attr('type', 'text');
-                        AnsInputDom.attr('placeholder', '답변명');
-                        AnsInputDom.val(sqpCntnt);
-                        var LinkInputDom = $("<input/>");
-                        LinkInputDom.attr('type', 'text');
-                        LinkInputDom.attr('placeholder', '연결');
-    
-                        AnsDom.append(AnsSeqDom);
-                        AnsDom.append(AnsInputDom);
-                        AnsDom.append(LinkInputDom);
-                        ulDom.append(AnsDom);
-                    }
-                }
-            }(srvId));
+            $.get("/ajax/survey/get/pick/" + srvId, function(response) {
+                var picks = response.data.picks;
+                console.log(picks);
 
+                var sqpCntnt = picks[j].sqpCntnt;
+                var nextId = picks[j].nextId;
 
+                console.log(sqpCntnt);
+                var AnsDom = $("<li></li>");
+                var AnsSeqDom = $("<div></div>");
+                AnsSeqDom.text(picks[j].seq);
+                var AnsInputDom = $("<input/>");
+                AnsInputDom.attr('type', 'text');
+                AnsInputDom.attr('placeholder', '답변명');
+                AnsInputDom.val(sqpCntnt);
+                var LinkInputDom = $("<input/>");
+                LinkInputDom.attr('type', 'text');
+                LinkInputDom.attr('placeholder', '연결');
+                LinkInputDom.val(nextId);
+
+                AnsDom.append(AnsSeqDom);
+                AnsDom.append(AnsInputDom);
+                AnsDom.append(LinkInputDom);
+                ulDom.append(AnsDom);
+            });
 
             var addSrvQstButtonDom = $("<button></button>");
             addSrvQstButtonDom.attr('type', 'button');
@@ -142,7 +133,7 @@ $().ready(function() {
             srvQstDom.append(srvQstBottomDom);
             $(".survey-body").append(srvQstDom);
                 
-            }
+        }
     });
 
     $("#btn-add-srv-qst").on("click", function() {
