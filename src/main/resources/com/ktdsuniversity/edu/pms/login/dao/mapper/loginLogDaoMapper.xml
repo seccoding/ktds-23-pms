@@ -24,6 +24,13 @@
             <id column="EMP_NAME" property="empName"/>
         </association>
     </resultMap>
+    
+    <resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" id="teamVOMap" autoMapping="true">
+        <id column="EMP_ID" property="empId"/>
+        <association property="teamVO" javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+            <id column="TEAM_NAME" property="teamName"/>
+        </association>
+    </resultMap>
 
 
     <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
@@ -245,5 +252,15 @@
         </if>
          ORDER BY ACCS_DT
     </select>
+    
+    <select id="getOneTeamNameByEmpId"
+    		parameterType="string"
+    		resultMap="teamVOMap">
+			SELECT T.TM_NAME 
+			  FROM EMPLOYEE E
+			  JOIN TEAM T
+			    ON E.DEPT_ID = T.DEPT_ID
+			 WHERE E.EMP_ID = #{empId}
+	</select>
 
 </mapper>

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.ktdsuniversity.edu.pms.login.vo.*;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
@@ -31,10 +34,11 @@ public class LoginController {
     @Autowired
     private LoginLogService loginLogService;
 
-
     @Autowired
     private CommuteService commuteService;
 
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("/employee/login")
     public String viewLoginPage() {
@@ -79,13 +83,16 @@ public class LoginController {
             //로그인 성공시 LGNYN을 Y로 변경
             this.loginLogService.getOneEmpIdUseOtherPlace(employee);
 
+            //로그인 성공한 사원의 팀(들)을 가져온다
+            TeamListVO teamListVO = this.loginLogService.getOneTeamNameByEmpId(employee.getEmpId());
+            
             int commuteCheck = this.loginLogService.getCommuteDt(employee.getEmpId());
-
             if (commuteCheck == 0) {
                 this.loginLogService.insertCommuteIn(employee);
             }
 
             session.setAttribute("_LOGIN_USER_", employee);
+            session.setAttribute("teamList", teamListVO);            
             session.setMaxInactiveInterval(20 * 60);
             SessionUtil.addSession(employee.getEmpId(), session);
 
@@ -116,12 +123,12 @@ public class LoginController {
 		 * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
 		 * true: 전체 조회
 		 * false: 입력받은 본인의 출퇴근만 조회
-		 */
+		 */ 
 		String AdmnCodeIsSystemFormat = "301";
 		if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
 			CommuteListVO commuteListVO = commuteService.getAllCommuteData(commuteVO);
 			model.addAttribute("commuteList", commuteListVO);
-			model.addAttribute("commnuteVO", commuteVO);
+			model.addAttribute("commuteVO", commuteVO);
 			return "commute/view";
 		} 
 		else{

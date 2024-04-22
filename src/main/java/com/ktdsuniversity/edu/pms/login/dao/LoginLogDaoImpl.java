@@ -4,6 +4,8 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +112,11 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO) {
         return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllVisitedLog", visitedVO);
     }
+
+	@Override
+	public List<TeamVO> getOneTeamNameByEmpId(String empId) {
+		return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneTeamNameByEmpId", empId);
+	}
 
 
 }
