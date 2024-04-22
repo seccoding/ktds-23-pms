@@ -96,6 +96,6 @@ $().ready(function () {
             clearSubMenuInfo();
 
             var pid = $(this).data("id");
-            reloadSubMenuCode(pid);
+            reloadSubMenu(pid);
         });
 })
