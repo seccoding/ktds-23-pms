@@ -63,7 +63,6 @@
 		 , K.DEL_YN
 		 , K.CRTR_ID
 		 , K.MDFR_ID
-	     , K.RQM_ID
 	     , K.FILE_NAME
 	     , ORIGIN_FILE_NAME
 	     , P.PRJ_NAME
