@@ -28,6 +28,9 @@
 			<id column="PRJ_ID" property="prjId" />
 			<result column="PRJ_NAME" property="prjName" />
 			<result column="REQ_YN" property="reqYn" />
+			<result column="IS_YN" property="isYn" />
+			<result column="KNL_YN" property="knlYn" />
+			<result column="QA_YN" property="qaYn" />
 	</association>
 	
 	<!-- join table -->
