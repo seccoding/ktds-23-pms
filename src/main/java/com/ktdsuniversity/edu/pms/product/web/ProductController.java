@@ -167,15 +167,6 @@ public class ProductController {
 		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId()).append("detailUrl", "/product/manage/detail");
 	}
 	
-//	@ResponseBody
-//	@PostMapping("/ajax/product/manage/list/add")
-//	public AjaxResponse addProductCount(ProductManagementVO productManagementVO) {
-//		
-//		boolean isCountAddSuccess = this.productService.addProductCount(productManagementVO);
-//		
-//		return new AjaxResponse().append("result", isCountAddSuccess).append("next", "/product/manage/list");
-//	}
-	
 	@ResponseBody
 	@PostMapping("/ajax/product/manage/view/modifymain")
 	public AjaxResponse modifyProduct(ProductVO productVO) {
