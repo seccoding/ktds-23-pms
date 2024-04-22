@@ -135,6 +135,14 @@ public class DepartmentController {
 		
 	}
 	
+	@ResponseBody
+	@GetMapping("/ajax/department/team/candelete/{teamId}")
+	public AjaxResponse canDeleteOneTeam(@PathVariable String teamId) {
+		boolean isDeletePossible = this.teamService.isPossibleDelete(teamId);
+		return new AjaxResponse().append("possible", isDeletePossible);
+				
+	}
+	
 	
 }
 

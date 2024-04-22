@@ -55,4 +55,10 @@ public class TeamServiceImpl implements TeamService{
 		return teamListVO;
 	}
 
+	@Override
+	public boolean isPossibleDelete(String teamId) {
+
+		return teamDao.isPossibleDelete(teamId) == 0;
+	}
+
 }
