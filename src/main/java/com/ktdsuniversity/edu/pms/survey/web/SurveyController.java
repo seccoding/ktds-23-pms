@@ -71,5 +71,23 @@ public class SurveyController {
 		boolean isSuccess = this.surveyQuestionService.createSurveyBody(surveyQuestionVO);
 		return new AjaxResponse().append("result", isSuccess);
 	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/modify/{srvId}")
+	public AjaxResponse doModifySurvey(@PathVariable String srvId, SurveyQuestionVO surveyQuestionVO) {
+		surveyQuestionVO.setSrvId(srvId);
+
+		boolean isSuccess = this.surveyQuestionService.modifyOneSurvey(surveyQuestionVO);
+		return new AjaxResponse().append("result", isSuccess);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/modify/next/{srvId}")
+	public AjaxResponse doModifySurveyExceptBody(@PathVariable String srvId, SurveyQuestionVO surveyQuestionVO) {
+		surveyQuestionVO.setSrvId(srvId);
+
+		boolean isSuccess = this.surveyQuestionService.modifyOneSurveyExceptBody(surveyQuestionVO);
+		return new AjaxResponse().append("result", isSuccess);
+	}
 
 }
