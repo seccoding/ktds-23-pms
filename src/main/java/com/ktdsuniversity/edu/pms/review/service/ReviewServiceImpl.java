@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
 import com.ktdsuniversity.edu.pms.review.dao.ReviewDao;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
@@ -121,6 +122,13 @@ public class ReviewServiceImpl implements ReviewService {
 		int cnt = this.reviewDao.deleteReviewViewResult(id);
 		logger.debug("cnt : {}", cnt);
 		return true;
+	}
+
+	@Override
+	public boolean deleteManyReview(List<String> reviewIds) {		
+		int deletedCount = this.reviewDao.deleteManyReview(reviewIds);
+		
+		return deletedCount > 0;
 	}
 
 	
