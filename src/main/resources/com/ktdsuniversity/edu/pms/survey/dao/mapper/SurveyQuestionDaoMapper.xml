@@ -171,5 +171,23 @@
 		     , TYPE_YN = #{typeYn}
 		 WHERE SRV_ID = #{srvId}
 	</update>
+	
+	<select id="getAllSurveys" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO"
+			resultMap="SurveyQuestionVOMap">
+		SELECT SRV_ID
+			 , PRJ_ID
+			 , SRV_QST
+			 , CRTR_ID
+			 , CRT_DT
+			 , MDFR_ID
+			 , MDF_DT
+			 , DEL_YN
+			 , SEQ
+			 , TYPE_YN
+			 , SRV_STS
+		  FROM SURVEY_QUESTION
+		 WHERE PRJ_ID = #{prjId}
+		   AND DEL_YN = 'N'
+	</select>
 
 </mapper>

@@ -1,12 +1,13 @@
 $().ready(function() {
-    function redirectToURL(prjId) {
-        var srvSts = "${survey.srvSts}";
-    
+    $(".prj-list").on("click", function() {
+        var prjId = $(this).data("prj-id");
+        var srvSts = $(this).data("srv-sts");
+
         if (srvSts === "N" || srvSts === "W") {
-            location.href = '/survey/write/' + prjId;
+            location.href = '/survey/write?prjId=' + prjId;
         } 
         else {
             location.href = '/project/search';
         }
-    }
+    });
 });

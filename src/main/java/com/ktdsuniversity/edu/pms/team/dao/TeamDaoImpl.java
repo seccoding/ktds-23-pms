@@ -49,5 +49,10 @@ public class TeamDaoImpl extends SqlSessionDaoSupport implements TeamDao{
 		return getSqlSession().selectOne(TeamDao.NAME_SPACE + ".countTeamInDepartement", id);
 	}
 
+	@Override
+	public int isPossibleDelete(String teamId) {
+		return getSqlSession().selectOne(TeamDao.NAME_SPACE + ".isPossibleDelete", teamId);
+	}
+
 	
 }

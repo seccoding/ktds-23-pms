@@ -524,4 +524,15 @@
         'NONE'
         )
     </insert>
+
+    <select id="findAllProjectTeammate"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        SELECT PRJ_TM_ID,
+        PRJ_ID ,
+        TM_ID,
+        "ROLE" ,
+        DEL_YN
+        FROM PROJECT_TEAMMATE
+        WHERE DEL_YN = 'N'
+    </select>
 </mapper>

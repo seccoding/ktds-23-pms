@@ -100,6 +100,20 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".searchViewReviewCntnt", searchReviewVO);
 	}
 
+	@Override
+	public List<ReviewVO> selectManyReview(List<String> Items) {
+		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".selectManyReview", Items);
+
+	}
+	
+	@Override
+	public int deleteManyReview(List<String> Items) {
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".deleteManyReview", Items);
+
+	}
+
+	
+
 
 
 	

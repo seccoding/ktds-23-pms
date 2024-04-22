@@ -4,6 +4,7 @@ package com.ktdsuniversity.edu.pms.login.web;
 import java.util.List;
 import java.util.Map;
 
+import com.ktdsuniversity.edu.pms.login.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.SessionUtil;
 import com.ktdsuniversity.edu.pms.utils.Validator;
@@ -131,6 +130,26 @@ public class LoginController {
 			return "commute/view";
 		}
 	}
-	
 
+    // 로그인 기록 확인 페이지
+    @GetMapping("/loginlog/view")
+    public String viewLoginLog(Model model, LoginLogVO loginLogVO) {
+
+        LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog(loginLogVO);
+        model.addAttribute("loginLogList", loginLogListVO);
+        model.addAttribute("loginLogVO", loginLogVO);
+
+        return "login/loginlogview";
+    }
+
+    // 화면 접근 기록 확인 페이지
+    @GetMapping("/visitedlog/view")
+    public String viewVisitedLog(Model model, VisitedVO visitedVO) {
+
+        VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
+        model.addAttribute("visitedVO", visitedVO);
+        model.addAttribute("visitedList", visitedList);
+
+        return "login/visitedlogview";
+    }
 }

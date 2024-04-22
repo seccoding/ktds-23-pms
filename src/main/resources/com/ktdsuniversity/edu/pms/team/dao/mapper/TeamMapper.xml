@@ -74,5 +74,14 @@
 		   AND DEPT_ID = #{_parameter}
 		
 	</select>
+	
+	<select id="isPossibleDelete"
+			parameterType="string"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM ASSIGNMENT
+		 WHERE DEL_YN = 'N'
+		   AND TM_ID = #{_parameter}
+	</select>
 
 </mapper>

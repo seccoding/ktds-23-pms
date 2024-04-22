@@ -1,12 +1,16 @@
 package com.ktdsuniversity.edu.pms.survey.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionPickService;
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
@@ -15,6 +19,15 @@ public class SurveyAnswerController {
 	
 	@Autowired
 	private SurveyQuestionPickService surveyQuestionPickService;
+	
+	@ResponseBody
+	@GetMapping("/ajax/survey/get/pick/{srvId}")
+	public AjaxResponse getAllSurveyPicks(@PathVariable String srvId, SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
+		searchSurveyQuestionPickVO.setSrvId(srvId);
+		List<SurveyQuestionPickVO> surveypickList = this.surveyQuestionPickService.getAllPicks(searchSurveyQuestionPickVO);
+		
+		return new AjaxResponse().append("picks", surveypickList);
+	}
 	
 	@ResponseBody
 	@PostMapping("/ajax/survey/answer/{srvId}")

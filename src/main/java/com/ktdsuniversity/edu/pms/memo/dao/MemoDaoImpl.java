@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 
 @Repository
 public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
@@ -19,13 +20,13 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	}
 
 	@Override
-	public int getSentMemoAllCount() {
-		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getSentMemoAllCount");
+	public int getSentMemoAllCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getSentMemoAllCount" , searchMemoVO);
 	}
 
 	@Override
-	public List<MemoVO> getAllSentMemo() {
-		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllSentMemo");
+	public List<MemoVO> getAllSentMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllSentMemo", searchMemoVO);
 	}
 
 	@Override

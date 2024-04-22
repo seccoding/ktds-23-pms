@@ -191,4 +191,9 @@ public class ProjectServiceImpl implements ProjectService {
             return projectDao.insertNewProjectTeammate(newProjectTeammate) > 0;
         }
     }
+
+    @Override
+    public List<ProjectTeammateVO> getAllProjectTeammate() {
+        return projectDao.findAllProjectTeammate();
+    }
 }

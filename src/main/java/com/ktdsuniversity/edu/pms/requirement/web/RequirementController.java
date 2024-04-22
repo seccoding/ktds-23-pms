@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.web.LoginController;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
@@ -46,33 +48,25 @@ public class RequirementController {
 
 	@GetMapping("/requirement")
 	public String viewAllRequirement() {
-		return "redirect:/requirement/search?prjId=ALL";
+		return "redirect:/requirement/search?prjId=";
 	}
-	
+
 	@GetMapping("/requirement/search")
-	public String viewSearchAllRequirement(
-			/* @SessionAttribute , */
-			@RequestParam String prjId,Model model, 
-			RequirementSearchVO requirementSearchVO) {
-		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
+	public String viewSearchAllRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@RequestParam String prjId, Model model, RequirementSearchVO requirementSearchVO) {
+
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
-			
-		requirementSearchVO.setPageCount(requirementList.getCount()); 
+		requirementSearchVO.setPageCount(requirementList.getCount());
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
-				projectList.getProjectList().stream()
-				.filter((project)->project.getReqYn().equals("Y")).toList());
-		
-		model.addAttribute("resultList", requirementList)
-        .addAttribute("requirementSearch", requirementSearchVO)
-		.addAttribute("projectList", projectList)
-		.addAttribute("prjId", prjId)
-		.addAttribute("scdSts", scdSts)
-		.addAttribute("rqmSts", rqmSts)
-		.addAttribute("searchOption", requirementSearchVO);
-		
+				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+
+		model.addAttribute("resultList", requirementList).addAttribute("requirementSearch", requirementSearchVO)
+				.addAttribute("projectList", projectList).addAttribute("prjId", prjId).addAttribute("scdSts", scdSts)
+				.addAttribute("rqmSts", rqmSts).addAttribute("searchOption", requirementSearchVO);
+
 		return "requirement/requirementlist";
 	}
 
@@ -95,17 +89,14 @@ public class RequirementController {
 		// TODO 사원리스트도 보내줘야 담당자, 테스터, 확인자 체크가능 ->현재는 임의의 사원번호를 넣는중
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
-				projectList.getProjectList().stream()
-				.filter((project)->project.getReqYn().equals("Y")).toList());
+				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
-		List<ProjectTeammateVO> prjTeammateList =this.projectService.getAllProjectTeammateByProjectId("PRJ_240409_000012");
+		List<ProjectTeammateVO> prjTeammateList = this.projectService
+				.getAllProjectTeammateByProjectId("PRJ_240409_000012");
 
-		model.addAttribute("projectList", projectList)
-		.addAttribute("scdSts", scdStsList)
-		.addAttribute("rqmSts",rqmStsList)
-		.addAttribute("prjTeammateList",prjTeammateList)
-		;
+		model.addAttribute("projectList", projectList).addAttribute("scdSts", scdStsList)
+				.addAttribute("rqmSts", rqmStsList).addAttribute("prjTeammateList", prjTeammateList);
 
 		return "requirement/requirementwrite";
 
@@ -113,24 +104,26 @@ public class RequirementController {
 
 	@PostMapping("/requirement/write")
 	public String createRequirement(@RequestParam MultipartFile file /* @SessionAttribute , */
-			,RequirementVO requirementVO, Model model) {
+			, RequirementVO requirementVO, Model model) {
 		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
 
 		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
 	}
+
 	@GetMapping("/requirement/downloadFile/{rqmId}")
 	public ResponseEntity<Resource> fileDownload(@PathVariable String rqmId) {
-		
-		RequirementVO Requirement= this.requirementService.getOneRequirement(rqmId);
+
+		RequirementVO Requirement = this.requirementService.getOneRequirement(rqmId);
 
 		return this.requirementService.getDownloadFile(Requirement);
-		
+
 	}
+
 	@ResponseBody
 	@GetMapping("/requirement/teammate/{prjId}")
 	public AjaxResponse postProjectTeammate(@PathVariable String prjId) {
 		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
-		
+
 		return new AjaxResponse().append("prjTeammateList", prjTeammateList);
 	}
 
@@ -143,8 +136,7 @@ public class RequirementController {
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		ProjectListVO projectList = this.projectService.getAllProject();
 		projectList.setProjectList(
-				projectList.getProjectList().stream()
-				.filter((project)->project.getReqYn().equals("Y")).toList());
+				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 
@@ -179,18 +171,20 @@ public class RequirementController {
 
 		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
 	}
+
 	@ResponseBody
 	@GetMapping("/project/requirement/delaycall")
 	public AjaxResponse delayRequirement(/* @SessionAttribute , */
 			@RequestParam String rqmId) {
-		
+
 		RequirementVO thisRequirement = this.requirementService.getOneRequirement(rqmId);
 		boolean isSuccess = this.requirementService.delayRequirement(thisRequirement);
-		
-		 AjaxResponse ajax = new AjaxResponse();
+
+		AjaxResponse ajax = new AjaxResponse();
 		return ajax.append("result", isSuccess);
 
 	}
+
 	@ResponseBody
 	@GetMapping("/project/requirement/delayaccess")
 	public AjaxResponse accessDelay(
@@ -198,10 +192,10 @@ public class RequirementController {
 			@RequestParam String rqmId, @RequestParam boolean dalayApprove) {
 
 		boolean isSuccess = this.requirementService.updateDelayRequirement(rqmId, dalayApprove);
-		
-		AjaxResponse ajax= new AjaxResponse();
+
+		AjaxResponse ajax = new AjaxResponse();
 		return ajax.append("result", isSuccess).append("dalayApprove", dalayApprove);
-		
+
 	}
 
 }

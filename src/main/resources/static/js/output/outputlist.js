@@ -2,14 +2,23 @@ $().ready(function () {
   $("#search-output").on("click", function () {
     var prjId = $("#prj-id option:selected").val();
     var outType = $("#out-type option:selected").val();
+    var outVer = $("#out-ver option:selected").val();
+    console.log("outVer :" + outVer);
     console.log("outType :" + outType);
 
     $.get(
       "/output/search?prjId=" + prjId,
       {
         outType: outType,
+        outVer: outVer,
       },
-      (location.href = "/output/search?prjId=" + prjId + "&outType=" + outType)
+      (location.href =
+        "/output/search?prjId=" +
+        prjId +
+        "&outType=" +
+        outType +
+        "&outVer=" +
+        outVer)
     );
   });
 
@@ -39,6 +48,7 @@ $().ready(function () {
 function search(pageNo) {
   var prjId = $("#prj-id option:selected").val();
   var outType = $("#out-type option:selected").val();
+  var outVer = $("#out-ver option:selected").val();
   var pageNo = pageNo;
 
   $.get(
@@ -47,6 +57,7 @@ function search(pageNo) {
       prjId: prjId,
       outType: outType,
       pageNo: pageNo,
+      outVer: outVer,
     },
     (location.href = "/output/search?prjId=" + prjId)
   );
@@ -57,5 +68,7 @@ function search(pageNo) {
     "&outType=" +
     outType +
     "&pageNo=" +
-    pageNo;
+    pageNo +
+    "&outVer=" +
+    outVer;
 }

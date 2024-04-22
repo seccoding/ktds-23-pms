@@ -2,6 +2,9 @@ package com.ktdsuniversity.edu.pms.login.dao;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
+import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
 
 import java.util.List;
 
@@ -47,4 +50,7 @@ public interface LoginLogDao {
 
     public int getPwdCndt(String empId);
 
+    public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO);
+
+	public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO);
 }

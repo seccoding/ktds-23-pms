@@ -1,4 +1,27 @@
 $().ready(function () {
+  $("#deleteMassiveReview").on("click", function () {
+    // 선택된 체크박스만 가져온다.
+    var checkedItems = $(".target-review-id:checked");
+    // 선택된 체크박스만 반복하며 서버로 보낼 파라미터를 생성한다.
+    var itemsArray = [];
+    checkedItems.each(function (index, data) {
+      itemsArray.push($(data).val());
+    });
+    console.log(itemsArray);
+    // 서버로 전송한다(ajax)
+    $.post(
+      "/ajax/review/delete/massive",
+      { reviewIds: itemsArray },
+      function (response) {
+        var result = response.data.result;
+        if (result) {
+          // 삭제가 완료되면 현재페이지를 새로고침한다.
+          location.reload();
+        }
+      }
+    );
+  });
+
   $(".delete-button").click(function () {
     // const id = $(".delete-button").closest("tr").attr("id");
     const id = $(this).closest("tr").attr("id");
@@ -27,6 +50,15 @@ $().ready(function () {
       });
     }
   });
+
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
+
+  /*  var reviewCnt = $(reviewList.reviewCnt);
+  if (reviewCnt === 0) {
+    document.querySelector(".table").style.display = "none";
+  }*/
 });
 
 function showModalWithReviewContent(reviewContent) {
@@ -61,7 +93,6 @@ $(document).ready(function () {
     showModalWithReviewContent(reviewContent); // 모달 창에 후기 내용 표시
   });
 });
-
 
 function search(pageNo) {
   var searchForm = $("#search-form");
