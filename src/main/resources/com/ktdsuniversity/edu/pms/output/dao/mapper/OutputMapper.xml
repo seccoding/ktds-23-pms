@@ -62,6 +62,7 @@
 		     , O.OUT_TYPE
 		     , O.OUT_TTL
 		     , O.OUT_VER
+		     , O.OUT_VER_NUM
 		     , O.OUT_FILE
 		     , O.OUT_ENCODE_FILE
 		     , O.CRT_DT
@@ -137,6 +138,7 @@
 		     , O.OUT_TYPE
 		     , O.OUT_TTL
 		     , O.OUT_VER
+		     , O.OUT_VER_NUM
 		     , O.OUT_FILE
 		     , O.OUT_ENCODE_FILE
 		     , O.CRT_DT
