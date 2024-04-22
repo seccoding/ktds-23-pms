@@ -4,7 +4,7 @@ $().ready(function() {
         var srvSts = $(this).data("srv-sts");
 
         if (srvSts === "N" || srvSts === "W") {
-            location.href = '/survey/write/' + prjId;
+            location.href = '/survey/write?prjId=' + prjId;
         } 
         else {
             location.href = '/project/search';
