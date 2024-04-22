@@ -13,7 +13,7 @@
 
 
      <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.</div>
-      <a id="deleteMassiveMemo" href="javascript:void(0)">삭제</a>
+     <button href="javascript:void(0)" id="deleteMassiveMemo">삭제</button>
     <table>
 	  <colgroup>
           <col width="*" />

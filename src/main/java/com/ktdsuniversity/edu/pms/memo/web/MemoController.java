@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.memo.web;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ktdsuniversity.edu.pms.memo.service.MemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.RequestUtil;
 
@@ -34,11 +34,15 @@ public class MemoController {
 	 * 보낸 쪽지리스트 보여주는 페이지 
 	 */
 	@GetMapping("/memo/sent")
-	public String viewSentMemoListPage(Model model) {
+	public String viewSentMemoListPage(Model model,
+			SearchMemoVO searchMemoVO) {
 		
-		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
+		model.addAttribute("searchMemoVO", searchMemoVO);
+		
+	
 		
 		return "memo/memosent";
 	}
@@ -117,6 +121,7 @@ public class MemoController {
 		boolean deleteResult = this.memoService.deleteManyMemo(memoIds);
 		
 		return new AjaxResponse().append("result", deleteResult);
+		
 	}
 	
 	
