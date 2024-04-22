@@ -65,9 +65,9 @@
 		     , O.OUT_VER_NUM
 		     , O.OUT_FILE
 		     , O.OUT_ENCODE_FILE
-		     , O.CRT_DT
+		     , TO_CHAR(O.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
 		     , O.CRTR_ID
-		     , O.MDF_DT
+		     , TO_CHAR(O.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
 		     , O.MDFR_ID
 		     , O.PRJ_ID
 		     , O.DEL_YN  
@@ -163,15 +163,15 @@
 		     , O.OUT_VER_NUM
 		     , O.OUT_FILE
 		     , O.OUT_ENCODE_FILE
-		     , O.CRT_DT
-		     , O.CRTR_ID
-		     , O.MDF_DT
 		     , O.MDFR_ID
+		     , O.CRTR_ID
+		     , TO_CHAR(O.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		     , TO_CHAR(O.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
 		     , O.PRJ_ID
 		     , CC.CMCD_NAME AS OUTPUT_TYPE_NAME
 		     , P.PRJ_NAME
 		  FROM PMS."OUTPUT" O
-		  JOIN COMMON_CODE cc
+		  JOIN COMMON_CODE CC
 		    ON O.OUT_TYPE = CC.CMCD_ID
 		  JOIN PROJECT P
 		    ON O.PRJ_ID = P.PRJ_ID
