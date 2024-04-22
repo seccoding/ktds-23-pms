@@ -67,6 +67,8 @@ public class ProjectController {
                                             SearchProjectVO searchProjectVO) {
 //        ProjectListVO projectListVO = projectService.getAllProject();
 
+        // 검증 시, searchProject.setEmployeeVO(session 의 employee)
+
         ProjectListVO projectListVO = projectService
                 .searchProject(searchProjectVO);
         List<CommonCodeVO> projectCommonCodeList = commonCodeService
