@@ -62,6 +62,7 @@
 		     , O.OUT_TYPE
 		     , O.OUT_TTL
 		     , O.OUT_VER
+		     , O.OUT_VER_NUM
 		     , O.OUT_FILE
 		     , O.OUT_ENCODE_FILE
 		     , O.CRT_DT
@@ -84,9 +85,20 @@
 		    ON O.OUT_VER = OUTVERSTS.CMCD_ID
 		 WHERE O.DEL_YN='N'
 		   AND P.OUT_YN='Y'  
-		 <if test='prjId != null and prjId!= ""'>
+		<choose>
+		  <when test='prjId != null and prjId!= ""'>
 		   AND O.PRJ_ID = #{prjId}
-		 </if>
+		   </when>
+		  <otherwise>
+		    <if test='empId != null and empId != ""'>
+		  AND  O.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+ 	  		</if>
+		  </otherwise>
+		</choose>
 		 <if test='outType != null and outType != ""'>
 		  AND O.OUT_TYPE = #{outType}
 		 </if>
@@ -119,9 +131,20 @@
 	    ON  O.OUT_VER = OUTVERSTS.CMCD_ID 	  
  	 WHERE	O.DEL_YN='N' 	
  	   AND 	P.OUT_YN='Y'   
- 	 <if test='prjId != null and prjId!= ""'>
-	   AND 	O.PRJ_ID = #{prjId}
-	</if>
+ 	 <choose>
+		  <when test='prjId != null and prjId!= ""'>
+		   AND O.PRJ_ID = #{prjId}
+		   </when>
+		  <otherwise>
+		    <if test='empId != null and empId != ""'>
+		  AND  O.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+ 	  		</if>
+		  </otherwise>
+		</choose>
 	<if test='outType != null and outType != ""'>
 	   AND	O.OUT_TYPE = #{outType}
 	</if>
@@ -137,6 +160,7 @@
 		     , O.OUT_TYPE
 		     , O.OUT_TTL
 		     , O.OUT_VER
+		     , O.OUT_VER_NUM
 		     , O.OUT_FILE
 		     , O.OUT_ENCODE_FILE
 		     , O.CRT_DT

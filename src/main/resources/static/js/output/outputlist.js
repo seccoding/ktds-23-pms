@@ -3,6 +3,7 @@ $().ready(function () {
     var prjId = $("#prj-id option:selected").val();
     var outType = $("#out-type option:selected").val();
     var outVer = $("#out-ver option:selected").val();
+    console.log("outVer :" + outVer);
     console.log("outType :" + outType);
 
     $.get(
@@ -11,7 +12,13 @@ $().ready(function () {
         outType: outType,
         outVer: outVer,
       },
-      (location.href = "/output/search?prjId=" + prjId + "&outType=" + outType)
+      (location.href =
+        "/output/search?prjId=" +
+        prjId +
+        "&outType=" +
+        outType +
+        "&outVer=" +
+        outVer)
     );
   });
 
@@ -61,5 +68,7 @@ function search(pageNo) {
     "&outType=" +
     outType +
     "&pageNo=" +
-    pageNo;
+    pageNo +
+    "&outVer=" +
+    outVer;
 }

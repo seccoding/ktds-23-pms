@@ -6,6 +6,7 @@ public class OutputSearchVO extends PaginateVO{
 	String prjId;
 	String outType;
 	String outVer;
+	String empId;
 	
 	public OutputSearchVO() {
 		
@@ -36,6 +37,16 @@ public class OutputSearchVO extends PaginateVO{
 	public void setOutVer(String outVer) {
 		this.outVer = outVer;
 	}
+
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	
+	
 	
 	
 }

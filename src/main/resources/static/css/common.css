@@ -356,6 +356,15 @@ input[type="text"] {
   padding: 7px;
 }
 
+.menu-info input[type="text"] {
+  width: 100%;
+}
+
+.menu-info label,
+.menu-info div {
+  padding: 7px;
+}
+
 input[type="submit"] {
   width: 5rem;
   height: 2rem;

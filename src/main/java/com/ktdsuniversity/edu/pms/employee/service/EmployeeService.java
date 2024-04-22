@@ -22,6 +22,10 @@ public interface EmployeeService {
 
 	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
+
 	public List<EmployeeVO> findEmployeesByTeamId(String teamId);
+
+	public int getOneEmpIdIsExist(String empId);
+
 
 }

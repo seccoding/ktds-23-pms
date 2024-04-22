@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.product.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface ProductManagementDao {
 	

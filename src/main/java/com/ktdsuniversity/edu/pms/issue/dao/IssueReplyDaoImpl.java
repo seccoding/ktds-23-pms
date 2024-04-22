@@ -29,8 +29,8 @@ public class IssueReplyDaoImpl extends SqlSessionDaoSupport implements IssueRepl
 	}
 
 	@Override
-	public int createNewIssueReply(String replyId) {
-		return getSqlSession().insert(IssueReplyDao.NAME_SPACE + ".createNewIssueReply", replyId);
+	public int createNewIssueReply(IssueReplyVO issueReplyVO) {
+		return getSqlSession().insert(IssueReplyDao.NAME_SPACE + ".createNewIssueReply", issueReplyVO);
 	}
 
 	@Override
@@ -41,10 +41,5 @@ public class IssueReplyDaoImpl extends SqlSessionDaoSupport implements IssueRepl
 	@Override
 	public int modifyOneIssueReply(IssueReplyVO issueReplyVO) {
 		return getSqlSession().update(IssueReplyDao.NAME_SPACE + ".modifyOneIssueReply", issueReplyVO);
-	}
-
-	@Override
-	public int recommendOneIssueReply(String replyId) {
-		return getSqlSession().update(IssueReplyDao.NAME_SPACE + ".recommendOneIssueReply", replyId);
 	}
 }

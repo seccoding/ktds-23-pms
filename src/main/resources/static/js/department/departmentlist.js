@@ -1,5 +1,5 @@
 $().ready(function () {
-  function clearCodeInfo() {
+  function clearDepartmentInfo() {
     var subCommonCodeInfo = $(".code-info");
     subCommonCodeInfo.find("#codeDeptId").text("");
     subCommonCodeInfo.find("#codeDeptName").text("");
@@ -7,7 +7,7 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeDeptCrtDt").text("");
   }
 
-  function clearSubCodeInfo() {
+  function clearTeamInfo() {
     var subCommonCodeInfo = $(".sub-code-info");
     subCommonCodeInfo.find("#codeTmId").text("");
     subCommonCodeInfo.find("#codeTmName").text("");
@@ -15,22 +15,29 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeTmLeadId").text("");
     subCommonCodeInfo.find("#codeTmCrtDt").text("");
   }
-  function clearSubSubCodeInfo() {
+  function clearEmployeeInfo() {
     var subSubCommonCodeInfo = $(".sub-sub-code-info");
     subSubCommonCodeInfo.find("#codeEmpId").text("");
     subSubCommonCodeInfo.find("#codeEmpName").text("");
     subSubCommonCodeInfo.find("#codeEmpEmail").text("");
     subSubCommonCodeInfo.find("#codeEmpCntct").text("");
+    subSubCommonCodeInfo.find("#codeEmpPstn").text("");
+    $("#profile").removeAttr("src");
+    $("#profile").attr({ src: "/images/login.png" });
   }
 
   $(".departmentListClickFunction").on("click", function () {
-    clearCodeInfo();
-    clearSubCodeInfo();
+    clearDepartmentInfo();
+    clearTeamInfo();
+    clearEmployeeInfo();
 
     $(this).closest("tbody").find("tr").removeClass("active");
+    $(".sub-sub-employee").find("tr").removeClass("active");
+    $(".sub-sub-employee").find("tbody").html("");
+
     $(this).addClass("active");
 
-    clearSubCodeInfo();
+    clearTeamInfo();
     reloadSubTeam($(this).data("dept-id"));
 
     var commonCodeInfo = $(".code-info");
@@ -62,8 +69,8 @@ $().ready(function () {
           $(this).closest("tbody").find("tr").removeClass("active");
           $(this).addClass("active");
 
-          clearSubCodeInfo();
-
+          clearTeamInfo();
+          clearEmployeeInfo();
           var teamInfo = $(".sub-code-info");
           teamInfo.find("#codeTmId").text($(this).data("id"));
           teamInfo.find("#codeTmName").text($(this).data("name"));
@@ -100,11 +107,10 @@ $().ready(function () {
                   $(this).closest("tbody").find("tr").removeClass("active");
                   $(this).addClass("active");
 
-                  clearSubSubCodeInfo();
+                  clearEmployeeInfo();
                   var employeeInfo = $(".sub-sub-code-info");
-                  employeeInfo
-                    .find("#profile")
-                    .attr({ src: $(this).data("emp-profile") });
+
+                  $("#profile").attr({ src: $(this).data("emp-profile") });
                   employeeInfo
                     .find("#codeEmpPstn")
                     .text($(this).data("emp-pstn"));
@@ -118,6 +124,9 @@ $().ready(function () {
                   employeeInfo
                     .find("#codeEmpCntct")
                     .text($(this).data("emp-cntct"));
+                  employeeInfo
+                    .find("#codeEmpPstn")
+                    .text($(this).data("emp-pstn"));
                 });
               });
             }
@@ -151,17 +160,35 @@ $().ready(function () {
     $.get("/ajax/department/candelete/" + deptId, function (response) {
       if (response.data.possible) {
         if (confirm("정말로 삭제하시겠습니까?")) {
-          $.get("/ajax/department/delete/" + deptId, function (response) {
+          $.get("/ajax/department/delete/" + deptId, function (delResponse) {
+            if (delResponse.data.success) {
+              alert("삭제에 성공하였습니다.");
+            } else {
+              alert("삭제중 오류가 발생했습니다.");
+            }
+            location.href = delResponse.data.next;
+          });
+        }
+      } else {
+        alert("팀이 존재하고 있어 삭제할 수 없습니다.");
+      }
+    });
+  });
+  $(".team-delete").on("click", function () {
+    var tmId = $("#codeTmId").text();
+    $.get("/ajax/department/team/candelete/" + tmId, function (response) {
+      if (response.data.possible) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          $.get("/ajax/department/team/delete/" + tmId, function (response) {
             if (response.data.success) {
               alert("삭제에 성공하였습니다.");
             } else {
               alert("삭제중 오류가 발생했습니다.");
             }
-            location.href = response.data.next;
           });
         }
       } else {
-        alert("팀이 존재하고 있어 삭제할 수 없습니다.");
+        alert("사원이 존재하고 있어 삭제할 수 없습니다.");
       }
     });
   });
@@ -180,6 +207,8 @@ $().ready(function () {
 
   $(".team-create").on("click", function () {
     var modal = $(".create-modal-team");
+    $("#department-selectbox").val($("#codeDeptId").text());
+    console.log($("#department-selectbox").val());
     modal[0].showModal();
   });
   $("#team-cancel-button").on("click", function () {
