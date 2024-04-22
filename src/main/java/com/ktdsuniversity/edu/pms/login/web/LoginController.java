@@ -133,20 +133,22 @@ public class LoginController {
 
     // 로그인 기록 확인 페이지
     @GetMapping("/loginlog/view")
-    public String viewLoginLog(Model model) {
+    public String viewLoginLog(Model model, LoginLogVO loginLogVO) {
 
-        LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog();
+        LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog(loginLogVO);
         model.addAttribute("loginLogList", loginLogListVO);
+        model.addAttribute("loginLogVO", loginLogVO);
 
         return "login/loginlogview";
     }
 
     // 화면 접근 기록 확인 페이지
     @GetMapping("/visitedlog/view")
-    public String viewVisitedLog(Model model) {
+    public String viewVisitedLog(Model model, VisitedVO visitedVO) {
 
-        VisitedListVO visitedVO = this.loginLogService.getAllVisitedLog();
-        model.addAttribute("visitedList", visitedVO);
+        VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
+        model.addAttribute("visitedVO", visitedVO);
+        model.addAttribute("visitedList", visitedList);
 
         return "login/visitedlogview";
     }

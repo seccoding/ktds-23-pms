@@ -17,6 +17,9 @@ public class OutputVO {
 	private String prjId;	//프로젝트 id
 	private String delYn;	//삭제여부
 	private String outEncodeFile;//산출물 인코딩 파일명
+	private String outVerNum;//버젼별 넘버
+	
+	private CommonCodeVO outVerSts;
 	
 	private CommonCodeVO outTypeVO;
 	
@@ -107,6 +110,20 @@ public class OutputVO {
 	public void setOutEncodeFile(String outEncodeFile) {
 		this.outEncodeFile = outEncodeFile;
 	}
+	
+	public String getOutVerNum() {
+		return outVerNum;
+	}
+	public void setOutVerNum(String outVerNum) {
+		this.outVerNum = outVerNum;
+	}
+	public CommonCodeVO getOutVerSts() {
+		return outVerSts;
+	}
+	public void setOutVerSts(CommonCodeVO outVerSts) {
+		this.outVerSts = outVerSts;
+	}
+	
 	
 	
 	

@@ -7,10 +7,8 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
-import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
-
+import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 
 @Repository
 public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao {
@@ -35,7 +33,7 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	public int getAllCountByEmpId(String empId) {
 		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllCountByEmpId", empId);
 	}
-	
+
 	@Override
 	public List<ApprovalVO> getAllApprovalByEmpId(String empId) {
 		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".getAllApprovalByEmpId", empId);
@@ -51,53 +49,66 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectOneApprovalAll", apprId);
 	}
 
+	// PSH0422
+	@Override
+	public String selectOneApprId() {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectOneApprId");
+	}
+
+	@Override
+	public int insertApproval(ApprovalVO approvalVO) {
+		return getSqlSession().insert(ApprovalDao.NAME_SPACE + ".insertApproval", approvalVO);
+	}
+
 	@Override
 	public int updateApprovalStatus(ApprovalVO approvalVO) {
-		return getSqlSession().update(ApprovalDao.NAME_SPACE+".updateApprovalStatus", approvalVO);
+		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateApprovalStatus", approvalVO);
 
 	}
 
 	@Override
 	public int deleteApproval(String apprId) {
-		return getSqlSession().update(ApprovalDao.NAME_SPACE +".deleteApproval", apprId);
+		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".deleteApproval", apprId);
 	}
 
 	@Override
 	public int getAllApproveCount() {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getAllApproveCount");
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllApproveCount");
 	}
 
 	@Override
 	public int getAllOneWeekApprovalCount() {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getAllOneWeekApprovalCount");
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllOneWeekApprovalCount");
 	}
 
 	@Override
 	public int getAllMonthApprovalCount() {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getAllMonthApprovalCount");
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllMonthApprovalCount");
 	}
 
 	@Override
 	public int updateApproval(String id) {
-		// TODO Auto-generated method stub
-		return getSqlSession().update(ApprovalDao.NAME_SPACE+".updateApproval",id);
+		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateApproval", id);
 	}
-	
-	
+
 	@Override
 	public int searchBoardAllCount(ApprovalVO approvaVo) {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".searchBoardAllCount", approvaVo);
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".searchBoardAllCount", approvaVo);
 	}
 
 	@Override
 	public List<ApprovalVO> searchAllBoard(ApprovalVO approvaVo) {
-		// TODO Auto-generated method stub
-		return getSqlSession().selectList(ApprovalDao.NAME_SPACE+".searchAllBoard", approvaVo);
+		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchAllBoard", approvaVo);
 	}
 
+	@Override
+	public int selectAllApprovalCount(String id) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectAllApprovalCount", id);
+	}
+
+	@Override
+	public List<ApprovalVO> searchBoard(SearchApprovalVO searchapprovalvo) {
+		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchBoard", searchapprovalvo);
+	}
 
 }
