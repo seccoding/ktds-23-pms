@@ -175,7 +175,7 @@ public class ApprovalController {
 //	}
 
 //	@ResponseBody
-//	@GetMapping("/approval/delete/{apprId}")
+//	@GetMapping("/ajax/approval/delete/{apprId}")
 //	public AjaxResponse doApprovalDelete(@PathVariable String apprId, Model model) {
 //
 //		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
