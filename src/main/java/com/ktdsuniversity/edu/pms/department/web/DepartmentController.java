@@ -143,6 +143,13 @@ public class DepartmentController {
 				
 	}
 	
+	@ResponseBody
+	@GetMapping("/ajax/department/team/delete/{teamId}")
+	public AjaxResponse deleteOneTeam(@PathVariable String teamId) {
+		boolean isSuccessDelete = this.teamService.deleteOneTeam(teamId);
+		return new AjaxResponse().append("success", isSuccessDelete);
+	}
+	
 	
 }
 

@@ -13,13 +13,13 @@ public interface MemoDao {
 
 	public List<MemoVO> getAllSentMemo(SearchMemoVO searchMemoVO);
 	
-	public int getStorageMemoAllCount();
+	public int getStorageMemoAllCount(SearchMemoVO searchMemoVO);
 
-	public List<MemoVO> getAllStorageMemo();
+	public List<MemoVO> getAllStorageMemo(SearchMemoVO searchMemoVO);
 
-	public int getReceiveMemoAllCount();
+	public int getReceiveMemoAllCount(SearchMemoVO searchMemoVO);
 
-	public List<MemoVO> getAllReceiveMemo();
+	public List<MemoVO> getAllReceiveMemo(SearchMemoVO searchMemoVO);
 	
 	public int writeNewMemo(MemoVO memoVO);
 

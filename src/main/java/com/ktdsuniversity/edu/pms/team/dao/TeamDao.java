@@ -22,5 +22,7 @@ public interface TeamDao {
 
 	public int isPossibleDelete(String teamId);
 
+	public int deleteOneTeam(String teamId);
+
 
 }

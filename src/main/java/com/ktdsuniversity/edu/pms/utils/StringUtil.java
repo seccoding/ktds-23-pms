@@ -38,7 +38,7 @@ public abstract class StringUtil {
 			return false;
 		}
 		
-		String passwordFormat = "^(?=.[a-zA-Z])(?=.[0-9])(?=.[!@#$%^&()-+=])([a-zA-Z0-9!@#$%^&*()-+=]{10})$";
+		String passwordFormat = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+|~=`{}\\[\\]:\";'<>?,./\\\\\\-])[a-zA-Z0-9!@#$%^&*()_+|~=`{}\\[\\]:\";'<>?,./\\\\\\-]{10,}$";
 		
 		return str.matches(passwordFormat);
 	}

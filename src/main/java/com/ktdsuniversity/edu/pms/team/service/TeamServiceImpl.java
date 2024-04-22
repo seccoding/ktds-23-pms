@@ -61,4 +61,9 @@ public class TeamServiceImpl implements TeamService{
 		return teamDao.isPossibleDelete(teamId) == 0;
 	}
 
+	@Override
+	public boolean deleteOneTeam(String teamId) {
+		return teamDao.deleteOneTeam(teamId) > 0;
+	}
+
 }

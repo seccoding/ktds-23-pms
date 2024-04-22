@@ -55,7 +55,7 @@
 
                 <div class="product-quantity">
                     <label for="apply-quantity">신청 수량</label>
-                    <input type="number" min="1" class="apply-quantity" value="1"/>
+                    <input type="number" min="1" id="apply-quantity" value="1"/>
                 </div>
 
                 <div class="category-list" data-ctgrList="${categoryList.productList}" data-category="${category.prdtCtgr}">

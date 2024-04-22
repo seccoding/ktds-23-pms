@@ -14,13 +14,18 @@ public interface ProductService {
 	 */
 	public ProductListVO getAllProduct(ProductVO productVO);
 
+	/**
+	 * 입력한 비품 정보들을 새로 추가
+	 * @param productList
+	 * @return
+	 */
 	public int createNewProduct(ProductListVO productList);
 
 	public ProductVO getOneProduct(String id);
 
 	public boolean updateOneProduct(String prdtId);
 
-	public boolean addProductCount(ProductManagementVO productManagementVO);
+//	public boolean addProductCount(ProductManagementVO productManagementVO);
 
 	public boolean deleteOneProduct(String prdtId);
 
@@ -40,11 +45,9 @@ public interface ProductService {
 	public ProductVO getOneSelectedProduct(String prdtName);
 
 	/**
-	 * 여러 개의 비품 일괄등록 
-	 * @param addItems
+	 * 새로운 prdtId 생성
 	 * @return
 	 */
-	public boolean createManyProduct(List<Integer> addItems);
-	
+	public String selectNewPrdtId();
 
 }
