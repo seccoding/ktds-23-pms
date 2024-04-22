@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
-import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
-
-
 
 @Repository
 public class ApprovalDetailDaoImpl extends SqlSessionDaoSupport implements ApprovalDetailDao {
@@ -20,37 +17,44 @@ public class ApprovalDetailDaoImpl extends SqlSessionDaoSupport implements Appro
 	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
 		super.setSqlSessionTemplate(sqlSessionTemplate);
 	}
-	
+
 	@Override
 	public List<ApprovalDetailVO> getAllApprovalDetail() {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE+".getAllApprovalDetail");
+		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE + ".getAllApprovalDetail");
 	}
-	
+
 	@Override
 	public int insertApproval(ApprovalDetailVO approvaldetailVo) {
 		// TODO Auto-generated method stub
-		return getSqlSession().insert(ApprovalDetailDao.NAME_SPACE+".insertNewBoard", approvaldetailVo);
+		return getSqlSession().insert(ApprovalDetailDao.NAME_SPACE + ".insertNewBoard", approvaldetailVo);
+	}
+
+	// PSH0422
+	@Override
+	public List<ApprovalDetailVO> getPersonApproval(String apprId) {
+		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE + ".getPersonApproval", apprId);
 	}
 
 	@Override
-	public List<ApprovalDetailVO> getpersonApproval(String id) {
-		// TODO Auto-generated method stub
-
-		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE+".getpersonApproval", id);
+	public int insertApprovalDetailList(List<ApprovalDetailVO> approvalDetailVOList) {
+		return getSqlSession().insert(ApprovalDetailDao.NAME_SPACE + ".insertApprovalDetailList", approvalDetailVOList);
 	}
 
-//	@Override
-//	public int searchBoardDetailAllCount(ApprovalDetailVO approvaldetailvo) {
-//		// TODO Auto-generated method stub
-//		return getSqlSession().selectOne(ApprovalDetailDao.NAME_SPACE+".searchBoardDetailAllCount", approvaldetailvo);
-//	}
-//
-//	@Override
-//	public List<ApprovalVO> searchAllBoardDetail(ApprovalDetailVO approvaldetailvo) {
-//		// TODO Auto-generated method stub
-//		return getSqlSession().selectList(ApprovalDao.NAME_SPACE+".searchAllBoardDetail", approvaldetailvo);
-//	}
-	
-	
+	@Override
+	public int deleteApprovalDetail(String apprId) {
+		return getSqlSession().update(ApprovalDetailDao.NAME_SPACE + ".deleteApprovalDetail", apprId);
+	}
+
+	@Override
+	public int getPrdtCountByApprId(String apprId) {
+		return getSqlSession().selectOne(ApprovalDetailDao.NAME_SPACE + ".getPrdtCountByApprId", apprId);
+	}
+
+	@Override
+	public List<String> getPrdtNameByApprId(String apprId) {
+
+		return getSqlSession().selectList(ApprovalDetailDao.NAME_SPACE + ".getPrdtNameByApprId", apprId);
+	}
+
 }

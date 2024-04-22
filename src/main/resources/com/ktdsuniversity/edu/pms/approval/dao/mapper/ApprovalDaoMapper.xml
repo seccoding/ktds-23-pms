@@ -16,9 +16,6 @@
         	<result column="CMCD_NAME" property="cmcdName"/>
         </association>
 	</resultMap>
-	
-	
-	
 
 	<resultMap id="approvalDetailVOMap" type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" autoMapping="true">
 		<id column="APPR_ID" property="apprId"/>
@@ -51,8 +48,46 @@
 				<result column="P_CUR_STR" property="curStr"/>
 				<result column="P_DEL_YN" property="delYn"/>
 			</association>
+			<association property="productManagementVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO">
+				<id column="PRDT_MNG_ID" property="prdtMngId"/>
+			</association>
 		</collection>
 	</resultMap>
+	
+	<insert id="insertApproval" parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+		INSERT INTO APPROVAL
+		     ( APPR_ID
+		     , DMD_DT
+		     , APPR_CTGR
+		     , APPR_STS
+		     , APPR_TTL
+		     , APPR_CNTNT
+		     , DMD_ID
+		     , APPR_MNG_ID
+		     , ARRP_RJCT
+		     , LAST_CN_DT
+		     , APPR_FNSH_DT
+		     , DEL_YN)
+		VALUES
+		     ( #{apprId}
+		     , SYSDATE
+		     , #{apprCtgr}
+		     , '801'
+		     , #{apprTtl}
+		     , ''
+		     , #{dmdId}
+		     , #{apprMngId}
+		     , NULL
+		     , NULL
+		     , NULL
+		     ,'N')
+	</insert>
+	
+	<select id="selectOneApprId" resultType="string">
+		SELECT 'APPR_' || TO_CHAR(SYSDATE, 'YYMMDD')
+				|| '_' || LPAD(SEQ_APPR_PK.NEXTVAL, 6, '0')
+		FROM DUAL
+	</select>
 
 	<select id="getAllCount" resultType="_int">	
 		SELECT COUNT(*)
@@ -147,7 +182,7 @@
 			 , E.EMP_NAME
 			 , E_MNG.EMP_NAME MNG_EMP_NAME
 			 , CC.CMCD_NAME
-			 , P.PRDT_CTGR
+			 , PM.PRDT_MNG_ID
 			 , P.PRDT_NAME
 			 , AD.CUR_STR APPR_DTL_CUR_STR
 			 , P.CUR_STR P_CUR_STR
@@ -160,8 +195,10 @@
 		    ON CC.CMCD_ID = E.PSTN_ID
 		 INNER JOIN APPROVAL_DETAIL AD
 		    ON A.APPR_ID = AD.APPR_ID
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON PM.PRDT_MNG_ID = AD.PRDT_ID
 		 INNER JOIN PRODUCT P
-		    ON P.PRDT_ID = AD.PRDT_ID
+		    ON P.PRDT_ID = PM.PRDT_ID
 		 WHERE A.APPR_ID = #{_parameter}
 		   AND A.DEL_YN = 'N'
 	</select>
@@ -179,22 +216,13 @@
 		 WHERE APPR_ID= #{_parameter}
   	</update>
   	
-
-  	<update id="updateApproval" parameterType="string">
-  		UPDATE APPROVAL
-			SET 
-			ARRP_RJCT='품목 변경'  
-			,APPR_FNSH_DT=SYSDATE 
-			WHERE APPR_ID='';
-  	</update>
-  	
   	<select id="getAllApproveCount" resultType="_int">
   		SELECT COUNT(1)
-			FROM APPROVAL A
-			INNER JOIN EMPLOYEE e 
-			ON e.EMP_ID =A.DMD_ID
-			WHERE A.DEL_YN = 'N'
-			AND APPR_STS  IN ('801','803') 
+		  FROM APPROVAL A
+		 INNER JOIN EMPLOYEE e
+		    ON e.EMP_ID =A.DMD_ID
+		 WHERE A.DEL_YN = 'N'
+		   AND APPR_STS  IN ('801','803')
   	</select>
   	
   	<select id="getAllOneWeekApprovalCount" resultType="_int"> 
