@@ -1,12 +1,13 @@
 $().ready(function () {
-  function clearCodeInfo() {
+  function clearDepartmentInfo() {
     var subCommonCodeInfo = $(".code-info");
     subCommonCodeInfo.find("#codeDeptId").text("");
     subCommonCodeInfo.find("#codeDeptName").text("");
     subCommonCodeInfo.find("#codeDeptLeadId").text("");
     subCommonCodeInfo.find("#codeDeptCrtDt").text("");
   }
-  function clearSubCodeInfo() {
+
+  function clearTeamInfo() {
     var subCommonCodeInfo = $(".sub-code-info");
     subCommonCodeInfo.find("#codeTmId").text("");
     subCommonCodeInfo.find("#codeTmName").text("");
@@ -14,15 +15,29 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeTmLeadId").text("");
     subCommonCodeInfo.find("#codeTmCrtDt").text("");
   }
+  function clearEmployeeInfo() {
+    var subSubCommonCodeInfo = $(".sub-sub-code-info");
+    subSubCommonCodeInfo.find("#codeEmpId").text("");
+    subSubCommonCodeInfo.find("#codeEmpName").text("");
+    subSubCommonCodeInfo.find("#codeEmpEmail").text("");
+    subSubCommonCodeInfo.find("#codeEmpCntct").text("");
+    subSubCommonCodeInfo.find("#codeEmpPstn").text("");
+    $("#profile").removeAttr("src");
+    $("#profile").attr({ src: "/images/login.png" });
+  }
 
   $(".departmentListClickFunction").on("click", function () {
-    clearCodeInfo();
-    clearSubCodeInfo();
+    clearDepartmentInfo();
+    clearTeamInfo();
+    clearEmployeeInfo();
 
     $(this).closest("tbody").find("tr").removeClass("active");
+    $(".sub-sub-employee").find("tr").removeClass("active");
+    $(".sub-sub-employee").find("tbody").html("");
+
     $(this).addClass("active");
 
-    clearSubCodeInfo();
+    clearTeamInfo();
     reloadSubTeam($(this).data("dept-id"));
 
     var commonCodeInfo = $(".code-info");
@@ -54,16 +69,68 @@ $().ready(function () {
           $(this).closest("tbody").find("tr").removeClass("active");
           $(this).addClass("active");
 
-          clearSubCodeInfo();
+          clearTeamInfo();
+          clearEmployeeInfo();
+          var teamInfo = $(".sub-code-info");
+          teamInfo.find("#codeTmId").text($(this).data("id"));
+          teamInfo.find("#codeTmName").text($(this).data("name"));
+          teamInfo.find("#codeTmDepartment").text($(this).data("tm-dept-id"));
+          teamInfo.find("#codeTmLeadId").text($(this).data("tm-lead-id"));
+          teamInfo.find("#codeTmCrtDt").text($(this).data("crdt"));
 
-          var departmentInfo = $(".sub-code-info");
-          departmentInfo.find("#codeTmId").text($(this).data("id"));
-          departmentInfo.find("#codeTmName").text($(this).data("name"));
-          departmentInfo
-            .find("#codeTmDepartment")
-            .text($(this).data("tm-dept-id"));
-          departmentInfo.find("#codeTmLeadId").text($(this).data("tm-lead-id"));
-          departmentInfo.find("#codeTmCrtDt").text($(this).data("crdt"));
+          $.get(
+            "/ajax/department/search/findemployee/" + $("#codeTmId").text(),
+            function (response) {
+              var employeeLists = response.data.employeeList;
+              var subEmployee = $(".sub-sub-employee").find("tbody");
+              subEmployee.html("");
+              employeeLists.forEach((employee) => {
+                var empTrDom = $("<tr></tr>");
+                empTrDom.attr({
+                  "data-emp-id": employee.empId,
+                  "data-emp-name": employee.empName,
+                  "data-emp-email": employee.email,
+                  "data-emp-cntct": employee.cntct,
+                  "data-emp-profile": employee.prfl,
+                  "data-emp-pstn": employee.commonCodeVO.cmcdName,
+                });
+                var empIdTdDom = $("<td></td>");
+                var empNameTdDom = $("<td></td>");
+                empIdTdDom.text(employee.empId);
+                empNameTdDom.text(employee.empName);
+                empTrDom.append(empIdTdDom);
+                empTrDom.append(empNameTdDom);
+                subEmployee.append(empTrDom);
+
+                empTrDom.on("click", function () {
+                  $(".employee-info-enter").removeClass("hidden");
+                  $(this).closest("tbody").find("tr").removeClass("active");
+                  $(this).addClass("active");
+
+                  clearEmployeeInfo();
+                  var employeeInfo = $(".sub-sub-code-info");
+
+                  $("#profile").attr({ src: $(this).data("emp-profile") });
+                  employeeInfo
+                    .find("#codeEmpPstn")
+                    .text($(this).data("emp-pstn"));
+                  employeeInfo.find("#codeEmpId").text($(this).data("emp-id"));
+                  employeeInfo
+                    .find("#codeEmpName")
+                    .text($(this).data("emp-name"));
+                  employeeInfo
+                    .find("#codeEmpEmail")
+                    .text($(this).data("emp-email"));
+                  employeeInfo
+                    .find("#codeEmpCntct")
+                    .text($(this).data("emp-cntct"));
+                  employeeInfo
+                    .find("#codeEmpPstn")
+                    .text($(this).data("emp-pstn"));
+                });
+              });
+            }
+          );
         });
 
         var tmIdTdDom = $("<td></td>");
@@ -93,17 +160,35 @@ $().ready(function () {
     $.get("/ajax/department/candelete/" + deptId, function (response) {
       if (response.data.possible) {
         if (confirm("정말로 삭제하시겠습니까?")) {
-          $.get("/ajax/department/delete/" + deptId, function (response) {
+          $.get("/ajax/department/delete/" + deptId, function (delResponse) {
+            if (delResponse.data.success) {
+              alert("삭제에 성공하였습니다.");
+            } else {
+              alert("삭제중 오류가 발생했습니다.");
+            }
+            location.href = delResponse.data.next;
+          });
+        }
+      } else {
+        alert("팀이 존재하고 있어 삭제할 수 없습니다.");
+      }
+    });
+  });
+  $(".team-delete").on("click", function () {
+    var tmId = $("#codeTmId").text();
+    $.get("/ajax/department/team/candelete/" + tmId, function (response) {
+      if (response.data.possible) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          $.get("/ajax/department/team/delete/" + tmId, function (response) {
             if (response.data.success) {
               alert("삭제에 성공하였습니다.");
             } else {
               alert("삭제중 오류가 발생했습니다.");
             }
-            location.href = response.data.next;
           });
         }
       } else {
-        alert("팀이 존재하고 있어 삭제할 수 없습니다.");
+        alert("사원이 존재하고 있어 삭제할 수 없습니다.");
       }
     });
   });
@@ -122,6 +207,8 @@ $().ready(function () {
 
   $(".team-create").on("click", function () {
     var modal = $(".create-modal-team");
+    $("#department-selectbox").val($("#codeDeptId").text());
+    console.log($("#department-selectbox").val());
     modal[0].showModal();
   });
   $("#team-cancel-button").on("click", function () {
@@ -234,5 +321,11 @@ $().ready(function () {
         location.href = returnUrl;
       }
     );
+  });
+
+  $(".employee-info-enter").on("click", function () {
+    var id = $("#codeEmpId").text();
+    console.log(id);
+    location.href = "/employee/view?empId=" + id;
   });
 });

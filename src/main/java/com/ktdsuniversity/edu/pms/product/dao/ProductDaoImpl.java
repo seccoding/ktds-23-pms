@@ -82,4 +82,15 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	public int insertManyProduct(List<Integer> addItems) {
 		return getSqlSession().insert(ProductDao.NAME_SPACE+".insertManyProduct", addItems);
 	}
+
+	@Override
+	public String selectOnePrdtId() {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".selectOnePrdtId");
+	}
+	
+	// PSH0422
+	@Override
+	public int changeOnePrdtStored(String prdtName) {
+		return getSqlSession().update(ProductDao.NAME_SPACE + ".changeOnePrdtStored", prdtName);
+	}
 }

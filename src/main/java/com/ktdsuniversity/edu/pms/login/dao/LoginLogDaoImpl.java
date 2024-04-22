@@ -102,13 +102,13 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 	}
 
     @Override
-    public List<LoginLogVO> getAllLoginLog() {
-        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllLoginLog");
+    public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO) {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllLoginLog", loginLogVO);
     }
 
     @Override
-    public List<VisitedVO> getAllVisitedLog() {
-        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllVisitedLog");
+    public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO) {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllVisitedLog", visitedVO);
     }
 
 

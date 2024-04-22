@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.memo.web;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ktdsuniversity.edu.pms.memo.service.MemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.RequestUtil;
 
@@ -34,34 +34,39 @@ public class MemoController {
 	 * 보낸 쪽지리스트 보여주는 페이지 
 	 */
 	@GetMapping("/memo/sent")
-	public String viewSentMemoListPage(Model model) {
+	public String viewSentMemoListPage(Model model,
+			SearchMemoVO searchMemoVO) {
 		
-		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
+		model.addAttribute("searchMemoVO", searchMemoVO);
+		
+	
 		
 		return "memo/memosent";
 	}
 	
 	// 수정필요
 	@GetMapping("/memo/storage")
-	public String viewStorageMemoListPage(Model model) {
+	public String viewStorageMemoListPage(Model model, SearchMemoVO searchMemoVO) {
 		
-		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
+		model.addAttribute("searchMemoVO", searchMemoVO);
 		
 		return "memo/memostorage";
 	}
 	
 	// 수정필요
 	@GetMapping("/memo/receive")
-	public String viewReceiveMemoListPage(Model model) {
+	public String viewReceiveMemoListPage(Model model, SearchMemoVO searchMemoVO) {
 		
-		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch();
+		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
-		
+		model.addAttribute("searchMemoVO", searchMemoVO);
 		return "memo/memoreceive";
 	}
 	
@@ -77,7 +82,7 @@ public class MemoController {
 	 * 쪽찌 쓰기 기능 쓰기 완료시 보낸쪽지함으로 이동
 	 */
 	@PostMapping("/memo/write")
-	public String doBoardWrite(@RequestParam String rcvId,
+	public String doMemoWrite(@RequestParam String rcvId,
 			@RequestParam String memoCntnt,
 			Model model) {
 		
@@ -94,7 +99,7 @@ public class MemoController {
 	
 	
 	@GetMapping({"/memo/sent/view", "/memo/receive/view", "/memo/storage/view"})
-	public String viewBoardDetailPage(@RequestParam() String id, Model model) {
+	public String viewMemoDetailPage(@RequestParam() String id, Model model) {
 		MemoVO memoVO = this.memoService.getOneMemo(id);
 	
 		model.addAttribute("memoVO", memoVO);
@@ -117,6 +122,7 @@ public class MemoController {
 		boolean deleteResult = this.memoService.deleteManyMemo(memoIds);
 		
 		return new AjaxResponse().append("result", deleteResult);
+		
 	}
 	
 	

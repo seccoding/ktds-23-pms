@@ -36,6 +36,15 @@
         <label for="content">내용</label>
         <div>${issueVO.isCntnt}</div>
 
+        <div class="replies">
+            <div class="reply-items"></div>
+            <div class="write-reply">
+              <textarea id="txt-reply" name="rplCntnt" data-issue-id="${issueVO.isId}"></textarea>
+              <button id="btn-save-reply">등록</button>
+              <button id="btn-cancel-reply">취소</button>
+            </div>
+        </div>
+
         <div>
             <button>
                 <a href="/issue">목록</a>

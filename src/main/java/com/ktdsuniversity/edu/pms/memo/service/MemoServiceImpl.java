@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ktdsuniversity.edu.pms.memo.dao.MemoDao;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 
 @Service
 public class MemoServiceImpl implements MemoService{
@@ -18,24 +19,12 @@ public class MemoServiceImpl implements MemoService{
 	private MemoDao memoDao;
 
 	@Override
-	public MemoListVO getSentMemoAllsearch() {
+	public MemoListVO getSentMemoAllsearch(SearchMemoVO searchMemoVO) {
 		
-		int sentMemoCount = this.memoDao.getSentMemoAllCount();
+		int sentMemoCount = this.memoDao.getSentMemoAllCount(searchMemoVO);
+		searchMemoVO.setPageCount(sentMemoCount);
 		
-		List<MemoVO> memoList = this.memoDao.getAllSentMemo();
-		
-		MemoListVO memoListVO = new MemoListVO();
-		memoListVO.setMemoCnt(sentMemoCount);
-		memoListVO.setMemoList(memoList);
-		
-		return memoListVO;
-	}
-
-	@Override
-	public MemoListVO getStorageMemoAllsearch() {
-		int sentMemoCount = this.memoDao.getStorageMemoAllCount();
-		
-		List<MemoVO> memoList = this.memoDao.getAllStorageMemo();
+		List<MemoVO> memoList = this.memoDao.getAllSentMemo(searchMemoVO);
 		
 		MemoListVO memoListVO = new MemoListVO();
 		memoListVO.setMemoCnt(sentMemoCount);
@@ -45,13 +34,26 @@ public class MemoServiceImpl implements MemoService{
 	}
 
 	@Override
-	public MemoListVO getReceiveMemoAllsearch() {
-		int sentMemoCount = this.memoDao.getReceiveMemoAllCount();
-		
-		List<MemoVO> memoList = this.memoDao.getAllReceiveMemo();
+	public MemoListVO getStorageMemoAllsearch(SearchMemoVO searchMemoVO) {
+		int storageMemoCount = this.memoDao.getStorageMemoAllCount(searchMemoVO);
+		searchMemoVO.setPageCount(storageMemoCount);
+		List<MemoVO> memoList = this.memoDao.getAllStorageMemo(searchMemoVO);
 		
 		MemoListVO memoListVO = new MemoListVO();
-		memoListVO.setMemoCnt(sentMemoCount);
+		memoListVO.setMemoCnt(storageMemoCount);
+		memoListVO.setMemoList(memoList);
+		
+		return memoListVO;
+	}
+
+	@Override
+	public MemoListVO getReceiveMemoAllsearch(SearchMemoVO searchMemoVO) {
+		int receiveMemoCount = this.memoDao.getReceiveMemoAllCount(searchMemoVO);
+		searchMemoVO.setPageCount(receiveMemoCount);
+		List<MemoVO> memoList = this.memoDao.getAllReceiveMemo(searchMemoVO);
+		
+		MemoListVO memoListVO = new MemoListVO();
+		memoListVO.setMemoCnt(receiveMemoCount);
 		memoListVO.setMemoList(memoList);
 		
 		return memoListVO;
@@ -102,7 +104,6 @@ public class MemoServiceImpl implements MemoService{
 
 	@Override
 	public boolean deleteManyMemo(List<String> memoIds) {
-		List<MemoVO> originalBoardList = this.memoDao.selectManyMemo(memoIds);
 		
 		int deletedCount = this.memoDao.deleteManyMemo(memoIds);
 		

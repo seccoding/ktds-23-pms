@@ -1,9 +1,10 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
-import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class EmployeeVO {
@@ -35,6 +36,7 @@ public class EmployeeVO {
     private String lgnYn;
     private String fileName;
     private DepartmentVO departmentVO;
+    private CommonCodeVO commonCodeVO;
 
     private LoginLogVO loginLogVO;
 
@@ -232,6 +234,14 @@ public class EmployeeVO {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public CommonCodeVO getCommonCodeVO() {
+		return commonCodeVO;
+	}
+
+	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
+		this.commonCodeVO = commonCodeVO;
 	}
 
 }

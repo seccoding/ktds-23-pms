@@ -11,6 +11,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/department/departmentlist.js"
     ></script>
     <style>
+      .hidden {
+        display: none;
+      }
       .create-modal,
       .create-modal-team {
         position: absolute;
@@ -69,11 +72,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         font-weight: bold;
         border-radius: 0.25rem;
         background-color: var(--btn-color);
-        margin-left: 1rem;
-        margin-right: 2rem;
+        margin: 0 0.5rem;
       }
       .dept-list-modal > .grid > input,
       .dept-list-modal > .grid > div,
+      .dept-list-modal > .grid > select,
       .dept-list-modal > .grid > p {
         align-items: center;
         text-align: left;
@@ -88,11 +91,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         max-height: 25rem;
         overflow-y: scroll;
       }
+      .employee-info-enter {
+        margin-top: 1.9rem;
+        width: 7rem;
+      }
     </style>
-    <script
-      type="text/javascript"
-      src="/js/department/departmentlist.js"
-    ></script>
   </head>
   <body>
     <dialog class="create-modal dept-list-modal">
@@ -123,7 +126,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="grid-item">팀장ID</div>
         <input id="team-leader" type="text" class="grid-item" />
         <div class="grid-item">담당부서ID</div>
-        <input id="team-department" type="text" class="grid-item" />
+        <select
+          class="grid-item department-selectbox"
+          id="department-selectbox"
+        >
+          <c:forEach
+            items="${onlyDepartmentList.departmentList}"
+            var="department"
+          >
+            <option class="enter-data-id" value="${department.deptId}">
+              ${department.deptName}
+            </option>
+          </c:forEach>
+        </select>
       </div>
       <div class="flex">
         <input
@@ -346,6 +361,46 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div data-columns="1 / -1" style="text-align: right">
           <input type="button" class="team-create button" value="팀 등록" />
           <input type="button" class="team-modify button" value="팀 변경" />
+          <input type="button" class="team-delete button" value="팀 삭제" />
+        </div>
+      </div>
+      <div class="overflow-scroll">
+        <h4 style="background-color: var(--body-bg)">사원 정보</h4>
+        <div class="grid" style="display: flex" data-grid-columns="1fr 3fr">
+          <div>
+            <img
+              src="/images/login.png"
+              id="profile"
+              alt="profile"
+              width="120"
+              height="160"
+              style="margin-right: 0.5rem"
+            />
+          </div>
+          <div
+            class="grid code-info sub-code-info sub-sub-code-info"
+            data-grid-columns=" 1fr 1fr"
+            data-grid-rows="1fr 1fr 1fr 1fr"
+          >
+            <label for="codeEmpId">사원 ID</label>
+            <div id="codeEmpId"></div>
+            <label for="codeEmpName">사원명</label>
+            <div id="codeEmpName"></div>
+            <label for="codeEmpPstn">직급</label>
+            <div id="codeEmpPstn"></div>
+
+            <label for="codeEmpEmail">이메일</label>
+            <div data-columns="2 / -1" id="codeEmpEmail"></div>
+            <label for="codeEmpCntct">전화번호</label>
+            <div data-columns="2 / -1" id="codeEmpCntct"></div>
+          </div>
+        </div>
+        <div data-columns="1 / -1" style="text-align: right">
+          <input
+            type="button"
+            class="employee-info-enter button hidden"
+            value="상세 정보 보기"
+          />
         </div>
       </div>
     </div>

@@ -28,6 +28,9 @@
 			<id column="PRJ_ID" property="prjId" />
 			<result column="PRJ_NAME" property="prjName" />
 			<result column="REQ_YN" property="reqYn" />
+			<result column="IS_YN" property="isYn" />
+			<result column="KNL_YN" property="knlYn" />
+			<result column="QA_YN" property="qaYn" />
 	</association>
 	
 	<!-- join table -->
@@ -76,7 +79,7 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	 <if test='prjId != "ALL"'>
+	 <if test='prjId != null and prjId != ""'>
 	   AND	R.PRJ_ID=#{prjId}
 	 </if>
 	 <if test='scdSts != null and scdSts != ""'>
@@ -104,6 +107,9 @@
 		 ,	TSTR.EMP_NAME	AS TSTR_NAME
 		 ,	CRTR.EMP_NAME	AS CRTR_NAME
 		 ,	MDFR.EMP_NAME	AS MDFR_NAME
+		 ,  P.IS_YN
+		 ,  P.KNL_YN
+		 ,	P.QA_YN
 	  FROM 	REQUIREMENT r 
 	  JOIN	COMMON_CODE STS 
 	  	ON	R.SCD_STS =STS.CMCD_ID
@@ -119,7 +125,7 @@
 	    ON  R.TSTR	= TSTR.EMP_ID
 	  JOIN	EMPLOYEE CRTR
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
-	  JOIN	EMPLOYEE MDFR
+	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID  	
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
@@ -135,8 +141,8 @@
 		 ,	R.SCD_STS 
 		 ,	R.RQM_STS 
 		 ,	R.PRJ_ID
-		 ,  R.STRT_DT
-		 , 	R.END_DT
+		 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
+		 , 	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
 		 ,	STS.CMCD_NAME 	AS STS_NAME
 		 ,	RQM.CMCD_NAME 	AS RQM_NAME
 		 ,	P.PRJ_NAME    	AS PRJ_NAME
@@ -160,7 +166,7 @@
 	    ON  R.TSTR	= TSTR.EMP_ID
 	  JOIN	EMPLOYEE CRTR
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
-	  JOIN	EMPLOYEE MDFR
+	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID   	
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
@@ -181,6 +187,8 @@
 		 ,	cc2.CMCD_NAME AS RQM_NAME	
 		 ,	r.PRJ_ID
 		 ,	p.PRJ_NAME 
+		 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
+		 , 	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
 	  FROM 	REQUIREMENT r 
 	  JOIN	COMMON_CODE cc1 
 	  	ON	R.SCD_STS =CC1.CMCD_ID
@@ -190,7 +198,7 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	 <if test='prjId != "ALL"'>
+	 <if test='prjId != null and prjId != ""'>
 	   AND	R.PRJ_ID=#{prjId}
 	 </if>
 	 <if test='scdSts != null and scdSts != ""'>
@@ -342,7 +350,7 @@ SELECT  R.RQM_ID
 	    ON  R.TSTR	= TSTR.EMP_ID
 	  JOIN	EMPLOYEE CRTR
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
-	  JOIN	EMPLOYEE MDFR
+	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID  	
 	 </sql>
 	 

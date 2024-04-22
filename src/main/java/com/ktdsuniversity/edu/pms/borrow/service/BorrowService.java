@@ -13,6 +13,9 @@ public interface BorrowService {
 
 	public boolean returnOneItem(BorrowVO borrowVO);
 	
-	
+	// PSH0422
+	public boolean getIsNotReturnCount(String dmdId);
+
+	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO);
 
 }

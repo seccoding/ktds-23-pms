@@ -89,4 +89,15 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 				, searchEmployeeVO);
 	}
 
+	@Override
+	public List<EmployeeVO> findEmployeesByTeamId(String teamId) {
+
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".findEmployeesByTeamId", teamId);
+	}
+	
+	@Override
+	public int getOneEmpIdIsExist(String empId) {
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getOneEmpIdIsExist", empId);
+	}
+
 }

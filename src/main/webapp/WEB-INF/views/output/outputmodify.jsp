@@ -15,7 +15,6 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     }
   </style>
   <body>
-    <jsp:include page="../layout/layout.jsp"></jsp:include>
     <form
       method="post"
       enctype="multipart/form-data"
@@ -66,6 +65,5 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
     </form>
 
-    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
   </body>
 </html>

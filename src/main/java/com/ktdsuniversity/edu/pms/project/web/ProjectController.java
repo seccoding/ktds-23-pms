@@ -34,6 +34,7 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 /**
  * TODO
@@ -64,8 +65,12 @@ public class ProjectController {
     // getAllProject + getAllProjectByProjectTeammateRole
     @GetMapping("/project/search")
     public String viewSearchProjectListPage(Model model,
-                                            SearchProjectVO searchProjectVO) {
+                                            SearchProjectVO searchProjectVO,
+                                            @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 //        ProjectListVO projectListVO = projectService.getAllProject();
+
+        // 검증 시, searchProject.setEmployeeVO(session 의 employee)
+        searchProjectVO.setEmployeeVO(employeeVO);
 
         ProjectListVO projectListVO = projectService
                 .searchProject(searchProjectVO);

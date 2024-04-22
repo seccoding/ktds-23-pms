@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 
 @Repository
 public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
@@ -19,33 +20,33 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	}
 
 	@Override
-	public int getSentMemoAllCount() {
-		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getSentMemoAllCount");
+	public int getSentMemoAllCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getSentMemoAllCount" , searchMemoVO);
 	}
 
 	@Override
-	public List<MemoVO> getAllSentMemo() {
-		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllSentMemo");
+	public List<MemoVO> getAllSentMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllSentMemo", searchMemoVO);
 	}
 
 	@Override
-	public int getStorageMemoAllCount() {
-		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getStorageMemoAllCount");
+	public int getStorageMemoAllCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getStorageMemoAllCount", searchMemoVO);
 	}
 
 	@Override
-	public List<MemoVO> getAllStorageMemo() {
-		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllStorageMemo");
+	public List<MemoVO> getAllStorageMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllStorageMemo", searchMemoVO);
 	}
 
 	@Override
-	public int getReceiveMemoAllCount() {
-		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReceiveMemoAllCount");
+	public int getReceiveMemoAllCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReceiveMemoAllCount", searchMemoVO);
 	}
 
 	@Override
-	public List<MemoVO> getAllReceiveMemo() {
-		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllReceiveMemo");
+	public List<MemoVO> getAllReceiveMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllReceiveMemo", searchMemoVO);
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Repository
 public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements ProductManagementDao {
@@ -82,6 +83,23 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 	@Override
 	public int getDelNCount(String prdtId) {
 		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getDelNCount", prdtId);
+	}
+	
+	// PSH0422
+	@Override
+	public int unusablePrdtByAppr(String apprId) {
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".unusablePrdtByAppr", apprId);
+	}
+
+	@Override
+	public String getNewPrdtMngIdForBorrow(String prdtName) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE + ".getNewPrdtMngIdForBorrow", prdtName);
+	}
+
+	@Override
+	public int changeItemBrrwStateY(String prdtMngId) {
+		System.out.println("changeItemBrrwStateY >>>> " + prdtMngId);
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".changeManyItemBrrwState", prdtMngId);
 	}
 
 }

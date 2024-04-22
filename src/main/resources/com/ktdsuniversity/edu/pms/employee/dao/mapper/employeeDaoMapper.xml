@@ -23,7 +23,35 @@
 			<id column="TM_ID" property="tmId"/>
 			<result column="TM_NAME" property="tmName"/>
 		</association>
-		</resultMap>
+	</resultMap>
+	<resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+			   id="employeeVOMapByCommonCode"
+			   autoMapping="true">
+		<id column="EMP_ID" property="empId" />
+		<association property="commonCodeVO"
+					 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId"/>
+		  <result column="CMCD_NAME" property="cmcdName"/>
+		</association>
+	</resultMap>	
+	
+	<select id="findEmployeesByTeamId"
+			parameterType="string"
+			resultMap="employeeVOMapByCommonCode">
+		SELECT E.EMP_ID 
+			 , E.EMP_NAME
+			 , E.EMAIL
+			 , E.CNTCT
+			 , C.CMCD_NAME
+			 , E.PRFL
+		  FROM EMPLOYEE E
+		 INNER JOIN ASSIGNMENT A
+		    ON E.EMP_ID = A.EMP_ID
+		 INNER JOIN COMMON_CODE C
+		    ON E.PSTN_ID = C.CMCD_ID
+		 WHERE A.TM_ID = #{_parameter}			
+	</select>
+	
 
 	<select id="getAllEmployeeCount" 
 			resultType="_int">
@@ -265,5 +293,14 @@
 		  FROM EMPLOYEE
 		 WHERE EMP_ID = #{empId}
 	</select>
+	
+	<select id="getOneEmpIdIsExist"
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+			resultType="_int">
+			SELECT COUNT(1) 
+			  FROM EMPLOYEE
+			 WHERE EMP_ID = #{empId}
+	</select>
+
 
 </mapper>

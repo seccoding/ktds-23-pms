@@ -55,4 +55,8 @@ public interface ProjectDao {
     int updateTeammateDeleteYnByProjectTeammateId(String prjTmId);
 
     int insertNewProjectTeammate(ProjectTeammateVO newProjectTeammate);
+
+    List<ProjectTeammateVO> findAllProjectTeammate();
+
+    List<ProjectVO> findAllProjectByEmployeeId(String empId);
 }

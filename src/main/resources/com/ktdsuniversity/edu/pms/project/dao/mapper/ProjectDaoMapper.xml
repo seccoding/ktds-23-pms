@@ -155,6 +155,20 @@
                 </when>
             </choose>
         </if>
+        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+            <choose>
+                <when test='employeeVO.admnCode == "301"'>
+                </when>
+                <otherwise>
+                    AND P.PRJ_ID IN (
+                        SELECT PRJ_ID
+                    FROM PROJECT_TEAMMATE PT
+                    WHERE PT.TM_ID = #{employeeVO.empId}
+                    AND PT.DEL_YN = 'N'
+                    )
+                </otherwise>
+            </choose>
+        </if>
         ORDER BY P.CRT_DT DESC
         <include refid="Common.pagenate_footer"/>
     </select>
@@ -191,6 +205,20 @@
                 <when test='searchType == "department"'>
                     AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
+            </choose>
+        </if>
+        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+            <choose>
+                <when test='employeeVO.admnCode == "301"'>
+                </when>
+                <otherwise>
+                    AND P.PRJ_ID IN (
+                    SELECT PRJ_ID
+                    FROM PROJECT_TEAMMATE PT
+                    WHERE PT.TM_ID = #{employeeVO.empId}
+                    AND PT.DEL_YN = 'N'
+                    )
+                </otherwise>
             </choose>
         </if>
     </select>
@@ -524,4 +552,34 @@
         'NONE'
         )
     </insert>
+
+    <select id="findAllProjectTeammate"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        SELECT PRJ_TM_ID,
+        PRJ_ID ,
+        TM_ID,
+        "ROLE" ,
+        DEL_YN
+        FROM PROJECT_TEAMMATE
+        WHERE DEL_YN = 'N'
+    </select>
+
+    <select id="findAllProjectByEmployeeId"
+            parameterType="String"
+            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+        SELECT P.PRJ_ID,
+        P.PRJ_NAME,
+        P.CLNT_INFO,
+        P.DEPT_ID,
+        P.PRJ_STS,
+        P.STRT_DT,
+        P.END_DT
+        FROM PROJECT P
+        WHERE P.DEL_YN = 'N'
+        AND PRJ_ID IN (SELECT PRJ_ID
+        FROM PROJECT_TEAMMATE PT
+        WHERE PT.TM_ID = #{_parameter}
+        AND PT.DEL_YN = 'N')
+        ORDER BY P.CRT_DT DESC
+    </select>
 </mapper>

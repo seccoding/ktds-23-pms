@@ -10,6 +10,11 @@
 			<id column="PRDT_ID" property="prdtId" />
 			<result column="PRDT_NAME" property="prdtName"/>
 		</association>
+		<association property="approvalDetailVO" javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO">
+			<id column="APPR_DTL_ID" property="apprDtlId"/>
+			<result column="APPR_ID" property="apprId"/>
+			<result column="APPR_DTL_DEL_YN" property="delYn"/>
+		</association>
 	</resultMap>
 
 	<select id="getProductManagementCount" 
@@ -160,5 +165,35 @@
 		 WHERE DEL_YN = 'N'
 		   AND PRDT_ID = #{_parameter}
 	</select>
+	
+	<!-- PSH0422 -->
+	<select id="getNewPrdtMngIdForBorrow" parameterType="string" resultType="string">
+		SELECT PRDT.PRDT_MNG_ID
+		  FROM (SELECT PM.PRDT_MNG_ID
+			      FROM PRODUCT_MANAGEMENT PM
+			     INNER JOIN PRODUCT P
+			  	    ON PM.PRDT_ID = P.PRDT_ID
+				 WHERE P.PRDT_NAME = #{_parameter}
+		 		   AND PM.LOST_YN = 'N'
+				   AND PM.BRRW_YN = 'N'
+				   AND PM.DEL_YN = 'N'
+				 ORDER BY PM.BUY_DT ASC) PRDT
+				 WHERE ROWNUM = 1
+	</select>
+
+	<update id="unusablePrdtByAppr" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT
+		   SET BRRW_YN = 'N'
+		     , DEL_YN = 'Y'
+		 WHERE PRDT_MNG_ID IN (SELECT PRDT_ID
+								 FROM APPROVAL_DETAIL
+								WHERE APPR_ID = #{_parameter})
+	</update>
+
+	<update id="changeManyItemBrrwState" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT
+		   SET BRRW_YN = 'Y'
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</update>
 	
 </mapper>

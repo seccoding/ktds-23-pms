@@ -13,6 +13,11 @@ public interface ProductDao {
 
 	public int getProductAllCount(ProductVO productVO);
 
+	/**
+	 * 새로운 비품 추가
+	 * @param productVO
+	 * @return
+	 */
 	public int insertNewProduct(ProductVO productVO);
 
 	public ProductVO selectOneProduct(String id);
@@ -49,5 +54,14 @@ public interface ProductDao {
 	 * @return
 	 */
 	public int insertManyProduct(List<Integer> addItems);
+
+	/**
+	 * prdtId 값 조회
+	 * @return
+	 */
+	public String selectOnePrdtId();
+	
+	// PSH0422
+	public int changeOnePrdtStored(String prdtName);
 
 }

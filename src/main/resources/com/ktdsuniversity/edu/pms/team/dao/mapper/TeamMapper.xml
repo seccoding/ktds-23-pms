@@ -74,5 +74,22 @@
 		   AND DEPT_ID = #{_parameter}
 		
 	</select>
+	
+	<select id="isPossibleDelete"
+			parameterType="string"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM ASSIGNMENT
+		 WHERE DEL_YN = 'N'
+		   AND TM_ID = #{_parameter}
+	</select>
+	
+	<update id="deleteOneTeam"
+			parameterType="string">
+		UPDATE TEAM
+		   SET DEL_YN = 'Y'
+		 WHERE TM_ID = #{_parameter}
+	</update>
+	
 
 </mapper>

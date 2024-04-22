@@ -37,7 +37,7 @@ public interface LoginLogService {
 
     public int getPwdCndt(String empId);
 
-    public LoginLogListVO getAllLoginLog();
+    public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO);
 
-    public VisitedListVO getAllVisitedLog();
+    public VisitedListVO getAllVisitedLog(VisitedVO visitedVO);
 }

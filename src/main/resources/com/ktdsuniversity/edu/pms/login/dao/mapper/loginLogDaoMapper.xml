@@ -11,6 +11,20 @@
         </association>
     </resultMap>
 
+    <resultMap id="loginLogVOMap" type="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" autoMapping="true">
+        <id column="LOG_ID" property="logId" />
+        <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="EMP_NAME" property="empName" />
+        </association>
+    </resultMap>
+
+    <resultMap id="visitedVOMap" type="com.ktdsuniversity.edu.pms.login.vo.VisitedVO" autoMapping="true">
+        <id column="ACCS_ID" property="accsId" />
+        <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="EMP_NAME" property="empName"/>
+        </association>
+    </resultMap>
+
 
     <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
             resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
@@ -55,7 +69,7 @@
         VALUES
         (SEQ_LGN_LG_PK.NEXTVAL
         , #{empId}
-        , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        , SYSDATE
         , NULL
         , 'N')
     </insert>
@@ -84,7 +98,7 @@
 
     <update id="updateEmpLogout" parameterType="string">
         UPDATE LOGIN_LOG
-        SET LGT_DT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        SET LGT_DT = SYSDATE
         WHERE LOG_ID = #{_parameter}
         AND LGT_DT IS NULL
     </update>
@@ -174,23 +188,61 @@
            AND SYSDATE > PWD_CN_DT + 90
     </select>
 
-    <select id="getAllLoginLog" resultType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
-        SELECT LOG_ID
-             , EMP_ID
-             , LGN_SCC_DT
-             , LGT_DT
-             , DEL_YN
-          FROM LOGIN_LOG
-         ORDER BY LGN_SCC_DT
+    <select id="getAllLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" resultMap="loginLogVOMap">
+        SELECT L.LOG_ID
+             , L.EMP_ID
+             , L.LGN_SCC_DT
+             , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD') LGT_DT
+             , TO_CHAR(L.DEL_YN, 'YYYY-MM-DD') DEL_YN
+             , E.EMP_NAME
+          FROM LOGIN_LOG L
+          JOIN EMPLOYEE E
+            ON E.EMP_ID = L.EMP_ID
+          <if test='searchKeyword != null and searchKeyword != ""'>
+              <choose>
+                  <when test='searchType == "empId"'>
+                      WHERE L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+                  </when>
+                  <when test='searchType == "lgnSccDt"'>
+                      WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
+                  </when>
+                  <when test='searchType == "lgtDt"'>
+                      WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
+                  </when>
+                  <when test='searchType == "employeeVO.empName"'>
+                      WHERE EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                  </when>
+              </choose>
+          </if>
+         ORDER BY L.LGN_SCC_DT
     </select>
 
-    <select id="getAllVisitedLog" resultType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO">
-        SELECT ACCS_ID
-             , EMP_ID
-             , ACCS_URL
-             , ACCS_DT
-             , DEL_YN
-          FROM VISITED_HISTORY
+    <select id="getAllVisitedLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO" resultMap="visitedVOMap">
+        SELECT V.ACCS_ID
+             , V.EMP_ID
+             , V.ACCS_URL
+             , V.ACCS_DT
+             , V.DEL_YN
+             , E.EMP_NAME
+          FROM VISITED_HISTORY V
+          JOIN EMPLOYEE E
+            ON E.EMP_ID = V.EMP_ID
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "empId"'>
+                    WHERE V.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "employeeVO.empName"'>
+                    WHERE E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "accsUrl"'>
+                    WHERE V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "accsDt"'>
+                    WHERE V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
          ORDER BY ACCS_DT
     </select>
 

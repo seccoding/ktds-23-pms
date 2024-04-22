@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.borrow.vo;
 
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
@@ -15,6 +17,10 @@ public class BorrowVO {
 	private ProductManagementVO productManagementVO;
 	
 	private ProductVO productVO;
+	
+	// PSH0422
+	private ApprovalVO approvalVO;
+	private ApprovalDetailVO approvalDetailVO;
 	
 	public ProductVO getProductVO() {
 		return productVO;
@@ -63,6 +69,18 @@ public class BorrowVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public ApprovalVO getApprovalVO() {
+		return approvalVO;
+	}
+	public void setApprovalVO(ApprovalVO approvalVO) {
+		this.approvalVO = approvalVO;
+	}
+	public ApprovalDetailVO getApprovalDetailVO() {
+		return approvalDetailVO;
+	}
+	public void setApprovalDetailVO(ApprovalDetailVO approvalDetailVO) {
+		this.approvalDetailVO = approvalDetailVO;
 	}
 	
 	

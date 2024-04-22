@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>결재HOME</title>
+	<title>결재현황</title>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
 	<style>
 		.container {
@@ -13,64 +13,64 @@
 			border-radius: val(--box-border-radius);
 		}
 		.title {
-            margin-bottom: 3rem;
-        }
-        .col-1-1 {
-            width: 99%;
-        }
-        .col-1-2 {
-            width: 50%;
-        }
-        .col-1-3 {
-            width: 33.33%;
-        }
-        .col-2-3 {
-            width: 66.66%;
-        }
-        .col-1-4 {
-            width: 25%;
-        }
-        .col-1-8 {
-            width: 12.5%
-        }
-		.row {
-            display: flex;
-            justify-content: space-between;
-        }
-        .card {
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #FFF;
-            padding: 0 0.8125rem;
-        }
-        .card-body {
-            flex: 1 1 auto;
-            padding: 1.5rem 1.5rem;
-            background-color: #f0f0f0;
-            border-radius: 0.5rem;
-        }
-        .card-icon {
-            margin-bottom: 0.875rem;
-        }
-        .card-list {
-            display: flex;
-            background-color: #f0f0f0;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 1.5rem;
-            margin: 1rem 0;
-        }
-        .card-list-user {
-            display: flex;
-            align-items: center;
-        }
-        .card-list-category > .category {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }	
+        margin-bottom: 3rem;
+    }
+    .col-1-1 {
+        width: 99%;
+    }
+    .col-1-2 {
+        width: 50%;
+    }
+    .col-1-3 {
+        width: 33.33%;
+    }
+    .col-2-3 {
+        width: 66.66%;
+    }
+    .col-1-4 {
+        width: 25%;
+    }
+    .col-1-8 {
+        width: 12.5%
+    }
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+    .card {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #FFF;
+        padding: 0 0.8125rem;
+    }
+    .card-body {
+        flex: 1 1 auto;
+        padding: 1.5rem 1.5rem;
+        background-color: #f0f0f0;
+        border-radius: 0.5rem;
+    }
+    .card-icon {
+        margin-bottom: 0.875rem;
+    }
+    .card-list {
+        display: flex;
+        background-color: #f0f0f0;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 1.5rem;
+        margin: 1rem 0;
+    }
+    .card-list-user {
+        display: flex;
+        align-items: center;
+    }
+    .card-list-category > .category {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }	
 	</style>
 </head>
 <body>
@@ -116,10 +116,10 @@
 									</div>
 								</div>
 								<div class="card-list-title">
-                                    <a href="/approval/approvalview?apprId=${approval.apprId}">
-									    <h6>${approval.apprTtl}</h6>
-                                        <span>${approval.dmdDt}</span>
-                                    </a>
+                  <a href="/approval/approvalview?apprId=${approval.apprId}">
+                    <h6>${approval.apprTtl}</h6>
+                    <span>${approval.dmdDt}</span>
+                  </a>
 								</div>
 								<div class="card-list-user">
 									<img src="" alt="img">
@@ -191,9 +191,6 @@
         </form>
       </div>
       <!-- Paginator 끝 -->
-       
     </div>
-    
-    
 </body>
 </html>

@@ -94,4 +94,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeListVO;
 	}
 
+	@Override
+	public List<EmployeeVO> findEmployeesByTeamId(String teamId) {
+		return this.employeeDao.findEmployeesByTeamId(teamId);
+	}
+	
+	@Override
+	public int getOneEmpIdIsExist(String empId) {
+		return this.employeeDao.getOneEmpIdIsExist(empId);
+	}
+
 }

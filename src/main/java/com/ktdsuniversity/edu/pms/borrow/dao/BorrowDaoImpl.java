@@ -44,5 +44,27 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	public int returnOneItem(String brrwHistId) {
 		return getSqlSession().update(BorrowDao.NAME_SPACE+".returnOneItem", brrwHistId);
 	}
+	
+	// PSH0422
+	@Override
+	public int getIsNotReturnCount(String dmdId) {
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE + ".getIsNotReturnCount", dmdId);
+	}
+
+	@Override
+	public int returnOneItemByAppr(String apprId) {
+		return getSqlSession().update(BorrowDao.NAME_SPACE + ".returnOneItemByAppr", apprId);
+	}
+
+	@Override
+	public int newBrrwPrdtByAppr(List<BorrowVO> borrowVOList) {
+		return getSqlSession().update(BorrowDao.NAME_SPACE + ".newBrrwPrdtByAppr", borrowVOList);
+	}
+
+	@Override
+	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
+		System.out.println("getUserRentalStateForAppr >>>>>>>>>>>>>> HRER!!!!!!");
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
+	}
 
 }

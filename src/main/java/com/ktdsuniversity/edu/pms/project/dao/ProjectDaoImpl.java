@@ -130,4 +130,14 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     public int insertNewProjectTeammate(ProjectTeammateVO newProjectTeammate) {
         return getSqlSession().insert(ProjectDao.NAME_SPACE + ".insertNewProjectTeammate", newProjectTeammate);
     }
+
+    @Override
+    public List<ProjectTeammateVO> findAllProjectTeammate() {
+        return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".findAllProjectTeammate");
+    }
+
+    @Override
+    public List<ProjectVO> findAllProjectByEmployeeId(String empId) {
+        return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".findAllProjectByProjectTeammateId", empId);
+    }
 }

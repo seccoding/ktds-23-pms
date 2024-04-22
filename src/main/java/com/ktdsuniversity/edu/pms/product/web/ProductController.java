@@ -128,6 +128,8 @@ public class ProductController {
 	@PostMapping("/ajax/product/manage/add")
 	public AjaxResponse doProductManageAdd(ProductListVO productList) {
 		
+//		String prdtId = this.productService.selectNewPrdtId();
+		
 		
 		int isCreateSuccess = this.productService.createNewProduct(productList);
 		
@@ -135,8 +137,7 @@ public class ProductController {
 			throw new PageNotFoundException();
 		}
 		
-		return new AjaxResponse().append("result1", isCreateSuccess)
-								 .append("next", "/product/manage/list");
+		return new AjaxResponse().append("result1", isCreateSuccess).append("next", "/product/manage/list");
 	}
 	
 	@ResponseBody
@@ -166,14 +167,14 @@ public class ProductController {
 		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId()).append("detailUrl", "/product/manage/detail");
 	}
 	
-	@ResponseBody
-	@PostMapping("/ajax/product/manage/list/add")
-	public AjaxResponse addProductCount(ProductManagementVO productManagementVO) {
-		
-		boolean isCountAddSuccess = this.productService.addProductCount(productManagementVO);
-		
-		return new AjaxResponse().append("result", isCountAddSuccess).append("next", "/product/manage/list");
-	}
+//	@ResponseBody
+//	@PostMapping("/ajax/product/manage/list/add")
+//	public AjaxResponse addProductCount(ProductManagementVO productManagementVO) {
+//		
+//		boolean isCountAddSuccess = this.productService.addProductCount(productManagementVO);
+//		
+//		return new AjaxResponse().append("result", isCountAddSuccess).append("next", "/product/manage/list");
+//	}
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/manage/view/modifymain")

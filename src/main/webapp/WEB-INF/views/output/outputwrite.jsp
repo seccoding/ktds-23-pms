@@ -33,6 +33,13 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </c:forEach>
         </select>
 
+        <label for="out-ver">프로젝트 진행상황</label>
+        <select name="outVer" id="out-ver">
+          <c:forEach items="${prjSts}" var="prjSts">
+            <option value="${prjSts.cmcdId}">${prjSts.cmcdName}</option>
+          </c:forEach>
+        </select>
+
         <label for="out-ttl">산출물 제목</label>
         <div class="ttlInput">
           <input type="text" name="outTtl" id="out-ttl" />

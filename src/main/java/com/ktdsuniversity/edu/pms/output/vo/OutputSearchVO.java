@@ -5,6 +5,17 @@ import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 public class OutputSearchVO extends PaginateVO{
 	String prjId;
 	String outType;
+	String outVer;
+	String empId;
+	
+	public OutputSearchVO() {
+		
+	}
+	
+	public OutputSearchVO(String prjId, String outType) {
+		this.prjId =prjId;
+		this.outType = outType;
+	}
 	
 	public String getPrjId() {
 		return prjId;
@@ -18,6 +29,24 @@ public class OutputSearchVO extends PaginateVO{
 	public void setOutType(String outType) {
 		this.outType = outType;
 	}
+
+	public String getOutVer() {
+		return outVer;
+	}
+
+	public void setOutVer(String outVer) {
+		this.outVer = outVer;
+	}
+
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	
+	
 	
 	
 }

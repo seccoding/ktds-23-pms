@@ -20,5 +20,9 @@ public interface TeamDao {
 
 	public int countTeamInDepartement(String id);
 
+	public int isPossibleDelete(String teamId);
+
+	public int deleteOneTeam(String teamId);
+
 
 }

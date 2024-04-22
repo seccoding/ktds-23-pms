@@ -10,7 +10,7 @@ $().ready(function () {
     // 서버로 전송한다(ajax)
     $.get(
       "/ajax/memo/delete/massive",
-      { memoIds : itemsArray },
+      { memoIds: itemsArray },
       function (response) {
         var result = response.data.result;
         if (result) {
@@ -30,4 +30,24 @@ $().ready(function () {
 
     $("." + targetClass).prop("checked", isChecked);
   });
+
+  $("#status").on("change", function () {
+    search(0);
+  });
+
+  $("#list-size").on("change", function () {
+    search(0);
+  });
+
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
 });
+
+function search(pageNo) {
+  var searchForm = $("#search-form");
+  // var listSize = $("#list-size");
+  $("#page-no").val(pageNo);
+
+  searchForm.attr("method", "get").submit();
+}

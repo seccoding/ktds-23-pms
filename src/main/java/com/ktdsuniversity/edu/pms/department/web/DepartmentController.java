@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.department.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -25,6 +29,9 @@ public class DepartmentController {
 	
 	@Autowired
 	private TeamService teamService;
+	
+	@Autowired
+	private EmployeeService employeeService;
 	
 	@GetMapping("/department/search")
 	public String viewDepartmentListPage(Model model) {
@@ -119,6 +126,30 @@ public class DepartmentController {
 		return new AjaxResponse().append("success", isSuccessDelete).append("next", "/department/search"); 
 	}
 
+	@ResponseBody
+	@GetMapping("/ajax/department/search/findemployee/{teamId}")
+	public AjaxResponse findEmployeesByTeamId(@PathVariable String teamId) {
+	
+		List<EmployeeVO> employeeList = this.employeeService.findEmployeesByTeamId(teamId);
+		return new AjaxResponse().append("employeeList", employeeList);
+		
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/department/team/candelete/{teamId}")
+	public AjaxResponse canDeleteOneTeam(@PathVariable String teamId) {
+		boolean isDeletePossible = this.teamService.isPossibleDelete(teamId);
+		return new AjaxResponse().append("possible", isDeletePossible);
+				
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/department/team/delete/{teamId}")
+	public AjaxResponse deleteOneTeam(@PathVariable String teamId) {
+		boolean isSuccessDelete = this.teamService.deleteOneTeam(teamId);
+		return new AjaxResponse().append("success", isSuccessDelete);
+	}
+	
 	
 }
 
