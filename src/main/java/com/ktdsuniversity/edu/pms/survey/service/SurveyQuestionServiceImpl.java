@@ -63,5 +63,29 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 	public List<SurveyQuestionVO> getAllSurveys(SearchSurveyVO searchSurveyVO) {
 		return this.surveyQuestionDao.getAllSurveys(searchSurveyVO);
 	}
+	
+	@Transactional
+	@Override
+	public boolean modifyOneSurvey(SurveyQuestionVO surveyQuestionVO) {
+		SurveyQuestionVO originalSurveyQuestionVO = this.surveyQuestionDao
+							.getOneSurvey(surveyQuestionVO.getSrvId());
+		
+		if (!originalSurveyQuestionVO.getSrvId().equals(surveyQuestionVO.getSrvId())) {
+			throw new PageNotFoundException();
+		}
+		return this.surveyQuestionDao.modifyOneSurvey(surveyQuestionVO) > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO) {
+		SurveyQuestionVO originalSurveyQuestionVO = this.surveyQuestionDao
+							.getOneSurvey(surveyQuestionVO.getSrvId());
+			
+		if (!originalSurveyQuestionVO.getSrvId().equals(surveyQuestionVO.getSrvId())) {
+		throw new PageNotFoundException();
+		}
+		return this.surveyQuestionDao.modifyOneSurveyExceptBody(surveyQuestionVO) > 0;
+	}
 
 }
