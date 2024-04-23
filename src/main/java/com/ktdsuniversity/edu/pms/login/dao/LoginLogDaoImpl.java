@@ -50,7 +50,7 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 
     @Override
     public void updateEmpLogout(String logId) {
-        getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", logId);
+        getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", logId);
     }
 
     @Override
@@ -109,14 +109,18 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
+    public List<LoginLogVO> getOneLoginLog(String empId) {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneLoginLog", empId);
+    }
+
+    @Override
     public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO) {
         return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getAllVisitedLog", visitedVO);
     }
 
-	@Override
-	public List<TeamVO> getOneTeamNameByEmpId(String empId) {
-		return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneTeamNameByEmpId", empId);
-	}
-
+    @Override
+    public List<VisitedVO> getOneVisitedLog(String empId) {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneVisitedLog", empId);
+    }
 
 }

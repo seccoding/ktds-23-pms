@@ -161,6 +161,14 @@ public class LoginLogServiceImpl implements LoginLogService {
 	}
 
 	@Override
+	public LoginLogListVO getOneLoginLog(String empId) {
+		LoginLogListVO loginLogListVO = new LoginLogListVO();
+		loginLogListVO.setLoginLogList(this.loginLogDao.getOneLoginLog(empId));
+
+		return loginLogListVO;
+	}
+
+	@Override
 	public VisitedListVO getAllVisitedLog(VisitedVO visitedVO) {
 		VisitedListVO visitedListVO = new VisitedListVO();
 		visitedListVO.setVisitedList(this.loginLogDao.getAllVisitedLog(visitedVO));
@@ -169,11 +177,10 @@ public class LoginLogServiceImpl implements LoginLogService {
 	}
 
 	@Override
-	public TeamListVO getOneTeamNameByEmpId(String empId) {
-		TeamListVO teamListVO = new TeamListVO();
-		teamListVO.setTeamList(loginLogDao.getOneTeamNameByEmpId(empId));
-		return teamListVO;
+	public VisitedListVO getOneVisitedLog(String empId) {
+		VisitedListVO visitedListVO = new VisitedListVO();
+		visitedListVO.setVisitedList(this.loginLogDao.getOneVisitedLog(empId));
+		return visitedListVO;
 	}
-
 
 }

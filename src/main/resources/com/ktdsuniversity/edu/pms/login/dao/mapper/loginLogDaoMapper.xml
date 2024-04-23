@@ -105,7 +105,8 @@
         AND L.LGT_DT IS NULL
     </select>
 
-    <update id="updateEmpLogout" parameterType="string">
+    <update id="updateEmpLogout"
+            parameterType="string">
         UPDATE LOGIN_LOG
         SET LGT_DT = SYSDATE
         WHERE LOG_ID = #{_parameter}
@@ -153,7 +154,8 @@
 							   AND LGN_TRY = 5)
     </select>
 
-    <insert id="insertCommuteIn" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    <insert id="insertCommuteIn"
+            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         INSERT INTO COMMUTE
         (CMMT_ID
         , CMMT_DATE
@@ -170,34 +172,43 @@
         , 'N')
     </insert>
 
-    <select id="selectSalt" parameterType="string" resultType="string">
+    <select id="selectSalt"
+            parameterType="string"
+            resultType="string">
         SELECT SALT
         FROM EMPLOYEE
         WHERE EMP_ID = #{_parameter}
     </select>
 
-    <select id="getCommuteDt" parameterType="string" resultType="_int">
+    <select id="getCommuteDt"
+            parameterType="string"
+            resultType="_int">
         SELECT COUNT(1)
         FROM COMMUTE
         WHERE TO_CHAR(CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
         AND EMP_ID = #{empId}
     </select>
 
-    <update id="updateCommuteFnsh" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+    <update id="updateCommuteFnsh"
+            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
         UPDATE COMMUTE
         SET FNSH_TIME = SYSDATE
         WHERE EMP_ID = #{empId}
         AND FNSH_TIME IS NULL
     </update>
 
-    <select id="getPwdCndt" parameterType="string" resultType="_int">
+    <select id="getPwdCndt"
+            parameterType="string"
+            resultType="_int">
         SELECT COUNT(1)
           FROM EMPLOYEE
          WHERE EMP_ID = #{_parameter}
            AND SYSDATE > PWD_CN_DT + 90
     </select>
 
-    <select id="getAllLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" resultMap="loginLogVOMap">
+    <select id="getAllLoginLog"
+            parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO"
+            resultMap="loginLogVOMap">
         SELECT L.LOG_ID
              , L.EMP_ID
              , TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
@@ -223,10 +234,38 @@
                   </when>
               </choose>
           </if>
+         WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')
          ORDER BY L.LGN_SCC_DT
     </select>
 
-    <select id="getAllVisitedLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO" resultMap="visitedVOMap">
+    <select id="getOneLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" resultMap="loginLogVOMap">
+        SELECT L.LOG_ID
+        , L.EMP_ID
+        , TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
+        , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LGT_DT
+        , L.DEL_YN
+        , E.EMP_NAME
+        FROM LOGIN_LOG L
+        JOIN EMPLOYEE E
+        ON E.EMP_ID = L.EMP_ID
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "lgnSccDt"'>
+                    WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "lgtDt"'>
+                    WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
+        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')
+          AND L.EMP_ID = #{empId}
+        ORDER BY L.LGN_SCC_DT
+    </select>
+
+    <select id="getAllVisitedLog"
+            parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
+            resultMap="visitedVOMap">
         SELECT V.ACCS_ID
              , V.EMP_ID
              , V.ACCS_URL
@@ -252,17 +291,35 @@
                 </when>
             </choose>
         </if>
+         WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(ACCS_DT, 'YYYY-MM-DD')
          ORDER BY ACCS_DT
     </select>
-    
-    <select id="getOneTeamNameByEmpId"
-    		parameterType="string"
-    		resultMap="teamVOMap">
-			SELECT T.TM_NAME 
-			  FROM EMPLOYEE E
-			  JOIN TEAM T
-			    ON E.DEPT_ID = T.DEPT_ID
-			 WHERE E.EMP_ID = #{empId}
-	</select>
+
+    <select id="getOneVisitedLog"
+            parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
+            resultMap="visitedVOMap">
+        SELECT V.ACCS_ID
+             , V.EMP_ID
+             , V.ACCS_URL
+             , V.ACCS_DT
+             , V.DEL_YN
+             , E.EMP_NAME
+          FROM VISITED_HISTORY V
+          JOIN EMPLOYEE E
+            ON E.EMP_ID = V.EMP_ID
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "accsUrl"'>
+                    WHERE V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "accsDt"'>
+                    WHERE V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
+        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD')
+          AND V.EMP_ID = #{empId}
+        ORDER BY V.ACCS_DT
+    </select>
 
 </mapper>

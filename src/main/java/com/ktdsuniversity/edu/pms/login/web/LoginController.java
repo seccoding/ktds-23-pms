@@ -82,9 +82,6 @@ public class LoginController {
 
             //로그인 성공시 LGNYN을 Y로 변경
             this.loginLogService.getOneEmpIdUseOtherPlace(employee);
-
-            //로그인 성공한 사원의 팀(들)을 가져온다
-            TeamListVO teamListVO = this.loginLogService.getOneTeamNameByEmpId(employee.getEmpId());
             
             int commuteCheck = this.loginLogService.getCommuteDt(employee.getEmpId());
             if (commuteCheck == 0) {
@@ -92,10 +89,8 @@ public class LoginController {
             }
 
             session.setAttribute("_LOGIN_USER_", employee);
-            session.setAttribute("teamList", teamListVO);            
             session.setMaxInactiveInterval(20 * 60);
             SessionUtil.addSession(employee.getEmpId(), session);
-
 
             return new AjaxResponse().append("next", nextUrl);
         }
@@ -107,10 +102,8 @@ public class LoginController {
 
     @GetMapping("/employee/logout")
     public String doLogout(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
         this.loginLogService.getOneEmpIdNotUseNow(employeeVO);
         this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
-
         SessionUtil.removeSession(employeeVO.getEmpId());
 
         return "redirect:/employee/login";
@@ -140,23 +133,33 @@ public class LoginController {
 
     // 로그인 기록 확인 페이지
     @GetMapping("/loginlog/view")
-    public String viewLoginLog(Model model, LoginLogVO loginLogVO) {
-
-        LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog(loginLogVO);
-        model.addAttribute("loginLogList", loginLogListVO);
-        model.addAttribute("loginLogVO", loginLogVO);
-
-        return "login/loginlogview";
+    public String viewLoginLog(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, LoginLogVO loginLogVO) {
+        String AdmnCodeIsSystemFormat = "301";
+        if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
+            LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog(loginLogVO);
+            model.addAttribute("loginLogList", loginLogListVO);
+            model.addAttribute("loginLogVO", loginLogVO);
+            return "login/loginlogview";
+        }else {
+            LoginLogListVO loginLogListVO = this.loginLogService.getOneLoginLog(employeeVO.getEmpId());
+            model.addAttribute("loginLogList", loginLogListVO);
+            return "login/loginlogview";
+        }
     }
 
     // 화면 접근 기록 확인 페이지
     @GetMapping("/visitedlog/view")
-    public String viewVisitedLog(Model model, VisitedVO visitedVO) {
-
-        VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
-        model.addAttribute("visitedVO", visitedVO);
-        model.addAttribute("visitedList", visitedList);
-
-        return "login/visitedlogview";
+    public String viewVisitedLog(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, VisitedVO visitedVO) {
+        String AdmnCodeIsSystemFormat = "301";
+        if(employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)){
+            VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
+            model.addAttribute("visitedVO", visitedVO);
+            model.addAttribute("visitedList", visitedList);
+            return "login/visitedlogview";
+        }else {
+            VisitedListVO visitedList = this.loginLogService.getOneVisitedLog(employeeVO.getEmpId());
+            model.addAttribute("visitedList", visitedList);
+            return "login/visitedlogview";
+        }
     }
 }

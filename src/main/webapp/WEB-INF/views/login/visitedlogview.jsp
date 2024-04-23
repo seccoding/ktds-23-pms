@@ -14,19 +14,21 @@
 
 <div class="grid">
     <h2>화면접근기록 관리</h2>
-        <form id="search-form">
-            <input type="hidden" id="page-no" name="pageNo" value="0" />
-            <div>
-                <select id="search-type" name="searchType">
+    <form id="search-form">
+        <input type="hidden" id="page-no" name="pageNo" value="0"/>
+        <div>
+            <select id="search-type" name="searchType">
+                <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
                     <option value="employeeVO.empName" ${visitedVO.searchType eq 'employeeVO.empName' ? 'selected' : ''}>사원 이름</option>
                     <option value="empId" ${visitedVO.searchType eq 'empId' ? 'selected' : ''}>사원번호</option>
-                    <option value="accsUrl" ${visitedVO.searchType eq 'accsUrl' ? 'selected' : ''}>방문한 URL</option>
-                    <option value="accsDt" ${visitedVO.searchType eq 'accsDt' ? 'selected' : ''}>방문한 시간</option>
-                </select>
-                <input type="text" name="searchKeyword" value="${visitedVO.searchKeyword}" />
-                <button type="button" id="search-btn">검색</button>
-            </div>
-        </form>
+                </c:if>
+                <option value="accsUrl" ${visitedVO.searchType eq 'accsUrl' ? 'selected' : ''}>방문한 URL</option>
+                <option value="accsDt" ${visitedVO.searchType eq 'accsDt' ? 'selected' : ''}>방문한 시간</option>
+            </select>
+            <input type="text" name="searchKeyword" value="${visitedVO.searchKeyword}"/>
+            <button type="button" id="search-btn">검색</button>
+        </div>
+    </form>
     <table class="table">
         <thead>
         <tr>
