@@ -43,6 +43,18 @@ $().ready(function () {
     }
     $("#checked-all").prop("checked", allChecked);
   });
+
+  $(".delete").on("click", function () {
+    var outId = $(this).data("out-id");
+
+    console.log("outId :" + outId);
+    if (confirm("정말로 삭제하겠습니까")) {
+      location.href = "/output/delete/" + outId;
+    } else {
+    }
+
+    // /output/delete/${output.outId}?prjId=${prjId}
+  });
 });
 
 function search(pageNo) {

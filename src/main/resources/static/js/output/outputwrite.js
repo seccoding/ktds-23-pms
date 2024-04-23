@@ -11,4 +11,14 @@ $().ready(function () {
       $(".ttlAlert").remove();
     }
   });
+
+  $("#submitBtn").on("submit", function () {
+    var file = $("#file").val();
+    console.log(file);
+
+    if (file) {
+    } else {
+      return false;
+    }
+  });
 });

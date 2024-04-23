@@ -41,7 +41,7 @@ public class OutputDaoImpl extends SqlSessionDaoSupport implements OutputDao{
 	
 	@Override
 	public int searchOutputCnt(OutputSearchVO outputSearchVO) {
-		return getSqlSession().selectOne(NAME_SPACE+".searchOutputCnt",outputSearchVO);
+		return getSqlSession().selectOne(NAME_SPACE + ".searchOutputCnt",outputSearchVO);
 	}
 
 
