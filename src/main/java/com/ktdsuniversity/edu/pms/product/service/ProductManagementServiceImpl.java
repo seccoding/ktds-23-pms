@@ -12,6 +12,7 @@ import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 @Service
 public class ProductManagementServiceImpl implements ProductManagementService{
@@ -23,12 +24,24 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 	private ProductDao productDao;
 
 	@Override
-	public ProductManagementListVO getAllProductdetail(ProductManagementVO productManagementVO) {
-		int productManagementCount = this.productManagementDao.getProductManagementCount(productManagementVO);
+	public ProductManagementListVO getAllProductdetail() {
+		int productManagementCount = this.productManagementDao.getProductManagementCount();
 		
-		productManagementVO.setPageCount(productManagementCount);
+		List<ProductManagementVO> productManagementList = this.productManagementDao.getAllProductManagement();
 		
-		List<ProductManagementVO> productManagementList = this.productManagementDao.getAllProductManagement(productManagementVO);
+		ProductManagementListVO productManagementListVO = new ProductManagementListVO();
+		productManagementListVO.setProductManagementCnt(productManagementCount);
+		productManagementListVO.setProductManagementList(productManagementList);
+		
+		return productManagementListVO;
+	}
+	
+	@Override
+	public ProductManagementListVO searchAllProductDetail(SearchProductVO searchProductVO) {
+		int productManagementCount = this.productManagementDao.searchProductManagementAllCount(searchProductVO);
+		searchProductVO.setPageCount(productManagementCount);
+		
+		List<ProductManagementVO> productManagementList = this.productManagementDao.searchAllProductManagement(searchProductVO);
 		
 		ProductManagementListVO productManagementListVO = new ProductManagementListVO();
 		productManagementListVO.setProductManagementCnt(productManagementCount);

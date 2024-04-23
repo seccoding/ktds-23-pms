@@ -10,6 +10,27 @@
 		SELECT COUNT(1)
 		  FROM PRODUCT
 		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="getAllProduct" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT PRDT_ID
+			 , PRDT_NAME
+			 , PRDT_CTGR
+			 , ONCE_YN
+			 , CUR_STR
+			 , DEL_YN
+		  FROM PRODUCT
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="searchProductAllCount" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM PRODUCT
+		 WHERE DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productId"'>
@@ -25,12 +46,10 @@
 		</if>
 	</select>
 	
-	<select id="getAllProduct" 
+	<select id="searchAllProduct" 
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
 			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
-		<!-- 
 		<include refid="Common.pagenate_header" />
-		 -->
 		SELECT PRDT_ID
 			 , PRDT_NAME
 			 , PRDT_CTGR
@@ -53,9 +72,7 @@
 			</choose>
 		</if>
 		
-		<!-- 
 		<include refid="Common.pagenate_footer" />
-		 -->
 	</select>
 	
 	<insert id="insertNewProduct" parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">

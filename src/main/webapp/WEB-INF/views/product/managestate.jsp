@@ -23,22 +23,6 @@
         </div>
     </div>
     <div class="grid">
-        <div>
-            <form id="search-form">
-                <div class="right-align">
-                    
-                    <select id="search-type" name="searchType" >
-                        <option value="prdtMngId" ${productVO.searchType eq 'prdtMngId' ? 'selected' : ''}>비품관리ID</option>
-                        <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
-                        <option value="borrowId" ${productVO.searchType eq 'borrowId' ? 'selected' : ''}>대여자ID</option>
-                        
-                    </select>
-        
-                    <input type="text" name="searchKeyword" value="${productVO.searchKeyword}"/>
-                    <button type="button" id="search-btn">검색</button>
-                </div>
-            </form>
-        </div>
 
         <table class="table">
             <thead>
@@ -80,8 +64,69 @@
                 </c:choose>
             </tbody>
         </table>
-
-        
     </div>
+
+    <!-- Paginator 시작 -->
+    <div>
+        <form id="search-form">
+            <input type="hidden" id="page-no" name="pageNo" value="0"/>
+            <select id="list-size" name="listSize">
+                <option value="10" ${searchBorrowVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+                <option value="20" ${searchBorrowVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+                <option value="30" ${searchBorrowVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+                <option value="50" ${searchBorrowVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+                <option value="100" ${searchBorrowVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+            </select>
+
+            <select id="search-type" name="searchType" >
+                <option value="productManagementId" ${searchBorrowVO.searchType eq 'productManagementId' ? 'selected' : ''}>비품관리ID</option>
+                <option value="productName" ${searchBorrowVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                <option value="borrowId" ${searchBorrowVO.searchType eq 'borrowId' ? 'selected' : ''}>대여자ID</option>
+            </select>
+
+            <input type="text" name="searchKeyword" value="${searchBorrowVO.searchKeyword}"/>
+            <button type="button" id="search-btn">검색</button>
+
+            <ul class="page-nav">
+                <c:if test="${searchBorrowVO.hasPrevGroup}">
+                    <li><a href="javascript:search(0);">처음</a></li>
+                    <li>
+                        <a
+                                href="javascript:search(${searchBorrowVO.prevGroupStartPageNo});"
+                        >이전</a
+                        >
+                    </li>
+                </c:if>
+
+                <!-- Page 번호를 반복하며 노출한다. -->
+                <c:forEach
+                        begin="${searchBorrowVO.groupStartPageNo}"
+                        end="${searchBorrowVO.groupEndPageNo}"
+                        step="1"
+                        var="p"
+                >
+                    <li class="${searchBorrowVO.pageNo eq p ? 'active' : ''}">
+                        <a href="javascript:search(${p});">${p+1}</a>
+                    </li>
+                </c:forEach>
+
+                <c:if test="${searchBorrowVO.hasNextGroup}">
+                    <li>
+                        <a
+                                href="javascript:search(${searchBorrowVO.nextGroupStartPageNo});"
+                        >다음</a
+                        >
+                    </li>
+                    <li>
+                        <a href="javascript:search(${searchBorrowVO.pageCount - 1});"
+                        >마지막</a
+                        >
+                    </li>
+                </c:if>
+            </ul>
+        </form>
+    </div>
+
+    <!-- Paginator 끝 -->
 </body>
 </html>
