@@ -34,8 +34,9 @@
 			<id column="EMP_ID" property="empId" />
 			<result column="EMP_NAME" property="empName" />
 		</association>
-		<collection property="surveyQuestionPickVO"
-  	    			javaType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
+		<collection property="surveyQuestionPickList"
+  	    			ofType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO"
+  	    			column="SRV_ID">
   	    	<id column="SQP_ID" property="sqpId" />
 			<result column="SQP_CNTNT" property="sqpCntnt" />
 			<result column="NEXT_ID" property="nextId" />
@@ -201,7 +202,44 @@
 			 , SRV_STS
 		  FROM SURVEY_QUESTION
 		 WHERE PRJ_ID = #{prjId}
+		   AND DEL_YN = 'N'
+	</select>
+	
+ 	<select id="getOneSurveyForWrite" parameterType="String" resultMap="SurveyQuestionVOMap">
+		SELECT sq.SRV_ID
+			 , sq.PRJ_ID
+			 , sq.SRV_QST
+			 , sq.CRTR_ID
+			 , sq.CRT_DT
+			 , sq.MDFR_ID
+			 , sq.MDF_DT
+			 , sq.DEL_YN
+			 , sq.SEQ
+			 , sq.TYPE_YN
+			 , sq.SRV_STS
+			 , sqp.SQP_ID
+			 , sqp.SQP_CNTNT
+			 , sqp.NEXT_ID
+			 , sqp.DEL_YN
+			 , sqp.SEQ
+		  FROM (SELECT SRV_ID
+			  			  , PRJ_ID
+			  			  , SRV_QST
+			  			  , CRTR_ID
+			  			  , CRT_DT
+			  			  , MDFR_ID
+			  			  , MDF_DT
+			  			  , DEL_YN
+			  			  , SEQ
+			  			  , TYPE_YN
+			  			  , SRV_STS
+			  		   FROM SURVEY_QUESTION) sq
+		  JOIN SURVEY_QUESTION_PICK sqp
+		    ON sqp.SRV_ID = sq.SRV_ID
+		 WHERE sq.PRJ_ID = #{_parameter}
+		   AND ROWNUM = 1
 		   AND sq.DEL_YN = 'N'
+		   AND sqp.DEL_YN = 'N'
 	</select>
 	
 	<select id="getAllSurveysForWrite" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO"
@@ -221,11 +259,15 @@
 			 , sqp.SQP_CNTNT
 			 , sqp.NEXT_ID
 			 , sqp.DEL_YN
-			 , sqp.SEQ 
+			 , sqp.SEQ
 		  FROM SURVEY_QUESTION sq
 		  JOIN SURVEY_QUESTION_PICK sqp
 		    ON sqp.SRV_ID = sq.SRV_ID
-		 WHERE PRJ_ID = #{prjId}
+		 WHERE sq.PRJ_ID = #{prjId}
+		   AND sqp.SQP_ID IN
+		   <foreach collection="list" item="sqpId" open="(" close=")" separator=", ">
+		   	   #{sqpId}
+		   </foreach>
 		   AND sq.DEL_YN = 'N'
 		   AND sqp.DEL_YN = 'N'
 	</select>

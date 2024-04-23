@@ -26,6 +26,8 @@ public interface SurveyQuestionService {
 
 	public boolean writeNewSurvey(SurveyReplyVO surveyReplyVO);
 
+	public SurveyQuestionVO getOneSurveyForWrite(String prjId);
+
 	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO);
 
 }
