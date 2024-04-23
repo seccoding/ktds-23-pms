@@ -55,27 +55,34 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <th>상태</th>
             <th>시작일</th>
             <th>종료일</th>
-            <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+            <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
             <th>후기결과보기</th></c:if>
           </tr>
         </thead>
         <tbody>
           <c:choose>
+          
             <c:when test="${not empty reviewlist.reviewList}">
               <c:forEach items="${reviewlist.reviewList}" var="review">
                 <tr>
-                  <td>
-                    <a href="/review/prjId/${review.projectVO.prjId}/write"
-                      >${review.projectVO.prjName}</a
-                    >
-                  </td>
+	              <c:choose>
+				    <c:when test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+				          <td>${review.projectVO.prjName}</td>
+				    </c:when>
+				       <c:otherwise>
+				          <td>
+				             <a href="/review/prjId/${review.projectVO.prjId}/write">
+				                ${review.projectVO.prjName}
+				             </a>
+				          </td>
+				      </c:otherwise>
+				   </c:choose>
                   <td>${review.projectVO.clntInfo}</td>
                   <td>${review.departmentVO.deptName}</td>
                   <td>${review.projectVO.prjSts}</td>
                   <td>${review.projectVO.strtDt}</td>
-                  
                   <td>${review.projectVO.endDt}</td>
-                  <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+                  <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
                   <td
                     onclick="location.href='/review/viewresult?prjId=${review.prjId}'"
                   >
