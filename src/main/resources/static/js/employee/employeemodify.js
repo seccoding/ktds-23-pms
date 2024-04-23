@@ -10,10 +10,12 @@ $().ready(function () {
     })
 
     $(".dept-select").on("change", function(){
+
         if($(".grid").data("teamlist").length!=0){
             alert("팀이 존재하여 부서를 변경할 수 없습니다.")
             location.reload();
         }else{
+        $("#add-team-select option").remove()
         $("#dept-change-cmt").removeClass("hidden")
         
     }
@@ -66,6 +68,7 @@ $().ready(function () {
     }
 
     $("#add-team").on("click", function(){
+        $("#add-team-select option").remove()
         var dialog = $(".team-modal");
         dialog[0].showModal();
         $.get("/ajax/employee/modify?empId="+empId, {
