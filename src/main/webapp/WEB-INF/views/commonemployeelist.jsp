@@ -12,6 +12,29 @@
         width: 80%;
         height: 80%;
     }
+
+    .modal-list-close{
+    text-align: right;
+    color: gray;
+  }
+  .modal-list-close:hover {
+    color: black;
+  }
+  
+  .modal-emp-content {
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+    vertical-align: middle;
+    overflow-y: auto;
+    max-height: 11rem;
+    justify-content: flex-start;
+  }
+  
+  .input-emplist-space {
+    text-align: right;
+    align-items: end;
+  }
 </style>
 <dialog class="modal-employee-list">
     <div class="grid-modal-list">
@@ -61,4 +84,5 @@
         <button class="confirm-emp-button button"></button>
       </div>
     </div>
+    <div></div>
   </dialog>
