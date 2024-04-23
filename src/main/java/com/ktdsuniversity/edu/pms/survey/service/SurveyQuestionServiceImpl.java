@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 @Service
 public class SurveyQuestionServiceImpl implements SurveyQuestionService {
@@ -58,7 +60,6 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return this.surveyQuestionDao.insertSurveyBody(surveyQuestionVO) > 0;
 	}
 
-	@Transactional
 	@Override
 	public List<SurveyQuestionVO> getAllSurveys(SearchSurveyVO searchSurveyVO) {
 		return this.surveyQuestionDao.getAllSurveys(searchSurveyVO);
@@ -88,11 +89,17 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return this.surveyQuestionDao.modifyOneSurveyExceptBody(surveyQuestionVO) > 0;
 	}
 
+	@Transactional
 	@Override
-	public boolean writeNewSurvey(SurveyQuestionVO surveyQuestionVO) {
-		int insertedCount = this.surveyQuestionDao.insertNewSurvey(surveyQuestionVO);
+	public boolean writeNewSurvey(SurveyReplyVO surveyReplyVO) {
+		int insertedCount = this.surveyQuestionDao.insertNewSurvey(surveyReplyVO);
 		
 		return insertedCount > 0;
+	}
+
+	@Override
+	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
+		return this.surveyQuestionDao.getAllSurveysForWrite(surveyQuestionVO);
 	}
 
 }
