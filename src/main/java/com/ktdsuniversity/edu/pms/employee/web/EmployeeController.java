@@ -242,9 +242,8 @@ public class EmployeeController {
 		
 		if (validator.hasErrors()) {
 			Map<String, List<String>> errors = validator.getErrors();
-			RequestParam(defaultServletHandlerMapping)
+			return new AjaxResponse().append("errors", errors);
 		}
-		
 		
 		boolean createEmpSuccess = this.employeeService.createEmployee(employeeVO);
 		
