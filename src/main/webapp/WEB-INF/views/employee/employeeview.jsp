@@ -21,9 +21,7 @@
     <h2>상세정보</h2>
     <label for="prfl">프로필 사진</label>
     <div>
-        <a href="/employee/file/download/${employeeVO.empId}">
-            ${employeeVO.prfl}
-        </a>
+        <img src="/employee/file/download/${employeeVO.empId}" alt="프로필 사진">
     </div>
 
     <div class="grid" data-id="${employeeVO.empId}">
@@ -34,7 +32,12 @@
         <div>${employeeVO.empId}</div>
 
         <label for="workSts">재직 상태</label>
-        <div>${employeeVO.workSts}</div>
+        <div> 
+          ${employeeVO.workSts eq '201' ? '재직' : 
+            employeeVO.workSts eq '202' ? '휴직' : 
+            employeeVO.workSts eq '203' ? '퇴직예정' : 
+            employeeVO.workSts eq '204' ? '퇴직' : ''}
+        </div>
 
         <label for="hireYear">입사연차</label>
         <div>${employeeVO.hireYear}</div>
