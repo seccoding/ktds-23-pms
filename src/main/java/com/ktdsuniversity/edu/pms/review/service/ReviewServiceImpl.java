@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.review.dao.ReviewDao;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
@@ -24,6 +24,9 @@ public class ReviewServiceImpl implements ReviewService {
 	*/
 	@Autowired
 	private ReviewDao reviewDao;
+
+	@Autowired
+	private ProjectTeammateVO projectTeammateDao;
 
 	@Override
 	public ReviewListVO getAllReview(SearchReviewVO searchReviewVO) {
@@ -92,6 +95,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return this.reviewDao.insertNewReview(reviewVO) > 0;
 	}
 
+	/*
+	 * @Transactional
+	 * 
+	 * @Override public boolean updateReviewRvYn(ProjectTeammateVO
+	 * projectTeammateVO) { return
+	 * this.projectTeammateDao.updateReviewRvYn(projectTeammateVO) > 0; }
+	 */
+	
 	@Transactional
 	@Override
 	public boolean updateOneReview(ReviewVO reviewVO) {

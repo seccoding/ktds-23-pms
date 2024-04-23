@@ -52,11 +52,7 @@ public class ReviewController {
 		if (tmList.size()>0) { // PM인 경우
 		    isPM = true;
 		}
-		/*
-		 * if(tmList == null || tmList.isEmpty()) {//pm이 아닌경우
-		 * 
-		 * }else {//pm인경우 isPM = true; }
-		 */
+		
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
 		model.addAttribute("reviewlist", reviewListVO);
 		model.addAttribute("SearchReviewVO", searchReviewVO);
@@ -80,6 +76,17 @@ public class ReviewController {
 	@GetMapping("/review/prjId/{id}/write")
 	public String viewReviewWritePage(@PathVariable String id, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
+		List<ProjectTeammateVO> tmList =this.projectService.getAllProjectTeammate().stream()
+		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
+//		.filter(tm->tm.getRvYn().equals("Y"))
+		.toList();
+		boolean isRVY = false;
+		
+		if (tmList.size()>0) { // rvYn = Y 일 경우
+			isRVY = true;
+			model.addAttribute("isRVY", isRVY);
+		}
+		
 		if( employeeVO.getMngrYn().equals("N")) {
 			ProjectVO projectVO = projectService.getOneProject(id);
 			model.addAttribute("project", projectVO);
@@ -93,8 +100,9 @@ public class ReviewController {
 	 *   '저장'버튼을 누른 이후 후기는 수정할 수 없음
 	 */
 	@PostMapping("/review/write")
-	public String ReviewWritePage(Model model, ReviewVO reviewVO) {
+	public String ReviewWritePage(Model model, ReviewVO reviewVO, ProjectTeammateVO projectTeammateVO) {
 		this.reviewService.insertNewReview(reviewVO);
+//		this.reviewService.insertReviewRvYn(projectTeammateVO);
 //		logger.debug(">>>>>>>>> {}", reviewVO);
 		return "redirect:/review"; 
 	}

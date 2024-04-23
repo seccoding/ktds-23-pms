@@ -60,6 +60,16 @@
 			, 'N')
 	</insert>
 
+
+	<!-- <update id="updateReviewRvYn" 
+			parameterType="com.ktdsuniversity.edu.pms.review.vo.ProjectTeammateVO">
+		UPDATE PROJECT_TEAMMATE
+		   SET RV_YN = 'Y'
+		 WHERE RV_ID = #{_parameter}
+	</update> -->
+	
+	
+	
 	<!-- <insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
 		<selectKey resultType="string" keyProperty="rvId" order="BEFORE">
 	        SELECT (('RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))) FROM DUAL;       

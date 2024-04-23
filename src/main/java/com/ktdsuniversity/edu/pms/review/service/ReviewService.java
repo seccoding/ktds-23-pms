@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.review.service;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
@@ -63,6 +64,8 @@ public interface ReviewService {
 	public boolean reviewViewResultDelete(String id);
 	
 	boolean deleteManyReview(List<String> reviewIds);
+	
+//	boolean updateReviewRvYn(ProjectTeammateVO projectTeammateVO);
 
 
 	
