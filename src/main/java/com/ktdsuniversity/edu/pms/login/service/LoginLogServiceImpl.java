@@ -73,15 +73,10 @@ public class LoginLogServiceImpl implements LoginLogService {
 		if (count >= 5) {
 			throw new LimitLoginException();
 		}
-
-
-
-
-
-
-
+		
 		EmployeeVO employee = loginLogDao.getOneEmployeeByEmpIdAndPwd(employeeVO);
 
+		
 		//시도 횟수가 5회가 아닐때 로그인 성공, 실패 상관없이 로그인 시도시간을 업데이트한다
 		this.loginLogDao.updateOneEmpLgnTryDt(employeeVO.getEmpId());
 
@@ -93,7 +88,6 @@ public class LoginLogServiceImpl implements LoginLogService {
 		} else {
 			// 성공하면 로그인 시도 횟수를 0으로 초기화
 			this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
-			
 			return employee;
 		}
 
@@ -117,13 +111,23 @@ public class LoginLogServiceImpl implements LoginLogService {
 
 
 	@Override
-	public void updateLoginLog(EmployeeVO employee) {
-		this.loginLogDao.updateLoginLog(employee);
+	public boolean updateLoginLog(EmployeeVO employee) {
+		if (employee.getLoginLogVO() == null) {
+			employee.setLoginLogVO(new LoginLogVO());
+		}
+		
+		LoginLogVO loginLogVO = employee.getLoginLogVO();
+		loginLogVO.setEmpId(employee.getEmpId());
+		
+		int insertedCount = this.loginLogDao.updateLoginLog(loginLogVO);
+		return insertedCount > 0;
 	}
 
 	@Override
 	public EmployeeVO updateEmpLog(EmployeeVO employee) {
-
+		TeamListVO teamList = new TeamListVO();
+		
+		
 		return this.loginLogDao.updateEmpLog(employee);
 	}
 

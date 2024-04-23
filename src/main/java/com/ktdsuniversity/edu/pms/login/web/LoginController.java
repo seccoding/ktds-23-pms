@@ -74,25 +74,22 @@ public class LoginController {
 
         // 사용중 여부 확인
         if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
-
+        	
             // 로그인 기록 DB 저장 메서드
             this.loginLogService.updateLoginLog(employee);
             // LOGIN_LOG 테이블의 LOG_ID 값을 포함한 employeeVO 객체를 재대입한다.
-            employee = this.loginLogService.updateEmpLog(employee);
+//            employee = this.loginLogService.updateEmpLog(employee);
 
             //로그인 성공시 LGNYN을 Y로 변경
             this.loginLogService.getOneEmpIdUseOtherPlace(employee);
 
-            //로그인 성공한 사원의 팀(들)을 가져온다
-            TeamListVO teamListVO = this.loginLogService.getOneTeamNameByEmpId(employee.getEmpId());
             
             int commuteCheck = this.loginLogService.getCommuteDt(employee.getEmpId());
             if (commuteCheck == 0) {
                 this.loginLogService.insertCommuteIn(employee);
             }
 
-            session.setAttribute("_LOGIN_USER_", employee);
-            session.setAttribute("teamList", teamListVO);            
+            session.setAttribute("_LOGIN_USER_", employee);            
             session.setMaxInactiveInterval(20 * 60);
             SessionUtil.addSession(employee.getEmpId(), session);
 
