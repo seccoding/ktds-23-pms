@@ -5,53 +5,21 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 public class MemoVO {
 
 	private String memoId;
-	private String memoPid;
 	private String rcvId;
 	private String crtrId;
 	private String crtDt;
-	private String memoCntnt;
 	private String readYn;
 	private String delYn;
-	private String mdfDt;
-	private String mdfrId;
 	private String saveYn;
+	private String memoCntnt;
+	private String memoTtl;
+	private String rcvSave;
+	private String crtrSave;
 
 	private EmployeeVO employeeVO;
 	private String email;
 	private String empName;
 	private String empId;
-	
-	public String getEmpId() {
-		return empId;
-	}
-
-	public void setEmpId(String empId) {
-		this.empId = empId;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getEmpName() {
-		return empName;
-	}
-
-	public void setEmpName(String empName) {
-		this.empName = empName;
-	}
-
-	public EmployeeVO getEmployeeVO() {
-		return employeeVO;
-	}
-
-	public void setEmployeeVO(EmployeeVO employeeVO) {
-		this.employeeVO = employeeVO;
-	}
 
 	public String getMemoId() {
 		return memoId;
@@ -59,14 +27,6 @@ public class MemoVO {
 
 	public void setMemoId(String memoId) {
 		this.memoId = memoId;
-	}
-
-	public String getMemoPid() {
-		return memoPid;
-	}
-
-	public void setMemoPid(String memoPid) {
-		this.memoPid = memoPid;
 	}
 
 	public String getRcvId() {
@@ -93,14 +53,6 @@ public class MemoVO {
 		this.crtDt = crtDt;
 	}
 
-	public String getMemoCntnt() {
-		return memoCntnt;
-	}
-
-	public void setMemoCntnt(String memoCntnt) {
-		this.memoCntnt = memoCntnt;
-	}
-
 	public String getReadYn() {
 		return readYn;
 	}
@@ -117,28 +69,76 @@ public class MemoVO {
 		this.delYn = delYn;
 	}
 
-	public String getMdfDt() {
-		return mdfDt;
-	}
-
-	public void setMdfDt(String mdfDt) {
-		this.mdfDt = mdfDt;
-	}
-
-	public String getMdfrId() {
-		return mdfrId;
-	}
-
-	public void setMdfrId(String mdfrId) {
-		this.mdfrId = mdfrId;
-	}
-
 	public String getSaveYn() {
 		return saveYn;
 	}
 
 	public void setSaveYn(String saveYn) {
 		this.saveYn = saveYn;
+	}
+
+	public String getMemoCntnt() {
+		return memoCntnt;
+	}
+
+	public void setMemoCntnt(String memoCntnt) {
+		this.memoCntnt = memoCntnt;
+	}
+
+	public String getMemoTtl() {
+		return memoTtl;
+	}
+
+	public void setMemoTtl(String memoTtl) {
+		this.memoTtl = memoTtl;
+	}
+
+	public String getRcvSave() {
+		return rcvSave;
+	}
+
+	public void setRcvSave(String rcvSave) {
+		this.rcvSave = rcvSave;
+	}
+
+	public String getCrtrSave() {
+		return crtrSave;
+	}
+
+	public void setCrtrSave(String crtrSave) {
+		this.crtrSave = crtrSave;
+	}
+
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
 	}
 
 }
