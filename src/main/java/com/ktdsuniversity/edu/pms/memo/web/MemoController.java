@@ -127,10 +127,9 @@ public class MemoController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/ajax/memo/delete/massive")
-	public AjaxResponse doDeleteMassive(@RequestParam("memoIds[]") List<String> memoIds
-										/*, @SessionAttribute("_LOGIN_USER_") MemberVO memberVO */) {
-					
+	@GetMapping("/ajax/memo/delete/massive")
+	public AjaxResponse doDeleteMassive(@RequestParam("memoIds[]") List<String> memoIds) {
+		
 		boolean deleteResult = this.memoService.deleteManyMemo(memoIds);
 		
 		return new AjaxResponse().append("result", deleteResult);
