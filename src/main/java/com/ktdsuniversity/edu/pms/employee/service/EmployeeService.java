@@ -29,5 +29,9 @@ public interface EmployeeService {
 
 	public boolean modifyOneEmployee(EmployeeVO employeeVO);
 
+	public boolean deleteTeam(EmployeeVO employeeVO);
+
+	public boolean addTeam(EmployeeVO employeeVO);
+
 
 }

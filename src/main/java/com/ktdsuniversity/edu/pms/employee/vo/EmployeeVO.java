@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
@@ -39,8 +41,20 @@ public class EmployeeVO {
     private DepartmentVO departmentVO;
     private CommonCodeVO commonCodeVO;
     private DepartmentHistoryVO departmentHistoryVO;
+    
+    private List<TeamVO> teamList;
+    private TeamVO teamVO;
+    
 
-    public DepartmentHistoryVO getDepartmentHistoryVO() {
+    public List<TeamVO> getTeamList() {
+		return teamList;
+	}
+
+	public void setTeamList(List<TeamVO> teamList) {
+		this.teamList = teamList;
+	}
+
+	public DepartmentHistoryVO getDepartmentHistoryVO() {
 		return departmentHistoryVO;
 	}
 
@@ -69,7 +83,6 @@ public class EmployeeVO {
     }
 
     private JobVO jobVO;
-    private TeamVO teamVO;
     private String tmName;
     
 	public TeamVO getTeamVO() {

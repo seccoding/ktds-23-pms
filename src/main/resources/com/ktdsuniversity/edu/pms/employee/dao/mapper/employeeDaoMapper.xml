@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao">
 
+
 	<resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
 			   id="employeeVOMap"
 			   autoMapping="true">
@@ -199,7 +200,6 @@
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
 		 , J.JOB_NAME
-		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D
 	    ON D.DEPT_ID = E.DEPT_ID
@@ -312,6 +312,38 @@
 			  FROM EMPLOYEE
 			 WHERE EMP_ID = #{empId}
 	</select>
-
+	
+	<select id="getEmployeeAllTeam" parameterType="string" resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		SELECT T.TM_ID
+			 , T.TM_CR_DT
+			 , T.TM_NAME
+			 , T.DEPT_ID
+			 , T.TM_LEAD_ID
+		  FROM TEAM T
+		 INNER JOIN ASSIGNMENT A
+		    ON T.TM_ID = A.TM_ID
+		 WHERE A.EMP_ID = #{_parameter}
+		   AND A.DEL_YN = 'N'
+		   AND T.DEL_YN = 'N'
+	</select>
+	<update id="deleteTeam" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE ASSIGNMENT
+		   SET DEL_YN = 'Y'
+		 WHERE EMP_ID = #{empId}
+		   AND TM_ID = #{teamVO.tmId}
+	</update>
+	
+	<insert id="addTeam" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO ASSIGNMENT
+		 (ASST_ID
+		, EMP_ID
+		, TM_ID
+		, DEL_YN)
+		VALUES 
+		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_ASGN_PK.NEXTVAL, 6, '0')
+		, #{empId}
+		, #{teamVO.tmId}
+		, 'N')
+	</insert>
 
 </mapper>

@@ -4,6 +4,13 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao">
 
+	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO" id="deptHistMap" autoMapping="true">
+		<id column="DEPT_HIST_ID" property="deptHistId"  />
+		<association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+			<id column="DEPT_ID" property="deptId"/>
+			<result column="DEPT_NAME" property="deptName"/>
+		</association>
+	</resultMap>
 	<insert id="insertOneChangeDeptHistory" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		INSERT INTO DEPARTMENT_HISTORY
 			  (DEPT_HIST_ID
@@ -33,15 +40,20 @@
 		 WHERE ROWNUM = 1
 	</select>
 	
-	<select id="getAllDeptHist" parameterType="string" resultType="com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO">
-		SELECT DEPT_HIST_ID
-			 , EMP_ID
-			 , TO_CHAR(DEPT_STRT_DT, 'YYYY-MM-DD') DEPT_STRT_DT
-			 , TO_CHAR(DEPT_END_DT, 'YYYY-MM-DD') DEPT_END_DT
-			 , CN_NOTE
-			 , PAST_DEPT_ID
-		  FROM DEPARTMENT_HISTORY
-		 WHERE EMP_ID = #{_parameter}
-		   AND DEL_YN = 'N'
+	<select id="getAllDeptHist" parameterType="string" resultMap="deptHistMap">
+		SELECT DH.DEPT_HIST_ID
+			 , DH.EMP_ID
+			 , TO_CHAR(DH.DEPT_STRT_DT, 'YYYY-MM-DD') DEPT_STRT_DT
+			 , TO_CHAR(DH.DEPT_END_DT, 'YYYY-MM-DD') DEPT_END_DT
+			 , DH.CN_NOTE
+			 , DH.PAST_DEPT_ID
+			 , D.DEPT_NAME
+		  FROM DEPARTMENT_HISTORY DH
+		 INNER JOIN DEPARTMENT D
+		    ON D.DEPT_ID = DH.PAST_DEPT_ID
+		 WHERE DH.EMP_ID = #{_parameter}
+		   AND DH.DEL_YN = 'N'
+		 ORDER BY DEPT_STRT_DT
 	</select>
+	
 </mapper>
