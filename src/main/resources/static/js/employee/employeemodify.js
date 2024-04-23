@@ -86,25 +86,29 @@ $().ready(function () {
 
         $("#add-team-final").on("click", function(){
             $.get("/ajax/employee/modify?empId="+empId, function(res){
+                var canAdd = true;
                  res.data.empTeamList.forEach(team=>{
                     if(team.tmId==$("#add-team-select").val()){
                         alert("이미 속해있는 팀입니다.")
-                        location.reload()
+                        canAdd = false;
                     }
         
                  })
-                 $.post("/ajax/employee/modify/addteam", {
-                    empId:empId,
-                    "teamVO.tmId":$("#add-team-select").val()
-                 }, function(res){
-                    if(res.data.isSuccess){
-                        alert("팀을 추가했습니다.")
-                        location.href = res.data.next
-                    }else{
-                        alert("팀 추가 중 오류가 발생했습니다.")
+                 if(canAdd){
+                     $.post("/ajax/employee/modify/addteam", {
+                        empId:empId,
+                        "teamVO.tmId":$("#add-team-select").val()
+                     }, function(res){
+                        if(res.data.isSuccess){
+                            alert("팀을 추가했습니다.")
+                            location.href = res.data.next
+                        }else{
+                            alert("팀 추가 중 오류가 발생했습니다.")
+    
+                        }
+                     })
 
-                    }
-                 })
+                 }
             })
         })
 
