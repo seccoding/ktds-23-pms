@@ -88,7 +88,9 @@ public class ProjectController {
     public String viewProjectDetailPage(@RequestParam String prjId, Model model) {
         ProjectVO projectVO = projectService.getOneProject(prjId);
         int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
-        List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId);
+        List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId).stream().
+                filter(requirement -> !requirement.getRqmSts().equals("605"))
+                .toList();
 
         // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
         // boolean isTeammate = projectVO.getProjectTeammateList().stream()

@@ -2,9 +2,10 @@ $().ready(function () {
 
     function reloadSubMenu(pid) {
         $.get("/ajax/menu/" + pid, function (response) {
-            var subCodeTable = $(".sub-common-code").find("tbody");
-            subCodeTable.html("");
-            var codeList = response.data.codeList;
+            var subMenuTable = $(".sub-menu").find("tbody");
+            subMenuTable.html("");
+
+            var menuList = response.data.menuList;
 
             codeList.forEach((subCommonCode) => {
                 var trDom = $("<tr></tr>");
@@ -55,20 +56,20 @@ $().ready(function () {
     }
 
     function clearSubMenuInfo() {
-        var subCommonCodeInfo = $(".sub-code-info");
-        subCommonCodeInfo.find("#subCmcdId").val("");
-        subCommonCodeInfo.find("#subCmcdPid").val("");
-        subCommonCodeInfo.find("#subCmcdName").val("");
-        subCommonCodeInfo.find("#subCrtDt").text("");
-        subCommonCodeInfo.find("#subCrtrId").text("");
-        subCommonCodeInfo.find("#subMdfDt").text("");
-        subCommonCodeInfo.find("#subMdfrId").text("");
+        var subMenuInfo = $(".sub-menu");
+        subMenuInfo.find("#subCmcdId").val("");
+        subMenuInfo.find("#subCmcdPid").val("");
+        subMenuInfo.find("#subCmcdName").val("");
+        subMenuInfo.find("#subCrtDt").text("");
+        subMenuInfo.find("#subCrtrId").text("");
+        subMenuInfo.find("#subMdfDt").text("");
+        subMenuInfo.find("#subMdfrId").text("");
 
         $("#modifySubCode").attr("disabled", "disabled");
         $("#delSubCode").attr("disabled", "disabled");
-        $("#newSubCode").removeAttr("disabled");
-        $("#newSubCode").text("신규");
-        $("#newSubCode").attr("data-mode", "new");
+        $("#newSubMenu").removeAttr("disabled");
+        $("#newSubMenu").text("신규");
+        $("#newSubMenu").attr("data-mode", "new");
     }
 
     $("table.main-menu")
