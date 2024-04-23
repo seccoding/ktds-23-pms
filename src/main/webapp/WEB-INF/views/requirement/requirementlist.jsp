@@ -76,6 +76,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <col width="160px" />
         <col width="160px" />
         <col width="160px" />
+        <col width="120px" />
+        <col width="120px" />
       </colgroup>
       <thead>
         <tr>
@@ -92,6 +94,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <th>요구사항 제목</th>
           <th>일정상태</th>
           <th>진행상태</th>
+          <th>작성자</th>
+          <th>작성일</th>
         </tr>
       </thead>
       <tbody>
@@ -122,6 +126,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </td>
                 <td>${requirememt.scdStsVO.cmcdName}</td>
                 <td>${requirememt.rqmStsVO.cmcdName}</td>
+                <td>${requirememt.crtrId}</td>
+                <td>${requirememt.cfrmrVO.empName}</td>
               </tr>
             </c:forEach>
           </c:when>
@@ -171,7 +177,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         >
         <!--마지막-->
         <c:if test="${requirementSearch.hasNextGroup}"
-          ><a href="javascript:search(${requirementSearch.pageCount})"
+          ><a href="javascript:search(${requirementSearch.pageCount-1})"
             >마지막</a
           ></c:if
         >

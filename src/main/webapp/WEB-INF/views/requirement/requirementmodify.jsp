@@ -10,6 +10,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/requirement/requirementwrite.js"
     ></script>
+    <%--
     <script type="text/javascript">
       window.onload = function () {
         var editors = loadEditor(
@@ -18,8 +19,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           "${requirement.rqmCntnt}"
         );
         var rqmCntnt = "";
-
-        //$(".ck-content").append($("#rqm-cntnt").val());
 
         $("button").on("click", function (event) {
           event.preventDefault();
@@ -32,6 +31,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         });
       };
     </script>
+    --%>
     <style>
       .grid {
         display: grid;
@@ -71,24 +71,24 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <select id="dvlrp-check" name="dvlrp" id="dvlrp">
           <c:forEach items="${prjTeammateList}" var="prjTeammateList">
             <c:choose>
-              <c:when test="${prjTeammateList.prjTmId eq requirement.dvlrp}">
-                <option value="prjTeammateList.prjTmId" selected>
+              <c:when test="${prjTeammateList.tmId eq requirement.dvlrp}">
+                <option value="${prjTeammateList.tmId}" selected>
                   ${prjTeammateList.employeeVO.empName}
                 </option>
               </c:when>
               <c:otherwise>
-                <option value="prjTeammateList.prjTmId">
+                <option value="${prjTeammateList.tmId}">
                   ${prjTeammateList.employeeVO.empName}
                 </option>
               </c:otherwise>
-            </c:choose>
-          </c:forEach>
+            </c:choose> </c:forEach
+          >re
         </select>
 
         <label for="cfrmr">확인자</label>
         <select id="cfrmr-check" name="cfrmr" id="cfrmr">
           <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-            <option value="prjTeammateList.prjTmId">
+            <option value="${prjTeammateList.tmId}">
               ${prjTeammateList.employeeVO.empName}
             </option>
           </c:forEach>
@@ -97,7 +97,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <label for="tstr">테스터</label>
         <select id="tstr-check" name="tstr" id="tstr">
           <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-            <option value="prjTeammateList.prjTmId">
+            <option value="${prjTeammateList.tmId}">
               ${prjTeammateList.employeeVO.empName}
             </option>
           </c:forEach>
@@ -127,6 +127,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="hereCkEditor5">
           <%-- 여기가 editor 생성부 --%>
           <div class="editor" data-name="rqmCntnt"></div>
+          <input
+            type="text"
+            id="rqm-cntnt"
+            name="rqmCntnt"
+            style="visibility: hidden"
+          />
         </div>
 
         <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->

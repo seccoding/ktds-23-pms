@@ -158,7 +158,7 @@ public class RequirementController {
 		if(validator.hasErrors()) {
 			
 		}
-		
+		requirementVO.setCrtrId(employeeVO.getEmpId());
 		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
 
 		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
@@ -230,7 +230,7 @@ public class RequirementController {
 			}
 		}
 		
-//		TODO 입력된 정보가 올바른지 확인 필요
+		requirementVO.setMdfrId(employeeVO.getEmpId());
 
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.updateRequirement(requirementVO, file);
