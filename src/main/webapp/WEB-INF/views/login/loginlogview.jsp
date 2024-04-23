@@ -17,8 +17,10 @@
         <input type="hidden" id="page-no" name="pageNo" value="0" />
         <div>
             <select id="search-type" name="searchType">
-                <option value="employeeVO.empName" ${loginLogVO.searchType eq 'employeeVO.empName' ? 'selected' : ''}>사원 이름</option>
-                <option value="empId" ${loginLogVO.searchType eq 'empId' ? 'selected' : ''}>사원번호</option>
+                <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+                    <option value="employeeVO.empName" ${loginLogVO.searchType eq 'employeeVO.empName' ? 'selected' : ''}>사원 이름</option>
+                    <option value="empId" ${loginLogVO.searchType eq 'empId' ? 'selected' : ''}>사원번호</option>
+                </c:if>
                 <option value="lgnSccDt" ${loginLogVO.searchType eq 'lgnSccDt' ? 'selected' : ''}>로그인 시간</option>
                 <option value="lgtDt" ${loginLogVO.searchType eq 'lgtDt' ? 'selected' : ''}>로그아웃 시간</option>
             </select>

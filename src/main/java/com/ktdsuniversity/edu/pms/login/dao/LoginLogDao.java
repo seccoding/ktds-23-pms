@@ -53,7 +53,10 @@ public interface LoginLogDao {
 
     public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO);
 
+	List<LoginLogVO> getOneLoginLog(String empId);
+
 	public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO);
 
-	public List<TeamVO> getOneTeamNameByEmpId(String empId);
+	List<VisitedVO> getOneVisitedLog(String empId);
+
 }

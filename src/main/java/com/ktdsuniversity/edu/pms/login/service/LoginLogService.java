@@ -40,7 +40,9 @@ public interface LoginLogService {
 
     public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO);
 
+    LoginLogListVO getOneLoginLog(String empId);
+
     public VisitedListVO getAllVisitedLog(VisitedVO visitedVO);
 
-	public TeamListVO getOneTeamNameByEmpId(String empId);
+    VisitedListVO getOneVisitedLog(String empId);
 }

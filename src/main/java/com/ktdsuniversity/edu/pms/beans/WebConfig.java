@@ -85,6 +85,7 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new RestrictAccessAfterLoginInterceptor())
 				.addPathPatterns("/employee/login", "/ajax/employee/login");
 
+		//경영지원부가 아니라면 아래 url의 접근을 막는 interceptor
 		registry.addInterceptor(new RestrictRegistInterceptor())
 				.addPathPatterns("/employee/regist", "/ajax/employee/regist");
 	}
