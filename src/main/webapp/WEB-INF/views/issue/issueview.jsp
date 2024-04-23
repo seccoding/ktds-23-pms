@@ -11,6 +11,7 @@
 </head>
 <body>
 	<div class="grid" data-id="${issueVO.isId}">
+        <span style="display: none;" hidden id="login-email">${sessionScope._LOGIN_USER_.empId}</span>
         <label for="subject">제목</label>
         <div>${issueVO.isTtl}</div>
   
