@@ -34,4 +34,12 @@ public class JobDaoImpl extends SqlSessionDaoSupport implements JobDao{
 		return getSqlSession().update(JobDao.NAME_SPACE + ".getNameCount", jobName);
 	}
 
+	@Override
+	public JobVO getOneJob(String jobId) {
+
+		return getSqlSession().selectOne(JobDao.NAME_SPACE + ".getOneJob", jobId);
+	}
+
+
+
 }

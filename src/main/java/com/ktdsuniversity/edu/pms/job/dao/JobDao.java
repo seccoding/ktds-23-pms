@@ -11,6 +11,8 @@ public interface JobDao {
 	public int deleteJob(String jobId);
 	
 	public int getNameCount(String jobName);
+
+	public JobVO getOneJob(String jobId);
 	
 
 }

@@ -20,9 +20,14 @@ public class JobServiceImpl implements JobService{
 	}
 
 	@Override
-	public boolean deleteJobByName(String jobName) {
+	public boolean deleteJob(String jobName) {
 		
 		return this.jobDao.deleteJob(jobName) > 0 ;
+	}
+
+	@Override
+	public JobVO selectJob(String jobId) {
+		return this.jobDao.getOneJob(jobId);
 	}
 
 
