@@ -211,8 +211,6 @@
 	    ON J.JOB_ID = E.JOB_ID
 	  JOIN TEAM T
 	    ON T.DEPT_ID = E.DEPT_ID
-	  JOIN ASSIGNMENT A
-		ON A.EMP_ID = E.EMP_ID
 	 WHERE E.EMP_ID = #{_parameter}
 		OR D.DEPT_ID = #{_parameter}  
 	</select>
