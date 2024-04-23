@@ -89,17 +89,6 @@ public class ApprovalController {
 //								 .append("apprList", apprList).append("searchapprovalvo", searchapprovalvo);
 //	}
 
-	@GetMapping("/approval/view")
-	public String doApprovalViewPage(@RequestParam String apprId, Model model) {
-
-		ApprovalVO approvalVO = this.approvalService.selectOneApprovalAll(apprId);
-		model.addAttribute("approvalVO", approvalVO);
-
-		if (approvalVO == null || approvalVO.getApprovalDetailVOList() == null) {
-			throw new PageNotFoundException();
-		}
-		return "/approval/approvalview";
-	}
 
 	// PSH0422
 	// 조건에 따른 count 어떻게 뿌려줄지 생각해보기
@@ -134,9 +123,22 @@ public class ApprovalController {
 		return "approval/approvallist";
 																					
 	}
+	
+
+	@GetMapping("/approval/view")
+	public String doApprovalViewPage(@RequestParam String apprId, Model model) {
+
+		ApprovalVO approvalVO = this.approvalService.selectOneApprovalAll(apprId);
+		model.addAttribute("approvalVO", approvalVO);
+
+		if (approvalVO == null || approvalVO.getApprovalDetailVOList() == null) {
+			throw new PageNotFoundException();
+		}
+		return "/approval/approvalview";
+	}
 
 
-	// 비품대여현황 jsp에서 전달받을 파라미터: @RequestParam String empId
+	// 비품대여현황 jsp에서 전달받을 파라미터: String empId
 	@GetMapping("/approval/write")
 	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
