@@ -185,10 +185,5 @@ public class EmployeeController {
 		return new AjaxResponse().append("errorMessage", "실패사유");
 	}
 
-	@ResponseBody
-	@PostMapping("/ajax/employee/search/history")
-	public AjaxResponse viewEmployeeHistory() {
 
-		return redirect);
-	}
 }
