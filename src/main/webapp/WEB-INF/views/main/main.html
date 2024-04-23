@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert title here</title>
+    <!-- <jsp:include page="../commonheader.jsp" /> -->
+    <style>
+        * {
+        box-sizing: border-box;
+        }
+        .container {
+        background-color: #FFF;
+        padding: 1rem;
+        }
+        .title {
+            margin-bottom: 3rem;
+        }
+        .row-1-1 {
+            height: 20rem;
+        }
+        .row-1-2 {
+            height: 10rem;
+        }
+        .col-1-1 {
+            width: 100%;
+        }
+        .col-1-2 {
+            width: 50%;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #FFF;
+            padding: 0 0.8125rem;
+            /* margin: 1rem; */
+            padding: 1rem;
+        }
+        .card-body {
+            height: inherit;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-1-2">
+                <div>
+                    <div class="card row-1-2" style="background-color: #f0f0f0;">
+                        <div class="card-body" style="background-color: #FFF;">출퇴근</div>
+                    </div>
+                    <div class="card row-1-2" style="background-color: #f0f0f0;">
+                        <div class="card-body" style="background-color: #FFF;">쪽지</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1-2">
+                <div class="card row-1-1" style="background-color: #f0f0f0;">
+                    <div class="card-body" style="background-color: #FFF;">팀</div>
+                </div>
+            </div>
+            <div class="col-1-1">
+                <div class="card row-1-1" style="background-color: #f0f0f0;">
+                    <div class="card-body" style="background-color: #FFF;">프로젝트</div>
+                </div>
+            </div>
+            <div class="col-1-1">
+                <div class="card row-1-1" style="background-color: #f0f0f0">
+                    <div class="card-body" style="background-color: #FFF;">비품대여</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

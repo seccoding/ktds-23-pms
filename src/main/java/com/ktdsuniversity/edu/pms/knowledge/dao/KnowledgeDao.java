@@ -33,6 +33,10 @@ public interface KnowledgeDao {
 
 	public int deleteManyKnowledge(List<String> deleteItems);
 
+	public KnowledgeVO findById(String getpPostId);
+
+	public void save(KnowledgeVO knowledge);
+
 
 
 }

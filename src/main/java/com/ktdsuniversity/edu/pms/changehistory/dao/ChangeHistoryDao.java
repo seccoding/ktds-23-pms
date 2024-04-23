@@ -15,4 +15,6 @@ public interface ChangeHistoryDao {
 
 	List<DepartmentHistoryVO> getAllDeptHist(String empId);
 
+
+
 }

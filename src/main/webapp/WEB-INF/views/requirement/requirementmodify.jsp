@@ -36,7 +36,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       .grid {
         display: grid;
         grid-template-columns: 200px 1fr;
-        grid-template-rows: repeat(6 40px);
+        grid-template-rows: repeat(8, 40px) 1fr 40px 40px 40px;
       }
     </style>
 
@@ -68,13 +68,59 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         />
 
         <label for="dvlrp">담당개발자</label>
-        <select id="dvlrp-check" name="dvlrp" id="dvlrp"></select>
+        <select id="dvlrp-check" name="dvlrp" id="dvlrp">
+          <c:forEach items="${prjTeammateList}" var="prjTeammateList">
+            <c:choose>
+              <c:when test="${prjTeammateList.prjTmId eq requirement.dvlrp}">
+                <option value="prjTeammateList.prjTmId" selected>
+                  ${prjTeammateList.employeeVO.empName}
+                </option>
+              </c:when>
+              <c:otherwise>
+                <option value="prjTeammateList.prjTmId">
+                  ${prjTeammateList.employeeVO.empName}
+                </option>
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
+        </select>
 
         <label for="cfrmr">확인자</label>
-        <select id="cfrmr-check" name="cfrmr" id="cfrmr"></select>
+        <select id="cfrmr-check" name="cfrmr" id="cfrmr">
+          <c:forEach items="${prjTeammateList}" var="prjTeammateList">
+            <option value="prjTeammateList.prjTmId">
+              ${prjTeammateList.employeeVO.empName}
+            </option>
+          </c:forEach>
+        </select>
 
         <label for="tstr">테스터</label>
-        <select id="tstr-check" name="tstr" id="tstr"></select>
+        <select id="tstr-check" name="tstr" id="tstr">
+          <c:forEach items="${prjTeammateList}" var="prjTeammateList">
+            <option value="prjTeammateList.prjTmId">
+              ${prjTeammateList.employeeVO.empName}
+            </option>
+          </c:forEach>
+        </select>
+
+        <!--날짜선택창-->
+        <label for="start-date">시작일</label>
+        <input
+          type="date"
+          id="start-date"
+          name="strtDt"
+          value="${requirement.strtDt}"
+        />
+        <!--날짜선택창-->
+        <label for="end-date">종료예정일</label>
+        <input
+          type="date"
+          id="end-date"
+          name="endDt"
+          value="${requirement.endDt}"
+        />
+        <label for="file">첨부파일</label>
+        <input type="file" id="file" name="file" />
 
         <!-- ckeditor를 이용한 내용넣기-->
         <label for="rqm-cntnt">요구사항 내용</label>
@@ -100,25 +146,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
           </c:forEach>
         </select>
-
-        <!--날짜선택창-->
-        <label for="start-date">시작일</label>
-        <input
-          type="date"
-          id="start-date"
-          name="strtDt"
-          value="${requirement.strtDt}"
-        />
-        <!--날짜선택창-->
-        <label for="end-date">종료예정일</label>
-        <input
-          type="date"
-          id="end-date"
-          name="endDt"
-          value="${requirement.endDt}"
-        />
-        <label for="file">첨부파일</label>
-        <input type="file" id="file" name="file" />
 
         <!--담당자 확인자 테스터 테스트결과는 아직 어떤 기준으로 해야하는지 알 수 없음-->
 

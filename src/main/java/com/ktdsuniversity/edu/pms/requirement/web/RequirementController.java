@@ -21,11 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.login.web.LoginController;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
+import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
@@ -33,6 +36,8 @@ import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @Controller
 public class RequirementController {
@@ -43,6 +48,7 @@ public class RequirementController {
 	private ProjectService projectService;
 	@Autowired
 	private CommonCodeService commonCodeService;
+
 //	@Autowired
 //	private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -54,14 +60,20 @@ public class RequirementController {
 	@GetMapping("/requirement/search")
 	public String viewSearchAllRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String prjId, Model model, RequirementSearchVO requirementSearchVO) {
+		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
+			requirementSearchVO.setEmpId(employeeVO.getEmpId());
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {
+		} // 관리자라면
+
+		projectList.setProjectList(
+				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
 		requirementSearchVO.setPageCount(requirementList.getCount());
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
-		ProjectListVO projectList = this.projectService.getAllProject();
-		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 
 		model.addAttribute("resultList", requirementList).addAttribute("requirementSearch", requirementSearchVO)
 				.addAttribute("projectList", projectList).addAttribute("prjId", prjId).addAttribute("scdSts", scdSts)
@@ -71,25 +83,50 @@ public class RequirementController {
 	}
 
 	@GetMapping("/requirement/view")
-	public String viewOneRequirement(
-			/* @SessionAttribute , */
+	public String viewOneRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId, Model model) {
-		// TODO 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
+		// 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
+		if(employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId)
+			.stream()
+			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+			.toList();
+			
+//			if(tmList.size() == 0  ) {
+//				throw new PageNotFoundException();
+//			}
+		}
+		
+		boolean isPmAndPl = false;
+		List<ProjectTeammateVO> tmList =  this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
+		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
+		.filter(tm ->tm.getRole().equals("PM") || tm.getRole().equals("PL"))
+		.toList();
+		if(tmList.size() > 0) {
+			isPmAndPl= true;
+		}
+		
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
-
-		model.addAttribute("requirement", requirement);
-
+		model.addAttribute("requirement", requirement)
+		.addAttribute("employeeVO", employeeVO)
+		.addAttribute("isPmAndPl", isPmAndPl);
+	
 		return "requirement/requirementview";
 
 	}
 
 	@GetMapping("/requirement/write")
-	public String viewwritePage(Model model
-	/* @SessionAttribute , */) {
-		// TODO 사원리스트도 보내줘야 담당자, 테스터, 확인자 체크가능 ->현재는 임의의 사원번호를 넣는중
+	public String viewwritePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {// 관리자라면
+
+		}
+
 		projectList.setProjectList(
 				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
 		List<ProjectTeammateVO> prjTeammateList = this.projectService
@@ -103,8 +140,25 @@ public class RequirementController {
 	}
 
 	@PostMapping("/requirement/write")
-	public String createRequirement(@RequestParam MultipartFile file /* @SessionAttribute , */
-			, RequirementVO requirementVO, Model model) {
+	public String createRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@RequestParam MultipartFile file, RequirementVO requirementVO, Model model) throws Exception {
+		Validator<RequirementVO> validator = new Validator<>(requirementVO);
+		validator
+		.add("rqmTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("rqmCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+		.add("strtDt", Type.NOT_EMPTY, "시작일은 필수 입력값입니다")
+		.add("endDt", Type.NOT_EMPTY, "종료일은 필수 입력값입니다")
+		.add("dvlrp", Type.NOT_EMPTY, "담당개발자는 필수 입력값입니다")
+		.add("cfrmr", Type.NOT_EMPTY, "확인자는 필수 입력값입니다")
+		.add("tstr", Type.NOT_EMPTY, "테스터는 필수 입력값입니다")
+		.add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다")
+		.add("rqmSts", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+		.add("prjId", Type.NOT_EMPTY, "프로젝트는 필수 입력값입니다")
+		.start();
+		if(validator.hasErrors()) {
+			
+		}
+		
 		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
 
 		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
@@ -121,35 +175,61 @@ public class RequirementController {
 
 	@ResponseBody
 	@GetMapping("/requirement/teammate/{prjId}")
-	public AjaxResponse postProjectTeammate(@PathVariable String prjId) {
+	public AjaxResponse postProjectTeammate(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@PathVariable String prjId) {
 		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
 
 		return new AjaxResponse().append("prjTeammateList", prjTeammateList);
 	}
 
 	@GetMapping("/project/requirement/modify")
-	public String viewModifyPage(/* @SessionAttribute , */
+	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId, Model model) {
-//		TODO 사원리스트도 보내줘야 담당자, 테스터, 확인자 체크가능 ->현재는 임의의 사원번호를 넣는중
-//		TODO 사용자 체크: 수정은 본인과 관리자만 가능함
-
-		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
+		if(employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId)
+			.stream()
+			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+			.toList();
+			
+//			if(tmList.size() == 0 ) {
+//				throw new PageNotFoundException();
+//			}
+		}
+		
 		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {// 관리자라면
+
+		}
 		projectList.setProjectList(
 				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
+		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 
 		model.addAttribute("requirement", requirement).addAttribute("projectList", projectList)
-				.addAttribute("scdSts", scdSts).addAttribute("rqmSts", rqmSts);
+				.addAttribute("scdSts", scdSts).addAttribute("rqmSts", rqmSts)
+				.addAttribute("prjTeammateList",prjTeammateList);
 
 		return "requirement/requirementmodify";
 	}
 
 	@PostMapping("/requirement/modify")
-	public String modifyRequirement(@RequestParam String rqmId,
-			/* @SessionAttribute , */
+	public String modifyRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String rqmId,
 			RequirementVO requirementVO, @RequestParam MultipartFile file) {
+		if(employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(requirementVO.getPrjId())
+			.stream()
+			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+			.toList();
+			
+			if(tmList.size() == 0 ) {
+				throw new PageNotFoundException();
+			}
+		}
+		
 //		TODO 입력된 정보가 올바른지 확인 필요
 
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
@@ -159,11 +239,12 @@ public class RequirementController {
 
 	}
 
-	@GetMapping("/project/requirement/delete")
-	public String deleteRequirement(
-			/* @SessionAttribute , */
+	@PostMapping("/project/requirement/delete")
+	public String deleteRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String rqmId) {
-		// TODO 사용자 체크: 삭제는 본인과 관리자만 가능함
+		//사용자 체크: 삭제는 본인과 관리자만 가능함
+		
+		
 		RequirementVO requirementVO = this.requirementService.getOneRequirement(rqmId);
 
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
@@ -173,8 +254,8 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@GetMapping("/project/requirement/delaycall")
-	public AjaxResponse delayRequirement(/* @SessionAttribute , */
+	@PostMapping("/project/requirement/delaycall")
+	public AjaxResponse delayRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String rqmId) {
 
 		RequirementVO thisRequirement = this.requirementService.getOneRequirement(rqmId);
@@ -186,10 +267,9 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@GetMapping("/project/requirement/delayaccess")
-	public AjaxResponse accessDelay(
-			/* @SessionAttribute , */
-			@RequestParam String rqmId, @RequestParam boolean dalayApprove) {
+	@PostMapping("/project/requirement/delayaccess")
+	public AjaxResponse accessDelay(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String rqmId,
+			@RequestParam boolean dalayApprove) {
 
 		boolean isSuccess = this.requirementService.updateDelayRequirement(rqmId, dalayApprove);
 

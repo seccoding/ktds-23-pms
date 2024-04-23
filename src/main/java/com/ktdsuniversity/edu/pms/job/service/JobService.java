@@ -6,8 +6,9 @@ public interface JobService {
 	
 	public boolean createJob(JobVO jobVO);
 	
-	public boolean deleteJobByName(String jobName);
-	
+	public boolean deleteJob(String jobId);
+
+	public JobVO selectJob(String jobId);
 
 	
 	

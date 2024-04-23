@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
@@ -29,7 +30,7 @@ public class QnaServiceImpl implements QnaService{
 	@Autowired
 	private FileHandler fileHandler;
 
-
+	@Transactional
 	@Override
 	public QnaListVO getAllQna() {
 		
@@ -44,6 +45,7 @@ public class QnaServiceImpl implements QnaService{
 	}
 	
 	// 검색
+	@Transactional
 	@Override
 	public QnaListVO searchAllQna(SearchQnaVO searchQnaVO) {
 		
@@ -59,6 +61,7 @@ public class QnaServiceImpl implements QnaService{
 		return qnaListVO;
 	}
 
+	@Transactional
 	@Override
 	public QnaVO getOneQna(String qaId, boolean isIncrease) {
 
@@ -77,6 +80,7 @@ public class QnaServiceImpl implements QnaService{
 		return qnaVO;
 	}
 
+	@Transactional
 	@Override
 	public boolean createNewQna(QnaVO qnaVO, MultipartFile file) {
 		
@@ -97,7 +101,7 @@ public class QnaServiceImpl implements QnaService{
 		return insertedCount > 0;
 	}
 	
-	
+	@Transactional
 	@Override
 	public boolean updateOneQna(QnaVO qnaVO, MultipartFile file) {
 		
@@ -133,7 +137,7 @@ public class QnaServiceImpl implements QnaService{
 	}
 		
 		
-	
+	@Transactional
 	@Override
 	public boolean deleteOneQna(String qaId) {
 		
@@ -156,7 +160,7 @@ public class QnaServiceImpl implements QnaService{
 		return deletedCount > 0;
 	}
 	
-	
+	@Transactional
 	@Override
 	public boolean deleteManyQna(List<String> deleteItems) {
 		
@@ -177,7 +181,7 @@ public class QnaServiceImpl implements QnaService{
 		return deletedCount > 0;
 	}
 	
-
+	@Transactional
 	@Override
 	public int recommendOneQna(String qaId) {
 		

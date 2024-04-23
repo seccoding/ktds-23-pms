@@ -1,4 +1,9 @@
 $().ready(function () {
+  $(".open-employee").on("click", function () {
+    var modal = $(".modal-employee-list");
+    modal[0].showModal();
+  });
+
   function clearDepartmentInfo() {
     var subCommonCodeInfo = $(".code-info");
     subCommonCodeInfo.find("#codeDeptId").text("");

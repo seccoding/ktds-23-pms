@@ -1016,3 +1016,42 @@ padding: 0.625rem 0.5125rem;
 .page-item .page-link {
 border-radius: 0.25rem;
 }
+
+/* main 영역 */
+.container {
+background-color: #FFF;
+padding: 1rem;
+}
+.title {
+    margin-bottom: 3rem;
+}
+.row-1-1 {
+    height: 20rem;
+}
+.row-1-2 {
+    height: 10rem;
+}
+.col-1-1 {
+    width: 100%;
+}
+.col-1-2 {
+    width: 50%;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #FFF;
+    padding: 0 0.8125rem;
+    /* margin: 1rem; */
+    padding: 1rem;
+}
+.card-body {
+    height: inherit;
+    border-radius: 0.5rem;
+}

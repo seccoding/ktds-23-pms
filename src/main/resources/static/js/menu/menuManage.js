@@ -1,89 +1,81 @@
 $().ready(function () {
+    function clearMainMenuInfo() {
+        var MainMenuInfo = $(".main-menu-info");
+        MainMenuInfo.find("#mainId").val("");
+        MainMenuInfo.find("#mainMenuName").val("");
 
-    function reloadSubMenu(pid) {
-        $.get("/ajax/menu/" + pid, function (response) {
-            var subMenuTable = $(".sub-menu").find("tbody");
-            subMenuTable.html("");
+        $("#modifyMainMenu").attr("disabled", "disabled");
+        $("#delMainMenu").attr("disabled", "disabled");
+        $("#newMainMenu").removeAttr("disabled");
+        $("#newMainMenu").text("신규");
+        $("#newMainMenu").attr("data-mode", "new");
+    }
 
+    function reloadMainMenu()  {
+        $.get("/ajax/menu/reload", function (response) {
+            var menuTable = $(".main-menu").find("tbody");
+            menuTable.html("");
             var menuList = response.data.menuList;
 
-            codeList.forEach((subCommonCode) => {
+            clearMainMenuInfo();
+            clearSubMenuInfo();
+            clearDetailMenuInfo();
+
+            menuList.forEach((menu) => {
                 var trDom = $("<tr></tr>");
                 trDom.attr({
-                    "data-id": subCommonCode.cmcdId,
-                    "data-pid": subCommonCode.cmcdPid,
-                    "data-code-name": subCommonCode.cmcdName,
-                    "data-crt-dt": subCommonCode.crtDt,
-                    "data-crtr-id": subCommonCode.crtrId,
-                    "data-mdf-dt": subCommonCode.mdfDt,
-                    "data-mdfr-id": subCommonCode.mdfrId,
+                    "data-id": menu.id,
+                    "data-name": menu.name,
+                    "data-role": menu.role,
+                    "data-url": menu.url,
+                    "data-parent": menu.parent,
                 });
 
                 trDom.on("click", function () {
-                    clearSubCodeInfo();
-
                     $(this).closest("tbody").find("tr").removeClass("active");
                     $(this).addClass("active");
 
-                    $("#subCmcdId").attr("disabled", "disabled");
+                    clearSubMenuInfo();
+                    clearDetailMenuInfo();
 
-                    var commonCodeInfo = $(".sub-code-info");
-                    commonCodeInfo.find("#subCmcdId").val($(this).data("id"));
-                    commonCodeInfo.find("#subCmcdPid").val($(this).data("pid"));
-                    commonCodeInfo.find("#subCmcdName").val($(this).data("code-name"));
-                    commonCodeInfo.find("#subCrtDt").text($(this).data("crt-dt"));
-                    commonCodeInfo.find("#subCrtrId").text($(this).data("crtr-id"));
-                    commonCodeInfo.find("#subMdfDt").text($(this).data("mdf-dt") || "");
-                    commonCodeInfo.find("#subMdfrId").text($(this).data("mdfr-id") || "");
+                    var mainMenuInfo = $(".main-menu-info");
+                    mainMenuInfo.find("#mainId").val($(this).data("id"));
+                    mainMenuInfo.find("#mainRole").val($(this).data("role"));
+                    mainMenuInfo.find("#mainMenuName").val($(this).data("name"));
 
-                    $("#modifySubCode").removeAttr("disabled");
-                    $("#delSubCode").removeAttr("disabled");
-                    $("#newSubCode").removeAttr("disabled");
+                    $("#modifyMainMenu").removeAttr("disabled");
+                    $("#delMainMenu").removeAttr("disabled");
+                    $("#newMainMenu").removeAttr("disabled");
                 });
 
-                var codeIdTdDom = $("<td></td>");
-                codeIdTdDom.text(subCommonCode.cmcdId);
+                var mainMenuIdTdDom = $("<td></td>");
+                mainMenuIdTdDom.text(menu.id);
 
-                var codeNameTdDom = $("<td></td>");
-                codeNameTdDom.text(subCommonCode.cmcdName);
+                var mainMenuNameTdDom = $("<td></td>");
+                mainMenuNameTdDom.text(menu.name);
 
-                trDom.append(codeIdTdDom);
-                trDom.append(codeNameTdDom);
+                var mainMenuRoleTdDom = $("<td></td>");
+                mainMenuRoleTdDom.text(menu.role);
 
-                subCodeTable.append(trDom);
+                trDom.append(mainMenuIdTdDom);
+                trDom.append(mainMenuNameTdDom);
+                trDom.append(mainMenuRoleTdDom);
+
+                menuTable.append(trDom);
             });
         });
     }
 
-    function clearSubMenuInfo() {
-        var subMenuInfo = $(".sub-menu");
-        subMenuInfo.find("#subCmcdId").val("");
-        subMenuInfo.find("#subCmcdPid").val("");
-        subMenuInfo.find("#subCmcdName").val("");
-        subMenuInfo.find("#subCrtDt").text("");
-        subMenuInfo.find("#subCrtrId").text("");
-        subMenuInfo.find("#subMdfDt").text("");
-        subMenuInfo.find("#subMdfrId").text("");
-
-        $("#modifySubCode").attr("disabled", "disabled");
-        $("#delSubCode").attr("disabled", "disabled");
-        $("#newSubMenu").removeAttr("disabled");
-        $("#newSubMenu").text("신규");
-        $("#newSubMenu").attr("data-mode", "new");
-    }
-
+    // 서브 메뉴 불러오기
     $("table.main-menu")
-        .find("tr")
-        .on("click", function () {
+        .on("click", "tr", function () {
             $(this).closest("tbody").find("tr").removeClass("active");
             $(this).addClass("active");
 
             var menuInfo = $(".menu-info").not(".sub-menu-info").not(".detail-menu-info");
-            menuInfo.find("#id").val($(this).data("id"));
-            menuInfo.find("#name").val($(this).data("name"));
-            menuInfo.find("#role").val($(this).data("role"));
-            menuInfo.find("#url").val($(this).data("url"));
-            menuInfo.find("#parent").val($(this).data("parent"));
+            menuInfo.find("#mainId").val($(this).data("id"));
+            menuInfo.find("#mainMenuName").val($(this).data("name"));
+            menuInfo.find("#mainRole").val($(this).data("role"));
 
             $("#mainParent").attr("disabled", "disabled");
 
@@ -99,4 +91,295 @@ $().ready(function () {
             var pid = $(this).data("id");
             reloadSubMenu(pid);
         });
+
+    function reloadSubMenu(pid) {
+        $.get("/ajax/menu/" + pid, function (response) {
+            var subMenuTable = $(".sub-menu").find("tbody");
+            subMenuTable.html("");
+
+            var menuList = response.data.menuList;
+
+            menuList.forEach((subMenu) => {
+                var trDom = $("<tr></tr>");
+
+                trDom.attr({
+                    "data-id": subMenu.id,
+                    "data-name": subMenu.name,
+                    "data-role": subMenu.role,
+                    "data-url": subMenu.url,
+                    "data-parent": subMenu.parent,
+                });
+
+                trDom.on("click", function () {
+                    clearSubMenuInfo();
+
+                    $(this).closest("tbody").find("tr").removeClass("active");
+                    $(this).addClass("active");
+
+                    $("#subId").attr("disabled", "disabled");
+
+                    var subMenuInfo = $(".sub-menu-info");
+                    subMenuInfo.find("#subId").val($(this).data("id"));
+                    subMenuInfo.find("#subParent").val($(this).data("parent"));
+                    subMenuInfo.find("#subUrl").val($(this).data("url"));
+                    subMenuInfo.find("#subMenuName").val($(this).data("name"));
+                    subMenuInfo.find("#subRole").val($(this).data("role"));
+
+                    $("#modifySubMenu").removeAttr("disabled");
+                    $("#delSubMenu").removeAttr("disabled");
+                    $("#newSubMenu").removeAttr("disabled");
+                });
+
+                var subMenuIdTdDom = $("<td></td>");
+                subMenuIdTdDom.text(subMenu.id);
+
+                var subMenuNameTdDom = $("<td></td>");
+                subMenuNameTdDom.text(subMenu.name);
+
+                var subRoleTdDom = $("<td></td>");
+                subRoleTdDom.text(subMenu.role);
+
+                trDom.append(subMenuIdTdDom);
+                trDom.append(subMenuNameTdDom);
+                trDom.append(subRoleTdDom);
+
+                subMenuTable.append(trDom);
+            });
+        });
+    }
+
+    function clearSubMenuInfo() {
+        var subMenuInfo = $(".sub-menu-info");
+        subMenuInfo.find("#subId").val("");
+        subMenuInfo.find("#subParent").val("");
+        subMenuInfo.find("#subUrl").val("");
+        subMenuInfo.find("#subMenuName").val("");
+        subMenuInfo.find("#subRole").val("");
+
+        $("#modifySubMenu").attr("disabled", "disabled");
+        $("#delSubMenu").attr("disabled", "disabled");
+        $("#newSubMenu").removeAttr("disabled");
+        $("#newSubMenu").text("신규");
+        $("#newSubMenu").attr("data-mode", "new");
+    }
+
+    // 디테일 메뉴 불러오기
+    $("table.sub-menu")
+        .on("click", "tr", function () {
+            $(this).closest("tbody").find("tr").removeClass("active");
+            $(this).addClass("active");
+
+            var subMenuInfo = $(".menu-info").not(".main-menu-info").not(".detail-menu-info");
+            subMenuInfo.find("#subId").val($(this).data("id"));
+            subMenuInfo.find("#subParent").val($(this).data("parent"));
+            subMenuInfo.find("#subUrl").val($(this).data("url"));
+            subMenuInfo.find("#subMenuName").val($(this).data("name"));
+            subMenuInfo.find("#subRole").val($(this).data("role"));
+
+            $("#mainParent").attr("disabled", "disabled");
+
+            $("#modifySubMenu").removeAttr("disabled");
+            $("#delSubMenu").removeAttr("disabled");
+            $("#newSubMenu").removeAttr("disabled");
+
+            $("#newSubMenu").attr("data-mode", "new");
+            $("#newSubMenu").text("신규");
+
+            clearDetailMenuInfo();
+
+            var pid = $(this).data("id");
+            reloadDetailMenu(pid);
+        });
+
+    function clearDetailMenuInfo() {
+        var detailMenuInfo = $(".detail-menu-info");
+        detailMenuInfo.find("#detailId").val("");
+        detailMenuInfo.find("#detailParent").val("");
+        detailMenuInfo.find("#detailUrl").val("");
+        detailMenuInfo.find("#detailMenuName").val("");
+
+        $("#modifyDetailMenu").attr("disabled", "disabled");
+        $("#delDetailMenu").attr("disabled", "disabled");
+        $("#newDetailMenu").removeAttr("disabled");
+        $("#newDetailMenu").text("신규");
+        $("#newDetailMenu").attr("data-mode", "new");
+    }
+
+    function reloadDetailMenu(pid) {
+        $.get("/ajax/menu/" + pid, function (response) {
+            var detailMenuTable = $(".detail-menu").find("tbody");
+            detailMenuTable.html("");
+
+            var detailMenuList = response.data.menuList;
+            console.log(detailMenuList);
+
+            detailMenuList.forEach((detailMenu) => {
+                var trDom = $("<tr></tr>");
+
+                trDom.attr({
+                    "data-id": detailMenu.id,
+                    "data-name": detailMenu.name,
+                    "data-role": detailMenu.role,
+                    "data-url": detailMenu.url,
+                    "data-parent": detailMenu.parent,
+                });
+
+                trDom.on("click", function () {
+                    clearDetailMenuInfo();
+
+                    $(this).closest("tbody").find("tr").removeClass("active");
+                    $(this).addClass("active");
+
+                    $("#detailId").attr("disabled", "disabled");
+
+                    var detailMenuInfo = $(".detail-menu-info");
+                    detailMenuInfo.find("#detailId").val($(this).data("id"));
+                    detailMenuInfo.find("#detailParent").val($(this).data("parent"));
+                    detailMenuInfo.find("#detailUrl").val($(this).data("url"));
+                    detailMenuInfo.find("#detailMenuName").val($(this).data("name"));
+
+                    $("#modifyDetailMenu").removeAttr("disabled");
+                    $("#delDetailMenu").removeAttr("disabled");
+                    $("#newDetailMenu").removeAttr("disabled");
+                });
+
+                var detailMenuIdTdDom = $("<td></td>");
+                detailMenuIdTdDom.text(detailMenu.id);
+
+                var detailMenuNameTdDom = $("<td></td>");
+                detailMenuNameTdDom.text(detailMenu.name);
+
+                trDom.append(detailMenuIdTdDom);
+                trDom.append(detailMenuNameTdDom);
+
+                detailMenuTable.append(trDom);
+            });
+        });
+    }
+
+    // 생성 수정 삭제 영역
+    $("#newMainMenu").on("click", function () {
+        $("#mainId").removeAttr("disabled");
+        var newButton = $(this);
+        var mode = newButton.attr("data-mode");
+        console.log("mode", mode);
+        if (mode === "new") {
+            clearMainMenuInfo();
+            newButton.attr("data-mode", "save");
+            $("#mainId").focus();
+            $("#newMainMenu").text("저장");
+        } else {
+            $.post(
+                "/ajax/menu/new",
+                { id: $("#mainId").val(), name: $("#mainMenuName").val(), role: $("#mainRole").val() },
+                function (response) {
+                    if (response.data.result) {
+                        $("#mainId").attr("disabled", "disabled");
+                        newButton.attr("data-mode", "new");
+                        reloadMainMenu();
+                    }
+                }
+            );
+        }
+    });
+
+    $("#newSubCode").on("click", function () {
+        $("#subCmcdId").removeAttr("disabled");
+        var newButton = $(this);
+        var mode = newButton.attr("data-mode");
+
+        if (mode === "new") {
+            clearSubCodeInfo();
+            newButton.attr("data-mode", "save");
+            $("#subCmcdPid").val($("#cmcdId").val());
+            $("#subCmcdId").focus();
+            $("#newSubCode").text("저장");
+        } else {
+            $.post(
+                "/ajax/commoncode/new",
+                {
+                    cmcdId: $("#subCmcdId").val(),
+                    cmcdName: $("#subCmcdName").val(),
+                    cmcdPid: $("#cmcdId").val(),
+                },
+                function (response) {
+                    if (response.data.result) {
+                        $("#subCmcdId").attr("disabled", "disabled");
+                        newButton.attr("data-mode", "new");
+                        reloadSubCommonCode($("#cmcdId").val());
+                    }
+                }
+            );
+        }
+    });
+
+    $("#modifyCode").on("click", function () {
+        if (confirm("저장하시겠습니까?")) {
+            $.post(
+                "/ajax/commoncode/update",
+                {
+                    cmcdId: $("#cmcdId").val(),
+                    cmcdName: $("#cmcdName").val(),
+                    cmcdPid: $("#cmcdPid").val(),
+                },
+                function (response) {
+                    if (response.data.result) {
+                        reloadCommonCode();
+                    }
+                }
+            );
+        } else {
+            alert("저장을 취소했습니다.");
+        }
+    });
+
+    $("#modifySubCode").on("click", function () {
+        if (confirm("저장하시겠습니까?")) {
+            $.post(
+                "/ajax/commoncode/update",
+                {
+                    cmcdId: $("#subCmcdId").val(),
+                    cmcdName: $("#subCmcdName").val(),
+                    cmcdPid: $("#subCmcdPid").val(),
+                },
+                function (response) {
+                    if (response.data.result) {
+                        reloadSubCommonCode($("#subCmcdPid").val());
+                    }
+                }
+            );
+        } else {
+            alert("저장을 취소했습니다.");
+        }
+    });
+
+    $("#delCode").on("click", function () {
+        if (confirm("삭제하시겠습니까?")) {
+            $.get(
+                "/ajax/commoncode/delete/" + $("#cmcdId").val(),
+                function (response) {
+                    if (response.data.result) {
+                        reloadCommonCode();
+                    }
+                }
+            );
+        } else {
+            alert("삭제를 취소했습니다.");
+        }
+    });
+
+    $("#delSubCode").on("click", function () {
+        if (confirm("삭제하시겠습니까?")) {
+            $.get(
+                "/ajax/commoncode/delete/" + $("#subCmcdId").val(),
+                function (response) {
+                    if (response.data.result) {
+                        reloadSubCommonCode($("#cmcdId").val());
+                    }
+                }
+            );
+        } else {
+            alert("삭제를 취소했습니다.");
+        }
+    });
 })

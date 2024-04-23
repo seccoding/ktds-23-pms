@@ -38,4 +38,8 @@ public interface ProjectService {
     List<ProjectTeammateVO> getAllProjectTeammate();
 
     List<ProjectVO> getAllProjectByProjectTeammateId(String tmId);
+
+    boolean updateReviewStatus(ProjectTeammateVO projectTeammateVO);
+
+    boolean updateSurveyStatus(ProjectTeammateVO projectTeammateVO);
 }

@@ -5,29 +5,38 @@
   <head>
     <meta charset="UTF-8" />
     <title>회원가입 페이지</title>
+    <jsp:include page="../commonheader.jsp"></jsp:include>
     <style type="text/css">
       .grid {
         display: grid;
-        grid-template-columns: 100px 1fr 100px 1fr;
-        
+        grid-template-columns: 100px 1fr ;
+
         column-gap: 0;
         gap: 5px;
       }
-      
-      
-      input {
-        width: 90%;
-        height: 25px;
+
+      input[type="text"], [type="email"], input[type="password"], input[type="date"]{
+        width: 85%;
+        min-width: 385px;
+        max-width: 600px;
+        height: 2rem;
+        border: 0;
+        border-radius: var(--box-border-radius);
+        padding-left: 10px;
+        outline: none;
+        background-color: var(--border-color);
       }
 
-      .footer {
-        position: absolute;
-        bottom: 0;
-      }
-      
+
+
+
+
+
+
     </style>
-    <script type="text/javascript" src="/js/lib/jquery-3.7.1.min.js"></script>
+
     <script type="text/javascript" src="/js/employee/regist.js"></script>
+
   </head>
   <body>
     <div class="header">
@@ -190,15 +199,12 @@
             />
           </div>
           <div><button type="button" id="regist-btn">회원가입</button></div>
-          
+
         </div>
       </form>
     </div>
     <div class="footer">
-      <div>회원 가입 문의: 경영지원부 (전화번호):123-1234</div>
-      <div>회사 정보(이름, 사업자 번호, 대표명, 전호번호, 이메일)</div>
-      <div>회사 주소</div>
-      <div>COPYRIGHT</div>
+
     </div>
   </body>
 </html>

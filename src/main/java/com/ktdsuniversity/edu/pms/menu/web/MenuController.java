@@ -2,13 +2,19 @@ package com.ktdsuniversity.edu.pms.menu.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.menu.service.MenuService;
 import com.ktdsuniversity.edu.pms.menu.vo.MenuVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.util.List;
 
@@ -20,19 +26,21 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping(value = "/menu", produces = "application/json;charset=UTF-8")
-    public String viewMenuList(Model model) {
-
-        List<MenuVO> menuList = menuService.getAllMenuList();
+    public String viewMenuList(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
         Gson gson = new GsonBuilder().create();
 
-        return gson.toJson(menuList);
+        // 경영지원부서인 경우
+        if (employeeVO.getAdmnCode().equals("302") && employeeVO.getWorkSts().equals("201") && employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+            return gson.toJson(menuService.getBussinessSupportMenuList());
+        }
+
+        return gson.toJson(menuService.getAllMenuList(employeeVO.getAdmnCode().equals("301")));
     }
 
     @GetMapping("/menu/manage")
     public String viewMenuManagementPage(Model model) {
-
-        List<MenuVO> menuList = menuService.getAllMenuList();
+        List<MenuVO> menuList = menuService.getAllHierarchicalMenuList();
 
         model.addAttribute("menuList", menuList.stream()
                 .filter(menu -> menu.getParent() == null).toList());
@@ -40,4 +48,38 @@ public class MenuController {
         return "menu/menulist";
     }
 
+    @ResponseBody
+    @GetMapping("/ajax/menu/{pid}")
+    public AjaxResponse getSubMenuByPID(@PathVariable String pid) {
+
+        List<MenuVO> menuList = menuService.getAllFlatMenuList();
+
+        return new AjaxResponse().append("menuList", menuList.stream()
+                .filter(menu -> menu.getParent() != null)
+                .filter(menu -> menu.getParent().equals(pid))
+                .toList());
+    }
+
+    @ResponseBody
+    @GetMapping("/ajax/menu/reload")
+    public AjaxResponse getMenu() {
+
+        List<MenuVO> menuList = menuService.getAllFlatMenuList();
+
+        return new AjaxResponse().append("menuList", menuList.stream()
+                .filter(menu -> menu.getParent() == null)
+                .toList());
+
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/menu/new")
+    public AjaxResponse saveNewMenu(
+            @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+            MenuVO menuVO) {
+
+        boolean isSuccess = menuService.saveNewMenu(menuVO);
+
+        return new AjaxResponse().append("result", isSuccess);
+    }
 }

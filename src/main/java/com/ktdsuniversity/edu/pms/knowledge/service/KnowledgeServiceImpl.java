@@ -52,6 +52,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	}
 	
 	// 검색
+	@Transactional
 	@Override
 	public KnowledgeListVO searchAllKnowledge(SearchKnowledgeVO searchKnowledgeVO) {
 		
@@ -75,6 +76,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	 * @param isIncrease 의 값이 true일 때, 조회수가 증가한다.
 	 * @return 게시글 정보
 	 */
+	@Transactional
 	@Override
 	public KnowledgeVO getOneKnowledge(String knowledgeId, boolean isIncrease) {	
 		
@@ -91,8 +93,6 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 			int updatedCount = this.knowledgeDao.increaseViewCount(knowledgeId);
 		}
 		
-		
-		
 		return knowledgeVO;
 	}
 	
@@ -107,6 +107,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 //		return this.knowledgeDao.recommendOneKnowledge(knlId) > 0;
 //	}
 	
+	@Transactional
 	@Override
 	public int recommendOneKnowledge(String knlId) {
 		
@@ -115,7 +116,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 		return this.knowledgeDao.recommendOneKnowledge(knlId);
 	}
 
-	
+	@Transactional
 	@Override
 	public boolean createNewKnowledge(KnowledgeVO knowledgeVO, MultipartFile file) {
 		
@@ -138,6 +139,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	}
 
 	// 수정
+	@Transactional
 	@Override
 	public boolean updateOneKnowledge(KnowledgeVO knowledgeVO, MultipartFile file) {
 
@@ -174,6 +176,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
 	
 	// 삭제
+	@Transactional
 	@Override
 	public boolean deleteOneKnowledge(String knlId) {
 		
@@ -203,6 +206,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	
 	
 	// 글 한번에 삭제
+	@Transactional
 	@Override
 	public boolean deleteManyKnowledge(List<String> deleteItems) {
 		

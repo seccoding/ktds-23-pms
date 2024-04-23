@@ -79,9 +79,20 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	 <if test='prjId != null and prjId != ""'>
-	   AND	R.PRJ_ID=#{prjId}
-	 </if>
+	 <choose>
+		  <when test='prjId != null and prjId!= ""'>
+		   AND R.PRJ_ID = #{prjId}
+		   </when>
+		  <otherwise>
+		    <if test='empId != null and empId != ""'>
+		  AND  R.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+ 	  		</if>
+		  </otherwise>
+		</choose>
 	 <if test='scdSts != null and scdSts != ""'>
 	   AND	R.SCD_STS=#{scdSts}
 	 </if>
@@ -198,9 +209,20 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	 <if test='prjId != null and prjId != ""'>
-	   AND	R.PRJ_ID=#{prjId}
-	 </if>
+	 <choose>
+		  <when test='prjId != null and prjId!= ""'>
+		   AND R.PRJ_ID = #{prjId}
+		   </when>
+		  <otherwise>
+		    <if test='empId != null and empId != ""'>
+		  AND  R.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+ 	  		</if>
+		  </otherwise>
+		</choose>
 	 <if test='scdSts != null and scdSts != ""'>
 	   AND	R.SCD_STS=#{scdSts}
 	 </if>

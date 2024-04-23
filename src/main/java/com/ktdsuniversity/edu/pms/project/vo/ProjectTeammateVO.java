@@ -9,6 +9,8 @@ public class ProjectTeammateVO {
 	private String tmId;
 	private String role;
 	private String delYn;
+	private String rvYn;
+	private String srvYn;
 
 	private EmployeeVO employeeVO;
 
@@ -58,5 +60,21 @@ public class ProjectTeammateVO {
 
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
+	}
+
+	public String getRvYn() {
+		return rvYn;
+	}
+
+	public void setRvYn(String rvYn) {
+		this.rvYn = rvYn;
+	}
+
+	public String getSrvYn() {
+		return srvYn;
+	}
+
+	public void setSrvYn(String srvYn) {
+		this.srvYn = srvYn;
 	}
 }

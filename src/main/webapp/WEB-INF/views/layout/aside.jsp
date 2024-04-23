@@ -8,7 +8,7 @@
 		<div class="sidebar-user">
 			<div class="sidebar-user-info">
 				<div class="user-name">${sessionScope._LOGIN_USER_.empName}</div>
-				<c:forEach items="${teamList.teamList}" var="team">
+				<c:forEach items="${sessionScope._LOGIN_USER_.teamList}" var="team">
 					<div class="user-team">${team.tmName}</div>
 				</c:forEach>
 			</div>

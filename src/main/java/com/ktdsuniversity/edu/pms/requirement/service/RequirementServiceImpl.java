@@ -50,7 +50,7 @@ public class RequirementServiceImpl implements RequirementService{
 	public RequirementVO getOneRequirement(String rqmId) {
 		return this.requirementDao.getOneRequirement(rqmId);
 	}
-	
+	@Transactional
 	@Override
 	public boolean insertOneRequirement(RequirementVO requirementVO, MultipartFile file) {
 		// TODO 파일 네임 저장 복호화 & 실제내임 2개 필요
@@ -95,7 +95,7 @@ public class RequirementServiceImpl implements RequirementService{
 	
 		return this.requirementDao.updateDelayOneRequirement(delayAcessVO)>0;
 	}
-
+	@Transactional
 	@Override
 	public boolean deleteOneRequirement(RequirementVO RequirementVO) {
 		if(! RequirementVO.getRqmEncodeFile().equals(null)) {
@@ -104,12 +104,13 @@ public class RequirementServiceImpl implements RequirementService{
 		
 		return this.requirementDao.deleteReRequirement(RequirementVO)>0;
 	}
-
+	@Transactional
 	@Override
 	public boolean delayRequirement(RequirementVO requirementVO) {
 
 		return this.requirementDao.delayRequirement(requirementVO)>0;
 	}
+	@Transactional
 	@Override
 	public ResponseEntity<Resource> getDownloadFile(RequirementVO requirement) {
 		ResponseEntity<Resource> downloadFile=

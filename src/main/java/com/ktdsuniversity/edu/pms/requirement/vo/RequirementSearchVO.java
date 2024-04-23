@@ -2,6 +2,9 @@ package com.ktdsuniversity.edu.pms.requirement.vo;
 
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 
+/**
+ * 
+ */
 public class RequirementSearchVO  extends PaginateVO {
 	
 	private String prjId;
@@ -9,6 +12,7 @@ public class RequirementSearchVO  extends PaginateVO {
 	private String rqmSts;
 	private String searchType ;
 	private String searchKeyoword;
+	private String empId;
 	
 	public String getPrjId() {
 		return prjId;
@@ -40,6 +44,13 @@ public class RequirementSearchVO  extends PaginateVO {
 	public void setSearchKeyoword(String searchKeyoword) {
 		this.searchKeyoword = searchKeyoword;
 	}
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	
 	
 	
 

@@ -33,7 +33,6 @@ import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
-
 @Controller
 public class OutputController {
 	@Autowired
@@ -53,12 +52,12 @@ public class OutputController {
 	@GetMapping("/output/search")
 	public String viewOutputSearhList(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String prjId, Model model, OutputSearchVO outputSearchVO) {
-		
+
 		this.checkAccess(employeeVO, prjId);
-		if(! employeeVO.getAdmnCode().equals("301") ) {//관리자가 아니면
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
 			outputSearchVO.setEmpId(employeeVO.getEmpId());
 		}
-		
+
 		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
 		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
@@ -67,34 +66,35 @@ public class OutputController {
 
 		model.addAttribute("outputList", outputList).addAttribute("prjId", prjId)
 				.addAttribute("projectList", projectList).addAttribute("commonCodeList", commonCodeList)
-				.addAttribute("outputSearchVO", outputSearchVO)
-				.addAttribute("verStsList", verStsList);
+				.addAttribute("outputSearchVO", outputSearchVO).addAttribute("verStsList", verStsList);
 
 		return "output/outputlist";
 	}
 
 	@GetMapping("/output/write")
-	public String viewCreateOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,Model model) {
+	public String viewCreateOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 		this.checkAccess(employeeVO);
-		
-		ProjectListVO projectList = this.projectService.getAllProject();
-		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getOutYn().equals("Y")).toList());
+
+		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
-		List<CommonCodeVO> prjSts =this.commonCodeService.getAllCommonCodeListByPId("400");
-		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType)
-		.addAttribute("prjSts", prjSts);
+		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
+		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType).addAttribute("prjSts",
+				prjSts);
 		return "output/outputwrite";
 	}
 
 	@PostMapping("/output/write")
-	public String createOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,@RequestParam MultipartFile file, OutputVO outputVO, Model model) {
+	public String createOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@RequestParam MultipartFile file, OutputVO outputVO, Model model) {
 		this.checkAccess(employeeVO, outputVO.getPrjId());
-		
+
 		Validator<OutputVO> validator = new Validator<>(outputVO);
-		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
 				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
 
+		outputVO.setCrtrId(employeeVO.getEmpId());
 		boolean isSuccess = this.outputService.insertOneOutput(outputVO, file);
 
 		return "redirect:/output";
@@ -102,9 +102,10 @@ public class OutputController {
 	}
 
 	@GetMapping("output/downloadFile/{outId}")
-	public ResponseEntity<Resource> fileDownload(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,@PathVariable String outId) {
+	public ResponseEntity<Resource> fileDownload(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@PathVariable String outId) {
 		this.checkAccess(employeeVO);
-		
+
 		OutputVO Output = this.outputService.getOneOutput(outId);
 
 		return this.outputService.getDownloadFile(Output);
@@ -112,24 +113,28 @@ public class OutputController {
 	}
 
 	@GetMapping("/output/modify/{outId}")
-	public String viewModifyOutputPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,@PathVariable String outId, Model model) {
+	public String viewModifyOutputPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@PathVariable String outId, Model model) {
 		this.checkAccess(employeeVO);
-		
-		ProjectListVO projectList = this.projectService.getAllProject();
+
+		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
+		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		OutputVO output = this.outputService.getOneOutput(outId);
 
-		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType).addAttribute("output",
-				output);
+		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType)
+				.addAttribute("output", output).addAttribute("prjSts", prjSts);
 
 		return "/output/outputmodify";
 
 	}
 
 	@PostMapping("/output/modify/{outId}")
-	public String ModifyOutputPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,@PathVariable String outId, @RequestParam MultipartFile file, OutputVO outputVO) {
+	public String ModifyOutputPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String outId,
+			@RequestParam MultipartFile file, OutputVO outputVO) {
 		this.checkAccess(employeeVO, outputVO.getPrjId());
-		
+
 		Validator<OutputVO> validator = new Validator<>(outputVO);
 		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
 				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
@@ -139,25 +144,25 @@ public class OutputController {
 	}
 
 	@GetMapping("/output/delete/{outId}")
-	public String deleteOutputment(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,@PathVariable String outId, @RequestParam String prjId) {
-		this.checkAccess(employeeVO, prjId);
+	public String deleteOutputment(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String outId) {
+		this.checkAccess(employeeVO);
 
 		boolean isSuccess = this.outputService.deleteOneOutput(outId);
 
-		return "redirect:/output/search?prjId=" + prjId;
+		return "redirect:/output/search?prjId=";
 
 	}
-	
+
 	private void checkAccess(EmployeeVO employeeVO, String prjId) {
-		ProjectTeammateVO pmVO =this.projectDao.findPmByProjectId(prjId);
-		if(! employeeVO.getAdmnCode().equals("301") )  {//관리자가 아닌경우
-			if(pmVO != null) {//프로젝트 아이디가 주어진경우
-				if(pmVO.getTmId().equals(employeeVO.getEmpId())) {//pm인경우
-				}else {//pm이 아닌경우
+		ProjectTeammateVO pmVO = this.projectDao.findPmByProjectId(prjId);
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아닌경우
+			if (pmVO != null) {// 프로젝트 아이디가 주어진경우
+				if (pmVO.getTmId().equals(employeeVO.getEmpId())) {// pm인경우
+				} else {// pm이 아닌경우
 					throw new PageNotFoundException();
 				}
-			}else{//프로젝트 아이디가 안주어진 경우
-				checkAccess( employeeVO);
+			} else {// 프로젝트 아이디가 안주어진 경우
+				checkAccess(employeeVO);
 //				List<ProjectTeammateVO>  tmList = this.projectService.getAllProjectTeammate()
 //				.stream()
 //				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
@@ -169,18 +174,18 @@ public class OutputController {
 			}
 		}
 	}
-		
-		private void checkAccess(EmployeeVO employeeVO) {
-			if(! employeeVO.getAdmnCode().equals("301") )  {//관리자가 아닌경우
-					//프로젝트 아이디가 안주어진 경우
-				List<ProjectTeammateVO>  tmList = this.projectService.getAllProjectTeammate()
-				.stream()
-				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
-				.filter(tm -> tm.getRole().equals("PM")).toList();
-	
-				if(tmList ==null || tmList.isEmpty()) {//PM을 맏은 포지션이 없다면
-					throw new PageNotFoundException();
-				}else {}//pm을 맞은 포지션이 있다면
+
+	private void checkAccess(EmployeeVO employeeVO) {
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아닌경우
+			// 프로젝트 아이디가 안주어진 경우
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammate().stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).filter(tm -> tm.getRole().equals("PM"))
+					.toList();
+
+			if (tmList == null || tmList.isEmpty()) {// PM을 맏은 포지션이 없다면
+				throw new PageNotFoundException();
+			} else {
+			} // pm을 맞은 포지션이 있다면
 		}
 	}
 }

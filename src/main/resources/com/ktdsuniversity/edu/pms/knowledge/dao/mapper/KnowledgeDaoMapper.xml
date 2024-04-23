@@ -12,6 +12,7 @@
 	<result column="PRJ_ID" property="prjId" /><!-- join value -->
 	<result column="CMCD_ID" property="cmcdId" /><!-- join value -->
 	<result column="EMP_ID" property="empId" /><!-- join value -->
+	<result column="REC_ID" property="recId" /><!-- join value -->
 	 
 	<!-- join table -->
 	
@@ -42,6 +43,7 @@
 			<id column="EMP_ID" property="empId" />
 			<result column="EMP_ID" property="empId" />
 	</association>
+	
 	 
 	</resultMap>
 
@@ -112,7 +114,9 @@
   </select>
   
   
-    <select id="searchAllKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO" resultMap="knowledgeVOMap">
+    <select id="searchAllKnowledge" 
+    parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO" 
+    resultMap="knowledgeVOMap">
     <include refid="Common.pagenate_header" />
   	SELECT K.KNL_ID
          , K.RQM_ID
@@ -255,13 +259,13 @@
 	</update>
 	
 
-	
+	<!-- 추천 -->
 	<update id="recommendOneKnowledge" parameterType="String">
 		UPDATE KNOWLEDGE 
 		   SET KNL_REC_CNT = KNL_REC_CNT + 1
 		 WHERE DEL_YN = 'N'
 		   AND KNL_ID = #{knlId}
-	</update>
+	</update> 
 	
 	
 	<select id="selectManyKnowledge" parameterType="list" resultType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">

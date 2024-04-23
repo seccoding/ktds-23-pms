@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 @Repository
 public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
@@ -19,13 +20,23 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	}
 
 	@Override
-	public List<ProductVO> getAllProduct(ProductVO productVO) {
-		return getSqlSession().selectList(ProductDao.NAME_SPACE + ".getAllProduct", productVO);
+	public List<ProductVO> getAllProduct() {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE + ".getAllProduct");
 	}
 
 	@Override
-	public int getProductAllCount(ProductVO productVO) {
-		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".getProductAllCount", productVO);
+	public int getProductAllCount() {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".getProductAllCount");
+	}
+	
+	@Override
+	public List<ProductVO> searchAllProduct(SearchProductVO searchProductVO) {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE + ".searchAllProduct", searchProductVO);
+	}
+	
+	@Override
+	public int searchProductAllCount(SearchProductVO searchProductVO) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".searchProductAllCount", searchProductVO);
 	}
 
 	@Override

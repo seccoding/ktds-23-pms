@@ -60,8 +60,97 @@
 		   AND BH.BRRW_ID = #{_parameter}
 	</select>
 	
-	<select id="getProductManageStateAllCount" 
-			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+	<select id="searchBorrowAllCount" 
+			parameterType="string"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE BH.DEL_YN = 'N'
+		   AND BH.BRRW_ID = #{_parameter}
+		   AND BH.RTN_DT IS NULL
+		   AND P.ONCE_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productName"'>
+		   AND P.PRDT_NAME '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productManagementId"'>
+		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<select id="searchAllUserRentalState" 
+			parameterType="string"
+			resultMap="borrowVOMap">
+		<include refid="Common.pagenate_header" />
+		SELECT BH.BRRW_HIST_ID
+			 , BH.BRRW_ID
+			 , BH.PRDT_MNG_ID
+			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
+			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
+			 , BH.DEL_YN
+			 , P.PRDT_NAME
+			 , P.ONCE_YN 
+			 , P.PRDT_CTGR
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE BH.DEL_YN = 'N'
+		   AND BH.BRRW_ID = #{_parameter}
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productName"'>
+		   AND P.PRDT_NAME '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productManagementId"'>
+		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+		
+		<include refid="Common.pagenate_footer" />
+	</select>
+	
+	<select id="getProductManageStateAllCount" resultType="_int">
+		SELECT COUNT(1)
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE BH.DEL_YN ='N'
+		   AND BH.RTN_DT IS NULL
+		   AND P.ONCE_YN = 'N'
+	</select>
+
+	<select id="getProductManageState" resultMap="borrowVOMap">
+		SELECT BH.BRRW_HIST_ID
+			 , BH.BRRW_ID
+			 , BH.PRDT_MNG_ID
+			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
+			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
+			 , BH.DEL_YN
+			 , P.PRDT_NAME
+			 , P.ONCE_YN 
+			 , P.PRDT_CTGR
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE BH.DEL_YN = 'N'
+	</select>
+	
+	<select id="searchProductManagementStateAllCount" 
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO"
 			resultType="_int">
 		SELECT COUNT(1)
 		  FROM BORROW_HISTORY BH
@@ -74,27 +163,23 @@
 		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
-				<when test='searchType == "prdtMngId"'>
-		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				<when test='searchType == "productManagementId"'>
+		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND BH.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "borrowId"'>
 		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'
-				</when>
-				<when test='searchType == "noSelect"'>
-		   AND (BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
-		   OR BH.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
-		   OR BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%')
 				</when>
 			</choose>
 		</if>
 	</select>
 
-	<select id="getProductManageState" 
-			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+	<select id="searchAllProductManagementState" 
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO"
 			resultMap="borrowVOMap">
+		<include refid="Common.pagenate_header" />
 		SELECT BH.BRRW_HIST_ID
 			 , BH.BRRW_ID
 			 , BH.PRDT_MNG_ID
@@ -112,22 +197,19 @@
 		 WHERE BH.DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
-				<when test='searchType == "prdtMngId"'>
-		   AND PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				<when test='searchType == "productManagementId"'>
+		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "borrowId"'>
-		   AND BRRW_ID LIKE '%' || #{searchKeyword} || '%'
-				</when>
-				<when test='searchType == "noSelect"'>
-		   AND (PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
-		   OR PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
-		   OR BRRW_ID LIKE '%' || #{searchKeyword} || '%')
+		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
 		</if>
+		
+		<include refid="Common.pagenate_footer" />
 	</select>
 	
 	<update id="returnOneItem" parameterType="string">

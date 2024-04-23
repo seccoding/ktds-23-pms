@@ -97,6 +97,17 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return insertedCount > 0;
 	}
 
+	@Transactional
+	@Override
+	public SurveyQuestionVO getOneSurveyForWrite(String prjId) {
+		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionDao.getOneSurveyForWrite(prjId);
+		if (surveyQuestionVO == null) {
+			throw new PageNotFoundException();
+		}
+		return surveyQuestionVO;
+
+	}
+
 	@Override
 	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
 		return this.surveyQuestionDao.getAllSurveysForWrite(surveyQuestionVO);

@@ -21,7 +21,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
         <label for="prj-id">프로젝트명</label>
         <select name="prjId" id="prj-id">
-          <c:forEach items="${projectList.projectList}" var="project">
+          <c:forEach items="${projectList}" var="project">
             <option value="${project.prjId}">${project.prjName}</option>
           </c:forEach>
         </select>
@@ -47,8 +47,6 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
         <label for="file">산출물 파일</label>
         <input type="file" id="file" name="file" />
-
-        <!--담당자 확인자 테스터 테스트결과는 아직 어떤 기준으로 해야하는지 알 수 없음-->
 
         <input id="submitBtn" type="submit" value="제출" />
       </div>
