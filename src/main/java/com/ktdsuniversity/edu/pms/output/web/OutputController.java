@@ -90,7 +90,8 @@ public class OutputController {
 		this.checkAccess(employeeVO, outputVO.getPrjId());
 
 		Validator<OutputVO> validator = new Validator<>(outputVO);
-		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
 				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
 
 		outputVO.setCrtrId(employeeVO.getEmpId());
