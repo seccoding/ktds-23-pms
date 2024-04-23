@@ -4,14 +4,19 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 public interface ProductDao {
 	
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.product.dao.ProductDao";
 
-	public List<ProductVO> getAllProduct(ProductVO productVO);
+	public List<ProductVO> getAllProduct();
 
-	public int getProductAllCount(ProductVO productVO);
+	public int getProductAllCount();
+	
+	public int searchProductAllCount(SearchProductVO searchProductVO);
+
+	public List<ProductVO> searchAllProduct(SearchProductVO searchProductVO);
 
 	/**
 	 * 새로운 비품 추가
@@ -56,5 +61,7 @@ public interface ProductDao {
 	
 	// PSH0422
 	public int changeOnePrdtStored(String prdtName);
+
+	
 
 }

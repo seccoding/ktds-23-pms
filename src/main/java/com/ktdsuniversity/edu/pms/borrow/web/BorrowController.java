@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
@@ -24,19 +26,42 @@ public class BorrowController {
 	
 	
 	@GetMapping("/product/rentalstate")
-	public String viewRentalStatePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		BorrowListVO borrowListVO = this.borrowService.getUserRentalState(employeeVO);
+	public String viewRentalStatePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+						,ProductVO productVO, ProductManagementVO productManagementVO, SearchBorrowVO searchBorrowVO) {
+//		BorrowListVO borrowListVO = this.borrowService.getUserRentalState(employeeVO);
+		
+		searchBorrowVO.setEmployeeVO(employeeVO);
+		searchBorrowVO.setProductVO(productVO);
+		searchBorrowVO.setProductManagementVO(productManagementVO);
+		
+		System.out.println("~~~~~~~~~~~~~~"+searchBorrowVO.getProductVO().getPrdtName()+"~~~~~~~~~~~~~~");
+		System.out.println(searchBorrowVO.getSearchKeyword());
+		System.out.println(searchBorrowVO.getSearchType());
+		System.out.println(searchBorrowVO.getProductManagementVO());
+		
+		System.out.println(productVO.getPrdtId());
+		System.out.println(productVO.getPrdtName());
+		System.out.println(productManagementVO.getPrdtMngId());
+		
+		BorrowListVO borrowListVO = this.borrowService.searchUserRentalState(searchBorrowVO);
 		
 		model.addAttribute("userRentalState", borrowListVO);
 		return "product/rentalstate";
 	}
 	
 	@GetMapping("/product/manage/state")
-	public String viewProductManageStatePage(Model model, ProductVO productVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String viewProductManageStatePage(Model model, ProductVO productVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+							, ProductManagementVO productManagementVO, SearchBorrowVO searchBorrowVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
 			throw new PageNotFoundException();
 		}
-		BorrowListVO borrowListVO = this.borrowService.getProductManageState(productVO);
+		
+//		BorrowListVO borrowListVO = this.borrowService.getProductManageState();
+		
+		searchBorrowVO.setEmployeeVO(employeeVO);
+		searchBorrowVO.setProductVO(productVO);
+		searchBorrowVO.setProductManagementVO(productManagementVO);
+		BorrowListVO borrowListVO = this.borrowService.searchProductManageState(searchBorrowVO);
 		model.addAttribute("productState", borrowListVO);
 		model.addAttribute("productVO", productVO);
 		return "product/managestate";

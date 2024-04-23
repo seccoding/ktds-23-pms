@@ -31,8 +31,7 @@ public class ProductVO extends PaginateVO {
 	public void setApprovalDetailVOList(List<ApprovalDetailVO> approvalDetailVOList) {
 		this.approvalDetailVOList = approvalDetailVOList;
 	}
-	private String searchType; // option 선택
-	private String searchKeyword; // 검색어
+	
 	
 	public String getPrdtId() {
 		return prdtId;
@@ -70,17 +69,6 @@ public class ProductVO extends PaginateVO {
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
 	}
-	public String getSearchType() {
-		return searchType;
-	}
-	public void setSearchType(String searchType) {
-		this.searchType = searchType;
-	}
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
+	
 
 }

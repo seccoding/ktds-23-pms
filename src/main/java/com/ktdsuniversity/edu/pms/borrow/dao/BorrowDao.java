@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.borrow.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
@@ -18,10 +19,20 @@ public interface BorrowDao {
 	public int getBorrowCount(EmployeeVO employeeVO);
 
 	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO);
+	
+	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO);
 
-	public int getProductManageStateAllCount(ProductVO productVO);
+	public List<BorrowVO> searchAllUserRentalState(SearchBorrowVO searchBorrowVO);
+	
 
-	public List<BorrowVO> getProductManageState(ProductVO productVO);
+	public int getProductManageStateAllCount();
+
+	public List<BorrowVO> getProductManageState();
+	
+	public int searchProductManagementStateAllCount(SearchBorrowVO searchBorrowVO);
+
+	public List<BorrowVO> searchAllProductManagementState(SearchBorrowVO searchBorrowVO);
+	
 
 	public int returnOneItem(String brrwHistId);
 	
@@ -33,5 +44,9 @@ public interface BorrowDao {
     public int newBrrwPrdtByAppr(List<BorrowVO> borrowVOList);
 
 	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
+
+	
+
+	
 
 }

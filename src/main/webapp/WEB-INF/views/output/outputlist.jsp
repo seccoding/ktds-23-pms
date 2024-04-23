@@ -64,6 +64,8 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <button id="search-output">검색</button>
     <button id="reset"><a href="/output/search?prjId=">초기화</a></button>
 
+    <div>총 ${outputList.listCnt}건의 산출물이 조회되었습니다</div>
+
     <table class="table">
       <colgroup>
         <col width="40px" />
@@ -93,8 +95,8 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <th>버전</th>
           <th>파일명</th>
           <th>등록일</th>
-          <th>수정일</th>
-          <th>수정</th>
+          <th>작성자</th>
+          <th>등록일</th>
           <th>삭제</th>
         </tr>
       </thead>
@@ -125,8 +127,8 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
                     >${output.outFile}</a
                   >
                 </td>
+                <td>${output.crtrId}</td>
                 <td>${output.crtDt}</td>
-                <td>${output.mdfDt}</td>
                 <td>
                   <button>
                     <a id="modify-btn" href="/output/modify/${output.outId}"
@@ -136,7 +138,10 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </td>
                 <td>
                   <button>
-                    <a href="/output/delete/${output.outId}?prjId=${prjId}"
+                    <a
+                      class="delete"
+                      data-out-id="${output.outId}"
+                      href="javascript:void(0)"
                       >삭제</a
                     >
                   </button>

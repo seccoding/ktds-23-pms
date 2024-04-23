@@ -12,9 +12,10 @@ public class OutputSearchVO extends PaginateVO{
 		
 	}
 	
-	public OutputSearchVO(String prjId, String outType) {
+	public OutputSearchVO(String prjId, String outType,String outVer) {
 		this.prjId =prjId;
 		this.outType = outType;
+		this.outVer = outVer;
 	}
 	
 	public String getPrjId() {
