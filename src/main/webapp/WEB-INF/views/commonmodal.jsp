@@ -73,8 +73,8 @@
       <div class="modal-confirm-text"></div>
     </div>
     <div class="input-confirm-space">
-      <button class="cancel-confirm-button button"></button>
       <button class="confirm-confirm-button button"></button>
+      <button class="cancel-confirm-button button"></button>
     </div>
   </div>
 </dialog>

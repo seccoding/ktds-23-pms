@@ -164,39 +164,102 @@ $().ready(function () {
     var deptId = $("#codeDeptId").text();
     $.get("/ajax/department/candelete/" + deptId, function (response) {
       if (response.data.possible) {
-        if (confirm("정말로 삭제하시겠습니까?")) {
+        var alertModal = $(".modal-confirm-window");
+        var confirmButton = $(".confirm-confirm-button");
+        var cancelButton = $(".cancel-confirm-button");
+        var modalText = $(".modal-confirm-text");
+        modalText.text("정말로 삭제하시겠습니까?");
+        confirmButton.text("확인");
+        cancelButton.text("취소");
+        alertModal[0].showModal();
+
+        confirmButton.on("click", function () {
           $.get("/ajax/department/delete/" + deptId, function (delResponse) {
             if (delResponse.data.success) {
-              alert("삭제에 성공하였습니다.");
+              var alertModal = $(".modal-window");
+              var confirmButton = $(".confirm-button");
+              var modalText = $(".modal-text");
+              modalText.text("삭제에 성공하였습니다.");
+              confirmButton.text("확인");
+              alertModal[0].showModal();
+              confirmButton.on("click", function () {
+                location.href = delResponse.data.next;
+              });
             } else {
-              alert("삭제중 오류가 발생했습니다.");
+              var alertModal = $(".modal-window");
+              var confirmButton = $(".confirm-button");
+              var modalText = $(".modal-text");
+              modalText.text("삭제중 오류가 발생했습니다.");
+              confirmButton.text("확인");
+              alertModal[0].showModal();
+              confirmButton.on("click", function () {
+                location.reload();
+              });
             }
-            location.href = delResponse.data.next;
           });
-        }
+        });
       } else {
-        alert("팀이 존재하고 있어 삭제할 수 없습니다.");
+        var alertModal = $(".modal-window");
+        var confirmButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text("부서 내에 팀이 존재하여 삭제할 수 없습니다.");
+        confirmButton.text("확인");
+        alertModal[0].showModal();
+        confirmButton.on("click", function () {
+          location.reload();
+        });
       }
     });
   });
+
   $(".team-delete").on("click", function () {
     var tmId = $("#codeTmId").text();
     $.get("/ajax/department/team/candelete/" + tmId, function (response) {
       if (response.data.possible) {
-        if (confirm("정말로 삭제하시겠습니까?")) {
-          $.get("/ajax/department/team/delete/" + tmId, function (response) {
-            if (response.data.success) {
-              alert("삭제에 성공하였습니다.");
-              location.reload();
+        var alertModal = $(".modal-confirm-window");
+        var confirmButton = $(".confirm-confirm-button");
+        var cancelButton = $(".cancel-confirm-button");
+        var modalText = $(".modal-confirm-text");
+        modalText.text("정말로 삭제하시겠습니까?");
+        confirmButton.text("확인");
+        cancelButton.text("취소");
+        alertModal[0].showModal();
+
+        confirmButton.on("click", function () {
+          $.get("/ajax/department/team/delete/" + tmId, function (delResponse) {
+            if (delResponse.data.success) {
+              var alertModal = $(".modal-window");
+              var confirmButton = $(".confirm-button");
+              var modalText = $(".modal-text");
+              modalText.text("삭제에 성공하였습니다.");
+              confirmButton.text("확인");
+              alertModal[0].showModal();
+              confirmButton.on("click", function () {
+                location.reload();
+              });
             } else {
-              alert("삭제중 오류가 발생했습니다.");
-              location.reload();
+              var alertModal = $(".modal-window");
+              var confirmButton = $(".confirm-button");
+              var modalText = $(".modal-text");
+              modalText.text("삭제중 오류가 발생했습니다.");
+              confirmButton.text("확인");
+              alertModal[0].showModal();
+              confirmButton.on("click", function () {
+                location.reload();
+              });
             }
           });
-        }
+        });
       } else {
-        alert("사원이 존재하고 있어 삭제할 수 없습니다.");
-        location.reload();
+        var alertModal = $(".modal-window");
+        var confirmButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text("팀내에 사원이 존재하여 삭제할 수 없습니다.");
+        confirmButton.text("확인");
+        alertModal[0].showModal();
+        confirmButton.on("click", function () {
+          location.reload();
+        });
       }
     });
   });
@@ -216,20 +279,21 @@ $().ready(function () {
   $(".team-create").on("click", function () {
     var modal = $(".create-modal-team");
     $("#department-selectbox").val($("#codeDeptId").text());
-    console.log($("#department-selectbox").val());
+
     modal[0].showModal();
   });
+
   $("#team-cancel-button").on("click", function () {
     location.reload();
   });
 
   $(".team-submit-button").on("click", function () {
     var teamName = $("#team-name").val();
-    console.log(teamName);
+
     var teamLeader = $("#team-leader").val();
-    console.log(teamLeader);
+
     var teamDepartment = $(".department-selectbox").val();
-    console.log(teamDepartment);
+
     $.post(
       "/ajax/team/create",
       { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
