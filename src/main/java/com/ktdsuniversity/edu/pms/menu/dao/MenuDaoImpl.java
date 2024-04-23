@@ -21,4 +21,15 @@ public class MenuDaoImpl extends SqlSessionDaoSupport implements MenuDao {
     public List<MenuVO> selectAllMenuList() {
         return getSqlSession().selectList(NAME_SPACE + ".selectAllMenuList");
     }
+
+    @Override
+    public List<MenuVO> selectAllHierarchicalMenuList() {
+        return getSqlSession().selectList(NAME_SPACE + ".selectAllHierarchicalMenuList");
+    }
+
+    @Override
+    public int insertNewMenu(MenuVO menuVO) {
+        return getSqlSession().insert(NAME_SPACE + ".insertNewMenu", menuVO);
+
+    }
 }
