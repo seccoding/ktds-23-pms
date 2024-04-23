@@ -64,16 +64,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </button>
         </c:when>
         <c:otherwise>
-          <button>
-            <a id="approve" href="javascript:void(0)" data-approve="true"
-              >승인</a
-            >
-          </button>
-          <button>
-            <a id="refuse" href="javascript:void(0)" data-approve="false"
-              >거절</a
-            >
-          </button>
+          <c:if test='${employeeVO.getAdmnCode() == "301" or isPmAndPl }'>
+            <button>
+              <a id="approve" href="javascript:void(0)" data-approve="true"
+                >승인</a
+              >
+            </button>
+            <button>
+              <a id="refuse" href="javascript:void(0)" data-approve="false"
+                >거절</a
+              >
+            </button>
+          </c:if>
         </c:otherwise>
       </c:choose>
     </div>
