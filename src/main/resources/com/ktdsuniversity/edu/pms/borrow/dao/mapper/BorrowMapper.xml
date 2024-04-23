@@ -60,7 +60,9 @@
 		   AND BH.BRRW_ID = #{_parameter}
 	</select>
 	
-	<select id="searchBorrowAllCount" parameterType="string" resultType="_int">
+	<select id="searchBorrowAllCount" 
+			parameterType="string"
+			resultType="_int">
 		SELECT COUNT(1)
 		  FROM BORROW_HISTORY BH
 		 INNER JOIN PRODUCT_MANAGEMENT PM
@@ -83,7 +85,9 @@
 		</if>
 	</select>
 
-	<select id="searchAllUserRentalState" parameterType="string" resultMap="borrowVOMap">
+	<select id="searchAllUserRentalState" 
+			parameterType="string"
+			resultMap="borrowVOMap">
 		<include refid="Common.pagenate_header" />
 		SELECT BH.BRRW_HIST_ID
 			 , BH.BRRW_ID
@@ -159,7 +163,7 @@
 		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
-				<when test='searchType == "prdtMngId"'>
+				<when test='searchType == "productManagementId"'>
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
@@ -193,7 +197,7 @@
 		 WHERE BH.DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
-				<when test='searchType == "prdtMngId"'>
+				<when test='searchType == "productManagementId"'>
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>

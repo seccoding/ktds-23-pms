@@ -34,14 +34,10 @@ public class BorrowController {
 		searchBorrowVO.setProductVO(productVO);
 		searchBorrowVO.setProductManagementVO(productManagementVO);
 		
-		System.out.println("~~~~~~~~~~~~~~"+searchBorrowVO.getProductVO().getPrdtName()+"~~~~~~~~~~~~~~");
-		System.out.println(searchBorrowVO.getSearchKeyword());
-		System.out.println(searchBorrowVO.getSearchType());
-		System.out.println(searchBorrowVO.getProductManagementVO());
+		System.out.println("~~~~~~~~~~~~~~~~~"+searchBorrowVO.getEmployeeVO().getEmpId()+"~~~~~~~~~~~~~~");
 		
-		System.out.println(productVO.getPrdtId());
-		System.out.println(productVO.getPrdtName());
-		System.out.println(productManagementVO.getPrdtMngId());
+		String empID = searchBorrowVO.getEmployeeVO().getEmpId();
+		searchBorrowVO.getEmployeeVO().setEmpId(empID);
 		
 		BorrowListVO borrowListVO = this.borrowService.searchUserRentalState(searchBorrowVO);
 		
