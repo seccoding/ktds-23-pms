@@ -39,8 +39,8 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 
 
     @Override
-    public void updateLoginLog(EmployeeVO employee) {
-        getSqlSession().insert(LoginLogDao.LOGIN_SPACE + ".updateLoginLog", employee);
+    public int updateLoginLog(LoginLogVO loginLogVO) {
+        return getSqlSession().insert(LoginLogDao.LOGIN_SPACE + ".updateLoginLog", loginLogVO);
     }
 
     @Override
