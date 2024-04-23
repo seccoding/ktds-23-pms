@@ -573,7 +573,12 @@
         P.DEPT_ID,
         P.PRJ_STS,
         P.STRT_DT,
-        P.END_DT
+        P.END_DT,
+        P.OUT_YN,
+        P.REQ_YN,
+        P.IS_YN,
+        P.KNL_YN,
+        P.QA_YN
         FROM PROJECT P
         WHERE P.DEL_YN = 'N'
         AND PRJ_ID IN (SELECT PRJ_ID
