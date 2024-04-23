@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.login.service;
 
 
+import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
 import com.ktdsuniversity.edu.pms.login.vo.*;
@@ -8,6 +9,8 @@ import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 
 import org.apache.tika.utils.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +20,14 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdAndPwdIsNotMatchException;
 import com.ktdsuniversity.edu.pms.exceptions.LimitLoginException;
 import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
+
+	private Logger logger = LoggerFactory.getLogger(ApprovalServiceImpl.class);
 
 	/**
 	 * 맴버변수 loginLogDao 에 Bean Container 에 적재된 Dao 의존성 주입(할당)
@@ -64,8 +70,15 @@ public class LoginLogServiceImpl implements LoginLogService {
 		//현재시간이 로그인 시도시간 + 1/24보다 큰 경우 1을 반환하고 아니라면 0을 반환하는 쿼리를 실행
 		//실행된 값이 0보다 클경우 로그인 시도횟수를 0으로 초기화
 		int possiableLoginCount = this.loginLogDao.getCountPossibleLogin(employeeVO.getEmpId());
+
 		if (possiableLoginCount > 0) {
-			this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
+			int updateOneEmpLgnTryZeroSuccess =  this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
+
+			if (updateOneEmpLgnTryZeroSuccess > 0) {
+				logger.debug("로그인 시도 횟수 초기화에 성공했습니다.(1)");
+			} else {
+				logger.debug("로그인 시도 횟수 초기화에 실패했습니다.(1)");
+			}
 		}
 		
 		//로그인 시도횟수를 가져오고 5번이 되면 오류 발생
@@ -78,16 +91,30 @@ public class LoginLogServiceImpl implements LoginLogService {
 
 		
 		//시도 횟수가 5회가 아닐때 로그인 성공, 실패 상관없이 로그인 시도시간을 업데이트한다
-		this.loginLogDao.updateOneEmpLgnTryDt(employeeVO.getEmpId());
+		int updateOneEmpLgnTryDtSuccess = this.loginLogDao.updateOneEmpLgnTryDt(employeeVO.getEmpId());
+		if (updateOneEmpLgnTryDtSuccess > 0) {
+			logger.debug("로그인 시도시간 업데이트에 성공했습니다.");
+		} else {
+			logger.debug("로그인 시도시간 업데이트에 실패했습니다.");
+		}
 
+		// 로그인을 실패하면 실행되는 코드
 		if (employee == null) {
-			// exception 패키지에서 exception 처리 해야 한다.
-			this.loginLogDao.updateOneEmpLgnTryPlusOne(employeeVO.getEmpId());
-			
+			int updateOneEmpLgnTryPlusOneSuccess = this.loginLogDao.updateOneEmpLgnTryPlusOne(employeeVO.getEmpId());
+			if (updateOneEmpLgnTryPlusOneSuccess > 0) {
+				logger.debug("로그인 실패 - 로그인 시도 횟수 1 증가에 성공했습니다.(2)");
+			} else {
+				logger.debug("로그인 실패 - 로그인 시도 횟수 1 증가에 실패했습니다.(2)");
+			}
 			throw new EmpIdAndPwdIsNotMatchException();
 		} else {
 			// 성공하면 로그인 시도 횟수를 0으로 초기화
-			this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
+			int updateOneEmpLgnTryZeroSuccess =  this.loginLogDao.updateOneEmpLgnTryZero(employeeVO.getEmpId());
+			if (updateOneEmpLgnTryZeroSuccess > 0) {
+				logger.debug("로그인 시도 횟수 초기화에 성공했습니다.");
+			} else {
+				logger.debug("로그인 시도 횟수 초기화에 실패했습니다.");
+			}
 			return employee;
 		}
 
@@ -95,23 +122,24 @@ public class LoginLogServiceImpl implements LoginLogService {
 //		employee.setLgnYn("Y");
 	}
 
+	@Transactional
 	@Override
-	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
+	public boolean updateOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
 		employeeVO.setLgnYn("Y");
-		this.loginLogDao.getOneEmpIdUseOtherPlace(employeeVO);
-
-		return null;
+		return this.loginLogDao.updateOneEmpIdUseOtherPlace(employeeVO) > 0;
 	}
 
+	@Transactional
 	@Override
-	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO) {
-		employeeVO.setLgnYn("N");
-		this.loginLogDao.getOneEmpIdNotUseNow(employeeVO);
+	public boolean updateOneEmpIdNotUseNow(EmployeeVO employeeVO) {
+		int useEmpIdCheck = this.loginLogDao.updateOneEmpIdNotUseNow(employeeVO);
+
+		return useEmpIdCheck > 0;
 	}
 
-
+	@Transactional
 	@Override
-	public boolean updateLoginLog(EmployeeVO employee) {
+	public boolean insertLoginLog(EmployeeVO employee) {
 		if (employee.getLoginLogVO() == null) {
 			employee.setLoginLogVO(new LoginLogVO());
 		}
@@ -119,10 +147,11 @@ public class LoginLogServiceImpl implements LoginLogService {
 		LoginLogVO loginLogVO = employee.getLoginLogVO();
 		loginLogVO.setEmpId(employee.getEmpId());
 		
-		int insertedCount = this.loginLogDao.updateLoginLog(loginLogVO);
+		int insertedCount = this.loginLogDao.insertLoginLog(loginLogVO);
 		return insertedCount > 0;
 	}
 
+	@Transactional
 	@Override
 	public EmployeeVO updateEmpLog(EmployeeVO employee) {
 		TeamListVO teamList = new TeamListVO();
@@ -131,14 +160,16 @@ public class LoginLogServiceImpl implements LoginLogService {
 		return this.loginLogDao.updateEmpLog(employee);
 	}
 
+	@Transactional
 	@Override
-	public void updateEmpLogout(String logId) {
-		this.loginLogDao.updateEmpLogout(logId);
+	public boolean updateEmpLogout(String logId) {
+		return this.loginLogDao.updateEmpLogout(logId) > 0;
 	}
 
+	@Transactional
 	@Override
-	public void insertCommuteIn(EmployeeVO employee) {
-		this.loginLogDao.insertCommuteIn(employee);
+	public boolean insertCommuteIn(EmployeeVO employee) {
+		return this.loginLogDao.insertCommuteIn(employee) > 0;
 	}
 
 	@Override
@@ -146,9 +177,10 @@ public class LoginLogServiceImpl implements LoginLogService {
 		return this.loginLogDao.getCommuteDt(empId);
 	}
 
+	@Transactional
 	@Override
-	public void updateComuteFnsh(EmployeeVO employee) {
-		this.loginLogDao.updateCommuteFnsh(employee);
+	public boolean updateCommuteFnsh(EmployeeVO employee) {
+		return this.loginLogDao.updateCommuteFnsh(employee) > 0;
 	}
 
 	@Override

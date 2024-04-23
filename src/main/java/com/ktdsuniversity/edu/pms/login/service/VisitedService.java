@@ -4,5 +4,5 @@ import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
 
 public interface VisitedService {
 
-	void insertOneEmpVisitedHistory(VisitedVO visitedVO);
+	public boolean insertOneEmpVisitedHistory(VisitedVO visitedVO);
 }

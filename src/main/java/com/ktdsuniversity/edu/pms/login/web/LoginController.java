@@ -4,9 +4,12 @@ package com.ktdsuniversity.edu.pms.login.web;
 import java.util.List;
 import java.util.Map;
 
+import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
 import com.ktdsuniversity.edu.pms.login.vo.*;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
+    private Logger logger = LoggerFactory.getLogger(ApprovalServiceImpl.class);
 
     @Autowired
     private LoginLogService loginLogService;
@@ -76,16 +80,35 @@ public class LoginController {
         if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
         	
             // 로그인 기록 DB 저장 메서드
-            this.loginLogService.updateLoginLog(employee);
+            boolean insertLoginLogSuccess = this.loginLogService.insertLoginLog(employee);
+            if (insertLoginLogSuccess) {
+                logger.debug("로그인 기록 저장을 성공했습니다.");
+            } else {
+                logger.debug("로그인 기록 저장에 실패했습니다.");
+            }
             // LOGIN_LOG 테이블의 LOG_ID 값을 포함한 employeeVO 객체를 재대입한다.
 //            employee = this.loginLogService.updateEmpLog(employee);
 
             //로그인 성공시 LGNYN을 Y로 변경
-            this.loginLogService.getOneEmpIdUseOtherPlace(employee);
+            boolean updateLGNY = this.loginLogService.updateOneEmpIdUseOtherPlace(employee);
+            if (updateLGNY) {
+                logger.debug("로그인 상태를 'Y'로 변경했습니다.");
+            } else {
+                logger.debug("로그인 상태 변경('Y')에 실패했습니다.");
+            }
             
             int commuteCheck = this.loginLogService.getCommuteDt(employee.getEmpId());
             if (commuteCheck == 0) {
-                this.loginLogService.insertCommuteIn(employee);
+                logger.debug("오늘 출근 기록이 없습니다. 출근을 기록하겠습니다.");
+                boolean insertCommuteSuccess = this.loginLogService.insertCommuteIn(employee);
+
+                if (insertCommuteSuccess) {
+                    logger.debug("출퇴근 기록에 성공했습니다.");
+                } else {
+                    logger.debug("출퇴근 기록에 실패했습니다.");
+                }
+            } else {
+                logger.debug("이미 출근을 기록했습니다.");
             }
 
             session.setAttribute("_LOGIN_USER_", employee);            
@@ -102,8 +125,20 @@ public class LoginController {
 
     @GetMapping("/employee/logout")
     public String doLogout(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-        this.loginLogService.getOneEmpIdNotUseNow(employeeVO);
-        this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
+
+        boolean oneEmpIdNotUseSuccess = this.loginLogService.updateOneEmpIdNotUseNow(employeeVO);
+        if (oneEmpIdNotUseSuccess) {
+            logger.debug("로그인 상태 변경에 성공했습니다.(로그아웃 버튼)");
+        } else {
+            logger.debug("로그인 상태 변경에 실패했습니다.(로그아웃 버튼)");
+        }
+
+        boolean updateEmpLogoutSuccess = this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
+        if (updateEmpLogoutSuccess) {
+            logger.debug("로그아웃 기록에 성공했습니다.(로그아웃 버튼)");
+        } else {
+            logger.debug("로그아웃 기록에 실패했습니다.(로그아웃 버튼)");
+        }
         SessionUtil.removeSession(employeeVO.getEmpId());
 
         return "redirect:/employee/login";

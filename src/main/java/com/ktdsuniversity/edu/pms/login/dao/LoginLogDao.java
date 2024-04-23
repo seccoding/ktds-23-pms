@@ -18,34 +18,33 @@ public interface LoginLogDao {
 	 */
 	public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO);
 
-	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO);
+	public int updateOneEmpIdUseOtherPlace(EmployeeVO employeeVO);
 
-	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO);
+	public int updateOneEmpIdNotUseNow(EmployeeVO employeeVO);
 
-	public void updateOneEmpLgnTryPlusOne(String empId);
+	public int updateOneEmpLgnTryPlusOne(String empId);
 
-	public void updateOneEmpLgnTryZero(String empId);
+	public int updateOneEmpLgnTryZero(String empId);
 
 	public int getOneEmpLgnTryCount(String empId);
 
-
-	public int updateLoginLog(LoginLogVO loginLogVO);
+	public int insertLoginLog(LoginLogVO loginLogVO);
 
 	public EmployeeVO updateEmpLog(EmployeeVO employee);
 
-	public void updateOneEmpLgnTryDt(String empId);
+	public int updateOneEmpLgnTryDt(String empId);
 
 	public int getCountPossibleLogin(String empId);
 
-    public void updateEmpLogout(String logId);
+    public int updateEmpLogout(String logId);
 
-    public void insertCommuteIn(EmployeeVO employee);
+    public int insertCommuteIn(EmployeeVO employee);
 
     public String selectSalt(String empId);
 
     public int getCommuteDt(String empId);
 
-    public void updateCommuteFnsh(EmployeeVO employee);
+    public int updateCommuteFnsh(EmployeeVO employee);
 
     public int getPwdCndt(String empId);
 

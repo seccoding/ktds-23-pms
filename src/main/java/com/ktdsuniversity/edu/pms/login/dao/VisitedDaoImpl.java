@@ -17,7 +17,7 @@ public class VisitedDaoImpl extends SqlSessionDaoSupport implements VisitedDao{
     }
 
 	@Override
-	public void insertOneEmpVisitedHistory(VisitedVO visitedVO) {
-		getSqlSession().update(VisitedDao.VISITED_SPACE + ".insertOneEmpVisitedHistory", visitedVO);
+	public int insertOneEmpVisitedHistory(VisitedVO visitedVO) {
+		return getSqlSession().update(VisitedDao.VISITED_SPACE + ".insertOneEmpVisitedHistory", visitedVO);
 	}
 }

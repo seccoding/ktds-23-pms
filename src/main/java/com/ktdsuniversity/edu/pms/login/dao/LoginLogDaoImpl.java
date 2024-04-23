@@ -28,19 +28,19 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
 	@Override
-	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
-		return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpIdUseOtherPlace", employeeVO);
+	public int updateOneEmpIdUseOtherPlace(EmployeeVO employeeVO) {
+		return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateOneEmpIdUseOtherPlace", employeeVO);
 	}
 
 	@Override
-	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO) {
-		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getOneEmpIdNotUseNow", employeeVO);
+	public int updateOneEmpIdNotUseNow(EmployeeVO employeeVO) {
+		return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateOneEmpIdNotUseNow", employeeVO);
 	}
 
 
     @Override
-    public int updateLoginLog(LoginLogVO loginLogVO) {
-        return getSqlSession().insert(LoginLogDao.LOGIN_SPACE + ".updateLoginLog", loginLogVO);
+    public int insertLoginLog(LoginLogVO loginLogVO) {
+        return getSqlSession().insert(LoginLogDao.LOGIN_SPACE + ".insertLoginLog", loginLogVO);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-    public void updateEmpLogout(String logId) {
-        getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", logId);
+    public int updateEmpLogout(String logId) {
+        return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", logId);
     }
 
     @Override
-    public void insertCommuteIn(EmployeeVO employee) {
-        getSqlSession().insert(LoginLogDao.LOGIN_SPACE + ".insertCommuteIn", employee);
+    public int insertCommuteIn(EmployeeVO employee) {
+        return getSqlSession().insert(LoginLogDao.LOGIN_SPACE + ".insertCommuteIn", employee);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-    public void updateCommuteFnsh(EmployeeVO employee) {
-        getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateCommuteFnsh", employee);
+    public int updateCommuteFnsh(EmployeeVO employee) {
+        return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateCommuteFnsh", employee);
     }
 
     @Override
@@ -79,13 +79,13 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-	public void updateOneEmpLgnTryPlusOne(String empId) {
-		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryPlusOne", empId);
+	public int updateOneEmpLgnTryPlusOne(String empId) {
+		return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryPlusOne", empId);
 	}
 
 	@Override
-	public void updateOneEmpLgnTryZero(String empId) {
-		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryZero", empId);
+	public int updateOneEmpLgnTryZero(String empId) {
+		return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryZero", empId);
 	}
 
 	@Override
@@ -94,8 +94,8 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
 	}
 
 	@Override
-	public void updateOneEmpLgnTryDt(String empId) {
-		getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryDt", empId);
+	public int updateOneEmpLgnTryDt(String empId) {
+		return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateOneEmpLgnTryDt", empId);
 	}
 
 	@Override

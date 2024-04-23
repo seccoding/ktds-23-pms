@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.beans;
 
+import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -13,6 +16,8 @@ import jakarta.servlet.http.HttpSession;
 public class RecordScreenAccessAfterLoginInterceptor implements HandlerInterceptor {
 
 	private VisitedService visitedService;
+
+	private Logger logger = LoggerFactory.getLogger(ApprovalServiceImpl.class);
 
 	public void setVisitedService(VisitedService visitedService) {
 		this.visitedService = visitedService;
@@ -33,7 +38,12 @@ public class RecordScreenAccessAfterLoginInterceptor implements HandlerIntercept
 			visitedVO.setEmpId(employeeVO.getEmpId());
 			visitedVO.setAccsUrl(nextUrl.toString());
 
-			visitedService.insertOneEmpVisitedHistory(visitedVO);
+			boolean insertOneEmpVisitedHistory = visitedService.insertOneEmpVisitedHistory(visitedVO);
+			if (insertOneEmpVisitedHistory) {
+				logger.debug("화면 접근 기록에 성공했습니다.");
+			} else {
+				logger.debug("화면 접근 기록에 실패했습니다.");
+			}
 		}
 		return true;
 	}
