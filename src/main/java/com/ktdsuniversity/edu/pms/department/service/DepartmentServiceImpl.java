@@ -34,6 +34,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 		return departmentListVO;
 	}
 
+	@Transactional
 	@Override
 	public boolean createNewDepartment(DepartmentVO departmentVO) {
 		
