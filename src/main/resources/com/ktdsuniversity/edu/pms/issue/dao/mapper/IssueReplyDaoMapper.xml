@@ -18,14 +18,15 @@
 	<select id="getAllReplies" 
 			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO" 
 			resultMap="issueReplyVOMap">
-		SELECT R.RPL_ID
+		SELECT LEVEL
+		     , R.RPL_ID
 		     , R.RPL_PID
 		     , R.RPL_CNTNT
 		     , R.P_POST_ID
 		     , R.PICK_YN
-		     , R.CRT_DT
+		     , TO_CHAR(R.CRT_DT, 'YYYY-MM-DD') CRT_DT
 		     , R.CRTR_ID
-		     , R.MDF_DT
+		     , TO_CHAR(R.MDF_DT, 'YYYY-MM-DD') MDF_DT
 		     , R.MDFR_ID
 		     , R.DEL_YN
 		     , E.EMP_ID
@@ -33,6 +34,67 @@
 		  FROM REPLY R
 		 INNER JOIN EMPLOYEE E
 		    ON R.CRTR_ID = E.EMP_ID
-		 WHERE R.DEL_YN = 'N'
+		 START WITH R.P_POST_ID = #{pPostId}
+		CONNECT BY PRIOR R.RPL_ID = R.RPL_PID
 	</select>
+	
+	<select id="getOneReply" 
+			parameterType="_int" 
+			resultMap="issueReplyVOMap">
+		SELECT R.RPL_ID
+		     , R.RPL_PID
+		     , R.RPL_CNTNT
+		     , R.P_POST_ID
+		     , R.PICK_YN
+		     , TO_CHAR(R.CRT_DT, 'YYYY-MM-DD') CRT_DT
+		     , R.CRTR_ID
+		     , TO_CHAR(R.MDF_DT, 'YYYY-MM-DD') MDF_DT
+		     , R.MDFR_ID
+		     , R.DEL_YN
+		     , E.EMP_ID
+		     , E.EMP_NAME
+		  FROM REPLY R
+		 INNER JOIN EMPLOYEE E
+		    ON R.CRTR_ID = E.EMP_ID
+		 WHERE R.RPL_ID = #{_parameter}
+	</select>
+	
+	<insert id="createNewIssueReply"
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO">
+		INSERT INTO REPLY
+			 (RPL_ID
+			, RPL_PID
+			, RPL_CNTNT
+			, P_POST_ID
+			, CRT_DT
+			, CRTR_ID
+			, MDF_DT
+			, MDFR_ID
+			, DEL_YN)
+		VALUES
+			 (('RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REPLY_PK.NEXTVAL, 6, '0'))
+			, #{rplPid}
+			, #{rplCntnt}
+			, #{pPostId}
+			, SYSDATE
+			, #{crtrId}
+			, NULL
+			, NULL
+			, 'N')
+	</insert>
+	
+	<update id="deleteOneIssueReply"
+			parameterType="string">
+		UPDATE REPLY
+		   SET DEL_YN = 'Y'
+		 WHERE RPL_ID = #{_parameter}
+	</update>
+	
+	<update id="modifyOneIssueReply"
+			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO">
+		UPDATE REPLY
+		   SET RPL_CNTNT = 'Y
+		     , MDF_DT = SYSDATE
+		 WHERE RPL_ID = #{rplId}
+	</update>
 </mapper>

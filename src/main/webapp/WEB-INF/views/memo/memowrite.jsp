@@ -28,6 +28,7 @@
             });
         }
     </script>
+    <script type="text/javascript" src="/js/memo/memowrite.js"></script>
 </head>
 <body>
 
@@ -42,7 +43,7 @@
           value="${memoVO.rcvId}"
           placeholder="여러 명은 쉼표(,)로 구분해주세요."
         />
-		<button type="button" onclick="alert('주소록 구현필요')">주소록</button>
+		<button class="address">주소록</button>
         
         <div class="editor" data-tag="dataTag"></div><br>
         <input type="hidden" name="memoCntnt" id="memoCntnt" />

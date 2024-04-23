@@ -24,6 +24,13 @@
             <id column="EMP_NAME" property="empName"/>
         </association>
     </resultMap>
+    
+    <resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" id="teamVOMap" autoMapping="true">
+        <id column="EMP_ID" property="empId"/>
+        <association property="teamVO" javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+            <id column="TEAM_NAME" property="teamName"/>
+        </association>
+    </resultMap>
 
 
     <select id="getOneEmployeeByEmpIdAndPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
@@ -39,6 +46,7 @@
         , REST_ST_DT
         , REST_END_DT
         , MNGR_YN
+        , DEPT_ID
         FROM EMPLOYEE
         WHERE EMP_ID = #{empId}
         AND PWD = #{pwd}
@@ -88,6 +96,7 @@
         , E.REST_END_DT
         , E.PWD_CN_DT
         , E.MNGR_YN
+        , E.DEPT_ID
         , L.LOG_ID
         FROM EMPLOYEE E
         JOIN LOGIN_LOG L
@@ -98,7 +107,7 @@
 
     <update id="updateEmpLogout" parameterType="string">
         UPDATE LOGIN_LOG
-        SET LGT_DT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        SET LGT_DT = SYSDATE
         WHERE LOG_ID = #{_parameter}
         AND LGT_DT IS NULL
     </update>
@@ -191,9 +200,9 @@
     <select id="getAllLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" resultMap="loginLogVOMap">
         SELECT L.LOG_ID
              , L.EMP_ID
-             , L.LGN_SCC_DT
-             , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH:MI:SS') L.LGT_DT
-             , TO_CHAR(L.DEL_YN, 'YYYY-MM-DD HH:MI:SS') L.DEL_YN
+             , TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
+             , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LGT_DT
+             , L.DEL_YN
              , E.EMP_NAME
           FROM LOGIN_LOG L
           JOIN EMPLOYEE E
@@ -204,17 +213,17 @@
                       WHERE L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "lgnSccDt"'>
-                      WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                      WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "lgtDt"'>
-                      WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                      WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "employeeVO.empName"'>
                       WHERE EMP_NAME LIKE '%' || #{searchKeyword} || '%'
                   </when>
               </choose>
           </if>
-         ORDER BY LGN_SCC_DT
+         ORDER BY L.LGN_SCC_DT
     </select>
 
     <select id="getAllVisitedLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO" resultMap="visitedVOMap">
@@ -245,5 +254,15 @@
         </if>
          ORDER BY ACCS_DT
     </select>
+    
+    <select id="getOneTeamNameByEmpId"
+    		parameterType="string"
+    		resultMap="teamVOMap">
+			SELECT T.TM_NAME 
+			  FROM EMPLOYEE E
+			  JOIN TEAM T
+			    ON E.DEPT_ID = T.DEPT_ID
+			 WHERE E.EMP_ID = #{empId}
+	</select>
 
 </mapper>

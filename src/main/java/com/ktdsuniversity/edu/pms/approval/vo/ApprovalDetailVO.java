@@ -15,9 +15,7 @@ public class ApprovalDetailVO extends PaginateVO {
 	private ProductManagementVO productManagementVO;
 
 	private EmployeeVO employeeVO;
-
 	private ApprovalVO approvalVO;
-
 	private ProductVO productVO;
 
 	public String getApprDtlId() {

@@ -5,6 +5,7 @@ import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 import java.util.List;
 
@@ -53,4 +54,6 @@ public interface LoginLogDao {
     public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO);
 
 	public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO);
+
+	public List<TeamVO> getOneTeamNameByEmpId(String empId);
 }

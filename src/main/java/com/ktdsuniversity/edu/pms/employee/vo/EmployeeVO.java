@@ -60,6 +60,7 @@ public class EmployeeVO {
 
     private JobVO jobVO;
     private TeamVO teamVO;
+    private String tmName;
     
 	public TeamVO getTeamVO() {
 		return teamVO;
@@ -67,6 +68,15 @@ public class EmployeeVO {
 	public void setTeamVO(TeamVO teamVO) {
 		this.teamVO = teamVO;
 	}
+	
+	public String getTmName() {
+		return tmName;
+	}
+
+	public void setTmName(String tmName) {
+		this.tmName = tmName;
+	}
+
 	public JobVO getJobVO() {
 		return jobVO;
 	}

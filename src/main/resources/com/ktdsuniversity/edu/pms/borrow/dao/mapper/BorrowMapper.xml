@@ -12,6 +12,20 @@
 			<result column="ONCE_YN" property="onceYn" />
 			<result column="PRDT_CTGR" property="prdtCtgr" />
 		</association>
+		<association property="productManagementVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO">
+			<id column="PRDT_MNG_ID" property="prdtMngId" />
+			<result column="BRRW_YN" property="brrwYn" />
+		</association>
+		<association property="approvalVO" javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+			<id column="APPR_ID" property="apprId"/>
+			<result column="DMD_ID" property="dmdId"/>
+			<result column="APPR_DEL_YN" property="delYn"/>
+		</association>
+		<association property="approvalDetailVO" javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO">
+			<id column="APPR_DTL_ID" property="apprDtlId"/>
+			<result column="APPR_ID" property="apprId"/>
+			<result column="APPR_DTL_DEL_YN" property="delYn"/>
+		</association>
 	</resultMap>
 
 	<select id="getBorrowCount" resultType="_int" parameterType="string">
@@ -121,4 +135,69 @@
 		   SET RTN_DT = SYSDATE 
 		 WHERE BRRW_HIST_ID = #{_parameter}
 	</update>
+	
+	<!-- PSH0422 -->
+	<insert id="newBrrwPrdtByAppr" parameterType="list">
+		INSERT INTO BORROW_HISTORY
+		     ( BRRW_HIST_ID
+		     , BRRW_ID
+		     , PRDT_MNG_ID
+		     , BRRW_DT
+		     , RTN_DT
+		     , DEL_YN)
+		     SELECT 'BRRW_HT' || TO_CHAR(SYSDATE, 'YYMMDD')
+		     || '_' || LPAD(SEQ_BRRW_HT_PK.NEXTVAL, 6, '0'), BH.*
+		 FROM (
+		<foreach collection="list" item="borrowVO" separator="UNION ALL">
+			SELECT
+			#{borrowVO.brrwId} AS BRRW_ID
+			, #{borrowVO.prdtMngId} AS PRDT_MNG_ID
+			, SYSDATE AS BRRW_DT
+			, NULL AS RTN_DT
+			, 'N' AS DEL_YN
+			FROM DUAL
+		</foreach>
+		) BH
+	</insert>
+
+	<select id="getIsNotReturnCount" resultType="_int" parameterType="string">
+		SELECT count(1)
+		  FROM BORROW_HISTORY BH
+		 WHERE BH.PRDT_MNG_ID IN (SELECT DISTINCT AD.PRDT_ID
+								    FROM APPROVAL A
+								   INNER JOIN APPROVAL_DETAIL AD
+									  ON A.APPR_ID = AD.APPR_ID
+								   WHERE A.DMD_ID = #{_parameter}
+								     AND A.DEL_YN = 'N'
+								     AND AD.DEL_YN = 'N')
+		AND BH.DEL_YN = 'N'
+		AND BH.RTN_DT IS NULL
+	</select>
+
+	<update id="returnOneItemByAppr" parameterType="string">
+		UPDATE BORROW_HISTORY
+		   SET RTN_DT = SYSDATE
+		 WHERE PRDT_MNG_ID IN (SELECT PRDT_ID
+		  						FROM APPROVAL_DETAIL
+		 					   WHERE APPR_ID = #{_parameter})
+	</update>
+
+	<select id="getUserRentalStateForAppr" resultMap="borrowVOMap" parameterType="string">
+		SELECT BH.BRRW_HIST_ID
+		, BH.BRRW_ID
+		, BH.PRDT_MNG_ID
+		, TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
+		, TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
+		, BH.DEL_YN
+		, P.PRDT_NAME
+		, P.PRDT_CTGR
+		FROM BORROW_HISTORY BH
+		INNER JOIN PRODUCT_MANAGEMENT PM
+		ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		INNER JOIN PRODUCT P
+		ON P.PRDT_ID = PM.PRDT_ID
+		WHERE BH.DEL_YN = 'N'
+		AND BH.RTN_DT IS NULL
+		AND BH.BRRW_ID = #{_parameter}
+	</select>
 </mapper>

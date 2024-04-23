@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.login.vo;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class LoginLogVO {
     private String logId;
@@ -13,7 +14,7 @@ public class LoginLogVO {
     private String searchType;
 
     private EmployeeVO employeeVO;
-
+    
     public EmployeeVO getEmployeeVO() {
         return employeeVO;
     }

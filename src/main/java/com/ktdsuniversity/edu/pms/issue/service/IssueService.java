@@ -50,5 +50,5 @@ public interface IssueService {
 	 */
 	public boolean deleteOneIssue(String isId);
 
-	public boolean deleteManyIssue(List<Integer> deleteItems);
+	public boolean deleteManyIssue(List<String> deleteItems);
 }

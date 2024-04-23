@@ -62,12 +62,10 @@ public class MemoServiceImpl implements MemoService{
 	
 	@Transactional
 	@Override
-	public boolean writeNewMemo(String rcvId, String memoCntnt) {
+	public boolean writeNewMemo(MemoVO memoVO) {
 	
-		List<String> rcvIdList = Arrays.asList(rcvId.split(","));
-		MemoVO memoVO = new MemoVO();
-		memoVO.setMemoCntnt(memoCntnt);
-		
+		List<String> rcvIdList = Arrays.asList(memoVO.getRcvId().split(","));
+
 		int insertedCount = 0;
         for (String id : rcvIdList) {
             // 각 이메일 주소에 쪽지를 보냅니다.
@@ -82,11 +80,11 @@ public class MemoServiceImpl implements MemoService{
 	// 조회한 결과가 없다면? 설정해주기
 	@Transactional
 	@Override
-	public MemoVO getOneMemo(String memoId) {
+	public MemoVO getOneMemo(String memoId, String empId) {
 		MemoVO memoVO = this.memoDao.selectOneMemo(memoId);
 		
 		// 조회하면 읽음으로 바뀜
-		if(memoVO.getReadYn().equals("N")) {
+		if(memoVO.getReadYn().equals("N") && memoVO.getRcvId().equals(empId)) {
 			this.memoDao.changeViewStatus(memoId);
 		}
 		

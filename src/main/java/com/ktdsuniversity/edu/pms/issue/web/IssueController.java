@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.issue.service.IssueService;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
@@ -77,12 +79,14 @@ public class IssueController {
 	public String viewIssueWritePage(Model model) {
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
 		model.addAttribute("requirement", requirementList);
 		return "/issue/issuewrite";
 	}
 	
 	@PostMapping("/issue/write")
-	public String doWriteIssue(IssueVO issueVO, Model model, @RequestParam MultipartFile file) {
+	public String doWriteIssue(IssueVO issueVO, Model model, @RequestParam MultipartFile file,
+								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		boolean isEmptyTitle = StringUtil.isEmpty(issueVO.getIsTtl());
 		boolean isEmptyContent = StringUtil.isEmpty(issueVO.getIsCntnt());
 		
@@ -97,10 +101,10 @@ public class IssueController {
 			model.addAttribute("issueVO", issueVO);
 			return "/issue/issuewrite";
 		}
-		// 세션 추가 해야함
-		issueVO.setCrtrId("system01");
-		issueVO.setIsMngr("system01");
 		
+		issueVO.setCrtrId(employeeVO.getEmpId());
+		issueVO.setIsMngr(employeeVO.getEmpId());
+	
 		boolean isSuccess = this.issueService.createNewIssue(issueVO, file);
 		if (isSuccess) {
 			logger.info("글 등록 성공!");
@@ -115,17 +119,29 @@ public class IssueController {
 	}
 	
 	@GetMapping("/issue/modify/{isId}")
-	public String viewModifyIssuePage(@PathVariable String isId, Model model) {
-		
+	public String viewModifyIssuePage(@PathVariable String isId, Model model,
+									@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		IssueVO issueVO = this.issueService.getOneIssue(isId, false);
+		if (!employeeVO.getEmpId().equals(issueVO.getCrtrId())
+					&& employeeVO.getMngrYn().equals("N")) {
+			throw new PageNotFoundException();
+		}
 		
 		model.addAttribute("issueVO", issueVO);
 		return "issue/issuemodify";
 	}
 	
 	@PostMapping("/issue/modify/{isId}")
-	public String doModifyIssue(@PathVariable String isId, Model model, @RequestParam MultipartFile file, IssueVO issueVO) {
+	public String doModifyIssue(@PathVariable String isId, Model model,
+			@RequestParam MultipartFile file, IssueVO issueVO,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
+		IssueVO originalIssueVO = this.issueService.getOneIssue(isId, false);
+		if (!originalIssueVO.getCrtrId().equals(employeeVO.getEmpId())
+					&& employeeVO.getMngrYn().equals("N")) {
+			throw new PageNotFoundException();
+		}
+		
 		boolean isEmptyTitle = StringUtil.isEmpty(issueVO.getIsTtl());
 		boolean isEmptyContent = StringUtil.isEmpty(issueVO.getIsCntnt());
 		
@@ -142,8 +158,7 @@ public class IssueController {
 		}
 		
 		issueVO.setIsId(isId);
-		issueVO.setCrtrId("system01");
-		issueVO.setMdfrId("system01");
+		issueVO.setCrtrId(employeeVO.getEmpId());
 		
 		boolean isUpdateSuccess = this.issueService.updateOneIssue(issueVO, file);
 		
@@ -157,7 +172,13 @@ public class IssueController {
 	}
 	
 	@GetMapping("/issue/delete/{isId}")
-	public String doDeleteIssue(@PathVariable String isId) {
+	public String doDeleteIssue(@PathVariable String isId,
+								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		IssueVO originalIssueVO = this.issueService.getOneIssue(isId, false);
+		
+		if (!originalIssueVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+			throw new PageNotFoundException();
+		}
 		
 		boolean isSuccess = this.issueService.deleteOneIssue(isId);
 		
@@ -172,7 +193,12 @@ public class IssueController {
 	
 	@ResponseBody
 	@PostMapping("/ajax/issue/delete/massive")
-	public AjaxResponse doDeleteMassive(@RequestParam("deleteItems[]") List<Integer> deleteItems) {
+	public AjaxResponse doDeleteMassive(@RequestParam("deleteItems[]") List<String> deleteItems,
+										@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		if (employeeVO.getMngrYn().equals("N")) {
+			throw new PageNotFoundException();
+		}
 		
 		boolean deleteResult = this.issueService.deleteManyIssue(deleteItems);
 

@@ -65,12 +65,12 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	}
 
 	@Override
-	public List<IssueVO> selectManyIssue(List<Integer> deleteItems) {
+	public List<IssueVO> selectManyIssue(List<String> deleteItems) {
 		return getSqlSession().selectList(IssueDao.NAME_SPACE + ".selectManyIssue", deleteItems);
 	}
 
 	@Override
-	public int deleteManyIssue(List<Integer> deleteItems) {
+	public int deleteManyIssue(List<String> deleteItems) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteManyIssue", deleteItems);
 	}
 }

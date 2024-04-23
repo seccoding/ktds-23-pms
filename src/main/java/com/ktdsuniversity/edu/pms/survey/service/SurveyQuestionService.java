@@ -22,4 +22,6 @@ public interface SurveyQuestionService {
 
 	public boolean modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO);
 
+	public boolean writeNewSurvey(SurveyQuestionVO surveyQuestionVO);
+
 }

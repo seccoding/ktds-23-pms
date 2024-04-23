@@ -15,6 +15,7 @@ import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionService;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
@@ -38,6 +39,18 @@ public class SurveyController {
 		return "survey/surveyview";	
 	}
 	
+	@GetMapping("/survey/write")
+	public String viewSurveyWritePage() {
+		return "survey/surveywrite";
+	}
+	
+	@GetMapping("/survey/create")
+	public String viewSurveyCreatePage(@RequestParam String prjId, Model model) {
+		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionService.getOneSurvey(prjId);
+		model.addAttribute("surveyQuestionVO", surveyQuestionVO);
+		return "survey/surveycreate";
+	}
+	
 	@ResponseBody
 	@GetMapping("/ajax/survey/get/{prjId}")
 	public AjaxResponse getAllSurveys(@PathVariable String prjId, SearchSurveyVO searchSurveyVO) {
@@ -47,16 +60,18 @@ public class SurveyController {
 		return new AjaxResponse().append("surveys", surveyList);
 	}
 	
-	@GetMapping("/survey/write")
-	public String viewSurveyWritePage(@RequestParam String prjId, Model model) {
-		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionService.getOneSurvey(prjId);
-		model.addAttribute("surveyQuestionVO", surveyQuestionVO);
-		return "survey/surveywrite";
-	}
+//	@ResponseBody
+//	@PostMapping("/ajax/survey/write/{prjId}")
+//	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyReplyVO surveyReplyVO) {
+//		surveyReplyVO.setPrjId(prjId);
+//		
+//		boolean isSuccess = this.surveyQuestionService.writeNewSurvey(surveyQuestionVO);
+//		return new AjaxResponse().append("result", isSuccess);
+//	}
 	
 	@ResponseBody
-	@PostMapping("/ajax/survey/write/{prjId}")
-	public AjaxResponse doSurveyWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
+	@PostMapping("/ajax/survey/create/{prjId}")
+	public AjaxResponse doSurveyCreate(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setPrjId(prjId);
 		
 		boolean isSuccess = this.surveyQuestionService.createNewSurveyQuestion(surveyQuestionVO);
@@ -64,8 +79,8 @@ public class SurveyController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/ajax/survey/writebody/{prjId}")
-	public AjaxResponse doWriteSurveyBody(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
+	@PostMapping("/ajax/survey/createbody/{prjId}")
+	public AjaxResponse doCreateSurveyBody(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setPrjId(prjId);
 		
 		boolean isSuccess = this.surveyQuestionService.createSurveyBody(surveyQuestionVO);

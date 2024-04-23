@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.login.service;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.vo.*;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 
 import java.util.List;
 
@@ -40,4 +41,6 @@ public interface LoginLogService {
     public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO);
 
     public VisitedListVO getAllVisitedLog(VisitedVO visitedVO);
+
+	public TeamListVO getOneTeamNameByEmpId(String empId);
 }

@@ -92,7 +92,7 @@
       "결재 내역을 삭제합니다."
     );
     if(chooseValue) {
-      $.get("/approval/delete/" + apprId, function(response) {
+      $.get("/ajax/approval/delete/" + apprId, function(response) {
           if(response.data.result && response.data.next) {
             location.href = response.data.next;
           }

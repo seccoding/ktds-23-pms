@@ -30,7 +30,7 @@
 			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 		<!-- 
 		<include refid="Common.pagenate_header" />
-		 -->	
+		 -->
 		SELECT PRDT_ID
 			 , PRDT_NAME
 			 , PRDT_CTGR
@@ -52,6 +52,7 @@
 				</when>
 			</choose>
 		</if>
+		
 		<!-- 
 		<include refid="Common.pagenate_footer" />
 		 -->
@@ -148,5 +149,12 @@
 		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
 		  FROM DUAL
 	</select>
+	
+	<!-- PSH0422 -->
+	<update id="changeOnePrdtStored" parameterType="string">
+		UPDATE PRODUCT
+		SET CUR_STR = CUR_STR - 1
+		WHERE PRDT_NAME = #{prdtName}
+	</update>
 	
 </mapper>

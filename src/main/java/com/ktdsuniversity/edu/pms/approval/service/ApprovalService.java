@@ -22,12 +22,15 @@ public interface ApprovalService {
 
 	public ApprovalVO selectOneApproval(String apprId);
 	
-	// PSH0422
+	// PSH - 0422
 	public String selectNewApprId();
 
 	public boolean createApproval(ApprovalVO approvalVO);
 	
-//	public boolean getNewPrdtBorrowForAppr(String apprId);
+	public boolean getNewPrdtBorrowForAppr(String apprId);
+	
+	// PHS - search
+	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO);
 
 	/**
 	 * 승인되지 않은 결재 내역 개수

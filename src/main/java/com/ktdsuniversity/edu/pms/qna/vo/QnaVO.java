@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.qna.vo;
 
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
@@ -29,6 +30,7 @@ public class QnaVO {
 	
 	private EmployeeVO employeeVO;
 	
+	private CommonCodeVO commonCodeVO;
 
 	
 	public String getQaId() {
@@ -127,6 +129,13 @@ public class QnaVO {
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
 	}
+	public CommonCodeVO getCommonCodeVO() {
+		return commonCodeVO;
+	}
+	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
+		this.commonCodeVO = commonCodeVO;
+	}
+	
 	
 	
 

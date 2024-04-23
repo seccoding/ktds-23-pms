@@ -34,6 +34,7 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 /**
  * TODO
@@ -64,8 +65,12 @@ public class ProjectController {
     // getAllProject + getAllProjectByProjectTeammateRole
     @GetMapping("/project/search")
     public String viewSearchProjectListPage(Model model,
-                                            SearchProjectVO searchProjectVO) {
+                                            SearchProjectVO searchProjectVO,
+                                            @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 //        ProjectListVO projectListVO = projectService.getAllProject();
+
+        // 검증 시, searchProject.setEmployeeVO(session 의 employee)
+        searchProjectVO.setEmployeeVO(employeeVO);
 
         ProjectListVO projectListVO = projectService
                 .searchProject(searchProjectVO);
@@ -83,7 +88,9 @@ public class ProjectController {
     public String viewProjectDetailPage(@RequestParam String prjId, Model model) {
         ProjectVO projectVO = projectService.getOneProject(prjId);
         int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
-        List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId);
+        List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId).stream().
+                filter(requirement -> !requirement.getRqmSts().equals("605"))
+                .toList();
 
         // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
         // boolean isTeammate = projectVO.getProjectTeammateList().stream()

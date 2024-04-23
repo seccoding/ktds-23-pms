@@ -88,4 +88,11 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return this.surveyQuestionDao.modifyOneSurveyExceptBody(surveyQuestionVO) > 0;
 	}
 
+	@Override
+	public boolean writeNewSurvey(SurveyQuestionVO surveyQuestionVO) {
+		int insertedCount = this.surveyQuestionDao.insertNewSurvey(surveyQuestionVO);
+		
+		return insertedCount > 0;
+	}
+
 }
