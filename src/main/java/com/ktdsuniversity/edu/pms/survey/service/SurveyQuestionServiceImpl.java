@@ -97,9 +97,15 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return insertedCount > 0;
 	}
 
+	@Transactional
 	@Override
-	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
-		return this.surveyQuestionDao.getAllSurveysForWrite(surveyQuestionVO);
+	public SurveyListVO getAllSurveysForWrite(String prjId) {
+		List<SurveyQuestionVO> surveyList = this.surveyQuestionDao.getAllSurveysForWrite(prjId);
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setSurveyList(surveyList);
+		
+		return surveyListVO;
+
 	}
 
 }

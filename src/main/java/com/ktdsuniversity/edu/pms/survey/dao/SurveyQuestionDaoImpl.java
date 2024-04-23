@@ -67,8 +67,8 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
-		return getSqlSession().selectList(SurveyReplyDao.NAME_SPACE + ".getAllSurveysForWrite", surveyQuestionVO);
+	public List<SurveyQuestionVO> getAllSurveysForWrite(String prjId) {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllSurveysForWrite", prjId);
 	}
 
 }
