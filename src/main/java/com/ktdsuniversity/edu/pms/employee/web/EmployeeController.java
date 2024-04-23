@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.changehistory.service.ChangeHistoryService;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
+import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
+import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
@@ -87,8 +89,12 @@ public class EmployeeController {
 		
 		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
 		List<DepartmentHistoryVO> departmentHistList = this.changeHistoryService.getUserDeptHisory(empId);
+		List<JobHistoryVO> jobHistList = this.changeHistoryService.getUserJobHistory(empId);
+		List<PositionHistoryVO> positionHistList = this.changeHistoryService.getUserPositionHistory(empId);
 		model.addAttribute("employeeVO", employeeVO);
 		model.addAttribute("departmentHistList", departmentHistList);
+		model.addAttribute("jobHistList", jobHistList);
+		model.addAttribute("positionHistList", positionHistList);
 		return "employee/employeeview";
 	}
 	
