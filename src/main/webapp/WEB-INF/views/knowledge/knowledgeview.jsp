@@ -44,10 +44,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div >${knowledgeVO.knlCnt}</div>
 
       <label for="knlRecCnt">추천수</label>
-      <div id="knlRecCnt">${knowledgeVO.knlRecCnt}</div>
+      <div id="knlRecCnt">${recommendCount}</div>
 
       <div class="btn-group">
-        <button type="button" class= "recommend-knowledge">
+        <button type="button" class= "recommend-knowledge" value="${knowledgeVO.knlId}">
           추천하기</button>
           
         <button> 
@@ -59,13 +59,28 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
 
       <script>
-        $(".recommend-knowledge").on("click",(e)=> {
-          // e.preventDefault();
-          const response = $.ajax({
-            method:"PUT",
-            url:"/ajax/Knowledge/recommend/${knowledgeVO.knlId}",
-            success:({data})=> $("#knlRecCnt").html(data.result)
-          });
+        // $(".recommend-knowledge").on("click",(e)=> {
+        //   // e.preventDefault();
+        //   const response = $.ajax({
+        //     method:"PUT",
+        //     url:"/ajax/knowledge/recommend/${knowledgeVO.knlId}",
+        //     success:({data})=> $("#knlRecCnt").html(data.result)
+        //   });
+        // })
+
+        $().ready(function () {
+          knlId = $(".recommend-knowledge").val();
+          
+          $(".recommend-knowledge").on("click", function() {
+            $.post("/knowledge/recommend/" + knlId, function(response) {
+              console.log(response.data.result);
+              if(response.data.resultStatus) {
+                // 여기서 dom의 추천수를 올려서 보여주는 로직
+              } else {
+                return;
+              }
+            })
+          })
         })
       </script>
   </body>

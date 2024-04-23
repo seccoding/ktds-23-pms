@@ -40,8 +40,6 @@ import com.ktdsuniversity.edu.pms.qna.service.QnaService;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaListVO;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaVO;
 import com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO;
-import com.ktdsuniversity.edu.pms.recommend.service.RecommendService;
-import com.ktdsuniversity.edu.pms.recommend.vo.RecommendVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -63,8 +61,6 @@ public class QnaController {
 
 	@Autowired
 	private ProjectService projectService;
-	
-	private RecommendService recommendService;
 	
 	
 	// 전체 리스트 조회
@@ -150,7 +146,7 @@ public class QnaController {
 	// 추천하기
 	@ResponseBody
 	@PutMapping("/ajax/qna/recommend/{qaId}")
-	public AjaxResponse doRecommendQna(@PathVariable("qaId") String qaId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, RecommendVO recommendVO)
+	public AjaxResponse doRecommendQna(@PathVariable("qaId") String qaId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO)
 			throws Exception {
 		
 		// 유저 검증
@@ -159,9 +155,9 @@ public class QnaController {
 		}
 		
 		// 추천 여부 검증
-		if(recommendVO.getCrtrId().contains(employeeVO.getEmpId())) {
-			throw new Exception("이미 추천을 누르셨습니다.");
-		}
+//		if(recommendVO.getCrtrId().contains(employeeVO.getEmpId())) {
+//			throw new Exception("이미 추천을 누르셨습니다.");
+//		}
 		
 		QnaVO qnaVO = this.qnaService.getOneQna(qaId, false);
 		
