@@ -8,6 +8,17 @@
 	<jsp:include page="../commonheader.jsp"></jsp:include>
 	<script type="text/javascript" src="/js/approval/approvalwrite.js" ></script>
 	<style>
+		table { 
+			table-layout:fixed;
+			width: 100%;
+		}
+		th:first-child,
+		td:first-child {
+			width: 5rem;
+		}
+		input[type="checkbox"] {
+            display: flex;
+        }
 		.appr-prdt-info {
             width: 100%;
         }
@@ -138,14 +149,14 @@
 						<thead>
 							<tr>
 								<th><input type="checkbox" id="appr-item-checked-all"  data-target-class="target-prdt-dtl-id">
-									<label for="appr-item-checked-all"></label>
-									<label for="appr-item-checked-all"></label>
+									<!-- <label for="appr-item-checked-all"></label>
+									<label for="appr-item-checked-all"></label> -->
 								</th>
 								<th>비품번호</th>
 								<th>종류</th>
 								<th>품목</th>
 								<th>대여일</th>
-								<th><!--<button id="btn-add-prdt">추가</button>--></th>
+								<th><button id="btn-add-prdt">추가</button></th>
 							</tr>
 						</thead>
 						<tbody id="prdt-list">
@@ -154,8 +165,8 @@
 									<td>
 										<!-- <td><input type="checkbox" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"></td> -->
 										<input type="checkbox" id="prdt-check" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"/>
-										<label for="prdt-check"></label>
-										<label for="prdt-check"></label>
+										<!-- <label for="prdt-check"></label>
+										<label for="prdt-check"></label> -->
 									</td>
 									<td><input type="text" value="${borrow.prdtMngId}" readonly></td>
 									<td><input type="text" value="${borrow.productVO.prdtCtgr}" readonly></td>

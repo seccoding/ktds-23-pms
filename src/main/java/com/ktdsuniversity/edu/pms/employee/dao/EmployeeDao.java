@@ -36,5 +36,7 @@ public interface EmployeeDao {
 
 	public int getOneEmpIdIsExist(String empId);
 
+	public int modifyOneEmployee(EmployeeVO employeeVO);
+
 
 }

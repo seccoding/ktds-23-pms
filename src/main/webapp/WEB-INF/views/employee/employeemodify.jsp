@@ -1,19 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>사원 정보수정</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
-    <script type="text/javascript" src="/js/employeemodify.js"></script>
+    <script type="text/javascript" src="/js/employee/employeemodify.js"></script>
+    <style>
+        .hidden{
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <h2>사원 정보수정</h2>
-    <form 
+    <!-- <form 
     action="/employee/modify/${employeeVO.empId}"
     method="post"
-    enctype="multipart/form-data">
+    enctype="multipart/form-data"> -->
 
     <div class="grid">
         <label for="empId">사원 ID</label>
@@ -36,16 +42,28 @@
         <input type="text" id="hireDt"
         name="hireDt" value="${employeeVO.hireDt}"/>
 
-        <label for="deptName">부서</label>
-        <input type="text" id="deptName"
-        name="deptName" value="${employeeVO.departmentVO.deptName}"/>
+        <label for="dept-select">부서</label>
+        <div>
+            <select id="dept-select" class="dept-select">
+                <c:forEach items="${departmentlist.departmentList}" var="department">
+                    <option  value="${department.deptId}" >${department.deptName}</option>
+                </c:forEach>
+            </select>
+    
+            <input type="text" placeholder="부서 변경 사유를 입력해주세요." id="dept-change-cmt" class="hidden"/>
+
+        </div>
+        
+        <!-- <input type="text" id="deptName"
+        name="deptName" value="${employeeVO.departmentVO.deptName}"/> -->
 
         <div class="btn-group">
             <div class="right-align">
-                <input type="submit" value="저장"/>
+                <!-- <input type="submit" value="저장"/> -->
+                <button class="save-modify">저장</button>
             </div>
         </div>
     </div>
-    </form>
+    <!-- </form> -->
 </body>
 </html>

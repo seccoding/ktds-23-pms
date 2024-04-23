@@ -63,7 +63,6 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 
 	@Override
 	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
-		System.out.println("getUserRentalStateForAppr >>>>>>>>>>>>>> HRER!!!!!!");
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
 	}
 

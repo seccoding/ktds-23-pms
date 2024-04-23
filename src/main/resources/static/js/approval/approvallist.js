@@ -1,4 +1,5 @@
 $().ready(function() {
+
     // 체크박스 전체선택,선택해제 
     $("#prdt-check-all").on("click", function() {
         var targetClass = $(this).data("target-class");
