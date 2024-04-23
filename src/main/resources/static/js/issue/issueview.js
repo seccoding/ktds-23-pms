@@ -33,7 +33,6 @@ $().ready(function () {
       if (confirm("댓글을 삭제하시겠습니까?")) {
         $.get("/ajax/issue/reply/delete/" + rplId, function (response) {
           var result = response.data.result;
-  
           if (result) {
             loadReplies(pPostId);
             $("#txt-reply").val("");
@@ -54,7 +53,6 @@ $().ready(function () {
     var loadReplies = function (pPostId) {
       $.get("/ajax/issue/reply/" + pPostId, function (response) {
   
-        var count = response.data.count;
         var replies = response.data.issueReplies;
   
         for (var i in replies) {
@@ -142,7 +140,7 @@ $().ready(function () {
   
             var loginEmail = $("#login-email").text();
             var controlDom = $("<div></div>");
-  
+        
             if (reply.crtrId === loginEmail) {
               // <span class="modify-reply">수정</span>
               var modifyReplyDom = $("<span></span>");
