@@ -7,6 +7,7 @@ public class SearchApprovalVO extends PaginateVO {
 
     private String searchType;
     private String searchKeyword;
+    private String searchStatus;
     private String empId;
     private EmployeeVO employeeVO;
     
@@ -33,6 +34,15 @@ public class SearchApprovalVO extends PaginateVO {
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
     }
+
+    
+	public String getSearchStatus() {
+		return searchStatus;
+	}
+
+	public void setSearchStatus(String searchStatus) {
+		this.searchStatus = searchStatus;
+	}
 
 	public EmployeeVO getEmployeeVO() {
 		return employeeVO;

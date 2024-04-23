@@ -14,7 +14,6 @@
             display: flex;
         }
         table {
-            font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
@@ -35,7 +34,7 @@
             padding-right: 0.825rem;
         }
         /* 상태 뱃지 */
-        .badge {
+        /* .badge {
             display: inline-block;
             padding: 0.52em 0.593em;
             font-size: 0.8125em;
@@ -73,7 +72,7 @@
             background-color: #d7f5fc !important;
             color: #03c3ec !important;
             font-weight: bold;
-        }
+        } */
     </style>
 <script type="text/javascript" src=/js/approval/approvallist.js></script>
 </head>
@@ -93,10 +92,10 @@
                 총 ${apprList.apprCnt} 건
             </div>
             <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '302'}">
-                <div style="text-align: end;">
-                    <button class="btn-appr-write">기안서 작성</button>
-                </div>
-            </c:if>
+            <div style="text-align: end;">
+                <button class="btn-appr-write">기안서 작성</button>
+            </div>
+        </c:if>
         </div>
         <div class="table">
             <table>

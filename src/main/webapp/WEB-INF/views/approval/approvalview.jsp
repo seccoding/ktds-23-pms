@@ -6,6 +6,10 @@
 	<meta charset="UTF-8">
 	<title>결재상세</title>
 	<style>
+        table {
+			table-layout: fixed;
+            width: -webkit-fill-available;
+		}
 		h4 {
             padding: 0;
             margin: 0;
@@ -13,7 +17,17 @@
         .title {
             margin-bottom: 3rem;
         }
-
+        /* .col-1-1 {
+            width: 99%;
+        }    
+        .card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #FFF;
+            padding: 0 0.8125rem;
+        } */
         .btn-area {
             display: flex;
             justify-content: space-between;
@@ -43,7 +57,7 @@
             display: flex;
             flex-direction: column;
         }
-         #modalWrap {
+        #modalWrap {
         display: none; /* 초기에는 모달창을 숨김 */
         height: 270px;
         width: 401px;
@@ -60,16 +74,16 @@
         text-align: center;
         padding: 40px 10px 10px;
         animation: slidefade 0.5s ease-in-out;
-    }
-    #closeBtn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-    }
-    .modalWrap.show {
-        display: block;
-    }
+        }
+        #closeBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .modalWrap.show {
+            display: block;
+        }
 	</style>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
 	<script type="text/javascript" src="/js/approval/approvalview.js" ></script>
@@ -91,82 +105,120 @@
 				</div>
 			</c:if>
         </div>
-        <div class="grid-container" id="grid-container" data-appr-id="${approvalVO.apprId}">
-            <div class="grid-item">
-                <h5>종류</h5>
-				<span>결재 종류</span>
-            </div>
-            <div class="grid-item">
-				<c:if test="${approvalVO.apprCtgr eq '902'}">
-                	<button>비품변경</button>
-				</c:if>
-            </div>
-			<div class="grid-item">
-                <h5>상태</h5>
-                <span>결재 상태</span>
-            </div>
-            <div class="grid-item">
-				<c:if test="${approvalVO.apprSts eq '801'}">
-					<button>결재대기</button>
-				</c:if>
-				<c:if test="${approvalVO.apprSts eq '802'}">
-					<button>결재승인</button>
-				</c:if>
-				<c:if test="${approvalVO.apprSts eq '803'}">
-					<button>결재반려</button>
-				</c:if>
-            </div>
-            <div class="grid-item">
-                <h5>제목</h5>
-                <span>결재 문서의 제목</span>
-            </div>
-            <div class="grid-item">
-                <span>${approvalVO.apprTtl}</span>
-            </div>
-            <div class="grid-item">
-                <h5>작성일자</h5>
-                <span>결재 문서 작성일자</span>
-            </div>
-            <div class="grid-item">
-                <span>${approvalVO.dmdDt}</span>
-            </div>
-            <div class="grid-item">
-                <h5>기안자</h5>
-                <span>문서 기안자</span>
-            </div>
-            <div class="grid-item">
-                <span>${approvalVO.employeeVO.empName} ${approvalVO.commonCodeVO.cmcdName}</span>
-            </div>
-            <div class="grid-item">
-                <h5>시행자</h5>
-                <span>결재에 대한 시행자</span>
-            </div>
-            <div class="grid-item">
-                <span>${approvalVO.employeeManagerVO.empName}</span>
-            </div>
-            <div class="grid-item">
-                <h5>품목</h5>
-                <span>결재 대상 품목</span>
-            </div>
-            <div class="grid-item">
-                <div class="grid-appr-item">
-					<c:forEach items="${approvalVO.approvalDetailVOList}" var="approvalDetail">
-						<div class="grid-appr-item-prdt">
-                            <span><c:out value="${approvalDetail.productManagementVO.prdtMngId}"/></span>
-							<span><c:out value="${approvalDetail.productVO.prdtCtgr}"/></span>
-							<span><c:out value="${approvalDetail.productVO.prdtName}"/></span>
-						</div>
-					</c:forEach>
+        <div>
+            <h5 class="dmd-info-title">기본정보</h5>
+            <div class="grid-container" id="grid-container" data-appr-id="${approvalVO.apprId}">
+                <div class="grid-item">
+                    <h5>종류</h5>
+                    <span>결재 종류</span>
+                </div>
+                <div class="grid-item">
+                    <c:if test="${approvalVO.apprCtgr eq '902'}">
+                        <span class="badge bg-label-info">비품변경</span>
+                    </c:if>
+                </div>
+                <div class="grid-item">
+                    <h5>상태</h5>
+                    <span>결재 상태</span>
+                </div>
+                <div class="grid-item">
+                    <c:if test="${approvalVO.apprSts eq '801'}">
+                        <span class="badge bg-label-warning">결재대기</span>
+                    </c:if>
+                    <c:if test="${approvalVO.apprSts eq '802'}">
+                        <span class="badge bg-success">결재승인</span>
+                    </c:if>
+                    <c:if test="${approvalVO.apprSts eq '803'}">
+                        <span class="badge bg-label-danger">결재반려</span>
+                    </c:if>
+                </div>
+                <div class="grid-item">
+                    <h5>제목</h5>
+                    <span>결재 문서의 제목</span>
+                </div>
+                <div class="grid-item">
+                    <span>${approvalVO.apprTtl}</span>
+                </div>
+                <div class="grid-item">
+                    <h5>작성일자</h5>
+                    <span>결재 문서 작성일자</span>
+                </div>
+                <div class="grid-item">
+                    <span>${approvalVO.dmdDt}</span>
+                </div>
+                <div class="grid-item">
+                    <h5>기안자</h5>
+                    <span>문서 기안자</span>
+                </div>
+                <div class="grid-item">
+                    <span>${approvalVO.employeeVO.empName} ${approvalVO.commonCodeVO.cmcdName}</span>
+                </div>
+                <div class="grid-item">
+                    <h5>시행자</h5>
+                    <span>결재에 대한 시행자</span>
+                </div>
+                <div class="grid-item">
+                    <span>${approvalVO.employeeManagerVO.empName}</span>
+                </div>
+                <div class="grid-item">
+                    <h5>내용</h5>
+                    <span>결재 문서 내용</span>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-item-content">
+                        <span>${approvalVO.apprCntnt}</span>
+                    </div>
                 </div>
             </div>
-            <div class="grid-item">
-                <h5>내용</h5>
-                <span>결재 문서 내용</span>
-            </div>
-            <div class="grid-item">
-                <div class="grid-item-content">
-                    <span>${approvalVO.apprCntnt}</span>
-                </div>
+        </div>
+        <div class="card col-1-1">
+            <h5 class="dmd-info-title">비품 목록</h5>
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>비품코드</th>
+                            <th>비품종류</th>
+                            <th>비품명</th>
+                            <th>변경신청수량</th>
+                            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'
+                                            && approvalVO.apprSts eq '801'}">
+                                <th>재고수량</th>
+                                <th>변경가능여부</th>
+                            </c:if>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:choose>
+                            <c:when test="${not empty approvalVO.approvalDetailVOList}">
+                                <c:forEach items="${approvalVO.approvalDetailVOList}" var="approvalDetail">
+                                    <tr>
+                                        <td>${approvalDetail.productManagementVO.prdtMngId}</td>
+                                        <td>${approvalDetail.productVO.prdtCtgr}</td>
+                                        <td>${approvalDetail.productVO.prdtName}</td>
+                                        <td>${approvalDetail.curStr}</td>
+                                        <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301' 
+                                                        && approvalVO.apprSts eq '801'}">
+                                            <td>${approvalDetail.productVO.curStr}</td>
+                                            <td>
+                                                <c:set var="apprStr" value="${approvalDetail.curStr}"/>
+                                                <c:set var="prdtStr" value="${approvalDetail.productVO.curStr}"/>
+                                                <c:choose>
+                                                    <c:when test="${apprStr le prdtStr}">
+                                                        <span class="badge bg-success"><c:out value="비품변경가능"/></span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="badge bg-label-danger"><c:out value="비품변경불가"/></span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </c:if>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                        </c:choose>	
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

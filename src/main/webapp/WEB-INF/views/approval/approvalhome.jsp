@@ -23,7 +23,7 @@
 		.title {
         margin-bottom: 3rem;
     }
-    .col-1-1 {
+    /* .col-1-1 {
         width: 99%;
     }
     .col-1-2 {
@@ -40,7 +40,7 @@
     }
     .col-1-8 {
         width: 12.5%
-    }
+    } */
     .row {
         display: flex;
         justify-content: space-between;
@@ -115,7 +115,7 @@
 					<c:when test="${not empty apprList.apprList}">
 						<c:forEach items="${apprList.apprList}" var="approval">
               <a href="/approval/view?apprId=${approval.apprId}">
-                <div class="card-list"">
+                <div class="card-list">
                   <div class="card-list-category">
                     <div class="category">
                       <img src="/images/sidebar-approval.png" alt="img">
@@ -129,10 +129,10 @@
                     <span>${approval.dmdDt}</span>
                   </div>
                   <div class="card-list-user">
-                    <img src="/images/login.png" alt="img">
+                    <img src="/images/login.png" alt="prfl">
                     <div class="user">
-                      <h6>${approval.employeeVO.empName}</h6>
-                      <span>직급</span>
+                      <h6>${approval.employeeVO.empName} ${approval.commonCodeVO.cmcdName}</h6>
+                      <span>${employee.departmentVO.deptName}</span>
                     </div>
                   </div>
                   <div class="card-list-status">
