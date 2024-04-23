@@ -45,6 +45,10 @@ public class BorrowServiceImpl implements BorrowService{
 		int borrowCount = this.borrowDao.searchBorrowAllCount(searchBorrowVO);
 		searchBorrowVO.setPageCount(borrowCount);
 		
+//		System.out.println("~~~~~~~~~~~~~~~~~"+searchBorrowVO.getEmployeeVO().getEmpId()+"~~~~~~~~~~~~~~");
+		
+		
+		
 		List<BorrowVO> borrowList = this.borrowDao.searchAllUserRentalState(searchBorrowVO);
 		
 		BorrowListVO borrowListVO = new BorrowListVO();
@@ -69,8 +73,6 @@ public class BorrowServiceImpl implements BorrowService{
 	
 	@Override
 	public BorrowListVO searchProductManageState(SearchBorrowVO searchBorrowVO) {
-		
-		System.out.println("~~~~~~~~~~~~~~"+searchBorrowVO.getProductManagementVO().getPrdtMngId()+"~~~~~~~~~~~~~~");
 		int borrowCount = this.borrowDao.searchProductManagementStateAllCount(searchBorrowVO);
 		searchBorrowVO.setPageCount(borrowCount);
 		
