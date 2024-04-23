@@ -69,9 +69,10 @@ public class IssueController {
 	}
 	
 	@GetMapping("/issue/view")
-	public String viewIssueDetailPage(@RequestParam String isId, Model model) {
+	public String viewIssueDetailPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String isId, Model model) {
 		IssueVO issueVO = this.issueService.getOneIssue(isId, true);
 		model.addAttribute("issueVO", issueVO);
+		
 		return "issue/issueview";
 	}
 	
