@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
@@ -42,9 +44,24 @@ public class ReviewController {
 	@GetMapping("/review")
 	public String viewReviewListPage(SearchReviewVO searchReviewVO, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
+		List<ProjectTeammateVO> tmList =this.projectService.getAllProjectTeammate().stream()
+		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
+		.filter(tm->tm.getRole().equals("PM"))
+		.toList();
+		boolean isPM = false;
+		if (tmList.size()>0) { // PM인 경우
+		    isPM = true;
+		}
+		/*
+		 * if(tmList == null || tmList.isEmpty()) {//pm이 아닌경우
+		 * 
+		 * }else {//pm인경우 isPM = true; }
+		 */
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
 		model.addAttribute("reviewlist", reviewListVO);
 		model.addAttribute("SearchReviewVO", searchReviewVO);
+		model.addAttribute("isPM", isPM);
+
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
 	}
 	
@@ -68,7 +85,6 @@ public class ReviewController {
 			model.addAttribute("project", projectVO);
 		}
 		return "review/reviewwrite"; // reviewList.jsp 파일 이름
-		
 	}
 	
 	/*

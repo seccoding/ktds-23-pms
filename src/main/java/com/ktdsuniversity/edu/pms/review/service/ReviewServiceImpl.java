@@ -116,7 +116,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewVO;
 	}
 
-
+	@Transactional
 	@Override
 	public boolean reviewViewResultDelete(String id) {
 		int cnt = this.reviewDao.deleteReviewViewResult(id);
@@ -124,6 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return true;
 	}
 
+	@Transactional
 	@Override
 	public boolean deleteManyReview(List<String> reviewIds) {		
 		int deletedCount = this.reviewDao.deleteManyReview(reviewIds);
