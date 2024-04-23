@@ -3,6 +3,26 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao">
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO" id="positionHistMap" autoMapping="true">
+		<id column="PSTN_ID" property="pstnId"/>
+		<association property="commonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId"/>
+			<result column="C.CMCD_NAME" property="cmcdName"/>
+		</association>
+		<association property="pastCommonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId"/>
+			<result column="PC.CMCD_NAME" property="cmcdName"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO" id="jobHistMap" autoMapping="true">
+		<id column="JOB_HIST_ID" property="jobHistId"/>
+		<association property="jobVO" javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
+			<id column="JOB_ID" property="jobId"/>
+			<result column="JOB_NAME" property="jobName"/>
+		</association>
+	</resultMap>
 
 	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO" id="deptHistMap" autoMapping="true">
 		<id column="DEPT_HIST_ID" property="deptHistId"  />
@@ -54,6 +74,38 @@
 		 WHERE DH.EMP_ID = #{_parameter}
 		   AND DH.DEL_YN = 'N'
 		 ORDER BY DEPT_STRT_DT
+	</select>
+	
+	<select id="getAllJobHist" parameterType="string" resultMap="jobHistMap">
+		SELECT JH.JOB_HIST_ID
+			 , JH.EMP_ID
+			 , JH.PAST_JOB_ID
+			 , TO_CHAR(JH.JOB_STRT_DT, 'YYYY-MM-DD') JOB_STRT_DT
+			 , TO_CHAR(JH.JOB_END_DT, 'YYYY-MM-DD') JOB_END_DT
+			 , JH.CN_NOTE
+		  FROM JOB_HISTORY JH
+		 INNER JOIN JOB J
+		    ON J.JOB_ID = JH.PAST_JOB_ID 
+		 WHERE JH.EMP_ID = #{_parameter}
+		   AND JH.DEL_YN = 'Y'
+	</select>
+	
+	<select id="getUserPositionHistory" parameterType="string" resultMap="positionHistMap">
+		SELECT PH.PSTN_ID
+			 , PH.EMP_ID
+			 , PH.PAST_PSTN_ID
+			 , TO_CHAR(PH.PSTN_STRT_DT, 'YYYY-MM-DD') PSTN_STRT_DT
+			 , TO_CHAR(PH.PSTN_END_DT, 'YYYY-MM-DD') PSTN_END_DT
+			 , PH.CN_NOTE
+			 , C.CMCD_NAME
+			 , PC.CMCD_NAME
+		  FROM POSITION_HISTORY PH
+		 INNER JOIN COMMON_CODE C
+		    ON C.CMCD_ID = PH.PSTN_ID 
+		 INNER JOIN COMMON_CODE PC
+		    ON PC.CMCD_ID = PH.PAST_PSTN_ID 
+		 WHERE PH.EMP_ID = #{_parameter}
+		   AND PH.DEL_YN = 'N'
 	</select>
 	
 </mapper>

@@ -1,15 +1,71 @@
 package com.ktdsuniversity.edu.pms.changehistory.vo;
 
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
+
 public class JobHistoryVO {
 
 
-    private String job_hist_id;
-    private String emp_id;
-    private String job_id;
-    private String job_strt_dt;
-    private String job_end_dt;
-    private String cn_note;
-    private String del_yn;
+    private String jobHistId;
+    private String empId;
+    private String jobId;
+    private String jobStrtDt;
+    private String jobEndDt;
+    private String cnNote;
+    private String delYn;
+    
+    private JobVO jobVO;
+    
+    
+	public JobVO getJobVO() {
+		return jobVO;
+	}
+	public void setJobVO(JobVO jobVO) {
+		this.jobVO = jobVO;
+	}
+	public String getJobHistId() {
+		return jobHistId;
+	}
+	public void setJobHistId(String jobHistId) {
+		this.jobHistId = jobHistId;
+	}
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	public String getJobId() {
+		return jobId;
+	}
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+	public String getJobStrtDt() {
+		return jobStrtDt;
+	}
+	public void setJobStrtDt(String jobStrtDt) {
+		this.jobStrtDt = jobStrtDt;
+	}
+	public String getJobEndDt() {
+		return jobEndDt;
+	}
+	public void setJobEndDt(String jobEndDt) {
+		this.jobEndDt = jobEndDt;
+	}
+	public String getCnNote() {
+		return cnNote;
+	}
+	public void setCnNote(String cnNote) {
+		this.cnNote = cnNote;
+	}
+	public String getDelYn() {
+		return delYn;
+	}
+	public void setDelYn(String delYn) {
+		this.delYn = delYn;
+	}
+    
+    
 
 
 }
