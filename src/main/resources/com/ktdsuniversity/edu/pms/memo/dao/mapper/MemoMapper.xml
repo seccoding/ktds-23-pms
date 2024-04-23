@@ -197,7 +197,8 @@
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'Y'
-  		   AND M.RCV_ID = #{empId}
+  		   AND (M.RCV_ID = #{empId}
+  		    OR M.CRTR_ID = #{empId})
   		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
   		  <if test='searchStatus != null and searchStatus != ""'>
             <choose>

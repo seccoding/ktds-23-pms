@@ -1,4 +1,8 @@
 $().ready(function () {
+  $(".modal-list-close").on("click", function () {
+    location.reload();
+  });
+
   $("#earch-form")
     .find("button")
     .on("keydown", function (event) {
@@ -68,24 +72,22 @@ $().ready(function () {
           trDom.append(tdDom5);
           body.append(trDom);
         }
+
+        $("#checked-all").on("click", function () {
+          var isChecked = $(this).prop("checked");
+          $(".target-emp-id").prop("checked", isChecked);
+        });
+
+        $(".target-emp-id").on("change", function () {
+          var totalCheckboxes = $(".target-emp-id").length;
+          var checkedCheckboxes = $(".target-emp-id:checked").length;
+          var allChecked = totalCheckboxes === checkedCheckboxes;
+          $("#checked-all").prop("checked", allChecked);
+        });
         // result.employeeList.forEach((item) => {
         // });
       }
     );
-  });
-
-  $("#checked-all").on("click", function () {
-    var isChecked = $(this).prop("checked");
-    $(".target-emp-id").prop("checked", isChecked);
-  });
-
-  $(".target-emp-id").on("click", function () {
-    var total = $(input[(type = checkbox)]).length;
-    var checkedBox = $(input[(type = checkbox)][checked]).length;
-    console.log(total + "!!!!!!!!!!!!" + checkedBox);
-    total === checkedBox
-      ? $("#checked-all").prop("checked", true)
-      : $("#checked-all").prop("checked", false);
   });
 
   //   $("#checked-all").on("click", function () {

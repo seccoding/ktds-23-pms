@@ -22,6 +22,16 @@ $().ready(function () {
     console.log(response);
   });
 
+  $(".target-memo-id").on("change", function () {
+    var targetClass = $("#checked-all").data("target-class");
+    var totalCheckboxes = $("." + targetClass).length;
+    var checkedCheckboxes = $("." + targetClass + ":checked").length;
+    console.log(totalCheckboxes, checkedCheckboxes);
+    console.log(targetClass);
+    var allChecked = totalCheckboxes === checkedCheckboxes;
+    $("#checked-all").prop("checked", allChecked);
+  });
+
   $("#checked-all").on("change", function () {
     var targetClass = $(this).data("target-class");
 
