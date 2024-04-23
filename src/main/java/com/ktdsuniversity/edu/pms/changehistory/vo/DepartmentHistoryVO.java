@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.changehistory.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+
 public class DepartmentHistoryVO {
 	
 	private String deptHistId;
@@ -10,6 +12,14 @@ public class DepartmentHistoryVO {
 	private String delYn;
 	private String pastDeptId;
 	
+	private DepartmentVO departmentVO;
+	
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
 	public String getDeptHistId() {
 		return deptHistId;
 	}

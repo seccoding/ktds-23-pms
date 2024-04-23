@@ -33,4 +33,5 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	public List<DepartmentHistoryVO> getAllDeptHist(String empId) {
 		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE+".getAllDeptHist", empId);
 	}
+
 }

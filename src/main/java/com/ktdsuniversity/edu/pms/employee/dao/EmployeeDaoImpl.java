@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 @Repository
 public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao {
@@ -103,6 +104,21 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public int modifyOneEmployee(EmployeeVO employeeVO) {
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyOneEmployee", employeeVO);
+	}
+
+	@Override
+	public List<TeamVO> getEmployeeAllTeam(String empId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getEmployeeAllTeam", empId);
+	}
+
+	@Override
+	public int deleteTeam(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE+".deleteTeam", employeeVO);
+	}
+
+	@Override
+	public int addTeam(EmployeeVO employeeVO) {
+		return getSqlSession().insert(EmployeeDao.NAME_SPACE+".addTeam", employeeVO);
 	}
 
 }
