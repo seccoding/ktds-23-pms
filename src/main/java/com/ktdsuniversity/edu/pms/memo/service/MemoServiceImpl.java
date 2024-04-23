@@ -100,6 +100,7 @@ public class MemoServiceImpl implements MemoService{
 		return deletedCount > 0;
 	}
 
+	@Transactional
 	@Override
 	public boolean deleteManyMemo(List<String> memoIds) {
 		
@@ -108,6 +109,7 @@ public class MemoServiceImpl implements MemoService{
 		return deletedCount > 0;
 	}
 
+	@Transactional
 	@Override
 	public boolean saveOneMemo(String id) {
 		int savedCount = this.memoDao.saveOneMemo(id);

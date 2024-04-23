@@ -19,6 +19,7 @@ $().ready(function () {
         }
       }
     );
+    console.log(response);
   });
 
   $("#checked-all").on("change", function () {
