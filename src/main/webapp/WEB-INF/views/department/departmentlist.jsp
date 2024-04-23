@@ -98,6 +98,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </style>
   </head>
   <body>
+    <jsp:include page="../commonmodal.jsp" />
+    <jsp:include page="../commonemployeelist.jsp" />
+    <button class="open-employee">주소록</button>
+
     <dialog class="create-modal dept-list-modal">
       <h4>부서 등록</h4>
 

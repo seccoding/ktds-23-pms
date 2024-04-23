@@ -13,6 +13,7 @@ import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -72,6 +73,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeVO getOneEmployee(String empId) {
 		
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
+		List<TeamVO> TeamList = this.employeeDao.getEmployeeAllTeam(empId);
+		
+		employeeVO.setTeamList(TeamList);
+		
 		return employeeVO;
 		
 	}
@@ -138,6 +143,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		}
 		return updatedCount > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteTeam(EmployeeVO employeeVO) {
+		return this.employeeDao.deleteTeam(employeeVO) > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean addTeam(EmployeeVO employeeVO) {
+		return this.employeeDao.addTeam(employeeVO) > 0;
 	}
 
 }

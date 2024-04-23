@@ -36,6 +36,8 @@ import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @Controller
 public class RequirementController {
@@ -90,9 +92,9 @@ public class RequirementController {
 			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
 			.toList();
 			
-			if(tmList.size() == 0 ) {
-				throw new PageNotFoundException();
-			}
+//			if(tmList.size() == 0  ) {
+//				throw new PageNotFoundException();
+//			}
 		}
 		
 		boolean isPmAndPl = false;
@@ -139,7 +141,24 @@ public class RequirementController {
 
 	@PostMapping("/requirement/write")
 	public String createRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam MultipartFile file, RequirementVO requirementVO, Model model) {
+			@RequestParam MultipartFile file, RequirementVO requirementVO, Model model) throws Exception {
+		Validator<RequirementVO> validator = new Validator<>(requirementVO);
+		validator
+		.add("rqmTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("rqmCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+		.add("strtDt", Type.NOT_EMPTY, "시작일은 필수 입력값입니다")
+		.add("endDt", Type.NOT_EMPTY, "종료일은 필수 입력값입니다")
+		.add("dvlrp", Type.NOT_EMPTY, "담당개발자는 필수 입력값입니다")
+		.add("cfrmr", Type.NOT_EMPTY, "확인자는 필수 입력값입니다")
+		.add("tstr", Type.NOT_EMPTY, "테스터는 필수 입력값입니다")
+		.add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다")
+		.add("rqmSts", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+		.add("prjId", Type.NOT_EMPTY, "프로젝트는 필수 입력값입니다")
+		.start();
+		if(validator.hasErrors()) {
+			
+		}
+		
 		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
 
 		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
@@ -172,9 +191,9 @@ public class RequirementController {
 			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
 			.toList();
 			
-			if(tmList.size() == 0 ) {
-				throw new PageNotFoundException();
-			}
+//			if(tmList.size() == 0 ) {
+//				throw new PageNotFoundException();
+//			}
 		}
 		
 		ProjectListVO projectList = this.projectService.getAllProject();
@@ -185,13 +204,14 @@ public class RequirementController {
 		}
 		projectList.setProjectList(
 				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
-
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 
 		model.addAttribute("requirement", requirement).addAttribute("projectList", projectList)
-				.addAttribute("scdSts", scdSts).addAttribute("rqmSts", rqmSts);
+				.addAttribute("scdSts", scdSts).addAttribute("rqmSts", rqmSts)
+				.addAttribute("prjTeammateList",prjTeammateList);
 
 		return "requirement/requirementmodify";
 	}
@@ -219,7 +239,7 @@ public class RequirementController {
 
 	}
 
-	@GetMapping("/project/requirement/delete")
+	@PostMapping("/project/requirement/delete")
 	public String deleteRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String rqmId) {
 		//사용자 체크: 삭제는 본인과 관리자만 가능함
@@ -234,7 +254,7 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@GetMapping("/project/requirement/delaycall")
+	@PostMapping("/project/requirement/delaycall")
 	public AjaxResponse delayRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String rqmId) {
 
@@ -247,7 +267,7 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@GetMapping("/project/requirement/delayaccess")
+	@PostMapping("/project/requirement/delayaccess")
 	public AjaxResponse accessDelay(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String rqmId,
 			@RequestParam boolean dalayApprove) {
 

@@ -12,6 +12,21 @@
         .hidden{
             display: none;
         }
+        .modal{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .flex-col{
+            display: flex;
+            flex-direction: column;
+            margin: 2rem;
+        }
+        .flex-col > div{
+            margin: 1rem;
+        }
+
     </style>
 </head>
 <body>
@@ -21,7 +36,7 @@
     method="post"
     enctype="multipart/form-data"> -->
 
-    <div class="grid">
+    <div class="grid" data-teamlist="${employeeVO.teamList}">
         <label for="empId">사원 ID</label>
         <input type="text" id="empId"
                 name="empId" value="${employeeVO.empId}"/>
@@ -42,9 +57,40 @@
         <input type="text" id="hireDt"
         name="hireDt" value="${employeeVO.hireDt}"/>
 
+        <c:if test="${empty employeeVO.teamList}">
+          <label for="noneTmName" >팀</label>
+          <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
+        </c:if>
+        <c:forEach items="${employeeVO.teamList}" var="teamList">
+            <label for="tmName">팀</label>
+            <div>
+                <div id="tmName">${teamList.tmName}</div>
+                <button class="delete-team" data-tmid="${teamList.tmId}">삭제</button>
+
+            </div>
+        </c:forEach>
+        <button id="add-team">팀 추가</button>
+        <dialog class="team-modal modal">
+            <div class="flex-col">
+                <div>추가할 팀을 선택해주세요</div>
+                <select id="add-team-select">
+                    <!-- <c:forEach items="${teamListinDept}" var="team"> 
+                        <option value="${team.tmId}">${team.tmName}</option>
+    
+                    </c:forEach> -->
+                </select>
+                <div>
+                    <button id="add-team-final">추가</button>
+                    <button id="add-team-cancel">취소</button>
+    
+                </div>
+
+            </div>
+        </dialog>
+        
         <label for="dept-select">부서</label>
         <div>
-            <select id="dept-select" class="dept-select">
+            <select id="dept-select" class="dept-select" data-origin="${employeeVO.deptId}">
                 <c:forEach items="${departmentlist.departmentList}" var="department">
                     <option  value="${department.deptId}" >${department.deptName}</option>
                 </c:forEach>

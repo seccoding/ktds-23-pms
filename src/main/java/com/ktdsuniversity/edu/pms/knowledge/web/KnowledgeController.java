@@ -31,6 +31,7 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeRecommendService;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeService;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
@@ -58,6 +59,9 @@ public class KnowledgeController {
 
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private KnowledgeRecommendService knowledgeRecommendService;
 
 	// 목록 조회
 	@GetMapping("/knowledge")
@@ -83,9 +87,11 @@ public class KnowledgeController {
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
 
+		int recommendCount = knowledgeRecommendService.getKnowledgeRecommendCount(knlId);
+		
 		// knowledge/view 페이지에 데이터를 전송.
 		model.addAttribute("knowledgeVO", knowledgeVO);
-
+		model.addAttribute("recommendCount", recommendCount);
 		// return new AjaxResponse().append("oneKnowledge", knowledgeVO);
 		return "/knowledge/knowledgeview";
 	}
@@ -143,27 +149,7 @@ public class KnowledgeController {
 
 	}
 
-	// 추천하기
-	@ResponseBody
-	@PutMapping("/ajax/Knowledge/recommend/{knlId}")
-	public AjaxResponse doRecommendKnowledge(@PathVariable("knlId") String knlId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		
-		// 유저 검증
-		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
-			throw new EmployeeNotLoggedInException();
-		}
-
-		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
-
-		// 이번에 업데이트된 추천수(업데이트 성공 하면 1을 리턴함)
-		// 쿼리에서 update는 update된 row수를 리턴한다.
-		// 추천은 1회당 1건에 대해서만 업데이트가 이루어지므로, 성공하면 1이 리턴된다.
-		int successCount = this.knowledgeService.recommendOneKnowledge(knlId);
-
-		final var result = knowledgeVO.getKnlRecCnt() + successCount;
-
-		return new AjaxResponse().append("result", result);
-	}
+	
 
 	// 글 수정 페이지
 	@GetMapping("/knowledge/modify/{knlId}")
@@ -171,10 +157,10 @@ public class KnowledgeController {
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
-		 if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-		 employeeVO.getAdmnCode().equals(301)) {
-		 throw new PageNotFoundException();
-		 }
+//		 if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
+//		 employeeVO.getAdmnCode().equals(301)) {
+//		 throw new PageNotFoundException();
+//		 }
 
 		// 게시글의 정보를 화면에 보내준다.
 		model.addAttribute("knowledgeVO", knowledgeVO);
@@ -191,10 +177,10 @@ public class KnowledgeController {
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
 		 // 유저 검증
-		 if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-		 employeeVO.getAdmnCode().equals(301)) {
-		 throw new PageNotFoundException();
-		 }
+//		 if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
+//		 employeeVO.getAdmnCode().equals(301)) {
+//		 throw new PageNotFoundException();
+//		 }
 
 		// 수동 검사 -> Validator로 추후 수정 가능
 		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
@@ -264,6 +250,27 @@ public class KnowledgeController {
 	}
 	
 	
+	// 추천하기
+//	@ResponseBody
+//	@PutMapping("/ajax/knowledge/recommend/{knlId}")
+//	public AjaxResponse doRecommendKnowledge(@PathVariable("knlId") String knlId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//		
+//		// 유저 검증
+////			if(employeeVO == null || employeeVO.getLgnYn() == "N") {
+////				throw new EmployeeNotLoggedInException();
+////			}
+//
+//		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
+//
+//		// 이번에 업데이트된 추천수(업데이트 성공 하면 1을 리턴함)
+//		// 쿼리에서 update는 update된 row수를 리턴한다.
+//		// 추천은 1회당 1건에 대해서만 업데이트가 이루어지므로, 성공하면 1이 리턴된다.
+//		int successCount = this.knowledgeService.recommendOneKnowledge(knlId);
+//
+//		final var result = knowledgeVO.getKnlRecCnt() + successCount;
+//
+//		return new AjaxResponse().append("result", result);
+//		}
 
 
 	// 파일 다운로드
