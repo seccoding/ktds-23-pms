@@ -468,17 +468,12 @@ $().ready(function() {
     });
 
     function automaticInsert() {
-        var thisForAutoInsert = $("#btn-compl-srv").parent().find("form").children("div").children("div");
-        thisForAutoInsert.each(function() {
-            var that = thisForAutoInsert;
-            var srvId = thisForAutoInsert.data("srv-id");
-            var srvQst = thisForAutoInsert.children("div").eq(1).find("input").val();
-            var newTypeYn = thisForAutoInsert.data("type-yn");
-
-            if (newTypeYn) {
-                typeYn = newTypeYn;
-            }
-
+        $(".survey-question").each(function() {
+            var that = this;
+            var srvId = $(this).data("srv-id");
+            var srvQst = $(this).find(".survey-question-middle input[type='text']").val();
+            var typeYn = $(this).data("type-yn");
+    
             $.post("/ajax/survey/createbody/" + prjId, {
                 srvId: srvId,
                 srvQst: srvQst,

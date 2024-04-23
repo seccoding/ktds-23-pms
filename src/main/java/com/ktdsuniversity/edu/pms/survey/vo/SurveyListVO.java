@@ -4,13 +4,13 @@ import java.util.List;
 
 public class SurveyListVO {
 	
-	private List<SurveyQuestionVO> SurveyList;
+	private List<SurveyQuestionVO> surveyList;
 
 	public List<SurveyQuestionVO> getSurveyList() {
-		return SurveyList;
+		return surveyList;
 	}
 	public void setSurveyList(List<SurveyQuestionVO> surveyList) {
-		SurveyList = surveyList;
+		this.surveyList = surveyList;
 	}
 
 }

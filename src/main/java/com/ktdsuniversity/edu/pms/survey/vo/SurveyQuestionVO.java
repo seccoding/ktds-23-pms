@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.survey.vo;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
@@ -23,7 +25,7 @@ public class SurveyQuestionVO {
 	private DepartmentVO departmentVO;
 	private ProjectTeammateVO projectTeammateVO;
 	private EmployeeVO employeeVO;
-	private SurveyQuestionPickVO surveyQuestionPickVO;
+	private List<SurveyQuestionPickVO> surveyQuestionPickList;
 	
 	public String getSrvId() {
 		return srvId;
@@ -115,11 +117,11 @@ public class SurveyQuestionVO {
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
 	}
-	public SurveyQuestionPickVO getSurveyQuestionPickVO() {
-		return surveyQuestionPickVO;
+	public List<SurveyQuestionPickVO> getSurveyQuestionPickList() {
+		return surveyQuestionPickList;
 	}
-	public void setSurveyQuestionPickVO(SurveyQuestionPickVO surveyQuestionPickVO) {
-		this.surveyQuestionPickVO = surveyQuestionPickVO;
+	public void setSurveyQuestionPickList(List<SurveyQuestionPickVO> surveyQuestionPickList) {
+		this.surveyQuestionPickList = surveyQuestionPickList;
 	}
 
 }

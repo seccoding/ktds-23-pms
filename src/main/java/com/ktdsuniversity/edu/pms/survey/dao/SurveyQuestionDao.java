@@ -29,6 +29,8 @@ public interface SurveyQuestionDao {
 
 	public int insertNewSurvey(SurveyReplyVO surveyReplyVO);
 
-	public List<SurveyQuestionVO> getAllSurveysForWrite(String prjId);
+	public SurveyQuestionVO getOneSurveyForWrite(String prjId);
+
+	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO);
 
 }

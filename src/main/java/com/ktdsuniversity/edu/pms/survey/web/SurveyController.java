@@ -28,22 +28,21 @@ public class SurveyController {
 	@GetMapping("/survey/list")
 	public String viewSurveyListPage(Model model) {
 		SurveyListVO surveyListVO = this.surveyQuestionService.getAllSurvey();
-//		SurveyQuestionVO surveyQuestionVO = this
 		model.addAttribute("surveyList", surveyListVO);
 		return "survey/surveylist";
 	}
 
-//	@GetMapping("/survey/view")
-//	public String viewSurveyDetailPage(@RequestParam String prjId, Model model) {
-//		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionService.getOneSurvey(prjId);
+//	@GetMapping("/survey/write")
+//	public String viewSurveyWritePage(@RequestParam String prjId, Model model) {
+//		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionService.getOneSurveyForWrite(prjId);
 //		model.addAttribute("surveyQuestionVO", surveyQuestionVO);
-//		return "survey/surveyview";
+//		return "survey/surveywrite";
 //	}
-
+	
 	@GetMapping("/survey/write")
-	public String viewSurveyWritePage(@RequestParam String prjId, SearchSurveyVO searchSurveyVO, Model model) {
-		SurveyListVO surveyListVO = this.surveyQuestionService.getAllSurveysForWrite(prjId);
-		model.addAttribute("surveyList", surveyListVO);
+	public String viewSurveyWritePage(SurveyQuestionVO surveyQuestionVO, Model model) {
+		List<SurveyQuestionVO> surveyList = this.surveyQuestionService.getAllSurveysForWrite(surveyQuestionVO);
+		model.addAttribute("surveyList", surveyList);
 		return "survey/surveywrite";
 	}
 
@@ -63,13 +62,13 @@ public class SurveyController {
 		return new AjaxResponse().append("surveys", surveyList);
 	}
 
-//	@ResponseBody
-//	@GetMapping("/ajax/survey/write/{prjId}")
-//	public AjaxResponse getAllSurveysForWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
-//		surveyQuestionVO.setPrjId(prjId);
-//		List<SurveyQuestionVO> surveyList = this.surveyQuestionService.getAllSurveysForWrite(surveyQuestionVO);
-//		return new AjaxResponse().append("surveys", surveyList);
-//	}
+	@ResponseBody
+	@GetMapping("/ajax/survey/write/{prjId}")
+	public AjaxResponse getAllSurveysForWrite(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
+		surveyQuestionVO.setPrjId(prjId);
+		List<SurveyQuestionVO> surveyList = this.surveyQuestionService.getAllSurveysForWrite(surveyQuestionVO);
+		return new AjaxResponse().append("surveys", surveyList);
+	}
 
 //	@GetMapping("/ajax/survey/write/{prjId}")
 //	public String getAllSurveysForWrite(@PathVariable String prjId,
