@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.beans.SHA;
+import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
+import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -19,6 +22,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
 	private EmployeeDao employeeDao;
+	
+	@Autowired
+	private ChangeHistoryDao changeHistoryDao;
 	
 	@Override
 	public EmployeeListVO getAllEmployee() {
@@ -102,6 +108,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int getOneEmpIdIsExist(String empId) {
 		return this.employeeDao.getOneEmpIdIsExist(empId);
+	}
+
+	@Transactional
+	@Override
+	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
+		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
+		
+		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
+		
+		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
+			
+			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
+			System.out.println(deptHistList);
+			if(deptHistList.size() > 0) {
+				String provDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
+				System.out.println(provDate);
+				employeeVO.setHireDt(provDate);		
+				System.out.println("!!!!!!!!!!!!!!!!!!!!");
+			}
+			
+			employeeVO.setDeptId(originEmployee.getDeptId());
+			
+			
+			int insertCnt = this.changeHistoryDao.insertOneChangeDeptHistory(employeeVO);
+			
+			if(insertCnt == 0) {
+				return false;
+			}
+		}
+		return updatedCount > 0;
 	}
 
 }

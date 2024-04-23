@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao">
+
+	<insert id="insertOneChangeDeptHistory" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO DEPARTMENT_HISTORY
+			  (DEPT_HIST_ID
+			 , EMP_ID
+			 , DEPT_STRT_DT
+			 , DEPT_END_DT
+			 , CN_NOTE
+			 , DEL_YN
+			 , PAST_DEPT_ID)
+			 VALUES 
+			  ('DEPT_HT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_DEPT_HT_PK.NEXTVAL, 6, '0')
+			 , #{empId}
+			 , #{hireDt}
+			 , SYSDATE
+			 , #{departmentHistoryVO.cnNote}
+			 , 'N'
+			 , #{deptId})
+	</insert>
+	
+	<select id="getRecentDeptHist" parameterType="string" resultType="string">
+		SELECT TO_CHAR(D.DEPT_END_DT, 'YYYY-MM-DD') DEPT_END_DT
+		  FROM (SELECT DEPT_END_DT
+				  FROM DEPARTMENT_HISTORY
+				 WHERE EMP_ID = #{_parameter}
+				   AND DEL_YN = 'N'
+				 ORDER BY DEPT_HIST_ID DESC ) D
+		 WHERE ROWNUM = 1
+	</select>
+	
+	<select id="getAllDeptHist" parameterType="string" resultType="com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO">
+		SELECT DEPT_HIST_ID
+			 , EMP_ID
+			 , TO_CHAR(DEPT_STRT_DT, 'YYYY-MM-DD') DEPT_STRT_DT
+			 , TO_CHAR(DEPT_END_DT, 'YYYY-MM-DD') DEPT_END_DT
+			 , CN_NOTE
+			 , PAST_DEPT_ID
+		  FROM DEPARTMENT_HISTORY
+		 WHERE EMP_ID = #{_parameter}
+		   AND DEL_YN = 'N'
+	</select>
+</mapper>

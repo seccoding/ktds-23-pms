@@ -100,4 +100,9 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE + ".getOneEmpIdIsExist", empId);
 	}
 
+	@Override
+	public int modifyOneEmployee(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyOneEmployee", employeeVO);
+	}
+
 }
