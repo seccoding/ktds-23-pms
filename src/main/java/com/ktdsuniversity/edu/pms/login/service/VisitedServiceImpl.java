@@ -13,7 +13,7 @@ public class VisitedServiceImpl implements VisitedService {
 	private VisitedDao visitedDao;
 	
 	@Override
-	public void insertOneEmpVisitedHistory(VisitedVO visitedVO) {
-		this.visitedDao.insertOneEmpVisitedHistory(visitedVO);
+	public boolean insertOneEmpVisitedHistory(VisitedVO visitedVO) {
+		return this.visitedDao.insertOneEmpVisitedHistory(visitedVO) > 0;
 	}
 }

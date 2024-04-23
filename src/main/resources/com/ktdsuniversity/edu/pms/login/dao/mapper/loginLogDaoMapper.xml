@@ -60,14 +60,14 @@
 	            AND E.PWD = #{pwd}
     </select>
 
-    <update id="getOneEmpIdUseOtherPlace"
+    <update id="updateOneEmpIdUseOtherPlace"
             parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 	        UPDATE EMPLOYEE
 	        SET LGN_YN = 'Y'
 	        WHERE EMP_ID = #{empId}
     </update>
 
-    <update id="getOneEmpIdNotUseNow"
+    <update id="updateOneEmpIdNotUseNow"
             parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 	        UPDATE EMPLOYEE
 	        SET LGN_YN = 'N'
@@ -75,7 +75,7 @@
     </update>
 
 
-    <insert id="updateLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
+    <insert id="insertLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
         <selectKey resultType="string" keyProperty="logId" order="BEFORE">
         	SELECT SEQ_LGN_LG_PK.NEXTVAL
         	  FROM DUAL

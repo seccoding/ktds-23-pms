@@ -14,9 +14,9 @@ public interface LoginLogService {
      */
     public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO);
 
-	public EmployeeVO getOneEmpIdUseOtherPlace(EmployeeVO employeeVO);
+	public boolean updateOneEmpIdUseOtherPlace(EmployeeVO employeeVO);
 
-	public void getOneEmpIdNotUseNow(EmployeeVO employeeVO);
+	public boolean updateOneEmpIdNotUseNow(EmployeeVO employeeVO);
 
 
     /**
@@ -24,17 +24,17 @@ public interface LoginLogService {
      * @param employee 로그인 되어 있는 사원정보를 갖고 있는 객체
      * @return
      */
-    public boolean updateLoginLog(EmployeeVO employee);
+    public boolean insertLoginLog(EmployeeVO employee);
 
     public EmployeeVO updateEmpLog(EmployeeVO employee);
 
-    public void updateEmpLogout(String logId);
+    public boolean updateEmpLogout(String logId);
 
-    public void insertCommuteIn(EmployeeVO employee);
+    public boolean insertCommuteIn(EmployeeVO employee);
 
     public int getCommuteDt(String empId);
 
-    public void updateComuteFnsh(EmployeeVO employee);
+    public boolean updateCommuteFnsh(EmployeeVO employee);
 
     public int getPwdCndt(String empId);
 

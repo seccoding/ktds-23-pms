@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.common.listner;
 
+import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +17,8 @@ import jakarta.servlet.http.HttpSessionListener;
 @Component
 public class CustomHttpSessionListener implements HttpSessionListener {
 
+	private Logger logger = LoggerFactory.getLogger(ApprovalServiceImpl.class);
+
 	@Autowired
 	private LoginLogService loginLogService;
 	
@@ -24,8 +29,16 @@ public class CustomHttpSessionListener implements HttpSessionListener {
 		EmployeeVO employeeVO = (EmployeeVO) session.getAttribute("_LOGIN_USER_");
 		if (employeeVO != null) {
 			SessionUtil.removeSession(employeeVO.getEmpId(), false);
-			this.loginLogService.getOneEmpIdNotUseNow(employeeVO);
-			this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
+			boolean getOneEmpIdNotUseNowSuccess = this.loginLogService.updateOneEmpIdNotUseNow(employeeVO);
+			if (getOneEmpIdNotUseNowSuccess) {
+				logger.debug("로그인 상태 변경('N')에 성공했습니다.");
+			} else {
+				logger.debug("로그인 상태 변경('N')에 실패했습니다.");
+			}
+			boolean updateEmpLogoutSuccess =  this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
+			if (updateEmpLogoutSuccess) {
+				logger.debug("로그아웃 기록에 성공했습니다.(세션 만료)");
+			}
 		}
 		
 	}
