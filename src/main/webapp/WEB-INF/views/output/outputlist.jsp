@@ -9,61 +9,6 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <script type="text/javascript" src="/js/output/outputlist.js"></script>
   </head>
   <body>
-    <!--프로젝트-->
-    <label for="prj-id"></label>
-    <select name="prjId" id="prj-id">
-      <option value="" selected>프로젝트</option>
-      <c:forEach items="${projectList}" var="project">
-        <c:choose>
-          <c:when test="${project.prjId eq outputSearchVO.prjId}">
-            <option value="${project.prjId}" selected>
-              ${project.prjName}
-            </option>
-          </c:when>
-          <c:otherwise>
-            <option value="${project.prjId}">${project.prjName}</option>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-    </select>
-    <!--산출물 타입-->
-    <label for="out-type"></label>
-    <select name="outType" id="out-type">
-      <option value="" selected>산출물타입</option>
-      <c:forEach items="${commonCodeList}" var="commonCode">
-        <c:choose>
-          <c:when test="${commonCode.cmcdId eq outputSearchVO.outType}">
-            <option value="${commonCode.cmcdId}" selected>
-              ${commonCode.cmcdName}
-            </option>
-          </c:when>
-          <c:otherwise>
-            <option value="${commonCode.cmcdId}">${commonCode.cmcdName}</option>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-    </select>
-    <!--버전 타입-->
-    <label for="out-ver"></label>
-    <select name="outVer" id="out-ver">
-      <option value="" selected>버전</option>
-      <c:forEach items="${verStsList}" var="verStsList">
-        <c:choose>
-          <c:when test="${verStsList.cmcdId eq outputSearchVO.outVer}">
-            <option value="${verStsList.cmcdId}" selected>
-              ${verStsList.cmcdName}
-            </option>
-          </c:when>
-          <c:otherwise>
-            <option value="${verStsList.cmcdId}">${verStsList.cmcdName}</option>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-    </select>
-
-    <button id="search-output">검색</button>
-    <button id="reset"><a href="/output/search?prjId=">초기화</a></button>
-
     <div>총 ${outputList.listCnt}건의 산출물이 조회되었습니다</div>
 
     <table class="table">
@@ -155,7 +100,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </table>
 
     <!--pagination-->
-    <ul class="page-nav">
+    <ul class=".pagination">
       <c:if test="${outputList.listCnt > 0}">
         <!--처음-->
         <c:if test="${outputSearchVO.hasPrevGroup}">
@@ -196,6 +141,66 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         >
       </c:if>
     </ul>
+    <nav>
+      <!--프로젝트-->
+      <label for="prj-id"></label>
+      <select name="prjId" id="prj-id">
+        <option value="" selected>프로젝트</option>
+        <c:forEach items="${projectList}" var="project">
+          <c:choose>
+            <c:when test="${project.prjId eq outputSearchVO.prjId}">
+              <option value="${project.prjId}" selected>
+                ${project.prjName}
+              </option>
+            </c:when>
+            <c:otherwise>
+              <option value="${project.prjId}">${project.prjName}</option>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </select>
+      <!--산출물 타입-->
+      <label for="out-type"></label>
+      <select name="outType" id="out-type">
+        <option value="" selected>산출물타입</option>
+        <c:forEach items="${commonCodeList}" var="commonCode">
+          <c:choose>
+            <c:when test="${commonCode.cmcdId eq outputSearchVO.outType}">
+              <option value="${commonCode.cmcdId}" selected>
+                ${commonCode.cmcdName}
+              </option>
+            </c:when>
+            <c:otherwise>
+              <option value="${commonCode.cmcdId}">
+                ${commonCode.cmcdName}
+              </option>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </select>
+      <!--버전 타입-->
+      <label for="out-ver"></label>
+      <select name="outVer" id="out-ver">
+        <option value="" selected>버전</option>
+        <c:forEach items="${verStsList}" var="verStsList">
+          <c:choose>
+            <c:when test="${verStsList.cmcdId eq outputSearchVO.outVer}">
+              <option value="${verStsList.cmcdId}" selected>
+                ${verStsList.cmcdName}
+              </option>
+            </c:when>
+            <c:otherwise>
+              <option value="${verStsList.cmcdId}">
+                ${verStsList.cmcdName}
+              </option>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </select>
+
+      <button id="search-output">검색</button>
+      <button id="reset"><a href="/output/search?prjId=">초기화</a></button>
+    </nav>
     <div>
       <button><a href="/output/write">신규</a></button>
     </div>

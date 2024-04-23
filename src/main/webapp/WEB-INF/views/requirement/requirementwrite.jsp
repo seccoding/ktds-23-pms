@@ -19,8 +19,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         );
         var rqmCntnt = "";
 
-        //$(".ck-content").append($("#rqm-cntnt").val());
-
         $("button").on("click", function (event) {
           event.preventDefault();
 
@@ -38,7 +36,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       .grid {
         display: grid;
         grid-template-columns: 200px 1fr;
-        grid-template-rows: repeat(9, 40px) 1fr 40px;
+        grid-template-rows: repeat(8, 40px) 1fr 40px 40px 40px;
       }
     </style>
   </head>
@@ -52,8 +50,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     >
       <div class="grid">
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
-        <label for="prj-id">프로젝트명</label>
+        <label for="prj-id">프로젝트</label>
         <select name="prjId" id="prj-id">
+          <option value="">프로젝트를 선택해주세요</option>
           <c:forEach items="${projectList.projectList}" var="project">
             <option value="${project.prjId}">${project.prjName}</option>
           </c:forEach>
@@ -119,8 +118,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
           </c:forEach>
         </select>
-
-        <!--담당자 확인자 테스터 테스트결과는 아직 어떤 기준으로 해야하는지 알 수 없음-->
 
         <button type="button">등록</button>
       </div>
