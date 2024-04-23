@@ -54,7 +54,8 @@
 		    ON E.EMP_ID = A.EMP_ID
 		 INNER JOIN COMMON_CODE C
 		    ON E.PSTN_ID = C.CMCD_ID
-		 WHERE A.TM_ID = #{_parameter}			
+		 WHERE A.TM_ID = #{_parameter}
+		   AND A.DEL_YN = 'N'		
 	</select>
 	
 
