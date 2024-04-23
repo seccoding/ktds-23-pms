@@ -17,10 +17,17 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.changehistory.service.ChangeHistoryService;
+import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
+import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
+import com.ktdsuniversity.edu.pms.team.service.TeamService;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -33,6 +40,15 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private DepartmentService departmentService;
+	
+	@Autowired
+	private TeamService teamService;
+	
+	@Autowired
+	private ChangeHistoryService changeHistoryService;
 
 	@Autowired
 	private FileHandler fileHandler;
@@ -70,8 +86,18 @@ public class EmployeeController {
 	public String viewEmployeeDetail(@RequestParam String empId, Model model) {
 		
 		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
+		List<DepartmentHistoryVO> departmentHistList = this.changeHistoryService.getUserDeptHisory(empId);
 		model.addAttribute("employeeVO", employeeVO);
+		model.addAttribute("departmentHistList", departmentHistList);
 		return "employee/employeeview";
+	}
+	
+	//팀 삭제
+	@ResponseBody
+	@GetMapping("/ajax/employee/delete/team")
+	public AjaxResponse deleteTeam(EmployeeVO employeeVO) {
+		boolean isSuccessDelete = this.employeeService.deleteTeam(employeeVO);
+		return new AjaxResponse().append("result", isSuccessDelete).append("next", "/employee/modify/"+employeeVO.getEmpId());
 	}
 	
 	
@@ -86,14 +112,45 @@ public class EmployeeController {
 		return new AjaxResponse().append("next", isSuccess ? "/employee/success-delete-emp"
 											: "/employee/failed-delete-emp");
 	}
+	
+	// 팀 추가
+	@ResponseBody
+	@PostMapping("/ajax/employee/modify/addteam")
+	public AjaxResponse addTeam(EmployeeVO employeeVO) {
+		boolean isSuccess = this.employeeService.addTeam(employeeVO);
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next",  "/employee/modify/"+employeeVO.getEmpId());
+	}
 
-	//수정
+	//수정페이지
 	@GetMapping("/employee/modify/{empId}")
 	public String viewEmpModifyPage(@PathVariable String empId, Model model, 
 									 EmployeeVO employeeVO) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
+		
+		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
+		 model.addAttribute("departmentlist", departmentList);
+		
+//		TeamListVO teamList = this.teamService.getAllTeamList(employee.getDeptId());
+//		model.addAttribute("teamListinDept", teamList.getTeamList());
+		
 		return "employee/employeemodify";
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/employee/modify")
+	public AjaxResponse getEmployeeInput(@RequestParam String empId,  String deptId) {
+		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
+		TeamListVO teamList = this.teamService.getAllTeamList(deptId);
+		
+		return new AjaxResponse().append("employeeDept", employee.getDeptId()).append("teamList", teamList.getTeamList()).append("empTeamList", employee.getTeamList());
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/employee/modify")
+	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
+		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
 		
 	//수정
@@ -128,6 +185,10 @@ public class EmployeeController {
 			 }
 			 model.addAttribute("employeeVO", employeeVO);
 			 
+			 System.out.println(employeeVO.getDepartmentVO().getDeptName());
+			 System.out.println(employeeVO.getEmail());
+			 
+			 
 			 return "redirect:/employee/view?empId=" + empId;
 			
 		}
@@ -144,22 +205,32 @@ public class EmployeeController {
 
 	@ResponseBody
 	@PostMapping("/ajax/employee/regist")
-	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/main/mainpage") String nextUrl, Model model) {
+	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/") String nextUrl, @RequestParam String empId) {
 		/**
 		 * 수정해야할 사항 
-		 * 비밀번호를 직접 받지않고 사원번호 + 입사일 이런식으로 기본 비번 설정
 		 * 임원여부 체크박스로 만들어서 체크 안하면 N 체크하면 Y
 		 * 프로필 사진 첨부파일 기능 만들기
 		 */
+		/**
+		 * 사원번호가 있는지 확인하고
+		 * 1: 존재하는 사원번호, 0: 없는 사원번호
+		 * 1이라면 "이미 사용중인 사원번호입니다."오류 발생
+		 */
+		int isEmpIdUseCount = this.employeeService.getOneEmpIdIsExist(empId);
+		if(isEmpIdUseCount == 1) {
+			return new AjaxResponse().append("errorMessage", "이미 사용중인 사원번호 입니다.");
+		}
 		
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 		
 		validator.add("empId", Type.NOT_EMPTY, "사원번호를 입력해 주세요.")
 				.add("empId", Type.EMPID, "사원번호 형식으로 입력해 주세요")
+				.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해 주세요")
+				.add("pwd", Type.PASSWORD, "비밀번호 형식으로 입력해 주세요")
 				.add("empName", Type.NOT_EMPTY, "사원이름을 입력해 주세요")
 				.add("hireDt", Type.NOT_EMPTY, "입사일을 지정해 주세요")
 				.add("addr", Type.NOT_EMPTY, "주소를 입력해 주세요")
-				.add("brth", Type.NOT_EMPTY, "생일을 입력해 주세요")
+				.add("brth", Type.NOT_EMPTY, "생일을 지정해 주세요")
 				.add("email", Type.NOT_EMPTY, "이메일을 입력해 주세요")
 				.add("email", Type.EMAIL, "이메일 형식으로 입력해 주세요")
 				.add("deptId", Type.NOT_EMPTY, "부서ID를 입력해 주세요")

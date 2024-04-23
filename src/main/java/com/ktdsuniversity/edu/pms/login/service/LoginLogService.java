@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.login.service;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.vo.*;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface LoginLogService {
      * @param employee 로그인 되어 있는 사원정보를 갖고 있는 객체
      * @return
      */
-    public void updateLoginLog(EmployeeVO employee);
+    public boolean updateLoginLog(EmployeeVO employee);
 
     public EmployeeVO updateEmpLog(EmployeeVO employee);
 
@@ -39,5 +40,9 @@ public interface LoginLogService {
 
     public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO);
 
+    LoginLogListVO getOneLoginLog(String empId);
+
     public VisitedListVO getAllVisitedLog(VisitedVO visitedVO);
+
+    VisitedListVO getOneVisitedLog(String empId);
 }

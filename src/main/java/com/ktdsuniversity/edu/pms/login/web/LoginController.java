@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.ktdsuniversity.edu.pms.login.vo.*;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
@@ -31,10 +34,11 @@ public class LoginController {
     @Autowired
     private LoginLogService loginLogService;
 
-
     @Autowired
     private CommuteService commuteService;
 
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("/employee/login")
     public String viewLoginPage() {
@@ -70,25 +74,23 @@ public class LoginController {
 
         // 사용중 여부 확인
         if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
-
+        	
             // 로그인 기록 DB 저장 메서드
             this.loginLogService.updateLoginLog(employee);
             // LOGIN_LOG 테이블의 LOG_ID 값을 포함한 employeeVO 객체를 재대입한다.
-            employee = this.loginLogService.updateEmpLog(employee);
+//            employee = this.loginLogService.updateEmpLog(employee);
 
             //로그인 성공시 LGNYN을 Y로 변경
             this.loginLogService.getOneEmpIdUseOtherPlace(employee);
-
+            
             int commuteCheck = this.loginLogService.getCommuteDt(employee.getEmpId());
-
             if (commuteCheck == 0) {
                 this.loginLogService.insertCommuteIn(employee);
             }
 
-            session.setAttribute("_LOGIN_USER_", employee);
+            session.setAttribute("_LOGIN_USER_", employee);            
             session.setMaxInactiveInterval(20 * 60);
             SessionUtil.addSession(employee.getEmpId(), session);
-
 
             return new AjaxResponse().append("next", nextUrl);
         }
@@ -100,10 +102,8 @@ public class LoginController {
 
     @GetMapping("/employee/logout")
     public String doLogout(HttpSession session, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
         this.loginLogService.getOneEmpIdNotUseNow(employeeVO);
         this.loginLogService.updateEmpLogout(employeeVO.getLoginLogVO().getLogId());
-
         SessionUtil.removeSession(employeeVO.getEmpId());
 
         return "redirect:/employee/login";
@@ -116,12 +116,12 @@ public class LoginController {
 		 * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
 		 * true: 전체 조회
 		 * false: 입력받은 본인의 출퇴근만 조회
-		 */
+		 */ 
 		String AdmnCodeIsSystemFormat = "301";
 		if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
 			CommuteListVO commuteListVO = commuteService.getAllCommuteData(commuteVO);
 			model.addAttribute("commuteList", commuteListVO);
-			model.addAttribute("commnuteVO", commuteVO);
+			model.addAttribute("commuteVO", commuteVO);
 			return "commute/view";
 		} 
 		else{
@@ -133,23 +133,33 @@ public class LoginController {
 
     // 로그인 기록 확인 페이지
     @GetMapping("/loginlog/view")
-    public String viewLoginLog(Model model, LoginLogVO loginLogVO) {
-
-        LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog(loginLogVO);
-        model.addAttribute("loginLogList", loginLogListVO);
-        model.addAttribute("loginLogVO", loginLogVO);
-
-        return "login/loginlogview";
+    public String viewLoginLog(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, LoginLogVO loginLogVO) {
+        String AdmnCodeIsSystemFormat = "301";
+        if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
+            LoginLogListVO loginLogListVO = this.loginLogService.getAllLoginLog(loginLogVO);
+            model.addAttribute("loginLogList", loginLogListVO);
+            model.addAttribute("loginLogVO", loginLogVO);
+            return "login/loginlogview";
+        }else {
+            LoginLogListVO loginLogListVO = this.loginLogService.getOneLoginLog(employeeVO.getEmpId());
+            model.addAttribute("loginLogList", loginLogListVO);
+            return "login/loginlogview";
+        }
     }
 
     // 화면 접근 기록 확인 페이지
     @GetMapping("/visitedlog/view")
-    public String viewVisitedLog(Model model, VisitedVO visitedVO) {
-
-        VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
-        model.addAttribute("visitedVO", visitedVO);
-        model.addAttribute("visitedList", visitedList);
-
-        return "login/visitedlogview";
+    public String viewVisitedLog(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, VisitedVO visitedVO) {
+        String AdmnCodeIsSystemFormat = "301";
+        if(employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)){
+            VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
+            model.addAttribute("visitedVO", visitedVO);
+            model.addAttribute("visitedList", visitedList);
+            return "login/visitedlogview";
+        }else {
+            VisitedListVO visitedList = this.loginLogService.getOneVisitedLog(employeeVO.getEmpId());
+            model.addAttribute("visitedList", visitedList);
+            return "login/visitedlogview";
+        }
     }
 }

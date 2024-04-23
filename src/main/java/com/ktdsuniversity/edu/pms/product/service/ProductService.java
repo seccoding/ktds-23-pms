@@ -5,6 +5,7 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 public interface ProductService {
 
@@ -12,14 +13,21 @@ public interface ProductService {
 	 * 비픔 목록과 비품 수를 모두 조회
 	 * @return
 	 */
-	public ProductListVO getAllProduct(ProductVO productVO);
+	public ProductListVO getAllProduct();
+	
+	public ProductListVO searchAllProduct(SearchProductVO searchProductVO);
 
+	/**
+	 * 입력한 비품 정보들을 새로 추가
+	 * @param productList
+	 * @return
+	 */
 	public int createNewProduct(ProductListVO productList);
 
 	public ProductVO getOneProduct(String id);
 
 	public boolean updateOneProduct(String prdtId);
-
+	
 	public boolean addProductCount(ProductManagementVO productManagementVO);
 
 	public boolean deleteOneProduct(String prdtId);
@@ -40,11 +48,11 @@ public interface ProductService {
 	public ProductVO getOneSelectedProduct(String prdtName);
 
 	/**
-	 * 여러 개의 비품 일괄등록 
-	 * @param addItems
+	 * 새로운 prdtId 생성
 	 * @return
 	 */
-	public boolean createManyProduct(List<Integer> addItems);
+	public String selectNewPrdtId();
+
 	
 
 }

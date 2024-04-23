@@ -2,8 +2,10 @@ package com.ktdsuniversity.edu.pms.survey.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 public interface SurveyQuestionDao {
 	
@@ -24,5 +26,9 @@ public interface SurveyQuestionDao {
 	public int modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
 
 	public int modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO);
+
+	public int insertNewSurvey(SurveyReplyVO surveyReplyVO);
+
+	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO);
 
 }

@@ -7,6 +7,15 @@ public class SearchMemoVO extends PaginateVO {
 	private String searchStatus;
 	private String searchType;
 	private String searchKeyword;
+	private String empId;
+	
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
 
 	public String getSearchStatus() {
 		return searchStatus;

@@ -2,208 +2,231 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ktdsuniversity.edu.pms.output.dao.OutputDao">
-	
-	<resultMap type="com.ktdsuniversity.edu.pms.output.vo.OutputVO" 
-	id="outputVOMap" autoMapping="true">
-	<id column="OUT_ID" property="outId" /><!-- pk -->
-	 
-	 <association property="outTypeVO"
-	 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-	 	<id column="CMCD_ID" property="cmcdId"/>
-	 	<result column="OUTPUT_TYPE_NAME" property="cmcdName" />	
-	 </association>
-	  <association property="project"
-	 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
-	 	<id column="PRJ_ID" property="prjId"/>
-	 	<result column="PRJ_NAME" property="prjName" />	
-	 </association>
- 	<association property="outVerSts"
-	 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-	 	<id column="CMCD_ID" property="cmcdId"/>
-	 	<result column="OUT_VER_STS_NAME" property="cmcdName" />	
-	 </association>
+<mapper
+	namespace="com.ktdsuniversity.edu.pms.output.dao.OutputDao">
+
+	<resultMap
+		type="com.ktdsuniversity.edu.pms.output.vo.OutputVO" id="outputVOMap"
+		autoMapping="true">
+		<id column="OUT_ID" property="outId" /><!-- pk -->
+
+		<association property="outTypeVO"
+			javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="OUTPUT_TYPE_NAME" property="cmcdName" />
+		</association>
+		<association property="project"
+			javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+			<id column="PRJ_ID" property="prjId" />
+			<result column="PRJ_NAME" property="prjName" />
+		</association>
+		<association property="outVerSts"
+			javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="OUT_VER_STS_NAME" property="cmcdName" />
+		</association>
 	</resultMap>
 
-	<select id="getAllOutputList"
-	resultMap="outputVOMap">
+	<select id="getAllOutputList" resultMap="outputVOMap">
 		SELECT O.OUT_ID
-		     , O.OUT_TYPE
-		     , O.OUT_TTL
-		     , O.OUT_VER
-		     , O.OUT_FILE
-		     , O.OUT_VER
-		     , O.OUT_ENCODE_FILE
-		     , O.CRT_DT
-		     , O.CRTR_ID
-		     , O.MDF_DT
-		     , O.MDFR_ID
-		     , O.PRJ_ID
-		     , O.DEL_YN  
-		     , CC.CMCD_NAME AS OUTPUT_TYPE_NAME
-		     , OUTVERSTS.CMCD_NAME AS OUT_VER_STS_NAME
-		     , P.PRJ_NAME
-		  FROM PMS."OUTPUT" O
-		  JOIN COMMON_CODE CC
-		    ON O.OUT_TYPE = CC.CMCD_ID
-		  JOIN PROJECT P
-		    ON O.PRJ_ID = P.PRJ_ID
-		  JOIN COMMON_CODE OUTVERSTS
-		    ON O.OUT_VER = OUTVERSTS.CMCD_ID
-		 WHERE O.DEL_YN='N'  
-		 ORDER BY  O.OUT_ID DESC
+		, O.OUT_TYPE
+		, O.OUT_TTL
+		, O.OUT_VER
+		, O.OUT_FILE
+		, O.OUT_VER
+		, O.OUT_ENCODE_FILE
+		, O.CRT_DT
+		, O.CRTR_ID
+		, O.MDF_DT
+		, O.MDFR_ID
+		, O.PRJ_ID
+		, O.DEL_YN
+		, CC.CMCD_NAME AS OUTPUT_TYPE_NAME
+		, OUTVERSTS.CMCD_NAME AS OUT_VER_STS_NAME
+		, P.PRJ_NAME
+		FROM PMS."OUTPUT" O
+		JOIN COMMON_CODE CC
+		ON O.OUT_TYPE = CC.CMCD_ID
+		JOIN PROJECT P
+		ON O.PRJ_ID = P.PRJ_ID
+		JOIN COMMON_CODE OUTVERSTS
+		ON O.OUT_VER = OUTVERSTS.CMCD_ID
+		WHERE O.DEL_YN='N'
+		ORDER BY O.OUT_ID DESC
 	</select>
-	
+
 	<select id="searchAllOutPutList"
-	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO"
-	resultMap="outputVOMap">
+		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO"
+		resultMap="outputVOMap">
 		<include refid="Common.pagenate_header"></include>
 		SELECT O.OUT_ID
-		     , O.OUT_TYPE
-		     , O.OUT_TTL
-		     , O.OUT_VER
-		     , O.OUT_VER_NUM
-		     , O.OUT_FILE
-		     , O.OUT_ENCODE_FILE
-		     , O.CRT_DT
-		     , O.CRTR_ID
-		     , O.MDF_DT
-		     , O.MDFR_ID
-		     , O.PRJ_ID
-		     , O.DEL_YN  
-		     , CC.CMCD_NAME AS OUTPUT_TYPE_NAME
-		     , OUTVERSTS.CMCD_NAME AS OUT_VER_STS_NAME
-		     , P.PRJ_NAME
-		  FROM PMS."OUTPUT" O
-		  JOIN COMMON_CODE CC
-		    ON O.OUT_TYPE = CC.CMCD_ID
-		  JOIN PROJECT P
-		    ON O.PRJ_ID = P.PRJ_ID
-		  JOIN COMMON_CODE OUTVERSTS
-		    ON O.OUT_VER = OUTVERSTS.CMCD_ID
-		  JOIN COMMON_CODE OUTVERSTS
-		    ON O.OUT_VER = OUTVERSTS.CMCD_ID
-		 WHERE O.DEL_YN='N'
-		   AND P.OUT_YN='Y'  
-		 <if test='prjId != null and prjId!= ""'>
-		   AND O.PRJ_ID = #{prjId}
-		 </if>
-		 <if test='outType != null and outType != ""'>
-		  AND O.OUT_TYPE = #{outType}
-		 </if>
-		 <if test='outVer != null and outVer != ""'>
-		  AND O.OUT_VER = #{outVer}
-		 </if>
-		 ORDER BY  O.OUT_ID DESC
-		 <include refid="Common.pagenate_footer"></include>
+		, O.OUT_TYPE
+		, O.OUT_TTL
+		, O.OUT_VER
+		, O.OUT_VER_NUM
+		, O.OUT_FILE
+		, O.OUT_ENCODE_FILE
+		, TO_CHAR(O.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		, O.CRTR_ID
+		, TO_CHAR(O.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		, O.MDFR_ID
+		, O.PRJ_ID
+		, O.DEL_YN
+		, CC.CMCD_NAME AS OUTPUT_TYPE_NAME
+		, OUTVERSTS.CMCD_NAME AS OUT_VER_STS_NAME
+		, P.PRJ_NAME
+		FROM PMS."OUTPUT" O
+		JOIN COMMON_CODE CC
+		ON O.OUT_TYPE = CC.CMCD_ID
+		JOIN PROJECT P
+		ON O.PRJ_ID = P.PRJ_ID
+		JOIN COMMON_CODE OUTVERSTS
+		ON O.OUT_VER = OUTVERSTS.CMCD_ID
+		JOIN COMMON_CODE OUTVERSTS
+		ON O.OUT_VER = OUTVERSTS.CMCD_ID
+		WHERE O.DEL_YN='N'
+		AND P.OUT_YN='Y'
+		<choose>
+			<when test='prjId != null and prjId!= ""'>
+				AND O.PRJ_ID = #{prjId}
+			</when>
+			<otherwise>
+				<if test='empId != null and empId != ""'>
+					AND O.PRJ_ID IN
+					(SELECT PRJ_ID
+					FROM PROJECT_TEAMMATE
+					WHERE TM_ID = #{empId}
+					)
+				</if>
+			</otherwise>
+		</choose>
+		<if test='outType != null and outType != ""'>
+			AND O.OUT_TYPE = #{outType}
+		</if>
+		<if test='outVer != null and outVer != ""'>
+			AND O.OUT_VER = #{outVer}
+		</if>
+		ORDER BY O.OUT_ID DESC
+		<include refid="Common.pagenate_footer"></include>
 	</select>
-	
-	<select id="getOutputCnt"
-	resultType="_int">
-	SELECT	count(1) AS LIST_CNT
- 	  FROM	"OUTPUT"
- 	 WHERE	DEL_YN='N'
+
+	<select id="getOutputCnt" resultType="_int">
+		SELECT count(1) AS LIST_CNT
+		FROM "OUTPUT"
+		WHERE DEL_YN='N'
 	</select>
-	
+
 	<select id="searchOutputCnt"
-	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO"
-	resultType="_int">
-	SELECT	count(1) AS LIST_CNT
- 	  FROM	"OUTPUT" O
-	  JOIN  COMMON_CODE CC
-	    ON  O.OUT_TYPE = CC.CMCD_ID
-	  JOIN  PROJECT P
-	    ON  O.PRJ_ID = P.PRJ_ID
-	  JOIN  COMMON_CODE OUTVERSTS
-	    ON  O.OUT_VER = OUTVERSTS.CMCD_ID
-	  JOIN  COMMON_CODE OUTVERSTS
-	    ON  O.OUT_VER = OUTVERSTS.CMCD_ID 	  
- 	 WHERE	O.DEL_YN='N' 	
- 	   AND 	P.OUT_YN='Y'   
- 	 <if test='prjId != null and prjId!= ""'>
-	   AND 	O.PRJ_ID = #{prjId}
-	</if>
-	<if test='outType != null and outType != ""'>
-	   AND	O.OUT_TYPE = #{outType}
-	</if>
-	<if test='outVer != null and outVer != ""'>
-	   AND O.OUT_VER = #{outVer}
-	</if>
+		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO"
+		resultType="_int">
+		SELECT count(1) AS LIST_CNT
+		FROM "OUTPUT" O
+		JOIN COMMON_CODE CC
+		ON O.OUT_TYPE = CC.CMCD_ID
+		JOIN PROJECT P
+		ON O.PRJ_ID = P.PRJ_ID
+		JOIN COMMON_CODE OUTVERSTS
+		ON O.OUT_VER = OUTVERSTS.CMCD_ID
+		JOIN COMMON_CODE OUTVERSTS
+		ON O.OUT_VER = OUTVERSTS.CMCD_ID
+		WHERE O.DEL_YN='N'
+		AND P.OUT_YN='Y'
+		<choose>
+			<when test='prjId != null and prjId!= ""'>
+				AND O.PRJ_ID = #{prjId}
+			</when>
+			<otherwise>
+				<if test='empId != null and empId != ""'>
+					AND O.PRJ_ID IN
+					(SELECT PRJ_ID
+					FROM PROJECT_TEAMMATE
+					WHERE TM_ID = #{empId}
+					)
+				</if>
+			</otherwise>
+		</choose>
+		<if test='outType != null and outType != ""'>
+			AND O.OUT_TYPE = #{outType}
+		</if>
+		<if test='outVer != null and outVer != ""'>
+			AND O.OUT_VER = #{outVer}
+		</if>
 	</select>
-	
-	<select id="getOneOutput"
-	parameterType="String"
-	resultMap="outputVOMap">
-	SELECT O.OUT_ID
-		     , O.OUT_TYPE
-		     , O.OUT_TTL
-		     , O.OUT_VER
-		     , O.OUT_VER_NUM
-		     , O.OUT_FILE
-		     , O.OUT_ENCODE_FILE
-		     , O.CRT_DT
-		     , O.CRTR_ID
-		     , O.MDF_DT
-		     , O.MDFR_ID
-		     , O.PRJ_ID
-		     , CC.CMCD_NAME AS OUTPUT_TYPE_NAME
-		     , P.PRJ_NAME
-		  FROM PMS."OUTPUT" O
-		  JOIN COMMON_CODE cc
-		    ON O.OUT_TYPE = CC.CMCD_ID
-		  JOIN PROJECT P
-		    ON O.PRJ_ID = P.PRJ_ID
-		 WHERE O.DEL_YN='N'
-		   AND O.OUT_ID = #{_parameter}  
+
+	<select id="getOneOutput" parameterType="String"
+		resultMap="outputVOMap">
+		SELECT O.OUT_ID
+		, O.OUT_TYPE
+		, O.OUT_TTL
+		, O.OUT_VER
+		, O.OUT_VER_NUM
+		, O.OUT_FILE
+		, O.OUT_ENCODE_FILE
+		, O.MDFR_ID
+		, O.CRTR_ID
+		, TO_CHAR(O.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		, TO_CHAR(O.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		, O.PRJ_ID
+		, CC.CMCD_NAME AS OUTPUT_TYPE_NAME
+		, P.PRJ_NAME
+		FROM PMS."OUTPUT" O
+		JOIN COMMON_CODE CC
+		ON O.OUT_TYPE = CC.CMCD_ID
+		JOIN PROJECT P
+		ON O.PRJ_ID = P.PRJ_ID
+		WHERE O.DEL_YN='N'
+		AND O.OUT_ID = #{_parameter}
 	</select>
-	
+
 	<insert id="insertOneOutput"
-	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
+		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
 		INSERT INTO PMS."OUTPUT"
 		( OUT_ID
 		, OUT_TYPE
 		, OUT_TTL
-		, OUT_VER
+		,
+		OUT_VER
 		, OUT_FILE
 		, OUT_ENCODE_FILE
 		, CRT_DT
 		, CRTR_ID
 		, PRJ_ID
 		, DEL_YN
-		, OUT_VER_NUM)
+		,
+		OUT_VER_NUM)
 		VALUES
-		( ('OUT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_OUTPUT_PK.NEXTVAL, 6, '0'))
+		( ('OUT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' ||
+		LPAD(SEQ_OUTPUT_PK.NEXTVAL, 6, '0'))
 		, #{outType}
 		, #{outTtl}
 		, #{outVer}
 		, #{outFile}
 		, #{outEncodeFile}
 		, SYSDATE
-		, '00000'
+		, #{crtrId}
 		, #{prjId}
-		, 'N' 
+		, 'N'
 		, #{outVerNum})
 	</insert>
-	
-	<update id="deleteOneOutput"
-	parameterType="String">
+
+	<update id="deleteOneOutput" parameterType="String">
 		UPDATE PMS."OUTPUT"
-		SET  
+		SET
 		DEL_YN='Y'
 		WHERE OUT_ID=#{_parameter}
 	</update>
-	
+
 	<update id="updateOneOutput"
-	parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
-	UPDATE PMS."OUTPUT"
-	  SET  OUT_TYPE=#{outType} 
-	     , OUT_TTL=#{outTtl} 
-	     , OUT_VER=#{outVer}
-	     , OUT_FILE=#{outFile}
-	     , MDF_DT= SYSDATE
-	     , MDFR_ID='00000'  
-	     , OUT_ENCODE_FILE=#{outEncodeFile}  
-	 WHERE OUT_ID=#{outId}
- 
+		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
+		UPDATE PMS."OUTPUT"
+		SET OUT_TYPE=#{outType}
+		, OUT_TTL=#{outTtl}
+		, OUT_VER=#{outVer}
+		, OUT_FILE=#{outFile}
+		, MDF_DT= SYSDATE
+		, MDFR_ID='00000'
+		, OUT_ENCODE_FILE=#{outEncodeFile}
+		WHERE OUT_ID=#{outId}
+
 	</update>
 </mapper>

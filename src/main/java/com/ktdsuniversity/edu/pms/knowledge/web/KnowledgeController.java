@@ -29,7 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeRecommendService;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeService;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
@@ -57,6 +59,9 @@ public class KnowledgeController {
 
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private KnowledgeRecommendService knowledgeRecommendService;
 
 	// 목록 조회
 	@GetMapping("/knowledge")
@@ -71,15 +76,22 @@ public class KnowledgeController {
 
 	// 게시글별 상세 조회
 	@GetMapping("/knowledge/view")
-	public String viewDetailKnowledgeListPage(@RequestParam String knlId, Model model) {
+	public String viewDetailKnowledgeListPage(@RequestParam String knlId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		// 유저 검증
+		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
+			throw new EmployeeNotLoggedInException();
+		}
 
 		logger.info(knlId);
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
 
+		int recommendCount = knowledgeRecommendService.getKnowledgeRecommendCount(knlId);
+		
 		// knowledge/view 페이지에 데이터를 전송.
 		model.addAttribute("knowledgeVO", knowledgeVO);
-
+		model.addAttribute("recommendCount", recommendCount);
 		// return new AjaxResponse().append("oneKnowledge", knowledgeVO);
 		return "/knowledge/knowledgeview";
 	}
@@ -96,10 +108,15 @@ public class KnowledgeController {
 		return "/knowledge/knowledgewrite";
 	}
 
-	// 글 작성 // TO DO!! @SessionAttribute 추가
+	// 글 작성 
 	@PostMapping("/knowledge/write")
 	public String doKnowledgeWrite(KnowledgeVO knowledgeVO, @RequestParam MultipartFile file,
-			Model model) {
+			Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		// 유저 검증
+		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
+			throw new EmployeeNotLoggedInException();
+		}
 
 		// 검사 -> Validator로 추후 수정 가능
 		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
@@ -132,33 +149,18 @@ public class KnowledgeController {
 
 	}
 
-	// 추천하기 // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
-	@ResponseBody
-	@PutMapping("/ajax/Knowledge/recommend/{knlId}")
-	public AjaxResponse doRecommendKnowledge(@PathVariable("knlId") String knlId) {
+	
 
-		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
-
-		// 이번에 업데이트된 추천수(업데이트 성공 하면 1을 리턴함)
-		// 쿼리에서 update는 update된 row수를 리턴한다.
-		// 추천은 1회당 1건에 대해서만 업데이트가 이루어지므로, 성공하면 1이 리턴된다.
-		int successCount = this.knowledgeService.recommendOneKnowledge(knlId);
-
-		final var result = knowledgeVO.getKnlRecCnt() + successCount;
-
-		return new AjaxResponse().append("result", result);
-	}
-
-	// 글 수정 페이지 // @SessionAttribute 추가 예정
+	// 글 수정 페이지
 	@GetMapping("/knowledge/modify/{knlId}")
-	public String viewKnowledgeModify(@PathVariable String knlId, Model model) {
+	public String viewKnowledgeModify(@PathVariable String knlId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
-		// if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-		// employeeVO.getAdmnCode().equals(301)) {
-		// throw new PageNotFoundException();
-		// }
+//		 if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
+//		 employeeVO.getAdmnCode().equals(301)) {
+//		 throw new PageNotFoundException();
+//		 }
 
 		// 게시글의 정보를 화면에 보내준다.
 		model.addAttribute("knowledgeVO", knowledgeVO);
@@ -168,17 +170,17 @@ public class KnowledgeController {
 	}
 
 	// 글 수정 작성 페이지
-	@PostMapping("/knowledge/modify/{knlId}") // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+	@PostMapping("/knowledge/modify/{knlId}")
 	public String doKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
-			KnowledgeVO knowledgeVO) {
+			KnowledgeVO knowledgeVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
-		// TO DO !! 1. 유저 검증 코드 부분
-		// if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-		// employeeVO.getAdmnCode().equals(301)) {
-		// throw new PageNotFoundException();
-		// }
+		 // 유저 검증
+//		 if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
+//		 employeeVO.getAdmnCode().equals(301)) {
+//		 throw new PageNotFoundException();
+//		 }
 
 		// 수동 검사 -> Validator로 추후 수정 가능
 		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
@@ -210,19 +212,18 @@ public class KnowledgeController {
 	}
 
 	// 글 삭제
-	@GetMapping("/knowledge/delete/{knlId}") // TO DO!!! @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
-	public String doKnowledgeDelete(@PathVariable String knlId) {
+	@GetMapping("/knowledge/delete/{knlId}")
+	public String doKnowledgeDelete(@PathVariable String knlId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		boolean isDeleteSuccess = this.knowledgeService.deleteOneKnowledge(knlId);
 
-		// KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId,
-		// false);
+		 KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
-		// TO DO !! 1. 유저 검증 코드 부분
-		// if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-		// employeeVO.getAdmnCode().equals(301)) {
-		// throw new PageNotFoundException();
-		// }
+		// 유저 검증
+		 if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
+		 employeeVO.getAdmnCode().equals(301)) {
+		 throw new PageNotFoundException();
+		 }
 
 		if (isDeleteSuccess) {
 			logger.info("게시글 삭제 성공!");
@@ -236,12 +237,12 @@ public class KnowledgeController {
 
 	// 게시글 일괄 삭제
 	@ResponseBody
-	@PostMapping("/ajax/knowledge/delete/massive") // @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
-	public AjaxResponse doDeleteMassive(@RequestParam ("deleteItems[]") List<String> deleteItems) {
+	@PostMapping("/ajax/knowledge/delete/massive")
+	public AjaxResponse doDeleteMassive(@RequestParam ("deleteItems[]") List<String> deleteItems, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-//		if (EmployeeVO.getAdminYn().equals('N')) {
-//			throw new PageNotFoundException();
-//		}
+		if (employeeVO.getAdmnCode().equals(301)) {
+			throw new PageNotFoundException();
+		}
 		
 		boolean deleteResult = this.knowledgeService.deleteManyKnowledge(deleteItems);
 		
@@ -249,6 +250,27 @@ public class KnowledgeController {
 	}
 	
 	
+	// 추천하기
+//	@ResponseBody
+//	@PutMapping("/ajax/knowledge/recommend/{knlId}")
+//	public AjaxResponse doRecommendKnowledge(@PathVariable("knlId") String knlId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//		
+//		// 유저 검증
+////			if(employeeVO == null || employeeVO.getLgnYn() == "N") {
+////				throw new EmployeeNotLoggedInException();
+////			}
+//
+//		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
+//
+//		// 이번에 업데이트된 추천수(업데이트 성공 하면 1을 리턴함)
+//		// 쿼리에서 update는 update된 row수를 리턴한다.
+//		// 추천은 1회당 1건에 대해서만 업데이트가 이루어지므로, 성공하면 1이 리턴된다.
+//		int successCount = this.knowledgeService.recommendOneKnowledge(knlId);
+//
+//		final var result = knowledgeVO.getKnlRecCnt() + successCount;
+//
+//		return new AjaxResponse().append("result", result);
+//		}
 
 
 	// 파일 다운로드
@@ -376,15 +398,15 @@ public class KnowledgeController {
 	
 	
 	// 엑셀 일괄 등록
-	@ResponseBody
-	@PostMapping("/ajax/knowledge/excel/write")
-	 public AjaxResponse doExcelUpload(@RequestParam MultipartFile excelFile) {
-		
-	
-	 boolean isSuccess = this.knowledgeService.createMassiveKnowledge(excelFile);
-	
-	 return new AjaxResponse().append("result", isSuccess).append("next", "/knowledge");
-	}
+//	@ResponseBody
+//	@PostMapping("/ajax/knowledge/excel/write")
+//	 public AjaxResponse doExcelUpload(@RequestParam MultipartFile excelFile) {
+//		
+//	
+//	 boolean isSuccess = this.knowledgeService.createMassiveKnowledge(excelFile);
+//	
+//	 return new AjaxResponse().append("result", isSuccess).append("next", "/knowledge");
+//	}
 	
 	
 	

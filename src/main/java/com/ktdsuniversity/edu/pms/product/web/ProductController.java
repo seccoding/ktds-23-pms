@@ -20,6 +20,7 @@ import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
@@ -33,8 +34,11 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/list")
-	public String viewProductListPage(Model model, ProductVO productVO) {
-		ProductListVO productListVO = this.productService.getAllProduct(productVO);
+	public String viewProductListPage(Model model, ProductVO productVO, SearchProductVO searchProductVO) {
+//		ProductListVO productListVO = this.productService.getAllProduct();
+		
+		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
+		
 		model.addAttribute("productList", productListVO);
 		model.addAttribute("productVO", productVO);
 		return "product/list";
@@ -42,9 +46,9 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/apply")
-	public String viewProductApplyPage(Model model, ProductVO productVO) {
+	public String viewProductApplyPage(Model model, ProductVO productVO, SearchProductVO searchProductVO) {
 		// 비품명 선택
-		ProductListVO productListVO = this.productService.getAllProduct(productVO);
+		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
 		model.addAttribute("productListVO", productListVO);
 		
 		// 카테고리 선택
@@ -65,11 +69,12 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/manage/list")
-	public String viewProductManageListPage(Model model, ProductVO productVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String viewProductManageListPage(Model model, ProductVO productVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+								, SearchProductVO searchProductVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
 			throw new PageNotFoundException();
 		}
-		ProductListVO productListVO = this.productService.getAllProduct(productVO);
+		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
 		model.addAttribute("productList", productListVO);
 		model.addAttribute("productVO", productVO);
 		return "product/managelist";
@@ -90,11 +95,13 @@ public class ProductController {
 	}
 	
 	@GetMapping("/product/manage/detail")
-	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+									, SearchProductVO searchProductVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
 			throw new PageNotFoundException();
 		}
-		ProductManagementListVO productManagementListVO = this.productManagementService.getAllProductdetail(productManagementVO);
+//		ProductManagementListVO productManagementListVO = this.productManagementService.getAllProductdetail();
+		ProductManagementListVO productManagementListVO = this.productManagementService.searchAllProductDetail(searchProductVO);
 		model.addAttribute("productManagementList", productManagementListVO);
 		model.addAttribute("productVO", productManagementVO);
 		return "product/managedetail";
@@ -128,6 +135,8 @@ public class ProductController {
 	@PostMapping("/ajax/product/manage/add")
 	public AjaxResponse doProductManageAdd(ProductListVO productList) {
 		
+//		String prdtId = this.productService.selectNewPrdtId();
+		
 		
 		int isCreateSuccess = this.productService.createNewProduct(productList);
 		
@@ -135,8 +144,7 @@ public class ProductController {
 			throw new PageNotFoundException();
 		}
 		
-		return new AjaxResponse().append("result1", isCreateSuccess)
-								 .append("next", "/product/manage/list");
+		return new AjaxResponse().append("result1", isCreateSuccess).append("next", "/product/manage/list");
 	}
 	
 	@ResponseBody

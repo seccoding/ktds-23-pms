@@ -35,59 +35,95 @@ public class ApprovalController {
 	@Autowired
 	private BorrowService borrowService;
 
+//	@GetMapping("/approval/home")
+//	public String doApprovalHomePage(Model model, ApprovalVO approvaVo) {
+////		ApprovalListVO apprList = this.approvalService.getAllApproval();
+////        model.addAttribute("apprList", apprList);
+//
+//		ApprovalListVO apprList = this.approvalService.searchAllBoard(approvaVo);
+//		model.addAttribute("apprList", apprList);
+//		model.addAttribute("searchBoardVO", approvaVo);
+//
+//		ApprovalListVO approveList = this.approvalService.getAllApprove();
+//		model.addAttribute("approveList", approveList);
+//
+//		ApprovalListVO OneWeekApprovalList = this.approvalService.getAllOneWeekApproval();
+//		model.addAttribute("OneWeekApprovalList", OneWeekApprovalList);
+//
+//		ApprovalListVO monthApprovalList = this.approvalService.getAllMonthApproval();
+//		model.addAttribute("monthApprovalList", monthApprovalList);
+//
+//		return "approval/approvalhome";
+//	}
+
+//	@GetMapping("/approval/list")
+//	public String doApprovalListByEmpIdPage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+//			SearchApprovalVO searchapprovalvo) {
+////		ApprovalListVO apprList = this.approvalService.getAllApprovalByEmpId(employeeVO.getEmpId());
+////		model.addAttribute("apprList", apprList);
+//		System.out.println(employeeVO.getEmpId());
+//
+//		searchapprovalvo.setEmpId(employeeVO.getEmpId());
+//
+//		ApprovalListVO apprList = this.approvalService.searchApprovalView(searchapprovalvo, employeeVO.getEmpId());
+//		model.addAttribute("searchapprovalvo", searchapprovalvo);
+//		model.addAttribute("apprList", apprList);
+//
+//		return "/approval/approvallist";
+//	}
+
+//	// 검색
+//	@ResponseBody
+//	@PostMapping("/approval/list")
+//	public AjaxResponse doPsostApprovalListByEmpIdPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+//			@RequestParam("searchKeyword") String searchKeyword, SearchApprovalVO searchapprovalvo, Model model,
+//			String searchType) {
+//
+//		searchapprovalvo.setEmpId(employeeVO.getEmpId());
+//		searchapprovalvo.setSearchType(searchType);
+//		searchapprovalvo.setSearchKeyword(searchKeyword);
+//
+//		ApprovalListVO apprList = this.approvalService.searchApprovalView(searchapprovalvo, employeeVO.getEmpId());
+//
+//		return new AjaxResponse().append("success", "success")
+//								 .append("apprList", apprList).append("searchapprovalvo", searchapprovalvo);
+//	}
+
+
+	// PSH0422
+	// 조건에 따른 count 어떻게 뿌려줄지 생각해보기
 	@GetMapping("/approval/home")
-	public String doApprovalHomePage(Model model, ApprovalVO approvaVo) {
-//		ApprovalListVO apprList = this.approvalService.getAllApproval();
-//        model.addAttribute("apprList", apprList);
+	public String viewApprovalHomePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+									   Model model, SearchApprovalVO searchApprovalVO) {
 
-		ApprovalListVO apprList = this.approvalService.searchAllBoard(approvaVo);
-		model.addAttribute("apprList", apprList);
-		model.addAttribute("searchBoardVO", approvaVo);
+		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		searchApprovalVO.setEmployeeVO(employeeVO);
+		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
 
-		ApprovalListVO approveList = this.approvalService.getAllApprove();
-		model.addAttribute("approveList", approveList);
-
-		ApprovalListVO OneWeekApprovalList = this.approvalService.getAllOneWeekApproval();
-		model.addAttribute("OneWeekApprovalList", OneWeekApprovalList);
-
-		ApprovalListVO monthApprovalList = this.approvalService.getAllMonthApproval();
-		model.addAttribute("monthApprovalList", monthApprovalList);
+		model.addAttribute("employee", employee);
+		model.addAttribute("apprList", apprListVO);
+		model.addAttribute("searchApproval", searchApprovalVO);
 
 		return "approval/approvalhome";
 	}
-
+	
 	@GetMapping("/approval/list")
-	public String doApprovalListByEmpIdPage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			SearchApprovalVO searchapprovalvo) {
-//		ApprovalListVO apprList = this.approvalService.getAllApprovalByEmpId(employeeVO.getEmpId());
-//		model.addAttribute("apprList", apprList);
-		System.out.println(employeeVO.getEmpId());
+	public String viewApprovalListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+										Model model, SearchApprovalVO searchApprovalVO) {
+					   
 
-		searchapprovalvo.setEmpId(employeeVO.getEmpId());
+		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		searchApprovalVO.setEmployeeVO(employeeVO);
+		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
 
-		ApprovalListVO apprList = this.approvalService.searchApprovalView(searchapprovalvo, employeeVO.getEmpId());
-		model.addAttribute("searchapprovalvo", searchapprovalvo);
-		model.addAttribute("apprList", apprList);
+		model.addAttribute("employee", employee);
+		model.addAttribute("apprList", apprListVO);
+		model.addAttribute("searchApproval", searchApprovalVO);
 
-		return "/approval/approvallist";
+		return "approval/approvallist";
+																					
 	}
-
-	// 검색
-	@ResponseBody
-	@PostMapping("/approval/list")
-	public AjaxResponse doPsostApprovalListByEmpIdPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam("searchKeyword") String searchKeyword, SearchApprovalVO searchapprovalvo, Model model,
-			String searchType) {
-
-		searchapprovalvo.setEmpId(employeeVO.getEmpId());
-		searchapprovalvo.setSearchType(searchType);
-		searchapprovalvo.setSearchKeyword(searchKeyword);
-
-		ApprovalListVO apprList = this.approvalService.searchApprovalView(searchapprovalvo, employeeVO.getEmpId());
-
-		return new AjaxResponse().append("success", "success")
-								 .append("apprList", apprList).append("searchapprovalvo", searchapprovalvo);
-	}
+	
 
 	@GetMapping("/approval/view")
 	public String doApprovalViewPage(@RequestParam String apprId, Model model) {
@@ -101,28 +137,27 @@ public class ApprovalController {
 		return "/approval/approvalview";
 	}
 
-	// PSH0422
 
-//	// 비품대여현황 jsp에서 전달받을 파라미터: @RequestParam String empId
-//	@GetMapping("/approval/write")
-//	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-//
-//		// test code
-//		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
-//		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
-//
-////		if(dmdEmployeeVO == null || ! dmdEmployeeVO.getEmpId().equals(employeeVO.getEmpId())) {
-////			throw new PageNotFoundException();
-////		}
-//
-//		if (borrowListVO == null) {
+	// 비품대여현황 jsp에서 전달받을 파라미터: String empId
+	@GetMapping("/approval/write")
+	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+		// test code
+		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
+		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
+
+//		if(dmdEmployeeVO == null || ! dmdEmployeeVO.getEmpId().equals(employeeVO.getEmpId())) {
 //			throw new PageNotFoundException();
 //		}
-//
-//		model.addAttribute("employee", dmdEmployeeVO);
-//		model.addAttribute("borrowList", borrowListVO);
-//		return "/approval/approvalwrite";
-//	}
+
+		if (borrowListVO == null) {
+			throw new PageNotFoundException();
+		}
+
+		model.addAttribute("employee", dmdEmployeeVO);
+		model.addAttribute("borrowList", borrowListVO);
+		return "/approval/approvalwrite";
+	}
 
 	@ResponseBody
 	@PostMapping("/ajax/approval/write")
@@ -167,32 +202,32 @@ public class ApprovalController {
 	}
 
 	// 결재 승인 후 신규비품 대여
-//	@ResponseBody
-//	@PostMapping("/ajax/product/newPrdtBorrow")
-//	public AjaxResponse doNewPrdtForAppr(String apprId) {
-//		boolean isSuccessBorrow = this.approvalService.getNewPrdtBorrowForAppr(apprId);
-//		return new AjaxResponse().append("result", isSuccessBorrow).append("next", "/approval/list");
-//	}
+	@ResponseBody
+	@PostMapping("/ajax/product/newPrdtBorrow")
+	public AjaxResponse doNewPrdtForAppr(String apprId) {
+		boolean isSuccessBorrow = this.approvalService.getNewPrdtBorrowForAppr(apprId);
+		return new AjaxResponse().append("result", isSuccessBorrow).append("next", "/approval/list");
+	}
 
-//	@ResponseBody
-//	@GetMapping("/approval/delete/{apprId}")
-//	public AjaxResponse doApprovalDelete(@PathVariable String apprId, Model model) {
-//
-//		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
-//		// 퇴사: true
-//		boolean isLeaveEmployee = this.employeeService.getOneEmployee(approvalVO.getDmdId()).getWorkSts().equals("204");
-//		// 대여중인 물품이 없음: true
-//		boolean isNoReturnProduct = this.borrowService.getIsNotReturnCount(approvalVO.getDmdId());
-//
-//		if (!isLeaveEmployee) {
-//			return new AjaxResponse().append("errorMessage", "퇴직한 사원의 결재 내역만 삭제할 수 있습니다.");
-//		}
-//		if (!isNoReturnProduct) {
-//			return new AjaxResponse().append("errorMessage", "대여중인 비품이 포함된 결재 내역은 삭제할 수 없습니다.");
-//		}
-//
-//		boolean isDeleteSuccess = this.approvalService.deleteOneApproval(apprId);
-//		return new AjaxResponse().append("result", isDeleteSuccess).append("next", "/approval/list");
-//	}
+	@ResponseBody
+	@GetMapping("/ajax/approval/delete/{apprId}")
+	public AjaxResponse doApprovalDelete(@PathVariable String apprId, Model model) {
+
+		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
+		// 퇴사: true
+		boolean isLeaveEmployee = this.employeeService.getOneEmployee(approvalVO.getDmdId()).getWorkSts().equals("204");
+		// 대여중인 물품이 없음: true
+		boolean isNoReturnProduct = this.borrowService.getIsNotReturnCount(approvalVO.getDmdId());
+
+		if (!isLeaveEmployee) {
+			return new AjaxResponse().append("errorMessage", "퇴직한 사원의 결재 내역만 삭제할 수 있습니다.");
+		}
+		if (!isNoReturnProduct) {
+			return new AjaxResponse().append("errorMessage", "대여중인 비품이 포함된 결재 내역은 삭제할 수 없습니다.");
+		}
+
+		boolean isDeleteSuccess = this.approvalService.deleteOneApproval(apprId);
+		return new AjaxResponse().append("result", isDeleteSuccess).append("next", "/approval/list");
+	}
 
 }

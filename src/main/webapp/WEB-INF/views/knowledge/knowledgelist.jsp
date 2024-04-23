@@ -66,7 +66,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </tr>
               </c:forEach>
             </c:when>
-            <%-- boardList 의 내용이 존재하지 않는다면 --%>
+            <%-- knowledgeList 의 내용이 존재하지 않는다면 --%>
             <c:otherwise>
               <tr>
                 <td colspan="6"></td>
@@ -142,10 +142,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <button>
       <a href="/knowledge/excel/download">엑셀 다운</a>
       </button>
-      <button>
+      <!-- <button>
         <a id="uploadExcelfile" href="javaScript:void(0)">일괄 등록</a>
         <input type="file" id="excelfile" style="display: none;">
-        </button>
+        </button> -->
         <button>
           <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
         </button>

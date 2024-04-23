@@ -46,21 +46,21 @@ public class ApprovalDetailServiceImpl implements ApprovalDetailService {
 //	}
 
 	// PSH0422
-//	@Override
-//	public ApprovalDetailListVO getPersonApprovalDetail(String apprId) {
-//		ApprovalDetailListVO approvallistVO = new ApprovalDetailListVO();
-//		approvallistVO.setApprovalDetailList(approvalDetailDao.getPersonApproval(apprId));
-//		return approvallistVO;
-//	}
-//
-//	@Transactional
-//	@Override
-//	public boolean updateUnusablePrdt(String apprId) {
-//
-//		int returnPrdtCount = this.borrowDao.returnOneItemByAppr(apprId);
-//		int unusablePrdtCount = this.productManagementDao.unusablePrdtByAppr(apprId);
-//
-//		return ((returnPrdtCount > 0) && (unusablePrdtCount > 0));
-//	}
+	@Override
+	public ApprovalDetailListVO getPersonApprovalDetail(String apprId) {
+		ApprovalDetailListVO approvallistVO = new ApprovalDetailListVO();
+		approvallistVO.setApprovalDetailList(approvalDetailDao.getPersonApproval(apprId));
+		return approvallistVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean updateUnusablePrdt(String apprId) {
+
+		int returnPrdtCount = this.borrowDao.returnOneItemByAppr(apprId);
+		int unusablePrdtCount = this.productManagementDao.unusablePrdtByAppr(apprId);
+
+		return ((returnPrdtCount > 0) && (unusablePrdtCount > 0));
+	}
 
 }

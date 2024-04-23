@@ -1,5 +1,5 @@
 $().ready(function () {
-  $("#prj-id").on("change", function () {
+  $("#prj-id").on("change click", function () {
     var prjId = $("#prj-id option:selected").val();
 
     $.get("/requirement/teammate/" + prjId, function (response) {

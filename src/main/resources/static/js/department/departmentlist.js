@@ -1,5 +1,10 @@
 $().ready(function () {
-  function clearCodeInfo() {
+  $(".open-employee").on("click", function () {
+    var modal = $(".modal-employee-list");
+    modal[0].showModal();
+  });
+
+  function clearDepartmentInfo() {
     var subCommonCodeInfo = $(".code-info");
     subCommonCodeInfo.find("#codeDeptId").text("");
     subCommonCodeInfo.find("#codeDeptName").text("");
@@ -7,7 +12,7 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeDeptCrtDt").text("");
   }
 
-  function clearSubCodeInfo() {
+  function clearTeamInfo() {
     var subCommonCodeInfo = $(".sub-code-info");
     subCommonCodeInfo.find("#codeTmId").text("");
     subCommonCodeInfo.find("#codeTmName").text("");
@@ -15,7 +20,7 @@ $().ready(function () {
     subCommonCodeInfo.find("#codeTmLeadId").text("");
     subCommonCodeInfo.find("#codeTmCrtDt").text("");
   }
-  function clearSubSubCodeInfo() {
+  function clearEmployeeInfo() {
     var subSubCommonCodeInfo = $(".sub-sub-code-info");
     subSubCommonCodeInfo.find("#codeEmpId").text("");
     subSubCommonCodeInfo.find("#codeEmpName").text("");
@@ -27,9 +32,9 @@ $().ready(function () {
   }
 
   $(".departmentListClickFunction").on("click", function () {
-    clearCodeInfo();
-    clearSubCodeInfo();
-    clearSubSubCodeInfo();
+    clearDepartmentInfo();
+    clearTeamInfo();
+    clearEmployeeInfo();
 
     $(this).closest("tbody").find("tr").removeClass("active");
     $(".sub-sub-employee").find("tr").removeClass("active");
@@ -37,7 +42,7 @@ $().ready(function () {
 
     $(this).addClass("active");
 
-    clearSubCodeInfo();
+    clearTeamInfo();
     reloadSubTeam($(this).data("dept-id"));
 
     var commonCodeInfo = $(".code-info");
@@ -69,8 +74,8 @@ $().ready(function () {
           $(this).closest("tbody").find("tr").removeClass("active");
           $(this).addClass("active");
 
-          clearSubCodeInfo();
-          clearSubSubCodeInfo();
+          clearTeamInfo();
+          clearEmployeeInfo();
           var teamInfo = $(".sub-code-info");
           teamInfo.find("#codeTmId").text($(this).data("id"));
           teamInfo.find("#codeTmName").text($(this).data("name"));
@@ -107,7 +112,7 @@ $().ready(function () {
                   $(this).closest("tbody").find("tr").removeClass("active");
                   $(this).addClass("active");
 
-                  clearSubSubCodeInfo();
+                  clearEmployeeInfo();
                   var employeeInfo = $(".sub-sub-code-info");
 
                   $("#profile").attr({ src: $(this).data("emp-profile") });
@@ -174,6 +179,27 @@ $().ready(function () {
       }
     });
   });
+  $(".team-delete").on("click", function () {
+    var tmId = $("#codeTmId").text();
+    $.get("/ajax/department/team/candelete/" + tmId, function (response) {
+      if (response.data.possible) {
+        if (confirm("정말로 삭제하시겠습니까?")) {
+          $.get("/ajax/department/team/delete/" + tmId, function (response) {
+            if (response.data.success) {
+              alert("삭제에 성공하였습니다.");
+              location.reload();
+            } else {
+              alert("삭제중 오류가 발생했습니다.");
+              location.reload();
+            }
+          });
+        }
+      } else {
+        alert("사원이 존재하고 있어 삭제할 수 없습니다.");
+        location.reload();
+      }
+    });
+  });
 
   $(".dep-submit-button").on("click", function () {
     var departmentName = $("#department-name").val();
@@ -182,7 +208,7 @@ $().ready(function () {
       "/ajax/department/create",
       { deptName: departmentName, deptLeadId: departmentLeader },
       function (response) {
-        location.href = rsponese.data.nextUrl;
+        location.href = response.data.nextUrl;
       }
     );
   });
@@ -201,7 +227,9 @@ $().ready(function () {
     var teamName = $("#team-name").val();
     console.log(teamName);
     var teamLeader = $("#team-leader").val();
-    var teamDepartment = $("#team-department").val();
+    console.log(teamLeader);
+    var teamDepartment = $(".department-selectbox").val();
+    console.log(teamDepartment);
     $.post(
       "/ajax/team/create",
       { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
@@ -273,9 +301,6 @@ $().ready(function () {
     });
 
     modal[0].showModal();
-  });
-  $(".team-delete").on("click", function () {
-    var tmId = $("#codeTmId").text();
   });
 
   $("#modify-team-select-box").on("change", function () {

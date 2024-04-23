@@ -23,6 +23,7 @@ public class SurveyQuestionVO {
 	private DepartmentVO departmentVO;
 	private ProjectTeammateVO projectTeammateVO;
 	private EmployeeVO employeeVO;
+	private SurveyQuestionPickVO surveyQuestionPickVO;
 	
 	public String getSrvId() {
 		return srvId;
@@ -113,6 +114,12 @@ public class SurveyQuestionVO {
 	}
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
+	}
+	public SurveyQuestionPickVO getSurveyQuestionPickVO() {
+		return surveyQuestionPickVO;
+	}
+	public void setSurveyQuestionPickVO(SurveyQuestionPickVO surveyQuestionPickVO) {
+		this.surveyQuestionPickVO = surveyQuestionPickVO;
 	}
 
 }

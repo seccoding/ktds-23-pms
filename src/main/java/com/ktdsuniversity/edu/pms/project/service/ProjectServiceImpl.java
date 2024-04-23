@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.project.service;
 
-import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
@@ -196,4 +195,10 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectTeammateVO> getAllProjectTeammate() {
         return projectDao.findAllProjectTeammate();
     }
+
+    @Override
+    public List<ProjectVO> getAllProjectByProjectTeammateId(String tmId) {
+        return projectDao.findAllProjectByEmployeeId(tmId);
+    }
+
 }

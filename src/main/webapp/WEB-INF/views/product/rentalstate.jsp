@@ -37,6 +37,9 @@
         top: 3px;
 
     }
+    input[type="checkbox"] {
+        display: inline-block;
+    }
 </style>
 </head>
 <body>
@@ -45,29 +48,14 @@
         <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
     </div>
     <div class="grid">
-        <div>
-            <form id="search-form">
-                <div class="right-align">
-                    
-                    <select id="search-type" name="searchType" >
-                        <option value="productId" ${productVO.searchType eq 'productId' ? 'selected' : ''}>비품ID</option>
-                        <option value="productName" ${productVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
-                        <option value="category" ${productVO.searchType eq 'category' ? 'selected' : ''}>카테고리</option>
-                    </select>
-        
-                    <input type="text" name="searchKeyword" value="${productVO.searchKeyword}"/>
-                    <button type="button" id="search-btn">검색</button>
-                </div>
-            </form>
-        </div>
 
         <table class="table">
             <thead>
                 <tr>
                     <th>
                         <input type="checkbox" class="checkbox" id="checked-all"/>
-                        <label for="checkbox1"></label>
-                        <label for="checkbox1"></label>
+                        <!-- <label for="checkbox1"></label>
+                        <label for="checkbox1"></label> -->
                     </th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>
@@ -122,59 +110,71 @@
     
             </tbody>
         </table>
+    </div>
 
-        <!-- Paginator 시작 -->
-        <div class="paginator-bar">
-            <input type="hidden" id="page-no" name="pageNo" value="0" />
+    <!-- Paginator 시작 -->
+    <div>
+        <form id="search-form">
+            <input type="hidden" id="page-no" name="pageNo" value="0"/>
             <select id="list-size" name="listSize">
-                <!-- listSize의 값이 option 값과 같다면 selected 옵션 주기 -->
-                <option value="10" ${productVO.listSize eq 10 ? 'selected' : ''}>10개</option>
-                <option value="20" ${productVO.listSize eq 20 ? 'selected' : ''}>20개</option>
-                <option value="30" ${productVO.listSize eq 30 ? 'selected' : ''}>30개</option>
-                <option value="50" ${productVO.listSize eq 50 ? 'selected' : ''}>50개</option>
-                <option value="100" ${productVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+                <option value="10" ${searchBorrowVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+                <option value="20" ${searchBorrowVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+                <option value="30" ${searchBorrowVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+                <option value="50" ${searchBorrowVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+                <option value="100" ${searchBorrowVO.listSize eq 100 ? 'selected' : ''}>100개</option>
             </select>
 
-            <ul class="page-nav">
-            <c:if test="${productVO.hasPrevGroup}">
-                <!-- javascript에 있는 search 함수를 실행해라. 0을 전달 -->
-                <li><a href="javascript:search(0);">처음</a></li>
-                <li>
-                <a
-                    href="javascript:search(${productVO.prevGroupStartPageNo});"
-                    >이전</a
-                >
-                </li>
-            </c:if>
-            <!-- Page 번호를 반복하며 노출한다. -->
-            <c:forEach
-                begin="${productVO.groupStartPageNo}"
-                end="${productVO.groupEndPageNo}"
-                step="1"
-                var="p"
-            >
-                <li class="${productVO.pageNo eq p ? 'active' : ''}">
-                <a href="javascript:search(${p});">${p+1}</a>
-                </li>
-            </c:forEach>
+            <select id="search-type" name="searchType" >
+                <option value="productName" ${searchBorrowVO.searchType eq 'productName' ? 'selected' : ''}>비품명</option>
+                <option value="productManagementId" ${searchBorrowVO.searchType eq 'productManagementId' ? 'selected' : ''}>비품관리ID</option>
+            </select>
 
-            <c:if test="${productVO.hasNextGroup}">
-                <li>
-                <a
-                    href="javascript:search(${productVO.nextGroupStartPageNo});"
-                    >다음</a
+            <input type="text" name="searchKeyword" value="${searchBorrowVO.searchKeyword}"/>
+            <button type="button" id="search-btn">검색</button>
+
+            <ul class="page-nav">
+                <c:if test="${searchBorrowVO.hasPrevGroup}">
+                    <li><a href="javascript:search(0);">처음</a></li>
+                    <li>
+                        <a
+                                href="javascript:search(${searchBorrowVO.prevGroupStartPageNo});"
+                        >이전</a
+                        >
+                    </li>
+                </c:if>
+
+                <!-- Page 번호를 반복하며 노출한다. -->
+                <c:forEach
+                        begin="${searchBorrowVO.groupStartPageNo}"
+                        end="${searchBorrowVO.groupEndPageNo}"
+                        step="1"
+                        var="p"
                 >
-                </li>
-                <li>
-                <a href="javascript:search(${productVO.pageCount - 1});"
-                    >마지막</a
-                >
-                </li>
-            </c:if>
+                    <li class="${searchBorrowVO.pageNo eq p ? 'active' : ''}">
+                        <a href="javascript:search(${p});">${p+1}</a>
+                    </li>
+                </c:forEach>
+
+                <c:if test="${searchBorrowVO.hasNextGroup}">
+                    <li>
+                        <a
+                                href="javascript:search(${searchBorrowVO.nextGroupStartPageNo});"
+                        >다음</a
+                        >
+                    </li>
+                    <li>
+                        <a href="javascript:search(${searchBorrowVO.pageCount - 1});"
+                        >마지막</a
+                        >
+                    </li>
+                </c:if>
             </ul>
-        </div>
-        <!-- Paginator 끝 -->
+        </form>
     </div>
+
+    <!-- Paginator 끝 -->
+
+
     <div class="flex">
         <button>선택항목 변경신청</button>
         <button class="selected-return">선택항목 반납</button>

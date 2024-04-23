@@ -15,7 +15,6 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     }
   </style>
   <body>
-    <jsp:include page="../layout/layout.jsp"></jsp:include>
     <form
       method="post"
       enctype="multipart/form-data"
@@ -24,7 +23,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
         <label for="prj-id">프로젝트명</label>
         <select name="prjId" id="prj-id">
-          <c:forEach items="${projectList.projectList}" var="project">
+          <c:forEach items="${projectList}" var="project">
             <c:choose>
                 <c:when test="${project.prjId eq output.prjId}">
                     <option value="${project.prjId}" selected>${project.prjName}</option>
@@ -50,6 +49,14 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </c:forEach>
         </select>
 
+        
+        <label for="out-ver">프로젝트 진행상황</label>
+        <select name="outVer" id="out-ver">
+          <c:forEach items="${prjSts}" var="prjSts">
+            <option value="${prjSts.cmcdId}">${prjSts.cmcdName}</option>
+          </c:forEach>
+        </select>
+
         <label for="out-ttl">산출물 제목</label>
         <input type="text" name="outTtl" id="out-ttl"  />
 
@@ -66,6 +73,5 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
     </form>
 
-    <jsp:include page="../layout/layout_close.jsp"></jsp:include>
   </body>
 </html>

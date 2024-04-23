@@ -16,6 +16,7 @@ public class TeamServiceImpl implements TeamService{
 	@Autowired
 	private TeamDao teamDao;
 	
+	@Transactional
 	@Override
 	public boolean createNewTeam(TeamVO teamVO) {
 		
@@ -59,6 +60,12 @@ public class TeamServiceImpl implements TeamService{
 	public boolean isPossibleDelete(String teamId) {
 
 		return teamDao.isPossibleDelete(teamId) == 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteOneTeam(String teamId) {
+		return teamDao.deleteOneTeam(teamId) > 0;
 	}
 
 }

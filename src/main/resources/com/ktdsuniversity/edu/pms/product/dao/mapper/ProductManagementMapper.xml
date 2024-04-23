@@ -10,9 +10,42 @@
 			<id column="PRDT_ID" property="prdtId" />
 			<result column="PRDT_NAME" property="prdtName"/>
 		</association>
+		<association property="approvalDetailVO" javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO">
+			<id column="APPR_DTL_ID" property="apprDtlId"/>
+			<result column="APPR_ID" property="apprId"/>
+			<result column="APPR_DTL_DEL_YN" property="delYn"/>
+		</association>
 	</resultMap>
 
 	<select id="getProductManagementCount" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM PRODUCT_MANAGEMENT PM
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE PM.DEL_YN = 'N'
+	</select>
+	
+	<select id="getAllProductManagement" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO"
+			resultMap="ProductManagementVOMap">
+		SELECT PM.PRDT_MNG_ID
+			 , PM.PRDT_PRICE
+			 , TO_CHAR(PM.BUY_DT, 'YYYY-MM-DD') BUY_DT
+			 , PM.LOST_YN
+			 , TO_CHAR(PM.LOST_DT, 'YYYY-MM-DD') LOST_DT
+			 , PM.BRRW_YN
+			 , PM.PRDT_ID
+			 , PM.DEL_YN
+			 , P.PRDT_NAME 
+		  FROM PRODUCT_MANAGEMENT PM
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE PM.DEL_YN = 'N'
+	</select>
+	
+	<select id="searchProductManagementAllCount" 
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO"
 			resultType="_int">
 		SELECT COUNT(1)
@@ -28,17 +61,14 @@
 				<when test='searchType == "productName"'>
 		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
-				<when test='searchType == "noSelect"'>
-		   AND (PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
-		   OR P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%')
-				</when>
 			</choose>
 		</if>
 	</select>
 	
-	<select id="getAllProductManagement" 
+	<select id="searchAllProductManagement" 
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO"
 			resultMap="ProductManagementVOMap">
+		<include refid="Common.pagenate_header" />
 		SELECT PM.PRDT_MNG_ID
 			 , PM.PRDT_PRICE
 			 , TO_CHAR(PM.BUY_DT, 'YYYY-MM-DD') BUY_DT
@@ -60,12 +90,10 @@
 				<when test='searchType == "productName"'>
 		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
-				<when test='searchType == "noSelect"'>
-		   AND (PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
-		   OR P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%')
-				</when>
 			</choose>
 		</if>
+		
+		<include refid="Common.pagenate_footer" />
 	</select>
 	
 	<select id="getFilteringProductManagementCount" resultType="_int" parameterType="string">
@@ -160,5 +188,35 @@
 		 WHERE DEL_YN = 'N'
 		   AND PRDT_ID = #{_parameter}
 	</select>
+	
+	<!-- PSH0422 -->
+	<select id="getNewPrdtMngIdForBorrow" parameterType="string" resultType="string">
+		SELECT PRDT.PRDT_MNG_ID
+		  FROM (SELECT PM.PRDT_MNG_ID
+			      FROM PRODUCT_MANAGEMENT PM
+			     INNER JOIN PRODUCT P
+			  	    ON PM.PRDT_ID = P.PRDT_ID
+				 WHERE P.PRDT_NAME = #{_parameter}
+		 		   AND PM.LOST_YN = 'N'
+				   AND PM.BRRW_YN = 'N'
+				   AND PM.DEL_YN = 'N'
+				 ORDER BY PM.BUY_DT ASC) PRDT
+				 WHERE ROWNUM = 1
+	</select>
+
+	<update id="unusablePrdtByAppr" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT
+		   SET BRRW_YN = 'N'
+		     , DEL_YN = 'Y'
+		 WHERE PRDT_MNG_ID IN (SELECT PRDT_ID
+								 FROM APPROVAL_DETAIL
+								WHERE APPR_ID = #{_parameter})
+	</update>
+
+	<update id="changeManyItemBrrwState" parameterType="string">
+		UPDATE PRODUCT_MANAGEMENT
+		   SET BRRW_YN = 'Y'
+		 WHERE PRDT_MNG_ID = #{_parameter}
+	</update>
 	
 </mapper>

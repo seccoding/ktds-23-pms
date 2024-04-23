@@ -70,6 +70,17 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	public int deleteApproval(String apprId) {
 		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".deleteApproval", apprId);
 	}
+	
+	// PSH - search
+	@Override
+	public int searchApprAllCount(SearchApprovalVO searchApprovalVO) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".searchApprAllCount", searchApprovalVO);
+	}
+	
+	@Override
+	public List<ApprovalVO> searchAllApproval(SearchApprovalVO searchApprovalVO) {
+		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchAllApproval", searchApprovalVO);
+	}
 
 	@Override
 	public int getAllApproveCount() {

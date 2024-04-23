@@ -10,13 +10,13 @@ public interface MemoService {
 
 	public MemoListVO getSentMemoAllsearch(SearchMemoVO searchMemoVO);
 
-	public boolean writeNewMemo(String rcvId, String memoCntnt);
+	public boolean writeNewMemo(MemoVO memoVO);
 
-	public MemoVO getOneMemo(String memoId);
+	public MemoVO getOneMemo(String memoId, String empId);
 
-	public MemoListVO getStorageMemoAllsearch();
+	public MemoListVO getStorageMemoAllsearch(SearchMemoVO searchMemoVO);
 
-	public MemoListVO getReceiveMemoAllsearch();
+	public MemoListVO getReceiveMemoAllsearch(SearchMemoVO searchMemoVO);
 
 	public boolean deleteOneMemo(String id);
 

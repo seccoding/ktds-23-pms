@@ -5,7 +5,7 @@
 <mapper namespace="com.ktdsuniversity.edu.pms.memo.dao.MemoDao">
   
   	<resultMap type="com.ktdsuniversity.edu.pms.memo.vo.MemoVO" id="MemoVOMap" autoMapping="true">
-  		<id column="MemoId" property="memoId"/>
+  		<id column="MEMO_ID" property="memoId"/>
   		<association property="employeeVO" 
   					javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
   			<id column="EMP_ID" property="empId"/>
@@ -22,7 +22,8 @@
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.RCV_ID
   		 WHERE M.DEL_YN = 'N'
-  		   AND M.CRTR_ID = '1010002'
+  		   AND M.CRTR_ID = #{empId}
+  		   AND M.RCV_ID != M.CRTR_ID
   		   AND M.SAVE_YN = 'N'
   		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
   		 <!-- AND M.CRTR_ID = 세션에 로그인된 사람의 EMP_ID -->
@@ -70,7 +71,8 @@
   		  FROM MEMO M
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.RCV_ID
-  		 WHERE CRTR_ID = '1010002'
+  		 WHERE M.CRTR_ID = #{empId}
+  		   AND M.RCV_ID != M.CRTR_ID
   		   AND M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'N'
 		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
@@ -110,13 +112,37 @@
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'N'
-  		   AND M.RCV_ID = '1010002'
+  		   AND M.RCV_ID = #{empId}
   		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
   		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  		 <if test='searchStatus != null and searchStatus != ""'>
+            <choose>
+                <when test='searchStatus == "all"'>
+                </when>
+                <otherwise>
+                    AND M.READ_YN = #{searchStatus}
+                </otherwise>
+            </choose>
+        </if>
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "rcvId"'>
+                    AND M.RCV_ID LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "email"'>
+                    AND E.EMAIL LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "empName"'>
+                    AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
   	</select>
   
   	<select id="getAllReceiveMemo"
+  			parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO"
   			resultMap="MemoVOMap">
+  			<include refid="Common.pagenate_header"/>
   		SELECT M.MEMO_ID
 			 , M.MEMO_PID
 			 , M.RCV_ID
@@ -133,12 +159,34 @@
   		  FROM MEMO M
   		 INNER JOIN EMPLOYEE E
   		    ON E.EMP_ID = M.CRTR_ID
-  		 WHERE RCV_ID = '1010002'
+  		 WHERE M.RCV_ID = #{empId}
   		   AND M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'N'
   		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
-  		  <!-- WHERE M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  		  <if test='searchStatus != null and searchStatus != ""'>
+            <choose>
+                <when test='searchStatus == "all"'>
+                </when>
+                <otherwise>
+                    AND M.READ_YN = #{searchStatus}
+                </otherwise>
+            </choose>
+        </if>
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "rcvId"'>
+                    AND M.RCV_ID LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "email"'>
+                    AND E.EMAIL LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "empName"'>
+                    AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
   		 ORDER BY M.CRT_DT DESC
+  		 <include refid="Common.pagenate_footer"/>
   	</select>
   
   	<select id="getStorageMemoAllCount"
@@ -149,12 +197,36 @@
   		    ON E.EMP_ID = M.CRTR_ID
   		 WHERE M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'Y'
-  		   AND M.RCV_ID = '1010002'
+  		   AND M.RCV_ID = #{empId}
   		 <!-- AND M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  		  <if test='searchStatus != null and searchStatus != ""'>
+            <choose>
+                <when test='searchStatus == "all"'>
+                </when>
+                <otherwise>
+                    AND M.READ_YN = #{searchStatus}
+                </otherwise>
+            </choose>
+        </if>
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "rcvId"'>
+                    AND M.RCV_ID LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "email"'>
+                    AND E.EMAIL LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "empName"'>
+                    AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
   	</select>
   	
   	<select id="getAllStorageMemo"
-  			resultType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
+  			parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO"
+  			resultMap="MemoVOMap">
+  		<include refid="Common.pagenate_header"/>
   		SELECT M.MEMO_ID
 			 , M.MEMO_PID
 			 , M.RCV_ID
@@ -170,12 +242,36 @@
 			 , E.EMP_NAME
   		  FROM MEMO M
   		 INNER JOIN EMPLOYEE E
-  		    ON E.EMP_ID = M.CRTR_ID
-  		 WHERE RCV_ID = '1010002'
+  		    ON E.EMP_ID = M.RCV_ID
+  		 WHERE (M.RCV_ID = #{empId}
+  		    OR M.CRTR_ID = #{empId})
   		   AND M.DEL_YN = 'N'
   		   AND M.SAVE_YN = 'Y'
   		  <!-- WHERE M.RCV_ID = 세션에 로그인된 사람의 EMP_ID -->
+  		   <if test='searchStatus != null and searchStatus != ""'>
+            <choose>
+                <when test='searchStatus == "all"'>
+                </when>
+                <otherwise>
+                    AND M.READ_YN = #{searchStatus}
+                </otherwise>
+            </choose>
+        </if>
+        <if test='searchKeyword != null and searchKeyword != ""'>
+            <choose>
+                <when test='searchType == "rcvId"'>
+                    AND M.RCV_ID LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "email"'>
+                    AND E.EMAIL LIKE '%' || #{searchKeyword} || '%'
+                </when>
+                <when test='searchType == "empName"'>
+                    AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                </when>
+            </choose>
+        </if>
   		 ORDER BY M.CRT_DT DESC
+  		 <include refid="Common.pagenate_footer"/>
   	</select>
   
   	<insert id="writeNewMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.MemoVO">
@@ -195,7 +291,7 @@
 			  ('MM_' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_MEMO_PK.NEXTVAL,6 ,'0')
 			 , NULL
 			 , #{rcvId} /* 받는 사람 */
-			 , '1010002' /* 세션에 로그인된 사람 보내는 사람 */
+			 , #{empId} /* 세션에 로그인된 사람 보내는 사람 */
 			 , SYSDATE
 			 , #{memoCntnt} /* 세션에 적은 내용 */
 			 , 'N'

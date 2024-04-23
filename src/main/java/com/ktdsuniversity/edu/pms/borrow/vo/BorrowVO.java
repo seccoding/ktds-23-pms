@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.borrow.vo;
 
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
@@ -16,6 +18,26 @@ public class BorrowVO {
 	
 	private ProductVO productVO;
 	
+	// PSH0422
+	private ApprovalVO approvalVO;
+	private ApprovalDetailVO approvalDetailVO;
+	
+	private String searchType; // option 선택
+	private String searchKeyword; // 검색어
+	
+	
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
 	public ProductVO getProductVO() {
 		return productVO;
 	}
@@ -63,6 +85,18 @@ public class BorrowVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public ApprovalVO getApprovalVO() {
+		return approvalVO;
+	}
+	public void setApprovalVO(ApprovalVO approvalVO) {
+		this.approvalVO = approvalVO;
+	}
+	public ApprovalDetailVO getApprovalDetailVO() {
+		return approvalDetailVO;
+	}
+	public void setApprovalDetailVO(ApprovalDetailVO approvalDetailVO) {
+		this.approvalDetailVO = approvalDetailVO;
 	}
 	
 	

@@ -4,15 +4,25 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 public interface ProductDao {
 	
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.product.dao.ProductDao";
 
-	public List<ProductVO> getAllProduct(ProductVO productVO);
+	public List<ProductVO> getAllProduct();
 
-	public int getProductAllCount(ProductVO productVO);
+	public int getProductAllCount();
+	
+	public int searchProductAllCount(SearchProductVO searchProductVO);
 
+	public List<ProductVO> searchAllProduct(SearchProductVO searchProductVO);
+
+	/**
+	 * 새로운 비품 추가
+	 * @param productVO
+	 * @return
+	 */
 	public int insertNewProduct(ProductVO productVO);
 
 	public ProductVO selectOneProduct(String id);
@@ -44,10 +54,14 @@ public interface ProductDao {
 	public ProductVO selectOneProductByPrdtName(String prdtName);
 
 	/**
-	 * 여러 개의 비품들 일괄등록 
-	 * @param addItems
+	 * prdtId 값 조회
 	 * @return
 	 */
-	public int insertManyProduct(List<Integer> addItems);
+	public String selectOnePrdtId();
+	
+	// PSH0422
+	public int changeOnePrdtStored(String prdtName);
+
+	
 
 }

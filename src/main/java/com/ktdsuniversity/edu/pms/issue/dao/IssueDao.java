@@ -62,8 +62,8 @@ public interface IssueDao {
 	 */
 	public int deleteOneIssue(String isId);
 
-	public List<IssueVO> selectManyIssue(List<Integer> deleteItems);
+	public List<IssueVO> selectManyIssue(List<String> deleteItems);
 
-	public int deleteManyIssue(List<Integer> deleteItems);
+	public int deleteManyIssue(List<String> deleteItems);
 
 }

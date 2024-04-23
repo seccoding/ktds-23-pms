@@ -2,9 +2,11 @@ package com.ktdsuniversity.edu.pms.survey.service;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 public interface SurveyQuestionService {
 	
@@ -21,5 +23,9 @@ public interface SurveyQuestionService {
 	public boolean modifyOneSurvey(SurveyQuestionVO surveyQuestionVO);
 
 	public boolean modifyOneSurveyExceptBody(SurveyQuestionVO surveyQuestionVO);
+
+	public boolean writeNewSurvey(SurveyReplyVO surveyReplyVO);
+
+	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO);
 
 }

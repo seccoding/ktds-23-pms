@@ -56,17 +56,17 @@ public interface ApprovalDao {
 	 */
 	public int updateApproval(String id);
 
-	// PSH0422
-	/**
-	 * 시퀀스로 생성해둔 Approval의 PK값을 가져온다.
-	 * 
-	 * @return apprId
-	 */
+	// PSH - 0422
 	public String selectOneApprId();
 
 	public int insertApproval(ApprovalVO approvalVO);
 
 	public int deleteApproval(String apprId);
+	
+	// PSH - search
+	public int searchApprAllCount(SearchApprovalVO searchApprovalVO);
+
+	public List<ApprovalVO> searchAllApproval(SearchApprovalVO searchApprovalVO);
 
 	/**
 	 * 승인되지 않은 결재 내역 개수

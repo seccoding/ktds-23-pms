@@ -12,6 +12,7 @@ import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -23,12 +24,24 @@ public class ProductServiceImpl implements ProductService{
 	private ProductManagementDao productManagementDao;
 
 	@Override
-	public ProductListVO getAllProduct(ProductVO productVO) {
-		int productCount = this.productDao.getProductAllCount(productVO);
+	public ProductListVO getAllProduct() {
+		int productCount = this.productDao.getProductAllCount();
 		
-		productVO.setPageCount(productCount);
+		List<ProductVO> productList = this.productDao.getAllProduct();
 		
-		List<ProductVO> productList = this.productDao.getAllProduct(productVO);
+		ProductListVO productListVO = new ProductListVO();
+		productListVO.setProductCnt(productCount);
+		productListVO.setProductList(productList);
+		
+		return productListVO;
+	}
+	
+	@Override
+	public ProductListVO searchAllProduct(SearchProductVO searchProductVO) {
+		int productCount = this.productDao.searchProductAllCount(searchProductVO);
+		searchProductVO.setPageCount(productCount);
+		
+		List<ProductVO> productList = this.productDao.searchAllProduct(searchProductVO);
 		
 		ProductListVO productListVO = new ProductListVO();
 		productListVO.setProductCnt(productCount);
@@ -43,7 +56,20 @@ public class ProductServiceImpl implements ProductService{
 		int insertCount = 0;
 		
 		for( ProductVO productVO : productList.getProductList()) {
-			insertCount += this.productDao.insertNewProduct(productVO);			
+			
+			// 추가할 비품ID의 시퀀스 값을 가져온다.
+			String prdtId = this.productDao.selectOnePrdtId();
+			
+			productVO.setPrdtId(prdtId);
+			insertCount += this.productDao.insertNewProduct(productVO);
+			
+			// 수량만큼 해당 비품의 관리 상세목록에 비품을 추가
+			for(int i=0; i < productVO.getCurStr(); i++) {
+				
+				productVO.getProductManagementVO().setPrdtId(prdtId);
+				
+				this.productManagementDao.addProductManagement(productVO.getProductManagementVO());
+			}
 		}
 		
 		return insertCount;
@@ -65,7 +91,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		return productDao.updateOneProduct(prdtId) > 0;
 	}
-
+	
 	@Transactional
 	@Override
 	public boolean addProductCount(ProductManagementVO productManagementVO) {
@@ -106,10 +132,9 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public boolean createManyProduct(List<Integer> addItems) {
-		return this.productDao.insertManyProduct(addItems) > 0;
+	public String selectNewPrdtId() {
+		return this.productDao.selectOnePrdtId();
 	}
-
 	
 
 }

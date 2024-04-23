@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public interface EmployeeDao {
 
@@ -31,6 +32,18 @@ public interface EmployeeDao {
 
 	public String saltByEmp(String empId);
 
+
 	public List<EmployeeVO> findEmployeesByTeamId(String teamId);
+
+	public int getOneEmpIdIsExist(String empId);
+
+	public int modifyOneEmployee(EmployeeVO employeeVO);
+
+	public List<TeamVO> getEmployeeAllTeam(String empId);
+
+	public int deleteTeam(EmployeeVO employeeVO);
+
+	public int addTeam(EmployeeVO employeeVO);
+
 
 }

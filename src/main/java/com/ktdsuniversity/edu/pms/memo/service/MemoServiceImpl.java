@@ -22,6 +22,7 @@ public class MemoServiceImpl implements MemoService{
 	public MemoListVO getSentMemoAllsearch(SearchMemoVO searchMemoVO) {
 		
 		int sentMemoCount = this.memoDao.getSentMemoAllCount(searchMemoVO);
+		searchMemoVO.setPageCount(sentMemoCount);
 		
 		List<MemoVO> memoList = this.memoDao.getAllSentMemo(searchMemoVO);
 		
@@ -33,26 +34,26 @@ public class MemoServiceImpl implements MemoService{
 	}
 
 	@Override
-	public MemoListVO getStorageMemoAllsearch() {
-		int sentMemoCount = this.memoDao.getStorageMemoAllCount();
-		
-		List<MemoVO> memoList = this.memoDao.getAllStorageMemo();
+	public MemoListVO getStorageMemoAllsearch(SearchMemoVO searchMemoVO) {
+		int storageMemoCount = this.memoDao.getStorageMemoAllCount(searchMemoVO);
+		searchMemoVO.setPageCount(storageMemoCount);
+		List<MemoVO> memoList = this.memoDao.getAllStorageMemo(searchMemoVO);
 		
 		MemoListVO memoListVO = new MemoListVO();
-		memoListVO.setMemoCnt(sentMemoCount);
+		memoListVO.setMemoCnt(storageMemoCount);
 		memoListVO.setMemoList(memoList);
 		
 		return memoListVO;
 	}
 
 	@Override
-	public MemoListVO getReceiveMemoAllsearch() {
-		int sentMemoCount = this.memoDao.getReceiveMemoAllCount();
-		
-		List<MemoVO> memoList = this.memoDao.getAllReceiveMemo();
+	public MemoListVO getReceiveMemoAllsearch(SearchMemoVO searchMemoVO) {
+		int receiveMemoCount = this.memoDao.getReceiveMemoAllCount(searchMemoVO);
+		searchMemoVO.setPageCount(receiveMemoCount);
+		List<MemoVO> memoList = this.memoDao.getAllReceiveMemo(searchMemoVO);
 		
 		MemoListVO memoListVO = new MemoListVO();
-		memoListVO.setMemoCnt(sentMemoCount);
+		memoListVO.setMemoCnt(receiveMemoCount);
 		memoListVO.setMemoList(memoList);
 		
 		return memoListVO;
@@ -61,12 +62,10 @@ public class MemoServiceImpl implements MemoService{
 	
 	@Transactional
 	@Override
-	public boolean writeNewMemo(String rcvId, String memoCntnt) {
+	public boolean writeNewMemo(MemoVO memoVO) {
 	
-		List<String> rcvIdList = Arrays.asList(rcvId.split(","));
-		MemoVO memoVO = new MemoVO();
-		memoVO.setMemoCntnt(memoCntnt);
-		
+		List<String> rcvIdList = Arrays.asList(memoVO.getRcvId().split(","));
+
 		int insertedCount = 0;
         for (String id : rcvIdList) {
             // 각 이메일 주소에 쪽지를 보냅니다.
@@ -81,11 +80,11 @@ public class MemoServiceImpl implements MemoService{
 	// 조회한 결과가 없다면? 설정해주기
 	@Transactional
 	@Override
-	public MemoVO getOneMemo(String memoId) {
+	public MemoVO getOneMemo(String memoId, String empId) {
 		MemoVO memoVO = this.memoDao.selectOneMemo(memoId);
 		
 		// 조회하면 읽음으로 바뀜
-		if(memoVO.getReadYn().equals("N")) {
+		if(memoVO.getReadYn().equals("N") && memoVO.getRcvId().equals(empId)) {
 			this.memoDao.changeViewStatus(memoId);
 		}
 		

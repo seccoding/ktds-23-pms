@@ -1,12 +1,11 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
-import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
-
-import java.util.List;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public interface LoginLogDao {
 	public String LOGIN_SPACE = "com.ktdsuniversity.edu.pms.login.dao.LoginLogDao";
@@ -30,7 +29,7 @@ public interface LoginLogDao {
 	public int getOneEmpLgnTryCount(String empId);
 
 
-	public void updateLoginLog(EmployeeVO employee);
+	public int updateLoginLog(LoginLogVO loginLogVO);
 
 	public EmployeeVO updateEmpLog(EmployeeVO employee);
 
@@ -52,5 +51,10 @@ public interface LoginLogDao {
 
     public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO);
 
+	List<LoginLogVO> getOneLoginLog(String empId);
+
 	public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO);
+
+	List<VisitedVO> getOneVisitedLog(String empId);
+
 }

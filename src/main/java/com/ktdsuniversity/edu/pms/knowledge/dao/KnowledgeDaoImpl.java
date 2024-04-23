@@ -94,6 +94,20 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 	}
 
 
+	@Override
+	public KnowledgeVO findById(String getpPostId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void save(KnowledgeVO knowledge) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	
 	
 

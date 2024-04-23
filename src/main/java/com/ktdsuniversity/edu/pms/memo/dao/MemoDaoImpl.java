@@ -30,23 +30,23 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	}
 
 	@Override
-	public int getStorageMemoAllCount() {
-		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getStorageMemoAllCount");
+	public int getStorageMemoAllCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getStorageMemoAllCount", searchMemoVO);
 	}
 
 	@Override
-	public List<MemoVO> getAllStorageMemo() {
-		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllStorageMemo");
+	public List<MemoVO> getAllStorageMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllStorageMemo", searchMemoVO);
 	}
 
 	@Override
-	public int getReceiveMemoAllCount() {
-		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReceiveMemoAllCount");
+	public int getReceiveMemoAllCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReceiveMemoAllCount", searchMemoVO);
 	}
 
 	@Override
-	public List<MemoVO> getAllReceiveMemo() {
-		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllReceiveMemo");
+	public List<MemoVO> getAllReceiveMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectList(MemoDao.NAME_SPACE + ".getAllReceiveMemo", searchMemoVO);
 	}
 	
 	@Override

@@ -12,11 +12,9 @@ public interface IssueReplyDao {
 	
 	public IssueReplyVO getOneReply(String replyId);
 	
-	public int createNewIssueReply(String replyId);
+	public int createNewIssueReply(IssueReplyVO issueReplyVO);
 	
 	public int deleteOneIssueReply(String replyId);
 	
 	public int modifyOneIssueReply(IssueReplyVO issueReplyVO);
-	
-	public int recommendOneIssueReply(String replyId);
 }

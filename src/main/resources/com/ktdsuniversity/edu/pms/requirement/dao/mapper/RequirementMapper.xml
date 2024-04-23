@@ -28,6 +28,9 @@
 			<id column="PRJ_ID" property="prjId" />
 			<result column="PRJ_NAME" property="prjName" />
 			<result column="REQ_YN" property="reqYn" />
+			<result column="IS_YN" property="isYn" />
+			<result column="KNL_YN" property="knlYn" />
+			<result column="QA_YN" property="qaYn" />
 	</association>
 	
 	<!-- join table -->
@@ -76,9 +79,20 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	 <if test='prjId != null and prjId != ""'>
-	   AND	R.PRJ_ID=#{prjId}
-	 </if>
+	 <choose>
+		  <when test='prjId != null and prjId!= ""'>
+		   AND R.PRJ_ID = #{prjId}
+		   </when>
+		  <otherwise>
+		    <if test='empId != null and empId != ""'>
+		  AND  R.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+ 	  		</if>
+		  </otherwise>
+		</choose>
 	 <if test='scdSts != null and scdSts != ""'>
 	   AND	R.SCD_STS=#{scdSts}
 	 </if>
@@ -138,8 +152,8 @@
 		 ,	R.SCD_STS 
 		 ,	R.RQM_STS 
 		 ,	R.PRJ_ID
-		 ,  R.STRT_DT
-		 , 	R.END_DT
+		 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
+		 , 	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
 		 ,	STS.CMCD_NAME 	AS STS_NAME
 		 ,	RQM.CMCD_NAME 	AS RQM_NAME
 		 ,	P.PRJ_NAME    	AS PRJ_NAME
@@ -184,6 +198,8 @@
 		 ,	cc2.CMCD_NAME AS RQM_NAME	
 		 ,	r.PRJ_ID
 		 ,	p.PRJ_NAME 
+		 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
+		 , 	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
 	  FROM 	REQUIREMENT r 
 	  JOIN	COMMON_CODE cc1 
 	  	ON	R.SCD_STS =CC1.CMCD_ID
@@ -193,9 +209,20 @@
 	  	ON	r.PRJ_ID = p.PRJ_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
-	 <if test='prjId != null and prjId != ""'>
-	   AND	R.PRJ_ID=#{prjId}
-	 </if>
+	 <choose>
+		  <when test='prjId != null and prjId!= ""'>
+		   AND R.PRJ_ID = #{prjId}
+		   </when>
+		  <otherwise>
+		    <if test='empId != null and empId != ""'>
+		  AND  R.PRJ_ID IN 
+		  	(SELECT PRJ_ID 
+ 	   		   FROM PROJECT_TEAMMATE 
+ 	  		  WHERE TM_ID = #{empId}
+ 	  		  )
+ 	  		</if>
+		  </otherwise>
+		</choose>
 	 <if test='scdSts != null and scdSts != ""'>
 	   AND	R.SCD_STS=#{scdSts}
 	 </if>

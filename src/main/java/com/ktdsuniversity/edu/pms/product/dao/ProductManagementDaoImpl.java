@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 @Repository
 public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements ProductManagementDao {
@@ -20,13 +22,23 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 
 
 	@Override
-	public int getProductManagementCount(ProductManagementVO productManagementVO) {
-		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductManagementCount", productManagementVO);
+	public int getProductManagementCount() {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getProductManagementCount");
 	}
 
 	@Override
-	public List<ProductManagementVO> getAllProductManagement(ProductManagementVO productManagementVO) {
-		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getAllProductManagement", productManagementVO);
+	public List<ProductManagementVO> getAllProductManagement() {
+		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".getAllProductManagement");
+	}
+	
+	@Override
+	public int searchProductManagementAllCount(SearchProductVO searchProductVO) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".searchProductManagementAllCount", searchProductVO);
+	}
+	
+	@Override
+	public List<ProductManagementVO> searchAllProductManagement(SearchProductVO searchProductVO) {
+		return getSqlSession().selectList(ProductManagementDao.NAME_SPACE+".searchAllProductManagement", searchProductVO);
 	}
 
 
@@ -82,6 +94,23 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 	@Override
 	public int getDelNCount(String prdtId) {
 		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE+".getDelNCount", prdtId);
+	}
+	
+	// PSH0422
+	@Override
+	public int unusablePrdtByAppr(String apprId) {
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".unusablePrdtByAppr", apprId);
+	}
+
+	@Override
+	public String getNewPrdtMngIdForBorrow(String prdtName) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE + ".getNewPrdtMngIdForBorrow", prdtName);
+	}
+
+	@Override
+	public int changeItemBrrwStateY(String prdtMngId) {
+		System.out.println("changeItemBrrwStateY >>>> " + prdtMngId);
+		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".changeManyItemBrrwState", prdtMngId);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
@@ -25,6 +26,7 @@ public class ApprovalVO extends PaginateVO {
 	private EmployeeVO employeeVO;
 	private EmployeeVO employeeManagerVO;
 	private CommonCodeVO commonCodeVO;
+	private DepartmentVO departmentVO;
 	private List<ApprovalDetailVO> approvalDetailVOList;
 	private List<ProductVO> productListVO;
 
@@ -138,6 +140,15 @@ public class ApprovalVO extends PaginateVO {
 
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
+	}
+	
+
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
 	}
 
 	public EmployeeVO getEmployeeManagerVO() {

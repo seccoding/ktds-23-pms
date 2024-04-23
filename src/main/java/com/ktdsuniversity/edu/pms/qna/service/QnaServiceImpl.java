@@ -6,10 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeServiceImpl;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.qna.dao.QnaDao;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaListVO;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaVO;
@@ -26,7 +30,7 @@ public class QnaServiceImpl implements QnaService{
 	@Autowired
 	private FileHandler fileHandler;
 
-
+	@Transactional
 	@Override
 	public QnaListVO getAllQna() {
 		
@@ -40,12 +44,24 @@ public class QnaServiceImpl implements QnaService{
 		return qnaListVO;
 	}
 	
+	// 검색
+	@Transactional
 	@Override
 	public QnaListVO searchAllQna(SearchQnaVO searchQnaVO) {
+		
+		int qnaCount = this.qnaDao.searchAllQnaCount(searchQnaVO);
+		searchQnaVO.setPageCount(qnaCount);
+		
+		List<QnaVO> qnaList = this.qnaDao.searchAllQna(searchQnaVO);
+		
+		QnaListVO qnaListVO = new QnaListVO();
+		qnaListVO.setQnaCnt(qnaCount);
+		qnaListVO.setQnaList(qnaList);
 
-		return null;
+		return qnaListVO;
 	}
 
+	@Transactional
 	@Override
 	public QnaVO getOneQna(String qaId, boolean isIncrease) {
 
@@ -63,6 +79,118 @@ public class QnaServiceImpl implements QnaService{
 		
 		return qnaVO;
 	}
+
+	@Transactional
+	@Override
+	public boolean createNewQna(QnaVO qnaVO, MultipartFile file) {
+		
+		// 파일 업로드 확인
+		if(file != null && !file.isEmpty()) {
+			StoredFile storedfile = fileHandler.storeFile(file);
+			// 정상적으로 업로드 한 경우
+			if(storedfile != null) {
+				// 난독화 파일
+				qnaVO.setFileName(storedfile.getRealFileName());
+				// 사용자가 업로드한 파일
+				qnaVO.setOriginFileName(storedfile.getFileName());
+			}
+		}
+		
+		int insertedCount = this.qnaDao.insertNewQna(qnaVO);
+		
+		return insertedCount > 0;
+	}
+	
+	@Transactional
+	@Override
+	public boolean updateOneQna(QnaVO qnaVO, MultipartFile file) {
+		
+		// 파일 업로드 확인
+		if(file != null && !file.isEmpty()) {
+			// 기존의 게시글 내용을 확인
+			// 사용자가 파일을 업로드 한 경우, 기존에 업로드되었던 파일을 삭제하기 위해서!
+			// 기존에 첨부된 파일의 존재여부를 확인
+			QnaVO originalQnaVO = this.qnaDao.selectOneQna(qnaVO.getQaTtl());
+			
+			// 기존 게시글에 첨부된 파일이 있는지 확인.
+			if(originalQnaVO != null) {
+				
+				// 기존 게시글에 첨부된 파일의 이름을 받아욘다.
+				String storedFileName = originalQnaVO.getFileName();
+				// 첨부된 파일의 이름이 있는지 확인한다.
+				// 만약 첨부된 파일의 이름이 있다면, 이 게시글은 파일이 첨부되었던 게시글이다.
+				if (storedFileName != null && storedFileName.length() > 0) {
+					// 첨부된 파일을 삭제한다.
+					this.fileHandler.deleteFileByFileName(storedFileName);
+				}
+			}
+			
+			// 사용자가 업로드한 파일을 서버에 저장한다.
+			StoredFile storedFile = this.fileHandler.storeFile(file);
+			qnaVO.setOriginFileName(storedFile.getFileName());
+			qnaVO.setFileName(storedFile.getRealFileName());
+			
+		}
+		
+		int updatedCount = this.qnaDao.updateOneQna(qnaVO);
+		return updatedCount > 0;
+	}
+		
+		
+	@Transactional
+	@Override
+	public boolean deleteOneQna(String qaId) {
+		
+		QnaVO originalQnaVO = this.qnaDao.selectOneQna(qaId);
+		
+		if(originalQnaVO != null) {
+			
+			// 기존 게시글에 첨부된 파일의 이름을 받아옴.
+			String storedFileName = originalQnaVO.getFileName();
+			// 첨부된 파일의 이름이 있는지 확인한다.
+			// 만약 첨부된 파일의 이름이 있다면, 이 게시글은 파일이 첨부되었던 게시글이다.
+			if (storedFileName != null && storedFileName.length() > 0) {
+				// 첨부된 파일을 삭제
+				this.fileHandler.deleteFileByFileName(storedFileName);
+			}
+		}
+	
+		int deletedCount = this.qnaDao.deleteOneQna(qaId);
+	
+		return deletedCount > 0;
+	}
+	
+	@Transactional
+	@Override
+	public boolean deleteManyQna(List<String> deleteItems) {
+		
+		List<QnaVO> originalQnaList = this.qnaDao.selectManyQna(deleteItems);
+		
+		for (QnaVO qnaVO : originalQnaList ) {
+			if(qnaVO != null) {
+				String storedFileName = qnaVO.getFileName();
+				
+				if (storedFileName != null && storedFileName.length() > 0) {
+					this.fileHandler.deleteFileByFileName(storedFileName);
+				}
+			}
+		}
+		
+		int deletedCount = this.qnaDao.deleteManyQna(deleteItems);
+		
+		return deletedCount > 0;
+	}
+	
+	@Transactional
+	@Override
+	public int recommendOneQna(String qaId) {
+		
+		QnaVO originQna = this.qnaDao.selectOneQna(qaId);
+
+		return this.qnaDao.recommendOneQna(qaId);
+	}
+
+
 
 	
 	

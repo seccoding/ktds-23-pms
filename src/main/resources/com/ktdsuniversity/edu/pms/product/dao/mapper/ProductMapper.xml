@@ -10,6 +10,27 @@
 		SELECT COUNT(1)
 		  FROM PRODUCT
 		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="getAllProduct" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT PRDT_ID
+			 , PRDT_NAME
+			 , PRDT_CTGR
+			 , ONCE_YN
+			 , CUR_STR
+			 , DEL_YN
+		  FROM PRODUCT
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="searchProductAllCount" 
+			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM PRODUCT
+		 WHERE DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productId"'>
@@ -25,7 +46,7 @@
 		</if>
 	</select>
 	
-	<select id="getAllProduct" 
+	<select id="searchAllProduct" 
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
 			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 		<include refid="Common.pagenate_header" />
@@ -50,6 +71,7 @@
 				</when>
 			</choose>
 		</if>
+		
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
@@ -62,7 +84,7 @@
 			, CUR_STR
 			, DEL_YN)
 			VALUES
-			 ('PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+			 (#{prdtId}
 			, #{prdtName}
 			, #{prdtCtgr}
 			, #{onceYn}
@@ -139,21 +161,17 @@
 		  FROM PRODUCT
 		 WHERE PRDT_NAME = #{_parameter}
 	</select>
+  	
+	<select id="selectOnePrdtId" resultType="string">
+		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		  FROM DUAL
+	</select>
 	
-	<insert id="insertManyProduct" parameterType="list">
-  		INSERT INTO PRODUCT
-		 (PRDT_ID
-		, PRDT_NAME
-		, PRDT_CTGR
-		, ONCE_YN
-		, CUR_STR
-		, DEL_YN)
-		VALUES
-  		<foreach collection="list" item="productListVO" open="(" close=")" separator=", ">
-  			('PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
-  			, #{productListVO.prdtName}, #{productListVO.prdtCtgr}, #{productListVO.onceYn},
-  			  #{productListVO.curStr}, #{productListVO.delYn},)
-  		</foreach>
-  	</insert>
+	<!-- PSH0422 -->
+	<update id="changeOnePrdtStored" parameterType="string">
+		UPDATE PRODUCT
+		SET CUR_STR = CUR_STR - 1
+		WHERE PRDT_NAME = #{prdtName}
+	</update>
 	
 </mapper>

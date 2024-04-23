@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.memo.service.MemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
@@ -35,37 +37,42 @@ public class MemoController {
 	 */
 	@GetMapping("/memo/sent")
 	public String viewSentMemoListPage(Model model,
-			SearchMemoVO searchMemoVO) {
+			SearchMemoVO searchMemoVO,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO ) {
 		
+		searchMemoVO.setEmpId(employeeVO.getEmpId());
 		MemoListVO memoListVO =this.memoService.getSentMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
 		model.addAttribute("searchMemoVO", searchMemoVO);
-		
-	
 		
 		return "memo/memosent";
 	}
 	
 	// 수정필요
 	@GetMapping("/memo/storage")
-	public String viewStorageMemoListPage(Model model) {
+	public String viewStorageMemoListPage(Model model, SearchMemoVO searchMemoVO,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch();
+		searchMemoVO.setEmpId(employeeVO.getEmpId());
+		MemoListVO memoListVO =this.memoService.getStorageMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
+		model.addAttribute("searchMemoVO", searchMemoVO);
 		
 		return "memo/memostorage";
 	}
 	
 	// 수정필요
 	@GetMapping("/memo/receive")
-	public String viewReceiveMemoListPage(Model model) {
+	public String viewReceiveMemoListPage(Model model, SearchMemoVO searchMemoVO,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch();
+		searchMemoVO.setEmpId(employeeVO.getEmpId());
+		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch(searchMemoVO);
 		
 		model.addAttribute("memoList", memoListVO );
-		
+		model.addAttribute("searchMemoVO", searchMemoVO);
 		return "memo/memoreceive";
 	}
 	
@@ -81,11 +88,15 @@ public class MemoController {
 	 * 쪽찌 쓰기 기능 쓰기 완료시 보낸쪽지함으로 이동
 	 */
 	@PostMapping("/memo/write")
-	public String doBoardWrite(@RequestParam String rcvId,
+	public String doMemoWrite(@RequestParam String rcvId,
 			@RequestParam String memoCntnt,
-			Model model) {
-		
-		boolean isCreateSuccess = this.memoService.writeNewMemo(rcvId, memoCntnt);
+			Model model,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		MemoVO memoVO = new MemoVO();
+		memoVO.setEmpId(employeeVO.getEmpId());
+		memoVO.setRcvId(rcvId);
+		memoVO.setMemoCntnt(memoCntnt);
+		boolean isCreateSuccess = this.memoService.writeNewMemo(memoVO);
 		if(isCreateSuccess) {
 			logger.info("쪽지 쓰기 성공!");
 		}
@@ -98,8 +109,10 @@ public class MemoController {
 	
 	
 	@GetMapping({"/memo/sent/view", "/memo/receive/view", "/memo/storage/view"})
-	public String viewBoardDetailPage(@RequestParam() String id, Model model) {
-		MemoVO memoVO = this.memoService.getOneMemo(id);
+	public String viewMemoDetailPage(@RequestParam() String id, Model model,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		String empId = employeeVO.getEmpId();
+		MemoVO memoVO = this.memoService.getOneMemo(id,empId);
 	
 		model.addAttribute("memoVO", memoVO);
 		model.addAttribute("url", RequestUtil.getRequest().getRequestURI());
