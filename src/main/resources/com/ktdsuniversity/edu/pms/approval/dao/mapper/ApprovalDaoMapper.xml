@@ -103,22 +103,29 @@
 	
 	<select id="getAllApproval" resultMap="approvalVOMap">
 		SELECT A.APPR_ID
-	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
-	         , A.APPR_CTGR
-	         , A.APPR_STS
-	         , A.APPR_TTL
-	         , A.APPR_CNTNT
-	         , A.DMD_ID
-	         , A.APPR_MNG_ID
-	         , A.ARRP_RJCT
-	         , A.LAST_CN_DT
-	         , A.APPR_FNSH_DT
-	         , E.EMP_NAME
-	         , E.PRFL
-	      FROM APPROVAL A
-	     INNER JOIN EMPLOYEE E
-	        ON A.DMD_ID = E.EMP_ID 
-	     WHERE A.DEL_YN = 'N'
+			  , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
+			  , A.APPR_CTGR
+			  , A.APPR_STS
+			  , A.APPR_TTL
+			  , A.APPR_CNTNT
+			  , A.DMD_ID
+			  , A.APPR_MNG_ID
+			  , A.ARRP_RJCT
+			  , A.LAST_CN_DT
+			  , A.APPR_FNSH_DT
+			  , E.EMP_NAME
+			  , E.PRFL
+			  , CC.CMCD_NAME
+			  , D.DEPT_NAME
+		   FROM APPROVAL A
+		  INNER JOIN EMPLOYEE E
+			 ON A.DMD_ID = E.EMP_ID
+		  INNER JOIN COMMON_CODE CC
+			 ON E.PSTN_ID = CC.CMCD_ID
+		  INNER JOIN DEPARTMENT D
+			 ON D.DEPT_ID = E.DEPT_ID
+		  WHERE A.DEL_YN = 'N'
+		  ORDER BY DMD_DT DESC
 	</select>
 	
 	<select id="getAllCountByEmpId" parameterType="string" resultType="_int">
@@ -151,6 +158,7 @@
 	        ON E.PSTN_ID = CC.CMCD_ID 
 	     WHERE A.DMD_ID = #{_parameter}
 	       AND A.DEL_YN = 'N'
+	     ORDER BY DMD_DT DESC
 	</select>
 
 	<select id="selectOneApproval" parameterType="string" resultMap="approvalVOMap">
@@ -188,6 +196,7 @@
 			 , CC.CMCD_NAME
 			 , PM.PRDT_MNG_ID
 			 , P.PRDT_NAME
+			 , P.PRDT_CTGR
 			 , AD.CUR_STR APPR_DTL_CUR_STR
 			 , P.CUR_STR P_CUR_STR
 		  FROM APPROVAL A
@@ -227,6 +236,16 @@
 		 INNER JOIN EMPLOYEE E
 		    ON A.DMD_ID = E.EMP_ID
 		 WHERE A.DEL_YN = 'N'
+		<if test='searchStatus != null and searchStatus != ""'>
+			<choose>
+				<when test='searchStatus == "801"'>
+					AND A.APPR_STS = '801'
+				</when>
+				<otherwise>
+					AND A.APPR_STS != '801'
+				</otherwise>
+			</choose>
+		</if>
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "title"'>
@@ -273,6 +292,16 @@
 		 INNER JOIN DEPARTMENT D
 		    ON D.DEPT_ID = E.DEPT_ID
 		 WHERE A.DEL_YN = 'N'
+		<if test='searchStatus != null and searchStatus != ""'>
+			<choose>
+				<when test='searchStatus == "801"'>
+					AND A.APPR_STS = '801'
+				</when>
+				<otherwise>
+					AND A.APPR_STS != '801'
+				</otherwise>
+			</choose>
+		</if>
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "title"'>
@@ -295,6 +324,8 @@
 		 ORDER BY DMD_DT DESC
 		<include refid="Common.pagenate_footer"/>
 	</select>
+	<!-- PSH - searchEnd -->
+  	
   	
   	<select id="getAllApproveCount" resultType="_int">
   		SELECT COUNT(1)

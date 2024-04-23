@@ -35,7 +35,7 @@
 		.title {
             margin-bottom: 3rem;
         }
-        .col-1-1 {
+        /* .col-1-1 {
             width: 99%;
         }
         .col-1-2 {
@@ -52,7 +52,7 @@
         }
         .col-1-8 {
             width: 12.5%
-        }
+        } */
 		.grid-container-user {
             display: grid;
             grid-template-columns: 1fr 2fr 1fr 2fr;
@@ -148,7 +148,8 @@
 					<table class="appr-prdt-info">
 						<thead>
 							<tr>
-								<th><input type="checkbox" id="appr-item-checked-all"  data-target-class="target-prdt-dtl-id">
+								<th>
+									<input type="checkbox" id="appr-item-checked-all"  data-target-class="target-prdt-dtl-id">
 									<!-- <label for="appr-item-checked-all"></label>
 									<label for="appr-item-checked-all"></label> -->
 								</th>

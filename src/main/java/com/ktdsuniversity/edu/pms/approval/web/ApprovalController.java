@@ -96,35 +96,31 @@ public class ApprovalController {
 	public String viewApprovalHomePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 									   Model model, SearchApprovalVO searchApprovalVO) {
 
-		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
-		searchApprovalVO.setEmployeeVO(employeeVO);
-		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
-
-		model.addAttribute("employee", employee);
-		model.addAttribute("apprList", apprListVO);
-		model.addAttribute("searchApproval", searchApprovalVO);
-
+		commonSearchApproval(employeeVO, model, searchApprovalVO);
 		return "approval/approvalhome";
 	}
-	
-	@GetMapping("/approval/list")
-	public String viewApprovalListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-										Model model, SearchApprovalVO searchApprovalVO) {
-					   
+ 
 
-		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
-		searchApprovalVO.setEmployeeVO(employeeVO);
-		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
+	@GetMapping("/approval/progresslist")
+	public String viewApprProgressListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+										   Model model, SearchApprovalVO searchApprovalVO) {
 
-		model.addAttribute("employee", employee);
-		model.addAttribute("apprList", apprListVO);
-		model.addAttribute("searchApproval", searchApprovalVO);
+		searchApprovalVO.setSearchStatus("801"); // CommonCode...?									 
+		commonSearchApproval(employeeVO, model, searchApprovalVO);
+		return "approval/approvallist";					 
+	}
+ 
+
+	@GetMapping("/approval/completelist")
+	public String viewApprCompleteListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+									   Model model, SearchApprovalVO searchApprovalVO) {
+		searchApprovalVO.setSearchStatus("800");
+		commonSearchApproval(employeeVO, model, searchApprovalVO);
 
 		return "approval/approvallist";
-																					
 	}
-	
 
+	
 	@GetMapping("/approval/view")
 	public String doApprovalViewPage(@RequestParam String apprId, Model model) {
 
@@ -228,6 +224,19 @@ public class ApprovalController {
 
 		boolean isDeleteSuccess = this.approvalService.deleteOneApproval(apprId);
 		return new AjaxResponse().append("result", isDeleteSuccess).append("next", "/approval/list");
+	}
+	
+	// searchAllApproval 공통 메서드
+	private void commonSearchApproval(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
+									, Model model, SearchApprovalVO searchApprovalVO) {
+		
+		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		searchApprovalVO.setEmployeeVO(employeeVO);
+		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
+
+		model.addAttribute("employee", employee);
+		model.addAttribute("apprList", apprListVO);
+		model.addAttribute("searchApproval", searchApprovalVO);
 	}
 
 }
