@@ -235,6 +235,17 @@
 			 , PSTN_ID = #{pstnId}
 		 WHERE EMP_ID = #{empId}
 	</update>
+	
+	<update id="modifyOneEmployee" 
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		   SET EMP_NAME = #{empName}
+			 , WORK_STS = #{workSts}
+			 , HIRE_YEAR = #{hireYear}
+			 , HIRE_DT = #{hireDt}
+			 , DEPT_ID = #{deptId}
+		 WHERE EMP_ID = #{empId}
+	</update>
 	<update id="deleteEmployeeById"
 			parameterType ="string">
 		UPDATE EMPLOYEE 

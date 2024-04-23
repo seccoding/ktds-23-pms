@@ -34,7 +34,21 @@
 			<id column="EMP_ID" property="empId" />
 			<result column="EMP_NAME" property="empName" />
 		</association>
+		<collection property="surveyQuestionPickVO"
+  	    			javaType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
+  	    	<id column="SQP_ID" property="sqpId" />
+			<result column="SQP_CNTNT" property="sqpCntnt" />
+			<result column="NEXT_ID" property="nextId" />
+			<result column="DEL_YN" property="delYn" />
+			<result column="SEQ" property="seq" />		
+  	    </collection>
 	</resultMap>
+	<!-- <resultMap type="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO" 
+  	           id="SurveyVOMap"
+  	           autoMapping="true">
+  	    <id column="SRV_ID" property="srvId" />
+  	    
+  	</resultMap> -->
 
 	<select id="getAllSurvey" resultMap="SurveyQuestionVOMap">
 		SELECT DISTINCT sq.PRJ_ID
@@ -187,7 +201,33 @@
 			 , SRV_STS
 		  FROM SURVEY_QUESTION
 		 WHERE PRJ_ID = #{prjId}
-		   AND DEL_YN = 'N'
+		   AND sq.DEL_YN = 'N'
+	</select>
+	
+	<select id="getAllSurveysForWrite" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO"
+			resultMap="SurveyQuestionVOMap">
+		SELECT sq.SRV_ID
+			 , sq.PRJ_ID
+			 , sq.SRV_QST
+			 , sq.CRTR_ID
+			 , sq.CRT_DT
+			 , sq.MDFR_ID
+			 , sq.MDF_DT
+			 , sq.DEL_YN
+			 , sq.SEQ
+			 , sq.TYPE_YN
+			 , sq.SRV_STS
+			 , sqp.SQP_ID
+			 , sqp.SQP_CNTNT
+			 , sqp.NEXT_ID
+			 , sqp.DEL_YN
+			 , sqp.SEQ 
+		  FROM SURVEY_QUESTION sq
+		  JOIN SURVEY_QUESTION_PICK sqp
+		    ON sqp.SRV_ID = sq.SRV_ID
+		 WHERE PRJ_ID = #{prjId}
+		   AND sq.DEL_YN = 'N'
+		   AND sqp.DEL_YN = 'N'
 	</select>
 
 </mapper>

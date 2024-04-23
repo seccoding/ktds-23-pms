@@ -129,6 +129,12 @@ $().ready(function () {
 });
 
 $().ready(function () {
+  
+  // Pagination active 기능
+  $(".page-item").on("click", function(){
+    $(this).addClass("active");
+  });
+
   // 날짜 체크 1, 프로젝트 종료일이 프로젝트 시작일보다 빠르면 alert 를 발생하고,
   // 프로젝트 종료일을 초기화한다.
   $("#end-date").on("change", function () {

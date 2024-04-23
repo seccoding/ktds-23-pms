@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
@@ -33,6 +36,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private DepartmentService departmentService;
 
 	@Autowired
 	private FileHandler fileHandler;
@@ -93,7 +99,26 @@ public class EmployeeController {
 									 EmployeeVO employeeVO) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
+		
+		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
+		 model.addAttribute("departmentlist", departmentList);
+		
 		return "employee/employeemodify";
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/employee/modify")
+	public AjaxResponse getEmployeeInput(@RequestParam String empId,  EmployeeVO employeeVO) {
+		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
+		return new AjaxResponse().append("employeeDept", employee.getDeptId());
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/employee/modify")
+	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
+		System.out.println("!!!!!!!!!!!!!!!!!"+employeeVO.getDeptId());
+		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
 		
 	//수정
@@ -127,6 +152,10 @@ public class EmployeeController {
 				 logger.info("등록 실패");
 			 }
 			 model.addAttribute("employeeVO", employeeVO);
+			 
+			 System.out.println(employeeVO.getDepartmentVO().getDeptName());
+			 System.out.println(employeeVO.getEmail());
+			 
 			 
 			 return "redirect:/employee/view?empId=" + empId;
 			

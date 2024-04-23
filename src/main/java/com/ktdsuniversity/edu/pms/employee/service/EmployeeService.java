@@ -27,4 +27,7 @@ public interface EmployeeService {
 
 	public int getOneEmpIdIsExist(String empId);
 
+	public boolean modifyOneEmployee(EmployeeVO employeeVO);
+
+
 }
