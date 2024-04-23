@@ -7,7 +7,7 @@ $().ready(function() {
             location.href = '/survey/create?prjId=' + prjId;
         } 
         else {
-            location.href = '/project/search';
+            location.href = '/survey/write?prjId=' + prjId;
         }
     });
 });

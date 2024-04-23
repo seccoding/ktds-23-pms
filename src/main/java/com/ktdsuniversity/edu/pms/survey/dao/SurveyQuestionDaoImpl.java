@@ -7,8 +7,10 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 @Repository
 public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements SurveyQuestionDao {
@@ -60,8 +62,13 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public int insertNewSurvey(SurveyQuestionVO surveyQuestionVO) {
-		return getSqlSession().insert(SurveyQuestionDao.NAME_SPACE + ".insertNewSurvey", surveyQuestionVO);
+	public int insertNewSurvey(SurveyReplyVO surveyReplyVO) {
+		return getSqlSession().insert(SurveyQuestionDao.NAME_SPACE + ".insertNewSurvey", surveyReplyVO);
+	}
+
+	@Override
+	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
+		return getSqlSession().selectList(SurveyReplyDao.NAME_SPACE + ".getAllSurveysForWrite", surveyQuestionVO);
 	}
 
 }

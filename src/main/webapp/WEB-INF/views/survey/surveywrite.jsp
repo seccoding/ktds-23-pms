@@ -29,8 +29,9 @@
 </head>
 <body>
     <h1>설문 작성</h1>
-    <div class="survey-body">
-        <div data-prj-id="${surveyQuestionVO.prjId}" data-srv-sts="${surveyQuestionVO.srvSts}"></div>
+    <div class="survey-body" data-prj-id="${surveyQuestionVO.prjId}">
+        <div></div>
+        <button id="next-srv-btn">다음</button>
     </div>
 </body>
 </html>
