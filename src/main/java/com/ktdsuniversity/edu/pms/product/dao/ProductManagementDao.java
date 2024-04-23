@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 public interface ProductManagementDao {
 	
@@ -11,9 +12,13 @@ public interface ProductManagementDao {
 
 
 
-	public int getProductManagementCount(ProductManagementVO productManagementVO);
+	public int getProductManagementCount();
 
-	public List<ProductManagementVO> getAllProductManagement(ProductManagementVO productManagementVO);
+	public List<ProductManagementVO> getAllProductManagement();
+	
+	public int searchProductManagementAllCount(SearchProductVO searchProductVO);
+
+	public List<ProductManagementVO> searchAllProductManagement(SearchProductVO searchProductVO);
 
 	public int getFilteringProductManagementCount(String id);
 
@@ -39,5 +44,7 @@ public interface ProductManagementDao {
 	public String getNewPrdtMngIdForBorrow(String prdtName);
 
 	public int changeItemBrrwStateY(String prdtMngId);
+
+	
 
 }

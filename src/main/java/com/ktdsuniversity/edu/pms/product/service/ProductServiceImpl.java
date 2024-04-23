@@ -12,6 +12,7 @@ import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -23,12 +24,24 @@ public class ProductServiceImpl implements ProductService{
 	private ProductManagementDao productManagementDao;
 
 	@Override
-	public ProductListVO getAllProduct(ProductVO productVO) {
-		int productCount = this.productDao.getProductAllCount(productVO);
+	public ProductListVO getAllProduct() {
+		int productCount = this.productDao.getProductAllCount();
 		
-		productVO.setPageCount(productCount);
+		List<ProductVO> productList = this.productDao.getAllProduct();
 		
-		List<ProductVO> productList = this.productDao.getAllProduct(productVO);
+		ProductListVO productListVO = new ProductListVO();
+		productListVO.setProductCnt(productCount);
+		productListVO.setProductList(productList);
+		
+		return productListVO;
+	}
+	
+	@Override
+	public ProductListVO searchAllProduct(SearchProductVO searchProductVO) {
+		int productCount = this.productDao.searchProductAllCount(searchProductVO);
+		searchProductVO.setPageCount(productCount);
+		
+		List<ProductVO> productList = this.productDao.searchAllProduct(searchProductVO);
 		
 		ProductListVO productListVO = new ProductListVO();
 		productListVO.setProductCnt(productCount);
@@ -77,6 +90,19 @@ public class ProductServiceImpl implements ProductService{
 	public boolean updateOneProduct(String prdtId) {
 		
 		return productDao.updateOneProduct(prdtId) > 0;
+	}
+	
+	@Transactional
+	@Override
+	public boolean addProductCount(ProductManagementVO productManagementVO) {
+		int count = productManagementVO.getProductVO().getCurStr();
+		int successCount = 0;
+		for(var i=0; i < count; i++) {
+			successCount += productManagementDao.addProductManagement(productManagementVO);
+		}
+		boolean isSuccessPrdtCntUp = productDao.updateOneProductCount(productManagementVO.getProductVO()) > 0;
+		
+		return isSuccessPrdtCntUp && successCount == count;
 	}
 
 	@Transactional

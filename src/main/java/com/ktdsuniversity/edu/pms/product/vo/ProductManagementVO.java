@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.product.vo;
 
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 
 public class ProductManagementVO extends PaginateVO {
@@ -15,9 +16,15 @@ public class ProductManagementVO extends PaginateVO {
 	
 	private ProductVO productVO;
 	
-	private String searchType; // option 선택
-	private String searchKeyword; // 검색어
+	private ApprovalDetailVO approvalDetailVO;
 	
+	
+	public ApprovalDetailVO getApprovalDetailVO() {
+		return approvalDetailVO;
+	}
+	public void setApprovalDetailVO(ApprovalDetailVO approvalDetailVO) {
+		this.approvalDetailVO = approvalDetailVO;
+	}
 	public ProductVO getProductVO() {
 		return productVO;
 	}
@@ -71,18 +78,6 @@ public class ProductManagementVO extends PaginateVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
-	}
-	public String getSearchType() {
-		return searchType;
-	}
-	public void setSearchType(String searchType) {
-		this.searchType = searchType;
-	}
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
 	}
 	
 	

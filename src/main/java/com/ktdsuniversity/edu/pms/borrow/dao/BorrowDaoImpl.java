@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
@@ -29,15 +30,35 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO) {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalState", employeeVO.getEmpId());
 	}
-
+	
 	@Override
-	public int getProductManageStateAllCount(ProductVO productVO) {
-		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getProductManageStateAllCount", productVO);
+	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO) {
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getBorrowCount", searchBorrowVO.getEmployeeVO().getEmpId());
+	}
+	
+	@Override
+	public List<BorrowVO> searchAllUserRentalState(SearchBorrowVO searchBorrowVO) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalState", searchBorrowVO.getEmployeeVO().getEmpId());
 	}
 
 	@Override
-	public List<BorrowVO> getProductManageState(ProductVO productVO) {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState", productVO);
+	public int getProductManageStateAllCount() {
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getProductManageStateAllCount");
+	}
+
+	@Override
+	public List<BorrowVO> getProductManageState() {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState");
+	}
+	
+	@Override
+	public int searchProductManagementStateAllCount(SearchBorrowVO searchBorrowVO) {
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".searchProductManagementStateAllCount", searchBorrowVO);
+	}
+	
+	@Override
+	public List<BorrowVO> searchAllProductManagementState(SearchBorrowVO searchBorrowVO) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".searchAllProductManagementState", searchBorrowVO);
 	}
 
 	@Override
