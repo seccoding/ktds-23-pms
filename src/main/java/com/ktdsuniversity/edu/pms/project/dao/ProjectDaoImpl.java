@@ -140,4 +140,14 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     public List<ProjectVO> findAllProjectByEmployeeId(String empId) {
         return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".findAllProjectByEmployeeId", empId);
     }
+
+    @Override
+    public int updateOneTeammateReviewStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneTeammateReviewStatusByProjectIdAndEmployeeId", projectTeammateVO);
+    }
+
+    @Override
+    public int updateOneTeammateSurveyStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO) {
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneTeammateSurveyStatusByProjectIdAndEmployeeId", projectTeammateVO);
+    }
 }

@@ -161,7 +161,7 @@
                 </when>
                 <otherwise>
                     AND P.PRJ_ID IN (
-                        SELECT PRJ_ID
+                    SELECT PRJ_ID
                     FROM PROJECT_TEAMMATE PT
                     WHERE PT.TM_ID = #{employeeVO.empId}
                     AND PT.DEL_YN = 'N'
@@ -587,4 +587,20 @@
         AND PT.DEL_YN = 'N')
         ORDER BY P.CRT_DT DESC
     </select>
+
+    <update id="updateOneTeammateReviewStatusByProjectIdAndEmployeeId"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        UPDATE PROJECT_TEAMMATE
+        SET RV_YN = 'Y'
+        WHERE PRJ_ID = #{prjId}
+        AND TM_ID = #{tmId}
+    </update>
+
+    <update id="updateOneTeammateSurveyStatusByProjectIdAndEmployeeId"
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
+        UPDATE PROJECT_TEAMMATE
+        SET SRV_YN = 'Y'
+        WHERE PRJ_ID = #{prjId}
+        AND TM_ID = #{tmId}
+    </update>
 </mapper>

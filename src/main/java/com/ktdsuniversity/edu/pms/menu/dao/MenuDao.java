@@ -10,4 +10,7 @@ public interface MenuDao {
 
     List<MenuVO> selectAllMenuList();
 
+    List<MenuVO> selectAllHierarchicalMenuList();
+
+    int insertNewMenu(MenuVO menuVO);
 }

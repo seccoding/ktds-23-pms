@@ -201,4 +201,16 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.findAllProjectByEmployeeId(tmId);
     }
 
+    @Transactional
+    @Override
+    public boolean updateReviewStatus(ProjectTeammateVO projectTeammateVO) {
+        return projectDao.updateOneTeammateReviewStatusByProjectIdAndEmployeeId(projectTeammateVO) > 0;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateSurveyStatus(ProjectTeammateVO projectTeammateVO) {
+        return projectDao.updateOneTeammateSurveyStatusByProjectIdAndEmployeeId(projectTeammateVO) > 0;
+    }
+
 }

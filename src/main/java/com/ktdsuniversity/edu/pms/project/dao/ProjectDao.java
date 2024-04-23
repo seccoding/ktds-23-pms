@@ -59,4 +59,8 @@ public interface ProjectDao {
     List<ProjectTeammateVO> findAllProjectTeammate();
 
     List<ProjectVO> findAllProjectByEmployeeId(String empId);
+
+    int updateOneTeammateReviewStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO);
+
+    int updateOneTeammateSurveyStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO);
 }

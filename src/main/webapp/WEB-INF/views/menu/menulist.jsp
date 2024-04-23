@@ -39,6 +39,7 @@
                             data-role="${mainMenu.role}"
                             data-url="${mainMenu.url}"
                             data-parent="${mainMenu.parent}"
+                            data-icon="${mainMenu.icon}"
                     >
                         <td>${mainMenu.id}</td>
                         <td>${mainMenu.name}</td>
@@ -98,24 +99,17 @@
         >
             <label for="mainId">ID</label>
             <input type="text" name="id" id="mainId" />
-            <label for="mainParent">P-ID</label>
-            <input type="text" disabled name="parent" id="mainParent" />
 
-            <label for="mainUrl">URL</label>
-            <input
-                    data-columns="2 / -1"
-                    type="text"
-                    name="url"
-                    id="mainUrl"
-            />
-
-            <label for="mainMenuName">이름</label>
+            <label for="mainMenuName">Name</label>
             <input type="text" name="name" id="mainMenuName" />
+
             <label for="mainRole">권한</label>
             <select id="mainRole" name="role">
                 <option value="ADMIN">ADMIN</option>
                 <option value="USER">USER</option>
             </select>
+
+            <div data-columns="2 / 2"></div>
 
             <div data-columns="1 / -1" style="text-align: right">
                 <button type="button" id="modifyMainMenu">수정</button>

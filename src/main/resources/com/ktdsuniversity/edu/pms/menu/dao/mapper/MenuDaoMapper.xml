@@ -2,7 +2,44 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.ktdsuniversity.edu.pms.menu.dao.MenuDao">
+
+    <resultMap id="menuResultMap" type="com.ktdsuniversity.edu.pms.menu.vo.MenuVO">
+        <id property="id" column="main_id"/>
+        <result property="name" column="main_name"/>
+        <result property="role" column="main_role"/>
+        <result property="url" column="main_url"/>
+        <result property="icon" column="main_icon"/>
+        <result property="parent" column="main_parent"/>
+        <!-- 첫 번째 레벨의 자식 (서브 메뉴) -->
+        <collection property="children" javaType="ArrayList" ofType="com.ktdsuniversity.edu.pms.menu.vo.MenuVO"
+                    resultMap="subMenuResultMap">
+        </collection>
+    </resultMap>
+
+    <resultMap id="subMenuResultMap" type="com.ktdsuniversity.edu.pms.menu.vo.MenuVO">
+        <id property="id" column="sub_id"/>
+        <result property="name" column="sub_name"/>
+        <result property="role" column="sub_role"/>
+        <result property="url" column="sub_url"/>
+        <result property="icon" column="sub_icon"/>
+        <result property="parent" column="sub_parent"/>
+        <!-- 두 번째 레벨의 자식 (세부 메뉴) -->
+        <collection property="children" javaType="ArrayList" ofType="com.ktdsuniversity.edu.pms.menu.vo.MenuVO"
+                    resultMap="detailMenuResultMap">
+        </collection>
+    </resultMap>
+
+    <resultMap id="detailMenuResultMap" type="com.ktdsuniversity.edu.pms.menu.vo.MenuVO">
+        <id property="id" column="detail_id"/>
+        <result property="name" column="detail_name"/>
+        <result property="role" column="detail_role"/>
+        <result property="url" column="detail_url"/>
+        <result property="icon" column="detail_icon"/>
+        <result property="parent" column="detail_parent"/>
+    </resultMap>
+
 
     <select id="selectAllMenuList"
             resultType="com.ktdsuniversity.edu.pms.menu.vo.MenuVO">
@@ -17,5 +54,80 @@
         START WITH PARENT IS NULL
         CONNECT BY PRIOR ID = PARENT
     </select>
+
+    <select id="selectAllHierarchicalMenuList"
+            resultMap="menuResultMap">
+        SELECT
+        MAIN.ID AS main_id,
+        MAIN.NAME AS main_name,
+        MAIN."ROLE" AS main_role,
+        MAIN.URL AS main_url,
+        MAIN.ICON AS main_icon,
+        MAIN.PARENT AS main_parent,
+        SUB.ID AS sub_id,
+        SUB.NAME AS sub_name,
+        SUB."ROLE" AS sub_role,
+        SUB.URL AS sub_url,
+        SUB.ICON AS sub_icon,
+        SUB.PARENT AS sub_parent,
+        DETAIL.ID AS detail_id,
+        DETAIL.NAME AS detail_name,
+        DETAIL."ROLE" AS detail_role,
+        DETAIL.URL AS detail_url,
+        DETAIL.ICON AS detail_icon,
+        DETAIL.PARENT AS detail_parent
+        FROM
+        (SELECT ID, NAME, "ROLE", URL, ICON, PARENT
+        FROM MENU
+        WHERE PARENT IS NULL) MAIN
+        LEFT JOIN
+        (SELECT ID, NAME, "ROLE", URL, ICON, PARENT
+        FROM MENU
+        WHERE PARENT IS NOT NULL
+        AND ROLE IS NOT NULL) SUB
+        ON MAIN.ID = SUB.PARENT
+        LEFT JOIN
+        (SELECT ID, NAME, "ROLE", URL, ICON, PARENT
+        FROM MENU
+        WHERE PARENT IS NOT NULL
+        AND ROLE IS NULL) DETAIL
+        ON SUB.ID = DETAIL.PARENT
+        ORDER BY MAIN.ID, SUB.ID, DETAIL.ID
+    </select>
+
+    <insert id="insertNewMenu">
+        INSERT INTO MENU
+
+        (
+        ID
+        ,NAME
+        ,ROLE
+        <if test='url != null and url != ""'>
+            ,URL
+        </if>
+        <if test='icon != null and icon != ""'>
+            ,ICON
+        </if>
+        <if test='parent != null and parent != ""'>
+            ,PARENT
+        </if>
+        )
+
+        VALUES
+        (
+        #{id}
+        ,#{name}
+        ,#{role}
+        <if test='url != null and url != ""'>
+            ,#{url}
+        </if>
+        <if test='icon != null and icon != ""'>
+            ,#{icon}
+        </if>
+        <if test='parent != null and parent != ""'>
+            ,#{parent}
+        </if>
+        )
+    </insert>
 
 </mapper>
