@@ -23,6 +23,10 @@
 			<id column="TM_ID" property="tmId"/>
 			<result column="TM_NAME" property="tmName"/>
 		</association>
+<!--		<association property="assignmentVO"-->
+<!--					 javaType="com.ktdsuniversity.edu.pms.team.vo.AssignmentVO">-->
+<!--			-->
+<!--		</association>-->
 	</resultMap>
 	<resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
 			   id="employeeVOMapByCommonCode"
@@ -207,6 +211,8 @@
 	    ON J.JOB_ID = E.JOB_ID
 	  JOIN TEAM T
 	    ON T.DEPT_ID = E.DEPT_ID
+	  JOIN ASSIGNMENT A
+		ON
 	 WHERE E.EMP_ID = #{_parameter}
 		OR D.DEPT_ID = #{_parameter}  
 	</select>
@@ -293,7 +299,6 @@
 		  FROM EMPLOYEE
 		 WHERE EMP_ID = #{empId}
 	</select>
-	
 
 
 </mapper>

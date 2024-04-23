@@ -63,7 +63,7 @@
         <label for="email">이메일</label>
         <div>${employeeVO.email}</div>
   <c:if
-        test="${sessionScope._LOGIN_USER_.email eq boardVO.email || sessionScope._LOGIN_USER_.mngrYn eq 'Y'}"
+        test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.mngrYn eq 'Y'}"
       >
       <div class="btn-group">
         <button class="backto-list">

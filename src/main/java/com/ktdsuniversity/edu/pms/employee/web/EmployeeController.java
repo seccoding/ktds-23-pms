@@ -171,7 +171,7 @@ public class EmployeeController {
 		
 		if (validator.hasErrors()) {
 			Map<String, List<String>> errors = validator.getErrors();
-			return new AjaxResponse().append("errors", errors);
+			RequestParam(defaultServletHandlerMapping)
 		}
 		
 		
@@ -183,5 +183,12 @@ public class EmployeeController {
 			return new AjaxResponse().append("next", nextUrl);
 		}
 		return new AjaxResponse().append("errorMessage", "실패사유");
+	}
+
+	@ResponseBody
+	@PostMapping("/ajax/employee/search/history")
+	public AjaxResponse viewEmployeeHistory() {
+
+		return redirect);
 	}
 }
