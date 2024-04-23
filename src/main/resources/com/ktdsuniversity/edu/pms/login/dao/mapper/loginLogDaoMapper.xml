@@ -231,23 +231,23 @@
           FROM LOGIN_LOG L
           JOIN EMPLOYEE E
             ON E.EMP_ID = L.EMP_ID
+         WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')
           <if test='searchKeyword != null and searchKeyword != ""'>
               <choose>
                   <when test='searchType == "empId"'>
-                      WHERE L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+                      AND L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "lgnSccDt"'>
-                      WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                      AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "lgtDt"'>
-                      WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                      AND TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
                   </when>
                   <when test='searchType == "employeeVO.empName"'>
-                      WHERE EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                      AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
                   </when>
               </choose>
           </if>
-         WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')
          ORDER BY L.LGN_SCC_DT
     </select>
 
@@ -261,17 +261,17 @@
         FROM LOGIN_LOG L
         JOIN EMPLOYEE E
         ON E.EMP_ID = L.EMP_ID
+        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
                 <when test='searchType == "lgnSccDt"'>
-                    WHERE TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                    AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "lgtDt"'>
-                    WHERE TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+                    AND TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
                 </when>
             </choose>
         </if>
-        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')
           AND L.EMP_ID = #{empId}
         ORDER BY L.LGN_SCC_DT
     </select>
@@ -288,23 +288,23 @@
           FROM VISITED_HISTORY V
           JOIN EMPLOYEE E
             ON E.EMP_ID = V.EMP_ID
+         WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(ACCS_DT, 'YYYY-MM-DD')
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
                 <when test='searchType == "empId"'>
-                    WHERE V.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+                    AND V.EMP_ID LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "employeeVO.empName"'>
-                    WHERE E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+                    AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "accsUrl"'>
-                    WHERE V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
+                    AND V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "accsDt"'>
-                    WHERE V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
+                    AND V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
                 </when>
             </choose>
         </if>
-         WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(ACCS_DT, 'YYYY-MM-DD')
          ORDER BY ACCS_DT
     </select>
 
@@ -320,17 +320,17 @@
           FROM VISITED_HISTORY V
           JOIN EMPLOYEE E
             ON E.EMP_ID = V.EMP_ID
+        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD')
         <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
                 <when test='searchType == "accsUrl"'>
-                    WHERE V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
+                    AND V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
                 </when>
                 <when test='searchType == "accsDt"'>
-                    WHERE V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
+                    AND V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
                 </when>
             </choose>
         </if>
-        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD')
           AND V.EMP_ID = #{empId}
         ORDER BY V.ACCS_DT
     </select>
