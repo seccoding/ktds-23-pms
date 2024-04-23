@@ -11,24 +11,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/requirement/requirementwrite.js"
     ></script>
     <script type="text/javascript">
-      window.onload = function () {
-        var editors = loadEditor(
-          ".editor",
-          "내용을 입력하세요.",
-          "${requirement.rqmCntnt}"
-        );
-        var rqmCntnt = "";
-
-        $("button").on("click", function (event) {
-          event.preventDefault();
-
-          rqmCntnt = editors.getData();
-
-          $("#rqm-cntnt").val(rqmCntnt);
-
-          $("#writeForm").submit();
-        });
-      };
+      window.onload = function () {};
     </script>
     <title>요구사항 신규작성 페이지</title>
 
@@ -43,6 +26,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
   <body>
     <form
+      name="requirementForm"
       id="writeForm"
       action="/requirement/write"
       method="post"
@@ -67,13 +51,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         />
 
         <label for="dvlrp">담당개발자</label>
-        <select id="dvlrp-check" name="dvlrp" id="dvlrp"></select>
+        <select id="dvlrp-check" name="dvlrp" id="dvlrp">
+          <option value="">프로젝트를 선택해주세요</option>
+        </select>
 
         <label for="cfrmr">확인자</label>
-        <select id="cfrmr-check" name="cfrmr" id="cfrmr"></select>
+        <select id="cfrmr-check" name="cfrmr" id="cfrmr">
+          <option value="">프로젝트를 선택해주세요</option>
+        </select>
 
         <label for="tstr">테스터</label>
-        <select id="tstr-check" name="tstr" id="tstr"></select>
+        <select id="tstr-check" name="tstr" id="tstr">
+          <option value="">프로젝트를 선택해주세요</option>
+        </select>
 
         <!--날짜선택창-->
         <label for="start-date">시작일</label>
@@ -99,6 +89,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="hereCkEditor5">
           <%-- 여기가 editor 생성부 --%>
           <div class="editor" data-name="rqmCntnt"></div>
+          <input
+            type="text"
+            id="rqm-cntnt"
+            name="rqmCntnt"
+            style="visibility: hidden"
+          />
         </div>
 
         <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
