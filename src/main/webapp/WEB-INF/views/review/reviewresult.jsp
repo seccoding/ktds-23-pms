@@ -86,14 +86,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
          </c:forEach> 
        </tbody>
      </table>
-    </body>
-  </html>
+    
 
   <!----------------------------------------------------  Paginator 시작 -------------------------------------------------------->
-  <div>
-	  <form id="search-form">
-	    <!-- value=0 은 아무것도 안치고 엔터눌렀을때 에러나는것을 방지하는 하는 역할-->
-	    <input type="hidden" id="page-no" name="pageNo" value="0"/>
+  <nav aria-label="Page navigation">
+        <form id="search-form">
+            <div class="search-keyword">
+            <input type="hidden" id="page-no" name="pageNo" value="0"/>
       	<input type="hidden" name="prjId" value= ${SearchReviewVO.prjId} />
 
 	    <select id="list-size" name="listSize">
@@ -110,48 +109,32 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 	
 	    <input type="text" name="searchKeyword" value="${SearchReviewVO.searchKeyword}"/>
 	    <button type="button" id="search-btn">검색</button>
-	
-	    <ul class="page-nav">
-	      <c:if test="${SearchReviewVO.hasPrevGroup}">
-	        <!-- '처음'을 클릭하면, javascript에 있는 search함수에 0을 파라미터로 전달해서 form을 전송시킴 -->
-	        <li><a href="javascript:search(0);">처음</a></li>
-	        <li>
-	          <a
-	            href="javascript:search(${SearchReviewVO.prevGroupStartPageNo});"
-	            >이전</a
-	          >
-	        </li>
-	      </c:if>
-	
-	      <!--page번호를 반복하여 노출한다.-->
-	      <c:forEach
-	        begin="${SearchReviewVO.groupStartPageNo}"
-	        end="${SearchReviewVO.groupEndPageNo}"
-	        step="1"
-	        var="p"
-	      >
-	        <!--페이지번호(pageNo) 는 항상 0부터 시작 -->
-	        <li class="${SearchReviewVO.pageNo eq p ? 'active' : ''}">
-	          <a href="javascript:search(${p});">${p+1}</a>
-	        </li>
-	      </c:forEach>
-	
-	      <c:if test="${SearchReviewVO.hasNextGroup}">
-	        <li>
-	          <a
-	            href="javascript:search(${SearchReviewVO.nextGroupStartPageNo});"
-	            >다음</a
-	          >
-	        </li>
-	        <li>
-	          <a href="javascript:search(${SearchReviewVO.pageCount - 1});"
-	            >마지막</a
-	          >
-	        </li>
-	      </c:if>
-	    </ul>
-	</form>
-</div>
+            </div>
+            <ul class="pagination">
+                <c:if test="${SearchReviewVO.hasPrevGroup}">
+                    <li class="page-item first">
+                        <a class="page-link" href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a>
+                    </li>
+                    <li class="page-item prev">
+                        <a class="page-link" href="javascript:search(${SearchReviewVO.prevGroupStartPageNo});"><img src="/images/chevron-left.svg"/></a>
+                    </li>
+                </c:if>
+                <c:forEach begin="${SearchReviewVO.groupStartPageNo}" end="${SearchReviewVO.groupEndPageNo}" step="1" var="p">
+                    <li class="${SearchReviewVO.pageNo eq p ? 'active' : ''} page-item">
+                        <a class="page-link" href="javascript:search(${p});">${p+1}</a>
+                    </li>
+                </c:forEach>
+                <c:if test="${SearchReviewVO.hasNextGroup}">
+                    <li class="page-item next">
+                        <a class="page-link" href="javascript:search(${SearchReviewVO.nextGroupStartPageNo});"><img src="/images/chevron-right.svg"/></a>
+                    </li>
+                    <li class="page-item last">
+                        <a class="page-link" href="javascript:search(${SearchReviewVO.groupCount - 1});"><img src="/images/chevron-double-right.svg"/></a>
+                    </li>
+                </c:if>
+            </ul>
+        </form>
+    </nav>
 <!----------------------------------------------------  Paginator 끝 -------------------------------------------------------->
 
 
