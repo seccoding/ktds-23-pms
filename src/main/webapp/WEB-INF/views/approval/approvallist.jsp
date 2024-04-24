@@ -14,7 +14,6 @@
             display: flex;
         }
         table {
-            font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
@@ -33,46 +32,6 @@
         }
         .search-keyword > * {
             padding-right: 0.825rem;
-        }
-        /* 상태 뱃지 */
-        .badge {
-            display: inline-block;
-            padding: 0.52em 0.593em;
-            font-size: 0.8125em;
-            font-weight: 500;
-            line-height: 1;
-            color: #fff;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: 0.25rem;
-        }
-        .badge:empty {
-            display: none;
-        }
-        .btn .badge {
-            position: relative;
-            top: -1px;
-        }
-        .bg-label-danger {
-            background-color: #ffe0db !important;
-            color: #ff3e1d !important;
-            font-weight: bold;
-        }
-        .bg-success {
-            background-color: #e8fadf !important;
-            color: #71dd37 !important;
-            font-weight: bold
-        }
-        .bg-label-warning {
-            background-color: #fff2d6 !important;
-            color: #ffab00 !important;
-            font-weight: bold;
-        }
-        .bg-label-info {
-            background-color: #d7f5fc !important;
-            color: #03c3ec !important;
-            font-weight: bold;
         }
     </style>
 <script type="text/javascript" src=/js/approval/approvallist.js></script>
@@ -93,10 +52,10 @@
                 총 ${apprList.apprCnt} 건
             </div>
             <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '302'}">
-                <div style="text-align: end;">
-                    <button class="btn-appr-write">기안서 작성</button>
-                </div>
-            </c:if>
+            <div style="text-align: end;">
+                <button class="btn-appr-write">기안서 작성</button>
+            </div>
+        </c:if>
         </div>
         <div class="table">
             <table>

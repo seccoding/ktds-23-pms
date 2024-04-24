@@ -181,7 +181,9 @@ public class ProjectServiceImpl implements ProjectService {
             // 만약 삭제되었던 팀원이라면?
             if (originTeammate.getDelYn().equals("Y")) {
                 // del_yn을 바꿔준 후, true 를 리턴!
-                return projectDao.updateTeammateDeleteYnByProjectTeammateId(originTeammate.getPrjTmId()) > 0;
+                originTeammate.setRole(newProjectTeammate.getRole());
+
+                return projectDao.updateTeammateDeleteYnAndRoleByProjectTeammateId(originTeammate) > 0;
             } else {
                 return false;
             }

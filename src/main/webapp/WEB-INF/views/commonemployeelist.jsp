@@ -4,13 +4,39 @@
     <jsp:include page="./commonheader.jsp"></jsp:include>
 <script type="text/javascript" src="/js/commonemployeelist.js"></script>
 <style>
+    .flex {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    thead {
+      position: sticky;
+      top: 0; /* 고정될 위치 조정 */
+      background-color: var(--body-bg); /* 배경색 지정 */
+      z-index: 1; 
+    }
+    table {
+      width: 520px;
+    }
+    .table-overflow {
+      height: 455px;
+      width: 530px;
+      overflow-y: scroll;
+    }
+
+    .small-overflow {
+      height: 400px;
+      width: 350px;
+      overflow-y: scroll;
+    }
 
     .modal-employee-list {
-        top: 10%;
-        left: 10%;
+        top: 20%;
+        left: 25%;
 
-        width: 80%;
-        height: 80%;
+        width: 930px;
+        height: 550px;
+        padding: 1rem
     }
 
     .modal-list-close{
@@ -31,11 +57,27 @@
     justify-content: flex-start;
   }
   
+  .checked-emp-table {
+    margin-left: 2rem;
+    width: 300px;
+    align-self: self-start;
+  }
+  .checked-emp-table > thead {
+    height: 54.91px;
+  }
+
   .input-emplist-space {
     text-align: right;
     align-items: end;
   }
+  .button-right-align {
+    position: absolute;
+    right: 3.6%;
+    bottom: 5%;
+  }
+
 </style>
+<jsp:include page="./commonmodal.jsp" />
 <dialog class="modal-employee-list">
     <div class="grid-modal-list">
       <div class="modal-list-close">X</div>
@@ -62,27 +104,49 @@
           </div>
       </div>
 
-      <table class="emp-table">
-        <thead>
-            <tr>
+      <div class="flex">
+        <div class="table-overflow">
+
+          <table class="emp-table">
+            <thead>
+              <tr>
                 <th><input type="checkbox" id="checked-all" data-target-class="target-emp-id" />
-                    <label for="checked-all"></label></th>
-                <th>사원ID</th>
-                <th>사원명</th>
-                <th>부서명</th>
-                <th>직무명</th>
-                <th>생년월일</th>
-            </tr>
-        </thead>
-    
-    <tbody>
-        
-    </tbody>
-</table>
+                  <label for="checked-all"></label></th>
+                  <th>사원ID</th>
+                  <th>사원명</th>
+                  <th>부서명</th>
+                  <th>직무명</th>
+                  <th>생년월일</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
       
-      <div class="input-emplist-space">
-        <button class="confirm-emp-button button"></button>
+    
+          <div>
+      <div class="small-overflow">
+
+        <table class="checked-emp-table">
+          <thead>
+            <tr>
+              <th>사원ID</th>
+              <th>사원명</th>
+              <th>취소</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
       </div>
     </div>
-    <div></div>
+    
+  </div>
+  <div class="button-right-align">
+    <button type="button" id="common-modal-search-btn">선택</button>
+  </div>
   </dialog>

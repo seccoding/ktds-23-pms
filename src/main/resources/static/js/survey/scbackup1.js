@@ -1,16 +1,15 @@
-function handleDeleteQuestionItem(event) {
-    var qstToDel = $(event.currentTarget).closest(".survey-question");
-    var nextQst = qstToDel.nextAll(".survey-question");
+function deleteSurveyQuestion(srvQstDom, seqNum) {
+    var nextQst = srvQstDom.nextAll(".survey-question");
 
     var chooseValue = confirm("정말 삭제하시겠습니까?");
     if (chooseValue) {
         nextQst.each(function() {
             var srvId = $(this).data("srv-id");
-            var newSrvQst = $(this).children(".survey-question-middle").find("input").val();
-            var currentSrvSeqNum = parseInt($(this).find(".survey-question-middle div").text(), 10);
+            var newSrvQst = $(this).children(".survey-question-middle").children("input").val();
+            var currentSrvSeqNum = $(this).children(".survey-question-middle").children("div").text();
+            
             var newSrvSeqNum = currentSrvSeqNum - 1;
-
-            $(this).children(".survey-question-middle").find("div").text(newSrvSeqNum);
+            $(this).children(".survey-question-middle").children("div").text(newSrvSeqNum);
 
             var currentTypeYn = $(this).data("type-yn");
             var newTypeYn = 'N';
@@ -19,10 +18,7 @@ function handleDeleteQuestionItem(event) {
             }
 
             if (!newSrvQst) {
-                $.post("/ajax/survey/modify/next/" + srvId, {
-                    seq: newSrvSeqNum,
-                    typeYn: newTypeYn
-                });
+                $.post("/ajax/survey/modify/next/" + srvId, { seq: newSrvSeqNum, typeYn: newTypeYn });
             } else {
                 $.post("/ajax/survey/modify/" + srvId, {
                     srvQst: newSrvQst,
@@ -30,120 +26,114 @@ function handleDeleteQuestionItem(event) {
                     seq: newSrvSeqNum,
                     typeYn: newTypeYn
                 });
-            }
+            }                 
         });
-        qstToDel.remove();
-        seqNum = recalculateSeqNum();
+        srvQstDom.remove();
+        return seqNum - 1;
     }
+    return seqNum;
 }
 
-function addAnswerItem(ulDom) {
-    var nextAnsSeqNum = ulDom.find("li").length + 1;
+function deleteSurveyAnswer(ansDom, updateQstNumCallback) {
+    var ansToDel = ansDom.closest("li");
+    var nextAnsSeq = ansToDel.nextAll("li").find("div:first-child");
 
-    var nextAnsDom = $("<li></li>");
-    var nextAnsSeqDom = $("<div></div>").text(nextAnsSeqNum);
-    var nextAnsInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명');
-    var nextLinkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결');
-    var deleteSrvAnsButtonDom = $("<button></button>").attr("type", "button").addClass("delete-survey-answer").text("제거");
-
-    deleteSrvAnsButtonDom.on("click", function() {
-        handleDeleteAnswerItem($(this));
-        renumberAnswerItems(ulDom);
+    nextAnsSeq.each(function() {
+        var currentAnsSeqNum = parseInt($(this).text(), 10);
+        var nextAnsSeqNum = currentAnsSeqNum - 1;
+        $(this).text(nextAnsSeqNum);
     });
-
-    nextAnsDom.append(nextAnsSeqDom, nextAnsInputDom, nextLinkInputDom, deleteSrvAnsButtonDom);
-    ulDom.append(nextAnsDom);
-}
-
-function handleDeleteAnswerItem(event) {
-    var ansToDel = $(event.currentTarget).closest("li");
-    var ulDom = ansToDel.parent();
 
     ansToDel.remove();
-    renumberAnswerItems(ulDom);
-
-    ulDom.find("li").each(function() {
-        var currentAnsSeqNum = parseInt($(this).find("div:first-child").text(), 10);
-        var sqpId = $(this).children("input").first().data("sqp-id");
-        var newAns = $(this).children("input").first().val();
-        var newNextId = $(this).children("input").last().val();
-
-        if (sqpId) {
-            $.post("/ajax/survey/answer/modify/" + sqpId, {
-                sqpCntnt: newAns,
-                nextId: newNextId,
-                mdfrId: '0509004',
-                seq: currentAnsSeqNum
-            });
-        }
-    });
+    if (typeof updateQstNumCallback === "function") {
+        updateQstNumCallback(-1);
+    }
 }
 
-function handleSelectiveTypeClick(srvQstDom) {
-    var srvQstBottomDom = $(srvQstDom).find(".survey-question-bottom");
-    $(srvQstBottomDom).empty();
-    var typeYn = 'N';
-    $(srvQstDom).data("type-yn", typeYn);
+function addAnswerItem(ulDom, qstNum, updateQstNumCallback) {
+    var nextAnsDom = $("<li></li>");
+    var nextAnsSeqDom = $("<div></div>").text(qstNum);
+    var nextAnsInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명');
+    var nextLinkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결');
+    
+    nextAnsDom.append(nextAnsSeqDom, nextAnsInputDom, nextLinkInputDom);
 
-    var ulDom = $("<ul></ul>");
-    for (var i = 1; i <= 2; i++) {
-        var ansDom = $("<li></li>");
-        var ansSeqDom = $("<div></div>").text(i);
-        var ansInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명');
-        var linkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결');
-        ansDom.append(ansSeqDom, ansInputDom, linkInputDom);
-        ulDom.append(ansDom);
+    if (qstNum > 2) {
+        var deleteSrvAnsButtonDom = $("<button></button>").attr("type", "button").text("제거");
+        deleteSrvAnsButtonDom.on("click", function() {
+            deleteSurveyAnswer($(this), function(change) {
+                updateQstNumCallback(change);
+            });
+        });
+        nextAnsDom.append(deleteSrvAnsButtonDom);
     }
 
-    var addSrvAnsButtonDom = $("<button></button>")
+    ulDom.append(nextAnsDom);
+
+    return qstNum + 1;
+}
+
+function handleSelectiveTypeClick(srvQstDom, typeYn, seqNum) {
+    var srvQstBottomDom = srvQstDom.find(".survey-question-bottom");
+    srvQstBottomDom.empty();
+    typeYn = 'N';
+    srvQstDom.data("type-yn", typeYn);
+    
+    var ulDom = $("<ul></ul>");
+    var qstNum = 1;
+
+    for (let i = 0; i < 2; i++) {
+        qstNum = addAnswerItem(ulDom, qstNum, function(change) {
+            qstNum += change;
+        });
+    }
+
+    var addSrvQstButtonDom = $("<button></button>")
         .attr('type', 'button')
-        .addClass("add-survey-answer")
-        .text("답변 항목 추가");
+        .addClass("add-survey-question")
+        .text("답변 항목 추가")
+        .on("click", function() {
+            qstNum = addAnswerItem(ulDom, qstNum, function(change) {
+                qstNum += change;
+            });
+        });
 
     var deleteSrvQstButtonDom = $("<button></button>")
         .attr("type", "button")
-        .addClass("delete-survey-question")
-        .text("문항 삭제");
+        .text("문항 삭제")
+        .on("click", function() {
+            var srvQstDom = $(this).closest(".survey-question");
+            seqNum = deleteSurveyQuestion(srvQstDom, seqNum);
+        });
 
-    srvQstBottomDom.append(ulDom, addSrvAnsButtonDom, deleteSrvQstButtonDom);
+    srvQstBottomDom.append(ulDom, addSrvQstButtonDom, deleteSrvQstButtonDom);
 }
 
-function handleDescriptiveTypeClick(event) {
-    var srvQstDom = $(event.currentTarget).closest(".survey-question");
+function handleDescriptiveTypeClick(srvQstDom, typeYn, seqNum) {
     var srvQstBottomDom = srvQstDom.find(".survey-question-bottom");
     srvQstBottomDom.empty();
-
-    var typeYn = 'Y';
+    typeYn = 'Y'; // 서술형으로 타입 변경
     srvQstDom.data("type-yn", typeYn);
 
     var deleteSrvQstButtonDom = $("<button></button>")
         .attr("type", "button")
-        .addClass("delete-survey-question")
-        .text("문항 삭제");
+        .text("문항 삭제")
+        .on("click", function() {
+            var srvQstDom = $(this).closest(".survey-question");
+            seqNum = deleteSurveyQuestion(srvQstDom, seqNum);
+        });
 
     srvQstBottomDom.append(deleteSrvQstButtonDom);
 }
 
-function recalculateSeqNum() {
-    var maxSeqNum = 0;
-    $(".survey-body .survey-question").each(function() {
-        var currentSeqNum = parseInt($(this).find(".survey-question-middle div").text(), 10);
-        if (currentSeqNum > maxSeqNum) {
-            maxSeqNum = currentSeqNum;
-        }
-    });
-    return maxSeqNum + 1;
-}
-
-function renumberAnswerItems(ulDom) {
-    ulDom.find("li").each(function(index) {
-        $(this).find("div:first-child").text(index + 1);
-    });
-}
-
-$(document).ready(function() {
+$().ready(function() {
     var prjId = $(".survey-body").data("prj-id");
+    var seqNum = 0;
     var typeYn = 'N';
+    // var srvId = $(".survey-question").data("srv-id");
+    // if (srvId) {
+    //     $(".survey-body").append();
+    // }
 
     $.get("/ajax/survey/get/" + prjId, function(response) {
         var surveys = response.data.surveys;
@@ -159,13 +149,23 @@ $(document).ready(function() {
 
             var selectiveTypeButtonDom = $("<button></button>");
             selectiveTypeButtonDom.attr("type", "button");
-            selectiveTypeButtonDom.addClass("selective-type-button");
+            selectiveTypeButtonDom.addClass("selective-type");
             selectiveTypeButtonDom.text("선택형");
+
+            $(".survey-body").on("click", ".selective-type", function() {
+                var srvQstDom = $(this).closest(".survey-question");
+                handleSelectiveTypeClick(srvQstDom, typeYn, seqNum);
+            });
             
             var descriptiveTypeButtonDom = $("<button></button>");
             descriptiveTypeButtonDom.attr("type", "button");
-            descriptiveTypeButtonDom.addClass("descriptive-type-button");
+            descriptiveTypeButtonDom.addClass("descriptive-type");
             descriptiveTypeButtonDom.text("서술형");
+
+            $(".survey-body").on("click", ".descriptive-type", function() {
+                var srvQstDom = $(this).closest(".survey-question");
+                handleDescriptiveTypeClick(srvQstDom, typeYn, seqNum);
+            });
 
             srvQstTopDom.append(selectiveTypeButtonDom);
             srvQstTopDom.append(descriptiveTypeButtonDom);
@@ -194,14 +194,31 @@ $(document).ready(function() {
             if (surveys[i].typeYn === "N") {
                 var addSrvQstButtonDom = $("<button></button>");
                 addSrvQstButtonDom.attr('type', 'button');
-                addSrvQstButtonDom.addClass("add-survey-answer");
+                addSrvQstButtonDom.addClass("add-survey-question");
                 addSrvQstButtonDom.text("답변 항목 추가");
+
+                $(".survey-body").off("click", ".add-survey-question").on("click", ".add-survey-question", function(event) {
+                    var ulDom = $(this).prev("ul");
+                
+                    var lastAnsSeqDom = ulDom.find("li:last-child div:first-child");
+                    var lastAnsSeqNum = lastAnsSeqDom.length ? parseInt(lastAnsSeqDom.text(), 10) : 0;
+                
+                    var qstNum = lastAnsSeqNum + 1;
+                
+                    qstNum = addAnswerItem(ulDom, qstNum, function(change) {
+                    });
+                });
             }
+
 
             var deleteSrvQstButtonDom = $("<button></button>");
             deleteSrvQstButtonDom.attr("type", "button");
-            deleteSrvQstButtonDom.addClass("delete-survey-question");
             deleteSrvQstButtonDom.text("문항 삭제");
+
+            $(".survey-body").on("click", ".delete-survey-question", function() {
+                var srvQstDom = $(this).closest(".survey-question");
+                seqNum = deleteSurveyQuestion(srvQstDom, seqNum);
+            });
 
             srvQstBottomDom.append(ulDom);
             if (surveys[i].typeYn === "N") {
@@ -242,11 +259,12 @@ $(document).ready(function() {
                     ulDom.append(AnsDom);
                 }
             });
-        }) 
+        })
+        
     });
 
-    $("#btn-add-srv-qst").on("click", function() {
-        var seqNum = recalculateSeqNum();
+    $("#btn-add-srv-qst").on("click", function () {
+        seqNum++;
         var srvQstDom = $("<div></div>");
         srvQstDom.addClass("survey-question");
         srvQstDom.attr("data-type-yn", typeYn);
@@ -256,11 +274,9 @@ $(document).ready(function() {
 
         var selectiveTypeButtonDom = $("<button></button>");
         selectiveTypeButtonDom.attr("type", "button");
-        selectiveTypeButtonDom.addClass("selective-type-button");
         selectiveTypeButtonDom.text("선택형");
         var descriptiveTypeButtonDom = $("<button></button>");
         descriptiveTypeButtonDom.attr("type", "button");
-        descriptiveTypeButtonDom.addClass("descriptive-type-button");
         descriptiveTypeButtonDom.text("서술형");
 
         srvQstTopDom.append(selectiveTypeButtonDom);
@@ -315,18 +331,29 @@ $(document).ready(function() {
         ulDom.append(firstAnsDom);
         ulDom.append(secondAnsDom);
 
-        var addSrvAnsButtonDom = $("<button></button>")
-            .attr('type', 'button')
-            .addClass("add-survey-answer")
-            .text("답변 항목 추가");
+        var addSrvQstButtonDom = $("<button></button>");
+        addSrvQstButtonDom.attr('type', 'button');
+        addSrvQstButtonDom.addClass("add-survey-question");
+        addSrvQstButtonDom.text("답변 항목 추가");
+
+        var qstNum = 3;
+        $(addSrvQstButtonDom).on("click", function() {
+            qstNum = addAnswerItem(ulDom, qstNum, function(change) {
+                qstNum += change;
+            });
+        });
 
         var deleteSrvQstButtonDom = $("<button></button>");
         deleteSrvQstButtonDom.attr("type", "button");
-        deleteSrvQstButtonDom.addClass("delete-survey-question");
         deleteSrvQstButtonDom.text("문항 삭제");
 
+        $(deleteSrvQstButtonDom).on("click", function() {
+            var srvQstDom = $(this).closest(".survey-question");
+            seqNum = deleteSurveyQuestion(srvQstDom, seqNum);
+        });
+
         srvQstBottomDom.append(ulDom);
-        srvQstBottomDom.append(addSrvAnsButtonDom);
+        srvQstBottomDom.append(addSrvQstButtonDom);
         srvQstBottomDom.append(deleteSrvQstButtonDom);
 
         srvQstDom.append(srvQstTopDom);
@@ -334,11 +361,14 @@ $(document).ready(function() {
         srvQstDom.append(srvQstBottomDom);
         $(".survey-body").append(srvQstDom);
 
+        $(selectiveTypeButtonDom).on("click", function() {
+            var srvQstDom = $(this).closest(".survey-question");
+            handleSelectiveTypeClick(srvQstDom, typeYn, seqNum);
+        });
+
         $(descriptiveTypeButtonDom).on("click", function() {
-            $(this).closest(srvQstDom).find(srvQstBottomDom).empty();
-            typeYn = 'Y';
-            $(this).closest(srvQstDom).data("type-yn", typeYn);
-            srvQstBottomDom.append(deleteSrvQstButtonDom);
+            var srvQstDom = $(this).closest(".survey-question");
+            handleDescriptiveTypeClick(srvQstDom, typeYn, seqNum);
         });
 
         $.post("/ajax/survey/create/" + prjId, {
@@ -349,20 +379,6 @@ $(document).ready(function() {
         function(response) {
             srvQstDom.attr("data-srv-id", response.data.srvId);
         });
-    });
-
-    $(document).on("click", ".delete-survey-question", handleDeleteQuestionItem);
-    $(document).on("click", ".delete-survey-answer", handleDeleteAnswerItem);
-    $(document).on("click", ".add-survey-answer", function() {
-        var ulDom = $(this).closest(".survey-question-bottom").find("ul");
-        addAnswerItem(ulDom);
-    });
-    $(document).on("click", ".selective-type-button", function() {
-        var srvQstDom = $(this).closest(".survey-question");
-        handleSelectiveTypeClick(srvQstDom);
-    });
-    $(document).on("click", ".descriptive-type-button", function(event) {
-        handleDescriptiveTypeClick(event);
     });
 
     $("#btn-compl-srv").on("click", function() {
@@ -409,8 +425,7 @@ $(document).ready(function() {
             $.post("/ajax/survey/createbody/" + prjId, {
                 srvId: srvId,
                 srvQst: srvQst,
-                typeYn: typeYn,
-                srvSts: 'Y'
+                typeYn: typeYn
             }, function(response) {
                 $(that).children("div").last().find("li").each(function() {
                     var ansDom = $(this).find("input").first();
@@ -462,8 +477,7 @@ $(document).ready(function() {
             $.post("/ajax/survey/createbody/" + prjId, {
                 srvId: srvId,
                 srvQst: srvQst,
-                typeYn: typeYn,
-                srvSts: 'W'
+                typeYn: typeYn
             }, function(response) {
                 $(that).children("div").last().find("li").each(function() {
                     var ansDom = $(this).find("input").first();

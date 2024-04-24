@@ -100,7 +100,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </table>
 
     <!--pagination-->
-    <ul class=".pagination">
+    <ul class="pagination">
       <c:if test="${outputList.listCnt > 0}">
         <!--처음-->
         <c:if test="${outputSearchVO.hasPrevGroup}">
@@ -135,7 +135,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         >
         <!--마지막-->
         <c:if test="${outputSearchVO.hasNextGroup}"
-          ><a href="javascript:search(${outputSearchVO.pageCount})"
+          ><a href="javascript:search(${outputSearchVO.pageCount-1})"
             >마지막</a
           ></c:if
         >

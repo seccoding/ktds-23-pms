@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -124,6 +121,24 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public boolean saveNewMenu(MenuVO menuVO) {
         int insertedCount = menuDao.insertNewMenu(menuVO);
+
+        needReload(insertedCount > 0);
+        return insertedCount > 0;
+    }
+
+    @Transactional
+    @Override
+    public boolean updateMenu(MenuVO menuVO) {
+        int insertedCount = menuDao.updateMenu(menuVO);
+
+        needReload(insertedCount > 0);
+        return insertedCount > 0;
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteMenu(String id) {
+        int insertedCount = menuDao.deleteMenu(id);
 
         needReload(insertedCount > 0);
         return insertedCount > 0;

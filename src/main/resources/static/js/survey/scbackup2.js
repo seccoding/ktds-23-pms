@@ -145,106 +145,6 @@ $(document).ready(function() {
     var prjId = $(".survey-body").data("prj-id");
     var typeYn = 'N';
 
-    $.get("/ajax/survey/get/" + prjId, function(response) {
-        var surveys = response.data.surveys;
-
-        for (let i in surveys) {
-            var srvId = surveys[i].srvId;
-            var srvQst = surveys[i].srvQst;
-            var srvQstDom = $("<div></div>");
-            srvQstDom.addClass("survey-question");
-
-            var srvQstTopDom = $("<div></div>");
-            srvQstTopDom.addClass("survey-question-top");
-
-            var selectiveTypeButtonDom = $("<button></button>");
-            selectiveTypeButtonDom.attr("type", "button");
-            selectiveTypeButtonDom.addClass("selective-type-button");
-            selectiveTypeButtonDom.text("선택형");
-            
-            var descriptiveTypeButtonDom = $("<button></button>");
-            descriptiveTypeButtonDom.attr("type", "button");
-            descriptiveTypeButtonDom.addClass("descriptive-type-button");
-            descriptiveTypeButtonDom.text("서술형");
-
-            srvQstTopDom.append(selectiveTypeButtonDom);
-            srvQstTopDom.append(descriptiveTypeButtonDom);
-
-            var srvQstMiddleDom = $("<div></div>");
-            srvQstMiddleDom.addClass("survey-question-middle");
-
-            var seqDom = $("<div></div>");
-            seqDom.text(surveys[i].seq);
-            
-            var srvQstInputDom = $("<input/>")
-            srvQstInputDom.attr('type', 'text');
-            srvQstInputDom.attr('placeholder', '질문 입력');
-            srvQstInputDom.val(srvQst);
-
-            srvQstMiddleDom.append(seqDom);
-            srvQstMiddleDom.append(srvQstInputDom);
-            //바텀돔
-            var srvQstBottomDom = $("<div></div>");
-            srvQstBottomDom.addClass("survey-question-bottom");
-
-            var ulDom = $("<ul></ul>");
-            ulDom.addClass("survey-question-list");
-            ulDom.attr("data-srv-id", srvId);
-            
-            if (surveys[i].typeYn === "N") {
-                var addSrvQstButtonDom = $("<button></button>");
-                addSrvQstButtonDom.attr('type', 'button');
-                addSrvQstButtonDom.addClass("add-survey-answer");
-                addSrvQstButtonDom.text("답변 항목 추가");
-            }
-
-            var deleteSrvQstButtonDom = $("<button></button>");
-            deleteSrvQstButtonDom.attr("type", "button");
-            deleteSrvQstButtonDom.addClass("delete-survey-question");
-            deleteSrvQstButtonDom.text("문항 삭제");
-
-            srvQstBottomDom.append(ulDom);
-            if (surveys[i].typeYn === "N") {
-                srvQstBottomDom.append(addSrvQstButtonDom);
-            }
-            srvQstBottomDom.append(deleteSrvQstButtonDom);
-
-            srvQstDom.append(srvQstTopDom);
-            srvQstDom.append(srvQstMiddleDom);
-            srvQstDom.append(srvQstBottomDom);
-            $(".survey-body").append(srvQstDom);       
-        }
-
-        // 답변 선택지 추가
-        $("ul.survey-question-list").each(function() {
-            var ulDom = $(this);
-            var srvId = ulDom.data("srv-id");
-
-            $.get("/ajax/survey/get/pick/" + srvId, function(pickResponse) {
-                var picks = pickResponse.data.picks;
-    
-                for (var j in picks) {
-                    var AnsDom = $("<li></li>");
-                    var AnsSeqDom = $("<div></div>");
-                    AnsSeqDom.text(picks[j].seq);
-                    var AnsInputDom = $("<input/>");
-                    AnsInputDom.attr('type', 'text');
-                    AnsInputDom.attr('placeholder', '답변명');
-                    AnsInputDom.val(picks[j].sqpCntnt);
-                    var LinkInputDom = $("<input/>");
-                    LinkInputDom.attr('type', 'text');
-                    LinkInputDom.attr('placeholder', '연결');
-                    LinkInputDom.val(picks[j].nextId);
-    
-                    AnsDom.append(AnsSeqDom);
-                    AnsDom.append(AnsInputDom);
-                    AnsDom.append(LinkInputDom);
-                    ulDom.append(AnsDom);
-                }
-            });
-        }) 
-    });
-
     $("#btn-add-srv-qst").on("click", function() {
         var seqNum = recalculateSeqNum();
         var srvQstDom = $("<div></div>");
@@ -260,7 +160,6 @@ $(document).ready(function() {
         selectiveTypeButtonDom.text("선택형");
         var descriptiveTypeButtonDom = $("<button></button>");
         descriptiveTypeButtonDom.attr("type", "button");
-        descriptiveTypeButtonDom.addClass("descriptive-type-button");
         descriptiveTypeButtonDom.text("서술형");
 
         srvQstTopDom.append(selectiveTypeButtonDom);
@@ -341,7 +240,7 @@ $(document).ready(function() {
             srvQstBottomDom.append(deleteSrvQstButtonDom);
         });
 
-        $.post("/ajax/survey/create/" + prjId, {
+        $.post("/ajax/survey/write/" + prjId, {
             crtrId: '0509004',
             seq: seqDom.text(),
             typeYn: typeYn
@@ -406,11 +305,10 @@ $(document).ready(function() {
                 typeYn = newTypeYn;
             }
 
-            $.post("/ajax/survey/createbody/" + prjId, {
+            $.post("/ajax/survey/writebody/" + prjId, {
                 srvId: srvId,
                 srvQst: srvQst,
-                typeYn: typeYn,
-                srvSts: 'Y'
+                typeYn: typeYn
             }, function(response) {
                 $(that).children("div").last().find("li").each(function() {
                     var ansDom = $(this).find("input").first();
@@ -453,17 +351,21 @@ $(document).ready(function() {
     });
 
     function automaticInsert() {
-        $(".survey-question").each(function() {
-            var that = this;
-            var srvId = $(this).data("srv-id");
-            var srvQst = $(this).find(".survey-question-middle input[type='text']").val();
-            var typeYn = $(this).data("type-yn");
-    
-            $.post("/ajax/survey/createbody/" + prjId, {
+        var thisForAutoInsert = $("#btn-compl-srv").parent().find("form").children("div").children("div");
+        thisForAutoInsert.each(function() {
+            var that = thisForAutoInsert;
+            var srvId = thisForAutoInsert.data("srv-id");
+            var srvQst = thisForAutoInsert.children("div").eq(1).find("input").val();
+            var newTypeYn = thisForAutoInsert.data("type-yn");
+
+            if (newTypeYn) {
+                typeYn = newTypeYn;
+            }
+
+            $.post("/ajax/survey/writebody/" + prjId, {
                 srvId: srvId,
                 srvQst: srvQst,
-                typeYn: typeYn,
-                srvSts: 'W'
+                typeYn: typeYn
             }, function(response) {
                 $(that).children("div").last().find("li").each(function() {
                     var ansDom = $(this).find("input").first();

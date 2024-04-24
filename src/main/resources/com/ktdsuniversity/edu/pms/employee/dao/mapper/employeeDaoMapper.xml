@@ -9,6 +9,11 @@
 			   id="employeeVOMap"
 			   autoMapping="true">
 		<id column="EMP_ID" property="empId"/>
+		<association property="commonCodeVO"
+					 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId"/>
+			<result column="CMCD_NAME" property="cmcdName"/>
+		</association>
 		<association property="departmentVO"
 					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 			<id column="DEPT_ID" property="deptId"/>
@@ -54,7 +59,8 @@
 		    ON E.EMP_ID = A.EMP_ID
 		 INNER JOIN COMMON_CODE C
 		    ON E.PSTN_ID = C.CMCD_ID
-		 WHERE A.TM_ID = #{_parameter}			
+		 WHERE A.TM_ID = #{_parameter}
+		   AND A.DEL_YN = 'N'		
 	</select>
 	
 
@@ -204,6 +210,7 @@
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
 		 , J.JOB_NAME
+		 , C.CMCD_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D
 	    ON D.DEPT_ID = E.DEPT_ID
@@ -211,8 +218,8 @@
 	    ON J.JOB_ID = E.JOB_ID
 	  JOIN TEAM T
 	    ON T.DEPT_ID = E.DEPT_ID
-	  JOIN ASSIGNMENT A
-		ON A.EMP_ID = E.EMP_ID
+	  JOIN COMMON_CODE C
+	    ON C.CMCD_ID = E.PSTN_ID
 	 WHERE E.EMP_ID = #{_parameter}
 		OR D.DEPT_ID = #{_parameter}  
 	</select>
@@ -247,6 +254,10 @@
 		UPDATE EMPLOYEE
 		   SET EMP_NAME = #{empName}
 			 , WORK_STS = #{workSts}
+			 , CNTCT = #{cntct}
+			 , ADDR = #{addr}
+			 , BRTH = #{brth}
+			 , EMAIL = #{email}
 			 , HIRE_YEAR = #{hireYear}
 			 , HIRE_DT = #{hireDt}
 			 , DEPT_ID = #{deptId}
@@ -265,6 +276,7 @@
 		 (EMP_ID
 		, EMP_NAME
 		, PRFL
+		, ORIGIN_PRFL_FILE_NAME
 		, HIRE_DT
 		, CNTCT
 		, ADDR
@@ -280,6 +292,7 @@
 		 (#{empId}
 		, #{empName}
 		, #{prfl}
+		, #{originPrflFileName}
 		, #{hireDt}
 		, #{cntct}
 		, #{addr}

@@ -15,6 +15,7 @@ import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
@@ -150,6 +151,28 @@ public class DepartmentController {
 		return new AjaxResponse().append("success", isSuccessDelete);
 	}
 	
+	@ResponseBody
+	@PostMapping("/ajax/department/team/employee/add")
+	public AjaxResponse addEmployeeListInTeam(EmployeeListVO employeeListVO) {
+		String teamId = employeeListVO.getEmployeeList().get(0).getTeamVO().getTmId();
+		List<EmployeeVO> empInTeam = this.employeeService.findEmployeesByTeamId(teamId);
+		int successCnt = 0;
+		int willAddCnt = 0;
+		for(EmployeeVO employeeVO : employeeListVO.getEmployeeList()) {
+			if(!empInTeam.contains(employeeVO)) {
+				willAddCnt++;
+				if(this.employeeService.addTeam(employeeVO)) {
+					successCnt++;
+				};
+				
+			}
+			
+			
+		}
+		boolean isSuccessMake = willAddCnt == successCnt;
+		
+		return new AjaxResponse().append("success", isSuccessMake);
+	}
 	
 }
 

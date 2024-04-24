@@ -189,24 +189,49 @@
 	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO"
 	resultMap="requirementVOMap">
 	<include refid="Common.pagenate_header"/>
-	SELECT  R.RQM_ID 
-		 ,	R.RQM_TTL 
-		 ,	R.RQM_CNTNT 
-		 ,	R.SCD_STS 
-		 ,	CC1.CMCD_NAME AS STS_NAME
-		 ,	R.RQM_STS 
-		 ,	cc2.CMCD_NAME AS RQM_NAME	
-		 ,	r.PRJ_ID
-		 ,	p.PRJ_NAME 
+	SELECT  R.RQM_ID
+		 , 	R.RQM_CNTNT
 		 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
 		 , 	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
-	  FROM 	REQUIREMENT r 
-	  JOIN	COMMON_CODE cc1 
-	  	ON	R.SCD_STS =CC1.CMCD_ID
-	  JOIN  COMMON_CODE cc2
-	  	ON  r.RQM_STS  = cc2.CMCD_ID 
+		 ,  R.RQM_FILE
+		 ,  R.DVLRP
+		 ,  R.CFRMR
+		 ,  R.TSTR
+		 ,  R.TEST_RSLT
+		 ,  R.SCD_STS
+		 ,  R.RQM_STS
+		 ,  TO_CHAR(R.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		 , 	TO_CHAR(R.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		 ,  R.CRTR_ID
+		 ,  R.MDFR_ID
+		 ,  R.PRJ_ID
+		 ,  R.RQM_TTL
+		 ,  R.RQM_ENCODE_FILE
+		 ,	STS.CMCD_NAME 	AS STS_NAME
+		 ,	RQM.CMCD_NAME 	AS RQM_NAME
+		 ,	P.PRJ_NAME    	AS PRJ_NAME
+		 ,	DVLRP.EMP_NAME 	AS DVLRP_NAME
+		 ,	CFRMR.EMP_NAME	AS CFRMR_NAME
+		 ,	TSTR.EMP_NAME	AS TSTR_NAME
+		 ,	CRTR.EMP_NAME	AS CRTR_NAME
+		 ,	MDFR.EMP_NAME	AS MDFR_NAME
+	  FROM 	REQUIREMENT R 
+	  JOIN	COMMON_CODE STS 
+	  	ON	R.SCD_STS =STS.CMCD_ID
+	  JOIN  COMMON_CODE RQM
+	  	ON  R.RQM_STS  = RQM.CMCD_ID 
 	  JOIN	PROJECT p 
-	  	ON	r.PRJ_ID = p.PRJ_ID 
+	  	ON	R.PRJ_ID = p.PRJ_ID 
+	  JOIN	EMPLOYEE DVLRP
+	    ON  R.dvlrp	= DVLRP.EMP_ID
+	  JOIN	EMPLOYEE CFRMR
+	    ON  R.CFRMR	= CFRMR.EMP_ID
+	  JOIN	EMPLOYEE TSTR
+	    ON  R.TSTR	= TSTR.EMP_ID
+	  JOIN	EMPLOYEE CRTR
+	    ON  R.CRTR_ID	= CRTR.EMP_ID
+	  LEFT  JOIN	EMPLOYEE MDFR
+	    ON  R.MDFR_ID	= MDFR.EMP_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
 	 <choose>
@@ -243,20 +268,36 @@ SELECT  R.RQM_ID
 	 ,	R.SCD_STS 
 	 ,	R.RQM_FILE
 	 ,	R.RQM_ENCODE_FILE
-	 ,	CC1.CMCD_NAME AS STS_NAME
 	 ,	R.RQM_STS 
-	 ,	cc2.CMCD_NAME AS RQM_NAME	
+	 ,  R.CRTR_ID
 	 ,	r.PRJ_ID
-	 ,	p.PRJ_NAME 
 	 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
 	 ,	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
+	 ,	STS.CMCD_NAME 	AS STS_NAME
+	 ,	RQM.CMCD_NAME 	AS RQM_NAME
+	 ,	P.PRJ_NAME    	AS PRJ_NAME
+	 ,	DVLRP.EMP_NAME 	AS DVLRP_NAME
+	 ,	CFRMR.EMP_NAME	AS CFRMR_NAME
+	 ,	TSTR.EMP_NAME	AS TSTR_NAME
+	 ,	CRTR.EMP_NAME	AS CRTR_NAME
+	 ,	MDFR.EMP_NAME	AS MDFR_NAME
   FROM 	REQUIREMENT r 
-  JOIN	COMMON_CODE cc1 
-  	ON	R.SCD_STS =CC1.CMCD_ID
-  JOIN  COMMON_CODE cc2
-  	ON  r.RQM_STS  = cc2.CMCD_ID 
+  JOIN	COMMON_CODE STS 
+  	ON	R.SCD_STS =STS.CMCD_ID
+  JOIN  COMMON_CODE RQM
+  	ON  r.RQM_STS  = RQM.CMCD_ID 
   JOIN	PROJECT p 
   	ON	r.PRJ_ID = p.PRJ_ID 
+  JOIN	EMPLOYEE DVLRP
+    ON  R.dvlrp	= DVLRP.EMP_ID
+  JOIN	EMPLOYEE CFRMR
+    ON  R.CFRMR	= CFRMR.EMP_ID
+  JOIN	EMPLOYEE TSTR
+    ON  R.TSTR	= TSTR.EMP_ID
+  JOIN	EMPLOYEE CRTR
+    ON  R.CRTR_ID	= CRTR.EMP_ID
+  LEFT  JOIN	EMPLOYEE MDFR
+    ON  R.MDFR_ID	= MDFR.EMP_ID   
  WHERE	R.RQM_ID = #{_PARAMETER}
    AND	P.REQ_YN= 'Y'
    AND  R.DEL_YN = 'N'
@@ -292,14 +333,14 @@ SELECT  R.RQM_ID
 	, #{strtDt}
 	, #{endDt}
 	, #{rqmFile}
-	, '0509006'
-	, '0509006'
-	, '0509006'
+	, #{cfrmr}
+	, #{tstr}
+	, #{dvlrp}
 	, ''
 	, #{scdSts}
 	, #{rqmSts}
 	, SYSDATE	
-	, '0509006'
+	, #{crtrId}
 	, ''
 	, ''
 	, #{prjId}
@@ -320,6 +361,10 @@ SELECT  R.RQM_ID
 	, RQM_STS=#{rqmSts}
 	, MDF_DT=SYSDATE
 	, RQM_TTL=#{rqmTtl}
+	, DVLRP=#{dvlrp}
+	, CFRMR=#{cfrmr}
+	, TSTR=#{tstr}
+	, MDFR_ID=#{mdfrId}
 	WHERE RQM_ID=#{rqmId}
 	
 	</update>

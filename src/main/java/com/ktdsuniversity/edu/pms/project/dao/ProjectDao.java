@@ -52,7 +52,7 @@ public interface ProjectDao {
 
     ProjectTeammateVO findTeammateByProjectIdAndEmployeeId(ProjectTeammateVO newProjectTeammate);
 
-    int updateTeammateDeleteYnByProjectTeammateId(String prjTmId);
+    int updateTeammateDeleteYnAndRoleByProjectTeammateId(ProjectTeammateVO originTeammate);
 
     int insertNewProjectTeammate(ProjectTeammateVO newProjectTeammate);
 

@@ -23,24 +23,6 @@
 		.title {
         margin-bottom: 3rem;
     }
-    .col-1-1 {
-        width: 99%;
-    }
-    .col-1-2 {
-        width: 50%;
-    }
-    .col-1-3 {
-        width: 33.33%;
-    }
-    .col-2-3 {
-        width: 66.66%;
-    }
-    .col-1-4 {
-        width: 25%;
-    }
-    .col-1-8 {
-        width: 12.5%
-    }
     .row {
         display: flex;
         justify-content: space-between;
@@ -115,7 +97,7 @@
 					<c:when test="${not empty apprList.apprList}">
 						<c:forEach items="${apprList.apprList}" var="approval">
               <a href="/approval/view?apprId=${approval.apprId}">
-                <div class="card-list"">
+                <div class="card-list">
                   <div class="card-list-category">
                     <div class="category">
                       <img src="/images/sidebar-approval.png" alt="img">
@@ -129,21 +111,21 @@
                     <span>${approval.dmdDt}</span>
                   </div>
                   <div class="card-list-user">
-                    <img src="/images/login.png" alt="img">
+                    <img src="/images/login.png" alt="prfl">
                     <div class="user">
-                      <h6>${approval.employeeVO.empName}</h6>
-                      <span>직급</span>
+                      <h6>${approval.employeeVO.empName} ${approval.commonCodeVO.cmcdName}</h6>
+                      <span>${employee.departmentVO.deptName}</span>
                     </div>
                   </div>
                   <div class="card-list-status">
                     <c:if test="${approval.apprSts eq '801'}">
-                      <button>결재대기</button>
+                      <span class="badge bg-label-warning">결재대기</span>
                     </c:if>
                     <c:if test="${approval.apprSts eq '802'}">
-                      <button>결재승인</button>
+                      <span class="badge bg-success">결재승인</span>
                     </c:if>
                     <c:if test="${approval.apprSts eq '803'}">
-                      <button>결재반려</button>
+                      <span class="badge bg-label-danger">결재반려</span>
                     </c:if>
                   </div>
                 </div>	

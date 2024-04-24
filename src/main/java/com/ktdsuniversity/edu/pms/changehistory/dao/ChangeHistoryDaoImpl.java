@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
+import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
+import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Repository
@@ -33,5 +35,36 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	public List<DepartmentHistoryVO> getAllDeptHist(String empId) {
 		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE+".getAllDeptHist", empId);
 	}
+
+	@Override
+	public List<JobHistoryVO> getAllJobHist(String empId) {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE+".getAllJobHist", empId);
+	}
+
+	@Override
+	public List<PositionHistoryVO> getUserPositionHistory(String empId) {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE+".getUserPositionHistory", empId);
+	}
+
+	@Override
+	public int insertOneChangeJobHistory(EmployeeVO employeeVO) {
+		return getSqlSession().insert(ChangeHistoryDao.NAME_SPACE + ".insertOneChangeJobHistory", employeeVO);
+	}
+
+	@Override
+	public String getRecentJobHist(String empId) {
+		return getSqlSession().selectOne(ChangeHistoryDao.NAME_SPACE + ".getRecentJobHist", empId);
+	}
+
+	@Override
+	public int insertOneChangePositionHistory(EmployeeVO employeeVO) {
+		return getSqlSession().insert(ChangeHistoryDao.NAME_SPACE + ".insertOneChangePositionHistory", employeeVO);
+	}
+
+	@Override
+	public String getRecentPositionHist(String empId) {
+		return getSqlSession().selectOne(ChangeHistoryDao.NAME_SPACE + ".getRecentPositionHist", empId);
+	}
+
 
 }

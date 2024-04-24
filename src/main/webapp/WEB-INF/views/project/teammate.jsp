@@ -24,6 +24,17 @@
 
 <%--메인 컨텐츠--%>
 <div>
+    <div class="project-tabs">
+        <ul>
+            <li>
+                <a id="tab-show" href="/project/view?prjId=${project.prjId}">기본정보</a>
+            </li>
+            <li>
+                <a id="tab-member" href="/project/team?prjId=${project.prjId}">구성원</a>
+            </li>
+        </ul>
+    </div>
+
     <div>
         <h4 id="project" data-project-id="${project.prjId}">
             프로젝트 : ${project.prjName}
@@ -60,7 +71,7 @@
             <c:when test="${not empty teammate}">
                 <%-- 내용을 반복해서 보여줌 --%>
                 <c:forEach items="${teammate}" var="teammate">
-                    <tr class="teammate-row" data-teammate-id="${teammate.tmId}">
+                    <tr class="teammate-row" data-teammate-id="${teammate.tmId}" id="${teammate.tmId}">
                             <%--      삭제기능, if 필요      --%>
                         <td>
                             <c:choose>

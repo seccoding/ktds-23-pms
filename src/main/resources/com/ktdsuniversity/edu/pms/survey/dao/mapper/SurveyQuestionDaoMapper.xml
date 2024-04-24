@@ -166,7 +166,7 @@
 		UPDATE SURVEY_QUESTION
 		   SET SRV_QST = #{srvQst}
 		     , TYPE_YN = #{typeYn}
-		     , SRV_STS = 'Y'
+		     , SRV_STS = #{srvSts}
 		 WHERE SRV_ID = #{srvId}
 	</update>
 	
