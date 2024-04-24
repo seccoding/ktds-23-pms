@@ -54,7 +54,9 @@ $().ready(function () {
     event.preventDefault();
 
     rqmCntnt = editors.getData();
-    var file = $("#file").prop("files");
+    var fileArr = $("#file").prop("files");
+    var file = fileArr[0];
+
     var prjId = $("#prj-id").val();
     var rqmTtl = $("#rqm-ttl").val();
     var dvlrp = $("#dvlrp-check").val();
