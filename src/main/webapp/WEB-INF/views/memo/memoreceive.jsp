@@ -8,15 +8,29 @@
 <title>보낸 편지함 목록</title>
 <jsp:include page="../commonheader.jsp" />
 <script type="text/javascript" src="/js/memo/memolist.js"></script>
+<style>
+    .memotop{
+        text-align: left;
+    }
+    .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 40rem;
+        display: inline-block;
+      }
+    .memotable {
+        margin-bottom: 1rem;
+    }
+</style>
 </head>
 <body>
-
-
-     <div> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.</div>
-     <button href="javascript:void(0)" id="deleteMassiveMemo">삭제</button>
+    <jsp:include page="../commonmodal.jsp" />
+    <div class="memotable"> 
+     <div class="memotop"> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.</div>
+     
     <table>
 	  <colgroup>
-          <col width="*" />
           <col width="*" />
           <col width="*" />
           <col width="*" />
@@ -30,8 +44,9 @@
                 <input type="checkbox" id="checked-all" data-target-class="target-memo-id" />
      	 		      <label for="checked-all"></label>
             </th>
+            <th>제목</th>
+            <th>받는 사람</th>
             <th>보낸 사람</th>
-            <th>내용</th>
             <th>보낸 날짜</th>
             <th>확인 여부</th>
 		</tr>
@@ -43,20 +58,20 @@
                  <input type="checkbox" class = "target-memo-id" id="target-memo-id-${loop.index}" name="targetMemoId" value="${memo.memoId}" />
      	 		       <label for="target-memo-id-${loop.index}"></label>
                </td>
-             <td class="center-align">${memo.crtrId}</td>
-             <td class="left-align">
-              <a class="ellipsis" href="/memo/receive/view?id=${memo.memoId}">
-             		쪽지를 받았습니다.
-               </a>
-             </td>
-             <td class="center-align">${memo.empName} : (${memo.email})</td>
-             <td class="center-align">${memo.crtDt}</td>
-             <td class="center-align">${memo.readYn}</td>
+               <td class="left-align">
+                <a class="ellipsis" href="/memo/receive/view?id=${memo.memoId}">
+                    ${memo.memoTtl}
+                </a>
+              </td>
+              <td class="center-align">${memo.rcvId} ${memo.rcvName} : (${memo.rcvEmail})</td>
+              <td class="center-align">${memo.crtrId} ${memo.crtrName} : (${memo.crtrEmail})</td>
+              <td class="center-align">${memo.crtDt}</td>
+              <td class="center-align">${memo.readYn}</td>
      
          </tr>
     </c:forEach>
     </table>
-
+</div>
 <!-- Paginator 시작 -->
     <div>
         <form id="search-form">
@@ -85,7 +100,7 @@
 
             <input type="text" name="searchKeyword" value="${searchMemoVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
-            
+            <button href="javascript:void(0)" id="deleteMassiveMemo">삭제</button>
             <ul class="page-nav">
                 <c:if test="${searchMemoVO.hasPrevGroup}">
                     <li><a href="javascript:search(0);">처음</a></li>

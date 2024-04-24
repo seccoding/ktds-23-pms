@@ -74,7 +74,6 @@ public class MemoServiceImpl implements MemoService{
         }
         // 모든 쪽지를 성공적으로 보냈을 경우에만 커밋합니다.
         return rcvIdList.size() == insertedCount;
-		
 	}
 
 	// 조회한 결과가 없다면? 설정해주기
@@ -111,8 +110,8 @@ public class MemoServiceImpl implements MemoService{
 
 	@Transactional
 	@Override
-	public boolean saveOneMemo(String id) {
-		int savedCount = this.memoDao.saveOneMemo(id);
+	public boolean saveOneMemo(String id, String empId) {
+		int savedCount = this.memoDao.saveOneMemo(id, empId);
 		return savedCount > 0;
 	}
 	
