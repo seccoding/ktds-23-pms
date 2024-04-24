@@ -32,4 +32,14 @@ public class MenuDaoImpl extends SqlSessionDaoSupport implements MenuDao {
         return getSqlSession().insert(NAME_SPACE + ".insertNewMenu", menuVO);
 
     }
+
+    @Override
+    public int updateMenu(MenuVO menuVO) {
+        return getSqlSession().update(NAME_SPACE + ".updateMenu", menuVO);
+    }
+
+    @Override
+    public int deleteMenu(String id) {
+        return getSqlSession().update(NAME_SPACE + ".deleteMenu", id);
+    }
 }

@@ -14,4 +14,8 @@ public interface MenuService {
     List<MenuVO> getAllFlatMenuList();
 
     boolean saveNewMenu(MenuVO menuVO);
+
+    boolean updateMenu(MenuVO menuVO);
+
+    boolean deleteMenu(String id);
 }

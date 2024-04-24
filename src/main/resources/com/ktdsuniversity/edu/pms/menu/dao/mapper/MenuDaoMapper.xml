@@ -51,6 +51,7 @@
         ICON,
         PARENT
         FROM MENU
+        WHERE DEL_YN = 'N'
         START WITH PARENT IS NULL
         CONNECT BY PRIOR ID = PARENT
     </select>
@@ -79,18 +80,21 @@
         FROM
         (SELECT ID, NAME, "ROLE", URL, ICON, PARENT
         FROM MENU
-        WHERE PARENT IS NULL) MAIN
+        WHERE PARENT IS NULL
+        AND DEL_YN = 'N') MAIN
         LEFT JOIN
         (SELECT ID, NAME, "ROLE", URL, ICON, PARENT
         FROM MENU
         WHERE PARENT IS NOT NULL
-        AND ROLE IS NOT NULL) SUB
+        AND ROLE IS NOT NULL
+        AND DEL_YN = 'N') SUB
         ON MAIN.ID = SUB.PARENT
         LEFT JOIN
         (SELECT ID, NAME, "ROLE", URL, ICON, PARENT
         FROM MENU
         WHERE PARENT IS NOT NULL
-        AND ROLE IS NULL) DETAIL
+        AND ROLE IS NULL
+        AND DEL_YN = 'N') DETAIL
         ON SUB.ID = DETAIL.PARENT
         ORDER BY MAIN.ID, SUB.ID, DETAIL.ID
     </select>
@@ -101,7 +105,9 @@
         (
         ID
         ,NAME
-        ,ROLE
+        <if test='role != null and role != ""'>
+            ,"ROLE"
+        </if>
         <if test='url != null and url != ""'>
             ,URL
         </if>
@@ -117,7 +123,9 @@
         (
         #{id}
         ,#{name}
-        ,#{role}
+        <if test='role != null and role != ""'>
+            ,#{role}
+        </if>
         <if test='url != null and url != ""'>
             ,#{url}
         </if>
@@ -130,4 +138,29 @@
         )
     </insert>
 
+    <update id="updateMenu"
+            parameterType="com.ktdsuniversity.edu.pms.menu.vo.MenuVO">
+        UPDATE MENU
+        SET NAME = #{name}
+        <if test="role != null and role != ''">
+            , "ROLE" = #{role}
+        </if>
+        <if test="url != null and url != ''">
+            , URL = #{url}
+        </if>
+        <if test="icon != null and icon != ''">
+            , ICON = #{icon}
+        </if>
+        <if test="parent != null and parent != ''">
+            , PARENT = #{parent}
+        </if>
+        WHERE ID = #{id}
+    </update>
+
+    <update id="deleteMenu"
+            parameterType="String">
+        UPDATE MENU
+        SET DEL_YN = 'Y'
+        WHERE ID = #{_parameter}
+    </update>
 </mapper>
