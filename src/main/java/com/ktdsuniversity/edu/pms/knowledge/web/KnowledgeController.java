@@ -31,9 +31,9 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeRecommendService;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeService;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
@@ -60,17 +60,18 @@ public class KnowledgeController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@Autowired
-	private KnowledgeRecommendService knowledgeRecommendService;
 
 	// 목록 조회
 	@GetMapping("/knowledge")
-	public String viewKnowledgeListPage(Model model, SearchKnowledgeVO searchKnowledgeVO) {
+	public String viewKnowledgeListPage(Model model, SearchKnowledgeVO searchKnowledgeVO, @RequestParam(required = false) String knlId) {
 		ProjectListVO projectList = this.projectService.getAllProject();
+		
 		KnowledgeListVO knowledgeList = this.knowledgeService.searchAllKnowledge(searchKnowledgeVO);
+		
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("knowledgeList", knowledgeList);
-//		model.addAttribute("searchKnowledgeVO", searchKnowledgeVO);
+		
+		model.addAttribute("searchKnowledgeVO", searchKnowledgeVO);
 		return "/knowledge/knowledgelist";
 	}
 
@@ -87,11 +88,11 @@ public class KnowledgeController {
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
 
-		int recommendCount = knowledgeRecommendService.getKnowledgeRecommendCount(knlId);
+//		int recommendCount = knowledgeService.getKnowledgeRecommendCount(knlId);
 		
 		// knowledge/view 페이지에 데이터를 전송.
 		model.addAttribute("knowledgeVO", knowledgeVO);
-		model.addAttribute("recommendCount", recommendCount);
+//		model.addAttribute("recommendCount", recommendCount);
 		// return new AjaxResponse().append("oneKnowledge", knowledgeVO);
 		return "/knowledge/knowledgeview";
 	}
@@ -102,15 +103,16 @@ public class KnowledgeController {
 
 		ProjectListVO projectList = projectService.getAllProject();
 		List<RequirementVO> requirementList = requirementService.getAllRequirement();
-
+		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
 		model.addAttribute("requirement", requirementList);
 
 		return "/knowledge/knowledgewrite";
 	}
 
 	// 글 작성 
-	@PostMapping("/knowledge/write")
-	public String doKnowledgeWrite(KnowledgeVO knowledgeVO, @RequestParam MultipartFile file,
+	@ResponseBody
+	@PostMapping("/ajax/knowledge/write")
+	public AjaxResponse doKnowledgeWrite(KnowledgeVO knowledgeVO, @RequestParam MultipartFile file,
 			Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
 		// 유저 검증
@@ -122,19 +124,20 @@ public class KnowledgeController {
 		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
 		boolean isEmptyContent = StringUtil.isEmpty(knowledgeVO.getKnlCntnt());
 
-		if (isEmptyTitle) {
-			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
-			model.addAttribute("knowledgeVO", knowledgeVO);
-			return "/knowledge/knowledgewrite";
-		}
-
-		if (isEmptyContent) {
-			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
-			model.addAttribute("knowledgeVO", knowledgeVO);
-			return "knowledge/knowledgewrite";
-		}
-		// 세션 검증 시 수정해야 함!!!
-		knowledgeVO.setCrtrId("system01");
+//		if (isEmptyTitle) {
+//			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
+//			model.addAttribute("knowledgeVO", knowledgeVO);
+//			return "/knowledge/knowledgewrite";
+//		}
+//
+//		if (isEmptyContent) {
+//			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
+//			model.addAttribute("knowledgeVO", knowledgeVO);
+//			return "knowledge/knowledgewrite";
+//		}
+		
+		knowledgeVO.setCrtrId(employeeVO.getEmpId());
+//		knowledgeVO.setIsMngr(employeeVO.getEmpId());
 
 		boolean isCreateSuccess = this.knowledgeService.createNewKnowledge(knowledgeVO, file);
 		if (isCreateSuccess) {
@@ -145,7 +148,9 @@ public class KnowledgeController {
 
 		String knlId = knowledgeVO.getKnlId();
 
-		return "redirect:/knowledge?knlId=" + knlId;
+		
+		return new AjaxResponse().append("result", isCreateSuccess);
+//		return "redirect:/knowledge?knlId=" + knlId;
 
 	}
 
@@ -157,10 +162,10 @@ public class KnowledgeController {
 
 		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
-//		 if(! knowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-//		 employeeVO.getAdmnCode().equals(301)) {
-//		 throw new PageNotFoundException();
-//		 }
+		if (!employeeVO.getEmpId().equals(knowledgeVO.getCrtrId())
+				&& employeeVO.getMngrYn().equals("N")) {
+		throw new PageNotFoundException();
+	}
 
 		// 게시글의 정보를 화면에 보내준다.
 		model.addAttribute("knowledgeVO", knowledgeVO);
@@ -177,10 +182,10 @@ public class KnowledgeController {
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
 		 // 유저 검증
-//		 if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-//		 employeeVO.getAdmnCode().equals(301)) {
-//		 throw new PageNotFoundException();
-//		 }
+		 if(!originKnowledgeVO.getCrtrId().equals(employeeVO.getEmpId()) && !
+		 employeeVO.getMngrYn().equals('N')) {
+		 throw new PageNotFoundException();
+		 }
 
 		// 수동 검사 -> Validator로 추후 수정 가능
 		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
@@ -215,15 +220,14 @@ public class KnowledgeController {
 	@GetMapping("/knowledge/delete/{knlId}")
 	public String doKnowledgeDelete(@PathVariable String knlId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		boolean isDeleteSuccess = this.knowledgeService.deleteOneKnowledge(knlId);
-
 		 KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
 
 		// 유저 검증
-		 if(! originKnowledgeVO.getKnlId().equals(employeeVO.getEmpId()) && !
-		 employeeVO.getAdmnCode().equals(301)) {
-		 throw new PageNotFoundException();
-		 }
+		 if (!originKnowledgeVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+				throw new PageNotFoundException();
+			}
+		 
+		boolean isDeleteSuccess = this.knowledgeService.deleteOneKnowledge(knlId);
 
 		if (isDeleteSuccess) {
 			logger.info("게시글 삭제 성공!");
@@ -240,7 +244,7 @@ public class KnowledgeController {
 	@PostMapping("/ajax/knowledge/delete/massive")
 	public AjaxResponse doDeleteMassive(@RequestParam ("deleteItems[]") List<String> deleteItems, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-		if (employeeVO.getAdmnCode().equals(301)) {
+		if (employeeVO.getMngrYn().equals("N")) {
 			throw new PageNotFoundException();
 		}
 		
@@ -271,6 +275,28 @@ public class KnowledgeController {
 //
 //		return new AjaxResponse().append("result", result);
 //		}
+	
+	
+	// 1사원 1추천
+	@ResponseBody
+	@PostMapping("/knowledge/recommend/{pPostId}")
+	public AjaxResponse getRecommendKnowledge(@PathVariable String pPostId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		KnowledgeRecommendVO knowledgeRecommendVO = new KnowledgeRecommendVO();
+		
+		knowledgeRecommendVO.setpPostId(pPostId);
+		knowledgeRecommendVO.setCrtrId(employeeVO.getEmpId());
+		
+		boolean isRecommend = knowledgeService.updateRecommend(knowledgeRecommendVO);
+		
+		 // 해당 사원이 이미 추천을 했는지 확인
+        if (isRecommend) {
+            return new AjaxResponse().append("result", "추천이 완료되었습니다.").append("resultStatus", true);
+        } else {
+        	return new AjaxResponse().append("result", "이미 추천하셨습니다.").append("resultStatus", false);
+        }
+        
+	}
 
 
 	// 파일 다운로드

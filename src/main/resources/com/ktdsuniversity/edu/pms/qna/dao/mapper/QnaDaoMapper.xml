@@ -10,8 +10,8 @@
 	<id column="QA_ID" property="qaId" /><!-- pk -->
 	<result column="RQM_ID" property="rqmId" /><!-- join value -->
 	<result column="PRJ_ID" property="prjId" /><!-- join value -->
-	<result column="CMCD_ID" property="cmcdId" /><!-- join value -->
 	<result column="EMP_ID" property="empId" /><!-- join value -->
+	<result column="REC_ID" property="recId" /><!-- join value -->
 	 
 	<!-- join table -->
 	
@@ -29,20 +29,23 @@
 	</association>
 	
 	<!-- join table -->
-	<association property="commonCodeVO" 
-		javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-			<id column="CMCD_ID" property="cmcdId" />
-			<result column="CMCD_ID" property="cmcdId" />
-	</association>
-	
-	<!-- join table -->
 	
 	<association property="employeeVO" 
 		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 			<id column="EMP_ID" property="empId" />
 			<result column="EMP_ID" property="empId" />
 	</association>
-	 
+	
+	<association property="qnaRecommendVO" 
+		javaType="com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO">
+			<id column="REC_ID" property="recId" />
+			<result column="REC_YN" property="recYn" />
+	</association>
+	</resultMap>
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO" 
+	id="qnaRecommendVOMap" autoMapping="true">
+	<id column="REC_ID" property="recId" /><!-- pk -->
 	</resultMap>
   
   
@@ -271,7 +274,7 @@
 		 </foreach>
 	</update>
   
-  	
+  	<!-- 추천 -->
   	<update id="recommendOneQna" parameterType="String">
 		UPDATE QNA 
 		   SET QA_REC_CNT = QA_REC_CNT + 1
@@ -279,13 +282,52 @@
 		   AND QA_ID = #{qaId}
 	</update>
 	
-	
+	<!-- 추천 취소 
   	<update id="cancelRecommendOneQna" parameterType="String">
 	UPDATE QNA 
 	   SET QA_REC_CNT = QA_REC_CNT - 1
 	 WHERE DEL_YN = 'N'
 	   AND QA_ID = #{qaId}
-	</update>
+	</update>  -->
+	
+	<!-- 1사원 1추천 -->
+	<select id="selectOneRecommend" 
+	parameterType="com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO"
+	resultMap="qnaRecommendVOMap">
+		SELECT REC_ID
+			 , P_POST_ID
+			 , CRTR_ID
+			 , REC_YN
+		  FROM RECOMMEND 
+		 WHERE P_POST_ID = #{pPostId}
+		   AND CRTR_ID = #{crtrId}
+	</select> 
+	
+	
+	<insert id="insertOneRecommend" parameterType="com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO">
+		INSERT INTO RECOMMEND 
+		( REC_ID
+		, P_POST_ID
+		, CRTR_ID
+		, REC_YN 
+		)
+		VALUES
+		( SEQ_RECOMMEND_PK.NEXTVAL
+		, #{pPostId}
+		, #{crtrId}
+		, 'Y'
+		)
+	</insert> 
+
+	
+	<select id="selectOneRecommendCount"
+			parameterType="String"
+			resultType="_int">
+	SELECT COUNT(1)
+  	FROM RECOMMEND
+ 	WHERE P_POST_ID = #{_parameter}
+ 	AND  REC_YN = 'Y'
+	</select>
   
   
   

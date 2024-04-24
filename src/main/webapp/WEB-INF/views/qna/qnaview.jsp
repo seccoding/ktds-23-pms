@@ -10,7 +10,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/qna/qnaview.js"
     ></script>
-    <link rel="stylesheet"  type="text/css" href="/static/css/qna/qna.css">
+    <!-- <link rel="stylesheet"  type="text/css" href="/static/css/qna/qna.css"> -->
   </head>
   <body>
     <h1>Qna 게시글 조회</h1>
@@ -48,7 +48,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div id="qaRecCnt">${qnaVO.qaRecCnt}</div>
 
       <div class="btn-group">
-        <button type="button" class= "recommend-qna">
+        <button type="button" class= "recommend-qna" value="${qnaVO.qaId}">
           추천하기</button>
           
         <button> 
@@ -60,13 +60,28 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
 
       <script>
-        $(".recommend-qna").on("click",(e)=> {
-          // e.preventDefault();
-          const response = $.ajax({
-            method:"PUT",
-            url:"/ajax/qna/recommend/${qnaVO.qaId}",
-            success:({data})=> $("#qaRecCnt").html(data.result)
-          });
+        // $(".recommend-knowledge").on("click",(e)=> {
+        //   // e.preventDefault();
+        //   const response = $.ajax({
+        //     method:"PUT",
+        //     url:"/ajax/knowledge/recommend/${knowledgeVO.knlId}",
+        //     success:({data})=> $("#knlRecCnt").html(data.result)
+        //   });
+        // })
+
+        $().ready(function () {
+          qaId = $(".recommend-qna").val();
+          
+          $(".recommend-qna").on("click", function() {
+            $.post("/qna/recommend/" + qaId, function(response) {
+              console.log(response.data.result);
+              if(response.data.resultStatus) {
+                // 여기서 dom의 추천수를 올려서 보여주는 로직
+              } else {
+                return;
+              }
+            })
+          })
         })
       </script>
 

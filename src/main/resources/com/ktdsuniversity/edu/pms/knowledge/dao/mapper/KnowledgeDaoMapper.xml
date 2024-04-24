@@ -10,7 +10,6 @@
 	<id column="KNL_ID" property="knlId" /><!-- pk -->
 	<result column="RQM_ID" property="rqmId" /><!-- join value -->
 	<result column="PRJ_ID" property="prjId" /><!-- join value -->
-	<result column="CMCD_ID" property="cmcdId" /><!-- join value -->
 	<result column="EMP_ID" property="empId" /><!-- join value -->
 	<result column="REC_ID" property="recId" /><!-- join value -->
 	 
@@ -30,13 +29,6 @@
 	</association>
 	
 	<!-- join table -->
-	<association property="commonCodeVO" 
-		javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-			<id column="CMCD_ID" property="cmcdId" />
-			<result column="CMCD_ID" property="cmcdId" />
-	</association>
-	
-	<!-- join table -->
 	
 	<association property="employeeVO" 
 		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
@@ -44,7 +36,18 @@
 			<result column="EMP_ID" property="empId" />
 	</association>
 	
-	 
+	<association property="knowledgeRecommendVO" 
+		javaType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO">
+			<id column="REC_ID" property="recId" />
+			<result column="REC_YN" property="recYn" />
+	</association>
+	</resultMap>
+	
+	
+	<resultMap type="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO" 
+	id="knowledgeRecommendVOMap" autoMapping="true">
+	<id column="REC_ID" property="recId" /><!-- pk -->
+	
 	</resultMap>
 
   <select id="getAllKnowledgeCount" resultType="_int">
@@ -258,14 +261,52 @@
 		 WHERE KNL_ID = #{knlId}
 	</update>
 	
-
-	<!-- 추천 -->
+	<!-- 추천수 -->
 	<update id="recommendOneKnowledge" parameterType="String">
 		UPDATE KNOWLEDGE 
 		   SET KNL_REC_CNT = KNL_REC_CNT + 1
 		 WHERE DEL_YN = 'N'
 		   AND KNL_ID = #{knlId}
-	</update> 
+	</update>
+	
+	
+	<!-- 1사원 1추천 -->
+	<select id="selectOneRecommend" 
+	parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO"
+	resultMap="knowledgeRecommendVOMap">
+		SELECT REC_ID
+			 , P_POST_ID
+			 , CRTR_ID
+			 , REC_YN
+		  FROM RECOMMEND 
+		 WHERE P_POST_ID = #{pPostId}
+		   AND CRTR_ID = #{crtrId}
+	</select> 
+	
+	<insert id="insertOneRecommend" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO">
+		INSERT INTO RECOMMEND 
+		( REC_ID
+		, P_POST_ID
+		, CRTR_ID
+		, REC_YN 
+		)
+		VALUES
+		( SEQ_RECOMMEND_PK.NEXTVAL
+		, #{pPostId}
+		, #{crtrId}
+		, 'Y'
+		)
+	</insert> 
+
+	
+	<select id="selectOneRecommendCount"
+			parameterType="String"
+			resultType="_int">
+	SELECT COUNT(1)
+  	FROM RECOMMEND
+ 	WHERE P_POST_ID = #{_parameter}
+ 	AND  REC_YN = 'Y'
+	</select>
 	
 	
 	<select id="selectManyKnowledge" parameterType="list" resultType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">

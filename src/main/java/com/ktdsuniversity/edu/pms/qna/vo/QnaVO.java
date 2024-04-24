@@ -31,6 +31,8 @@ public class QnaVO {
 	private EmployeeVO employeeVO;
 	
 	private CommonCodeVO commonCodeVO;
+	
+	private QnaRecommendVO qnaRecommendVO;
 
 	
 	public String getQaId() {

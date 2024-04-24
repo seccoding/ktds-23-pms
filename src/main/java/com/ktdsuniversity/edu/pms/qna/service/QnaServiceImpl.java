@@ -11,11 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
+import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeServiceImpl;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.qna.dao.QnaDao;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaListVO;
+import com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaVO;
 import com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO;
 
@@ -181,14 +184,48 @@ public class QnaServiceImpl implements QnaService{
 		return deletedCount > 0;
 	}
 	
+//	@Transactional
+//	@Override
+//	public int recommendOneQna(String qaId) {
+//		
+//		QnaVO originQna = this.qnaDao.selectOneQna(qaId);
+//
+//		return this.qnaDao.recommendOneQna(qaId);
+//	}
+	
 	@Transactional
 	@Override
-	public int recommendOneQna(String qaId) {
-		
-		QnaVO originQna = this.qnaDao.selectOneQna(qaId);
-
-		return this.qnaDao.recommendOneQna(qaId);
+	public int getQnaRecommendCount(String qaId) {
+		return this.qnaDao.selectOneRecommendCount(qaId);
 	}
+
+	@Transactional
+	@Override
+	public boolean updateRecommend(QnaRecommendVO qnaRecommendVO) {
+	// knowledgeRecommendVO를 파라미터로 하나의 추천 정보를 가져온다.
+		QnaRecommendVO originQnaRecommendVO = qnaDao.selectOneRecommend(qnaRecommendVO);
+		
+		if(originQnaRecommendVO == null) {
+//			추천한 기록이 없으면 실행됨
+			boolean isInsert = qnaDao.insertOneRecommend(qnaRecommendVO) > 0;
+			
+			if (isInsert) {
+				boolean isRecommend = qnaDao.recommendOneQna(qnaRecommendVO.getpPostId()) > 0;
+				return isRecommend;
+			} else {
+				throw new CreationException();
+			}
+		} else {
+//			기존에 추천 기록이 있다.
+			return false;
+		}
+	}
+
+
+
+
+
+
 
 
 
