@@ -1,7 +1,24 @@
 $().ready(function () {
-  $(".open-employee").on("click", function () {
+  $(".emp-team-create").on("click", function () {
     var modal = $(".modal-employee-list");
     modal[0].showModal();
+  });
+  $(".confirm-confirm-button").on("click", function () {
+    var data = {};
+    var list = $(".special-hidden-datalist").text().split(",");
+    var tmId = $("#codeTmId").text();
+    list.forEach((item, idx) => {
+      (data["employeeList[" + idx + "].empId"] = item),
+        (data["employeeList[" + idx + "].teamVO.tmId"] = tmId);
+    });
+    console.log(data);
+    $.post("/ajax/department/team/employee/add", data, function (res) {
+      if (res.data.success) {
+        alert("추가완료!");
+      } else {
+        alert("오류생김!");
+      }
+    });
   });
 
   function clearDepartmentInfo() {
