@@ -15,7 +15,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <ul class="menu-tab"></ul>
       <span class="menu-tab-next">>></span>
     </div>
-    <ul class="location-tree"></ul>
+    <ul class="location-tree">
+    </ul>
     <ul class="frame-list"></ul>
     <jsp:include page="../layout/layout_close.jsp" />
   </body>

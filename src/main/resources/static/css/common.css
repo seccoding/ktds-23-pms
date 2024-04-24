@@ -199,7 +199,7 @@ h1,
   margin-bottom: 1rem;
   font-weight: 500;
   line-height: 1.1;
-  color: #566a7f;
+  /* color: #566a7f; */
 }
 
 h1,
@@ -231,6 +231,7 @@ h6,
 .h6 {
   /* 15px */
   font-size: 0.9375rem;
+  font-weight: bold;
 }
 
 p {
@@ -1019,8 +1020,8 @@ nav {
 
 /* main 영역 */
 .container {
-background-color: #FFF;
-padding: 1rem;
+  background-color: var(--body-bg);
+  padding: 1rem;
 }
 .title {
     margin-bottom: 3rem;
@@ -1058,7 +1059,7 @@ padding: 1rem;
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #FFF;
+  /* background-color: #FFF; */
   padding: 0 0.8125rem;
   /* margin: 1rem; */
   padding: 1rem;
@@ -1066,6 +1067,8 @@ padding: 1rem;
 .card-body {
   height: inherit;
   border-radius: 0.5rem;
+  background-color: var(--box-bg);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.1) 0px 1px 2px;
 }
 
 /* 상태 뱃지 */

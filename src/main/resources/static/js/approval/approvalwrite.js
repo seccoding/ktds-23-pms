@@ -29,7 +29,7 @@
         prdtId.each(function(index) {
             formData["productListVO[" + index + "].prdtId"] = ($(this).val());
             // console.log($(this).val());
-        });
+        }); 
     
         console.log(formData);
     
