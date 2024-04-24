@@ -16,7 +16,18 @@
                     <div class="card row-1-2">
                         <h6>출퇴근</h6>
                         <div class="card-body">
-                            <!-- 출퇴근 content 영역 -->
+                             <div>출근시간 출력</div>
+                            <%-- <c:choose>
+                            	<c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+                            		<div>퇴근시간 출력</div>
+                            	</c:when>
+                            	<c:otherwise>
+                            		<div>퇴근 처리되지 않았습니다.</div>
+                            	</c:otherwise>
+                            </c:choose> --%>
+                            <div>
+                            	<button>퇴근</button>
+                            </div>
                         </div>
                     </div>
                     <div class="card row-1-2">
