@@ -98,8 +98,10 @@ public class ProjectController {
         boolean isTeammate = projectVO.getProjectTeammateList().stream()
                 .anyMatch(teammate -> teammate.getTmId().equals(employeeVO.getEmpId()));
 
-        if (!isTeammate || !employeeVO.getAdmnCode().equals("301")) {
-            throw new AccessDeniedException();
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            if (!isTeammate) {
+                throw new AccessDeniedException();
+            }
         }
 
         // PM 뽑기
@@ -141,8 +143,10 @@ public class ProjectController {
         boolean isTeammate = project.getProjectTeammateList().stream()
                 .anyMatch(tm -> tm.getTmId().equals(employeeVO.getEmpId()));
 
-        if (!isTeammate || !employeeVO.getAdmnCode().equals("301")) {
-            throw new AccessDeniedException();
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            if (!isTeammate) {
+                throw new AccessDeniedException();
+            }
         }
 
         model.addAttribute("deptId", project.getDeptId());
@@ -354,6 +358,8 @@ public class ProjectController {
         return new AjaxResponse().append("result", deleteResult);
     }
 
+    //TODO
+    // 이거 막는거 좀 고민해야함..
     @ResponseBody
     @GetMapping("/ajax/department-teammate/{deptId}")
     public AjaxResponse viewDepartmentTeammate(@PathVariable String deptId,
@@ -373,13 +379,23 @@ public class ProjectController {
                                               @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
         ProjectVO projectVO = projectService.getOneProject(newProjectTeammate.getPrjId());
 
+        if (projectVO == null) {
+            throw new PageNotFoundException();
+        }
+
         // PM 뽑기
         Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
                 .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
                 .findFirst();
 
         if (pmOptional.isPresent()) {
+            ProjectTeammateVO pm = pmOptional.get();
 
+            if (!employeeVO.getEmpId().equals(pm.getTmId())) {
+                if (!employeeVO.getAdmnCode().equals("301")) {
+                    throw new AccessDeniedException();
+                }
+            }
         }
 
         boolean addResult = projectService.insertOneTeammate(newProjectTeammate);

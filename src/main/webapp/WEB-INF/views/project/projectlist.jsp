@@ -17,6 +17,22 @@
         .submit-btn {
             width: 7rem;
         }
+
+        .search {
+            justify-content: center;
+        }
+
+        .search-keyword {
+            display: flex;
+        }
+
+        .search-keyword > * {
+            padding-right: 0.825rem;
+        }
+
+        .search-category {
+            padding-bottom: 11px;
+        }
     </style>
 </head>
 <body>
@@ -73,45 +89,55 @@
     </div>
 
     <!-- Paginator 시작 -->
-    <div>
+    <div class="search">
         <form id="search-form">
-            <input type="hidden" id="page-no" name="pageNo" value="0"/>
-            <select id="list-size" name="listSize">
-                <option value="10" ${searchProjectVO.listSize eq 10 ? 'selected' : ''}>10개</option>
-                <option value="20" ${searchProjectVO.listSize eq 20 ? 'selected' : ''}>20개</option>
-                <option value="30" ${searchProjectVO.listSize eq 30 ? 'selected' : ''}>30개</option>
-                <option value="50" ${searchProjectVO.listSize eq 50 ? 'selected' : ''}>50개</option>
-                <option value="100" ${searchProjectVO.listSize eq 100 ? 'selected' : ''}>100개</option>
-            </select>
+            <div class="search-keyword">
+                <div class="search-category">
+                    <input type="hidden" id="page-no" name="pageNo" value="0"/>
+                    <select id="list-size" name="listSize">
+                        <option value="10" ${searchProjectVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+                        <option value="20" ${searchProjectVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+                        <option value="30" ${searchProjectVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+                        <option value="50" ${searchProjectVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+                        <option value="100" ${searchProjectVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+                    </select>
 
-            <select id="status" name="searchStatus">
-                <option value="all" ${searchProjectVO.searchStatus eq 'all' ? 'selected' : ''}>전체상태</option>
-                <c:forEach items="${commonCodeList}" var="code">
-                    <option value="${code.cmcdId}" ${searchProjectVO.searchStatus eq code.cmcdId ? 'selected' : ''}>${code.cmcdName}</option>
-                </c:forEach>
-            </select>
+                    <select id="status" name="searchStatus">
+                        <option value="all" ${searchProjectVO.searchStatus eq 'all' ? 'selected' : ''}>전체상태</option>
+                        <c:forEach items="${commonCodeList}" var="code">
+                            <option value="${code.cmcdId}" ${searchProjectVO.searchStatus eq code.cmcdId ? 'selected' : ''}>${code.cmcdName}</option>
+                        </c:forEach>
+                    </select>
 
-            <select id="search-type" name="searchType">
-                <option value="" selected disabled hidden>검색 옵션</option>
-                <option value="project" ${searchProjectVO.searchType eq 'project' ? 'selected' : ''}>프로젝트명</option>
-                <option value="client" ${searchProjectVO.searchType eq 'client' ? 'selected' : ''}>고객사명</option>
-                <option value="department" ${searchProjectVO.searchType eq 'department' ? 'selected' : ''}>수행부서명
-                </option>
-            </select>
+                    <select id="search-type" name="searchType">
+                        <option value="" selected disabled hidden>검색 옵션</option>
+                        <option value="project" ${searchProjectVO.searchType eq 'project' ? 'selected' : ''}>프로젝트명
+                        </option>
+                        <option value="client" ${searchProjectVO.searchType eq 'client' ? 'selected' : ''}>고객사명</option>
+                        <option value="department" ${searchProjectVO.searchType eq 'department' ? 'selected' : ''}>수행부서명
+                        </option>
+                    </select>
+                </div>
+                <div class="search-text">
+                    <input type="text" name="searchKeyword" value="${searchProjectVO.searchKeyword}"/>
+                    <button type="button" id="search-btn">검색</button>
+                    <button type="button" id="cancel-search-btn">초기화</button>
+                </div>
+            </div>
 
-            <input type="text" name="searchKeyword" value="${searchProjectVO.searchKeyword}"/>
-            <button type="button" id="search-btn">검색</button>
-            <button type="button" id="cancel-search-btn">초기화</button>
+            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+                <button class="submit-btn btn-group" type="button" onclick="location.href='/project/write'">프로젝트 등록
+                </button>
+            </c:if>
 
-            <button class="submit-btn btn-group" type="button" onclick="location.href='/project/write'">프로젝트 등록</button>
-
-            <ul class="page-nav">
+            <ul class="pagination">
                 <c:if test="${searchProjectVO.hasPrevGroup}">
-                    <li><a href="javascript:search(0);">처음</a></li>
-                    <li>
+                    <li class="page-item first">
+                        <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>
+                    <li class="page-item prev">
                         <a
                                 href="javascript:search(${searchProjectVO.prevGroupStartPageNo});"
-                        >이전</a
+                        ><img src="/images/chevron-left.svg"/></a
                         >
                     </li>
                 </c:if>
@@ -123,21 +149,21 @@
                         step="1"
                         var="p"
                 >
-                    <li class="${searchProjectVO.pageNo eq p ? 'active' : ''}">
-                        <a href="javascript:search(${p});">${p+1}</a>
+                    <li class="${searchProjectVO.pageNo eq p ? 'active' : ''} page-item">
+                        <a class="page-link" href="javascript:search(${p});">${p+1}</a>
                     </li>
                 </c:forEach>
 
                 <c:if test="${searchProjectVO.hasNextGroup}">
-                    <li>
+                    <li class="page-item next">
                         <a
                                 href="javascript:search(${searchProjectVO.nextGroupStartPageNo});"
-                        >다음</a
+                        ><img src="/images/chevron-right.svg"/></a
                         >
                     </li>
-                    <li>
+                    <li class="page-item last">
                         <a href="javascript:search(${searchProjectVO.pageCount - 1});"
-                        >마지막</a
+                        ><img src="/images/chevron-double-right.svg"/></a
                         >
                     </li>
                 </c:if>
