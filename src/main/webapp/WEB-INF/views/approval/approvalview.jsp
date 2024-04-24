@@ -89,8 +89,8 @@
             </div>
 			<c:if test="${approvalVO.apprSts eq '801'}">
 				<div class="btn-status">
-					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="ok">승인</button>
-					<button id="modal-button" data-appr-id="${approvalVO.apprId}" data-appr-sts="no">반려</button>
+					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="802">승인</button>
+					<button id="modal-button" data-appr-id="${approvalVO.apprId}" data-appr-sts="803">반려</button>
 				</div>
 			</c:if>
         </div>
@@ -211,7 +211,6 @@
             </div>
         </div>
     </div>
-    
     <!--모달창 시작-->
     <div id="modalWrap">
         <div id="modalBody">
@@ -225,5 +224,6 @@
         </div>
     </div>
     <!--모달창 끝-->
+    <jsp:include page="../commonmodal.jsp"></jsp:include>
 </body>
 </html>

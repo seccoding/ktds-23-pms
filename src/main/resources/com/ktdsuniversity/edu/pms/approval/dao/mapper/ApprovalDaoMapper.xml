@@ -220,6 +220,9 @@
 		UPDATE APPROVAL
 		   SET APPR_STS = #{apprSts}
 			 , APPR_FNSH_DT = SYSDATE
+		<if test = 'apprSts == "803"'>
+			 , ARRP_RJCT = #{arrpRjct}
+		</if>
 		 WHERE APPR_ID = #{apprId}
 	</update>
 	

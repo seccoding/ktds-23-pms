@@ -114,8 +114,10 @@
                     <img src="/images/login.png" alt="prfl">
                     <div class="user">
                       <h6>${approval.employeeVO.empName} ${approval.commonCodeVO.cmcdName}</h6>
-                      <span>${employee.departmentVO.deptName}</span>
-                    </div>
+                      <c:forEach items="${sessionScope._LOGIN_USER_.teamList}" var="team">
+                        <span>${team}</span>
+                      </c:forEach>
+                      </div>
                   </div>
                   <div class="card-list-status">
                     <c:if test="${approval.apprSts eq '801'}">

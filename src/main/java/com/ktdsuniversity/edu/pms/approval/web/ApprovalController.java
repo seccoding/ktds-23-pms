@@ -130,7 +130,7 @@ public class ApprovalController {
 		if (approvalVO == null || approvalVO.getApprovalDetailVOList() == null) {
 			throw new PageNotFoundException();
 		}
-		return "/approval/approvalview";
+		return "approval/approvalview";
 	}
 
 
@@ -152,7 +152,7 @@ public class ApprovalController {
 
 		model.addAttribute("employee", dmdEmployeeVO);
 		model.addAttribute("borrowList", borrowListVO);
-		return "/approval/approvalwrite";
+		return "approval/approvalwrite";
 	}
 
 	@ResponseBody
@@ -172,37 +172,64 @@ public class ApprovalController {
 		boolean isSuccessCreate = this.approvalService.createApproval(newApprovalVO);
 
 		return new AjaxResponse().append("result", isSuccessCreate)
-								 .append("next", "/approval/view?apprId=" + apprId);
+								 .append("next", "approval/view?apprId=" + apprId);
 	}
-
-	// 수정필요
+	
+	// 결재로직
 	@ResponseBody
 	@PostMapping("/ajax/approval/statuschange/{apprId}")
-	public AjaxResponse doApprovalStatusChange(@PathVariable String apprId, @RequestParam String apprSts,
-			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public AjaxResponse doApprovalStatusChange(@PathVariable String apprId, ApprovalVO approvalVO,
+												@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
-		if (!employeeVO.getEmpId().equals(approvalVO.getDmdId()) || apprSts == null) {
-			throw new PageNotFoundException();
-		}
-
-		if (apprSts.equalsIgnoreCase("ok")) {
-			approvalVO.setApprSts("802");
-		} else if (apprSts.equalsIgnoreCase("no")) {
-			approvalVO.setApprSts("803");
-		}
+		approvalVO.setApprId(apprId);
+		logger.info(approvalVO.getApprSts() + "??????");
 		boolean isSuccessChanged = this.approvalService.approvalStatusChange(approvalVO);
 
 		return new AjaxResponse().append("result", isSuccessChanged)
-								 .append("next", "/approval/view?apprId=" + apprId);
+								 .append("next", "approval/view?apprId=" + apprId);
 	}
 
+//	// 결재승인
+//	@ResponseBody
+//	@PostMapping("/ajax/approval/statusok/{apprId}")
+//	public AjaxResponse doApprovalStatusOk(@PathVariable String apprId,	@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//
+//		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
+//		if (!employeeVO.getEmpId().equals(approvalVO.getDmdId())) {
+//			throw new PageNotFoundException();
+//		}
+//
+//		boolean isSuccessChanged = this.approvalService.approvalStatusChange(approvalVO);
+//
+//		return new AjaxResponse().append("result", isSuccessChanged)
+//								 .append("next", "/approval/view?apprId=" + apprId);
+//	}
+	
+	// 결재반려 - 로직구현필요
+//	@ResponseBody
+//	@PostMapping("/ajax/approval/statusno/{apprId}")
+//	public AjaxResponse doApprovalStatusNo(@PathVariable String apprId, @RequestParam String apprSts,
+//			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//
+//		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
+//		if (!employeeVO.getEmpId().equals(approvalVO.getDmdId()) || apprSts == null) {
+//			throw new PageNotFoundException();
+//		}
+//
+//		boolean isSuccessChanged = this.approvalService.approvalStatusChange(approvalVO);
+//
+//		return new AjaxResponse().append("result", isSuccessChanged)
+//								 .append("next", "/approval/view?apprId=" + apprId);
+//	}
+
 	// 결재 승인 후 신규비품 대여
+	// url 소문자로 바꾸기
 	@ResponseBody
 	@PostMapping("/ajax/product/newPrdtBorrow")
 	public AjaxResponse doNewPrdtForAppr(String apprId) {
 		boolean isSuccessBorrow = this.approvalService.getNewPrdtBorrowForAppr(apprId);
-		return new AjaxResponse().append("result", isSuccessBorrow).append("next", "/approval/list");
+		return new AjaxResponse().append("result", isSuccessBorrow)
+								 .append("next", "/approval/list");
 	}
 
 	@ResponseBody
@@ -211,7 +238,7 @@ public class ApprovalController {
 
 		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
 		// 퇴사: true
-		boolean isLeaveEmployee = this.employeeService.getOneEmployee(approvalVO.getDmdId()).getWorkSts().equals("204");
+		boolean isLeaveEmployee = this.employeeService.getOneEmployeeNoTeam(approvalVO.getDmdId()).getWorkSts().equals("204");
 		// 대여중인 물품이 없음: true
 		boolean isNoReturnProduct = this.borrowService.getIsNotReturnCount(approvalVO.getDmdId());
 
@@ -223,7 +250,8 @@ public class ApprovalController {
 		}
 
 		boolean isDeleteSuccess = this.approvalService.deleteOneApproval(apprId);
-		return new AjaxResponse().append("result", isDeleteSuccess).append("next", "/approval/list");
+		return new AjaxResponse().append("result", isDeleteSuccess)
+								 .append("next", "approval/list");
 	}
 	
 	// searchAllApproval 공통 메서드

@@ -108,7 +108,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Transactional
 	@Override
 	public boolean approvalStatusChange(ApprovalVO approvalVO) {
-		int updateCount = this.approvalDao.updateApprovalStatus(approvalVO);
+		int updateCount =  this.approvalDao.updateApprovalStatus(approvalVO);
 		return updateCount > 0;
 	}
 	
@@ -161,8 +161,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return deleteCount > 0;
 	}
 
-	
+	// PSH - search
+	@Override
+	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
+		int approvalCount = this.approvalDao.searchApprAllCount(searchApprovalVO);
+		searchApprovalVO.setPageCount(approvalCount);
 
+		List<ApprovalVO> approvalList = this.approvalDao.searchAllApproval(searchApprovalVO);
+
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalCount);
+		approvalListVO.setApprList(approvalList);
+
+		return approvalListVO;
+	}
+
+	// PHS End ----------
+	
 	@Override
 	public ApprovalListVO getAllApprove() {
 		// TODO Auto-generated method stub
@@ -229,21 +244,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		approvallistvo.setApprList(approval);
 		
 		return approvallistvo;
-	}
-
-	// PSH - search
-	@Override
-	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
-		int approvalCount = this.approvalDao.searchApprAllCount(searchApprovalVO);
-		searchApprovalVO.setPageCount(approvalCount);
-
-		List<ApprovalVO> approvalList = this.approvalDao.searchAllApproval(searchApprovalVO);
-
-		ApprovalListVO approvalListVO = new ApprovalListVO();
-		approvalListVO.setApprCnt(approvalCount);
-		approvalListVO.setApprList(approvalList);
-
-		return approvalListVO;
 	}
 
 }
