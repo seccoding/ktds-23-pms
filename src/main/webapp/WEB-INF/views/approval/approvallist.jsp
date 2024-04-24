@@ -51,11 +51,12 @@
             <div>
                 총 ${apprList.apprCnt} 건
             </div>
-            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '302'}">
-            <div style="text-align: end;">
-                <button class="btn-appr-write">기안서 작성</button>
-            </div>
-        </c:if>
+            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '302' 
+                            && searchApprovalVO.searchStatus eq '801'}">
+                <div style="text-align: end;">
+                    <button class="btn-appr-write">기안서 작성</button>
+                </div>
+            </c:if>
         </div>
         <div class="table">
             <table>
@@ -72,6 +73,9 @@
                         <th>문서제목</th>
                         <th>기안자</th>
                         <th>결재상태</th>
+                        <c:if test="${searchApprovalVO.searchStatus ne '801'}">
+                            <th>비품변경상태</th>
+                        </c:if>
                     </tr>
                 </thead>
                 <tbody>
@@ -108,6 +112,22 @@
 										<span class="badge bg-label-danger">결재반려</span>
 									</c:if>
                                 </td>
+                                <c:if test="${searchApprovalVO.searchStatus ne '801'}">
+                                    <td>
+                                        <c:if test="${approval.apprSts eq '803'}">
+                                            <span class="badge bg-label-danger">비품변경불가</span>
+                                        </c:if>
+                                        <c:if test="${approval.rntlSts eq '1101'}">
+                                            <span class="badge bg-label-warning">비품반납대기</span>
+                                        </c:if>
+                                        <c:if test="${approval.rntlSts eq '1102'}">
+                                            <span class="badge bg-label-warning">비품반납완료</span>
+                                        </c:if>
+                                        <c:if test="${approval.rntlSts eq '1103'}">
+                                            <span class="badge bg-success">비품변경완료</span>
+                                        </c:if>
+                                    </td>
+                                </c:if>
                             </tr>
                             </c:forEach>
                         </c:when>

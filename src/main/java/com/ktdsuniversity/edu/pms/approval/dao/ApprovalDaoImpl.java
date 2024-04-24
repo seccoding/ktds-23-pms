@@ -65,6 +65,11 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateApprovalStatus", approvalVO);
 
 	}
+	
+	@Override
+	public int updateRentalStatus(ApprovalVO approvalVO) {
+		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateRentalStatus", approvalVO);
+	}
 
 	@Override
 	public int deleteApproval(String apprId) {

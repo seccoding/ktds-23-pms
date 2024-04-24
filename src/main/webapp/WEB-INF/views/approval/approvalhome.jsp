@@ -93,96 +93,50 @@
         </div>
         <div>
             <div class="card">
-				<c:choose>
-					<c:when test="${not empty apprList.apprList}">
-						<c:forEach items="${apprList.apprList}" var="approval">
-              <a href="/approval/view?apprId=${approval.apprId}">
-                <div class="card-list">
-                  <div class="card-list-category">
-                    <div class="category">
-                      <img src="/images/sidebar-approval.png" alt="img">
-                      <c:if test="${approval.apprCtgr eq '902'}">
-                        <span>비품변경</span>
-                      </c:if>
-                    </div>
-                  </div>
-                  <div class="card-list-title">
-                    <h6>${approval.apprTtl}</h6>
-                    <span>${approval.dmdDt}</span>
-                  </div>
-                  <div class="card-list-user">
-                    <img src="/images/login.png" alt="prfl">
-                    <div class="user">
-                      <h6>${approval.employeeVO.empName} ${approval.commonCodeVO.cmcdName}</h6>
-                      <c:forEach items="${sessionScope._LOGIN_USER_.teamList}" var="team">
-                        <span>${team}</span>
-                      </c:forEach>
-                      </div>
-                  </div>
-                  <div class="card-list-status">
-                    <c:if test="${approval.apprSts eq '801'}">
-                      <span class="badge bg-label-warning">결재대기</span>
-                    </c:if>
-                    <c:if test="${approval.apprSts eq '802'}">
-                      <span class="badge bg-success">결재승인</span>
-                    </c:if>
-                    <c:if test="${approval.apprSts eq '803'}">
-                      <span class="badge bg-label-danger">결재반려</span>
-                    </c:if>
-                  </div>
-                </div>	
-              </a>
-						</c:forEach>
-					</c:when>
-				</c:choose>		
+              <c:choose>
+                <c:when test="${not empty apprList.apprList}">
+                  <c:forEach items="${apprList.apprList}" var="approval">
+                    <a href="/approval/view?apprId=${approval.apprId}">
+                      <div class="card-list">
+                        <div class="card-list-category">
+                          <div class="category">
+                            <img src="/images/sidebar-approval.png" alt="img">
+                            <c:if test="${approval.apprCtgr eq '902'}">
+                              <span>비품변경</span>
+                            </c:if>
+                          </div>
+                        </div>
+                        <div class="card-list-title">
+                          <h6>${approval.apprTtl}</h6>
+                          <span>${approval.dmdDt}</span>
+                        </div>
+                        <div class="card-list-user">
+                          <img src="/images/login.png" alt="prfl">
+                          <div class="user">
+                            <h6>${approval.employeeVO.empName} ${approval.commonCodeVO.cmcdName}</h6>
+                            <c:forEach items="${sessionScope._LOGIN_USER_.teamList}" var="team">
+                              <span>${team.tmName}</span>
+                            </c:forEach>
+                          </div>
+                        </div>
+                        <div class="card-list-status">
+                          <c:if test="${approval.apprSts eq '801'}">
+                            <span class="badge bg-label-warning">결재대기</span>
+                          </c:if>
+                          <c:if test="${approval.apprSts eq '802'}">
+                            <span class="badge bg-success">결재승인</span>
+                          </c:if>
+                          <c:if test="${approval.apprSts eq '803'}">
+                            <span class="badge bg-label-danger">결재반려</span>
+                          </c:if>
+                        </div>
+                      </div>	
+                    </a>
+                  </c:forEach>
+                </c:when>
+              </c:choose>		
             </div>
         </div>
-        
-
-        <!-- Paginator 시작 -->
-      <div>
-        <form id="search-form">
-          <input type="hidden" id="page-no" name="pageNo" value="0" />		
-          <ul class="page-nav">
-            <c:if test="${searchApproval.hasPrevGroup}">
-              <li><a href="javascript:search(0);">처음</a></li>
-              <li>
-                <a
-                  href="javascript:search(${searchApproval.prevGroupStartPageNo});"
-                  >이전</a
-                >
-              </li>
-            </c:if>
-
-            <!-- Page 번호를 반복하며 노출한다. -->
-            <c:forEach
-              begin="${searchApproval.groupStartPageNo}"
-              end="${searchApproval.groupEndPageNo}"
-              step="1"
-              var="p"
-            >
-              <li class="${searchApproval.pageNo eq p ? 'active' : ''}">
-                <a href="javascript:search(${p});">${p+1}</a>
-              </li>
-            </c:forEach>
-
-            <c:if test="${searchApproval.hasNextGroup}">
-              <li>
-                <a
-                  href="javascript:search(${searchApproval.nextGroupStartPageNo});"
-                  >다음</a
-                >
-              </li>
-              <li>
-                <a href="javascript:search(${searchApproval.pageCount - 1});"
-                  >마지막</a
-                >
-              </li>
-            </c:if>
-          </ul>
-        </form>
-      </div>
-      <!-- Paginator 끝 -->
     </div>
 </body>
 </html>

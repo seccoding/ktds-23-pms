@@ -108,8 +108,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Transactional
 	@Override
 	public boolean approvalStatusChange(ApprovalVO approvalVO) {
-		int updateCount =  this.approvalDao.updateApprovalStatus(approvalVO);
-		return updateCount > 0;
+		int updateApprStsCount =  this.approvalDao.updateApprovalStatus(approvalVO);
+//		approvalVO.set
+//		int updateRntlStsCount = this.approvalDao.updateRentalStatus(approvalVO);
+		return updateApprStsCount > 0;
 	}
 	
 	@Transactional
@@ -146,6 +148,19 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 		boolean isProcessSuccess = (isSuccessprdtMng > 0) && (isSuccessBrrwHt > 0) && (isSuccessChange > 0);
 		return isProcessSuccess;
+	}
+	
+	@Override
+	public boolean updateUnusablePrdt(ApprovalVO approvalVO) {
+		// 1.비품 반납
+		int returnPrdtCount = this.borrowDao.returnOneItemByAppr(approvalVO.getApprId());
+		// 2.반납비품 사용불가
+		int unusablePrdtCount = this.productManagementDao.unusablePrdtByAppr(approvalVO.getApprId());
+		// 3.결재상태 -> 반납완료
+		approvalVO.setApprSts("804"); // ???
+		int updateCount =  this.approvalDao.updateApprovalStatus(approvalVO);
+		
+		return ((returnPrdtCount > 0) && (unusablePrdtCount > 0) && (updateCount > 0));
 	}
 
 	@Override

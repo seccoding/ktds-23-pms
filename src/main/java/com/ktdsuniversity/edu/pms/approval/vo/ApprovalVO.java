@@ -22,6 +22,7 @@ public class ApprovalVO extends PaginateVO {
 	private String apprFnshDt;
 	private String apprTtl;
 	private String apprCntnt;
+	private String rntlSts;
 
 	private EmployeeVO employeeVO;
 	private EmployeeVO employeeManagerVO;
@@ -124,6 +125,14 @@ public class ApprovalVO extends PaginateVO {
 
 	public String getApprCntnt() {
 		return apprCntnt;
+	}
+	
+	public String getRntlSts() {
+		return rntlSts;
+	}
+
+	public void setRntlSts(String rntlSts) {
+		this.rntlSts = rntlSts;
 	}
 
 	public void setEmployeeVO(EmployeeVO employeeVO) {
