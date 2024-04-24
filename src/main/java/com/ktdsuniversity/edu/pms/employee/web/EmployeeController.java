@@ -29,7 +29,6 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
-import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -119,13 +118,7 @@ public class EmployeeController {
 											: "/employee/failed-delete-emp");
 	}
 	
-	// 팀 추가
-	@ResponseBody
-	@PostMapping("/ajax/employee/modify/addteam")
-	public AjaxResponse addTeam(EmployeeVO employeeVO) {
-		boolean isSuccess = this.employeeService.addTeam(employeeVO);
-		return new AjaxResponse().append("isSuccess", isSuccess).append("next",  "/employee/modify/"+employeeVO.getEmpId());
-	}
+	
 
 	//수정페이지
 	@GetMapping("/employee/modify/{empId}")
@@ -133,6 +126,7 @@ public class EmployeeController {
 									 EmployeeVO employeeVO) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
+
 		
 		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
 		 model.addAttribute("departmentlist", departmentList);
@@ -155,6 +149,7 @@ public class EmployeeController {
 	@ResponseBody
 	@PostMapping("/ajax/employee/modify")
 	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
+		
 		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
 		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
@@ -211,12 +206,8 @@ public class EmployeeController {
 
 	@ResponseBody
 	@PostMapping("/ajax/employee/regist")
-	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/") String nextUrl, @RequestParam String empId) {
-		/**
-		 * 수정해야할 사항 
-		 * 임원여부 체크박스로 만들어서 체크 안하면 N 체크하면 Y
-		 * 프로필 사진 첨부파일 기능 만들기
-		 */
+	public AjaxResponse doRegist(EmployeeVO employeeVO, @RequestParam(defaultValue = "/employee/search") String nextUrl, 
+			@RequestParam String empId, @RequestParam(required = false) MultipartFile file) {
 		/**
 		 * 사원번호가 있는지 확인하고
 		 * 1: 존재하는 사원번호, 0: 없는 사원번호
@@ -251,7 +242,7 @@ public class EmployeeController {
 			return new AjaxResponse().append("errors", errors);
 		}
 		
-		boolean createEmpSuccess = this.employeeService.createEmployee(employeeVO);
+		boolean createEmpSuccess = this.employeeService.createEmployee(employeeVO, file);
 		
 		// 사원 회원가입에 성공했다면
 		if (createEmpSuccess) {

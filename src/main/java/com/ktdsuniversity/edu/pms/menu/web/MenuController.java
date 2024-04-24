@@ -39,7 +39,12 @@ public class MenuController {
     }
 
     @GetMapping("/menu/manage")
-    public String viewMenuManagementPage(Model model) {
+    public String viewMenuManagementPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
+
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new PageNotFoundException();
+        }
+
         List<MenuVO> menuList = menuService.getAllHierarchicalMenuList();
 
         model.addAttribute("menuList", menuList.stream()
@@ -50,7 +55,11 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/ajax/menu/{pid}")
-    public AjaxResponse getSubMenuByPID(@PathVariable String pid) {
+    public AjaxResponse getSubMenuByPID(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String pid) {
+
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new PageNotFoundException();
+        }
 
         List<MenuVO> menuList = menuService.getAllFlatMenuList();
 
@@ -62,7 +71,11 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/ajax/menu/reload")
-    public AjaxResponse getMenu() {
+    public AjaxResponse getMenu(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new PageNotFoundException();
+        }
 
         List<MenuVO> menuList = menuService.getAllFlatMenuList();
 
@@ -78,7 +91,41 @@ public class MenuController {
             @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
             MenuVO menuVO) {
 
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new PageNotFoundException();
+        }
+
         boolean isSuccess = menuService.saveNewMenu(menuVO);
+
+        return new AjaxResponse().append("result", isSuccess);
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/menu/update")
+    public AjaxResponse updateMenu(
+            @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+            MenuVO menuVO) {
+
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new PageNotFoundException();
+        }
+
+        boolean isSuccess = menuService.updateMenu(menuVO);
+
+        return new AjaxResponse().append("result", isSuccess);
+    }
+
+    @ResponseBody
+    @GetMapping("/ajax/menu/delete/{id}")
+    public AjaxResponse deleteMenu(
+            @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+            @PathVariable String id) {
+
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new PageNotFoundException();
+        }
+
+        boolean isSuccess = menuService.deleteMenu(id);
 
         return new AjaxResponse().append("result", isSuccess);
     }

@@ -1,5 +1,8 @@
 $().ready(function () {
 	
+	if (window.browser) {
+		window.browser.history.deleteAll();
+	}
 	
   $("#login-btn").on("click", function () {
     $(".errorEndDt").remove();

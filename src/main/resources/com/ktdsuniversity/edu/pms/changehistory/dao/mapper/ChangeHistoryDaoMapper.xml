@@ -8,11 +8,11 @@
 		<id column="PSTN_ID" property="pstnId"/>
 		<association property="commonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
 			<id column="CMCD_ID" property="cmcdId"/>
-			<result column="C.CMCD_NAME" property="cmcdName"/>
+			<result column="CMCD_NAME" property="cmcdName"/>
 		</association>
 		<association property="pastCommonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
 			<id column="CMCD_ID" property="cmcdId"/>
-			<result column="PC.CMCD_NAME" property="cmcdName"/>
+			<result column="CMCD_NAME" property="cmcdName"/>
 		</association>
 	</resultMap>
 	
@@ -74,7 +74,7 @@
 		    ON D.DEPT_ID = DH.PAST_DEPT_ID
 		 WHERE DH.EMP_ID = #{_parameter}
 		   AND DH.DEL_YN = 'N'
-		 ORDER BY DEPT_STRT_DT
+		 ORDER BY DEPT_STRT_DT DESC
 	</select>
 
 	<insert id="insertOneChangeJobHistory"
@@ -119,6 +119,7 @@
 		    ON J.JOB_ID = JH.PAST_JOB_ID 
 		 WHERE JH.EMP_ID = #{_parameter}
 		   AND JH.DEL_YN = 'Y'
+		 ORDER BY JOB_STRT_DT DESC
 	</select>
 	
 	<insert id="insertOneChangePositionHistory" 
@@ -156,6 +157,7 @@
 		    ON PC.CMCD_ID = PH.PAST_PSTN_ID 
 		 WHERE PH.EMP_ID = #{_parameter}
 		   AND PH.DEL_YN = 'N'
+		 ORDER BY PSTN_STRT_DT DESC
 	</select>
 	
 	<select id="getRecentPositionHist" parameterType="string" resultType="string">

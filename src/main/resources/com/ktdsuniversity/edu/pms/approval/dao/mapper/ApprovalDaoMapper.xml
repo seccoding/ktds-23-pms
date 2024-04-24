@@ -267,7 +267,8 @@
 		</if>
 	</select>
 
-	<select id="searchAllApproval" resultMap="approvalVOMap" parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO">
+	<select id="searchAllApproval" resultMap="approvalVOMap" 
+			parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO">
 		<include refid="Common.pagenate_header"/>
 		SELECT A.APPR_ID
 		     , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT

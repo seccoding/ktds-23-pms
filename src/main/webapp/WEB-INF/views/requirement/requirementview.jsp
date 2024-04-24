@@ -15,7 +15,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       .grid {
         display: grid;
         grid-template-columns: 200px 1fr;
-        grid-template-rows: repeat(6 40px);
+        grid-template-rows: repeat(9 40px);
       }
     </style>
   </head>
@@ -30,8 +30,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </div>
       <div>요구사항 제목</div>
       <div>${requirement.rqmTtl}</div>
+
+      <div>담당개발자</div>
+      <div>${requirement.dvlrpVO.empName}</div>
+      <div>확인자</div>
+      <div>${requirement.cfrmrVO.empName}</div>
+      <div>테스터</div>
+      <div>${requirement.tstrVO.empName}</div>
+
       <div>요구사항 내용</div>
       <div>${requirement.rqmCntnt}</div>
+
       <div>일정상태</div>
       <div>${requirement.scdStsVO.cmcdName}</div>
       <div>진행상태</div>

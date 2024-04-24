@@ -63,12 +63,6 @@
             <li>
                 <a id="tab-member" href="/project/team?prjId=${project.prjId}">구성원</a>
             </li>
-            <li>
-                <a id="tab-output" href="/output?prjId=${project.prjId}">산출물</a>
-            </li>
-            <li>
-                <a id="tab-requirement" href="/requirement/search?prjId=${project.prjId}">요구사항</a>
-            </li>
         </ul>
     </div>
 
@@ -176,13 +170,15 @@
         </div>
     </div>
 
-    <div class="btn-group">
-        <div>
-            <button id="btn-modify" type="button" onclick="location.href='/project/modify/${project.prjId}'">수정
-            </button>
-            <button id="btn-delete" type="button" value="${project.prjId}">삭제</button>
+    <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+        <div class="btn-group">
+            <div>
+                <button id="btn-modify" type="button" onclick="location.href='/project/modify/${project.prjId}'">수정
+                </button>
+                <button id="btn-delete" type="button" value="${project.prjId}">삭제</button>
+            </div>
         </div>
-    </div>
+    </c:if>
 </div>
 </body>
 </html>

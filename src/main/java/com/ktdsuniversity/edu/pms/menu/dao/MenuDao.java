@@ -13,4 +13,8 @@ public interface MenuDao {
     List<MenuVO> selectAllHierarchicalMenuList();
 
     int insertNewMenu(MenuVO menuVO);
+
+    int updateMenu(MenuVO menuVO);
+
+    int deleteMenu(String id);
 }

@@ -53,7 +53,8 @@ $().ready(function () {
   window.name = isMainLayout ? "main" : "sub";
   sessionTimer();
 
-  if (!isMainLayout) {
+  if (!isMainLayout && window.parent.getLocationPathInFrame) {
+
     var framePath = window.parent.getLocationPathInFrame();
     
     // 자동 로그아웃되어서 로그인 페이지가 iframe에 보여질 경우
@@ -66,7 +67,7 @@ $().ready(function () {
 
     var activeFrameDataset = window.parent.getActiveFrameDataset();
 
-    if (menuObject.role && menuObject.id && menuObject.url) {
+    if ( (menuObject.role && menuObject.id && menuObject.url) && menuObject.id !== "8") {
       var menuId = activeFrameDataset.menuId;
 
       var url = $(window.parent.document)
@@ -223,8 +224,53 @@ function menuAnchorClickHandler(event, target) {
   menuTabItem.attr("data-menu-id", menuId);
   menuTabItem.attr("id", menuId);
 
+
+  if (menuUrl !== "/main/dashboard") {
+	var menuTabCloseButton = $("<span>X</span>");
+	  menuTabCloseButton.addClass("close-tab");
+	  menuTabCloseButton.on("click", function () {
+	    var tabItemLength = menuTabList.find("li").length;
+	    if (tabItemLength == 1) {
+	      return;
+	    }
+	
+	    var clickedTabItem = $(this).closest("li");
+	    clickedTabItem.remove();
+	    frameList
+	      .find("li[data-menu-id=" + clickedTabItem.data("menu-id") + "]")
+	      .remove();
+	
+	    menuTabQueue = menuTabQueue.filter((id) => id != menuId);
+	
+	    var tabs = [];
+	    menuTabList.find("li").each(function () {
+	      tabs.push($(this).data("menu-id"));
+	    });
+	    sessionStorage.setItem("activetabs", tabs);
+	
+	    var latestMenuId = menuTabQueue[menuTabQueue.length - 1];
+	    menuTabList.find("li[data-menu-id=" + latestMenuId + "]").click();
+	
+	    var itemTotalWidth = 0;
+	    menuTabList.find("li").each(function () {
+	      itemTotalWidth += $(this).outerWidth(true);
+	    });
+	
+	    var needScroll = itemTotalWidth > $(".frame-list").innerWidth();
+	    if (needScroll) {
+	      $(".menu-tab-prev, .menu-tab-next").show();
+	    } else {
+	      $(".menu-tab-prev, .menu-tab-next").hide();
+	    }
+	  });
+	  menuTabItem.append(menuTabCloseButton);
+  }
+
   var menuTabCloseButton = $("<span>X</span>");
   menuTabCloseButton.addClass("close-tab");
+  menuTabCloseButton.css({
+	"display": "inline-block"
+  });
   menuTabCloseButton.on("click", function () {
     var tabItemLength = menuTabList.find("li").length;
     if (tabItemLength == 1) {
@@ -262,6 +308,7 @@ function menuAnchorClickHandler(event, target) {
   });
   menuTabItem.append(menuTabCloseButton);
 
+
   menuTabItem.on("click", function () {
     var menuId = $(this).data("menu-id");
     menuTabList.find("li").removeClass("active-tab");
@@ -269,36 +316,37 @@ function menuAnchorClickHandler(event, target) {
 
     frameList.find("li").removeClass("frame-active");
     frameList.find("li[data-menu-id=" + menuId + "]").addClass("frame-active");
-
-    var sidebarMenu = $(".sidebar")
-      .find(".dropdown-menu")
-      .find("a[data-menu-id=" + menuId + "]")
-      .closest(".sidebar-submenu");
-    var dropdownMenu = sidebarMenu.find(".dropdown-menu");
-    if (dropdownMenu.not(".active").length > 0) {
-      sidebarMenu.find(".sidebar-submenu-content").click();
-    }
-
-    $(".sidebar").find(".dropdown-menu").find("a").removeClass("active");
-    $(".sidebar")
-      .find(".dropdown-menu")
-      .find("a[data-menu-id=" + menuId + "]")
-      .addClass("active");
-
-    $(".sidebar")
-      .find(".dropdown-menu")
-      .find("a[data-menu-id=" + menuId + "]")
-      .focus();
-
-    frameList
-      .find("li[data-menu-id=" + menuId + "]")
-      .find("iframe")
-      .attr("src", menuUrl);
-
-    if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
-      menuTabQueue.push(menuId);
-    }
-
+	
+	if (menuId !== "8") {
+	    var sidebarMenu = $(".sidebar")
+	      .find(".dropdown-menu")
+	      .find("a[data-menu-id=" + menuId + "]")
+	      .closest(".sidebar-submenu");
+	    var dropdownMenu = sidebarMenu.find(".dropdown-menu");
+	    if (dropdownMenu.not(".active").length > 0) {
+	      sidebarMenu.find(".sidebar-submenu-content").click();
+	    }
+	
+	    $(".sidebar").find(".dropdown-menu").find("a").removeClass("active");
+	    $(".sidebar")
+	      .find(".dropdown-menu")
+	      .find("a[data-menu-id=" + menuId + "]")
+	      .addClass("active");
+	
+	    $(".sidebar")
+	      .find(".dropdown-menu")
+	      .find("a[data-menu-id=" + menuId + "]")
+	      .focus();
+	
+	    frameList
+	      .find("li[data-menu-id=" + menuId + "]")
+	      .find("iframe")
+	      .attr("src", menuUrl);
+	
+	    if (menuTabQueue[menuTabQueue.length - 1] != menuId) {
+	      menuTabQueue.push(menuId);
+	    }
+	}
     location.href = "/#";
     location.href = "/#" + menuId;
   });

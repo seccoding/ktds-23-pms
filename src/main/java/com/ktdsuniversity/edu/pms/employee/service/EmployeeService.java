@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.employee.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -18,7 +20,7 @@ public interface EmployeeService {
 
 	public EmployeeVO getOneEmployee(String empId);
 
-	public boolean createEmployee(EmployeeVO employeeVO);
+	public boolean createEmployee(EmployeeVO employeeVO, MultipartFile file);
 
 	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
@@ -32,6 +34,7 @@ public interface EmployeeService {
 	public boolean deleteTeam(EmployeeVO employeeVO);
 
 	public boolean addTeam(EmployeeVO employeeVO);
+
 
 
 }

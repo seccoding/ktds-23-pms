@@ -54,8 +54,63 @@ $().ready(function () {
     event.preventDefault();
 
     rqmCntnt = editors.getData();
+    var file = $("#file").prop("files");
+    var prjId = $("#prj-id").val();
+    var rqmTtl = $("#rqm-ttl").val();
+    var dvlrp = $("#dvlrp-check").val();
+    var cfrmr = $("#cfrmr-check").val();
+    var tstr = $("#tstr-check").val();
+    var strtDt = $("#start-date").val();
+    var endDt = $("#end-date").val();
+    var scdSts = $("#scd-sts").val();
+    var rqmSts = $("#rqm-sts").val();
+
+    var formData = new FormData();
+    formData.append("file", file);
+    formData.append("prjId", prjId);
+    formData.append("rqmTtl", rqmTtl);
+    formData.append("dvlrp", dvlrp);
+    formData.append("tstr", tstr);
+    formData.append("cfrmr", cfrmr);
+    formData.append("strtDt", strtDt);
+    formData.append("endDt", endDt);
+    formData.append("scdSts", scdSts);
+    formData.append("rqmSts", rqmSts);
+    formData.append("rqmCntnt", rqmCntnt);
 
     $("#rqm-cntnt").val(rqmCntnt);
-    $("#writeForm").submit();
+
+    $.ajax({
+      url: "/ajax/requirement/write",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      data: formData,
+      success: function (response) {
+        var errors = response.data.error;
+        $(".error").remove();
+        if (errors) {
+          for (var key in errors) {
+            var errorDiv = $("<div></div>");
+            errorDiv.addClass("error");
+
+            var values = errors[key];
+
+            for (var i in values) {
+              var errorValue = values[i];
+              var error = $("<div></div>");
+              error.text(errorValue);
+              errorDiv.append(error);
+              $("input[name=" + key + "]").after(errorDiv);
+              $("select[name=" + key + "]").after(errorDiv);
+            }
+          }
+        }
+        if (response.data.result) {
+          location.href = "/requirement/search?prjId=";
+        }
+      },
+    });
   });
 });

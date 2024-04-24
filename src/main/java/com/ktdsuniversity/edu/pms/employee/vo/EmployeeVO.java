@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
-
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
@@ -13,6 +12,8 @@ import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class EmployeeVO {
+
+
 
     private String empId;
     private String empName;
@@ -43,6 +44,7 @@ public class EmployeeVO {
     private DepartmentVO departmentVO;
     private CommonCodeVO commonCodeVO;
     private DepartmentHistoryVO departmentHistoryVO;
+    private String originPrflFileName; 
     private JobHistoryVO jobHistoryVO;
 
     public JobHistoryVO getJobHistoryVO() {
@@ -74,17 +76,17 @@ public class EmployeeVO {
 	}
 
 	public LoginLogVO getLoginLogVO() {
-        return loginLogVO;
-    }
+		return loginLogVO;
+	}
 
-    public void setLoginLogVO(LoginLogVO loginLogVO) {
-        this.loginLogVO = loginLogVO;
-    }
+	public void setLoginLogVO(LoginLogVO loginLogVO) {
+		this.loginLogVO = loginLogVO;
+	}
 
-    private JobVO jobVO;
-    private TeamVO teamVO;
-    private List<TeamVO> teamList;
-    
+	private JobVO jobVO;
+	private TeamVO teamVO;
+	private List<TeamVO> teamList;
+
 	public List<TeamVO> getTeamList() {
 		return teamList;
 	}
@@ -96,6 +98,7 @@ public class EmployeeVO {
 	public TeamVO getTeamVO() {
 		return teamVO;
 	}
+
 	public void setTeamVO(TeamVO teamVO) {
 		this.teamVO = teamVO;
 	}
@@ -103,168 +106,223 @@ public class EmployeeVO {
 	public JobVO getJobVO() {
 		return jobVO;
 	}
+
 	public void setJobVO(JobVO jobVO) {
 		this.jobVO = jobVO;
 	}
+
 	public DepartmentVO getDepartmentVO() {
 		return departmentVO;
 	}
+
 	public void setDepartmentVO(DepartmentVO departmentVO) {
 		this.departmentVO = departmentVO;
 	}
+
 	public String getEmpId() {
 		return empId;
 	}
+
 	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
+
 	public String getEmpName() {
 		return empName;
 	}
+
 	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
+
 	public String getWorkSts() {
 		return workSts;
 	}
+
 	public void setWorkSts(String workSts) {
 		this.workSts = workSts;
 	}
+
 	public int getSalYear() {
 		return salYear;
 	}
+
 	public void setSalYear(int salYear) {
 		this.salYear = salYear;
 	}
+
 	public String getPrfl() {
 		return prfl;
 	}
+
 	public void setPrfl(String prfl) {
 		this.prfl = prfl;
 	}
+
 	public String getHireDt() {
 		return hireDt;
 	}
+
 	public void setHireDt(String hireDt) {
 		this.hireDt = hireDt;
 	}
+
 	public String getHireYear() {
 		return hireYear;
 	}
+
 	public void setHireYear(String hireYear) {
 		this.hireYear = hireYear;
 	}
+
 	public String getEndDt() {
 		return endDt;
 	}
+
 	public void setEndDt(String endDt) {
 		this.endDt = endDt;
 	}
+
 	public String getRestStDt() {
 		return restStDt;
 	}
+
 	public void setRestStDt(String restStDt) {
 		this.restStDt = restStDt;
 	}
+
 	public String getRestEndDt() {
 		return restEndDt;
 	}
+
 	public void setRestEndDt(String restEndDt) {
 		this.restEndDt = restEndDt;
 	}
+
 	public String getCntct() {
 		return cntct;
 	}
+
 	public void setCntct(String cntct) {
 		this.cntct = cntct;
 	}
+
 	public String getAddr() {
 		return addr;
 	}
+
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
+
 	public String getBrth() {
 		return brth;
 	}
+
 	public void setBrth(String brth) {
 		this.brth = brth;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getMngrYn() {
 		return mngrYn;
 	}
+
 	public void setMngrYn(String mngrYn) {
 		this.mngrYn = mngrYn;
 	}
+
 	public String getAdmnCode() {
 		return admnCode;
 	}
+
 	public void setAdmnCode(String admnCode) {
 		this.admnCode = admnCode;
 	}
+
 	public String getDeptId() {
 		return deptId;
 	}
+
 	public void setDeptId(String deptId) {
 		this.deptId = deptId;
 	}
+
 	public String getJobId() {
 		return jobId;
 	}
+
 	public void setJobId(String jobId) {
 		this.jobId = jobId;
 	}
+
 	public String getPstnId() {
 		return pstnId;
 	}
+
 	public void setPstnId(String pstnId) {
 		this.pstnId = pstnId;
 	}
+
 	public String getPwd() {
 		return pwd;
 	}
+
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
+
 	public String getSalt() {
 		return salt;
 	}
+
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
+
 	public int getLgnTry() {
 		return lgnTry;
 	}
+
 	public void setLgnTry(int lgnTry) {
 		this.lgnTry = lgnTry;
 	}
+
 	public String getPwdCnDt() {
 		return pwdCnDt;
 	}
+
 	public void setPwdCnDt(String pwdCnDt) {
 		this.pwdCnDt = pwdCnDt;
 	}
+
 	public String getLgnTryDt() {
 		return lgnTryDt;
 	}
+
 	public void setLgnTryDt(String lgnTryDt) {
 		this.lgnTryDt = lgnTryDt;
 	}
+
 	public String getLgnYn() {
 		return lgnYn;
 	}
+
 	public void setLgnYn(String lgnYn) {
 		this.lgnYn = lgnYn;
 	}
+
 	public String getFileName() {
 		return fileName;
 	}
+
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -276,5 +334,15 @@ public class EmployeeVO {
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
 	}
+
+	public String getOriginPrflFileName() {
+		return originPrflFileName;
+	}
+
+	public void setOriginPrflFileName(String originPrflFileName) {
+		this.originPrflFileName = originPrflFileName;
+	}
+	
+	
 
 }
