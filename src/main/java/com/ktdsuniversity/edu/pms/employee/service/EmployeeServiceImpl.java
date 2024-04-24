@@ -198,6 +198,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.deleteTeam(employeeVO) > 0;
 	}
 
+	@Override
+	public boolean addTeam(EmployeeVO employeeVO) {
+		return this.employeeDao.addTeam(employeeVO) > 0;
+	}
+
 	
 
 }
