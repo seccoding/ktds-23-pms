@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.output.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -83,21 +84,25 @@ public class OutputController {
 				prjSts);
 		return "output/outputwrite";
 	}
-
-	@PostMapping("/output/write")
-	public String createOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+	@ResponseBody
+	@PostMapping("/ajax/output/write")
+	public AjaxResponse createOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam MultipartFile file, OutputVO outputVO, Model model) {
 		this.checkAccess(employeeVO, outputVO.getPrjId());
-
-		Validator<OutputVO> validator = new Validator<>(outputVO);
-		validator.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
-		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
-				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
-
+		
+		
+		
+		Map<String,List<String>> error =this.outputvalidator(outputVO);
+		if(error !=null) {
+			return new AjaxResponse().append("error", error);
+		}
+		
 		outputVO.setCrtrId(employeeVO.getEmpId());
 		boolean isSuccess = this.outputService.insertOneOutput(outputVO, file);
 
-		return "redirect:/output";
+		return new AjaxResponse().append("result", isSuccess);
+		
+//		return "redirect:/output";
 
 	}
 
@@ -187,5 +192,26 @@ public class OutputController {
 			} else {
 			} // pm을 맞은 포지션이 있다면
 		}
+	}
+	
+	private Map<String , List<String>> outputvalidator (OutputVO  outputVO , MultipartFile file){
+		if(file !=null && ! file.isEmpty()) {
+			outputVO.setOutFile(file.getOriginalFilename());
+		}
+		
+		Validator<OutputVO> validator = new Validator<>(outputVO);
+		validator
+		.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
+		.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.")
+		.add("file", Type.NOT_EMPTY, "파일은 필수입력값입니다")
+		.start();
+	
+		
+		if(validator.hasErrors()) {
+			return validator.getErrors();
+		}
+		
+		return null;
 	}
 }

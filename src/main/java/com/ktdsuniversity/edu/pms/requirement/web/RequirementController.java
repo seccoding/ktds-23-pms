@@ -170,10 +170,6 @@ public class RequirementController {
 		if (employeeVO.getAdmnCode() != "301") {
 			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
 					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
-
-//			if(tmList.size() == 0 ) {
-//				throw new PageNotFoundException();
-//			}
 		}
 		
 		ProjectListVO projectList = this.projectService.getAllProject();

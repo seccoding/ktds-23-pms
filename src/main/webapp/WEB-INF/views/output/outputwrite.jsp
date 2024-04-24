@@ -48,7 +48,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <label for="file">산출물 파일</label>
         <input type="file" id="file" name="file" />
 
-        <input id="submitBtn" type="submit" value="제출" />
+        <button data-id="wirte" type="button">제출</button>
       </div>
     </form>
   </body>
