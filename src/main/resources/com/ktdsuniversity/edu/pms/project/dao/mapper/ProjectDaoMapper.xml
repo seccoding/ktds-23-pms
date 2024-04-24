@@ -378,6 +378,8 @@
         PT.TM_ID,
         PT."ROLE",
         PT.DEL_YN,
+        PT.RV_YN,
+        PT.SRV_YN,
         E.EMP_ID,
         E.EMP_NAME,
         E.EMAIL,
@@ -559,7 +561,9 @@
         PRJ_ID ,
         TM_ID,
         "ROLE" ,
-        DEL_YN
+        DEL_YN,
+        RV_YN,
+        SRV_YN
         FROM PROJECT_TEAMMATE
         WHERE DEL_YN = 'N'
     </select>
