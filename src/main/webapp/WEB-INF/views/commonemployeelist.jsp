@@ -4,6 +4,9 @@
     <jsp:include page="./commonheader.jsp"></jsp:include>
 <script type="text/javascript" src="/js/commonemployeelist.js"></script>
 <style>
+    .flex {
+      display: flex;
+    }
 
     .modal-employee-list {
         top: 10%;
@@ -62,6 +65,7 @@
           </div>
       </div>
 
+      <div class="flex">
       <table class="emp-table">
         <thead>
             <tr>
@@ -80,9 +84,20 @@
     </tbody>
 </table>
       
-      <div class="input-emplist-space">
-        <button class="confirm-emp-button button"></button>
-      </div>
-    </div>
-    <div></div>
+    
+
+      <table class="checked-emp-table">
+        <thead>
+          <tr>
+            <th>사원ID</th>
+            <th>사원명</th>
+            <th>취소</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    
+  </div>
   </dialog>
