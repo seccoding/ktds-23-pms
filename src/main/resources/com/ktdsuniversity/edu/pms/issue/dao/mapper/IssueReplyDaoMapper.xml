@@ -35,11 +35,12 @@
 		 INNER JOIN EMPLOYEE E
 		    ON R.CRTR_ID = E.EMP_ID
 		 START WITH R.P_POST_ID = #{pPostId}
-		CONNECT BY PRIOR R.RPL_ID = R.RPL_PID
+		   AND R.RPL_PID IS NULL
+		CONNECT BY PRIOR R.RPL_ID =R.RPL_PID
 	</select>
 	
 	<select id="getOneReply" 
-			parameterType="_int" 
+			parameterType="string" 
 			resultMap="issueReplyVOMap">
 		SELECT R.RPL_ID
 		     , R.RPL_PID
@@ -93,7 +94,7 @@
 	<update id="modifyOneIssueReply"
 			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueReplyVO">
 		UPDATE REPLY
-		   SET RPL_CNTNT = 'Y
+		   SET RPL_CNTNT = #{rplCntnt}
 		     , MDF_DT = SYSDATE
 		 WHERE RPL_ID = #{rplId}
 	</update>

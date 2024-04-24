@@ -22,6 +22,8 @@ public class IssueReplyController {
 	
 	@GetMapping("/ajax/issue/reply/{pPostId}")
 	public AjaxResponse getAllReplies(@PathVariable String pPostId, IssueReplyVO issueReplyVO) {
+		
+		
 		List<IssueReplyVO> issueReplyList = this.issueReplyService.getAllReplies(issueReplyVO);
 		
 		return new AjaxResponse().append("issueReplies", issueReplyList);
@@ -31,7 +33,7 @@ public class IssueReplyController {
 	public AjaxResponse doCreateNewReplies(@PathVariable String pPostId,
 			IssueReplyVO issueReplyVO,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
+		
 		issueReplyVO.setCrtrId(employeeVO.getEmpId());
 
 		boolean isSuccess = this.issueReplyService.createNewReply(issueReplyVO);
@@ -55,6 +57,6 @@ public class IssueReplyController {
 		issueReplyVO.setCrtrId(employeeVO.getEmpId());
 
 		boolean isSuccess = this.issueReplyService.modifyOneReply(issueReplyVO);
-		return new AjaxResponse().append("result", isSuccess);
+		return new AjaxResponse().append("result", isSuccess).append("pPostId", issueReplyVO.getpPostId());
 	}
 }

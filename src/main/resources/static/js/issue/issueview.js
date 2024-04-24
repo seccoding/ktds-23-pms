@@ -93,10 +93,11 @@ $().ready(function () {
           // <div class="reply" data-reply-id="댓글번호" style="padding-left: (level - 1) * 40px">
           var replyDom = $("<div></div>");
           replyDom.addClass("reply");
+         
           replyDom.attr("data-reply-id", reply.rplId);
           replyDom.data("reply-id", reply.rplId);
           replyDom.css({
-            "padding-left": (reply.level === 1 ? 0 : 1) * 40 + "px",
+            "padding-left": (reply.level === 1 ? 0 : reply.level-1) * 40 + "px",
             color: "#333",
           });
   
@@ -146,6 +147,7 @@ $().ready(function () {
               var modifyReplyDom = $("<span></span>");
               modifyReplyDom.addClass("modify-reply");
               modifyReplyDom.text("수정");
+              modifyReplyDom.attr("data-reply-id", reply.rplId);
               modifyReplyDom.on("click", modifyReply);
   
               controlDom.append(modifyReplyDom);
@@ -213,6 +215,7 @@ $().ready(function () {
   
       $.post(url, body, function (response) {
         var result = response.data.result;
+        // var pPostId = response.data.pPostId;
         if (result) {
           loadReplies(pPostId);
           $("#txt-reply").val("");
