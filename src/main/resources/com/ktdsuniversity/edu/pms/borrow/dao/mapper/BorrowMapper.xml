@@ -61,7 +61,7 @@
 	</select>
 	
 	<select id="searchBorrowAllCount" 
-			parameterType="string"
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
 			resultType="_int">
 		SELECT COUNT(1)
 		  FROM BORROW_HISTORY BH
@@ -70,13 +70,13 @@
 		 INNER JOIN PRODUCT P
 		    ON P.PRDT_ID = PM.PRDT_ID
 		 WHERE BH.DEL_YN = 'N'
-		   AND BH.BRRW_ID = #{_parameter}
+		   AND BH.BRRW_ID = #{employeeVO.empId}
 		   AND BH.RTN_DT IS NULL
 		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME '%' || #{searchKeyword} || '%'
+		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productManagementId"'>
 		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
@@ -86,7 +86,7 @@
 	</select>
 
 	<select id="searchAllUserRentalState" 
-			parameterType="string"
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
 			resultMap="borrowVOMap">
 		<include refid="Common.pagenate_header" />
 		SELECT BH.BRRW_HIST_ID
@@ -104,11 +104,11 @@
 		 INNER JOIN PRODUCT P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
-		   AND BH.BRRW_ID = #{_parameter}
+		   AND BH.BRRW_ID = #{employeeVO.empId}
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME '%' || #{searchKeyword} || '%'
+		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productManagementId"'>
 		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
@@ -150,7 +150,7 @@
 	</select>
 	
 	<select id="searchProductManagementStateAllCount" 
-			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO"
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
 			resultType="_int">
 		SELECT COUNT(1)
 		  FROM BORROW_HISTORY BH
@@ -177,7 +177,7 @@
 	</select>
 
 	<select id="searchAllProductManagementState" 
-			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO"
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
 			resultMap="borrowVOMap">
 		<include refid="Common.pagenate_header" />
 		SELECT BH.BRRW_HIST_ID
@@ -282,4 +282,28 @@
 		AND BH.RTN_DT IS NULL
 		AND BH.BRRW_ID = #{_parameter}
 	</select>
+	
+	<!-- YSH0424 -->
+	<select id="selectBrrwHistId" resultType="string">
+		SELECT 'BRRW_HT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		  FROM DUAL
+	</select>
+	
+	<insert id="insertNewBorrowHist" parameterType="com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO">
+		INSERT INTO BORROW_HISTORY
+			 ( BRRW_HIST_ID
+		     , BRRW_ID
+		     , PRDT_MNG_ID
+		     , BRRW_DT
+		     , RTN_DT
+		     , DEL_YN)
+			VALUES
+			 (#{brrwHistId}
+			, #{brrwId}
+			, #{prdtMngId}
+			, #{brrwDt}
+			, #{rtnDt}
+			, 'N')
+	</insert>
+	
 </mapper>

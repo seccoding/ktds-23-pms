@@ -1,7 +1,5 @@
 package com.ktdsuniversity.edu.pms.product.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
@@ -55,16 +55,35 @@ public class ProductController {
 		ProductListVO categoryList = this.productService.getAllProductCategory();
 		model.addAttribute("categoryList", categoryList);
 		
+		// 비품명 선택
+		ProductListVO productNameList = this.productService.getAllProductName();
+		model.addAttribute("nameList", productNameList);
+		
 		return "product/apply";
 	}
 	
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/apply")
-	public AjaxResponse doProductApply(@RequestParam String prdtName, ProductVO productVO) {
-		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
+	public AjaxResponse doProductApply(BorrowListVO borrowList, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
 		
-		return new AjaxResponse().append("oneProduct", oneProduct).append("next", "/product/list");
+//		@RequestParam String namevalue,
+		
+		borrowList.setEmployeeVO(employeeVO);
+		
+		int isApplySuccess = this.productService.createNewApplyProduct(borrowList);
+		
+//		System.out.println("^^^^^^^^^^^^^^^^^" + borrowList.getBorrowList().get +"^^^^^^^^^^^^^^^^^^");
+		if(isApplySuccess != borrowList.getBorrowList().size()) {
+			throw new PageNotFoundException();
+		}
+		
+//		int productCurstr = this.productService.getProductCurstr(namevalue);
+		
+		return new AjaxResponse().append("next", "/product/list");
+//								 .append("productCurstr", productCurstr);
+//								 .append("oneProduct", oneProduct);
 	}
 	
 	

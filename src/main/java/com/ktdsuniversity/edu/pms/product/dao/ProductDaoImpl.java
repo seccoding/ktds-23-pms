@@ -7,6 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
@@ -97,5 +98,26 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	@Override
 	public int changeOnePrdtStored(String prdtName) {
 		return getSqlSession().update(ProductDao.NAME_SPACE + ".changeOnePrdtStored", prdtName);
+	}
+
+	// YSH0424
+	@Override
+	public String selectPrdtIdByPrdtName(String productName) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".selectPrdtIdByPrdtName", productName);
+	}
+
+	@Override
+	public List<String> selectPrdtMngIdByPrdtId(String prdtIdByprdtName) {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE+".selectPrdtMngIdByPrdtId", prdtIdByprdtName);
+	}
+
+	@Override
+	public List<ProductVO> getAllProductName() {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE+".getAllProductName");
+	}
+
+	@Override
+	public int getProductCurstr(String namevalue) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".getProductCurstr", namevalue);
 	}
 }

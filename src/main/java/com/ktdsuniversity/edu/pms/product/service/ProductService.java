@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.product.service;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
@@ -52,6 +53,26 @@ public interface ProductService {
 	 * @return
 	 */
 	public String selectNewPrdtId();
+
+	/**
+	 * 입력한 신청 비품 정보들을 새로 추가
+	 * @param borrowList
+	 * @return
+	 */
+	public int createNewApplyProduct(BorrowListVO borrowList);
+
+	/**
+	 * 모든 비품명을 중복없이 조회
+	 * @return
+	 */
+	public ProductListVO getAllProductName();
+
+	/**
+	 * 비품명으로 해당 비품의 수량을 조회
+	 * @param namevalue
+	 * @return
+	 */
+	public int getProductCurstr(String namevalue);
 
 	
 

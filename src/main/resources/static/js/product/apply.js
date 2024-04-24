@@ -40,19 +40,13 @@ $().ready(function(){
             formData["borrowList["+index+"].brrwDt"] = $(form).find("#apply-date").val();
         });
 
-        var addConfirm = confirm("추가하시겠습니까?");
+        var addConfirm = confirm("신청하시겠습니까?");
         if(addConfirm){
-            var num = $(".apply-quantity").val();
-            if(num > curstr){
-                alert("현재 재고수(" + curstr + ") 보다 신청 수량이 많습니다! 다시 신청해주세요");
-            }
-            else{
-                $.post(url, formData, 
-                    function (response) {
-                        location.href = response.data.next;
-                    }
-                );
-            }
+            $.post(url, formData, 
+                function (response) {
+                    location.href = response.data.next;
+                }
+            );
         }
         else{
             location.reload();
@@ -81,29 +75,29 @@ $().ready(function(){
 
 
 
-    var oneProduct;
-    var curstr;
+    // var oneProduct;
+    // var curstr;
 
-    $("#select-prdtName").on("change", function () {
-        var nameValue = $(this).val();
-        console.log(nameValue);
+    // $("#select-prdtName").on("change", function () {
+    //     var nameValue = $(this).val();
+    //     console.log(nameValue);
         
-        for(var item in categories){
-            if(categories[item].includes(nameValue)){
-                $("#select-prdtCtgr").val(item);
-                break;
-            }
-        }
+    //     for(var item in categories){
+    //         if(categories[item].includes(nameValue)){
+    //             $("#select-prdtCtgr").val(item);
+    //             break;
+    //         }
+    //     }
 
-        $.post("/ajax/product/apply",
-            { prdtName: nameValue },
-            function (response) {
-                oneProduct = response.data.oneProduct;
-                curstr = oneProduct.curStr;
-            }
-        );
+    //     $.post("/ajax/product/apply",
+    //         { prdtName: nameValue },
+    //         function (response) {
+    //             oneProduct = response.data.oneProduct;
+    //             curstr = oneProduct.curStr;
+    //         }
+    //     );
         
 
-    });
+    // });
     
 })

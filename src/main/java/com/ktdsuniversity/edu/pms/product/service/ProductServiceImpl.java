@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
@@ -22,6 +25,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private ProductManagementDao productManagementDao;
+	
+	@Autowired
+	private BorrowDao borrowDao;
 
 	@Override
 	public ProductListVO getAllProduct() {
@@ -134,6 +140,73 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public String selectNewPrdtId() {
 		return this.productDao.selectOnePrdtId();
+	}
+
+	@Transactional
+	@Override
+	public int createNewApplyProduct(BorrowListVO borrowList) {
+		int insertCount = 0;
+		
+		for( BorrowVO borrowVO : borrowList.getBorrowList()) {
+			
+			
+			
+			// 비품명으로 비품ID 값을 가져온다.
+			String productName = borrowVO.getProductVO().getPrdtName();
+			
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~" + productName + "~~~~~~~~~~~~~~~");
+			String prdtIdByprdtName = this.productDao.selectPrdtIdByPrdtName(productName);
+			
+			// 비품ID 값으로 비품관리 ID 값들을 가져온다.
+			List<String> prdtManageId = this.productDao.selectPrdtMngIdByPrdtId(prdtIdByprdtName);
+			
+			
+			
+			// 대여 신청자의 ID를 employee ID 로 받아와서 set
+			String brrwID = borrowList.getEmployeeVO().getEmpId();
+			System.out.println("$$$$$$$$$$$$$$$$" + brrwID + "$$$$$$$$$$$$$$$$");
+			borrowVO.setBrrwId(brrwID);
+			
+			
+			// 신청수량만큼만 비품 대여현황, 비품 대여현황(관리자)에 비품을 추가
+			for(int i=0; i < borrowVO.getProductVO().getCurStr(); i++) {
+				System.out.println("#########"+borrowVO.getProductVO().getCurStr()+"#######");
+				
+				// 추가할 대여이력ID의 시퀀스 값을 가져온다.
+				String brrwHistId = this.borrowDao.selectBrrwHistId();
+				borrowVO.setBrrwHistId(brrwHistId);
+				
+				String productManageId = prdtManageId.get(i);
+				borrowVO.setPrdtMngId(productManageId);
+				
+				// 대여 이력에 추가
+				this.borrowDao.insertNewBorrowHist(borrowVO);
+				
+				// 대여현황 페이지에 하나씩 비품을 insert 할때마다 수량을 1 감소
+				String updatePrdtName = borrowVO.getProductVO().getPrdtName();
+				this.productDao.changeOnePrdtStored(updatePrdtName);
+			}
+			
+			System.out.println("%%%%%%%%%%%%%%%%%" + insertCount + "%%%%%%%%%%%%%%%%%%");
+			insertCount++;
+			
+		}
+		
+		return insertCount;
+	}
+
+	@Override
+	public ProductListVO getAllProductName() {
+		List<ProductVO> productNameList = this.productDao.getAllProductName();
+		ProductListVO productListVO = new ProductListVO();
+		productListVO.setProductList(productNameList);
+		
+		return productListVO;
+	}
+
+	@Override
+	public int getProductCurstr(String namevalue) {
+		return this.productDao.getProductCurstr(namevalue);
 	}
 	
 
