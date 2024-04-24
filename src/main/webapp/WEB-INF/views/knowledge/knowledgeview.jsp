@@ -15,6 +15,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <h1>지식관리 게시글 조회</h1>
 
     <div class="grid" data-id="${knowledgeVO.knlId}">
+      <span style="display: none;" hidden id="login-email">${sessionScope._LOGIN_USER_.empId}</span>
       <label for="knlTtl">제목</label>
       <div>${knowledgeVO.knlTtl}</div>
 
@@ -46,8 +47,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <label for="knlRecCnt">추천수</label>
       <div id="knlRecCnt">${knowledgeVO.knlRecCnt}</div>
 
+      <div class="replies">
+        <div class="reply-items"></div>
+        <div class="write-reply">
+          <textarea id="txt-reply" name="rplCntnt" data-issue-id="${knowledgeVO.knlId}"></textarea>
+          <button id="btn-save-reply" data-mode ="">등록</button>
+          <button id="btn-cancel-reply">취소</button>
+        </div>
+      </div>
+
       <div class="btn-group">
-        <button type="button" class= "recommend-knowledge" value="${knowledgeVO.knlId}">
+        <button type="button" class="recommend-knowledge" value="${knowledgeVO.knlId}">
           추천하기</button>
           
         <button> 
