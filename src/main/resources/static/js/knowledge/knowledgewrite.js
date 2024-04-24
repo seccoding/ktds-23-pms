@@ -3,6 +3,12 @@ $().ready(function () {
   if (dialog.length > 0) {
     dialog[0].showModal();
 
+    var editors = loadEditor(
+      ".editor",
+      "내용을 입력하세요.",
+      "${knowledge.knlCntnt}"
+    );
+    
     $("#submit-btn").on("click", function (event) {
       var knlCntnt = "";
       event.preventDefault();

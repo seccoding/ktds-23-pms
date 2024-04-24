@@ -12,24 +12,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/knowledge/knowledgewrite.js"
     ></script>
     <script type="text/javascript">
-      window.onload = function () {
-        var editors = loadEditor(
-          ".editor",
-          "내용을 입력하세요.",
-          "${knowledge.knlCntnt}"
-        );
-        var knlCntnt = "";
-
-        $("button").on("click", function (event) {
-          event.preventDefault();
-
-          knlCntnt = editors.getData();
-
-          $("#knl-cntnt").val(knlCntnt);
-
-          $("#writeForm").submit();
-        });
-      };
     </script>
     <body>
       <c:if test="${not empty errorMessage}">
