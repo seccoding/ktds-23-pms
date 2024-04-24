@@ -13,5 +13,7 @@ public interface ChangeHistoryService {
 	List<JobHistoryVO> getUserJobHistory(String empId);
 
 	List<PositionHistoryVO> getUserPositionHistory(String empId);
+	
+	
 
 }

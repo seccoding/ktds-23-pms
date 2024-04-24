@@ -10,15 +10,43 @@
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/employee/employeeview.js"></script>
      <style type="text/css">
-        div.grid {
+        
+        .grid-container{
           display: grid;
-          grid-template-columns: 80px 1fr;
-          grid-template-rows: repeat(6, 28px) auto auto 1fr;
-          row-gap: 10px;
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+          gap: 1rem;
         }
-        .change-table{
+        .header {
           text-align: center;
         }
+        .info-container{
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+        }
+        .table-container {
+          flex: 1 1 calc(50% - 1rem);
+          margin: 0.1rem;
+          border: 1px solid #333;
+          padding: 0.5rem;
+        }
+        .table-container > * + * {
+          border-left: none;
+        }
+        .table-container > *:nth-child(2n) {
+          border-right: none;
+        }
+        .table-container > *:nth-last-child(-n+2) {
+          border-bottom: none;
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+      
+       
         .photo{
           width: 10rem;
           height: 10rem;
@@ -63,7 +91,11 @@
         <label for="hireDt">입사일</label>
         <div>${employeeVO.hireDt}</div>
 
-        <label for="deptName">부서</label>
+        </div>
+      </div>  
+      <div class="table-container">
+        <div class="grid">
+          <label for="deptName">부서</label>
         <div>${employeeVO.departmentVO.deptName}</div>
 
         <c:if test="${empty employeeVO.teamList}">
@@ -78,7 +110,11 @@
         <label for="jobName">직무</label>
         <div>${employeeVO.jobVO.jobName}</div>
 
-        <label for="cntct">연락처</label>
+        </div>
+      </div>  
+       <div class="table-container">
+        <div class="grid">
+          <label for="cntct">연락처</label>
         <div>${employeeVO.cntct}</div>
 
         <label for="addr">주소</label>
@@ -89,6 +125,8 @@
 
         <label for="email">이메일</label>
         <div>${employeeVO.email}</div>
+        </div>
+       </div> 
       </div>
         <c:if test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <div class="btn-group">
