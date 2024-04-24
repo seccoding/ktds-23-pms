@@ -17,9 +17,6 @@
           grid-template-rows: auto;
           gap: 1rem;
         }
-        .header {
-          text-align: center;
-        }
         .info-container{
           display: grid;
           grid-template-columns: repeat(2, 1fr);
@@ -58,6 +55,8 @@
 </head>
 <body>
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
+    <div class="grid-container" data-id="${employeeVO.empId}">
+      <div class="info-container">
     <div>
       <c:choose>
         <c:when test="${not empty employeeVO.prfl}">
@@ -66,11 +65,10 @@
         <c:otherwise>
           <img src="/images/login.png" alt="프로필 사진" class="photo">
         </c:otherwise>
-        
       </c:choose>
     </div>
-
-    <div class="grid" data-id="${employeeVO.empId}">
+    <div class="table-container">
+      <div class="grid">
         <label for="empName">사원 이름</label>
         <div>${employeeVO.empName}</div>
 
@@ -90,9 +88,9 @@
 
         <label for="hireDt">입사일</label>
         <div>${employeeVO.hireDt}</div>
-
-        </div>
       </div>  
+    </div>
+
       <div class="table-container">
         <div class="grid">
           <label for="deptName">부서</label>
@@ -128,6 +126,7 @@
         </div>
        </div> 
       </div>
+    </div>  
         <c:if test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <div class="btn-group">
             <button class="backto-list">
