@@ -69,6 +69,11 @@
 
             </div>
         </c:forEach>
+        <div id="will-add-team" class="hidden">
+            <div>추가 예정 팀</div>
+
+        </div>
+
         <button id="add-team">팀 추가</button>
         <dialog class="team-modal modal">
             <div class="flex-col">
@@ -88,8 +93,10 @@
             </div>
         </dialog>
         
-        <label for="dept-select">부서</label>
-        <div>
+        <label for="dept-select" >부서</label>
+        <input class="origin-dept" value="${employeeVO.departmentVO.deptName}" disabled/>
+        <button class="change-dept-btn">부서변경</button>
+        <div id="hidden-selectbox" class="hidden">
             <select id="dept-select" class="dept-select" data-origin="${employeeVO.deptId}">
                 <c:forEach items="${departmentlist.departmentList}" var="department">
                     <option  value="${department.deptId}" >${department.deptName}</option>

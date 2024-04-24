@@ -119,13 +119,7 @@ public class EmployeeController {
 											: "/employee/failed-delete-emp");
 	}
 	
-	// 팀 추가
-	@ResponseBody
-	@PostMapping("/ajax/employee/modify/addteam")
-	public AjaxResponse addTeam(EmployeeVO employeeVO) {
-		boolean isSuccess = this.employeeService.addTeam(employeeVO);
-		return new AjaxResponse().append("isSuccess", isSuccess).append("next",  "/employee/modify/"+employeeVO.getEmpId());
-	}
+	
 
 	//수정페이지
 	@GetMapping("/employee/modify/{empId}")
@@ -155,6 +149,7 @@ public class EmployeeController {
 	@ResponseBody
 	@PostMapping("/ajax/employee/modify")
 	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
+		
 		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
 		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
