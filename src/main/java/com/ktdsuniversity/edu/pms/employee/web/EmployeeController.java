@@ -127,6 +127,7 @@ public class EmployeeController {
 									 EmployeeVO employeeVO) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
+
 		
 		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
 		 model.addAttribute("departmentlist", departmentList);

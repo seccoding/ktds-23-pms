@@ -8,11 +8,11 @@
 		<id column="PSTN_ID" property="pstnId"/>
 		<association property="commonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
 			<id column="CMCD_ID" property="cmcdId"/>
-			<result column="C.CMCD_NAME" property="cmcdName"/>
+			<result column="CMCD_NAME" property="cmcdName"/>
 		</association>
 		<association property="pastCommonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
 			<id column="CMCD_ID" property="cmcdId"/>
-			<result column="PC.CMCD_NAME" property="cmcdName"/>
+			<result column="CMCD_NAME" property="cmcdName"/>
 		</association>
 	</resultMap>
 	

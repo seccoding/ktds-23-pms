@@ -19,13 +19,27 @@
         .change-table{
           text-align: center;
         }
+        .photo{
+          width: 10rem;
+          height: 10rem;
+        }
+        label{
+            font-weight: bold;
+        }
       </style>
 </head>
 <body>
-    <h2>상세정보</h2>
-    <label for="prfl">프로필 사진</label>
+    <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
     <div>
-        <img src="/employee/file/download/${employeeVO.empId}" alt="프로필 사진">
+      <c:choose>
+        <c:when test="${not empty employeeVO.prfl}">
+          <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
+        </c:when>
+        <c:otherwise>
+          <img src="/images/login.png" alt="프로필 사진" class="photo">
+        </c:otherwise>
+        
+      </c:choose>
     </div>
 
     <div class="grid" data-id="${employeeVO.empId}">
@@ -76,121 +90,119 @@
         <label for="email">이메일</label>
         <div>${employeeVO.email}</div>
       </div>
-        <c:if
-          test="${sessionScope._LOGIN_USER_.email eq employeeVO.email || sessionScope._LOGIN_USER_.mngrYn eq 'Y'}"
-        >
-        <div class="btn-group">
-          <button class="backto-list">
-            <a href="/employee/search">목록</a>
-          </button>
-          <button> 
-          <a href="/employee/modify/${employeeVO.empId}">수정</a>
-        </button>
-        </div>
-        <div>
-          <h5>직무 변경 사항</h5>
-          <table class="job-change change-table">
-            <thead>
-              <tr>
-
-                <th>순서</th>
-                <th>이전 직무</th>
-                <th>근무 시작일</th>
-                <th>근무 종료일</th>
-                <th>변경 사유</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:if test="${fn:length(jobHistList) == 0}">
+        <c:if test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
+          <div class="btn-group">
+            <button class="backto-list">
+              <a href="/employee/search">목록</a>
+            </button>
+            <button> 
+              <a href="/employee/modify/${employeeVO.empId}">수정</a>
+            </button>
+          </div>
+          <div>
+            <h5>직무 변경 사항</h5>
+            <table class="job-change change-table">
+              <thead>
                 <tr>
-                  <td colspan="5">
-                    내역이 존재하지 않습니다.
 
-                  </td>
+                  <th>순서</th>
+                  <th>이전 직무</th>
+                  <th>근무 시작일</th>
+                  <th>근무 종료일</th>
+                  <th>변경 사유</th>
                 </tr>
-              </c:if>
-              <c:forEach items="${jobHistList}" var="jobHist" varStatus="item">
-                <tr>
-                  <td>${item.count}</td>
-                  <td>${jobHist.jobVO.jobName}</td>
-                  <td>${jobHist.jobStrtDt}</td>
-                  <td>${jobHist.jobEndDt}</td>
-                  <td>${jobHist.cnNote}</td>
-                </tr>
-              </c:forEach>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <h5>직급 변경 사항</h5>
-          <table class="position-change change-table">
-            <thead>
-              <tr>
+              </thead>
+              <tbody>
+                <c:if test="${fn:length(jobHistList) == 0}">
+                  <tr>
+                    <td colspan="5">
+                      내역이 존재하지 않습니다.
 
-                <th>순서</th>
-                <th>이전 직급</th>
-                <th>변경된 직급</th>
-                <th>근무 시작일</th>
-                <th>근무 종료일</th>
-                <th>변경 사유</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:if test="${fn:length(positionHistList) == 0}">
+                    </td>
+                  </tr>
+                </c:if>
+                <c:forEach items="${jobHistList}" var="jobHist" varStatus="item">
+                  <tr>
+                    <td>${item.count}</td>
+                    <td>${jobHist.jobVO.jobName}</td>
+                    <td>${jobHist.jobStrtDt}</td>
+                    <td>${jobHist.jobEndDt}</td>
+                    <td>${jobHist.cnNote}</td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h5>직급 변경 사항</h5>
+            <table class="position-change change-table">
+              <thead>
                 <tr>
-                  <td colspan="5">
-                    내역이 존재하지 않습니다.
 
-                  </td>
+                  <th>순서</th>
+                  <th>이전 직급</th>
+                  <th>변경된 직급</th>
+                  <th>근무 시작일</th>
+                  <th>근무 종료일</th>
+                  <th>변경 사유</th>
                 </tr>
-              </c:if>
-              <c:forEach items="${positionHistList}" var="posotionHist" varStatus="item">
-                <tr>
-                  <td>${item.count}</td>
-                  <td>${posotionHist.pastCommonVO.cmcdName}</td>
-                  <td>${posotionHist.commonVO.cmcdName}</td>
-                  <td>${posotionHist.pstnStrtDt}</td>
-                  <td>${posotionHist.pstnEndDt}</td>
-                  <td>${posotionHist.cnNote}</td>
-                </tr>
-              </c:forEach>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <h5>부서 변경 사항</h5>
-          <table class="dept-change change-table">
-            <thead>
-              <tr>
+              </thead>
+              <tbody>
+                <c:if test="${fn:length(positionHistList) == 0}">
+                  <tr>
+                    <td colspan="5">
+                      내역이 존재하지 않습니다.
 
-                <th>순서</th>
-                <th>이전 부서</th>
-                <th>근무 시작일</th>
-                <th>근무 종료일</th>
-                <th>변경 사유</th>
-              </tr>
-            </thead>
-            <tbody>
-              <c:if test="${fn:length(departmentHistList) == 0}">
+                    </td>
+                  </tr>
+                </c:if>
+                <c:forEach items="${positionHistList}" var="posotionHist" varStatus="item">
+                  <tr>
+                    <td>${item.count}</td>
+                    <td>${posotionHist.pastCommonVO.cmcdName}</td>
+                    <td>${posotionHist.commonVO.cmcdName}</td>
+                    <td>${posotionHist.pstnStrtDt}</td>
+                    <td>${posotionHist.pstnEndDt}</td>
+                    <td>${posotionHist.cnNote}</td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h5>부서 변경 사항</h5>
+            <table class="dept-change change-table">
+              <thead>
                 <tr>
-                  <td colspan="5">
-                    내역이 존재하지 않습니다.
 
-                  </td>
+                  <th>순서</th>
+                  <th>이전 부서</th>
+                  <th>근무 시작일</th>
+                  <th>근무 종료일</th>
+                  <th>변경 사유</th>
                 </tr>
-              </c:if>
-              <c:forEach items="${departmentHistList}" var="deptHist" varStatus="item">
-                <tr>
-                  <td>${item.count}</td>
-                  <td>${deptHist.departmentVO.deptName}</td>
-                  <td>${deptHist.deptStrtDt}</td>
-                  <td>${deptHist.deptEndDt}</td>
-                  <td>${deptHist.cnNote}</td>
-                </tr>
-              </c:forEach>
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                <c:if test="${fn:length(departmentHistList) == 0}">
+                  <tr>
+                    <td colspan="5">
+                      내역이 존재하지 않습니다.
+
+                    </td>
+                  </tr>
+                </c:if>
+                <c:forEach items="${departmentHistList}" var="deptHist" varStatus="item">
+                  <tr>
+                    <td>${item.count}</td>
+                    <td>${deptHist.departmentVO.deptName}</td>
+                    <td>${deptHist.deptStrtDt}</td>
+                    <td>${deptHist.deptEndDt}</td>
+                    <td>${deptHist.cnNote}</td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </div>
         </c:if>
 </body>
 </html>
