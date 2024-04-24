@@ -28,6 +28,10 @@ public interface SurveyQuestionService {
 
 	public SurveyQuestionVO getOneSurveyForWrite(String prjId);
 
-	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO);
+	public SurveyListVO getAllQuestions();
+
+	public List<SurveyQuestionVO> getAllQuestions(SurveyQuestionVO surveyQuestionVO);
+
+	public SurveyListVO searchProject(SearchSurveyVO searchSurveyVO);
 
 }

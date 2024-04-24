@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
 
 @Service
@@ -35,6 +36,7 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 		return this.surveyQuestionPickDao.modifyOneAnswer(surveyQuestionPickVO) > 0;
 	}
 
+	@Transactional
 	@Override
 	public boolean modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO) {
 		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
@@ -49,6 +51,21 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 	@Override
 	public List<SurveyQuestionPickVO> getAllPicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
 		return this.surveyQuestionPickDao.getAllPicks(searchSurveyQuestionPickVO);
+	}
+
+	@Override
+	public SurveyListVO getAllPicks() {
+		List<SurveyQuestionPickVO> pickList = this.surveyQuestionPickDao.getAllPicks();
+		
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setPickList(pickList);
+		
+		return surveyListVO;
+	}
+
+	@Override
+	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO) {
+		return this.surveyQuestionPickDao.getAllPicks(surveyQuestionPickVO);
 	}
 
 }

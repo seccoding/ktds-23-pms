@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
-import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
@@ -30,13 +32,12 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return surveyListVO;
 	}
 
-	@Transactional
 	@Override
 	public SurveyQuestionVO getOneSurvey(String prjId) {
 		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionDao.selectOneSurvey(prjId);
-		if (surveyQuestionVO == null) {
-			throw new PageNotFoundException();
-		}
+//		if (surveyQuestionVO == null) {
+//			throw new PageNotFoundException();
+//		}
 		return surveyQuestionVO;
 	}
 	
@@ -109,8 +110,32 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 	}
 
 	@Override
-	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
-		return this.surveyQuestionDao.getAllSurveysForWrite(surveyQuestionVO);
+	public SurveyListVO getAllQuestions() {
+		List<SurveyQuestionVO> questionList = this.surveyQuestionDao.getAllQuestions();
+		
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setQuestionList(questionList);
+		
+		return surveyListVO;
+	}
+
+	@Override
+	public List<SurveyQuestionVO> getAllQuestions(SurveyQuestionVO surveyQuestionVO) {
+		return this.surveyQuestionDao.getAllQuestions(surveyQuestionVO);
+	}
+
+	@Override
+	public SurveyListVO searchProject(SearchSurveyVO searchSurveyVO) {
+		int projectCount = this.surveyQuestionDao.searchProjectCount(searchSurveyVO);
+		searchSurveyVO.setPageCount(projectCount);
+		
+		List<ProjectSurveyQuestionVO> projectList = this.surveyQuestionDao.searchBoard(searchSurveyVO);
+		
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setProjectCount(projectCount);
+		surveyListVO.setProjectList(projectList);
+        
+		return surveyListVO;
 	}
 
 }

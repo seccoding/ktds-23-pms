@@ -29,20 +29,21 @@
                     <th>상태</th>
                     <th>시작일</th>
                     <th>종료일</th>
-                    <th>설문지 작성 여부</th>
+                    <th>설문지 생성 여부</th>
                 </tr>
             </thead>
             <tbody>
                 <c:choose>
-                    <c:when test="${not empty surveyList.surveyList}">
-                        <c:forEach items="${surveyList.surveyList}" var="survey">
-                            <tr class="prj-list" data-prj-id="${survey.prjId}" data-srv-sts="${survey.srvSts}">
-                                <td>${survey.projectVO.prjName}</td>
-                                <td>${survey.projectVO.clntInfo}</td>
-                                <td>${survey.departmentVO.deptName}</td>
-                                <td>${survey.projectVO.prjSts}</td>
-                                <td>${survey.projectVO.strtDt}</td>
-                                <td>${survey.projectVO.endDt}</td>
+                    <c:when test="${not empty surveyList.projectList}">
+                        <c:forEach items="${surveyList.projectList}" var="survey">
+                            <tr class="prj-list" data-prj-id="${survey.prjId}"> 
+                                <%-- data-srv-sts="${survey.srvSts}"> --%>
+                                <td>${survey.prjName}</td>
+                                <td>${survey.clntInfo}</td>
+                                <td>${survey.deptVO.deptName}</td>
+                                <td>${survey.prjSts}</td>
+                                <td>${survey.strtDt}</td>
+                                <td>${survey.endDt}</td>
                                 <td>${survey.srvSts}</td>
                             </tr>
                         </c:forEach>

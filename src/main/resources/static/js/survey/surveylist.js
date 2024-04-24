@@ -3,7 +3,7 @@ $().ready(function() {
         var prjId = $(this).data("prj-id");
         var srvSts = $(this).data("srv-sts");
 
-        if (srvSts === "N" || srvSts === "W") {
+        if (srvSts === "N" || srvSts === "W" || !srvSts) {
             location.href = '/survey/create?prjId=' + prjId;
         } 
         else {

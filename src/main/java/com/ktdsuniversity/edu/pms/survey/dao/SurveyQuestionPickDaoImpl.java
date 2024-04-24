@@ -49,4 +49,14 @@ public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements S
 		return getSqlSession().selectList(SurveyQuestionPickDao.NAME_SPACE + ".getAllPicks", searchSurveyQuestionPickVO);
 	}
 
+	@Override
+	public List<SurveyQuestionPickVO> getAllPicks() {
+		return getSqlSession().selectList(SurveyQuestionPickDao.NAME_SPACE + ".getAllPicks");
+	}
+
+	@Override
+	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO) {
+		return getSqlSession().selectList(SurveyQuestionPickDao.NAME_SPACE + ".getAllPicks", surveyQuestionPickVO);
+	}
+
 }
