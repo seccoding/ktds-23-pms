@@ -8,6 +8,7 @@ import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
@@ -61,15 +62,13 @@ public class ProjectController {
     @Autowired
     private RequirementService requirementService;
 
-    // 세션에 따라서 보여줘야할 프로젝트 리스트를 바꿔야함
     // getAllProject + getAllProjectByProjectTeammateRole
     @GetMapping("/project/search")
     public String viewSearchProjectListPage(Model model,
                                             SearchProjectVO searchProjectVO,
                                             @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-//        ProjectListVO projectListVO = projectService.getAllProject();
 
-        // 검증 시, searchProject.setEmployeeVO(session 의 employee)
+        // 접속 유저에 따라 내려주는 데이터를 다르게 설정
         searchProjectVO.setEmployeeVO(employeeVO);
 
         ProjectListVO projectListVO = projectService
@@ -85,7 +84,9 @@ public class ProjectController {
     }
 
     @GetMapping("/project/view")
-    public String viewProjectDetailPage(@RequestParam String prjId, Model model) {
+    public String viewProjectDetailPage(@RequestParam String prjId,
+                                        @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+                                        Model model) {
         ProjectVO projectVO = projectService.getOneProject(prjId);
         int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
         List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId).stream().
@@ -93,8 +94,12 @@ public class ProjectController {
                 .toList();
 
         // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
-        // boolean isTeammate = projectVO.getProjectTeammateList().stream()
-        // .anyMatch(teammate -> teammate.getTmId().equals(세션에 있는 사원 아이디));
+        boolean isTeammate = projectVO.getProjectTeammateList().stream()
+                .anyMatch(teammate -> teammate.getTmId().equals(employeeVO.getEmpId()));
+
+        if (!isTeammate || !employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
 
         // PM 뽑기
         Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
@@ -121,12 +126,23 @@ public class ProjectController {
         return new AjaxResponse().append("chartData", projectService.getProjectStatus(projectId));
     }
 
-    // Use Session, user 가 해당 프로젝트에 속해있는지를 검증해야함.
     @GetMapping("/project/team")
-    public String viewProjectTeamPage(@RequestParam String prjId, Model model) {
+    public String viewProjectTeamPage(@RequestParam String prjId,
+                                      Model model,
+                                      @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+
         ProjectVO project = projectService.getOneProject(prjId);
         int teammateCount = projectService.getProjectTeammateCount(prjId);
         List<ProjectTeammateVO> teammate = projectService.getAllProjectTeammateByProjectId(prjId);
+
+        // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
+        boolean isTeammate = project.getProjectTeammateList().stream()
+                .anyMatch(tm -> tm.getTmId().equals(employeeVO.getEmpId()));
+
+        if (!isTeammate || !employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
 
         model.addAttribute("deptId", project.getDeptId());
         model.addAttribute("project", project);
@@ -136,10 +152,14 @@ public class ProjectController {
         return "project/teammate";
     }
 
-
     @GetMapping("/project/write")
-    public String viewProjectWritePage(Model model) {
-        // 검증로직 추가 필요
+    public String viewProjectWritePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+                                       Model model) {
+        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
+
         List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
         List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
 
@@ -149,16 +169,14 @@ public class ProjectController {
         return "project/projectwrite";
     }
 
-    // 작성자 추가를 위해 SessionAttribute 추가 필요, @SessionAttribute("_LOGIN_USER_")
-    // MemberVO
-    // memberVO
-    // form action 추가 필요
     @ResponseBody
     @PostMapping("/ajax/project/write")
-    public AjaxResponse writeProject(CreateProjectVO createProjectVO) {
-        // 0. session memberVO가 admin 이 아닌 경우, return list page or return 400
-        // page(잘못된
-        // 접근)
+    public AjaxResponse writeProject(CreateProjectVO createProjectVO,
+                                     @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
 
         Validator<CreateProjectVO> validator = new Validator<>(createProjectVO);
 
@@ -185,9 +203,8 @@ public class ProjectController {
         }
 
         // 2. 검증 로직에 잘 맞춰서 작성한 경우, 데이터 저장
-        // 2-1. 세션에서 작성자 id 추출, projectVO.setCrtrId();
-        // 현재는 정적 데이터로 해결함.
-        createProjectVO.setCrtrId("system01");
+        // -> 세션에서 작성자 id 추출
+        createProjectVO.setCrtrId(employeeVO.getEmpId());
 
         boolean isCreateSuccess = projectService
                 .createNewProject(createProjectVO);
@@ -203,13 +220,15 @@ public class ProjectController {
 
     @GetMapping("/project/modify/{prjId}")
     public String viewProjectModifyPage(@PathVariable String prjId,
-                                        Model model) {
+                                        Model model,
+                                        @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+
 
         ProjectVO projectVO = projectService.getOneProject(prjId);
         List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
         List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
         List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
-        // 작성자 또는 PM인지를 검증하는 로직 작성 필요
 
         // PM 뽑기
         Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
