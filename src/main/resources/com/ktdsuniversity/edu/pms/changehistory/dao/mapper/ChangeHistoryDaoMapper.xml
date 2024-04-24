@@ -49,28 +49,7 @@
 			 , 'N'
 			 , #{deptId})
 	</insert>                                         
-	
-	<insert id="insertOneChangeJobHistory" 
-			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-	 INSERT INTO JOB_HISTORY 
- 		(JOB_HIST_ID
-	  , EMP_ID
-	  , JOB_STRT_DT
-	  , JOB_END_DT
-	  , CN_NOTE
-	  , DEL_YN
-	  , PAST_JOB_ID)
- 		VALUES 
- 		('JOB_HT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_JOB_HT_PK.NEXTVAL, 6, 0)
- 	  , #{empId}
- 	  , #{hireDt}
- 	  , SYSDATE
- 	  , #{jobHistoryVO.cnNote}
- 	  , 'N'
- 	  , #{jobId})
- 	  
-	
-	</insert>
+
 	
 	<select id="getRecentDeptHist" parameterType="string" resultType="string">
 		SELECT TO_CHAR(D.DEPT_END_DT, 'YYYY-MM-DD') DEPT_END_DT
@@ -97,6 +76,36 @@
 		   AND DH.DEL_YN = 'N'
 		 ORDER BY DEPT_STRT_DT
 	</select>
+
+	<insert id="insertOneChangeJobHistory"
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO JOB_HISTORY
+		(JOB_HIST_ID
+		, EMP_ID
+		, JOB_STRT_DT
+		, JOB_END_DT
+		, CN_NOTE
+		, DEL_YN
+		, PAST_JOB_ID)
+		VALUES
+		('JOB_HT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_JOB_HT_PK.NEXTVAL, 6, 0)
+		, #{empId}
+		, #{hireDt}
+		, SYSDATE
+		, #{jobHistoryVO.cnNote}
+		, 'N'
+		, #{jobId})
+	</insert>
+	
+	<select id="getRecentJobHist" parameterType="string" resultType="string">
+		SELECT TO_CHAR(JH.JOB_END_DT, 'YYYY-MM-DD') JOB_END_DT
+		  FROM (SELECT JOB_END_DT
+				  FROM JOB_HISTORY
+				 WHERE EMP_ID = #{_parameter}
+				   AND DEL_YN = 'N'
+				 ORDER BY JOB_HIST_ID DESC ) JH
+		 WHERE ROWNUM = 1
+	</select>
 	
 	<select id="getAllJobHist" parameterType="string" resultMap="jobHistMap">
 		SELECT JH.JOB_HIST_ID
@@ -111,6 +120,25 @@
 		 WHERE JH.EMP_ID = #{_parameter}
 		   AND JH.DEL_YN = 'Y'
 	</select>
+	
+	<insert id="insertOneChangePositionHistory" 
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT PSTN_ID
+			 , EMP_ID
+			 , PSTN_STRT_DT
+			 , PSTN_END_DT
+			 , CN_NOTE
+			 , DEL_YN
+			 , PAST_PSTN_ID
+			 VALUES  
+			   ('PSTN_HT' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PSTN_HT_PK.NEXTVAL, 6, 0)
+			 , #{empId}
+			 , #{hireDt}
+			 , SYSDATE
+			 , #{PositionHistoryVO.cnNote}
+			 , 'N'
+			 , #{pstnId})
+	</insert>
 	
 	<select id="getUserPositionHistory" parameterType="string" resultMap="positionHistMap">
 		SELECT PH.PSTN_ID
@@ -129,5 +157,17 @@
 		 WHERE PH.EMP_ID = #{_parameter}
 		   AND PH.DEL_YN = 'N'
 	</select>
+	
+	<select id="getRecentPositionHist" parameterType="string" resultType="string">
+		SELECT TO_CHAR(PH.PSTN_END_DT, 'YYYY-MM-DD') PSTN_END_DT
+		  FROM (SELECT PSTN_END_DT
+				  FROM POSITION_HISTORY
+				 WHERE EMP_ID = #{_parameter}
+				   AND DEL_YN = 'N'
+				 ORDER BY PSTN_HIST_ID DESC ) PH
+		 WHERE ROWNUM = 1
+	</select>
+	
+	
 	
 </mapper>

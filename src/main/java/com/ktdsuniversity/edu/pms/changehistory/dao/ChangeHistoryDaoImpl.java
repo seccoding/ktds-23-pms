@@ -52,8 +52,18 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	}
 
 	@Override
+	public String getRecentJobHist(String empId) {
+		return getSqlSession().selectOne(ChangeHistoryDao.NAME_SPACE + ".getRecentJobHist", empId);
+	}
+
+	@Override
 	public int insertOneChangePositionHistory(EmployeeVO employeeVO) {
 		return getSqlSession().insert(ChangeHistoryDao.NAME_SPACE + ".insertOneChangePositionHistory", employeeVO);
+	}
+
+	@Override
+	public String getRecentPositionHist(String empId) {
+		return getSqlSession().selectOne(ChangeHistoryDao.NAME_SPACE + ".getRecentPositionHist", empId);
 	}
 
 
