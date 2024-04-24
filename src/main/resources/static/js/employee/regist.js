@@ -18,7 +18,13 @@ $().ready(function() {
 		formData.append("pstnId", $("#pstnId").val());
 		formData.append("deptId", $("#deptId").val());
 		formData.append("jobId", $("#jobId").val());
-		formData.append("mngrYn", $("#mngrYn").val());
+
+		if ($("#mngrYn").is(":checked")) {
+			formData.append("mngrYn", "Y");
+		} else {
+			formData.append("mngrYn", "N");
+		}
+
 		formData.append("next", $("#nextUrl").val());
 
 		$.ajax({
@@ -31,7 +37,7 @@ $().ready(function() {
 				var errors = response.data.errors;
 				var next = response.data.next;
 				var errorMessage = response.data.errorMessage;
-				
+
 				if (errors) {
 					for (var key in errors) {
 						var errorDiv = $("<div></div>");
@@ -51,7 +57,7 @@ $().ready(function() {
 						"color": "red",
 					});
 				}
-				
+
 
 				if (errorMessage) {
 					alert(errorMessage);

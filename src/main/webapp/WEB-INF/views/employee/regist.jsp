@@ -32,7 +32,6 @@
 				}
 
 				input[type="checkbox"] {
-					/* 체크박스 만들기 */
 					width: 1.2rem;
 					height: 1.2rem;
 					border: 1px solid #000;
@@ -153,10 +152,9 @@
 							<label for="mngrYn">임원여부: </label>
 						</div>
 						<div>
-							<input id="mngrYn" 
-							<%-- type="checkbox" --%> 
-							type="text"
-							name="mngrYn" value="${employeeVO.mngrYn}" />
+							<input id="mngrYn"  
+							type="checkbox"
+							name="mngrYn" value="${employeeVO.mngrYn == 'N'}" />
 						</div>
 						<div>
 							<button type="button" id="regist-btn">회원가입</button>
