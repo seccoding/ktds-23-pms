@@ -50,6 +50,8 @@ public interface ApprovalDao {
 	public ApprovalVO selectOneApprovalAll(String apprId);
 
 	public int updateApprovalStatus(ApprovalVO approvalVO);
+	
+	public int updateRentalStatus(ApprovalVO approvalVO);
 
 	/**
 	 * 버튼 클릭시 승인 상태로 바뀐다

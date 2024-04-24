@@ -108,8 +108,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Transactional
 	@Override
 	public boolean approvalStatusChange(ApprovalVO approvalVO) {
-		int updateCount = this.approvalDao.updateApprovalStatus(approvalVO);
-		return updateCount > 0;
+		int updateApprStsCount =  this.approvalDao.updateApprovalStatus(approvalVO);
+//		approvalVO.set
+//		int updateRntlStsCount = this.approvalDao.updateRentalStatus(approvalVO);
+		return updateApprStsCount > 0;
 	}
 	
 	@Transactional
@@ -147,6 +149,19 @@ public class ApprovalServiceImpl implements ApprovalService {
 		boolean isProcessSuccess = (isSuccessprdtMng > 0) && (isSuccessBrrwHt > 0) && (isSuccessChange > 0);
 		return isProcessSuccess;
 	}
+	
+	@Override
+	public boolean updateUnusablePrdt(ApprovalVO approvalVO) {
+		// 1.비품 반납
+		int returnPrdtCount = this.borrowDao.returnOneItemByAppr(approvalVO.getApprId());
+		// 2.반납비품 사용불가
+		int unusablePrdtCount = this.productManagementDao.unusablePrdtByAppr(approvalVO.getApprId());
+		// 3.결재상태 -> 반납완료
+		approvalVO.setApprSts("804"); // ???
+		int updateCount =  this.approvalDao.updateApprovalStatus(approvalVO);
+		
+		return ((returnPrdtCount > 0) && (unusablePrdtCount > 0) && (updateCount > 0));
+	}
 
 	@Override
 	public boolean deleteOneApproval(String apprId) {
@@ -161,8 +176,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return deleteCount > 0;
 	}
 
-	
+	// PSH - search
+	@Override
+	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
+		int approvalCount = this.approvalDao.searchApprAllCount(searchApprovalVO);
+		searchApprovalVO.setPageCount(approvalCount);
 
+		List<ApprovalVO> approvalList = this.approvalDao.searchAllApproval(searchApprovalVO);
+
+		ApprovalListVO approvalListVO = new ApprovalListVO();
+		approvalListVO.setApprCnt(approvalCount);
+		approvalListVO.setApprList(approvalList);
+
+		return approvalListVO;
+	}
+
+	// PHS End ----------
+	
 	@Override
 	public ApprovalListVO getAllApprove() {
 		// TODO Auto-generated method stub
@@ -229,21 +259,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		approvallistvo.setApprList(approval);
 		
 		return approvallistvo;
-	}
-
-	// PSH - search
-	@Override
-	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
-		int approvalCount = this.approvalDao.searchApprAllCount(searchApprovalVO);
-		searchApprovalVO.setPageCount(approvalCount);
-
-		List<ApprovalVO> approvalList = this.approvalDao.searchAllApproval(searchApprovalVO);
-
-		ApprovalListVO approvalListVO = new ApprovalListVO();
-		approvalListVO.setApprCnt(approvalCount);
-		approvalListVO.setApprList(approvalList);
-
-		return approvalListVO;
 	}
 
 }

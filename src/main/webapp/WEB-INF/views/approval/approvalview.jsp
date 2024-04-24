@@ -46,51 +46,37 @@
             display: flex;
             flex-direction: column;
         }
-        #modalWrap {
-        display: none; /* 초기에는 모달창을 숨김 */
-        height: 270px;
-        width: 401px;
-        margin: auto;
-        border: 1px solid #777;
-        border-radius: 4px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        z-index: 1000;
-        text-align: center;
-        padding: 40px 10px 10px;
-        animation: slidefade 0.5s ease-in-out;
-        }
-        #closeBtn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-        .modalWrap.show {
-            display: block;
-        }
 	</style>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
 	<script type="text/javascript" src="/js/approval/approvalview.js" ></script>
 </head>
 <body>
+    <jsp:include page="../commonmodal.jsp"></jsp:include>
 	<div class="container">
         <div class="title">
             <h2>결재 상세정보</h2>
         </div>
         <div class="btn-area">
             <div class="btn-change">
-                <button id="btn-list-appr">목록</button>
+                <c:if test="${approvalVO.apprSts eq
+                                '802' && sessionScope._LOGIN_USER_.admnCode eq '302'}">
+                    <button id="btn-return-prdt">비품반납</button>
+                </c:if>
+                <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'
+                                && approvalVO.apprSts eq '804'}">
+                    <button id="btn-brrw-prdt">신규비품대여</button>
+                </c:if>
+            </div>
+            <div class="btn-change">
+                <a href="javascript:history.back();">
+                    <button id="btn-list-appr">목록</button>
+                </a>
                 <button id="btn-delete-appr">삭제</button>
             </div>
 			<c:if test="${approvalVO.apprSts eq '801'}">
 				<div class="btn-status">
-					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="ok">승인</button>
-					<button id="modal-button" data-appr-id="${approvalVO.apprId}" data-appr-sts="no">반려</button>
+					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="802">승인</button>
+					<button id="btn-appr-sts-no" data-appr-id="${approvalVO.apprId}" data-appr-sts="803">반려</button>
 				</div>
 			</c:if>
         </div>
@@ -175,6 +161,7 @@
                                 <th>재고수량</th>
                                 <th>변경가능여부</th>
                             </c:if>
+                            <th>대여여부</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -202,6 +189,7 @@
                                                 </c:choose>
                                             </td>
                                         </c:if>
+                                        <td>${approvalDetail.productManagementVO.brrwYn}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
@@ -211,19 +199,5 @@
             </div>
         </div>
     </div>
-    
-    <!--모달창 시작-->
-    <div id="modalWrap">
-        <div id="modalBody">
-            <span id="closeBtn">&times;</span>
-            <div class="modal-title">반려사유</div>
-            <div class="modal-body">
-                <input type="text" id="rejectionReason">
-                <button id="confirmButton">확인</button>
-                <button id="cancelButton">취소</button>
-            </div>
-        </div>
-    </div>
-    <!--모달창 끝-->
 </body>
 </html>

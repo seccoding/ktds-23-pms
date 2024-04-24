@@ -29,8 +29,11 @@ public interface ApprovalService {
 	
 	public boolean getNewPrdtBorrowForAppr(String apprId);
 	
+	public boolean updateUnusablePrdt(ApprovalVO approvalVO);
+	
 	// PHS - search
 	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO);
+	
 
 	/**
 	 * 승인되지 않은 결재 내역 개수

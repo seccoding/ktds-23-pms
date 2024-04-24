@@ -54,6 +54,7 @@
 			</association>
 			<association property="productManagementVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO">
 				<id column="PRDT_MNG_ID" property="prdtMngId"/>
+				<result column="BRRW_YN" property="brrwYn"/>
 			</association>
 		</collection>
 	</resultMap>
@@ -71,6 +72,7 @@
 		     , ARRP_RJCT
 		     , LAST_CN_DT
 		     , APPR_FNSH_DT
+		     , RNTL_STS
 		     , DEL_YN)
 		VALUES
 		     ( #{apprId}
@@ -81,6 +83,7 @@
 		     , ''
 		     , #{dmdId}
 		     , #{apprMngId}
+		     , NULL
 		     , NULL
 		     , NULL
 		     , NULL
@@ -191,10 +194,12 @@
 			 , A.APPR_STS
 			 , A.APPR_TTL
 			 , A.APPR_CNTNT
+			 , A.RNTL_STS
 			 , E.EMP_NAME
 			 , E_MNG.EMP_NAME MNG_EMP_NAME
 			 , CC.CMCD_NAME
 			 , PM.PRDT_MNG_ID
+			 , PM.BRRW_YN
 			 , P.PRDT_NAME
 			 , P.PRDT_CTGR
 			 , AD.CUR_STR APPR_DTL_CUR_STR
@@ -220,6 +225,16 @@
 		UPDATE APPROVAL
 		   SET APPR_STS = #{apprSts}
 			 , APPR_FNSH_DT = SYSDATE
+			 , RNTL_STS = '1101'
+		<if test = 'apprSts == "803"'>
+			 , ARRP_RJCT = #{arrpRjct}
+		</if>
+		 WHERE APPR_ID = #{apprId}
+	</update>
+	
+	<update id="updateRentalStatus" parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+		UPDATE APPROVAL 
+		   SET RNTL_STS = #{rntlSts}
 		 WHERE APPR_ID = #{apprId}
 	</update>
 	
@@ -281,6 +296,7 @@
 		     , A.ARRP_RJCT
 		     , A.LAST_CN_DT
 		     , A.APPR_FNSH_DT
+		     , A.RNTL_STS
 		     , E.EMP_NAME
 		     , E.PRFL
 		     , CC.CMCD_NAME
