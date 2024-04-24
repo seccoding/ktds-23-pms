@@ -409,8 +409,20 @@ $().ready(function () {
             subMenuContent.append(icon);
 
             var menuName = $("<span></span>");
+            if (item.url) {
+				menuName = $("<a></a>");
+                menuName.attr({
+                    href: "javascript:void(0);",
+                    "data-menu-id": item.id,
+                    "data-menu-url": item.url,
+                });
+                menuName.text(item.name);
+                menuName.on("click", menuAnchorClickHandler);
+			}
+			else {
+	            menuName.text(item.name);
+			}
             menuName.addClass("sidedbar-menu-name");
-            menuName.text(item.name);
             subMenuContent.append(menuName);
 
             if (item.children.length > 0) {
@@ -420,7 +432,7 @@ $().ready(function () {
             }
             subMenuContent.on("click", menuClickHandler);
             sidebarSubmenu.append(subMenuContent);
-
+			
             if (item.children.length > 0) {
                 var dropDownMenu = $("<div></div>");
                 dropDownMenu.addClass("dropdown-menu");
@@ -442,12 +454,19 @@ $().ready(function () {
 
             sidebarMenu.append(sidebarSubmenu);
         });
-
+		openDashboard();
     });
-
 
     reloadTabs();
 });
+
+
+function openDashboard() {
+	if (window.name === "main") {
+		menuAnchorClickHandler(null, $(".sidebar")
+                .find("a[data-menu-id=8]"))
+	}
+}
 
 function reloadTabs() {
     if (window.name === "main") {

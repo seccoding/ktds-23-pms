@@ -17,17 +17,6 @@
         .title {
             margin-bottom: 3rem;
         }
-        /* .col-1-1 {
-            width: 99%;
-        }    
-        .card {
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #FFF;
-            padding: 0 0.8125rem;
-        } */
         .btn-area {
             display: flex;
             justify-content: space-between;
