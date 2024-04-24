@@ -20,5 +20,9 @@ public interface SurveyQuestionPickDao {
 	public int modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO);
 
 	public List<SurveyQuestionPickVO> getAllPicks(SearchSurveyQuestionPickVO searchSurveyQuestionPickVO);
+	
+	public List<SurveyQuestionPickVO> getAllPicks();
+
+	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO);
 
 }

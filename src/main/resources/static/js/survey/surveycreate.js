@@ -144,6 +144,7 @@ function renumberAnswerItems(ulDom) {
 $(document).ready(function() {
     var prjId = $(".survey-body").data("prj-id");
     var typeYn = 'N';
+    console.log(prjId);
 
     $.get("/ajax/survey/get/" + prjId, function(response) {
         var surveys = response.data.surveys;

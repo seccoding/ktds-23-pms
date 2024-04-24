@@ -7,7 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
@@ -72,8 +72,23 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	}
 
 	@Override
-	public List<SurveyQuestionVO> getAllSurveysForWrite(SurveyQuestionVO surveyQuestionVO) {
-		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllSurveysForWrite", surveyQuestionVO);
+	public List<SurveyQuestionVO> getAllQuestions() {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllQuestions");
+	}
+
+	@Override
+	public List<SurveyQuestionVO> getAllQuestions(SurveyQuestionVO surveyQuestionVO) {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllQuestions", surveyQuestionVO);
+	}
+
+	@Override
+	public int searchProjectCount(SearchSurveyVO searchSurveyVO) {
+		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".searchProjectCount", searchSurveyVO);
+	}
+
+	@Override
+	public List<ProjectSurveyQuestionVO> searchBoard(SearchSurveyVO searchSurveyVO) {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".searchBoard", searchSurveyVO);
 	}
 
 }
