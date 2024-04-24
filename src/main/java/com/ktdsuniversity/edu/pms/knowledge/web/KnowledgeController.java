@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,6 +43,8 @@ import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @Controller
 public class KnowledgeController {
@@ -120,21 +123,12 @@ public class KnowledgeController {
 			throw new EmployeeNotLoggedInException();
 		}
 
-		// 검사 -> Validator로 추후 수정 가능
-		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
-		boolean isEmptyContent = StringUtil.isEmpty(knowledgeVO.getKnlCntnt());
-
-//		if (isEmptyTitle) {
-//			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
-//			model.addAttribute("knowledgeVO", knowledgeVO);
-//			return "/knowledge/knowledgewrite";
-//		}
-//
-//		if (isEmptyContent) {
-//			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
-//			model.addAttribute("knowledgeVO", knowledgeVO);
-//			return "knowledge/knowledgewrite";
-//		}
+		
+		Map<String, List<String>> error = this.knowledgeValidator(knowledgeVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
+		}
+		
 		
 		knowledgeVO.setCrtrId(employeeVO.getEmpId());
 //		knowledgeVO.setIsMngr(employeeVO.getEmpId());
@@ -175,8 +169,9 @@ public class KnowledgeController {
 	}
 
 	// 글 수정 작성 페이지
-	@PostMapping("/knowledge/modify/{knlId}")
-	public String doKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
+	@ResponseBody
+	@PostMapping("/ajax/knowledge/modify/{knlId}")
+	public AjaxResponse doKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
 			KnowledgeVO knowledgeVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
@@ -187,21 +182,13 @@ public class KnowledgeController {
 		 throw new PageNotFoundException();
 		 }
 
-		// 수동 검사 -> Validator로 추후 수정 가능
-		boolean isEmptyTitle = StringUtil.isEmpty(knowledgeVO.getKnlTtl());
-		boolean isEmptyContent = StringUtil.isEmpty(knowledgeVO.getKnlCntnt());
-
-		if (isEmptyTitle) {
-			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
-			model.addAttribute("knowledgeVO", knowledgeVO);
-			return "knowledge/knowledgemodify";
+		 
+		Map<String, List<String>> error = this.knowledgeValidator(knowledgeVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
 		}
-
-		if (isEmptyContent) {
-			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
-			model.addAttribute("knowledgeVO", knowledgeVO);
-			return "knowledge/knowledgemodify";
-		}
+		 
+		 
 		// Command Object 에는 전달된 knlId가 없으니 @PathVariable로 전달된 knlId를 세팅해준다.
 		knowledgeVO.setKnlId(knlId);
 
@@ -213,7 +200,8 @@ public class KnowledgeController {
 			logger.info("수정이 실패되었습니다!");
 		}
 
-		return "redirect:/knowledge/view?knlId=" + knlId;
+//		return "redirect:/knowledge/view?knlId=" + knlId;
+		return new AjaxResponse().append("result", isUpdateSuccess);
 	}
 
 	// 글 삭제
@@ -433,6 +421,22 @@ public class KnowledgeController {
 //	
 //	 return new AjaxResponse().append("result", isSuccess).append("next", "/knowledge");
 //	}
+	
+	private Map<String, List<String>> knowledgeValidator(KnowledgeVO knowledgeVO) {
+
+		Validator<KnowledgeVO> validator = new Validator<>(knowledgeVO);
+		validator.add("rqmId", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+				.add("knlTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+				.add("knlCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+				.start();
+
+		if (validator.hasErrors()) {
+			return validator.getErrors();
+
+		} else {
+			return null;
+		}
+	}
 	
 	
 	

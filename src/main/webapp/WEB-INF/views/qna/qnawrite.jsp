@@ -6,8 +6,28 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>Qna 작성 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
-    <script type="text/javascript" src="/js/modal.js"></script>
+    <jsp:include page="../ckeditor.jsp" />
     <script type="text/javascript" src="/js/qnawrite.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var editors = loadEditor(
+          ".editor",
+          "내용을 입력하세요.",
+          "${qna.qaCntnt}"
+        );
+        var qaCntnt = "";
+
+        $("button").on("click", function (event) {
+          event.preventDefault();
+
+          qaCntnt = editors.getData();
+
+          $("#qa-cntnt").val(qaCntnt);
+
+          $("#writeForm").submit();
+        });
+      };
+    </script>
     <body>
       <c:if test="${not empty errorMessage}">
         <dialog class="alert-dialog">
@@ -16,7 +36,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </c:if>
 
       <h1>Qna 작성</h1>
-      <form action="/qna/write" method="post" enctype="multipart/form-data">
+      <form
+        id="writeForm"
+        action="/ajax/qna/write"
+        method="post"
+        enctype="multipart/form-data"
+      >
         <!-- 요구사항 ID 선택창 -->
         <div>
           <label for="=rqm-id">요구사항제목</label>
@@ -36,18 +61,26 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <label for="file">첨부파일</label>
           <input type="file" name="file" id="file" />
 
-          <label for="content">내용</label>
-          <textarea id="qaCntnt" name="qaCntnt" style="height: 300px">
-  ${qnaVO.qaCntnt}</textarea
-          >
-
-          <div class="btn-group">
-            <div class="right-align">
-              <input type="submit" value="저장" />
-            </div>
+          <!-- ckeditor -->
+          <label for="qa-cntnt">내용</label>
+          <div class="hereCkEditor5">
+            <%-- editor 생성부 --%>
+            <div class="editor" data-name="qaCntnt"></div>
+            <input
+              type="text"
+              id="qaCntnt"
+              name="qaCntnt"
+              style="visibility: hidden"
+            />
+          </div>
           </div>
         </div>
       </form>
+      <div class="btn-group">
+        <div class="right-align">
+          <button id="submit-btn" type="button">저장</button>
+        </div>
+      </div>
     </body>
   </head>
 </html>
