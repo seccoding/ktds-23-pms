@@ -22,8 +22,6 @@ public class IssueReplyController {
 	
 	@GetMapping("/ajax/issue/reply/{pPostId}")
 	public AjaxResponse getAllReplies(@PathVariable String pPostId, IssueReplyVO issueReplyVO) {
-		
-		
 		List<IssueReplyVO> issueReplyList = this.issueReplyService.getAllReplies(issueReplyVO);
 		
 		return new AjaxResponse().append("issueReplies", issueReplyList);
