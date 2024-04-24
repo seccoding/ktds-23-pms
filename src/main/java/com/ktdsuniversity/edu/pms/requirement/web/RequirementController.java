@@ -1,7 +1,7 @@
 package com.ktdsuniversity.edu.pms.requirement.web;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +22,13 @@ import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.login.web.LoginController;
-import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
-import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
-import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
-import com.ktdsuniversity.edu.pms.team.service.TeamService;
-import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -86,31 +80,27 @@ public class RequirementController {
 	public String viewOneRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId, Model model) {
 		// 본인 프로젝트가 아닐경우, 잘못된 프로젝트 아이디가 입력된경우 에러페이지 & 메시지 전달
-		if(employeeVO.getAdmnCode() != "301") {
-			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId)
-			.stream()
-			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
-			.toList();
-			
+		if (employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
+
 //			if(tmList.size() == 0  ) {
 //				throw new PageNotFoundException();
 //			}
 		}
-		
+
 		boolean isPmAndPl = false;
-		List<ProjectTeammateVO> tmList =  this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
-		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
-		.filter(tm ->tm.getRole().equals("PM") || tm.getRole().equals("PL"))
-		.toList();
-		if(tmList.size() > 0) {
-			isPmAndPl= true;
+		List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
+				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+				.filter(tm -> tm.getRole().equals("PM") || tm.getRole().equals("PL")).toList();
+		if (tmList.size() > 0) {
+			isPmAndPl = true;
 		}
-		
+
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
-		model.addAttribute("requirement", requirement)
-		.addAttribute("employeeVO", employeeVO)
-		.addAttribute("isPmAndPl", isPmAndPl);
-	
+		model.addAttribute("requirement", requirement).addAttribute("employeeVO", employeeVO).addAttribute("isPmAndPl",
+				isPmAndPl);
+
 		return "requirement/requirementview";
 
 	}
@@ -139,29 +129,21 @@ public class RequirementController {
 
 	}
 
-	@PostMapping("/requirement/write")
-	public String createRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam MultipartFile file, RequirementVO requirementVO, Model model) throws Exception {
-		Validator<RequirementVO> validator = new Validator<>(requirementVO);
-		validator
-		.add("rqmTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
-		.add("rqmCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
-		.add("strtDt", Type.NOT_EMPTY, "시작일은 필수 입력값입니다")
-		.add("endDt", Type.NOT_EMPTY, "종료일은 필수 입력값입니다")
-		.add("dvlrp", Type.NOT_EMPTY, "담당개발자는 필수 입력값입니다")
-		.add("cfrmr", Type.NOT_EMPTY, "확인자는 필수 입력값입니다")
-		.add("tstr", Type.NOT_EMPTY, "테스터는 필수 입력값입니다")
-		.add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다")
-		.add("rqmSts", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
-		.add("prjId", Type.NOT_EMPTY, "프로젝트는 필수 입력값입니다")
-		.start();
-		if(validator.hasErrors()) {
-			
+	@ResponseBody
+	@PostMapping("ajax/requirement/write")
+	public AjaxResponse createRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, MultipartFile file,
+			RequirementVO requirementVO, Model model) throws Exception {
+
+		Map<String, List<String>> error = this.requirementValidator(requirementVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
 		}
+
 		requirementVO.setCrtrId(employeeVO.getEmpId());
 		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
 
-		return "redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
+		return new AjaxResponse().append("result", isSuccess);
+//				"redirect:/requirement/search?prjId=" + requirementVO.getPrjId();
 	}
 
 	@GetMapping("/requirement/downloadFile/{rqmId}")
@@ -185,12 +167,10 @@ public class RequirementController {
 	@GetMapping("/project/requirement/modify")
 	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId, Model model) {
-		if(employeeVO.getAdmnCode() != "301") {
-			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId)
-			.stream()
-			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
-			.toList();
-			
+		if (employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
+
 //			if(tmList.size() == 0 ) {
 //				throw new PageNotFoundException();
 //			}
@@ -208,43 +188,55 @@ public class RequirementController {
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
-
+		
+		if(throwUnauthorizedUser(employeeVO , requirement.getCrtrId())) {
+			throw new PageNotFoundException();
+		}
+		
 		model.addAttribute("requirement", requirement).addAttribute("projectList", projectList)
 				.addAttribute("scdSts", scdSts).addAttribute("rqmSts", rqmSts)
-				.addAttribute("prjTeammateList",prjTeammateList);
+				.addAttribute("prjTeammateList", prjTeammateList);
 
 		return "requirement/requirementmodify";
 	}
 
+	@ResponseBody
 	@PostMapping("/requirement/modify")
-	public String modifyRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String rqmId,
-			RequirementVO requirementVO, @RequestParam MultipartFile file) {
-		if(employeeVO.getAdmnCode() != "301") {
-			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(requirementVO.getPrjId())
-			.stream()
-			.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
-			.toList();
-			
-			if(tmList.size() == 0 ) {
+	public AjaxResponse modifyRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+			@RequestParam String rqmId, RequirementVO requirementVO, @RequestParam MultipartFile file) {
+		if (employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService
+					.getAllProjectTeammateByProjectId(requirementVO.getPrjId()).stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
+
+			if (tmList.size() == 0) {
 				throw new PageNotFoundException();
 			}
 		}
-		
+		if(throwUnauthorizedUser(employeeVO , requirementVO.getCrtrId())) {
+			throw new PageNotFoundException();
+		}
+
+		Map<String, List<String>> error = this.requirementValidator(requirementVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
+		}
+
 		requirementVO.setMdfrId(employeeVO.getEmpId());
 
-//		TODO isSuccess 의 결과에 따라 값을 다르게 반환
+//		isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.updateRequirement(requirementVO, file);
 
-		return "redirect:/requirement";
+		return new AjaxResponse().append("result", isSuccess);
+//		return "redirect:/requirement";
 
 	}
 
 	@PostMapping("/project/requirement/delete")
 	public String deleteRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 			@RequestParam String rqmId) {
-		//사용자 체크: 삭제는 본인과 관리자만 가능함
-		
-		
+		// 사용자 체크: 삭제는 본인과 관리자만 가능함
+
 		RequirementVO requirementVO = this.requirementService.getOneRequirement(rqmId);
 
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
@@ -277,5 +269,35 @@ public class RequirementController {
 		return ajax.append("result", isSuccess).append("dalayApprove", dalayApprove);
 
 	}
+
+	private Map<String, List<String>> requirementValidator(RequirementVO requirementVO) {
+
+		Validator<RequirementVO> validator = new Validator<>(requirementVO);
+		validator.add("rqmTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("rqmCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+				.add("strtDt", Type.NOT_EMPTY, "시작일은 필수 입력값입니다").add("endDt", Type.NOT_EMPTY, "종료일은 필수 입력값입니다")
+				.add("dvlrp", Type.NOT_EMPTY, "담당개발자는 필수 입력값입니다").add("cfrmr", Type.NOT_EMPTY, "확인자는 필수 입력값입니다")
+				.add("tstr", Type.NOT_EMPTY, "테스터는 필수 입력값입니다").add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다")
+				.add("rqmSts", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다").add("prjId", Type.NOT_EMPTY, "프로젝트는 필수 입력값입니다")
+				.start();
+		if (!requirementVO.getStrtDt().isEmpty() && !requirementVO.getEndDt().isEmpty()) {
+			validator.add("endDt", Type.DATE, requirementVO.getStrtDt(), "종료일은 시작일보다 커야합니다").start();
+		}
+
+		if (validator.hasErrors()) {
+			return validator.getErrors();
+
+		} else {
+			return null;
+		}
+	}
+	private boolean throwUnauthorizedUser(EmployeeVO employeeVO, String empId) {
+		if(! employeeVO.getAdmnCode().equals("301")) {//관리자가 아닌경우
+			if(! employeeVO.getEmpId().equals(empId)) {//본인이 작성한글이 아니면
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 }
