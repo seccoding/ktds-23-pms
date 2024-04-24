@@ -533,10 +533,11 @@
     </select>
 
     <update id="updateTeammateDeleteYnByProjectTeammateId"
-            parameterType="String">
+            parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
         UPDATE PROJECT_TEAMMATE
-        SET DEL_YN = 'N'
-        WHERE PRJ_TM_ID = #{_parameter}
+        SET DEL_YN = 'N',
+        "ROLE" = #{role}
+        WHERE PRJ_TM_ID = #{prjTmId}
     </update>
 
     <insert id="insertNewProjectTeammate"
@@ -551,7 +552,7 @@
         'PRJ_TM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0'),
         #{prjId},
         #{tmId},
-        'NONE'
+        #{role}
         )
     </insert>
 

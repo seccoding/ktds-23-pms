@@ -17,7 +17,9 @@ $().ready(function () {
 
         var projectId = $("#project").data("project-id");
         var selectedEmployeeId;
-        var selectElement;
+        var selectedRole;
+        var selectEmployeeListElement;
+        var selectRoleListElement;
 
         // 모달 내 취소 버튼의 로직
         // 이전 모달의 무엇이 사라져야하는지를 작성해야함.
@@ -68,6 +70,7 @@ $().ready(function () {
                         {
                             prjId: projectId,
                             tmId: selectedEmployeeId,
+                            role: selectedRole,
                         }, function (response) {
                             var result = response.data.result;
                             var message = response.data.message;
@@ -132,17 +135,28 @@ $().ready(function () {
 
             $.get("/ajax/department-teammate/" + deptId, function (response) {
                 console.log(response)
+                selectRoleListElement = $('<select></select>', {id: 'select-role', name: 'role'});
+                selectRoleListElement.append($('<option></option>').val('').text('역할').attr('disabled', true).attr('selected', true).attr('hidden', true));
+                selectRoleListElement.append($('<option></option>').val('PL').text('PL'));
+                selectRoleListElement.append($('<option></option>').val('NONE').text('NONE'));
+
                 var teammateList = response.data.teammateList;
-                selectElement = $('<select></select>', {id: 'select-teammate', name: 'teammate'});
+                selectEmployeeListElement = $('<select></select>', {id: 'select-teammate', name: 'teammate'});
 
                 // "팀원 선택"이라는 기본 옵션 추가
-                selectElement.append($('<option></option>').val('').text('팀원을 선택하세요').attr('disabled', true).attr('selected', true).attr('hidden', true));
+                selectEmployeeListElement.append($('<option></option>').val('').text('팀원을 선택하세요').attr('disabled', true).attr('selected', true).attr('hidden', true));
 
                 teammateList.forEach(function (teammate) {
-                    selectElement.append($('<option></option>').val(teammate.empId).text(teammate.empName + "-" + teammate.departmentVO.deptName));
+                    selectEmployeeListElement.append($('<option></option>').val(teammate.empId).text(teammate.empName + "-" + teammate.departmentVO.deptName));
                 });
 
-                $('.modal-text').append(selectElement);
+                $('.modal-text').append(selectRoleListElement);
+                $('.modal-text').append(selectEmployeeListElement);
+
+                $('#select-role').on('change', function () {
+                    selectedRole = $(this).val();
+                });
+
                 $('#select-teammate').on('change', function () {
                     selectedEmployeeId = $(this).val();
                 });
