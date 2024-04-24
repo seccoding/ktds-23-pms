@@ -53,7 +53,7 @@ $().ready(function () {
   window.name = isMainLayout ? "main" : "sub";
   sessionTimer();
 
-  if (!isMainLayout) {
+  if (!isMainLayout && window.parent.getLocationPathInFrame) {
     var framePath = window.parent.getLocationPathInFrame();
     
     // 자동 로그아웃되어서 로그인 페이지가 iframe에 보여질 경우
@@ -225,6 +225,9 @@ function menuAnchorClickHandler(event, target) {
 
   var menuTabCloseButton = $("<span>X</span>");
   menuTabCloseButton.addClass("close-tab");
+  menuTabCloseButton.css({
+	"display": "inline-block"
+  });
   menuTabCloseButton.on("click", function () {
     var tabItemLength = menuTabList.find("li").length;
     if (tabItemLength == 1) {

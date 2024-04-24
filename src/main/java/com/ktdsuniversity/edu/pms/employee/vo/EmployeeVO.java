@@ -42,6 +42,8 @@ public class EmployeeVO {
     private DepartmentVO departmentVO;
     private CommonCodeVO commonCodeVO;
     private DepartmentHistoryVO departmentHistoryVO;
+    
+    private String originPrflFileName; 
 
     public DepartmentHistoryVO getDepartmentHistoryVO() {
 		return departmentHistoryVO;
@@ -266,5 +268,15 @@ public class EmployeeVO {
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
 	}
+
+	public String getOriginPrflFileName() {
+		return originPrflFileName;
+	}
+
+	public void setOriginPrflFileName(String originPrflFileName) {
+		this.originPrflFileName = originPrflFileName;
+	}
+	
+	
 
 }

@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.beans.FileHandler;
+import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
@@ -26,6 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Autowired
 	private ChangeHistoryDao changeHistoryDao;
+	
+	@Autowired
+	private FileHandler fileHandler;
 	
 	@Override
 	public EmployeeListVO getAllEmployee() {
@@ -84,13 +90,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 	}
 
-	public boolean createEmployee(EmployeeVO employeeVO) {
+	@Override
+	public boolean createEmployee(EmployeeVO employeeVO, MultipartFile file) {
 		String pwd = employeeVO.getPwd();
 		String salt = this.sha.generateSalt();
 		pwd = this.sha.getEncrypt(pwd, salt);
 
 		employeeVO.setPwd(pwd);
 		employeeVO.setSalt(salt);
+		
+		if (file != null && ! file.isEmpty()) {
+			StoredFile storedFile = fileHandler.storeFile(file);
+			if (storedFile != null) {
+				employeeVO.setPrfl(storedFile.getRealFileName());
+				employeeVO.setOriginPrflFileName(storedFile.getFileName());
+			}
+		}
 		
 		int createSuccessCount = employeeDao.createEmployee(employeeVO);
 		
