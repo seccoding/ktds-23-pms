@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.employee.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +76,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
 		
-		if(teamList!= null && teamList.size() > 0 ) {
-			employeeVO.setTeamList(teamList);
+	
+		employeeVO.setTeamList(teamList);
 			
-		}
-		
 		return employeeVO;
 		
 	}
@@ -125,26 +124,56 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
 		
+		// 부서가 변경된 경우 부서 변경 이력 추가
 		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
 			
 			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
-			System.out.println(deptHistList);
+			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
 			if(deptHistList.size() > 0) {
 				String provDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
-				System.out.println(provDate);
+				
 				employeeVO.setHireDt(provDate);		
-				System.out.println("!!!!!!!!!!!!!!!!!!!!");
 			}
 			
 			employeeVO.setDeptId(originEmployee.getDeptId());
-			
-			
-			int insertCnt = this.changeHistoryDao.insertOneChangeDeptHistory(employeeVO);
+			int insertCnt = 0; 
+			insertCnt =	this.changeHistoryDao.insertOneChangeDeptHistory(employeeVO);
 			
 			if(insertCnt == 0) {
 				return false;
 			}
+			
 		}
+		
+		// 팀리스트가 추가되었을 경우
+		if(employeeVO.getTeamList()!=null) {
+			// 기존의 팀 리스트를 originEmployee에 할당
+			originEmployee.setTeamList(this.employeeDao.getEmployeeAllTeam(employeeVO.getEmpId()));
+			int willAddTeam = 0;
+			int addTeamCount = 0;
+			for (TeamVO changeTeam: employeeVO.getTeamList()) {
+				// 기존리스트 없으면 다 추가
+				if(originEmployee.getTeamList() == null) {
+					employeeVO.setTeamVO(changeTeam);
+					willAddTeam++;
+					addTeamCount = this.employeeDao.addTeam(employeeVO);
+				}
+				// 기존 리스트 있으면 기존 팀에 없는 팀만 추가
+				else if (!originEmployee.getTeamList().contains(changeTeam)) {
+					employeeVO.setTeamVO(changeTeam);
+					willAddTeam++;
+					addTeamCount = this.employeeDao.addTeam(employeeVO);
+				}
+				
+			}
+			if(willAddTeam!=addTeamCount) {
+				return false;
+			}
+			
+		} 
+		
+		
+		
 		return updatedCount > 0;
 	}
 
@@ -154,10 +183,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.deleteTeam(employeeVO) > 0;
 	}
 
-	@Transactional
-	@Override
-	public boolean addTeam(EmployeeVO employeeVO) {
-		return this.employeeDao.addTeam(employeeVO) > 0;
-	}
+	
 
 }

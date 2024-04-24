@@ -73,7 +73,7 @@
 		    ON D.DEPT_ID = DH.PAST_DEPT_ID
 		 WHERE DH.EMP_ID = #{_parameter}
 		   AND DH.DEL_YN = 'N'
-		 ORDER BY DEPT_STRT_DT
+		 ORDER BY DEPT_STRT_DT DESC
 	</select>
 	
 	<select id="getAllJobHist" parameterType="string" resultMap="jobHistMap">
@@ -88,6 +88,7 @@
 		    ON J.JOB_ID = JH.PAST_JOB_ID 
 		 WHERE JH.EMP_ID = #{_parameter}
 		   AND JH.DEL_YN = 'Y'
+		 ORDER BY JOB_STRT_DT DESC
 	</select>
 	
 	<select id="getUserPositionHistory" parameterType="string" resultMap="positionHistMap">
@@ -106,6 +107,7 @@
 		    ON PC.CMCD_ID = PH.PAST_PSTN_ID 
 		 WHERE PH.EMP_ID = #{_parameter}
 		   AND PH.DEL_YN = 'N'
+		 ORDER BY PSTN_STRT_DT DESC
 	</select>
 	
 </mapper>
