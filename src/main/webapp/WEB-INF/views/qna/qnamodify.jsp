@@ -30,18 +30,24 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             현재 업로드 된 파일: ${qnaVO.originFileName}
           </div>
 
-          <label for="content">내용</label>
-          <textarea id="content" name="qaCntnt" style="height: 300px">
-  ${qnaVO.qaCntnt}</textarea
-          >
-
-          <div class="btn-group">
-            <div class="right-align">
-              <input type="submit" value="저장" />
-            </div>
-          </div>
+           <!-- ckeditor -->
+           <label for="qa-cntnt">내용</label>
+           <div class="hereCkEditor5">
+             <%-- editor 생성부 --%>
+             <div class="editor" data-name="qaCntnt"></div>
+             <input
+               type="text"
+               id="qaCntnt"
+               name="qaCntnt"
+               style="visibility: hidden"
+             />
+           </div>
         </div>
       </form>
+      <div class="btn-group">
+        <div class="right-align">
+          <button id="submit-btn" type="button">저장</button>
+        </div>
     </body>
   </head>
 </html>

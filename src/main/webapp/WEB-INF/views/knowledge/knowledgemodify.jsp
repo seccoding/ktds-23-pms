@@ -37,7 +37,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
       <h1>지식관리 수정</h1>
       <form
-        action="/knowledge/modify/${knowledgeVO.knlId}"
+        action="/ajax/knowledge/modify/${knowledgeVO.knlId}"
         method="post"
         enctype="multipart/form-data"
       >

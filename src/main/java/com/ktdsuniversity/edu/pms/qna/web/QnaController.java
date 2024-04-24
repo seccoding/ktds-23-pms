@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -31,6 +32,7 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.qna.service.QnaService;
@@ -42,6 +44,8 @@ import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @Controller
 public class QnaController {
@@ -108,29 +112,19 @@ public class QnaController {
 	}
 	
 	// 글 작성 
-	@PostMapping("/qna/write")
-	public String doQnaWrite(QnaVO qnaVO, @RequestParam MultipartFile file,
-			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
+	@ResponseBody
+	@PostMapping("/ajax/qna/write")
+	public AjaxResponse doQnaWrite(QnaVO qnaVO, @RequestParam MultipartFile file,
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) throws Exception {
 		
 		// 유저 검증
 		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
 			throw new EmployeeNotLoggedInException();
 		}
 
-		// 검사 -> Validator로 추후 수정 가능
-		boolean isEmptyTitle = StringUtil.isEmpty(qnaVO.getQaTtl());
-		boolean isEmptyContent = StringUtil.isEmpty(qnaVO.getQaCntnt());
-
-		if (isEmptyTitle) {
-			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
-			model.addAttribute("qnaVO", qnaVO);
-			return "/qna/qnawrite";
-		}
-
-		if (isEmptyContent) {
-			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
-			model.addAttribute("qnaVO", qnaVO);
-			return "/qna/qnawrite";
+		Map<String, List<String>> error = this.qnaValidator(qnaVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
 		}
 		
 		qnaVO.setCrtrId(employeeVO.getEmpId());
@@ -138,15 +132,16 @@ public class QnaController {
 		
 
 		boolean isCreateSuccess = this.qnaService.createNewQna(qnaVO, file);
-		if (isCreateSuccess) {
-			logger.info("글 등록이 완료되었습니다.");
-		} else {
-			logger.info("글 등록이 실패되었습니다.");
-		}
+//		if (isCreateSuccess) {
+//			logger.info("글 등록이 완료되었습니다.");
+//		} else {
+//			logger.info("글 등록이 실패되었습니다.");
+//		}
 
 		String qaId = qnaVO.getQaId();
 
-		return "redirect:/qna?qaId=" + qaId;
+//		return "redirect:/qna?qaId=" + qaId;
+		return new AjaxResponse().append("result", isCreateSuccess);
 
 	}
 	
@@ -220,8 +215,9 @@ public class QnaController {
 	}
 	
 	// 글 수정 작성 페이지
-	@PostMapping("/qna/modify/{qaId}") 
-	public String doQnaModify(@PathVariable String qaId, Model model, @RequestParam MultipartFile file,
+	@ResponseBody
+	@PostMapping("/ajax/qna/modify/{qaId}") 
+	public AjaxResponse doQnaModify(@PathVariable String qaId, Model model, @RequestParam MultipartFile file,
 			QnaVO qnaVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		QnaVO originqnaVO = this.qnaService.getOneQna(qaId, false);
@@ -232,24 +228,16 @@ public class QnaController {
 		 throw new PageNotFoundException();
 		 }
 		
-
-		// 수동 검사 -> Validator로 추후 수정 가능
-		boolean isEmptyTitle = StringUtil.isEmpty(qnaVO.getQaTtl());
-		boolean isEmptyContent = StringUtil.isEmpty(qnaVO.getQaCntnt());
-
-		if (isEmptyTitle) {
-			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
-			model.addAttribute("qnaVO", qnaVO);
-			return "qna/qnamodify";
+		
+		Map<String, List<String>> error = this.qnaValidator(qnaVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
 		}
-
-		if (isEmptyContent) {
-			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
-			model.addAttribute("qnaVO", qnaVO);
-			return "qna/qnamodify";
-		}
+		
+		
 		// Command Object 에는 전달된 qaId가 없으니 @PathVariable로 전달된 qaId를 세팅해준다.
 		qnaVO.setQaId(qaId);
+		
 		boolean isUpdateSuccess = this.qnaService.updateOneQna(qnaVO, file);
 
 		if (isUpdateSuccess) {
@@ -258,7 +246,8 @@ public class QnaController {
 			logger.info("수정이 실패되었습니다!");
 		}
 
-		return "redirect:/qna/view?qaId=" + qaId;
+//		return "redirect:/qna/view?qaId=" + qaId;
+		return new AjaxResponse().append("result", isUpdateSuccess);
 	}
 	
 	// 삭제
@@ -420,6 +409,23 @@ public class QnaController {
 		}
 		
 		return this.fileHandler.download("게시글_목록.xlsx", storedFile.getName());
+	}
+	
+	
+	private Map<String, List<String>> qnaValidator(QnaVO qnaVO) {
+
+		Validator<QnaVO> validator = new Validator<>(qnaVO);
+		validator.add("rqmId", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+				.add("qaTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+				.add("qaCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+				.start();
+
+		if (validator.hasErrors()) {
+			return validator.getErrors();
+
+		} else {
+			return null;
+		}
 	}
 
 }
