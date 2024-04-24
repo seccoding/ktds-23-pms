@@ -91,4 +91,9 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".searchBoard", searchSurveyVO);
 	}
 
+	@Override
+	public int deleteOneSurvey(SurveyQuestionVO surveyQuestionVO) {
+		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".deleteOneSurvey", surveyQuestionVO);
+	}
+
 }

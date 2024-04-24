@@ -1,9 +1,15 @@
 function handleDeleteQuestionItem(event) {
+    var idToDel = $(event.currentTarget).closest(".survey-question").data("srv-id");
     var qstToDel = $(event.currentTarget).closest(".survey-question");
     var nextQst = qstToDel.nextAll(".survey-question");
 
     var chooseValue = confirm("정말 삭제하시겠습니까?");
     if (chooseValue) {
+
+        $.post("/ajax/survey/delete/" + idToDel, function(response) {
+            console.log(response.data.result);
+        });
+
         nextQst.each(function() {
             var srvId = $(this).data("srv-id");
             var newSrvQst = $(this).children(".survey-question-middle").find("input").val();
@@ -21,12 +27,11 @@ function handleDeleteQuestionItem(event) {
             if (!newSrvQst) {
                 $.post("/ajax/survey/modify/next/" + srvId, {
                     seq: newSrvSeqNum,
-                    typeYn: newTypeYn
+                    typeYn: newTypeYn,
                 });
             } else {
                 $.post("/ajax/survey/modify/" + srvId, {
                     srvQst: newSrvQst,
-                    mdfrId: "0509004",
                     seq: newSrvSeqNum,
                     typeYn: newTypeYn
                 });
@@ -72,7 +77,6 @@ function handleDeleteAnswerItem(event) {
             $.post("/ajax/survey/answer/modify/" + sqpId, {
                 sqpCntnt: newAns,
                 nextId: newNextId,
-                mdfrId: '0509004',
                 seq: currentAnsSeqNum
             });
         }
@@ -343,7 +347,6 @@ $(document).ready(function() {
         });
 
         $.post("/ajax/survey/create/" + prjId, {
-            crtrId: '0509004',
             seq: seqDom.text(),
             typeYn: typeYn
         },
@@ -426,7 +429,6 @@ $(document).ready(function() {
                         $.post("/ajax/survey/answer/modify/" + ansDom.data("sqp-id"), {
                             sqpCntnt: answer,
                             nextId: nextQstId,
-                            mdfrId: '0509004',
                             seq: ansNum
                         }, function(response) {
                             console.log(response.data.result);
@@ -437,7 +439,6 @@ $(document).ready(function() {
                             srvId: srvId,
                             sqpCntnt: answer,
                             nextId: nextQstId,
-                            crtrId: '0509004',
                             seq: ansNum
                         }, function(response) {
                             ansDom.attr({"data-sqp-id": response.data.sqpId, "data-answer": answer});
@@ -479,7 +480,6 @@ $(document).ready(function() {
                         $.post("/ajax/survey/answer/modify/" + ansDom.data("sqp-id"), {
                             sqpCntnt: answer,
                             nextId: nextQstId,
-                            mdfrId: '0509004',
                             seq: ansNum
                         }, function(response) {
                             console.log(response.data.result);
@@ -490,7 +490,6 @@ $(document).ready(function() {
                             srvId: srvId,
                             sqpCntnt: answer,
                             nextId: nextQstId,
-                            crtrId: '0509004',
                             seq: ansNum
                         }, function(response) {
                             ansDom.attr({"data-sqp-id": response.data.sqpId, "data-answer": answer});

@@ -116,5 +116,12 @@
 		 WHERE DEL_YN = 'N'
 		   AND SRV_ID = #{srvId}
 	</select>
-
+	
+	<update id="deleteOneAnswer" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
+		UPDATE SURVEY_QUESTION_PICK
+		   SET MDFR_ID = #{mdfrId}
+		     , MDF_DT = SYSDATE
+		     , DEL_YN = 'Y'
+		 WHERE SQP_ID = #{sqpId}
+	</update>
 </mapper>

@@ -20,47 +20,6 @@ public class SurveyAnswerController {
 	@Autowired
 	private SurveyQuestionPickService surveyQuestionPickService;
 	
-	@ResponseBody
-	@GetMapping("/ajax/survey/get/pick/{srvId}")
-	public AjaxResponse getAllSurveyPicks(@PathVariable String srvId, SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
-		searchSurveyQuestionPickVO.setSrvId(srvId);
-		List<SurveyQuestionPickVO> surveypickList = this.surveyQuestionPickService.getAllPicks(searchSurveyQuestionPickVO);
-		
-		return new AjaxResponse().append("picks", surveypickList);
-	}
 	
-	@ResponseBody
-	@PostMapping("/ajax/survey/answer/{srvId}")
-	public AjaxResponse doCreateNewAnswer(@PathVariable String srvId, 
-										  SurveyQuestionPickVO surveyQuestionPickVO) {
-		surveyQuestionPickVO.setSrvId(srvId);
-		
-		boolean isSuccess = this.surveyQuestionPickService.createNewAnswer(surveyQuestionPickVO);	
-		return new AjaxResponse().append("result", isSuccess).append("sqpId", surveyQuestionPickVO.getSqpId());
-	}
-	
-	@ResponseBody
-	@PostMapping("/ajax/survey/answer/modify/{sqpId}")
-	public AjaxResponse doModifyAnswers(@PathVariable String sqpId, SurveyQuestionPickVO surveyQuestionPickVO) {
-		surveyQuestionPickVO.setSqpId(sqpId);
-		
-		boolean isSuccess = this.surveyQuestionPickService.modifyOneAnswer(surveyQuestionPickVO);
-		
-//		if (!isSuccess) {
-//			return new AjaxResponse().append("result", isSuccess);		
-//		}
-		
-		return new AjaxResponse().append("result", isSuccess);
-	}
-	
-	@ResponseBody
-	@PostMapping("/ajax/survey/answer/modify/sequence/{sqpId}")
-	public AjaxResponse doModifyAnswerSequence(@PathVariable String sqpId, SurveyQuestionPickVO surveyQuestionPickVO) {
-		surveyQuestionPickVO.setSqpId(sqpId);
-		
-		boolean isSuccess = this.surveyQuestionPickService.modifyOneAnswerSequence(surveyQuestionPickVO);
-		
-		return new AjaxResponse().append("result", isSuccess);
-	}
 
 }

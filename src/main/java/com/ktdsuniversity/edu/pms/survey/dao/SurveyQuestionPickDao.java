@@ -25,4 +25,6 @@ public interface SurveyQuestionPickDao {
 
 	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO);
 
+	public int deleteOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
+
 }

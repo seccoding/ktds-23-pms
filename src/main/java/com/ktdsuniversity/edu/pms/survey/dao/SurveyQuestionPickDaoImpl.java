@@ -59,4 +59,9 @@ public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements S
 		return getSqlSession().selectList(SurveyQuestionPickDao.NAME_SPACE + ".getAllPicks", surveyQuestionPickVO);
 	}
 
+	@Override
+	public int deleteOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO) {
+		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".deleteOneAnswer", surveyQuestionPickVO);
+	}
+
 }

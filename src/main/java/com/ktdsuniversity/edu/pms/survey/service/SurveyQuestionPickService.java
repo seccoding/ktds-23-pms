@@ -20,4 +20,6 @@ public interface SurveyQuestionPickService {
 
 	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO);
 
+	public boolean deleteOneSurveyPick(SurveyQuestionPickVO surveyQuestionPickVO);
+
 }

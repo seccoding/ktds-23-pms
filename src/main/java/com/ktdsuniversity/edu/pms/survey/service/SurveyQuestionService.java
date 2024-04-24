@@ -34,4 +34,6 @@ public interface SurveyQuestionService {
 
 	public SurveyListVO searchProject(SearchSurveyVO searchSurveyVO);
 
+	public boolean deleteOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
 }

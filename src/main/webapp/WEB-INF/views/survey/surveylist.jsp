@@ -36,8 +36,8 @@
                 <c:choose>
                     <c:when test="${not empty surveyList.projectList}">
                         <c:forEach items="${surveyList.projectList}" var="survey">
-                            <tr class="prj-list" data-prj-id="${survey.prjId}"> 
-                                <%-- data-srv-sts="${survey.srvSts}"> --%>
+                            <tr class="prj-list" data-prj-id="${survey.prjId}" data-srv-sts="${survey.srvSts}"> 
+                               
                                 <td>${survey.prjName}</td>
                                 <td>${survey.clntInfo}</td>
                                 <td>${survey.deptVO.deptName}</td>

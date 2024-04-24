@@ -11,6 +11,7 @@ import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 
 @Service
 public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService {
@@ -66,6 +67,17 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 	@Override
 	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO) {
 		return this.surveyQuestionPickDao.getAllPicks(surveyQuestionPickVO);
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteOneSurveyPick(SurveyQuestionPickVO surveyQuestionPickVO) {
+		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao.getOneAnswer(surveyQuestionPickVO.getSqpId());
+		
+		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
+			throw new PageNotFoundException();
+		}
+		return this.surveyQuestionPickDao.deleteOneAnswer(surveyQuestionPickVO) > 0;
 	}
 
 }

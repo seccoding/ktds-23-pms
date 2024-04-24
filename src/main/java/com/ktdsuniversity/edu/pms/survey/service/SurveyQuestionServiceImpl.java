@@ -137,5 +137,16 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
         
 		return surveyListVO;
 	}
+	
+	@Transactional
+	@Override
+	public boolean deleteOneSurvey(SurveyQuestionVO surveyQuestionVO) {
+		SurveyQuestionVO originalSurveyQuestionVO = this.surveyQuestionDao.getOneSurvey(surveyQuestionVO.getSrvId());
+		
+		if (!originalSurveyQuestionVO.getSrvId().equals(surveyQuestionVO.getSrvId())) {
+			throw new PageNotFoundException();
+		}
+		return this.surveyQuestionDao.deleteOneSurvey(surveyQuestionVO) > 0;
+	}
 
 }

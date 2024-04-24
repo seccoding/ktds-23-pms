@@ -370,4 +370,12 @@
         	<include refid="Common.pagenate_footer"/>
 	</select>
 
+	<update id="deleteOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+		UPDATE SURVEY_QUESTION
+		   SET MDFR_ID = #{mdfrId}
+		     , MDF_DT = SYSDATE
+		     , DEL_YN = 'Y'
+		 WHERE SRV_ID = #{srvId}
+	</update>
+
 </mapper>

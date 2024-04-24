@@ -22,6 +22,7 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionPickService;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionService;
+import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
@@ -53,9 +54,6 @@ public class SurveyController {
 		model.addAttribute("commonCodeList", projectCommonCodeList);
 		model.addAttribute("surveyList", surveyListVO);
 		model.addAttribute("SearchSurveyVO", searchSurveyVO);
-		
-//		SurveyListVO surveyListVO = this.surveyQuestionService.getAllSurvey();
-//		model.addAttribute("surveyList", surveyListVO);
 
 		return "survey/surveylist";
 	}
@@ -112,11 +110,12 @@ public class SurveyController {
 
 	@ResponseBody
 	@PostMapping("/ajax/survey/create/{prjId}")
-	public AjaxResponse doSurveyCreate(@PathVariable String prjId, SurveyQuestionVO surveyQuestionVO) {
+	public AjaxResponse doSurveyCreate(@PathVariable String prjId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setPrjId(prjId);
+		surveyQuestionVO.setCrtrId(employeeVO.getEmpId());
 
 		boolean isSuccess = this.surveyQuestionService.createNewSurveyQuestion(surveyQuestionVO);
-		return new AjaxResponse().append("result", isSuccess).append("srvId", surveyQuestionVO.getSrvId());
+		return new AjaxResponse().append("result", isSuccess).append("srvId", surveyQuestionVO.getSrvId()).append("user", employeeVO.getEmpId());
 	}
 
 	@ResponseBody
@@ -130,8 +129,9 @@ public class SurveyController {
 
 	@ResponseBody
 	@PostMapping("/ajax/survey/modify/{srvId}")
-	public AjaxResponse doModifySurvey(@PathVariable String srvId, SurveyQuestionVO surveyQuestionVO) {
+	public AjaxResponse doModifySurvey(@PathVariable String srvId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, SurveyQuestionVO surveyQuestionVO) {
 		surveyQuestionVO.setSrvId(srvId);
+		surveyQuestionVO.setMdfrId(employeeVO.getEmpId());
 
 		boolean isSuccess = this.surveyQuestionService.modifyOneSurvey(surveyQuestionVO);
 		return new AjaxResponse().append("result", isSuccess);
@@ -143,6 +143,71 @@ public class SurveyController {
 		surveyQuestionVO.setSrvId(srvId);
 
 		boolean isSuccess = this.surveyQuestionService.modifyOneSurveyExceptBody(surveyQuestionVO);
+		return new AjaxResponse().append("result", isSuccess);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/delete/{srvId}")
+	public AjaxResponse doDeleteSurvey(@PathVariable String srvId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, SurveyQuestionVO surveyQuestionVO) {
+		surveyQuestionVO.setSrvId(srvId);
+		surveyQuestionVO.setMdfrId(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.surveyQuestionService.deleteOneSurvey(surveyQuestionVO);
+		return new AjaxResponse().append("result", isSuccess);
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/survey/get/pick/{srvId}")
+	public AjaxResponse getAllSurveyPicks(@PathVariable String srvId, SearchSurveyQuestionPickVO searchSurveyQuestionPickVO) {
+		searchSurveyQuestionPickVO.setSrvId(srvId);
+		List<SurveyQuestionPickVO> surveypickList = this.surveyQuestionPickService.getAllPicks(searchSurveyQuestionPickVO);
+		
+		return new AjaxResponse().append("picks", surveypickList);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/answer/{srvId}")
+	public AjaxResponse doCreateNewAnswer(@PathVariable String srvId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+										  SurveyQuestionPickVO surveyQuestionPickVO) {
+		surveyQuestionPickVO.setSrvId(srvId);
+		surveyQuestionPickVO.setCrtrId(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.surveyQuestionPickService.createNewAnswer(surveyQuestionPickVO);	
+		return new AjaxResponse().append("result", isSuccess).append("sqpId", surveyQuestionPickVO.getSqpId());
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/answer/modify/{sqpId}")
+	public AjaxResponse doModifyAnswers(@PathVariable String sqpId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, SurveyQuestionPickVO surveyQuestionPickVO) {
+		surveyQuestionPickVO.setSqpId(sqpId);
+		surveyQuestionPickVO.setMdfrId(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.surveyQuestionPickService.modifyOneAnswer(surveyQuestionPickVO);
+		
+//		if (!isSuccess) {
+//			return new AjaxResponse().append("result", isSuccess);		
+//		}
+		
+		return new AjaxResponse().append("result", isSuccess);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/answer/modify/sequence/{sqpId}")
+	public AjaxResponse doModifyAnswerSequence(@PathVariable String sqpId, SurveyQuestionPickVO surveyQuestionPickVO) {
+		surveyQuestionPickVO.setSqpId(sqpId);
+		
+		boolean isSuccess = this.surveyQuestionPickService.modifyOneAnswerSequence(surveyQuestionPickVO);
+		
+		return new AjaxResponse().append("result", isSuccess);
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/survey/pick/delete/{sqpId}")
+	public AjaxResponse doDeleteSurveyPick(@PathVariable String sqpId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, SurveyQuestionPickVO surveyQuestionPickVO) {
+		surveyQuestionPickVO.setSrvId(sqpId);
+		surveyQuestionPickVO.setMdfrId(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.surveyQuestionPickService.deleteOneSurveyPick(surveyQuestionPickVO);
 		return new AjaxResponse().append("result", isSuccess);
 	}
 

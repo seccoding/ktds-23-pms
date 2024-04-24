@@ -39,4 +39,6 @@ public interface SurveyQuestionDao {
 
 	public List<ProjectSurveyQuestionVO> searchBoard(SearchSurveyVO searchSurveyVO);
 
+	public int deleteOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
 }
