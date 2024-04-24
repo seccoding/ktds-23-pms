@@ -26,6 +26,17 @@ public class GlobalExceptionHandler {
 	// TODO ExceptionHandler 작성해야함.
 	// TODO ExceptionHandler 에 RuntimeException 추가해야함. - 현재 개발 단계이므로 에러 파악을 위해 미추가
 
+	@ExceptionHandler(AccessDeniedException.class)
+	public Object accessDenyPage(AccessDeniedException ade, Model model) {
+
+		logger.error(ade.getMessage(), ade);
+
+		model.addAttribute("message", ade.getMessage());
+
+		return "error/403";
+
+	}
+
 	@ExceptionHandler(PageNotFoundException.class)
 	public Object viewPageNotFoundPage(PageNotFoundException pnfe, Model model) {
 
