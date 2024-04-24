@@ -45,6 +45,6 @@ public class IssueReplyServiceImpl implements IssueReplyService {
 		if (!originalIssueReplyVO.getCrtrId().equals(issueReplyVO.getCrtrId())) {
 			throw new PageNotFoundException();
 		}
-		return this.issueReplyDao.modifyOneIssueReply(originalIssueReplyVO) > 0;
+		return this.issueReplyDao.modifyOneIssueReply(issueReplyVO) > 0;
 	}
 }
