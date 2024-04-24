@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Repository
@@ -33,12 +34,12 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	
 	@Override
 	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO) {
-		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getBorrowCount", searchBorrowVO.getEmployeeVO().getEmpId());
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".searchBorrowAllCount", searchBorrowVO);
 	}
 	
 	@Override
 	public List<BorrowVO> searchAllUserRentalState(SearchBorrowVO searchBorrowVO) {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalState", searchBorrowVO.getEmployeeVO().getEmpId());
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".searchAllUserRentalState", searchBorrowVO);
 	}
 
 	@Override
@@ -85,6 +86,17 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	@Override
 	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
+	}
+
+	// YSH0424
+	@Override
+	public String selectBrrwHistId() {
+		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".selectBrrwHistId");
+	}
+
+	@Override
+	public int insertNewBorrowHist(BorrowVO borrowVO) {
+		return getSqlSession().insert(BorrowDao.NAME_SPACE+".insertNewBorrowHist", borrowVO);
 	}
 
 }

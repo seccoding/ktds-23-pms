@@ -43,9 +43,9 @@
     </div>
     <div class="grid">
 
-        <!-- <div class="btn-group">
+        <div class="btn-group">
             <button type="button" class="apply-product">신청</button>
-        </div> -->
+        </div>
 
         <table class="table">
             <thead>
@@ -138,7 +138,7 @@
             </ul>
 
             <div class="check-option">
-                <input type="checkbox" id=" " 
+                <input type="checkbox" id="product-exist-search" 
                        name="existed-product" value="existed-product-checked"/>
                 <label for="product-exist-search"></label>
                 <label for="product-exist-search">재고가 있는 비품만 조회</label>

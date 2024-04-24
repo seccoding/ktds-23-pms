@@ -80,7 +80,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${product.productVO.prdtName}</td>
+                                <td data-productName="${product.productVO.prdtName}">${product.productVO.prdtName}</td>
                                 <td class="manage-id">${product.prdtMngId}</td>
                                 <td>${product.brrwDt}</td>
                                 <td>
@@ -176,7 +176,7 @@
 
 
     <div class="flex">
-        <button>선택항목 변경신청</button>
+        <button class="selected-change-apply">선택항목 변경신청</button>
         <button class="selected-return">선택항목 반납</button>
     </div>
     

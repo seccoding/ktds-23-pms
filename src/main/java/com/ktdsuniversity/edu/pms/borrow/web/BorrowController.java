@@ -27,7 +27,7 @@ public class BorrowController {
 	
 	@GetMapping("/product/rentalstate")
 	public String viewRentalStatePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
-						,ProductVO productVO, ProductManagementVO productManagementVO, SearchBorrowVO searchBorrowVO) {
+				,BorrowVO borrowVO, ProductVO productVO, ProductManagementVO productManagementVO, SearchBorrowVO searchBorrowVO) {
 //		BorrowListVO borrowListVO = this.borrowService.getUserRentalState(employeeVO);
 		
 		searchBorrowVO.setEmployeeVO(employeeVO);

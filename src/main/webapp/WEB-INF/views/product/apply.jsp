@@ -43,12 +43,12 @@
         <form action="/product/apply" method="post" enctype="multipart/form-data">
             <hr />
             <div class="form-grid">
-                <div class="productName" data-prdtList="${productListVO.productList}" data-prdtName="${product.prdtName}">
+                <div class="productName">
                     <label for="select-prdtName">비품명</label>
                     <select name="select-prdtName" id="select-prdtName">
                         <option value="">비품명 선택</option>
-                        <c:forEach items="${productListVO.productList}" var="product">
-                            <option value="${product.prdtName}" >${product.prdtName}</option>
+                        <c:forEach items="${nameList.productList}" var="name">
+                            <option value="${name.prdtName}" >${name.prdtName}</option>
                         </c:forEach>
                     </select>
                 </div>

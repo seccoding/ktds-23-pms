@@ -46,6 +46,22 @@ public interface BorrowDao {
 	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
 
 	
+	// YSH0424
+	
+	/**
+	 * 대여이력 ID의 시퀀스 값을 가져온다.
+	 * @return
+	 */
+	public String selectBrrwHistId();
+
+	/**
+	 * 대여이력에 
+	 * @param borrowVO
+	 * @return
+	 */
+	public int insertNewBorrowHist(BorrowVO borrowVO);
+
+	
 
 	
 
