@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -39,6 +40,8 @@ import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @Controller
 public class IssueController {
@@ -85,38 +88,27 @@ public class IssueController {
 		return "/issue/issuewrite";
 	}
 	
-	@PostMapping("/issue/write")
-	public String doWriteIssue(IssueVO issueVO, Model model, @RequestParam MultipartFile file,
-								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		boolean isEmptyTitle = StringUtil.isEmpty(issueVO.getIsTtl());
-		boolean isEmptyContent = StringUtil.isEmpty(issueVO.getIsCntnt());
-		
-		if (isEmptyTitle) {
-			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다!");
-			model.addAttribute("issueVO", issueVO);
-			return "/issue/issuewrite";
+	@ResponseBody
+	@PostMapping("/ajax/issue/write")
+	public AjaxResponse doWriteIssue(IssueVO issueVO, Model model, @RequestParam MultipartFile file,
+								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) throws Exception {
+
+		if (!issueVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+			throw new PageNotFoundException();
 		}
 		
-		if (isEmptyContent) {
-			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다!");
-			model.addAttribute("issueVO", issueVO);
-			return "/issue/issuewrite";
+		Map<String, List<String>> error = this.issueValidator(issueVO);
+		if (error != null) {
+			return new AjaxResponse().append("error", error);
 		}
 		
 		issueVO.setCrtrId(employeeVO.getEmpId());
 		issueVO.setIsMngr(employeeVO.getEmpId());
 	
 		boolean isSuccess = this.issueService.createNewIssue(issueVO, file);
-		if (isSuccess) {
-			logger.info("글 등록 성공!");
-		}
-		else {
-			logger.info("글 등록 실패!");
-		}
-		
 		String isId = issueVO.getIsId();
 		
-		return "redirect:/issue?isId=" + isId;
+		return new AjaxResponse().append("result", isSuccess);
 	}
 	
 	@GetMapping("/issue/modify/{isId}")
@@ -311,5 +303,18 @@ public class IssueController {
 			}
 		}
 		return this.fileHandler.download("이슈_목록.xlsx", storedFile.getName());
+	}
+	
+	private Map<String, List<String>> issueValidator(IssueVO issueVO) {
+		Validator<IssueVO> validator = new Validator<>(issueVO);
+		validator.add("isTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
+				.add("isCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+				.start();
+		if (validator.hasErrors()) {
+			return validator.getErrors();
+		} 
+		else {
+			return null;
+		}
 	}
 }
