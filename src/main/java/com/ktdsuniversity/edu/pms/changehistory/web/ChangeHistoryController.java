@@ -25,4 +25,8 @@ public class ChangeHistoryController {
 		return new AjaxResponse().append("departmentHistoryList", departmentHistoryVO);
 	}
 
+
+	
+	
+
 }

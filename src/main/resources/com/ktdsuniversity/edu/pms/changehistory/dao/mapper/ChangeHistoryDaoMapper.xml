@@ -48,6 +48,28 @@
 			 , #{departmentHistoryVO.cnNote}
 			 , 'N'
 			 , #{deptId})
+	</insert>                                         
+	
+	<insert id="insertOneChangeJobHistory" 
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+	 INSERT INTO JOB_HISTORY 
+ 		(JOB_HIST_ID
+	  , EMP_ID
+	  , JOB_STRT_DT
+	  , JOB_END_DT
+	  , CN_NOTE
+	  , DEL_YN
+	  , PAST_JOB_ID)
+ 		VALUES 
+ 		('JOB_HT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_JOB_HT_PK.NEXTVAL, 6, 0)
+ 	  , #{empId}
+ 	  , #{hireDt}
+ 	  , SYSDATE
+ 	  , #{jobHistoryVO.cnNote}
+ 	  , 'N'
+ 	  , #{jobId})
+ 	  
+	
 	</insert>
 	
 	<select id="getRecentDeptHist" parameterType="string" resultType="string">
