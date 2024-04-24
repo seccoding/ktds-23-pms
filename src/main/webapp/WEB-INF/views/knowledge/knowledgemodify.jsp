@@ -6,7 +6,28 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>지식관리 수정 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
-    <!-- <script type="text/javascript" src="/js/knowledgemodify.js"></script> -->
+    <jsp:include page="../ckeditor.jsp" />
+    <script type="text/javascript" src="/js/knowledgemodify.js"></script>
+    <script type="text/javascript">
+      window.onload = function () {
+        var editors = loadEditor(
+          ".editor",
+          "내용을 입력하세요.",
+          "${knowledge.knlCntnt}"
+        );
+        var knlCntnt = "";
+
+        $("button").on("click", function (event) {
+          event.preventDefault();
+
+          knlCntnt = editors.getData();
+
+          $("#knl-cntnt").val(knlCntnt);
+
+          $("#writeForm").submit();
+        });
+      };
+    </script>
     <body>
       <c:if test="${not empty errorMessage}">
         <dialog class="alert-dialog">
@@ -35,9 +56,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             현재 업로드 된 파일: ${knowledgeVO.originFileName}
           </div>
 
-          <label for="content">내용</label>
-          <textarea id="content" name="knlCntnt" style="height: 300px">
-  ${knowledgeVO.knlCntnt}</textarea
+          <!-- ckeditor -->
+          <label for="knl-cntnt">내용</label>
+          <div class="hereCkEditor5">
+            <%-- editor 생성부 --%>
+            <div class="editor" data-name="knlCntnt"></div>
+          </div>
           >
 
           <div class="btn-group">

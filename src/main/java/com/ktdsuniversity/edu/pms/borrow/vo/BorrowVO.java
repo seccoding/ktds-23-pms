@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.borrow.vo;
 
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
@@ -18,6 +19,15 @@ public class BorrowVO {
 	
 	private ProductVO productVO;
 	
+	private EmployeeVO employeeVO;
+	
+	
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
 	// PSH0422
 	private ApprovalVO approvalVO;
 	private ApprovalDetailVO approvalDetailVO;

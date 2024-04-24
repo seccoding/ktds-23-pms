@@ -31,13 +31,11 @@ import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
-import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
-import com.ktdsuniversity.edu.pms.knowledge.web.KnowledgeController;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.qna.service.QnaService;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaListVO;
+import com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaVO;
 import com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
@@ -65,27 +63,34 @@ public class QnaController {
 	
 	// 전체 리스트 조회
 	@GetMapping("/qna")
-	public String viewQnaListPage(Model model, SearchQnaVO searchQnaVO) {
+	public String viewQnaListPage(Model model, SearchQnaVO searchQnaVO, @RequestParam(required = false) String qaId) {
 		
 		ProjectListVO projectList = this.projectService.getAllProject();
 		QnaListVO qnaList = this.qnaService.searchAllQna(searchQnaVO);
 		
 		model.addAttribute("projectList", projectList);
 		model.addAttribute("qnaList", qnaList);
-		
+		model.addAttribute("searchQnaVO", searchQnaVO);
 		
 		return "/qna/qnalist";
 	}
 	
 	// 게시글별 상세 조회
 	@GetMapping("/qna/view")
-	public String viewDetailQnaListPage(@RequestParam String qaId, Model model) {
+	public String viewDetailQnaListPage(@RequestParam String qaId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		// 유저 검증
+		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
+			throw new EmployeeNotLoggedInException();
+		}
 		
 		QnaVO qnaVO = this.qnaService.getOneQna(qaId, true);
 		
+//		int recommendCount = this.qnaService.getQnaRecommendCount(qaId);
+		
 		// qna/view 페이지에 데이터를 전송.
 		model.addAttribute("qnaVO", qnaVO);
-
+//		model.addAttribute("recommendCount", recommendCount);
 		// return new AjaxResponse().append("oneQna", qnaVO);
 		return "/qna/qnaview";
 	}
@@ -127,8 +132,10 @@ public class QnaController {
 			model.addAttribute("qnaVO", qnaVO);
 			return "/qna/qnawrite";
 		}
-		// 세션 검증 시 수정해야 함!!!
-		qnaVO.setCrtrId("system01");
+		
+		qnaVO.setCrtrId(employeeVO.getEmpId());
+//		qnaVO.setIsMngr(employeeVO.getEmpId());
+		
 
 		boolean isCreateSuccess = this.qnaService.createNewQna(qnaVO, file);
 		if (isCreateSuccess) {
@@ -144,34 +151,52 @@ public class QnaController {
 	}
 	
 	// 추천하기
-	@ResponseBody
-	@PutMapping("/ajax/qna/recommend/{qaId}")
-	public AjaxResponse doRecommendQna(@PathVariable("qaId") String qaId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO)
-			throws Exception {
-		
-		// 유저 검증
-		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
-			throw new EmployeeNotLoggedInException();
-		}
-		
-		// 추천 여부 검증
-//		if(recommendVO.getCrtrId().contains(employeeVO.getEmpId())) {
-//			throw new Exception("이미 추천을 누르셨습니다.");
+//	@ResponseBody
+//	@PutMapping("/ajax/qna/recommend/{qaId}")
+//	public AjaxResponse doRecommendQna(@PathVariable("qaId") String qaId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO)
+//			throws Exception {
+//		
+//		// 유저 검증
+//		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
+//			throw new EmployeeNotLoggedInException();
 //		}
+//		
+//		// 추천 여부 검증
+////		if(recommendVO.getCrtrId().contains(employeeVO.getEmpId())) {
+////			throw new Exception("이미 추천을 누르셨습니다.");
+////		}
+//		
+//		QnaVO qnaVO = this.qnaService.getOneQna(qaId, false);
+//		
+//		// 이번에 업데이트된 추천수(업데이트 성공 하면 1을 리턴함)
+//		// 쿼리에서 update는 update된 row수를 리턴한다.
+//		// 추천은 1회당 1건에 대해서만 업데이트가 이루어지므로, 성공하면 1이 리턴된다.
+//		int successCount = this.qnaService.recommendOneQna(qaId);
+//
+//		final var result = qnaVO.getQaRecCnt() + successCount;
+//
+//		return new AjaxResponse().append("result", result);
+//	}
+	
+	// 1사원 1추천
+	@ResponseBody
+	@PostMapping("/qna/recommend/{pPostId}")
+	public AjaxResponse getRecommendQna (@PathVariable String pPostId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-		QnaVO qnaVO = this.qnaService.getOneQna(qaId, false);
+		QnaRecommendVO qnaRecommendVO = new QnaRecommendVO();
 		
-		// 이번에 업데이트된 추천수(업데이트 성공 하면 1을 리턴함)
-		// 쿼리에서 update는 update된 row수를 리턴한다.
-		// 추천은 1회당 1건에 대해서만 업데이트가 이루어지므로, 성공하면 1이 리턴된다.
-		int successCount = this.qnaService.recommendOneQna(qaId);
-
-		final var result = qnaVO.getQaRecCnt() + successCount;
-
-		return new AjaxResponse().append("result", result);
+		qnaRecommendVO.setpPostId(pPostId);
+		qnaRecommendVO.setCrtrId(employeeVO.getEmpId());
 		
-
+		boolean isRecommend = qnaService.updateRecommend(qnaRecommendVO);
 		
+		 // 해당 사원이 이미 추천을 했는지 확인
+        if (isRecommend) {
+            return new AjaxResponse().append("result", "추천이 완료되었습니다.").append("resultStatus", true);
+        } else {
+        	return new AjaxResponse().append("result", "이미 추천하셨습니다.").append("resultStatus", false);
+        }
+        
 	}
 	
 	
@@ -182,15 +207,10 @@ public class QnaController {
 		QnaVO qnaVO = this.qnaService.getOneQna(qaId, false);
 		
 		// 유저 검증
-//		 if(!qnaVO.getQaId().equals(employeeVO.getEmpId()) && 
-//			!employeeVO.getAdmnCode().equals(301)) {
-//		 throw new PageNotFoundException();
-//		 }
-		
-		 if(employeeVO == null || 
-			!employeeVO.getAdmnCode().equals(301)) {
-		 throw new PageNotFoundException();
-		 }
+		if (!employeeVO.getEmpId().equals(qnaVO.getCrtrId())
+				&& employeeVO.getMngrYn().equals("N")) {
+			throw new PageNotFoundException();
+			}
 
 		// 게시글의 정보를 화면에 보내준다.
 		model.addAttribute("qnaVO", qnaVO);
@@ -201,16 +221,16 @@ public class QnaController {
 	
 	// 글 수정 작성 페이지
 	@PostMapping("/qna/modify/{qaId}") 
-	public String doKnowledgeModify(@PathVariable String qaId, Model model, @RequestParam MultipartFile file,
+	public String doQnaModify(@PathVariable String qaId, Model model, @RequestParam MultipartFile file,
 			QnaVO qnaVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		QnaVO originqnaVO = this.qnaService.getOneQna(qaId, false);
 
 		// 유저 검증
-//		 if(!originqnaVO.getQaId().equals(employeeVO.getEmpId()) &&
-//			!employeeVO.getAdmnCode().equals(301)) {
-//		 throw new PageNotFoundException();
-//		 }
+		if(!originqnaVO.getCrtrId().equals(employeeVO.getEmpId()) && !
+		 employeeVO.getMngrYn().equals('N')) {
+		 throw new PageNotFoundException();
+		 }
 		
 
 		// 수동 검사 -> Validator로 추후 수정 가능
@@ -243,17 +263,16 @@ public class QnaController {
 	
 	// 삭제
 	@GetMapping("/qna/delete/{qaId}") 
-	public String doKnowledgeDelete(@PathVariable String qaId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
-		boolean isDeleteSuccess = this.qnaService.deleteOneQna(qaId);
-
-		 QnaVO originQnaVO = this.qnaService.getOneQna(qaId, false);
+	public String doQnaDelete(@PathVariable String qaId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		QnaVO originQnaVO = this.qnaService.getOneQna(qaId, false);
 
 		// 유저 검증
-		 if(!originQnaVO.getQaId().equals(employeeVO.getEmpId()) &&
-			!employeeVO.getAdmnCode().equals(301)) {
-		 throw new PageNotFoundException();
-		 }
+		 if (!originQnaVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+				throw new PageNotFoundException();
+			}
+		 
+		boolean isDeleteSuccess = this.qnaService.deleteOneQna(qaId);
 
 		if (isDeleteSuccess) {
 			logger.info("게시글 삭제 성공!");
@@ -270,7 +289,7 @@ public class QnaController {
 		@PostMapping("/ajax/qna/delete/massive")
 		public AjaxResponse doDeleteMassive(@RequestParam ("deleteItems[]") List<String> deleteItems, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 			
-			if (employeeVO.getAdmnCode().equals(301)) {
+			if (employeeVO.getMngrYn().equals("N")) {
 				throw new PageNotFoundException();
 			}
 			

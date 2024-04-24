@@ -30,7 +30,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <input type="text" id="prjName" name="prjName" value="${project.prjName}"/>
   
           <!-- <label for="crtrId">작성인</label> -->
-          <input type="hidden" id="crtrId" name="crtrId" value="0005020" />
+          <!-- select ? -->
+          <input type="hidden" id="crtrId" name="crtrId" value="${crtrId}" />
   
           <!-- <label for="crtDt">작성 날짜</label> -->
           <input type="hidden" name="crtDt" value="" />

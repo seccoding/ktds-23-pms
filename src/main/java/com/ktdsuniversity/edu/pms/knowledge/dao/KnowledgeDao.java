@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.knowledge.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
 
@@ -24,6 +25,12 @@ public interface KnowledgeDao {
 	public int deleteOneKnowledge(String knlId);
 
 	public int recommendOneKnowledge(String knlId);
+	
+	public KnowledgeRecommendVO selectOneRecommend(KnowledgeRecommendVO knowledgeRecommendVO);
+
+	public int insertOneRecommend(KnowledgeRecommendVO knowledgeRecommendVO);
+
+	public int selectOneRecommendCount(String knlId);
 
 	public int searchAllKnowledgeCount(SearchKnowledgeVO searchKnowledgeVO);
 
@@ -33,9 +40,6 @@ public interface KnowledgeDao {
 
 	public int deleteManyKnowledge(List<String> deleteItems);
 
-	public KnowledgeVO findById(String getpPostId);
-
-	public void save(KnowledgeVO knowledge);
 
 
 

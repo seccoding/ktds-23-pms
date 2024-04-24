@@ -56,6 +56,35 @@ $().ready(function () {
     }
   });
 
+
+  $(".selected-change-apply").on("click", function () {
+    var url = "/ajax/product/apply";
+
+    var changeApplyPrdts = $(".target-checkbox:checked");
+    
+    var param = {};
+
+    changeApplyPrdts.each(function (index, data) {
+      param["borrowList[" + index + "].brrwHistId"] = $(data).val(); // 대여이력 ID
+      param["borrowList[" + index + "].prdtMngId"] = $(data).data("prdtmgid"); // 비품관리 ID
+      param["borrowList[" + index + "].productVO.prdtName"] = $(data).data("productName"); // 비품명
+    });
+
+    $.post(url, param, function (res) {
+      var result = res.data.isSuccess;
+      if (result) {
+        alert("선택한 항목의 변경신청이 완료되었습니다.");
+      } else {
+        alert("선택한 항목의 변경신청 처리 중 오류가 발생하였습니다.");
+      }
+      location.href = res.data.next;
+    });
+
+    alert("!");
+
+  });
+
+
   $(".selected-return").on("click", function () {
     var brrwProducts = $(".target-checkbox:checked");
     console.log(brrwProducts);

@@ -16,6 +16,15 @@ public class SearchBorrowVO extends PaginateVO {
 	
 	private ProductManagementVO productManagementVO;
 	
+	private BorrowVO borrowVO;
+	
+	
+	public BorrowVO getBorrowVO() {
+		return borrowVO;
+	}
+	public void setBorrowVO(BorrowVO borrowVO) {
+		this.borrowVO = borrowVO;
+	}
 	public ProductManagementVO getProductManagementVO() {
 		return productManagementVO;
 	}

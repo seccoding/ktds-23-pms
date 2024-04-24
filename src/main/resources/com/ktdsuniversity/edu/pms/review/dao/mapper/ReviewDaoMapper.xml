@@ -29,6 +29,8 @@
 			<id column="PRJ_TM_ID" property="prjTmId" />
 			<result column="TM_ID" property="tmId" />
 			<result column="ROLE" property="role" />
+			<result column="RV_YN" property="rvYn" />
+			
 		</association>
 		<association property="employeeVO"
 					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
@@ -104,6 +106,8 @@
 	        FROM PROJECT p
 	        JOIN DEPARTMENT d
 	          ON p.DEPT_ID = d.DEPT_ID  
+	        LEFT JOIN PROJECT_TEAMMATE PT 
+	          ON P.PRJ_ID  = PT.PRJ_ID 
 	       WHERE p.DEL_YN = 'N' 
 	         AND p.PRJ_STS = '409'
 	         <if test='searchKeyword != null and searchKeyword !=""'>
@@ -119,14 +123,27 @@
 					</when>
 				</choose>
 			</if>
-  
+  <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+            <choose>
+                <when test='employeeVO.admnCode == "301"'>
+                </when>
+                <otherwise>
+                    AND p.PRJ_ID IN (
+                    SELECT PRJ_ID
+                    FROM PROJECT_TEAMMATE pt
+                    WHERE pt.TM_ID = #{employeeVO.empId}
+                    AND pt.DEL_YN = 'N'
+                    )
+                </otherwise>
+            </choose>
+        </if>
    </select>
 	
 	<select id="searchReview" 
 	        parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO" 
 	        resultMap="ReviewVOMap">
 		<include refid ="Common.pagenate_header"/>
-		SELECT DISTINCT p.PRJ_ID
+		  SELECT DISTINCT p.PRJ_ID
 	          , p.PRJ_NAME
 	          , p.CLNT_INFO
 	          , p.DEPT_ID
@@ -134,9 +151,12 @@
 	          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
 	          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
 	          , d.DEPT_NAME
+	          , PT.RV_YN 
 	        FROM PROJECT p
 	        JOIN DEPARTMENT d
 	          ON p.DEPT_ID = d.DEPT_ID  
+	        LEFT JOIN PROJECT_TEAMMATE PT 
+	          ON P.PRJ_ID  = PT.PRJ_ID 
 	       WHERE p.DEL_YN = 'N' 
 	         AND p.PRJ_STS = '409'
 	         <if test='searchKeyword != null and searchKeyword !=""'>
@@ -152,7 +172,20 @@
 					</when>
 				</choose>
 			</if>
-	       
+	        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+            <choose>
+                <when test='employeeVO.admnCode == "301"'>
+                </when>
+                <otherwise>
+                    AND p.PRJ_ID IN (
+                    SELECT PRJ_ID
+                    FROM PROJECT_TEAMMATE pt
+                    WHERE pt.TM_ID = #{employeeVO.empId}
+                    AND pt.DEL_YN = 'N'
+                    )
+                </otherwise>
+            </choose>
+        </if>
     	<include refid ="Common.pagenate_footer"/>
 	</select>
 

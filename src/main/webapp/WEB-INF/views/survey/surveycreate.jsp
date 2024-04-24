@@ -30,7 +30,7 @@
 <body>
     <h1>설문 작성</h1>
     <form>
-        <div class="survey-body" data-prj-id="${surveyQuestionVO.prjId}" data-srv-sts="${surveyQuestionVO.srvSts}"></div>
+        <div class="survey-body" data-prj-id="${projectVO.prjId}" data-srv-sts="${surveyQuestionVO.srvSts}"></div>
     </form>
     <button id="btn-add-srv-qst">문항 추가</button>
     <button id="btn-compl-srv">설문 완성</button>

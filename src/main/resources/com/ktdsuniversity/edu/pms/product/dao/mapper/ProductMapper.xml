@@ -174,4 +174,33 @@
 		WHERE PRDT_NAME = #{prdtName}
 	</update>
 	
+	<!-- YSH0424 -->
+	<select id="selectPrdtIdByPrdtName" 
+			parameterType="string" 
+			resultType="string">
+		SELECT PRDT_ID 
+		  FROM PRODUCT
+		 WHERE PRDT_NAME = #{productVO.prdtName}
+	</select>
+	
+	<select id="selectPrdtMngIdByPrdtId" 
+			parameterType="string" 
+			resultType="string">
+		SELECT PRDT_MNG_ID
+		  FROM PRODUCT_MANAGEMENT
+		 WHERE PRDT_ID = #{_parameter}
+	</select>
+	
+	<select id="getAllProductName" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT DISTINCT PRDT_NAME, 1
+		  FROM PRODUCT
+	</select>
+	
+	<select id="getProductCurstr" parameterType="string" resultType="_int">
+		SELECT CUR_STR
+		  FROM PRODUCT
+		 WHERE PRDT_NAME = #{_parameter}
+	</select>
+	
+	
 </mapper>

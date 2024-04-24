@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
 
@@ -17,7 +18,11 @@ public interface KnowledgeService {
 	public KnowledgeVO getOneKnowledge(String knlId, boolean isIncrease);
 	
 	// 추천
-	public int recommendOneKnowledge(String knlId);
+//	public int recommendOneKnowledge(String knlId);
+	
+	boolean updateRecommend(KnowledgeRecommendVO knowledgeRecommendVO);
+
+	public int getKnowledgeRecommendCount(String knlId);
 
 	public boolean createNewKnowledge(KnowledgeVO knowledgeVO, MultipartFile file);
 

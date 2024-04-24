@@ -21,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
+import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeDao;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeListVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
 
@@ -109,11 +111,29 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	
 	@Transactional
 	@Override
-	public int recommendOneKnowledge(String knlId) {
+	public boolean updateRecommend(KnowledgeRecommendVO knowledgeRecommendVO) {
+		// knowledgeRecommendVO를 파라미터로 하나의 추천 정보를 가져온다.
+		KnowledgeRecommendVO originKnowledgeRecommendVO = knowledgeDao.selectOneRecommend(knowledgeRecommendVO);
 		
-		KnowledgeVO originKnowledge = this.knowledgeDao.selectOneKnowledge(knlId);
+		if(originKnowledgeRecommendVO == null) {
+//			추천한 기록이 없으면 실행됨
+			boolean isInsert = knowledgeDao.insertOneRecommend(knowledgeRecommendVO) > 0;
+			
+			if (isInsert) {
+				boolean isRecommend = knowledgeDao.recommendOneKnowledge(knowledgeRecommendVO.getpPostId()) > 0;
+				return isRecommend;
+			} else {
+				throw new CreationException();
+			}
+		} else {
+//			기존에 추천 기록이 있다.
+			return false;
+		}
+	}
 
-		return this.knowledgeDao.recommendOneKnowledge(knlId);
+	@Override
+	public int getKnowledgeRecommendCount(String knlId) {
+		return knowledgeDao.selectOneRecommendCount(knlId);
 	}
 
 	@Transactional

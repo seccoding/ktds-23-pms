@@ -89,6 +89,7 @@ public class MemoController {
 	 */
 	@PostMapping("/memo/write")
 	public String doMemoWrite(@RequestParam String rcvId,
+			@RequestParam String memoTtl,
 			@RequestParam String memoCntnt,
 			Model model,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
@@ -96,6 +97,7 @@ public class MemoController {
 		memoVO.setEmpId(employeeVO.getEmpId());
 		memoVO.setRcvId(rcvId);
 		memoVO.setMemoCntnt(memoCntnt);
+		memoVO.setMemoTtl(memoTtl);
 		boolean isCreateSuccess = this.memoService.writeNewMemo(memoVO);
 		if(isCreateSuccess) {
 			logger.info("쪽지 쓰기 성공!");
@@ -139,8 +141,9 @@ public class MemoController {
 	
 	@ResponseBody
 	@GetMapping("/ajax/memo/save/{id}")
-	public AjaxResponse saveMemo(@PathVariable String id) {
-		return new AjaxResponse().append("result", memoService.saveOneMemo(id));
+	public AjaxResponse saveMemo(@PathVariable String id,@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		String empId = employeeVO.getEmpId();
+		return new AjaxResponse().append("result", memoService.saveOneMemo(id, empId));
 	}
 	
 }

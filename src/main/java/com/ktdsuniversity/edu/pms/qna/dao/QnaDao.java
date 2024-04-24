@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.qna.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaVO;
 import com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO;
 
@@ -32,6 +33,14 @@ public interface QnaDao {
 	public int searchAllQnaCount(SearchQnaVO searchQnaVO);
 
 	public List<QnaVO> searchAllQna(SearchQnaVO searchQnaVO);
+
+	public int insertOneRecommend(QnaRecommendVO qnaRecommendVO);
+
+	public QnaRecommendVO selectOneRecommend(QnaRecommendVO qnaRecommendVO);
+
+	public int selectOneRecommendCount(String qaId);
+
+
 	
 	
 

@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.product.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
@@ -61,6 +62,35 @@ public interface ProductDao {
 	
 	// PSH0422
 	public int changeOnePrdtStored(String prdtName);
+
+	
+	// YSH0424
+	
+	/**
+	 * 비품명으로 비품ID 조회
+	 * @return
+	 */
+	public String selectPrdtIdByPrdtName(String productName);
+
+	/**
+	 * 비품ID로 비품관리 ID 조회
+	 * @param prdtIdByprdtName
+	 * @return
+	 */
+	public List<String> selectPrdtMngIdByPrdtId(String prdtIdByprdtName);
+
+	/**
+	 * 모든 비품명을 중복없이 조회
+	 * @return
+	 */
+	public List<ProductVO> getAllProductName();
+
+	/**
+	 * 비품명으로 해당 비품의 수량을 조회
+	 * @param namevalue
+	 * @return
+	 */
+	public int getProductCurstr(String namevalue);
 
 	
 

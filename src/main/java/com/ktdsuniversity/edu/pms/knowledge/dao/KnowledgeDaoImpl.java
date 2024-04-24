@@ -7,6 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeRecommendVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO;
 import com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO;
 
@@ -67,6 +68,24 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 	public int recommendOneKnowledge(String knlId) {
 		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".recommendOneKnowledge", knlId);
 	}
+	
+	// 추천
+	@Override
+	public KnowledgeRecommendVO selectOneRecommend(KnowledgeRecommendVO knowledgeRecommendVO) {
+		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE + ".selectOneRecommend", knowledgeRecommendVO);
+	}
+	
+	// 추천
+	@Override
+	public int insertOneRecommend(KnowledgeRecommendVO knowledgeRecommendVO) {
+		return getSqlSession().insert(KnowledgeDao.NAME_SPACE + ".insertOneRecommend", knowledgeRecommendVO);
+	}
+
+	// 추천
+	@Override
+	public int selectOneRecommendCount(String knlId) {
+		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE + ".selectOneRecommendCount", knlId);
+	}
 
 
 	@Override
@@ -92,40 +111,6 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 
 		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".deleteManyKnowledge", deleteItems);
 	}
-
-
-	@Override
-	public KnowledgeVO findById(String getpPostId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public void save(KnowledgeVO knowledge) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

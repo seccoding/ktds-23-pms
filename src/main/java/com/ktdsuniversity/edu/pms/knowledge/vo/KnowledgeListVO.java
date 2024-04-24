@@ -15,6 +15,7 @@ public class KnowledgeListVO {
 	 */
 	private List<KnowledgeVO> knowledgeList;
 
+	private KnowledgeRecommendVO knowledgeRecommendVO;
 
 	public int getKnowledgeCnt() {
 		return knowledgeCnt;
@@ -34,6 +35,17 @@ public class KnowledgeListVO {
 	public void setKnowledgeList(List<KnowledgeVO> knowledgeList) {
 		this.knowledgeList = knowledgeList;
 	}
+
+
+	public KnowledgeRecommendVO getKnowledgeRecommendVO() {
+		return knowledgeRecommendVO;
+	}
+
+
+	public void setKnowledgeRecommendVO(KnowledgeRecommendVO knowledgeRecommendVO) {
+		this.knowledgeRecommendVO = knowledgeRecommendVO;
+	}
+	
 	
 	
 

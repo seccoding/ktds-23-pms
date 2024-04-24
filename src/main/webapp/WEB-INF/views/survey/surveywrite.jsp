@@ -15,7 +15,7 @@
         padding: 10px;
         
     }
-    .survey-question {
+    /* .survey-question {
         display: flex;
         flex-direction: column;
     }
@@ -24,13 +24,13 @@
     }
     .survey-question-bottom > ul > li > div {
         display: inline-block;
-    }
+    } */
 </style>
 </head>
 <body>
     <h1>설문 작성</h1>
     <div class="survey-body" data-prj-id="${surveyQuestionVO.prjId}">
-        <div></div>
+        <div class="survey-question"></div>
         <button id="next-srv-btn">다음</button>
     </div>
 </body>
