@@ -17,9 +17,61 @@ public class MemoVO {
 	private String crtrSave;
 
 	private EmployeeVO employeeVO;
+	private String rcvEmail;
+	private String rcvName;
+	private String crtrEmail;
+	private String crtrName;
+	private String empId;
 	private String email;
 	private String empName;
-	private String empId;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
+	public String getRcvEmail() {
+		return rcvEmail;
+	}
+
+	public void setRcvEmail(String rcvEmail) {
+		this.rcvEmail = rcvEmail;
+	}
+
+	public String getRcvName() {
+		return rcvName;
+	}
+
+	public void setRcvName(String rcvName) {
+		this.rcvName = rcvName;
+	}
+
+	public String getCrtrEmail() {
+		return crtrEmail;
+	}
+
+	public void setCrtrEmail(String crtrEmail) {
+		this.crtrEmail = crtrEmail;
+	}
+
+	public String getCrtrName() {
+		return crtrName;
+	}
+
+	public void setCrtrName(String crtrName) {
+		this.crtrName = crtrName;
+	}
 
 	public String getMemoId() {
 		return memoId;
@@ -115,22 +167,6 @@ public class MemoVO {
 
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getEmpName() {
-		return empName;
-	}
-
-	public void setEmpName(String empName) {
-		this.empName = empName;
 	}
 
 	public String getEmpId() {

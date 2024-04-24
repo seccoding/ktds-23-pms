@@ -80,7 +80,7 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 	}
 
 	@Override
-	public int saveOneMemo(String memoId) {
+	public int saveOneMemo(String memoId, String empId) {
 		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".saveOneMemo", memoId);
 	}
 

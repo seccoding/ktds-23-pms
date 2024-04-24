@@ -1,8 +1,19 @@
 $().ready(function () {
+  $(".modal-close").on("click", function () {
+    location.reload();
+  });
+
   $(".delete-button").click(function () {
     const id = $(this).parent("div").parent("div").data("id");
 
-    if (confirm("쪽지를 삭제하시겠습니까?")) {
+    var alertModal = $(".modal-window");
+    var modalButton = $(".confirm-button");
+    var modalText = $(".modal-text");
+    modalText.text("쪽지를 삭제하시겠습니까?");
+    modalButton.text("확인");
+    alertModal[0].showModal();
+
+    $(".confirm-button").on("click", function () {
       $.ajax({
         url: "/ajax/memo/delete/" + id,
         type: "GET",
@@ -36,7 +47,7 @@ $().ready(function () {
           console.log("complete...");
         },
       });
-    }
+    });
   });
 
   $(".list-button").click(function () {
@@ -56,7 +67,14 @@ $().ready(function () {
   $(".save-button").click(function () {
     const id = $(this).parent("div").parent("div").data("id");
 
-    if (confirm("쪽지를 저장하시겠습니까?")) {
+    var alertModal = $(".modal-window");
+    var modalButton = $(".confirm-button");
+    var modalText = $(".modal-text");
+    modalText.text("쪽지를 저장하시겠습니까?");
+    modalButton.text("확인");
+    alertModal[0].showModal();
+
+    $(".confirm-button").click(function () {
       $.ajax({
         url: "/ajax/memo/save/" + id,
         type: "GET",
@@ -78,6 +96,6 @@ $().ready(function () {
           console.log("complete...");
         },
       });
-    }
+    });
   });
 });
