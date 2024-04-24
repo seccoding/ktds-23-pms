@@ -24,7 +24,6 @@ public class KnowledgeVO {
 	// file - 난독화X
 	private String originFileName;
 	
-	
 //	클래스를 선언
 	private RequirementVO requirementVO; 
 	
@@ -33,6 +32,8 @@ public class KnowledgeVO {
 	private EmployeeVO employeeVO;
 	
 	private CommonCodeVO commonCodeVO;
+	
+	private KnowledgeRecommendVO knowledgeRecommendVO;
 	
 	public String getKnlId() {
 		return knlId;
@@ -136,6 +137,10 @@ public class KnowledgeVO {
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
 	}
-
-	
+	public KnowledgeRecommendVO getKnowledgeRecommendVO() {
+		return knowledgeRecommendVO;
+	}
+	public void setKnowledgeRecommendVO(KnowledgeRecommendVO knowledgeRecommendVO) {
+		this.knowledgeRecommendVO = knowledgeRecommendVO;
+	}
 }

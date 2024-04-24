@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeDao;
+import com.ktdsuniversity.edu.pms.qna.vo.QnaRecommendVO;
 import com.ktdsuniversity.edu.pms.qna.vo.QnaVO;
 import com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO;
 
@@ -47,7 +48,7 @@ public class QnaDaoImpl extends SqlSessionDaoSupport implements QnaDao {
 
 	@Override
 	public int updateOneQna(QnaVO qnaVO) {
-		return getSqlSession().update(QnaDao.NAME_SPACE + ".updateOneKnowledge", qnaVO);
+		return getSqlSession().update(QnaDao.NAME_SPACE + ".updateOneQna", qnaVO);
 	}
 	
 	@Override
@@ -79,6 +80,23 @@ public class QnaDaoImpl extends SqlSessionDaoSupport implements QnaDao {
 	public List<QnaVO> searchAllQna(SearchQnaVO searchQnaVO) {
 		return getSqlSession().selectList(QnaDao.NAME_SPACE + ".searchAllQna", searchQnaVO);
 	}
+
+	@Override
+	public int insertOneRecommend(QnaRecommendVO qnaRecommendVO) {
+		return getSqlSession().insert(QnaDao.NAME_SPACE + ".insertOneRecommend", qnaRecommendVO);
+	}
+
+	@Override
+	public QnaRecommendVO selectOneRecommend(QnaRecommendVO qnaRecommendVO) {
+		return getSqlSession().selectOne(QnaDao.NAME_SPACE + ".selectOneRecommend", qnaRecommendVO);
+	}
+
+	@Override
+	public int selectOneRecommendCount(String qaId) {
+		return getSqlSession().selectOne(QnaDao.NAME_SPACE + ".selectOneRecommendCount", qaId);
+	}
+
+
 
 	
 	

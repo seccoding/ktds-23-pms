@@ -44,7 +44,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div >${knowledgeVO.knlCnt}</div>
 
       <label for="knlRecCnt">추천수</label>
-      <div id="knlRecCnt">${recommendCount}</div>
+      <div id="knlRecCnt">${knowledgeVO.knlRecCnt}</div>
 
       <div class="btn-group">
         <button type="button" class= "recommend-knowledge" value="${knowledgeVO.knlId}">
