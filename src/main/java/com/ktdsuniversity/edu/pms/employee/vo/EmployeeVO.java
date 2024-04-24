@@ -1,8 +1,8 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
-import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
@@ -11,6 +11,7 @@ import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class EmployeeVO {
+
 
 
     private String empId;
@@ -46,6 +47,8 @@ public class EmployeeVO {
     private String originPrflFileName; 
 
 
+
+	
 	public DepartmentHistoryVO getDepartmentHistoryVO() {
 		return departmentHistoryVO;
 	}

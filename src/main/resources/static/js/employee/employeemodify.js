@@ -1,6 +1,6 @@
 $().ready(function () {
     
-    var empId = $("#empId").val()
+    var empId = $("#empId").text()
     var canAdd = true;
     
     $.get("/ajax/employee/modify?empId="+empId, {
@@ -112,7 +112,7 @@ $().ready(function () {
         console.log(willAddList)
         willAddList.empId = empId
         willAddList.empName = $("#empName").val()
-        willAddList.workSts = $("#workSts").val()
+        willAddList.workSts = $("#workSts").attr("id")
         willAddList.hireYear = $("#hireYear").val()
         willAddList.hireDt = $("#hireDt").val()
         willAddList.deptId = $("#dept-select option:selected").val()

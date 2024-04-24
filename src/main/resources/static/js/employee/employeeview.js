@@ -27,7 +27,7 @@ $().ready(function (){
             tdDom.text(item.deptEndDt)
             trDom.append(tdDom)
             tdDom.text(item.cnNote)
-            trDom.append(tdDomd)
+            trDom.append(tdDom)
             body.append(trDom)
         }
     })
