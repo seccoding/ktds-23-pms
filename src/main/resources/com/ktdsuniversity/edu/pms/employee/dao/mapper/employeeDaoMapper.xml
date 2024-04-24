@@ -264,6 +264,7 @@
 		 (EMP_ID
 		, EMP_NAME
 		, PRFL
+		, ORIGIN_PRFL_FILE_NAME
 		, HIRE_DT
 		, CNTCT
 		, ADDR
@@ -279,6 +280,7 @@
 		 (#{empId}
 		, #{empName}
 		, #{prfl}
+		, #{originPrflFileName}
 		, #{hireDt}
 		, #{cntct}
 		, #{addr}

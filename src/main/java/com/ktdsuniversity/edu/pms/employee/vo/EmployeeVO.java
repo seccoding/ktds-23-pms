@@ -12,35 +12,39 @@ import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class EmployeeVO {
 
-	private String empId;
-	private String empName;
-	private String workSts;
-	private int salYear;
-	private String prfl;
-	private String hireDt;
-	private String hireYear;
-	private String endDt;
-	private String restStDt;
-	private String restEndDt;
-	private String cntct;
-	private String addr;
-	private String brth;
-	private String email;
-	private String mngrYn;
-	private String admnCode;
-	private String deptId;
-	private String jobId;
-	private String pstnId;
-	private String pwd;
-	private String salt;
-	private int lgnTry;
-	private String pwdCnDt;
-	private String lgnTryDt;
-	private String lgnYn;
-	private String fileName;
-	private DepartmentVO departmentVO;
-	private CommonCodeVO commonCodeVO;
-	private DepartmentHistoryVO departmentHistoryVO;
+
+    private String empId;
+    private String empName;
+    private String workSts;
+    private int salYear;
+    private String prfl;
+    private String hireDt;
+    private String hireYear;
+    private String endDt;
+    private String restStDt;
+    private String restEndDt;
+    private String cntct;
+    private String addr;
+    private String brth;
+    private String email;
+    private String mngrYn;
+    private String admnCode;
+    private String deptId;
+    private String jobId;
+    private String pstnId;
+    private String pwd;
+    private String salt;
+    private int lgnTry;
+    private String pwdCnDt;
+    private String lgnTryDt;
+    private String lgnYn;
+    private String fileName;
+    private DepartmentVO departmentVO;
+    private CommonCodeVO commonCodeVO;
+    private DepartmentHistoryVO departmentHistoryVO;
+    
+    private String originPrflFileName; 
+
 
 	public DepartmentHistoryVO getDepartmentHistoryVO() {
 		return departmentHistoryVO;
@@ -321,5 +325,15 @@ public class EmployeeVO {
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
 	}
+
+	public String getOriginPrflFileName() {
+		return originPrflFileName;
+	}
+
+	public void setOriginPrflFileName(String originPrflFileName) {
+		this.originPrflFileName = originPrflFileName;
+	}
+	
+	
 
 }

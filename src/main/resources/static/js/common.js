@@ -52,7 +52,9 @@ $().ready(function () {
     window.location.pathname === "/" || window.location.pathname === "";
   window.name = isMainLayout ? "main" : "sub";
   sessionTimer();
-  if (!isMainLayout) {
+
+  if (!isMainLayout && window.parent.getLocationPathInFrame) {
+
     var framePath = window.parent.getLocationPathInFrame();
     
     // 자동 로그아웃되어서 로그인 페이지가 iframe에 보여질 경우
@@ -222,6 +224,7 @@ function menuAnchorClickHandler(event, target) {
   menuTabItem.attr("data-menu-id", menuId);
   menuTabItem.attr("id", menuId);
 
+
   if (menuUrl !== "/main/dashboard") {
 	var menuTabCloseButton = $("<span>X</span>");
 	  menuTabCloseButton.addClass("close-tab");
@@ -262,6 +265,49 @@ function menuAnchorClickHandler(event, target) {
 	  });
 	  menuTabItem.append(menuTabCloseButton);
   }
+
+  var menuTabCloseButton = $("<span>X</span>");
+  menuTabCloseButton.addClass("close-tab");
+  menuTabCloseButton.css({
+	"display": "inline-block"
+  });
+  menuTabCloseButton.on("click", function () {
+    var tabItemLength = menuTabList.find("li").length;
+    if (tabItemLength == 1) {
+      return;
+    }
+
+    var clickedTabItem = $(this).closest("li");
+    clickedTabItem.remove();
+    frameList
+      .find("li[data-menu-id=" + clickedTabItem.data("menu-id") + "]")
+      .remove();
+
+    menuTabQueue = menuTabQueue.filter((id) => id != menuId);
+
+    var tabs = [];
+    menuTabList.find("li").each(function () {
+      tabs.push($(this).data("menu-id"));
+    });
+    sessionStorage.setItem("activetabs", tabs);
+
+    var latestMenuId = menuTabQueue[menuTabQueue.length - 1];
+    menuTabList.find("li[data-menu-id=" + latestMenuId + "]").click();
+
+    var itemTotalWidth = 0;
+    menuTabList.find("li").each(function () {
+      itemTotalWidth += $(this).outerWidth(true);
+    });
+
+    var needScroll = itemTotalWidth > $(".frame-list").innerWidth();
+    if (needScroll) {
+      $(".menu-tab-prev, .menu-tab-next").show();
+    } else {
+      $(".menu-tab-prev, .menu-tab-next").hide();
+    }
+  });
+  menuTabItem.append(menuTabCloseButton);
+
 
   menuTabItem.on("click", function () {
     var menuId = $(this).data("menu-id");

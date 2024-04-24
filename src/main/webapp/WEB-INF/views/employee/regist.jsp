@@ -21,7 +21,7 @@
 				input[type="date"],
 				input[type="file"] {
 					width: 85%;
-					min-width: 385px;
+					min-width: 431px;
 					max-width: 600px;
 					height: 2rem;
 					border: 0;
@@ -42,19 +42,18 @@
 					vertical-align: middle;
 					border-radius: 0.3rem;
 					user-select: none;
-					/* 드래그 금지 */
 					margin: 0.3rem;
 				}
 
 				input[type="checkbox"]:checked {
-					/* 체크되었을 때 */
 					background: var(--btn-color);
 				}
 
 				input[type="checkbox"]:disabled {
-					/* 체크되었을 때 */
 					background: var(--secondary);
 				}
+				
+				
 
 			</style>
 
@@ -63,12 +62,12 @@
 		</head>
 
 		<body>
-			<div class="header">
-				<h2>홈페이지 로고 + 회원가입</h2>
-				<div>경영지원부 소속 사원들만 회원가입을 진행 할 수 있습니다</div>
+			<div>
+				<h2>사원등록</h2>
+				
 			</div>
 			<div class="content">
-				<form id="registForm" method="post">
+				<form id="registForm" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="next" id="next" value="${nextUrl}" />
 					<div class="grid">
 						<div class="empId">
@@ -101,7 +100,7 @@
 							<label for="prfl">프로필 사진: </label>
 						</div>
 						<div>
-							<input id="prfl" type="file" name="prfl" value="${employeeVO.prfl}" />
+							<input id="prfl" type="file" name="prfl"/>
 						</div>
 						<div>
 							<label for="cntct">연락처: </label>
