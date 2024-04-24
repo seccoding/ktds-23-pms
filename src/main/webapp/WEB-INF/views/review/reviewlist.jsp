@@ -36,6 +36,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <body>
   <div>
    세션값: ${sessionScope._LOGIN_USER_.mngrYn}
+   isPm : ${isPM}
+   isRVY : ${isRVY}
   </div>
     <div>
       <table class="table">
@@ -65,7 +67,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <c:forEach items="${reviewlist.reviewList}" var="review">
                 <tr>
 	              <c:choose>
-				    <c:when test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isRVY}">
+				    <c:when test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || 
+				    review.projectTeammateVO.rvYn eq 'Y'}">
 				          <td>${review.projectVO.prjName}</td>
 				    </c:when>
 				       <c:otherwise>
