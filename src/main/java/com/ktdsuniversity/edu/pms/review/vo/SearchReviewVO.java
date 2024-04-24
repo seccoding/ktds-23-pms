@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.review.vo;
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public class SearchReviewVO extends PaginateVO {
 
@@ -7,16 +8,7 @@ public class SearchReviewVO extends PaginateVO {
 	private String prjId;
     private String searchType;
     private String searchKeyword;
-    String empId;
-
-    
-    public String getEmpId() {
-		return empId;
-	}
-
-	public void setEmpId(String empId) {
-		this.empId = empId;
-	}
+    private EmployeeVO employeeVO;
 
 	public String getSearchType() {
         return searchType;
@@ -41,4 +33,12 @@ public class SearchReviewVO extends PaginateVO {
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
     }
+
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
+	}
 }

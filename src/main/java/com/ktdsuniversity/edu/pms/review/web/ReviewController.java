@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
@@ -52,14 +53,33 @@ public class ReviewController {
 		if (tmList.size()>0) { // PM인 경우
 		    isPM = true;
 		}
+//		
+//		List<ProjectTeammateVO> tYList =this.projectService.getAllProjectTeammateByProjectId(id).stream()
+//				.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
+//				.filter(tm->tm.getRvYn().equals("Y"))
+//				.toList();
+//				boolean isRVY = false;
+//				
+//				if (tYList.size()>0) { // rvYn = Y 일 경우
+//					isRVY = true;
+//				}
+		
+		
+		
+		
+		searchReviewVO.setEmployeeVO(employeeVO);
 		
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
 		model.addAttribute("reviewlist", reviewListVO);
 		model.addAttribute("SearchReviewVO", searchReviewVO);
 		model.addAttribute("isPM", isPM);
+//		.addAttribute("isRVY", isRVY);
 
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
 	}
+	
+	
+	
 	
 	@GetMapping("/review/viewresult")
 	public String viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) {
@@ -76,23 +96,30 @@ public class ReviewController {
 	@GetMapping("/review/prjId/{id}/write")
 	public String viewReviewWritePage(@PathVariable String id, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
-		List<ProjectTeammateVO> tmList =this.projectService.getAllProjectTeammate().stream()
+		List<ProjectTeammateVO> tmList =this.projectService.getAllProjectTeammateByProjectId(id).stream()
 		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
-//		.filter(tm->tm.getRvYn().equals("Y"))
+		.filter(tm->tm.getRvYn().equals("Y"))
 		.toList();
 		boolean isRVY = false;
 		
 		if (tmList.size()>0) { // rvYn = Y 일 경우
 			isRVY = true;
-			model.addAttribute("isRVY", isRVY);
 		}
 		
 		if( employeeVO.getMngrYn().equals("N")) {
 			ProjectVO projectVO = projectService.getOneProject(id);
 			model.addAttribute("project", projectVO);
 		}
+		model.addAttribute("crtrId", employeeVO.getEmpId());
+		model.addAttribute("employeeVO", employeeVO);
+		model.addAttribute("isRVY", isRVY);
+		
+		
 		return "review/reviewwrite"; // reviewList.jsp 파일 이름
 	}
+	
+	
+	
 	
 	/*
 	 * 사용자가 후기를 작성하는 페이지
@@ -100,8 +127,17 @@ public class ReviewController {
 	 *   '저장'버튼을 누른 이후 후기는 수정할 수 없음
 	 */
 	@PostMapping("/review/write")
-	public String ReviewWritePage(Model model, ReviewVO reviewVO, ProjectTeammateVO projectTeammateVO) {
+	public String ReviewWritePage(Model model, ReviewVO reviewVO, ProjectTeammateVO projectTeammateVO,  @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		
+		projectTeammateVO.setTmId(employeeVO.getEmpId());
+		
+		this.projectService.updateReviewStatus(projectTeammateVO);
 		this.reviewService.insertNewReview(reviewVO);
+		
+		model.addAttribute("projectTeammateVO", projectTeammateVO);
+		model.addAttribute("employeeVO", employeeVO);
+		model.addAttribute("reviewVO", reviewVO);
+
 //		this.reviewService.insertReviewRvYn(projectTeammateVO);
 //		logger.debug(">>>>>>>>> {}", reviewVO);
 		return "redirect:/review"; 
