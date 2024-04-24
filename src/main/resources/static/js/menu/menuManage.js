@@ -11,7 +11,7 @@ $().ready(function () {
         $("#newMainMenu").attr("data-mode", "new");
     }
 
-    function reloadMainMenu()  {
+    function reloadMainMenu() {
         $.get("/ajax/menu/reload", function (response) {
             var menuTable = $(".main-menu").find("tbody");
             menuTable.html("");
@@ -271,7 +271,11 @@ $().ready(function () {
         } else {
             $.post(
                 "/ajax/menu/new",
-                { id: $("#mainId").val(), name: $("#mainMenuName").val(), role: $("#mainRole").val() },
+                {
+                    id: $("#mainId").val(),
+                    name: $("#mainMenuName").val(),
+                    role: $("#mainRole").val()
+                },
                 function (response) {
                     if (response.data.result) {
                         $("#mainId").attr("disabled", "disabled");
@@ -283,48 +287,81 @@ $().ready(function () {
         }
     });
 
-    $("#newSubCode").on("click", function () {
-        $("#subCmcdId").removeAttr("disabled");
+    $("#newSubMenu").on("click", function () {
+        $("#subId").removeAttr("disabled");
         var newButton = $(this);
         var mode = newButton.attr("data-mode");
 
         if (mode === "new") {
-            clearSubCodeInfo();
+            clearSubMenuInfo();
             newButton.attr("data-mode", "save");
-            $("#subCmcdPid").val($("#cmcdId").val());
-            $("#subCmcdId").focus();
-            $("#newSubCode").text("저장");
+            $("#subParent").val($("#mainId").val());
+            $("#subId").focus();
+            $("#newSubMenu").text("저장");
         } else {
             $.post(
-                "/ajax/commoncode/new",
+                "/ajax/menu/new",
                 {
-                    cmcdId: $("#subCmcdId").val(),
-                    cmcdName: $("#subCmcdName").val(),
-                    cmcdPid: $("#cmcdId").val(),
+                    id: $("#subId").val(),
+                    name: $("#subMenuName").val(),
+                    role: $("#subRole").val(),
+                    url: $("#subUrl").val(),
+                    parent: $("#subParent").val(),
                 },
                 function (response) {
                     if (response.data.result) {
-                        $("#subCmcdId").attr("disabled", "disabled");
+                        $("#subId").attr("disabled", "disabled");
                         newButton.attr("data-mode", "new");
-                        reloadSubCommonCode($("#cmcdId").val());
+                        reloadSubMenu($("#mainId").val());
                     }
                 }
             );
         }
     });
 
-    $("#modifyCode").on("click", function () {
-        if (confirm("저장하시겠습니까?")) {
+    $("#newDetailMenu").on("click", function () {
+        $("#detailId").removeAttr("disabled");
+        var newButton = $(this);
+        var mode = newButton.attr("data-mode");
+
+        if (mode === "new") {
+            clearDetailMenuInfo();
+            newButton.attr("data-mode", "save");
+            $("#detailParent").val($("#subId").val());
+            $("#detailId").focus();
+            $("#newDetailMenu").text("저장");
+        } else {
             $.post(
-                "/ajax/commoncode/update",
+                "/ajax/menu/new",
                 {
-                    cmcdId: $("#cmcdId").val(),
-                    cmcdName: $("#cmcdName").val(),
-                    cmcdPid: $("#cmcdPid").val(),
+                    id: $("#detailId").val(),
+                    name: $("#detailMenuName").val(),
+                    url: $("#detailUrl").val(),
+                    parent: $("#detailParent").val(),
                 },
                 function (response) {
                     if (response.data.result) {
-                        reloadCommonCode();
+                        $("#detailId").attr("disabled", "disabled");
+                        newButton.attr("data-mode", "new");
+                        reloadDetailMenu($("#subId").val());
+                    }
+                }
+            );
+        }
+    });
+
+    $("#modifyMainMenu").on("click", function () {
+        if (confirm("저장하시겠습니까?")) {
+            $.post(
+                "/ajax/menu/update",
+                {
+                    id: $("#mainId").val(),
+                    name: $("#mainMenuName").val(),
+                    role: $("#mainRole").val(),
+                },
+                function (response) {
+                    if (response.data.result) {
+                        reloadMainMenu();
                     }
                 }
             );
@@ -333,18 +370,20 @@ $().ready(function () {
         }
     });
 
-    $("#modifySubCode").on("click", function () {
+    $("#modifySubMenu").on("click", function () {
         if (confirm("저장하시겠습니까?")) {
             $.post(
-                "/ajax/commoncode/update",
+                "/ajax/menu/update",
                 {
-                    cmcdId: $("#subCmcdId").val(),
-                    cmcdName: $("#subCmcdName").val(),
-                    cmcdPid: $("#subCmcdPid").val(),
+                    id: $("#subId").val(),
+                    name: $("#subMenuName").val(),
+                    role: $("#subRole").val(),
+                    url: $("#subUrl").val(),
+                    parent: $("#subParent").val(),
                 },
                 function (response) {
                     if (response.data.result) {
-                        reloadSubCommonCode($("#subCmcdPid").val());
+                        reloadSubMenu($("#subParent").val());
                     }
                 }
             );
@@ -353,13 +392,34 @@ $().ready(function () {
         }
     });
 
-    $("#delCode").on("click", function () {
+    $("#modifyDetailMenu").on("click", function () {
+        if (confirm("저장하시겠습니까?")) {
+            $.post(
+                "/ajax/menu/update",
+                {
+                    id: $("#detailId").val(),
+                    name: $("#detailMenuName").val(),
+                    url: $("#detailUrl").val(),
+                    parent: $("#detailParent").val(),
+                },
+                function (response) {
+                    if (response.data.result) {
+                        reloadDetailMenu($("#detailParent").val());
+                    }
+                }
+            );
+        } else {
+            alert("저장을 취소했습니다.");
+        }
+    });
+
+    $("#delMainMenu").on("click", function () {
         if (confirm("삭제하시겠습니까?")) {
             $.get(
-                "/ajax/commoncode/delete/" + $("#cmcdId").val(),
+                "/ajax/menu/delete/" + $("#mainId").val(),
                 function (response) {
                     if (response.data.result) {
-                        reloadCommonCode();
+                        reloadMainMenu();
                     }
                 }
             );
@@ -368,13 +428,28 @@ $().ready(function () {
         }
     });
 
-    $("#delSubCode").on("click", function () {
+    $("#delSubMenu").on("click", function () {
         if (confirm("삭제하시겠습니까?")) {
             $.get(
-                "/ajax/commoncode/delete/" + $("#subCmcdId").val(),
+                "/ajax/menu/delete/" + $("#subId").val(),
                 function (response) {
                     if (response.data.result) {
-                        reloadSubCommonCode($("#cmcdId").val());
+                        reloadSubMenu($("#mainId").val());
+                    }
+                }
+            );
+        } else {
+            alert("삭제를 취소했습니다.");
+        }
+    });
+
+    $("#delDetailMenu").on("click", function () {
+        if (confirm("삭제하시겠습니까?")) {
+            $.get(
+                "/ajax/menu/delete/" + $("#detailId").val(),
+                function (response) {
+                    if (response.data.result) {
+                        reloadDetailMenu($("#subId").val());
                     }
                 }
             );
