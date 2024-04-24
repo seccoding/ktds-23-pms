@@ -378,6 +378,8 @@
         PT.TM_ID,
         PT."ROLE",
         PT.DEL_YN,
+        PT.RV_YN,
+        PT.SRV_YN,
         E.EMP_ID,
         E.EMP_NAME,
         E.EMAIL,
