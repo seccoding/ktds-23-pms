@@ -87,6 +87,7 @@ public class ProjectController {
     public String viewProjectDetailPage(@RequestParam String prjId,
                                         @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
                                         Model model) {
+
         ProjectVO projectVO = projectService.getOneProject(prjId);
         int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
         List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId).stream().
@@ -222,7 +223,10 @@ public class ProjectController {
     public String viewProjectModifyPage(@PathVariable String prjId,
                                         Model model,
                                         @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
+        // 검증로직, 프로젝트 수정은 관리자만 가능하다.
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
 
 
         ProjectVO projectVO = projectService.getOneProject(prjId);
@@ -253,12 +257,20 @@ public class ProjectController {
     // 수정자 추가를 위해 SessionAttribute 추가 필요
     @ResponseBody
     @PostMapping("/ajax/project/modify/{prjId}")
-    public AjaxResponse modifyProject(@PathVariable String prjId, CreateProjectVO modifyProjectVO) {
+    public AjaxResponse modifyProject(@PathVariable String prjId,
+                                      CreateProjectVO modifyProjectVO,
+                                      @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
         // 1. 프로젝트를 가져와서 있는지 확인, 세션 검증용
         ProjectVO originalProjectVO = projectService.getOneProject(prjId);
-        // 2. 세션으로 관리자 판별 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw
-        // new
-        // RuntimeException
+
+        if (originalProjectVO == null) {
+            throw new PageNotFoundException();
+        }
+
+        // 검증로직, 프로젝트 수정은 관리자만 가능하다.
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
 
         // 3. 데이터 검증
         Validator<CreateProjectVO> validator = new Validator<>(modifyProjectVO);
@@ -298,30 +310,36 @@ public class ProjectController {
 
     // Use Session
     @GetMapping("/project/delete/{projectId}")
-    public String deleteProject(@PathVariable String projectId) {
+    public String deleteProject(@PathVariable String projectId,
+                                @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
         // 1. 프로젝트를 가져와서 있는지 확인
         ProjectVO originalProjectVO = projectService.getOneProject(projectId);
 
+        if (originalProjectVO == null) {
+            throw new PageNotFoundException();
+        }
+
         // 2. 검증 로직 (originalProjectVO와 유저를 판별 및 유저 권한으로 판별), 실패 시 throw new
-        // 작성자 또는 관리자
-        // RuntimeException
+        // 검증로직, 프로젝트 삭제는 관리자만 가능하다.
+        if (!employeeVO.getAdmnCode().equals("301")) {
+            throw new AccessDeniedException();
+        }
 
         // 3. 데이터 삭제 여부 확인
         boolean isDeleteSuccess = projectService.deleteOneProject(projectId);
 
         if (isDeleteSuccess) {
             return "redirect:/project/search";
-//            성공로그
         } else {
-//            실패로그
             return "redirect:/project/view?prjId=" + projectId;
         }
     }
 
-    // 세션 추가 필요
+    // 세션 추가 필요, PM, ADMIN
     @ResponseBody
     @PostMapping("/ajax/teammate/delete/massive")
-    public AjaxResponse deleteMassiveTeammate(@RequestParam("deleteItems[]") List<String> deleteItems) {
+    public AjaxResponse deleteMassiveTeammate(@RequestParam("deleteItems[]") List<String> deleteItems,
+                                              @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
         boolean deleteResult = projectService.deleteManyTeammate(deleteItems);
 
         return new AjaxResponse().append("result", deleteResult);
@@ -329,7 +347,8 @@ public class ProjectController {
 
     @ResponseBody
     @GetMapping("/ajax/teammate/delete/{prjTmId}")
-    public AjaxResponse deleteTeammate(@PathVariable String prjTmId) {
+    public AjaxResponse deleteTeammate(@PathVariable String prjTmId,
+                                       @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
         boolean deleteResult = projectService.deleteOneTeammate(prjTmId);
 
         return new AjaxResponse().append("result", deleteResult);
@@ -337,7 +356,8 @@ public class ProjectController {
 
     @ResponseBody
     @GetMapping("/ajax/department-teammate/{deptId}")
-    public AjaxResponse viewDepartmentTeammate(@PathVariable String deptId) {
+    public AjaxResponse viewDepartmentTeammate(@PathVariable String deptId,
+                                               @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
         List<EmployeeVO> allEmployeeList = employeeService.getAllEmployee().getEmployeeList();
 
         List<EmployeeVO> list = allEmployeeList.stream()
@@ -349,7 +369,19 @@ public class ProjectController {
 
     @ResponseBody
     @PostMapping("/ajax/teammate/add")
-    public AjaxResponse addNewProjectTeammate(ProjectTeammateVO newProjectTeammate) {
+    public AjaxResponse addNewProjectTeammate(ProjectTeammateVO newProjectTeammate,
+                                              @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+        ProjectVO projectVO = projectService.getOneProject(newProjectTeammate.getPrjId());
+
+        // PM 뽑기
+        Optional<ProjectTeammateVO> pmOptional = projectVO.getProjectTeammateList().stream()
+                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
+                .findFirst();
+
+        if (pmOptional.isPresent()) {
+
+        }
+
         boolean addResult = projectService.insertOneTeammate(newProjectTeammate);
 
         return new AjaxResponse().append("result", addResult).append("message", "이미 존재하는 팀원입니다.");
