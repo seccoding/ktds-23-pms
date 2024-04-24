@@ -25,8 +25,8 @@
 </style>
 </head>
 <body>
-
     <jsp:include page="../commonmodal.jsp" />
+   
     <div class="memotable">
     <div class="memotop"> 총 ${memoList.memoCnt} 건의 메모가 검색되었습니다.</div>
     <table>
