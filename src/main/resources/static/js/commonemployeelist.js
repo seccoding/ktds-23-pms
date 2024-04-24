@@ -1,9 +1,9 @@
 $().ready(function () {
   $(".modal-list-close").on("click", function () {
-    location.reload();
+    $(".modal-employee-list")[0].close();
   });
 
-  $("#earch-form")
+  $("#search-form")
     .find("button")
     .on("keydown", function (event) {
       if (event.keyCode === 13) {
@@ -93,7 +93,7 @@ $().ready(function () {
 
             // 새로운 테이블에 행 추가
             var newRow = $("<tr></tr>");
-            newRow.append("<td>" + empId + "</td>");
+            newRow.append("<td class='checked-id'>" + empId + "</td>");
             newRow.append("<td>" + empName + "</td>");
             newRow.append(
               "<td><button class='cancel-button'>취소</button></td>"
@@ -122,22 +122,32 @@ $().ready(function () {
           var checkedTableBody = $(".checked-emp-table tbody");
 
           // 기존의 데이터를 모두 비움
-          checkedTableBody.empty();
+          //checkedTableBody.empty();
 
           // 선택된 각 사원에 대해 처리
           checkedItems.each(function () {
             var empId = $(this).closest("tr").find(".emp-id-data").text(); // 사원 ID
             var empName = $(this).closest("tr").find(".emp-name-data").text(); // 사원 이름
 
-            // 새로운 테이블에 행 추가
-            var newRow = $("<tr></tr>");
-            newRow.append("<td>" + empId + "</td>");
-            newRow.append("<td>" + empName + "</td>");
-            newRow.append(
-              "<td><button class='cancel-button'>취소</button></td>"
+            // empId가 테이블에 이미 존재하는지 확인
+            var existingRow = $(".checked-emp-table tbody tr").filter(
+              function () {
+                return $(this).find(".checked-id").text() === empId;
+              }
             );
 
-            checkedTableBody.append(newRow);
+            // 테이블에 존재하지 않는 경우에만 행 추가
+            if (existingRow.length === 0) {
+              // 새로운 테이블에 행 추가
+              var newRow = $("<tr></tr>");
+              newRow.append("<td class='checked-id'>" + empId + "</td>");
+              newRow.append("<td>" + empName + "</td>");
+              newRow.append(
+                "<td><button class='cancel-button'>취소</button></td>"
+              );
+
+              checkedTableBody.append(newRow);
+            }
           });
         });
 
@@ -162,13 +172,26 @@ $().ready(function () {
     });
   });
 
-  //   $("#checked-all").on("click", function () {
-  //     var targetClass = $(this).data("target-class");
+  $("#common-modal-search-btn").on("click", function () {
+    var list = [];
 
-  //     // checked-all 의 체크 상태를 가져온다.
-  //     // 체크가 되어있다면 true 아니라면 false
-  //     var isChecked = $(this).prop("checked");
+    $(".checked-id").each((idx, item) => {
+      list.push($(item).text());
+    });
+    $("#special-hidden-datalist").text(list);
 
-  //     $("." + targetClass).prop("checked", isChecked);
-  //   });
+    var alertModal = $(".modal-confirm-window");
+    var confirmButton = $(".confirm-confirm-button");
+    var cancelButton = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text("정말로 해당 사원들을 등록하시겠습니까?");
+    confirmButton.text("확인");
+    cancelButton.text("취소");
+    alertModal[0].showModal();
+
+    confirmButton.on("click", function () {
+      $(".modal-confirm-window")[0].close();
+      $(".modal-employee-list")[0].close();
+    });
+  });
 });

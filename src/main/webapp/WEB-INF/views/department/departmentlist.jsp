@@ -100,7 +100,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <body>
     <jsp:include page="../commonmodal.jsp" />
     <jsp:include page="../commonemployeelist.jsp" />
-    <button class="open-employee">주소록</button>
 
     <dialog class="create-modal dept-list-modal">
       <h4>부서 등록</h4>
@@ -363,6 +362,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <div id="codeTmCrtDt"></div>
         </div>
         <div data-columns="1 / -1" style="text-align: right">
+          <input
+            type="button"
+            class="emp-team-create button"
+            value="사원 등록"
+          />
+          <div
+            id="special-hidden-datalist"
+            class="special-hidden-datalist"
+          ></div>
           <input type="button" class="team-create button" value="팀 등록" />
           <input type="button" class="team-modify button" value="팀 변경" />
           <input type="button" class="team-delete button" value="팀 삭제" />
