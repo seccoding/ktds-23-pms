@@ -53,10 +53,10 @@
         <input type="text" id="addr" value="${employeeVO.addr}"/>
 
         <label for="brth">생년월일</label>
-        <input type="text" id="addr" value="${employeeVO.brth}"/>
+        <input type="text" id="brth" value="${employeeVO.brth}"/>
 
         <label for="email">이메일</label>
-        <input type="text" id="addr" value="${employeeVO.email}"/>
+        <input type="text" id="email" value="${employeeVO.email}"/>
 
         <c:choose>
             <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
