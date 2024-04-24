@@ -38,6 +38,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         grid-template-columns: 200px 1fr;
         grid-template-rows: repeat(8, 40px) 1fr 40px 40px 40px;
       }
+      .error {
+        display: inline-block;
+        margin-left: 20px;
+      }
     </style>
 
     <title>요구사항 수정페이지</title>
@@ -53,72 +57,87 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div class="grid">
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
         <label for="prj-id">프로젝트명</label>
-        <select name="prjId" id="prj-id">
-          <c:forEach items="${projectList.projectList}" var="project">
-            <option value="${project.prjId}">${project.prjName}</option>
-          </c:forEach>
-        </select>
+        <div>
+          <select name="prjId" id="prj-id">
+            <c:forEach items="${projectList.projectList}" var="project">
+              <option value="${project.prjId}">${project.prjName}</option>
+            </c:forEach>
+          </select>
+        </div>
 
         <label for="rqm-ttl">요구사항 제목</label>
-        <input
-          type="text"
-          id="rqm-ttl"
-          name="rqmTtl"
-          value="${requirement.rqmTtl}"
-        />
+        <div>
+          <input
+            type="text"
+            id="rqm-ttl"
+            name="rqmTtl"
+            value="${requirement.rqmTtl}"
+          />
+        </div>
 
         <label for="dvlrp">담당개발자</label>
-        <select id="dvlrp-check" name="dvlrp" id="dvlrp">
-          <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-            <c:choose>
-              <c:when test="${prjTeammateList.tmId eq requirement.dvlrp}">
-                <option value="${prjTeammateList.tmId}" selected>
-                  ${prjTeammateList.employeeVO.empName}
-                </option>
-              </c:when>
-              <c:otherwise>
-                <option value="${prjTeammateList.tmId}">
-                  ${prjTeammateList.employeeVO.empName}
-                </option>
-              </c:otherwise>
-            </c:choose> </c:forEach
-          >re
-        </select>
+        <div>
+          <select id="dvlrp-check" name="dvlrp" id="dvlrp">
+            <c:forEach items="${prjTeammateList}" var="prjTeammateList">
+              <c:choose>
+                <c:when test="${prjTeammateList.tmId eq requirement.dvlrp}">
+                  <option value="${prjTeammateList.tmId}" selected>
+                    ${prjTeammateList.employeeVO.empName}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${prjTeammateList.tmId}">
+                    ${prjTeammateList.employeeVO.empName}
+                  </option>
+                </c:otherwise>
+              </c:choose> </c:forEach
+            >re
+          </select>
+        </div>
 
         <label for="cfrmr">확인자</label>
-        <select id="cfrmr-check" name="cfrmr" id="cfrmr">
-          <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-            <option value="${prjTeammateList.tmId}">
-              ${prjTeammateList.employeeVO.empName}
-            </option>
-          </c:forEach>
-        </select>
-
+        <div>
+          <select id="cfrmr-check" name="cfrmr" id="cfrmr">
+            <c:forEach items="${prjTeammateList}" var="prjTeammateList">
+              <option value="${prjTeammateList.tmId}">
+                ${prjTeammateList.employeeVO.empName}
+              </option>
+            </c:forEach>
+          </select>
+        </div>
         <label for="tstr">테스터</label>
-        <select id="tstr-check" name="tstr" id="tstr">
-          <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-            <option value="${prjTeammateList.tmId}">
-              ${prjTeammateList.employeeVO.empName}
-            </option>
-          </c:forEach>
-        </select>
+        <div>
+          <select id="tstr-check" name="tstr" id="tstr">
+            <c:forEach items="${prjTeammateList}" var="prjTeammateList">
+              <option value="${prjTeammateList.tmId}">
+                ${prjTeammateList.employeeVO.empName}
+              </option>
+            </c:forEach>
+          </select>
+        </div>
 
         <!--날짜선택창-->
+
         <label for="start-date">시작일</label>
-        <input
-          type="date"
-          id="start-date"
-          name="strtDt"
-          value="${requirement.strtDt}"
-        />
+        <div>
+          <input
+            type="date"
+            id="start-date"
+            name="strtDt"
+            value="${requirement.strtDt}"
+          />
+        </div>
+
         <!--날짜선택창-->
         <label for="end-date">종료예정일</label>
-        <input
-          type="date"
-          id="end-date"
-          name="endDt"
-          value="${requirement.endDt}"
-        />
+        <div>
+          <input
+            type="date"
+            id="end-date"
+            name="endDt"
+            value="${requirement.endDt}"
+          />
+        </div>
         <label for="file">첨부파일</label>
         <input type="file" id="file" name="file" />
 

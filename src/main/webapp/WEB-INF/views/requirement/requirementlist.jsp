@@ -12,6 +12,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <title>요구사항 리스트 페이지</title>
   </head>
   <body>
+    <div>총 ${resultList.count}건의 요구사항이 검색됬습니다.</div>
     <label for="prj-id"></label>
     <select name="prjId" id="prj-id">
       <option value="" selected>프로젝트</option>
@@ -140,49 +141,52 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:choose>
       </tbody>
     </table>
-    <!--pagination-->
-    <ul class="page-nav">
-      <c:if test="${resultList.count > 0}">
-        <!--처음-->
-        <c:if test="${requirementSearch.hasPrevGroup}">
-          <li><a href="javascript:search(0)">처음</a></li>
-        </c:if>
-        <!--이전-->
-        <c:if test="${requirementSearch.hasPrevGroup}">
-          <li>
+    <nav aria-label="Page navigation">
+      <!--pagination-->
+      <ul class="page-nav">
+        <c:if test="${resultList.count > 0}">
+          <!--처음-->
+          <c:if test="${requirementSearch.hasPrevGroup}">
+            <li><a href="javascript:search(0)">처음</a></li>
+          </c:if>
+          <!--이전-->
+          <c:if test="${requirementSearch.hasPrevGroup}">
+            <li>
+              <a
+                href="javascript:search(${requirementSearch.prevGroupStartPageNo})"
+                >이전</a
+              >
+            </li>
+          </c:if>
+          <!-- 각 페이지 링크 -->
+          <c:forEach
+            varStatus="status"
+            begin="${requirementSearch.groupStartPageNo}"
+            end="${requirementSearch.groupEndPageNo}"
+          >
+            <li>
+              <a
+                href="javascript:search(${requirementSearch.groupStartPageNo+status.count-1})"
+                >${requirementSearch.groupStartPageNo+status.count}</a
+              >
+            </li>
+          </c:forEach>
+          <!--다음-->
+          <c:if test="${requirementSearch.hasNextGroup}">
             <a
-              href="javascript:search(${requirementSearch.prevGroupStartPageNo})"
-              >이전</a
-            >
-          </li>
+              href="javascript:search(${requirementSearch.nextGroupStartPageNo})"
+              >다음</a
+            ></c:if
+          >
+          <!--마지막-->
+          <c:if test="${requirementSearch.hasNextGroup}"
+            ><a href="javascript:search(${requirementSearch.pageCount-1})"
+              >마지막</a
+            ></c:if
+          >
         </c:if>
-        <!-- 각 페이지 링크 -->
-        <c:forEach
-          varStatus="status"
-          begin="${requirementSearch.groupStartPageNo}"
-          end="${requirementSearch.groupEndPageNo}"
-        >
-          <li>
-            <a
-              href="javascript:search(${requirementSearch.groupStartPageNo+status.count-1})"
-              >${requirementSearch.groupStartPageNo+status.count}</a
-            >
-          </li>
-        </c:forEach>
-        <!--다음-->
-        <c:if test="${requirementSearch.hasNextGroup}">
-          <a href="javascript:search(${requirementSearch.nextGroupStartPageNo})"
-            >다음</a
-          ></c:if
-        >
-        <!--마지막-->
-        <c:if test="${requirementSearch.hasNextGroup}"
-          ><a href="javascript:search(${requirementSearch.pageCount-1})"
-            >마지막</a
-          ></c:if
-        >
-      </c:if>
-    </ul>
+      </ul>
+    </nav>
 
     <div>
       <p>
