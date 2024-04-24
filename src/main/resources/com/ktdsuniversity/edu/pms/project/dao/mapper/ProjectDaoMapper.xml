@@ -559,7 +559,9 @@
         PRJ_ID ,
         TM_ID,
         "ROLE" ,
-        DEL_YN
+        DEL_YN,
+        RV_YN,
+        SRV_YN
         FROM PROJECT_TEAMMATE
         WHERE DEL_YN = 'N'
     </select>
