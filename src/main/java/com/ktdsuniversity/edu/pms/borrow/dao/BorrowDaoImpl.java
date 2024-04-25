@@ -90,10 +90,10 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	}
 	
 	// 반납신청 한 비품을 제외한 비품 목록
-//	@Override
-//	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO) {
-//		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalNotAppr", employeeVO.getEmpId());
-//	}
+	@Override
+	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalNotAppr", employeeVO.getEmpId());
+	}
 
 	// YSH0424
 	@Override

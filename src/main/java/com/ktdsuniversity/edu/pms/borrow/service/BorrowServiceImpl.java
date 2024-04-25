@@ -98,18 +98,17 @@ public class BorrowServiceImpl implements BorrowService{
 		return this.borrowDao.getIsNotReturnCount(dmdId) == 0;
 	}
 
-	// 중복인데......
-//	@Override
-//	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO) {
-//	int borrowCount = this.borrowDao.getBorrowCount(employeeVO);
-//	List<BorrowVO> borrowList = this.borrowDao.getUserRentalNotAppr(employeeVO);
-//
-//
-//	BorrowListVO borrowListVO = new BorrowListVO();
-//	borrowListVO.setBorrowCnt(borrowCount);
-//	borrowListVO.setBorrowList(borrowList);
-//
-//	return borrowListVO;
-//	}
+	@Override
+	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO) {
+	int borrowCount = this.borrowDao.getBorrowCount(employeeVO);
+	List<BorrowVO> borrowList = this.borrowDao.getUserRentalNotAppr(employeeVO);
+
+
+	BorrowListVO borrowListVO = new BorrowListVO();
+	borrowListVO.setBorrowCnt(borrowCount);
+	borrowListVO.setBorrowList(borrowList);
+
+	return borrowListVO;
+	}
 
 }

@@ -45,7 +45,7 @@ public interface BorrowDao {
 
 	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
 	
-//	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO);
+	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO);
 
 	
 	// YSH0424
