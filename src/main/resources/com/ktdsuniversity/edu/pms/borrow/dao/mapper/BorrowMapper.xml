@@ -58,6 +58,7 @@
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
 		   AND BH.BRRW_ID = #{_parameter}
+		 ORDER BY BRRW_DT DESC
 	</select>
 	
 	<select id="searchBorrowAllCount" 
@@ -115,6 +116,7 @@
 				</when>
 			</choose>
 		</if>
+		 ORDER BY BH.BRRW_DT DESC
 		
 		<include refid="Common.pagenate_footer" />
 	</select>
@@ -147,6 +149,7 @@
 		 INNER JOIN PRODUCT P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
+		 ORDER BY BH.BRRW_DT DESC
 	</select>
 	
 	<select id="searchProductManagementStateAllCount" 
@@ -208,7 +211,7 @@
 				</when>
 			</choose>
 		</if>
-		
+		ORDER BY BH.BRRW_DT DESC
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
