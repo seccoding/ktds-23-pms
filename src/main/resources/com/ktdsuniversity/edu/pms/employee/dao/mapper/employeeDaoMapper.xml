@@ -254,6 +254,7 @@
 			 , ADDR = #{addr}
 			 , BRTH = #{brth}
 			 , EMAIL = #{email}
+			 , PWD = #{pwd}
 			 , MNGR_YN = #{mngrYn}
 			 , ADMN_CODE = #{admnCode}
 			 , DEPT_ID = #{deptId}

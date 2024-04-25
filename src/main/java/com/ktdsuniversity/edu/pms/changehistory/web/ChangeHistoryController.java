@@ -24,9 +24,4 @@ public class ChangeHistoryController {
 		List<DepartmentHistoryVO> departmentHistoryVO = this.changeHistoryService.getUserDeptHisory(empId);
 		return new AjaxResponse().append("departmentHistoryList", departmentHistoryVO);
 	}
-
-
-	
-	
-
 }

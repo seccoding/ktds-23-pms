@@ -161,6 +161,7 @@ public class EmployeeController {
 			 .add("email", Type.NOT_EMPTY, "이메일을 입력해주세요.")
 			 .add("email", Type.EMAIL, "이메일 형식으로 입력해주세요.")
 			 .add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해주세요.")
+			 .add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해주세요.")
 			 .add("mngrYn", Type.NOT_EMPTY, "임원여부를 설정해주세요.").start();	
 			 
 			 employeeVO.setEmpId(empId);
