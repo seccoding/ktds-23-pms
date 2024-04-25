@@ -1,14 +1,34 @@
 $().ready(function () {
     $(".delete-issue").on("click", function () {
-      var chooseValue = confirm(
-        "이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다."
-      );
+      var alertModal = $(".modal-confirm-window");
+        var modalButton = $(".confirm-confirm-button");
+        var modalButton1 = $(".cancel-confirm-button");
+        var modalText = $(".modal-confirm-text");
+        modalText.text("이 이슈를 정말 삭제하시겠습니까?");
+        modalButton.text("확인");
+        modalButton1.text("취소");
+        alertModal[0].showModal();
+        var isId = $(this).closest(".grid").data("id");
+        var confirm = false;
+        $(".confirm-confirm-button").on("click", function() {
+          confirm = true;
+          if (confirm) {
+            location.href = "/issue/delete/" + isId;
+          }
+        })
+        $(".cancel-confirm-button").on("click", function() {
+          location.reload();
+        })
+
+      // var chooseValue = confirm(
+      //   "이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다."
+      // );
   
-      var isId = $(this).closest(".grid").data("id");
+      // var isId = $(this).closest(".grid").data("id");
   
-      if (chooseValue) {
-        location.href = "/issue/delete/" + isId;
-      }
+      // if (chooseValue) {
+      //   location.href = "/issue/delete/" + isId;
+      // }
     });
 
     var modifyReply = function (event) {

@@ -113,7 +113,7 @@ public class IssueController {
 	
 	@ResponseBody
 	@PostMapping("/ajax/issue/write")
-	public AjaxResponse doWriteIssue(IssueVO issueVO, Model model, @RequestParam(required = false) MultipartFile file,
+	public AjaxResponse doWriteIssue(IssueVO issueVO, Model model, MultipartFile file,
 								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) throws Exception {
 
 		Map<String, List<String>> error = this.issueValidator(issueVO);
@@ -146,8 +146,8 @@ public class IssueController {
 	
 	@PostMapping("/issue/modify/{isId}")
 	public String doModifyIssue(@PathVariable String isId, Model model,
-			@RequestParam MultipartFile file, IssueVO issueVO,
-			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+								MultipartFile file, IssueVO issueVO,
+								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		IssueVO originalIssueVO = this.issueService.getOneIssue(isId, false);
 		if (!originalIssueVO.getCrtrId().equals(employeeVO.getEmpId())
