@@ -24,6 +24,7 @@
         margin: 4rem 2rem;
     }
 </style>
+<script type="text/javascript" src="/views/commonmodal.jsp"></script>
 <script type="text/javascript" src="/js/product/managedetail.js"></script>
 </head>
 <body>

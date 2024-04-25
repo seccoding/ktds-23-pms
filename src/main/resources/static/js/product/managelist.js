@@ -1,94 +1,172 @@
-$().ready(function(){
-    $("#search-btn").on("click", function () {
-        search(0);
-    });
+$().ready(function () {
+  function confirmModal(a) {
+    var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
+    var modalButton1 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text(a);
+    modalButton.text("확인");
+    modalButton1.text("취소");
+    alertModal[0].showModal();
+    var confirm = false;
 
-    $("#list-size").on("change", function () {
-        search(0);
+    $(".confirm-confirm-button").on("click", function () {
+      alertModal[0].close();
+      confirm = true;
     });
+    $(".cancel-confirm-button").on("click", function () {
+      alertModal[0].close();
+      confirm = false;
+    });
+    return confirm;
+  }
 
-    /* 
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
+
+  $("#list-size").on("change", function () {
+    search(0);
+  });
+
+  /* 
     엔터키 눌렀을 때 form 전송이 안되도록 함
+
+    var alertModal = $(".modal-window");
+        var modalButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text("선택한 항목의 반납처리 중 오류가 발생 되었습니다.");
+        modalButton.text("확인");
+
+        alertModal[0].showModal();
+        $(".confirm-button").on("click", function () {
+          alertModal[0].close();
+        });
     
      */
-    $("form")
+  $("form")
     .find("input")
     .on("keydown", function (event) {
-        if(event.keyCode === 13){
-            var noSubmit = $(this).data("no-submit");
-            if(noSubmit !== undefined){
-                event.preventDefault();
-            }
+      if (event.keyCode === 13) {
+        var noSubmit = $(this).data("no-submit");
+        if (noSubmit !== undefined) {
+          event.preventDefault();
         }
-    });
-    
-
-    $(".product-item").on("click", function(){
-        var id = $(this).data("product")
-        console.log(id)
-        location.href = "/product/manage/view?prdtId=" + id
+      }
     });
 
-    $(".create-product").on("click", function () {
-        location.href = "/product/manage/add";
-    });
+  $(".product-item").on("click", function () {
+    var id = $(this).data("product");
+    console.log(id);
+    location.href = "/product/manage/view?prdtId=" + id;
+  });
 
-    $(".add-product-count").on("click", function(){
-        $("#add-modal")[0].showModal()
-        var productName = $(this).data("productname")
-        var productId = $(this).data("productid")
-        $(".add-product").text(productId +" ("+productName+")")
+  $(".create-product").on("click", function () {
+    location.href = "/product/manage/add";
+  });
 
-        $(".add-count").val(1)
+  $(".add-product-count").on("click", function () {
+    $("#add-modal")[0].showModal();
+    var productName = $(this).data("productname");
+    var productId = $(this).data("productid");
+    $(".add-product").text(productId + " (" + productName + ")");
 
-        console.log($(".add-product").text().split(" ")[0])
-    })
+    $(".add-count").val(1);
 
-    $("#cancel-btn").on("click", function(){
-        location.reload()
-    })
+    console.log($(".add-product").text().split(" ")[0]);
+  });
 
-    $("#add-count-btn").on("click", function(){
-       if($(".buy-day").val()==""||$(".buy-price").val()==""){
-            alert("빈칸에 값을 입력해주세요")
-        }else{
-            $.post("/ajax/product/manage/list/add",{
-                prdtId:$(".add-product").text().split(" ")[0],
-                prdtPrice:$(".buy-price").val(),
-                buyDt:$(".buy-day").val(),
-                "productVO.prdtId" :$(".add-product").text().split(" ")[0],
-                "productVO.curStr" :$(".add-count").val()
-                
-            }, function(res){
-                if (res.data.result){
-                    alert("정상적으로 추가되었습니다.")
-                }else{
-                    alert("오류가 발생되었습니다.")
+  $("#cancel-btn").on("click", function () {
+    location.reload();
+  });
 
-                }
-                location.href = res.data.next
-            })
+  $("#add-count-btn").on("click", function () {
+    if ($(".buy-day").val() == "" || $(".buy-price").val() == "") {
+      var alertModal = $(".modal-window");
+      var modalButton = $(".confirm-button");
+      var modalText = $(".modal-text");
+      modalText.text("빈칸에 값을 입력해주세요");
+      modalButton.text("확인");
+
+      alertModal[0].showModal();
+      $(".confirm-button").on("click", function () {
+        alertModal[0].close();
+      });
+    } else {
+      $.post(
+        "/ajax/product/manage/list/add",
+        {
+          prdtId: $(".add-product").text().split(" ")[0],
+          prdtPrice: $(".buy-price").val(),
+          buyDt: $(".buy-day").val(),
+          "productVO.prdtId": $(".add-product").text().split(" ")[0],
+          "productVO.curStr": $(".add-count").val(),
+        },
+        function (res) {
+          if (res.data.result) {
+            var alertModal = $(".modal-window");
+            var modalButton = $(".confirm-button");
+            var modalText = $(".modal-text");
+            modalText.text("정상적으로 추가되었습니다.");
+            modalButton.text("확인");
+
+            alertModal[0].showModal();
+            $(".confirm-button").on("click", function () {
+              alertModal[0].close();
+            });
+          } else {
+            var alertModal = $(".modal-window");
+            var modalButton = $(".confirm-button");
+            var modalText = $(".modal-text");
+            modalText.text("오류가 발생되었습니다.");
+            modalButton.text("확인");
+
+            alertModal[0].showModal();
+            $(".confirm-button").on("click", function () {
+              alertModal[0].close();
+            });
+          }
+          location.href = res.data.next;
         }
-    })
+      );
+    }
+  });
 
-    $(".remove-product").on("click", function(){
-        var id = $(this).data("product")
-        $.get("/product/manage/list/iscandel?prdtId="+id, function(res){
-            if(res.data.canDel){
-                if(confirm("정말 삭제하시겠습니까?")){
-                    $.get("/product/manage/list/del?prdtId="+id,function(res){
-                        if(res.data.result){
-                            alert("삭제가 완료되었습니다.")
-                        }else{
-                            alert("삭제 중 오류가 발생했습니다.")
-                        }
-                        location.href = res.data.next
-                    })
+  $(".remove-product").on("click", function () {
+    var id = $(this).data("product");
+    $.get("/product/manage/list/iscandel?prdtId=" + id, function (res) {
+      if (res.data.canDel) {
+        if (confirmModal("정말 삭제하시겠습니까?")) {
+          $.get("/product/manage/list/del?prdtId=" + id, function (res) {
+            if (res.data.result) {
+              var alertModal = $(".modal-window");
+              var modalButton = $(".confirm-button");
+              var modalText = $(".modal-text");
+              modalText.text("삭제가 완료되었습니다.");
+              modalButton.text("확인");
 
-                }
-            }else{
-                alert("해당 비품은 상세 품목이 존재하여 삭제할 수 없습니다.")
+              alertModal[0].showModal();
+              $(".confirm-button").on("click", function () {
+                alertModal[0].close();
+              });
+            } else {
+              var alertModal = $(".modal-window");
+              var modalButton = $(".confirm-button");
+              var modalText = $(".modal-text");
+              modalText.text("삭제 중 오류가 발생했습니다.");
+              modalButton.text("확인");
+
+              alertModal[0].showModal();
+              $(".confirm-button").on("click", function () {
+                alertModal[0].close();
+              });
             }
-        })
-    })
-})
+            location.href = res.data.next;
+          });
+        }
+      } else {
+        alert("해당 비품은 상세 품목이 존재하여 삭제할 수 없습니다.");
+      }
+    });
+  });
+});
