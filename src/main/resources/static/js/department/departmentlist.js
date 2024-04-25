@@ -1,4 +1,6 @@
 $().ready(function () {
+  $(".emp-team-create").ready;
+
   $(".emp-team-create").on("click", function () {
     var modal = $(".modal-employee-list");
     modal[0].showModal();
@@ -7,16 +9,58 @@ $().ready(function () {
     var data = {};
     var list = $(".special-hidden-datalist").text().split(",");
     var tmId = $("#codeTmId").text();
+    var deptId = $("#codeDeptId").text();
     list.forEach((item, idx) => {
       (data["employeeList[" + idx + "].empId"] = item),
         (data["employeeList[" + idx + "].teamVO.tmId"] = tmId);
+      data["employeeList[" + idx + "].deptId"] = deptId;
     });
-    console.log(data);
     $.post("/ajax/department/team/employee/add", data, function (res) {
-      if (res.data.success) {
-        alert("추가완료!");
+      if (res.data.nopartof > 0) {
+        var alertModal = $(".modal-window");
+        var confirmButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text(
+          res.data.nopartof + "명의 인원은 관할 부서 사원이 아닙니다."
+        );
+        confirmButton.text("확인");
+        alertModal[0].showModal();
+        confirmButton.on("click", function () {
+          alertModal[0].close();
+        });
+      }
+      if (res.data.nopartof == 0 && res.data.alreadyexist) {
+        var alertModal = $(".modal-window");
+        var confirmButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text("이미 존재하는 사원입니다.");
+        confirmButton.text("확인");
+        alertModal[0].showModal();
+        confirmButton.on("click", function () {
+          alertModal[0].close();
+        });
+      } else if (res.data.success) {
+        var alertModal = $(".modal-window");
+        var confirmButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text(
+          "이미 존재하거나 관할 부서 사원이 아닌 사원을 제외하고 추가완료에 성공했습니다!"
+        );
+        confirmButton.text("확인");
+        alertModal[0].showModal();
+        confirmButton.on("click", function () {
+          alertModal[0].close();
+        });
       } else {
-        alert("오류생김!");
+        var alertModal = $(".modal-window");
+        var confirmButton = $(".confirm-button");
+        var modalText = $(".modal-text");
+        modalText.text("추가 중 오류가 발생하였습니다!");
+        confirmButton.text("확인");
+        alertModal[0].showModal();
+        confirmButton.on("click", function () {
+          alertModal[0].close();
+        });
       }
     });
   });
@@ -49,6 +93,7 @@ $().ready(function () {
   }
 
   $(".departmentListClickFunction").on("click", function () {
+    $(".emp-team-create").addClass("hidden");
     clearDepartmentInfo();
     clearTeamInfo();
     clearEmployeeInfo();
@@ -90,6 +135,7 @@ $().ready(function () {
         trDom.on("click", function () {
           $(this).closest("tbody").find("tr").removeClass("active");
           $(this).addClass("active");
+          $(".emp-team-create").removeClass("hidden");
 
           clearTeamInfo();
           clearEmployeeInfo();

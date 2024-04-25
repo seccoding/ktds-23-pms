@@ -183,6 +183,14 @@
 		  </if>
 	<include refid="Common.pagenate_footer" />
 	</select>
+	
+	<select id="getDeptIdByEmployeeId"
+			parameterType="string"
+			resultType="string">
+		SELECT DEPT_ID
+		  FROM EMPLOYEE
+		 WHERE EMP_ID = #{_parameter}		
+	</select>
 
 	
 	<select id="getOneEmployee" 

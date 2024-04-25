@@ -364,12 +364,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div data-columns="1 / -1" style="text-align: right">
           <input
             type="button"
-            class="emp-team-create button"
+            class="emp-team-create button hidden"
             value="사원 등록"
           />
           <div
             id="special-hidden-datalist"
             class="special-hidden-datalist"
+            style="display: none"
           ></div>
           <input type="button" class="team-create button" value="팀 등록" />
           <input type="button" class="team-modify button" value="팀 변경" />

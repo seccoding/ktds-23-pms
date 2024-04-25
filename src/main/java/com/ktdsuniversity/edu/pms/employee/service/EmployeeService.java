@@ -34,6 +34,8 @@ public interface EmployeeService {
 	public boolean deleteTeam(EmployeeVO employeeVO);
 
 	public boolean addTeam(EmployeeVO employeeVO);
+	
+	public String getDeptIdByEmployeeId(String empId);
 
 
 

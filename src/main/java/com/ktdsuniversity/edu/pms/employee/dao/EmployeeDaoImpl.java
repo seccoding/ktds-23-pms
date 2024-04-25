@@ -121,4 +121,9 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().insert(EmployeeDao.NAME_SPACE+".addTeam", employeeVO);
 	}
 
+	@Override
+	public String getDeptIdByEmployeeId(String empId) {
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE+".getDeptIdByEmployeeId", empId);
+	}
+
 }

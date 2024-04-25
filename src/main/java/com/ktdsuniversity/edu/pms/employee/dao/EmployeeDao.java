@@ -44,6 +44,8 @@ public interface EmployeeDao {
 	public int deleteTeam(EmployeeVO employeeVO);
 
 	public int addTeam(EmployeeVO employeeVO);
+	
+	public String getDeptIdByEmployeeId(String empId);
 
 
 }
