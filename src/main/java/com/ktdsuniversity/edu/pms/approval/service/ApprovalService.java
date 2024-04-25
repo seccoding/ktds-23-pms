@@ -27,7 +27,7 @@ public interface ApprovalService {
 
 	public boolean createApproval(ApprovalVO approvalVO);
 	
-	public boolean getNewPrdtBorrowForAppr(String apprId);
+	public boolean getNewPrdtBorrowForAppr(ApprovalVO approvalVO);
 	
 	public boolean updateUnusablePrdt(ApprovalVO approvalVO);
 	
@@ -53,6 +53,8 @@ public interface ApprovalService {
 	public ApprovalVO selectOneApprovalAll(String apprId);
 
 	public boolean approvalStatusChange(ApprovalVO approvalVO);
+	
+	public boolean approvalRntlStatusChange(ApprovalVO approvalVO);
 
 	public boolean deleteOneApproval(String apprId);
 
