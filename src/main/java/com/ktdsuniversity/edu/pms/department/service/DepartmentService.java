@@ -22,8 +22,8 @@ public interface DepartmentService {
 
 	public String getDepartmentNameById(String deptId);
 	
-	public String  getOnlypstnid(String pstnid);
+	public int  getDepartMent(String id);
 	
-	
+	public String  getOnlypstnid(String pstnid); 
 
 }

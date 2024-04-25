@@ -417,12 +417,17 @@ $().ready(function () {
       function (response) {
         var returnUrl = response.data.next;
         var message=response.data.message
+		console.log(message);
+		
 		if(message){
-			confirm(message)
+			confirm(message);
 		}
 		else{
-			location.href = returnUrl;
+			location.href =returnUrl;
 		}
+		
+		
+		
       }
     );
   });

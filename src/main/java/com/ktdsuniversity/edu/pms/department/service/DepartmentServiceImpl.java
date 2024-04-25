@@ -83,13 +83,20 @@ public class DepartmentServiceImpl implements DepartmentService{
 	public String getDepartmentNameById(String deptId) {
 		return departmentDao.getDepartmentNameById(deptId);
 	}
-	
+
+	@Override
+	public int getDepartMent(String id) {
+		// TODO Auto-generated method stub
+		return departmentDao.getDepartment(id);
+	}
+
 	@Override
 	public String getOnlypstnid(String pstnid) {
 		// TODO Auto-generated method stub
 		return this.departmentDao.getOnlypstnid(pstnid);
 	}
-
+	
+	
 	
 
 	

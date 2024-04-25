@@ -68,14 +68,6 @@ public class TeamServiceImpl implements TeamService{
 		return teamDao.deleteOneTeam(teamId) > 0;
 	}
 
-	@Override
-	public TeamListVO getaAllTeam() {
-		List<TeamVO> teamlist=this.teamDao.getaAllTeam();
-		
-		TeamListVO teamlistVo=new TeamListVO();
-		teamlistVo.setTeamList(teamlist);
-		
-		return teamlistVo;
-	}
+	
 
 }
