@@ -15,6 +15,7 @@ $().ready(function(){
 
         // 새로운 form에 비품명 선택 이벤트 바인딩
         formDom.find("#select-prdtName").on("change", autoPrdtCtgrSelect);
+        formDom.find("#select-prdtName").on("change", autoPrdtCurStrSelect);
     });
 
 
@@ -47,22 +48,50 @@ $().ready(function(){
 
     // 비품명 선택 시, 카테고리를 자동으로 선택해주는 함수
     function autoPrdtCtgrSelect(){
+
         // 선택한 비품명
-        var nameValue = $(this).val();
-        console.log(nameValue);
+        var namevalue = $(this).val();
+
+        // 선택된 비품명에 속한 form을 가져옴
+        var parentForm = $(this).closest("form");
         
         // 카테고리 선택
         for(var item in categories){
-            if(categories[item].includes(nameValue)){
-                $(this).closest(".form-grid").find("#select-prdtCtgr").val(item);
+            if(categories[item].includes(namevalue)){
+                parentForm.find("#select-prdtCtgr").val(item);
                 break;
             }
         }
+
+        
     };
 
 
+    function autoPrdtCurStrSelect(){
+
+        // 선택한 비품명
+        var namevalue = $(this).val();
+
+        // 선택된 비품명에 속한 form을 가져옴
+        var parentForm = $(this).closest("form");
+
+        var url = "/ajax/product/apply/" + namevalue;
+
+        $.get(url, { productName: namevalue },
+            function(response){
+                var curstr = response.data.oneProductCurStr;
+                console.log("재고: " + curstr + "개");
+                parentForm.find("#apply-stock").attr("max", curstr);
+            }
+        );
+    }
+
+
     // 비품명이 바뀔때마다 함수 호출
-    $("#select-prdtName").on("change", autoPrdtCtgrSelect);
+    // $("#select-prdtName").on("change", autoPrdtCtgrSelect);
+    // $("#select-prdtName").on("change", autoPrdtCurStrSelect);
+    $(".form-group").on("change", "#select-prdtName", autoPrdtCtgrSelect);
+    $(".form-group").on("change", "#select-prdtName", autoPrdtCurStrSelect);
 
 
 
@@ -73,41 +102,12 @@ $().ready(function(){
         var formData = {};
 
         $("form").each(function(index, form) {
-
-            var selectedPrdtName = $(form).find("#select-prdtName").val();
-            var selectedPrdtCtgr = $(form).find("#select-prdtCtgr").val();
-            var selectedApplyStock = $(form).find("#apply-stock").val();
-
-            console.log(selectedPrdtCtgr);
-            console.log(selectedApplyStock);
-
-            $.post("/ajax/product/apply",
-                { prdtName: selectedPrdtName },
-                function (response) {
-                    // 선택된 비품의 정보들
-                    oneProduct = response.data.oneProduct;
-
-                    console.log(oneProduct.prdtCtgr);
-                    console.log(oneProduct.curStr);
-
-                    if(selectedPrdtCtgr !== oneProduct.prdtCtgr){
-                        alert("카테고리가 맞지 않습니다. 해당 비품명의 카테고리는 "+oneProduct.prdtCtgr+"입니다.");
-                        return false;
-                    }
-                    if(selectedApplyStock !== oneProduct.curStr){
-                        alert("신청 수량 "+selectedApplyStock+"개가 현재 재고수 "+oneProduct.curStr+"보다 많습니다.");
-                        return false;
-                    }
-                }
-            );
-
-
-
-
             formData["borrowList["+index+"].productVO.prdtName"] = $(form).find("#select-prdtName").val();
             formData["borrowList["+index+"].productVO.prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
             formData["borrowList["+index+"].productVO.curStr"] = $(form).find("#apply-stock").val();
             formData["borrowList["+index+"].brrwDt"] = $(form).find("#apply-date").val();
+
+            
         });
 
 
@@ -127,11 +127,42 @@ $().ready(function(){
 
     
     $(".cancel-button").on("click", function() {
-        var cancelConfirm = confirm("취소하시겠습니까?");
-        if(cancelConfirm){
+        // var cancelConfirm = confirm("취소하시겠습니까?");
+        // if(cancelConfirm){
+        //     location.href = "/product/list";
+        // }
+
+
+        var alertModal = $(".modal-confirm-window");
+        var modalButton = $(".confirm-confirm-button");
+        var modalButton1 = $(".cancel-confirm-button");
+        var modalText = $(".modal-confirm-text");
+        modalText.text("취소하시겠습니까?");
+        modalButton.text("확인");
+        modalButton1.text("취소");
+
+
+        // 확인 버튼 클릭 시
+        $(modalButton).on("click", function () {
             location.href = "/product/list";
-        }
+        });
+
+        // 취소 버튼 클릭 시
+        $(modalButton1).on("click", function () {
+            alertModal[0].close();
+        });
+
+
+        alertModal[0].showModal();
+
+        // Modal 창 닫기 버튼 클릭
+        $(".modal-confirm-close").on("click", function () {
+            alertModal[0].close();
+        });
+        
     });
+
+
     
     
 });

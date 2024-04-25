@@ -68,11 +68,11 @@ public interface ProductService {
 	public ProductListVO getAllProductName();
 
 	/**
-	 * 비품명으로 해당 비품의 수량을 조회
-	 * @param namevalue
+	 * 비품명을 선택하면 해당 비품의 최대수량을 설정하기 위함
+	 * @param productName
 	 * @return
 	 */
-	public int getProductCurstr(String namevalue);
+	public int getOneProductCurStr(String productName);
 
 	
 

@@ -178,9 +178,13 @@
 	<select id="selectPrdtIdByPrdtName" 
 			parameterType="string" 
 			resultType="string">
-		SELECT PRDT_ID 
-		  FROM PRODUCT
-		 WHERE PRDT_NAME = #{productVO.prdtName}
+		SELECT *
+		  FROM (SELECT PRDT_ID 
+				  FROM PRODUCT
+				 WHERE PRDT_NAME = #{productVO.prdtName}
+				   AND CUR_STR IS NOT NULL
+				 ORDER BY PRDT_ID)
+		 WHERE ROWNUM <![CDATA[ <= ]]> 1
 	</select>
 	
 	<select id="selectPrdtMngIdByPrdtId" 
@@ -199,8 +203,14 @@
 	<select id="getProductCurstr" parameterType="string" resultType="_int">
 		SELECT CUR_STR
 		  FROM PRODUCT
-		 WHERE PRDT_NAME = #{_parameter}
+		 WHERE PRDT_ID = #{_parameter}
 	</select>
+	
+	<update id="changeOnePrdtStoredByPrdtId" parameterType="string">
+		UPDATE PRODUCT
+		SET CUR_STR = CUR_STR - 1
+		WHERE PRDT_ID = #{_parameter}
+	</update>
 	
 	
 </mapper>
