@@ -28,6 +28,15 @@ public interface ChangeHistoryDao {
 	int insertOneChangePositionHistory(EmployeeVO employeeVO);
 	
 	String getRecentPositionHist(String empId);
+
+	List<CommonCodeVO> getAllPosition();
+
+	List<JobHistoryVO> getUserJobHistory(String empId);
+
+	int insertPositionHist(EmployeeVO employeeVO);
+
+	List<CommonCodeVO> getAllJob();
+
 	
 
 

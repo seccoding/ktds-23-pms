@@ -136,8 +136,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
-		
 
+		if(employeeVO.getNewPwd() != null && !employeeVO.getNewPwd().isEmpty()) {
+			if(!employeeVO.getNewPwd().equals(employeeVO.getConfirmPwd())) {
+				return false;
+			}
+			String salt = this.sha.generateSalt();
+			String newPwd = this.sha.getEncrypt(employeeVO.getNewPwd(), salt);
+			employeeVO.setPwd(newPwd);
+			employeeVO.setSalt(salt);
+		}
+		
+		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
+		
 		
 		// 부서가 변경된 경우 부서 변경 이력 추가
 		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
@@ -166,9 +177,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			originEmployee.setTeamList(this.employeeDao.getEmployeeAllTeam(employeeVO.getEmpId()));
 			int willAddTeam = 0;
 			int addTeamCount = 0;
-			for (TeamVO changeTeam: employeeVO.getTeamList()) {
+			for (TeamVO changeTeam : employeeVO.getTeamList()) {
 				// 기존리스트 없으면 다 추가
-				if(originEmployee.getTeamList() == null) {
+				if (originEmployee.getTeamList() == null) {
 					employeeVO.setTeamVO(changeTeam);
 					willAddTeam++;
 					addTeamCount = this.employeeDao.addTeam(employeeVO);
@@ -179,9 +190,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 					willAddTeam++;
 					addTeamCount = this.employeeDao.addTeam(employeeVO);
 				}
-				
+
 			}
-			if(willAddTeam!=addTeamCount) {
+			if (willAddTeam != addTeamCount) {
 				return false;
 			}
 			
@@ -243,6 +254,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String encryptPwd = sha.getEncrypt(employeeVO.getNewPwd(), salt);
 		employeeVO.setPwd(encryptPwd);
 		employeeVO.setSalt(salt);
+	@Override
+	public EmployeeVO getOneEmployeeNoTeam(String empId) {
+		return this.employeeDao.getOneEmployee(empId);
+	}
 
 		int updateCount = this.employeeDao.updatePwd(employeeVO);
 		return updateCount > 0;

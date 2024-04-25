@@ -56,6 +56,17 @@ $().ready(function () {
     });
     
 
+    $("#confirmPwd").on("input", function() {
+        var newPwd = $("#newPwd").val();
+        var confirmPwd = $(this).val();
+
+        if (newPwd === confirmPwd) {
+            $("#password-match-status").text("비밀번호가 일치합니다.").css("color", "green");
+        } else {
+            $("#password-match-status").text("비밀번호가 일치하지 않습니다.").css("color", "red");
+        }
+    });
+
 
 
 
@@ -127,6 +138,7 @@ $().ready(function () {
         willAddList.hireYear = $("#hireYear").val()
         willAddList.hireDt = $("#hireDt").val()
         willAddList.cntct = $("#cntct").val()
+        willAddList.newPwd = $("#pwd").val()
         willAddList.addr = $("#addr").val()
         willAddList.brth = $("#brth").val()
         willAddList.email = $("#email").val()

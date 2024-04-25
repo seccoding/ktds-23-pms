@@ -167,7 +167,7 @@
     <div class="btn-group">
         <div class="right-align">
             <!-- <input type="submit" value="저장"/> -->
-            <button class="save-modify">저장</button>
+            <button type="button" class="save-modify">저장</button>
         </div>
     </div>
 </div>

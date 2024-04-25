@@ -24,4 +24,21 @@ public class ChangeHistoryController {
 		List<DepartmentHistoryVO> departmentHistoryVO = this.changeHistoryService.getUserDeptHisory(empId);
 		return new AjaxResponse().append("departmentHistoryList", departmentHistoryVO);
 	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/change/position")
+	public AjaxResponse changePosition(EmployeeVO employeeVO) {
+		
+		boolean isSuccess = this.changeHistoryService.changePosition(employeeVO);
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
+	}
+
+	@ResponseBody
+	@PostMapping("/ajax/change/job")
+	public AjaxResponse changeJob(EmployeeVO employeeVO) {
+		boolean isSuccess = this.changeHistoryService.changeJob(employeeVO);
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
+	}
+
+
 }

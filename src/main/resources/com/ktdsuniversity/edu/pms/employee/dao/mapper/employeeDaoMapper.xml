@@ -202,7 +202,7 @@
 		 , E.SAL_YEAR
 		 , E.PRFL
 		 , TO_CHAR(E.HIRE_DT, 'YYYY-MM-DD')HIRE_DT 
-		 , E.HIRE_YEAR
+		 , EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM E.HIRE_DT) AS HIRE_YEAR
 		 , TO_CHAR(E.END_DT, 'YYYY-MM-DD')END_DT
 		 , TO_CHAR(E.REST_ST_DT,'YYYY-MM-DD' ) END_DT
 		 , TO_CHAR(E.REST_END_DT,'YYYY-MM-DD' ) END_DT 
@@ -270,6 +270,10 @@
 			 , WORK_STS = #{workSts}
 			 , CNTCT = #{cntct}
 			 , ADDR = #{addr}
+			 <if test='newPwd != null and !newPwd.isEmpty()' >
+			 , PWD = #{newPwd}
+			 , SALT = #{salt}
+			 </if>
 			 , BRTH = #{brth}
 			 , EMAIL = #{email}
 			 , HIRE_YEAR = #{hireYear}

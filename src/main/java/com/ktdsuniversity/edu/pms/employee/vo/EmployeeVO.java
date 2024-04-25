@@ -51,7 +51,8 @@ public class EmployeeVO {
 	private String newPwd;
 	private String oldPwd;
     private PositionHistoryVO positionHistoryVO;
-    
+    private String confirmPwd;
+	private String newPwd;
 
     public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
@@ -380,5 +381,21 @@ public class EmployeeVO {
 
 	public void setOldPwd(String oldPwd) {
 		this.oldPwd = oldPwd;
+	}
+
+	public String getConfirmPwd() {
+		return confirmPwd;
+	}
+
+	public void setConfirmPwd(String confirmPwd) {
+		this.confirmPwd = confirmPwd;
+	}
+
+	public String getNewPwd() {
+		return newPwd;
+	}
+
+	public void setNewPwd(String newPwd) {
+		this.newPwd = newPwd;
 	}
 }
