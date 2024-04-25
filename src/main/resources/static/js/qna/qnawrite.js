@@ -8,8 +8,9 @@ $().ready(function () {
       event.preventDefault();
 
       qaCntnt = editors.getData();
-      var file = $("#file").prop("files");
-      var knlTtl = $("#qaTtl").val();
+      var fileArr = $("#file").prop("files");
+      var file = fileArr[0];
+      var qaTtl = $("#qaTtl").val();
       var rqmId = $("#rqm-id").val();
 
       var formData = new FormData();

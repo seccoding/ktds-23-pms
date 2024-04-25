@@ -93,6 +93,7 @@ public class IssueController {
 	public AjaxResponse doWriteIssue(IssueVO issueVO, Model model, @RequestParam MultipartFile file,
 								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) throws Exception {
 
+		issueVO.setCrtrId(employeeVO.getEmpId());
 		if (!issueVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
 			throw new PageNotFoundException();
 		}

@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <button type="button">등록</button>
+                <button id="submit" type="button">등록</button>
             </div>
         </form>
     </body>
