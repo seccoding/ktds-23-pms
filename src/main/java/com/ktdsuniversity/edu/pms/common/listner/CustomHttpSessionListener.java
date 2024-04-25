@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.common.listner;
 
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class CustomHttpSessionListener implements HttpSessionListener {
 		
 		HttpSession session = se.getSession();
 		EmployeeVO employeeVO = (EmployeeVO) session.getAttribute("_LOGIN_USER_");
+		int commuteFnshCheck = this.loginLogService.getCommutFnshCount(employeeVO.getEmpId());
+
 		if (employeeVO != null) {
 			SessionUtil.removeSession(employeeVO.getEmpId(), false);
 			boolean getOneEmpIdNotUseNowSuccess = this.loginLogService.updateOneEmpIdNotUseNow(employeeVO);
@@ -40,7 +43,12 @@ public class CustomHttpSessionListener implements HttpSessionListener {
 				logger.debug("로그아웃 기록에 성공했습니다.(세션 만료)");
 			}
 
-
+			if (commuteFnshCheck > 0) {
+				boolean updateCommuteFnshSuccess = this.loginLogService.updateCommuteFnsh(employeeVO);
+				if (updateCommuteFnshSuccess) {
+					logger.debug("퇴근 기록에 성공했습니다. (18:20 경과)");
+				}
+			}
 		}
 		
 	}

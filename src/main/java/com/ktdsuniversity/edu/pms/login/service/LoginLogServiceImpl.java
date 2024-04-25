@@ -225,5 +225,10 @@ public class LoginLogServiceImpl implements LoginLogService {
 		return this.loginLogDao.updatePwdDtThirtyDay(empId) > 0;
 	}
 
+	@Override
+	public int getCommutFnshCount(String empId) {
+		return this.loginLogDao.getCommutFnshCount(empId);
+	}
+
 
 }

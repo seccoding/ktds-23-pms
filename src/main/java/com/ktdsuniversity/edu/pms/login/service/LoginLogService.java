@@ -48,4 +48,5 @@ public interface LoginLogService {
 
     public boolean updatePwdDtThirtyDay(String empId);
 
+    public int getCommutFnshCount(String empId);
 }

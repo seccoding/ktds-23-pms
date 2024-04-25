@@ -343,4 +343,11 @@
          WHERE EMP_ID = #{_parameter}
     </update>
 
+    <select id="getCommutFnshCount" parameterType="string" resultType="_int">
+        SELECT COUNT(1)
+          FROM COMMUTE
+         WHERE EMP_ID = #{_parameter}
+           AND TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE(182000, 'HH24:MI:SS'), 'HH24:MI:SS')
+    </select>
+
 </mapper>

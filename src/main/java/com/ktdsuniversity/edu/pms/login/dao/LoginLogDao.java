@@ -57,4 +57,6 @@ public interface LoginLogDao {
 	public List<VisitedVO> getOneVisitedLog(String empId);
 
 	public int updatePwdDtThirtyDay(String empId);
+
+	public int getCommutFnshCount(String empId);
 }

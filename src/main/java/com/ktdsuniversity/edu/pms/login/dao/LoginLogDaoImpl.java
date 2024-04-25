@@ -128,4 +128,9 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
         return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updatePwdDtThirtyDay", empId);
     }
 
+    @Override
+    public int getCommutFnshCount(String empId) {
+        return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getCommutFnshCount", empId);
+    }
+
 }

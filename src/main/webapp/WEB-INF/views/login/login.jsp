@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>로그인 페이지</title>
+    <jsp:include page="../commonmodal.jsp" />
     <style type="text/css">
         html {
             background-color: #ffffff;
@@ -169,11 +170,11 @@
         }
 
         .id {
-            bottom: 30px;
+            bottom: 25px;
         }
 
         .pwd {
-            bottom: 40px;
+            bottom: 35px;
         }
 
         #empId, #pwd {
@@ -213,7 +214,7 @@
 
         .login-btn {
             position: relative;
-            bottom: 25px;
+            bottom: 20px;
         }
 
         .footer {
