@@ -219,4 +219,11 @@ public class LoginLogServiceImpl implements LoginLogService {
 		return visitedListVO;
 	}
 
+	@Transactional
+	@Override
+	public boolean updatePwdDtThirtyDay(String empId) {
+		return this.loginLogDao.updatePwdDtThirtyDay(empId) > 0;
+	}
+
+
 }

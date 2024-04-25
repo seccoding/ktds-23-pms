@@ -123,4 +123,9 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
         return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneVisitedLog", empId);
     }
 
+    @Override
+    public int updatePwdDtThirtyDay(String empId) {
+        return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updatePwdDtThirtyDay", empId);
+    }
+
 }

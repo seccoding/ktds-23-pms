@@ -40,9 +40,11 @@ public interface LoginLogService {
 
     public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO);
 
-    LoginLogListVO getOneLoginLog(String empId);
+    public LoginLogListVO getOneLoginLog(String empId);
 
     public VisitedListVO getAllVisitedLog(VisitedVO visitedVO);
 
-    VisitedListVO getOneVisitedLog(String empId);
+    public VisitedListVO getOneVisitedLog(String empId);
+
+    public boolean updatePwdDtThirtyDay(String empId);
 }
