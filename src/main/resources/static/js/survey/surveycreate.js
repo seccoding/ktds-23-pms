@@ -1,12 +1,23 @@
 function handleDeleteQuestionItem(event) {
-    var idToDel = $(event.currentTarget).closest(".survey-question").data("srv-id");
     var qstToDel = $(event.currentTarget).closest(".survey-question");
+    var qstIdToDel = $(event.currentTarget).closest(".survey-question").data("srv-id");
     var nextQst = qstToDel.nextAll(".survey-question");
 
     var chooseValue = confirm("정말 삭제하시겠습니까?");
     if (chooseValue) {
 
-        $.post("/ajax/survey/delete/" + idToDel, function(response) {
+        var pickToDel = qstToDel.find("li");
+        if (pickToDel) {          
+            pickToDel.each(function() {
+                var sqpIdToDel = $(this).find("input").first().data("sqp-id");
+                
+                $.post("/ajax/survey/pick/delete/" + sqpIdToDel, function(response) {
+                    console.log(response.data.result);
+                });
+            });
+        }
+
+        $.post("/ajax/survey/delete/" + qstIdToDel, function(response) {
             console.log(response.data.result);
         });
 

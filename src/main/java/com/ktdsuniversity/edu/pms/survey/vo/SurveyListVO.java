@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.survey.vo;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 
 public class SurveyListVO {
 	
@@ -11,8 +12,10 @@ public class SurveyListVO {
 	private List<SurveyQuestionVO> surveyList;
 	private List<SurveyQuestionVO> questionList;
 	private List<SurveyQuestionPickVO> pickList;
+	private List<SurveyReplyVO> replyList;
 	
 	private List<ProjectSurveyQuestionVO> projectList;
+	private List<ProjectSurveyQuestionVO> projectTeammateList;
 
 	public int getProjectCount() {
 		return projectCount;
@@ -43,6 +46,18 @@ public class SurveyListVO {
 	}
 	public void setProjectList(List<ProjectSurveyQuestionVO> projectList) {
 		this.projectList = projectList;
+	}
+	public List<ProjectSurveyQuestionVO> getProjectTeammateList() {
+		return projectTeammateList;
+	}
+	public void setProjectTeammateList(List<ProjectSurveyQuestionVO> projectTeammateList) {
+		this.projectTeammateList = projectTeammateList;
+	}
+	public List<SurveyReplyVO> getReplyList() {
+		return replyList;
+	}
+	public void setReplyList(List<SurveyReplyVO> replyList) {
+		this.replyList = replyList;
 	}
 
 }
