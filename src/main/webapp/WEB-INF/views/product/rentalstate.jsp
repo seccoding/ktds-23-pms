@@ -132,13 +132,14 @@
             <input type="text" name="searchKeyword" value="${searchBorrowVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
 
-            <ul class="page-nav">
+            <ul class="pagination">
                 <c:if test="${searchBorrowVO.hasPrevGroup}">
-                    <li><a href="javascript:search(0);">처음</a></li>
-                    <li>
+                    <li class="page-item first">
+                        <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>
+                    <li class="page-item prev">
                         <a
-                                href="javascript:search(${searchBorrowVO.prevGroupStartPageNo});"
-                        >이전</a
+                                href="javascript:search(${searchProjectVO.prevGroupStartPageNo});"
+                        ><img src="/images/chevron-left.svg"/></a
                         >
                     </li>
                 </c:if>
@@ -150,21 +151,21 @@
                         step="1"
                         var="p"
                 >
-                    <li class="${searchBorrowVO.pageNo eq p ? 'active' : ''}">
-                        <a href="javascript:search(${p});">${p+1}</a>
+                    <li class="${searchBorrowVO.pageNo eq p ? 'active' : ''} page-item">
+                        <a class="page-link" href="javascript:search(${p});">${p+1}</a>
                     </li>
                 </c:forEach>
 
                 <c:if test="${searchBorrowVO.hasNextGroup}">
-                    <li>
+                    <li class="page-item next">
                         <a
-                                href="javascript:search(${searchBorrowVO.nextGroupStartPageNo});"
-                        >다음</a
+                                href="javascript:search(${searchProductVO.nextGroupStartPageNo});"
+                        ><img src="/images/chevron-right.svg"/></a
                         >
                     </li>
-                    <li>
-                        <a href="javascript:search(${searchBorrowVO.pageCount - 1});"
-                        >마지막</a
+                    <li class="page-item last">
+                        <a href="javascript:search(${searchProductVO.pageCount - 1});"
+                        ><img src="/images/chevron-double-right.svg"/></a
                         >
                     </li>
                 </c:if>
