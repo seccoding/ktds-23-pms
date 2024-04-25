@@ -35,6 +35,7 @@ public class EmployeeVO {
     private String jobId;
     private String pstnId;
     private String pwd;
+	private String confirmPwd;
     private String salt;
     private int lgnTry;
     private String pwdCnDt;
@@ -47,7 +48,15 @@ public class EmployeeVO {
     private String originPrflFileName; 
     private JobHistoryVO jobHistoryVO;
 
-    public JobHistoryVO getJobHistoryVO() {
+	public String getConfirmPwd() {
+		return confirmPwd;
+	}
+
+	public void setConfirmPwd(String confirmPwd) {
+		this.confirmPwd = confirmPwd;
+	}
+
+	public JobHistoryVO getJobHistoryVO() {
 		return jobHistoryVO;
 	}
 

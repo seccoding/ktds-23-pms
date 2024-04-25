@@ -59,8 +59,12 @@
         <input type="text" id="email" value="${employeeVO.email}"/>
 
         <label for="pwd">비밀번호</label>
-        <input type="pwd" id="pwd" name="pwd" value="${employeeVO.pwd}">
+        <input type="text" id="pwd" name="pwd" value="${employeeVO.pwd}">
+     
+        <label for="confirmPwd">비밀번호 확인</label>
+        <input type="text" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}">
 
+        
         <c:choose>
             <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
                 <label for="workSts">재직 상태</label>
