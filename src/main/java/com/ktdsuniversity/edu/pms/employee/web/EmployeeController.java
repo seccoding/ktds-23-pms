@@ -106,16 +106,13 @@ public class EmployeeController {
 	}
 	
 	
-	//삭제 
+	// 사원 삭제 
 	@ResponseBody
 	@GetMapping("ajax/employee/delete")
-	public AjaxResponse deleteEmp(EmployeeVO employeeVO) {
-		boolean isSuccess = this.employeeService.deleteEmployee(employeeVO.getEmpId());
-//		if(isSuccess) {
-//			session.invalidate();
-//		}
-		return new AjaxResponse().append("next", isSuccess ? "/employee/success-delete-emp"
-											: "/employee/failed-delete-emp");
+	public AjaxResponse deleteEmp(@RequestParam String empId) {
+		boolean isSuccess = this.employeeService.deleteEmployee(empId);
+
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/search");
 	}
 	
 	

@@ -135,6 +135,10 @@
             <button> 
               <a href="/employee/modify/${employeeVO.empId}">수정</a>
             </button>
+            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+
+              <button class="delete-employee">퇴사 처리</button>
+            </c:if>
           </div>
           <div>
             <h5>직무 변경 사항</h5>

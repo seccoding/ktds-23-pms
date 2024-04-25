@@ -60,14 +60,16 @@
 		 INNER JOIN COMMON_CODE C
 		    ON E.PSTN_ID = C.CMCD_ID
 		 WHERE A.TM_ID = #{_parameter}
-		   AND A.DEL_YN = 'N'		
+		   AND A.DEL_YN = 'N'	
+		   AND E.WORK_STS != '204'	
 	</select>
 	
 
 	<select id="getAllEmployeeCount" 
 			resultType="_int">
 		SELECT COUNT(1)
-		  FROM EMPLOYEE E
+		  FROM EMPLOYEE
+		 WHERE WORK_STS != '204'	
 	</select>
 
 	<select id="searchEmployeeAllCount" 
@@ -79,6 +81,7 @@
 			ON D.DEPT_ID = E.DEPT_ID
 		  JOIN JOB J 
 		    ON J.JOB_ID = E.JOB_ID
+		 WHERE E.WORK_STS != '204'	
 		  <if test='searchKeyWord != null and searchKeyWord != "" '>
 		  	<choose>
 		  		<when test='searchType == "employee_name"'>
@@ -125,6 +128,7 @@
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D 
 	    ON D.DEPT_ID = E.DEPT_ID 
+	 WHERE E.WORK_STS != '204'	
 	  
 	</select>
 	<select id="searchAllEmployee" 
@@ -163,6 +167,7 @@
 	    ON D.DEPT_ID = E.DEPT_ID
 	  JOIN JOB J
 	    ON J.JOB_ID = E.JOB_ID 
+	 WHERE E.WORK_STS != '204'	
 	 <if test='searchKeyWord != null and searchKeyWord !="" '>
 		  	<choose>
 		  		<when test='searchType == "employee_name"'>
@@ -221,7 +226,7 @@
 	  JOIN COMMON_CODE C
 	    ON C.CMCD_ID = E.PSTN_ID
 	 WHERE E.EMP_ID = #{_parameter}
-		OR D.DEPT_ID = #{_parameter}  
+	   AND E.WORK_STS != '204'	  
 	</select>
 
 	<update id="modifyEmployee" 
@@ -266,7 +271,8 @@
 	<update id="deleteEmployeeById"
 			parameterType ="string">
 		UPDATE EMPLOYEE 
-   		   SET DEL_YN = 'Y'
+   		   SET WORK_STS = '204'
+   		     , END_DT = SYSDATE
  		 WHERE EMP_ID = #{empId} 
 	</update>
 
@@ -330,6 +336,7 @@
 			SELECT COUNT(1) 
 			  FROM EMPLOYEE
 			 WHERE EMP_ID = #{empId}
+			   AND WORK_STS != '204'
 	</select>
 	
 	<select id="getEmployeeAllTeam" parameterType="string" resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
@@ -359,7 +366,7 @@
 		, TM_ID
 		, DEL_YN)
 		VALUES 
-		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_ASGN_PK.NEXTVAL, 6, '0')
+		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ASGN_PK.NEXTVAL, 6, '0')
 		, #{empId}
 		, #{teamVO.tmId}
 		, 'N')
