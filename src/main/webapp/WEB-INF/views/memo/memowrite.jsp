@@ -25,12 +25,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <body>
     <jsp:include page="../commonemployeelist.jsp" />
     <h1>쪽지 쓰기</h1>
-    <form
-      id="writeForm"
-      action="/memo/write"
-      method="post"
-      enctype="multipart/form-data"
-    >
+    <form id="writeForm" action="/memo/write" method="post">
       <div class="grid">
         <div class="memowrite-content">
           <label for="rcvId">받는사람</label>
@@ -43,9 +38,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           />
           <div id="special-hidden-datalist" style="display: none"></div>
           <button class="address">주소록</button>
+          <c:forEach items="${errorMessage.rcvId}" var="error">
+            <div>${error}</div>
+          </c:forEach>
         </div>
         <div class="memowrite-content">
           <label for="memoTtl">제목 </label>
+          <c:forEach items="${errorMessage.memoTtl}" var="error">
+            <div>${error}</div>
+          </c:forEach>
           <input
             id="memoTtl"
             type="text"
@@ -55,6 +56,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           />
         </div>
         <label for="memoCntnt">내용</label>
+        <c:forEach items="${errorMessage.memoCntnt}" var="error">
+          <div>${error}</div>
+        </c:forEach>
         <textarea
           name="memoCntnt"
           id="memoCntnt"

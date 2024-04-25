@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.memo.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.memo.service.MemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.MemoListVO;
@@ -21,6 +24,8 @@ import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
 import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.RequestUtil;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +36,9 @@ public class MemoController {
 	
 	@Autowired
 	private MemoService memoService; 
+	
+	@Autowired
+	private EmployeeService employeeService;
 	
 	/**
 	 * 보낸 쪽지리스트 보여주는 페이지 
@@ -88,16 +96,38 @@ public class MemoController {
 	 * 쪽찌 쓰기 기능 쓰기 완료시 보낸쪽지함으로 이동
 	 */
 	@PostMapping("/memo/write")
-	public String doMemoWrite(@RequestParam String rcvId,
-			@RequestParam String memoTtl,
-			@RequestParam String memoCntnt,
+	public String doMemoWrite(@ModelAttribute MemoVO memoVO,
 			Model model,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		MemoVO memoVO = new MemoVO();
+		
+		
 		memoVO.setEmpId(employeeVO.getEmpId());
-		memoVO.setRcvId(rcvId);
-		memoVO.setMemoCntnt(memoCntnt);
-		memoVO.setMemoTtl(memoTtl);
+		
+		
+		Validator<MemoVO> validator = new Validator<>(memoVO);
+		validator
+		.add("memoTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다.")
+		.add("rcvId", Type.NOT_EMPTY, "받는 사람은 필수 입력값입니다.")
+		.add("memoCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다.")
+		.start();
+		
+		List<EmployeeVO> memoList = this.employeeService.getAllEmployee().getEmployeeList().stream()
+				.filter(emp -> emp.getEmpId().equals(memoVO.getRcvId()))
+				.toList();
+				
+		if(memoList.size() == 0) {
+				//중복값이 없다-> 아이디가 없다
+			model.addAttribute("rcvIdMatch", false);
+			
+		}
+		
+		if(validator.hasErrors()) {
+			Map<String, List<String>> errors = validator.getErrors();
+			model.addAttribute("errorMessage",errors);
+			model.addAttribute("memoVO",memoVO);
+			return "memo/memowrite";
+		}
+		
 		boolean isCreateSuccess = this.memoService.writeNewMemo(memoVO);
 		if(isCreateSuccess) {
 			logger.info("쪽지 쓰기 성공!");

@@ -16,7 +16,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 10rem;
+        width: 7rem;
         display: inline-block;
       }
     .memotable {
@@ -127,8 +127,6 @@
                                     <option value="empName" ${searchMemoVO.searchType eq 'empName' ? 'selected' : ''}>수신자 이름</option>
                                     <option value="email" ${searchMemoVO.searchType eq 'email' ? 'selected' : ''}>수신자 이메일</option>
                                 </select>
-                            </div>
-                            <div class="search-text">
                                 <input type="text" name="searchKeyword" value="${searchMemoVO.searchKeyword}"/>
                                 <button type="button" id="search-btn">검색</button>
                                 <button href="javascript:void(0)" id="deleteMassiveMemo">삭제</button>
@@ -161,12 +159,12 @@
                     </form>
                 </nav>
             </div>
-<div class="right-memo" id="sent-memo-detail"></div>
+        <div class="right-memo" id="sent-memo-detail"></div>
             <!-- Paginator 끝 -->
-        </div>
+    </div>
 
         
 
-    </div>
+</div>
 </body>
 </html>
