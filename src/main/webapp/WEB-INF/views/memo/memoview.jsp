@@ -66,8 +66,6 @@
         <button href="#" class="save-button">저장</button>
 	    </c:if>
       
-      <button href="" class="list-button">목록</button>
-      
       <div>
      
     </div>
