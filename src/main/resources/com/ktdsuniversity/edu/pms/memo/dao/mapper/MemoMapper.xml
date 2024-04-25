@@ -384,7 +384,6 @@
   	<update id="saveOneMemo" parameterType="string">
   		UPDATE MEMO
 		   SET SAVE_YN = 'Y'
-		     , RCV_SAVE = #{empId}
 		 WHERE DEL_YN = 'N'
 		   AND MEMO_ID = #{memoId}
   	</update>

@@ -22,5 +22,7 @@ public interface DepartmentDao {
 
 	public DepartmentVO getOneDepartment(String departmentId);
 
+	public String getDepartmentNameById(String deptId);
+
 
 }

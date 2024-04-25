@@ -323,23 +323,26 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <label for="codeDeptLeadId">부서장 ID</label>
           <div data-columns="2 / -1" id="codeDeptLeadId"></div>
         </div>
-        <div data-columns="1 / -1" style="text-align: right">
-          <input
-            type="button"
-            class="department-create button"
-            value="부서 등록"
-          />
-          <input
-            type="button"
-            class="department-modify button"
-            value="부서 변경"
-          />
-          <input
-            type="button"
-            class="department-delete-button button"
-            value="부서 삭제"
-          />
-        </div>
+
+        <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+          <div data-columns="1 / -1" style="text-align: right">
+            <input
+              type="button"
+              class="department-create button"
+              value="부서 등록"
+            />
+            <input
+              type="button"
+              class="department-modify button"
+              value="부서 변경"
+            />
+            <input
+              type="button"
+              class="department-delete-button button"
+              value="부서 삭제"
+            />
+          </div>
+        </c:if>
       </div>
       <div class="overflow-scroll">
         <h4 style="background-color: var(--body-bg)">팀 정보</h4>
@@ -361,21 +364,23 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <label for="codeTmCrtDt">생성일</label>
           <div id="codeTmCrtDt"></div>
         </div>
-        <div data-columns="1 / -1" style="text-align: right">
-          <input
-            type="button"
-            class="emp-team-create button hidden"
-            value="사원 등록"
-          />
-          <div
-            id="special-hidden-datalist"
-            class="special-hidden-datalist"
-            style="display: none"
-          ></div>
-          <input type="button" class="team-create button" value="팀 등록" />
-          <input type="button" class="team-modify button" value="팀 변경" />
-          <input type="button" class="team-delete button" value="팀 삭제" />
-        </div>
+        <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+          <div data-columns="1 / -1" style="text-align: right">
+            <input
+              type="button"
+              class="emp-team-create button hidden"
+              value="사원 등록"
+            />
+            <div
+              id="special-hidden-datalist"
+              class="special-hidden-datalist"
+              style="display: none"
+            ></div>
+            <input type="button" class="team-create button" value="팀 등록" />
+            <input type="button" class="team-modify button" value="팀 변경" />
+            <input type="button" class="team-delete button" value="팀 삭제" />
+          </div>
+        </c:if>
       </div>
       <div class="overflow-scroll">
         <h4 style="background-color: var(--body-bg)">사원 정보</h4>

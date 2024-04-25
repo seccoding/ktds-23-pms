@@ -78,5 +78,10 @@ public class DepartmentServiceImpl implements DepartmentService{
 		return departmentDao.deleteOneDepartment(deptId) > 0;
 	}
 
+	@Override
+	public String getDepartmentNameById(String deptId) {
+		return departmentDao.getDepartmentNameById(deptId);
+	}
+
 	
 }

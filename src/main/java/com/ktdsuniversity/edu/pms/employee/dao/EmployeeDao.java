@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.employee.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
@@ -46,6 +47,8 @@ public interface EmployeeDao {
 	public int addTeam(EmployeeVO employeeVO);
 	
 	public String getDeptIdByEmployeeId(String empId);
+
+	public List<EmployeeVO> findEmployeesByDeptID(String deptId);
 
 
 }

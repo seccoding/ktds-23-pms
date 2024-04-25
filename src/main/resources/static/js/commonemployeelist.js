@@ -1,8 +1,4 @@
 $().ready(function () {
-  $(".modal-list-close").on("click", function () {
-    $(".modal-employee-list")[0].close();
-  });
-
   $("#search-form")
     .find("button")
     .on("keydown", function (event) {
@@ -178,7 +174,6 @@ $().ready(function () {
     $(".checked-id").each((idx, item) => {
       list.push($(item).text());
     });
-    $("#special-hidden-datalist").text(list);
 
     var alertModal = $(".modal-confirm-window");
     var confirmButton = $(".confirm-confirm-button");
@@ -190,8 +185,17 @@ $().ready(function () {
     alertModal[0].showModal();
 
     confirmButton.on("click", function () {
+      $("#special-hidden-datalist").text(list);
       $(".modal-confirm-window")[0].close();
       $(".modal-employee-list")[0].close();
     });
+
+    cancelButton.on("click", function () {
+      $(".modal-confirm-window")[0].close();
+      $(".modal-employee-list")[0].close();
+    });
+  });
+  $(".modal-list-close").on("click", function () {
+    $(".modal-employee-list")[0].close();
   });
 });
