@@ -7,45 +7,8 @@
     <script type="text/javascript" src="/js/project/projectview.js"></script>
     <script type="text/javascript" src="/js/lib/chart.js"></script>
     <link rel="stylesheet" href="/css/project/modal.css"/>
-    <style>
-        .chart-table {
-            width: 100%;
-            table-layout: fixed; /* 테이블 내의 셀 너비를 고정합니다 */
-        }
-
-        .chart-table td {
-            text-align: center; /* 내용을 가운데로 정렬합니다 */
-        }
-
-        .chart-container {
-            max-width: 400px;
-            max-height: 400px;
-            margin: auto;
-        }
-
-        .chart-container canvas {
-            width: 100% !important;
-            height: auto !important;
-        }
-
-        .center-info-item {
-            display: inline-block;
-            justify-content: center;
-        }
-
-        .btn-group {
-            margin: 15px;
-            float: right;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .not-bottom-line {
-            border-collapse: unset;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/project/projecttab.css"/>
+    <link rel="stylesheet" href="/css/project/projectview.css"/>
 </head>
 <body>
 
@@ -53,21 +16,41 @@
 
 <div>
 
-    <%--  상단 탭  --%>
-    <%-- 기본정보, 구성원, 산출물, 요구사항 id를 js에서 QueryParam을 뽑아서 Control 해야할 듯 --%>
-    <div class="project-tabs">
+    <jsp:include page="projecttaps.jsp"/>
+
+    <div class="project-boards">
+        <%--    요구사항, 이슈, 지식관리, 묻고 답하기 관리 권한에 대한 요소를 보여준다.   --%>
         <ul>
-            <li>
-                <a id="tab-show" href="/project/view?prjId=${project.prjId}">기본정보</a>
-            </li>
-            <li>
-                <a id="tab-member" href="/project/team?prjId=${project.prjId}">구성원</a>
-            </li>
+            <c:if test='${project.reqYn eq "Y"}'>
+                <li>
+                    <a href="/requirement/search?prjId=${project.prjId}"><span class="badge bg-success">요구사항관리</span></a>
+                </li>
+            </c:if>
+            <c:if test='${project.isYn eq "Y"}'>
+                <li>
+                    <span class="badge bg-label-warning">이슈관리</span>
+                </li>
+            </c:if>
+            <c:if test='${project.knlYn eq "Y"}'>
+                <li>
+                    <span class="badge bg-label-danger">지식관리</span>
+                </li>
+            </c:if>
+            <c:if test='${project.qaYn eq "Y"}'>
+                <li>
+                    <span class="badge bg-label-info">묻고답하기</span>
+                </li>
+            </c:if>
+            <c:if test='${project.outYn eq "Y" and (sessionScope._LOGIN_USER_.admnCode eq "301")}' >
+                <li>
+                    <a href="/output/search?prjId=${project.prjId}"><span class="badge bg-success">산출물관리</span></a>
+                </li>
+            </c:if>
         </ul>
     </div>
 
     <div
-            class="grid"
+            class="grid bs"
             data-gap="0.5rem"
             data-grid-columns="1fr 1fr"
             data-grid-rows="auto"
@@ -99,75 +82,93 @@
             <div id="chart_package">
                 <table class="fit-parent not-bottom-line chart-table">
                     <tr>
-                        <td>
-                            <div class="chart-container">
-                                <canvas id="requirement-chart"></canvas>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="chart-container">
-                                <canvas id="issue-chart"></canvas>
-                            </div>
-                        </td>
+                        <c:if test='${project.reqYn eq "Y"}'>
+                            <td>
+                                <div class="chart-container">
+                                    <canvas id="requirement-chart"></canvas>
+                                </div>
+                            </td>
+                        </c:if>
+                        <c:if test='${project.isYn eq "Y"}'>
+                            <td>
+                                <div class="chart-container">
+                                    <canvas id="issue-chart"></canvas>
+                                </div>
+                            </td>
+                        </c:if>
                     </tr>
 
                     <tr>
-                        <td>
-                            <div class="center-info-item">
+                        <c:if test='${project.reqYn eq "Y"}'>
+                            <td>
+                                <div class="center-info-item">
 
-                                <table class="fit-parent">
-                                    <tbody class="center-info-item">
-                                    <tr id="requirement-info-name">
+                                    <table class="fit-parent">
+                                        <tbody class="center-info-item">
+                                        <tr id="requirement-info-name">
 
-                                    </tr>
-                                    <tr id="requirement-info-value">
+                                        </tr>
+                                        <tr id="requirement-info-value">
 
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="center-info-item">
-                                <table class="fit-parent">
-                                    <tr id="issue-info-table-name">
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </c:if>
 
-                                    </tr>
-                                    <tr id="issue-info-table-value">
+                        <c:if test='${project.isYn eq "Y"}'>
+                            <td>
+                                <div class="center-info-item">
+                                    <table class="fit-parent">
+                                        <tr id="issue-info-table-name">
 
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
+                                        </tr>
+                                        <tr id="issue-info-table-value">
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </c:if>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <div>
-            <table class="table text-center">
-                <thead>
-                <tr>
-                    <th>요구사항</th>
-                    <th>시작일</th>
-                    <th>종료일</th>
-                    <th>일정상태</th>
-                    <th>요구사항 진행상태</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${requirement}" var="requirement">
-                    <tr class="project-row" data-project-id="${requirement.rqmId}">
-                        <td>${requirement.rqmTtl}</td>
-                        <td>${requirement.strtDt}</td>
-                        <td>${requirement.endDt}</td>
-                        <td>${requirement.scdStsVO.cmcdName}</td>
-                        <td>${requirement.rqmStsVO.cmcdName}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
+        <c:choose>
+            <c:when test='${project.reqYn eq "Y"}'>
+                <div>
+                    <table class="table text-center">
+                        <thead>
+                        <tr>
+                            <th>요구사항</th>
+                            <th>시작일</th>
+                            <th>종료일</th>
+                            <th>일정상태</th>
+                            <th>요구사항 진행상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${requirement}" var="requirement">
+                            <tr class="project-row" data-project-id="${requirement.rqmId}">
+                                <td>${requirement.rqmTtl}</td>
+                                <td>${requirement.strtDt}</td>
+                                <td>${requirement.endDt}</td>
+                                <td>${requirement.scdStsVO.cmcdName}</td>
+                                <td>${requirement.rqmStsVO.cmcdName}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div>
+                    요구사항 관리 권한이 없는 프로젝트 입니다.
+                </div>
+            </c:otherwise>
+        </c:choose>
     </div>
 
     <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">

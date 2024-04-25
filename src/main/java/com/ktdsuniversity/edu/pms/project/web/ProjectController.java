@@ -390,7 +390,6 @@ public class ProjectController {
 
         if (pmOptional.isPresent()) {
             ProjectTeammateVO pm = pmOptional.get();
-
             if (!employeeVO.getEmpId().equals(pm.getTmId())) {
                 if (!employeeVO.getAdmnCode().equals("301")) {
                     throw new AccessDeniedException();

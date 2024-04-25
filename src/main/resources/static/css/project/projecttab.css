@@ -1,0 +1,38 @@
+
+
+.project-tabs {
+    background-color: #fafafb;
+    padding: 0;
+}
+
+.project-tabs ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fafafb;
+}
+
+.project-tabs ul li {
+    float: left;
+}
+
+.project-tabs ul li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.project-tabs ul li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.project-tabs ul li a.active {
+    background-color: #4CAF50;
+    color: white;
+}

@@ -6,16 +6,8 @@
     <jsp:include page="../commonheader.jsp"/>
     <script type="text/javascript" src="/js/project/teammate.js"></script>
     <link rel="stylesheet" href="/css/project/modal.css"/>
-    <style>
-        .btn-group {
-            margin: 15px;
-            float: right;
-        }
-
-        .h-59 {
-            height: 59px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/project/projecttab.css"/>
+    <link rel="stylesheet" href="/css/project/teammate.css"/>
 </head>
 <body>
 
@@ -24,107 +16,94 @@
 
 <%--메인 컨텐츠--%>
 <div>
-    <div class="project-tabs">
-        <ul>
-            <li>
-                <a id="tab-show" href="/project/view?prjId=${project.prjId}">기본정보</a>
-            </li>
-            <li>
-                <a id="tab-member" href="/project/team?prjId=${project.prjId}">구성원</a>
-            </li>
-        </ul>
+
+    <jsp:include page="projecttaps.jsp"/>
+
+    <div class="project-name" id="project" data-project-id="${project.prjId}">
+        <span>${project.prjName} - ${teammateCount}명</span>
     </div>
 
-    <div>
-        <h4 id="project" data-project-id="${project.prjId}">
-            프로젝트 : ${project.prjName}
-        </h4>
-    </div>
+    <div class="bs">
+        <table class="mb-0 table">
+            <thead>
+            <tr>
+                <%--      삭제기능, if 필요      --%>
+                <th>
+                    <input type="checkbox"
+                           id="checked-all"
+                           data-target-class="target-teammate-id"/>
+                    <label for="checked-all"></label>
+                </th>
+                <th>부서</th>
+                <th>역할</th>
+                <th>이름</th>
+                <th>이메일</th>
 
-    <div>
-        ${teammateCount} 명
-    </div>
+                <%--      삭제기능, if 필요      --%>
+                <th></th>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <%--      삭제기능, if 필요      --%>
-            <th>
-                <input type="checkbox"
-                       id="checked-all"
-                       data-target-class="target-teammate-id"/>
-                <label for="checked-all"></label>
-            </th>
-            <th>부서</th>
-            <th>역할</th>
-            <th>이름</th>
-            <th>이메일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:choose>
+                <%-- projectList 내용이 존재한다면 --%>
+                <c:when test="${not empty teammate}">
+                    <%-- 내용을 반복해서 보여줌 --%>
+                    <c:forEach items="${teammate}" var="teammate">
+                        <tr class="teammate-row" data-teammate-id="${teammate.tmId}" id="${teammate.tmId}">
+                                <%--      삭제기능, if 필요      --%>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${teammate.role eq 'PM'}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="checkbox"
+                                               class="target-teammate-id"
+                                               name="targetTeammateId"
+                                               value="${teammate.prjTmId}"
+                                               id="${teammate.prjTmId}">
+                                        <label for="${teammate.prjTmId}"></label>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>${teammate.employeeVO.departmentVO.deptName}</td>
+                            <td>${teammate.role}</td>
+                            <td>${teammate.employeeVO.empName}</td>
+                            <td>${teammate.employeeVO.email}</td>
+                                <%--      삭제기능, if 필요      --%>
 
-            <%--      삭제기능, if 필요      --%>
-            <th></th>
-
-        </tr>
-        </thead>
-        <tbody>
-        <c:choose>
-            <%-- projectList 내용이 존재한다면 --%>
-            <c:when test="${not empty teammate}">
-                <%-- 내용을 반복해서 보여줌 --%>
-                <c:forEach items="${teammate}" var="teammate">
-                    <tr class="teammate-row" data-teammate-id="${teammate.tmId}" id="${teammate.tmId}">
-                            <%--      삭제기능, if 필요      --%>
-                        <td>
                             <c:choose>
                                 <c:when test="${teammate.role eq 'PM'}">
+                                    <td class="h-59">
+                                    </td>
                                 </c:when>
                                 <c:otherwise>
-                                    <input type="checkbox"
-                                           class="target-teammate-id"
-                                           name="targetTeammateId"
-                                           value="${teammate.prjTmId}"
-                                           id="${teammate.prjTmId}">
-                                    <label for="${teammate.prjTmId}"></label>
+                                    <td>
+                                        <button value="${teammate.prjTmId}"
+                                                name="deleteTeammate"
+                                                onclick="javascript:void(0);">삭제
+                                        </button>
+
+                                    </td>
                                 </c:otherwise>
                             </c:choose>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <%-- projectList의 내용이 존재하지 않는다면 --%>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="6">
+                            <p>
+                                등록된 팀원이 없습니다.
+                            </p>
                         </td>
-                        <td>${teammate.employeeVO.departmentVO.deptName}</td>
-                        <td>${teammate.role}</td>
-                        <td>${teammate.employeeVO.empName}</td>
-                        <td>${teammate.employeeVO.email}</td>
-                            <%--      삭제기능, if 필요      --%>
-
-                        <c:choose>
-                            <c:when test="${teammate.role eq 'PM'}">
-                                <td class="h-59">
-                                </td>
-                            </c:when>
-                            <c:otherwise>
-                                <td>
-                                    <button value="${teammate.prjTmId}"
-                                            name="deleteTeammate"
-                                            onclick="javascript:void(0);">삭제
-                                    </button>
-
-                                </td>
-                            </c:otherwise>
-                        </c:choose>
                     </tr>
-                </c:forEach>
-            </c:when>
-            <%-- projectList의 내용이 존재하지 않는다면 --%>
-            <c:otherwise>
-                <tr>
-                    <td colspan="6">
-                        <p>
-                            등록된 팀원이 없습니다.
-                        </p>
-                    </td>
-                </tr>
-            </c:otherwise>
-        </c:choose>
-        </tbody>
-    </table>
-
+                </c:otherwise>
+            </c:choose>
+            </tbody>
+        </table>
+    </div>
 
     <div class="btn-group">
         <div>

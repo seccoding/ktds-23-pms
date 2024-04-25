@@ -1,0 +1,26 @@
+.btn-group {
+    margin: 15px;
+    float: right;
+}
+
+.h-59 {
+    height: 59px;
+}
+
+.project-name {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 10px;
+}
+
+/* border solid */
+.bs {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
