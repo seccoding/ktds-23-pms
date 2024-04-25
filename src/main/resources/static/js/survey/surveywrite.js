@@ -26,7 +26,8 @@ $().ready(function() {
                             type: "radio",
                             name: "surveyOption" + seqNum,
                             value: picks[i].sqpId,
-                            'data-next-id': picks[i].nextId // nextId를 데이터 속성으로 추가
+                            'data-next-id': picks[i].nextId, // nextId를 데이터 속성으로 추가
+                            'data-content': picks[i].sqpCntnt
                         });
                         var label = $("<label>").text(picks[i].sqpCntnt).prepend(radioInput);
                         srvPickLiDom.append(label);
@@ -49,7 +50,8 @@ $().ready(function() {
             });
         } else {
             $("#next-srv-btn").text("종료").off('click').on('click', function() {
-                window.location.href = "/your-next-page.html"; // 종료 버튼 클릭시 리디렉션
+                $.post("/survey/response/" + prjId);
+                window.location.href = "/survey/list"; // 종료 버튼 클릭시 리디렉션
             });
             $(".survey-question").empty().text("모든 설문을 완료했습니다.");
         }
@@ -62,6 +64,31 @@ $().ready(function() {
 
     $("#next-srv-btn").on("click", function() {
         if (validateResponse()) {
+            // 현재 선택한 옵션 또는 작성한 답변 가져오기
+            var responseContent;
+            if ($("input[type='radio'][name='surveyOption" + seqNum + "']:checked").length > 0) {
+                responseContent = $("input[type='radio'][name='surveyOption" + seqNum + "']:checked").data('content');
+            } else {
+                responseContent = $("#freeResponse").val().trim();
+            }
+            
+            // 현재 문항의 ID 가져오기
+            var srvId = questions[seqNum].srvId;
+    
+            // AJAX POST 요청으로 데이터 전송
+            $.post("/ajax/survey/response/" + srvId, {
+                srvId: srvId,
+                srvRplCntnt: responseContent
+                })
+                .done(function(response) {
+                    // POST 성공 시 처리할 내용 추가
+                    console.log("응답이 성공적으로 전송되었습니다.");
+                })
+                .fail(function(xhr, status, error) {
+                    // POST 실패 시 처리할 내용 추가
+                    console.error("응답을 전송하는 동안 오류가 발생했습니다:", error);
+                });
+    
             var nextId = $("input[type='radio'][name='surveyOption" + seqNum + "']:checked").data('next-id');
             if (nextId !== undefined && nextId !== null) {
                 seqNum = findQuestionIndexBySeq(nextId); // nextId로 문항 인덱스 찾기

@@ -10,7 +10,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/qna/qnaview.js"
     ></script>
-    <!-- <link rel="stylesheet"  type="text/css" href="/static/css/qna/qna.css"> -->
   </head>
   <body>
     <h1>Qna 게시글 조회</h1>
@@ -95,6 +94,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         })
       </script>
 
+
     </div>
+
   </body>
 </html>

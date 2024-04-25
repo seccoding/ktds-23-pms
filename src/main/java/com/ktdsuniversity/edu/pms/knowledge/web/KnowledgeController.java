@@ -115,7 +115,7 @@ public class KnowledgeController {
 	// 글 작성 
 	@ResponseBody
 	@PostMapping("/ajax/knowledge/write")
-	public AjaxResponse doKnowledgeWrite(KnowledgeVO knowledgeVO, @RequestParam MultipartFile file,
+	public AjaxResponse doKnowledgeWrite(KnowledgeVO knowledgeVO,  MultipartFile file,
 			Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
 		// 유저 검증
@@ -170,8 +170,8 @@ public class KnowledgeController {
 
 	// 글 수정 작성 페이지
 	@ResponseBody
-	@PostMapping("/ajax/knowledge/modify/{knlId}")
-	public AjaxResponse doKnowledgeModify(@PathVariable String knlId, Model model, @RequestParam MultipartFile file,
+	@PostMapping("/ajax/knowledge/modify")
+	public AjaxResponse doKnowledgeModify( String knlId, Model model,  MultipartFile file,
 			KnowledgeVO knowledgeVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);

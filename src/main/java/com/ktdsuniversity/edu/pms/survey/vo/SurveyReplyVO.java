@@ -10,6 +10,7 @@ public class SurveyReplyVO {
 	private String mdfrId;
 	private String mdfDt;
 	private String delYn;
+	private String prjId;
 	
 	public String getSrvRplId() {
 		return srvRplId;
@@ -58,6 +59,12 @@ public class SurveyReplyVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public String getPrjId() {
+		return prjId;
+	}
+	public void setPrjId(String prjId) {
+		this.prjId = prjId;
 	}
 
 }

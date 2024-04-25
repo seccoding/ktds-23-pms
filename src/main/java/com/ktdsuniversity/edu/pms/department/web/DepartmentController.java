@@ -40,7 +40,7 @@ public class DepartmentController {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
 		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
 		TeamListVO getOnlyTeamListVO = this.teamService.getOnlyTeam();
-		
+		List<EmployeeVO> empList = this.employeeService.getCanBeDeptLead();
 
 
 		
@@ -48,7 +48,7 @@ public class DepartmentController {
 		model.addAttribute("departmentList", departmentListVO.getDepartmentList());
 		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
 		model.addAttribute("onlyTeamList", getOnlyTeamListVO);
-		
+		model.addAttribute("empList", empList);
 		return "department/departmentlist";
 	}
 	@GetMapping("/department/create")
@@ -79,36 +79,49 @@ public class DepartmentController {
 //	
 	@ResponseBody
 	@PostMapping("/ajax/department/create")
-	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model) {
-		boolean isEmptyName = StringUtil.isEmpty(departmentVO.getDeptName());
-		boolean isEmptyLeaderId = StringUtil.isEmpty(departmentVO.getDeptLeadId());
+	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model, @RequestParam("deptLeadId") String deptLeadId) {
+		String str =  this.departmentService.getOnlypstnid(deptLeadId);
+		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
 		
-		
-		
-		if (isEmptyName) {
-			model.addAttribute("errorMessage", "부서 이름은 필수 입력 값입니다.");
-			model.addAttribute("departmentVO", departmentVO);
-			return new AjaxResponse().append("errormessage", model);
+		if(str!=null) {
+			int number = Integer.parseInt(str);
+			if(number < 105) {
+				return new AjaxResponse().append("message", "차장 이상부터 등록 가능합니다");
+			}
+			if(count==1) {
+				return new AjaxResponse().append("message", "아이디가 존재 합니다");
+			}
+			
+			
 		}
-		if (isEmptyLeaderId) {
-			model.addAttribute("errorMessage", "부서장 아이디는 필수 입력 값입니다.");
-			model.addAttribute("departmentVO", departmentVO);
-			return new AjaxResponse().append("errormessage", model);
+		else {
+			return new AjaxResponse().append("message", "아이디를 확인하세요");
 		}
 		
 		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
 		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
 	}
 	
+	
+	
 	@ResponseBody
 	@GetMapping("/ajax/department/show")
 	public AjaxResponse selectOptionShowDepartment(@RequestParam String departmentId) {
 		DepartmentVO departmentVO = this.departmentService.selectOneDepartment(departmentId);
-		return new AjaxResponse().append("oneDepartment", departmentVO);
+		List<EmployeeVO> empList = this.employeeService.getChangeToDeptLead(departmentId);
+		return new AjaxResponse().append("oneDepartment", departmentVO).append("empList", empList);
 	}
 	@ResponseBody
 	@PostMapping("/ajax/department/modify")
 	public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
+	
+		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
+		System.out.println("count:"+count);
+		
+		if(count==1) {
+			return new AjaxResponse().append("message", "아이디가 존재 합니다");
+		}
+		
 		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
 
 		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");

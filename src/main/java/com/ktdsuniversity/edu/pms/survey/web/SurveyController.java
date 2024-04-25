@@ -16,10 +16,9 @@ import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
-import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
-import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionPickService;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionService;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
@@ -47,15 +46,48 @@ public class SurveyController {
 	@GetMapping("/survey/list")
 	public String viewSurveyListPage(Model model, SearchSurveyVO searchSurveyVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		searchSurveyVO.setEmployeeVO(employeeVO);
+		searchSurveyVO.setEmpId(employeeVO.getEmpId());
 		
+		SurveyListVO teammate = this.surveyQuestionService.searchTeammate(searchSurveyVO);
 		SurveyListVO surveyListVO = this.surveyQuestionService.searchProject(searchSurveyVO);
-		List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 		
+		List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
+		List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammate().stream()
+		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
+		.filter(tm->tm.getRole().equals("PM"))
+		.toList();
+		boolean isPM = false;
+		if (tmList.size()>0) { // PM인 경우
+		    isPM = true;
+		}
+		
+		model.addAttribute("teammate", teammate);
 		model.addAttribute("commonCodeList", projectCommonCodeList);
 		model.addAttribute("surveyList", surveyListVO);
 		model.addAttribute("SearchSurveyVO", searchSurveyVO);
+		model.addAttribute("isPM", isPM);
 
 		return "survey/surveylist";
+	}
+	
+	@GetMapping("/survey/view")
+	public String viewCompleteSurveyPage(Model model, @RequestParam String prjId) {
+		SurveyQuestionVO surveyQuestion = this.surveyQuestionService.getOneSurveyForWrite(prjId);
+		
+		SurveyQuestionVO surveyQuestionVO = new SurveyQuestionVO();
+		SurveyQuestionPickVO surveyQuestionPickVO = new SurveyQuestionPickVO();
+		surveyQuestionVO.setPrjId(prjId);
+		surveyQuestionPickVO.setSrvId(surveyQuestion.getSrvId());
+		
+//		List<SurveyQuestionVO> questionList = this.surveyQuestionService.getAllQuestions().getQuestionList();
+//		List<SurveyQuestionPickVO> pickList = this.surveyQuestionPickService.getAllPicks().getPickList();
+		SurveyListVO questionList = this.surveyQuestionService.searchAllQuestions(surveyQuestionVO);
+		SurveyListVO pickList = this.surveyQuestionPickService.searchAllPicks(surveyQuestionPickVO);
+		
+		model.addAttribute("surveyQuestionVO", surveyQuestion);
+		model.addAttribute("questionList", questionList);
+		model.addAttribute("pickList", pickList);
+		return "survey/surveyview";
 	}
 
 	@GetMapping("/survey/write")

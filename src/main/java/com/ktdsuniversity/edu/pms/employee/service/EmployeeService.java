@@ -39,7 +39,10 @@ public interface EmployeeService {
 
 	public List<EmployeeVO> findEmployeesByDeptId(String deptId);
 
+	public List<EmployeeVO> getCanBeDeptLead();
 	public boolean updatePwd(EmployeeVO employeeVO);
+
+	public List<EmployeeVO> getChangeToDeptLead(String departmentId);
 
 
 

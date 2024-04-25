@@ -114,8 +114,8 @@ public class QnaController {
 	// 글 작성 
 	@ResponseBody
 	@PostMapping("/ajax/qna/write")
-	public AjaxResponse doQnaWrite(QnaVO qnaVO, @RequestParam MultipartFile file,
-			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) throws Exception {
+	public AjaxResponse doQnaWrite(QnaVO qnaVO, MultipartFile file, 
+			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 		
 		// 유저 검증
 		if(employeeVO == null || employeeVO.getLgnYn() == "N") {
@@ -132,11 +132,11 @@ public class QnaController {
 		
 
 		boolean isCreateSuccess = this.qnaService.createNewQna(qnaVO, file);
-//		if (isCreateSuccess) {
-//			logger.info("글 등록이 완료되었습니다.");
-//		} else {
-//			logger.info("글 등록이 실패되었습니다.");
-//		}
+		if (isCreateSuccess) {
+			logger.info("글 등록이 완료되었습니다.");
+		} else {
+			logger.info("글 등록이 실패되었습니다.");
+		}
 
 		String qaId = qnaVO.getQaId();
 
@@ -235,8 +235,8 @@ public class QnaController {
 	
 	// 글 수정 작성 페이지
 	@ResponseBody
-	@PostMapping("/ajax/qna/modify/{qaId}") 
-	public AjaxResponse doQnaModify(@PathVariable String qaId, Model model, @RequestParam MultipartFile file,
+	@PostMapping("/ajax/qna/modify") 
+	public AjaxResponse doQnaModify(String qaId, Model model, MultipartFile file,
 			QnaVO qnaVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		QnaVO originqnaVO = this.qnaService.getOneQna(qaId, false);

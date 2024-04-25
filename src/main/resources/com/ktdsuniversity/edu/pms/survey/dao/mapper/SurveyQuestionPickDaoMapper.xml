@@ -60,6 +60,7 @@
 		  FROM SURVEY_QUESTION_PICK
 		 WHERE DEL_YN = 'N'
 		   AND SQP_ID = #{_parameter}
+		 ORDER BY SEQ ASC
 	</select>
 	
 	<update id="modifyOneAnswer" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
@@ -76,6 +77,7 @@
 		  FROM SURVEY_QUESTION_PICK
 		 WHERE DEL_YN = 'N'
 		   AND SQP_ID = #{_parameter}
+		 ORDER BY SEQ ASC
 	</select>
 	
 	<update id="modifyOneAnswerSequence" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
@@ -83,22 +85,6 @@
 		   SET SEQ = #{seq}
 		 WHERE SQP_ID = #{sqpId}
 	</update>
-	
-	<!-- <select id="getAllPicks" resultMap="SurveyQuestionPickVoMap">
-		SELECT SQP_ID
-			 , SRV_ID
-			 , SQP_CNTNT
-			 , NEXT_ID
-			 , CRTR_ID
-			 , CRT_DT
-			 , MDFR_ID
-			 , MDF_DT
-			 , DEL_YN
-			 , SEQ
-		  FROM SURVEY_QUESTION_PICK
-		 WHERE DEL_YN = 'N'
-		   AND SRV_ID = #{srvId}
-	</select> -->
 	
 	<select id="getAllPicks" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO"
 			resultMap="SurveyQuestionPickVoMap">
@@ -115,6 +101,7 @@
 		  FROM SURVEY_QUESTION_PICK
 		 WHERE DEL_YN = 'N'
 		   AND SRV_ID = #{srvId}
+		 ORDER BY SEQ ASC
 	</select>
 	
 	<update id="deleteOneAnswer" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">

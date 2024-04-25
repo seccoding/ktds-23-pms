@@ -1,58 +1,62 @@
 $().ready(function () {
-  var dialog = $(".alert-dialog");
-  if (dialog.length > 0) {
-    dialog[0].showModal();
+  var editors = loadEditor(".editor", "내용을 입력하세요.", "${qnaVO.qaCntnt}");
 
-    $("#submit-btn").on("click", function (event) {
-      var qaCntnt = "";
-      event.preventDefault();
+  // var dialog = $(".alert-dialog");
+  // if (dialog.length > 0) {
+  //   dialog[0].showModal();
+  // }
 
-      qaCntnt = editors.getData();
-      var fileArr = $("#file").prop("files");
-      var file = fileArr[0];
-      var qaTtl = $("#qaTtl").val();
-      var rqmId = $("#rqm-id").val();
+  $("#submit-btn").on("click", function (event) {
+    var qaCntnt = "";
+    event.preventDefault();
 
-      var formData = new FormData();
-      formData.append("file", file);
-      formData.append("qaTtl", qaTtl);
-      formData.append("rqmId", rqmId);
-      formData.append("qaCntnt", qaCntnt);
+    qaCntnt = editors.getData();
+    var fileArr = $("#file").prop("files");
+    var file = fileArr[0];
+    var qaTtl = $("#qaTtl").val();
+    var rqmId = $("#rqm-id").val();
 
-      // $("#qa-cntnt").val(qaCntnt);
+    var formData = new FormData();
+    formData.append("file", file);
+    formData.append("qaTtl", qaTtl);
+    formData.append("rqmId", rqmId);
+    formData.append("qaCntnt", qaCntnt);
 
-      $.ajax({
-        url: "/ajax/qna/write",
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        data: formData,
-        success: function (response) {
-          var errors = response.data.error;
-          $(".error").remove();
-          if (errors) {
-            for (var key in errors) {
-              var errorDiv = $("<div></div>");
-              errorDiv.addClass("error");
+    $("#qaCntnt").val(qaCntnt);
+    var type = $(this).data("type");
+    var url = "/ajax/qna/" + type;
 
-              var values = errors[key];
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      data: formData,
+      success: function (response) {
+        var errors = response.data.error;
+        $(".error").remove();
+        if (errors) {
+          for (var key in errors) {
+            var errorDiv = $("<div></div>");
+            errorDiv.addClass("error");
 
-              for (var i in values) {
-                var errorValue = values[i];
-                var error = $("<div></div>");
-                error.text(errorValue);
-                errorDiv.append(error);
-                $("input[name=" + key + "]").after(errorDiv);
-                $("select[name=" + key + "]").after(errorDiv);
-              }
+            var values = errors[key];
+
+            for (var i in values) {
+              var errorValue = values[i];
+              var error = $("<div></div>");
+              error.text(errorValue);
+              errorDiv.append(error);
+              $("input[name=" + key + "]").after(errorDiv);
+              $("select[name=" + key + "]").after(errorDiv);
             }
           }
-          if (response.data.result) {
-            location.href = "/qna";
-          }
-        },
-      });
+        }
+        if (response.data.result) {
+          location.href = "/qna";
+        }
+      },
     });
-  }
+  });
 });

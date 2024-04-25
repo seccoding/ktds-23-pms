@@ -33,6 +33,8 @@ public interface RequirementDao {
 	public List<RequirementVO> getAllRequirementByprjId(String prjId);
 
 	public List<RequirementVO> searchAllRequirement(RequirementSearchVO requirementSearchVO);
+	
+	public List<RequirementVO> getAllRequirementByTeammateId (String empId);
 
 
 }

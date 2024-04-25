@@ -85,6 +85,11 @@ public class RequirementDaoImpl extends SqlSessionDaoSupport implements Requirem
 
 	}
 
+	@Override
+	public List<RequirementVO> getAllRequirementByTeammateId(String empId) {
+		return getSqlSession().selectList(NAME_SPACE + ".getAllRequirementByTeammateId", empId);
+	}
+
 	
 
 	

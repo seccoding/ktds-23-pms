@@ -91,5 +91,20 @@
 		 WHERE TM_ID = #{_parameter}
 	</update>
 	
+	<select id="getaAllTeam">
+		SELECT DISTINCT TM_LEAD_ID  FROM TEAM
+	</select>
+	
+	<select id="getAllEmployeeInTeam" parameterType="string" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT E.EMP_ID
+		     , E.EMP_NAME 
+		  FROM ASSIGNMENT A
+		 INNER JOIN EMPLOYEE E
+		    ON E.EMP_ID = A.EMP_ID
+		 WHERE A.TM_ID = #{_parameter}
+		   AND A.DEL_YN = 'N'
+		   AND E.WORK_STS != '204'
+	</select>
+	
 
 </mapper>

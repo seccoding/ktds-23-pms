@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
@@ -94,6 +95,16 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 	@Override
 	public int deleteOneSurvey(SurveyQuestionVO surveyQuestionVO) {
 		return getSqlSession().update(SurveyQuestionDao.NAME_SPACE + ".deleteOneSurvey", surveyQuestionVO);
+	}
+
+	@Override
+	public List<SurveyQuestionVO> getAllQuestionsByPrjId(String prjId) {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".getAllQuestionsByPrjId", prjId);
+	}
+
+	@Override
+	public List<ProjectSurveyQuestionVO> searchTeammate(SearchSurveyVO searchSurveyVO) {
+		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".searchTeammate", searchSurveyVO);
 	}
 
 }

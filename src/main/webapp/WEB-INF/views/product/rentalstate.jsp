@@ -7,7 +7,9 @@
 <meta charset="UTF-8">
 <title>비품 대여 현황</title>
 <jsp:include page="../commonheader.jsp" />
+<jsp:include page="../commonmodal.jsp" />
 <script type="text/javascript" src="/js/product/rentalstate.js"></script>
+
 <style>
     .flex{
         display: flex;

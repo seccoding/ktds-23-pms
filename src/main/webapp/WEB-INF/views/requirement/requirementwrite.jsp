@@ -137,7 +137,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </select>
         </div>
 
-        <button type="button">등록</button>
+        <button type="button" data-type="write">등록</button>
       </div>
     </form>
   </body>

@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.team.service;
 
+import java.util.List;
+
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
@@ -18,5 +21,9 @@ public interface TeamService {
 	public boolean isPossibleDelete(String teamId);
 
 	public boolean deleteOneTeam(String teamId);
+	
+	public TeamListVO getaAllTeam();
+
+	public List<EmployeeVO> getAllEmployeeInTeam(String teamId);
 
 }

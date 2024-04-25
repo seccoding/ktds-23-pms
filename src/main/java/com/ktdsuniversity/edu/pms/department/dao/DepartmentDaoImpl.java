@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Repository
 public class DepartmentDaoImpl extends SqlSessionDaoSupport implements DepartmentDao{
@@ -58,6 +59,25 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 	@Override
 	public String getDepartmentNameById(String deptId) {
 		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE + ".getDepartmentNameById", deptId);
+	}
+	
+
+	@Override
+	public int getDepartment(String id) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE+".getDepartment", id);
+	}
+
+	@Override
+	public String getOnlypstnid(String pstnid) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE+".getOnlypstnid", pstnid);
+	}
+
+
+	@Override
+	public List<EmployeeVO> getEmpByDeptId(String deptId) {
+		return getSqlSession().selectList(DepartmentDao.NAME_SPACE+".getEmpByDeptId", deptId);
 	}
 
 

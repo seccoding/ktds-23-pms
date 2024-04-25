@@ -51,11 +51,11 @@ $().ready(function () {
         var errorEndDt = response.data.errorEndDt;
 
         if (errorEndDt) {
-          var EndDtDiv = $("<div></div>");
+          var EndDtDiv = $("<div style='gap: 5px; font-size: 5px'></div>");
           EndDtDiv.addClass("errorEndDt");
           EndDtDiv.text(errorEndDt);
 
-          $("#loginForm").after(EndDtDiv);
+          $(".workCheck").after(EndDtDiv);
         }
 
         var errorRestDt = response.data.errorRestDt;

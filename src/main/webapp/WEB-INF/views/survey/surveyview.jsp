@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,19 +20,26 @@
 </style>
 </head>
 <body>
-    <h1>상세 정보</h1>
-    <div class="grid" data-id="${surveyQuestionVO.prjId}">
-        <div>프로젝트 명</div>
-        <div>${surveyQuestionVO.projectVO.prjName}</div>
-        <div>총책임자 명</div>
-        <div>${surveyQuestionVO.employeeVO.empName}</div>
-        <div>수행 부서</div>
-        <div>${surveyQuestionVO.departmentVO.deptName}</div>
-        <div>수행 기간</div>
-        <div></div>
-    </div>
-    <div>
-        <a href="/survey/write?prjId=${surveyQuestionVO.prjId}">설문 생성</a>
-    </div>
+    <c:choose>
+        <c:when test="${not empty questionList.questionList}">
+            <c:forEach items="${questionList.questionList}" var="question">
+                <p>${question.srvQst}</p>
+                <c:if test="${question.typeYn eq 'N'}">
+                    <ul>
+                        <c:forEach items="${pickList.pickList}" var="pick">
+                            <li>${pick.sqpCntnt}</li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <div>
+                <a href="/survey/list">
+                    등록된 설문지가 없습니다.
+                </a>
+            </div>
+        </c:otherwise>
+    </c:choose>
 </body>
 </html>

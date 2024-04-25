@@ -80,4 +80,14 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 		return this.surveyQuestionPickDao.deleteOneAnswer(surveyQuestionPickVO) > 0;
 	}
 
+	@Override
+	public SurveyListVO searchAllPicks(SurveyQuestionPickVO surveyQuestionPickVO) {
+		List<SurveyQuestionPickVO> pickList = this.surveyQuestionPickDao.getAllPicks(surveyQuestionPickVO);
+		
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setPickList(pickList);
+		
+		return surveyListVO;
+	}
+
 }

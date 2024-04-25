@@ -74,9 +74,23 @@
 		parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO"
 	resultType="_int">
 	SELECT  COUNT(1)
-	  FROM 	REQUIREMENT r  	
+	  FROM 	REQUIREMENT R 
+	  JOIN	COMMON_CODE STS 
+	  	ON	R.SCD_STS =STS.CMCD_ID
+	  JOIN  COMMON_CODE RQM
+	  	ON  R.RQM_STS  = RQM.CMCD_ID 
 	  JOIN	PROJECT p 
-	  	ON	r.PRJ_ID = p.PRJ_ID 
+	  	ON	R.PRJ_ID = p.PRJ_ID 
+	  JOIN	EMPLOYEE DVLRP
+	    ON  R.dvlrp	= DVLRP.EMP_ID
+	  JOIN	EMPLOYEE CFRMR
+	    ON  R.CFRMR	= CFRMR.EMP_ID
+	  JOIN	EMPLOYEE TSTR
+	    ON  R.TSTR	= TSTR.EMP_ID
+	  JOIN	EMPLOYEE CRTR
+	    ON  R.CRTR_ID	= CRTR.EMP_ID
+	  LEFT  JOIN	EMPLOYEE MDFR
+	    ON  R.MDFR_ID	= MDFR.EMP_ID 
 	 WHERE	R.DEL_YN = 'N'	
 	   AND	P.REQ_YN= 'Y'
 	 <choose>
@@ -98,7 +112,8 @@
 	 </if>
 	 <if test='rqmSts != null and rqmSts != ""'>
 	   AND	R.RQM_STS=#{rqmSts}
-	 </if>	
+	 </if>
+	 ORDER	BY  R.RQM_ID DESC
 	</select>
 
 
@@ -271,6 +286,9 @@ SELECT  R.RQM_ID
 	 ,	R.RQM_STS 
 	 ,  R.CRTR_ID
 	 ,	r.PRJ_ID
+	 , 	R.DVLRP
+	 ,	R.TSTR
+	 , 	R.CFRMR
 	 ,  TO_CHAR(R.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
 	 ,	TO_CHAR(R.END_DT, 'YYYY-MM-DD') AS END_DT
 	 ,	STS.CMCD_NAME 	AS STS_NAME
@@ -400,6 +418,21 @@ SELECT  R.RQM_ID
 		</choose>
 		 WHERE RQM_ID=#{rqmId}
 	</update>
+	
+	<select id="getAllRequirementByTeammateId"
+			parameterType="String"
+			resultMap="requirementVOMap">
+  		SELECT r.RQM_TTL
+	    	 , r.RQM_ID 
+	      FROM REQUIREMENT r 
+	     WHERE r.PRJ_ID  in(
+			  SELECT p.PRJ_ID 
+			    FROM PROJECT p
+			    JOIN PROJECT_TEAMMATE pt 
+			      ON P.PRJ_ID = PT.PRJ_ID
+			   WHERE PT.TM_ID = #{_parameter}
+			     AND P.IS_YN ='Y')			
+	</select>
 	
 	<!-- 참고용 사용X -->
 	<sql id="join">

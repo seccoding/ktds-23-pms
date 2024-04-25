@@ -91,7 +91,7 @@
                                 <td>${approval.dmdDt}</td>
                                 <td>
                                     <c:if test="${approval.apprCtgr eq '902'}">
-                                        <span>비품변경</span>
+                                        <span class="badge bg-label-info">비품변경</span>
                                     </c:if>
                                 </td>
                                 <td>${approval.apprId}</td>
