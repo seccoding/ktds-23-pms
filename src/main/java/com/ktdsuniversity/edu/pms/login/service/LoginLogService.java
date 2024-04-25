@@ -47,4 +47,5 @@ public interface LoginLogService {
     public VisitedListVO getOneVisitedLog(String empId);
 
     public boolean updatePwdDtThirtyDay(String empId);
+
 }

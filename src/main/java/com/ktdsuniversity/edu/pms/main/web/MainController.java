@@ -16,7 +16,7 @@ public class MainController {
 	private LoginLogService loginLogService;
 
 	@GetMapping("/")
-	public String viewMainLayoutPage(@SessionAttribute("_LOGIN_USER_")EmployeeVO employeeVO, Model model) {
+	public String viewMainLayoutPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 		if (this.loginLogService.getPwdCndt(employeeVO.getEmpId()) > 0) {
 			model.addAttribute("pwdMessage", "비밀번호를 변경한지 90일지 지났습니다. 비밀번호를 변경해주세요.");
 		}

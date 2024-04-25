@@ -39,6 +39,8 @@ public class CustomHttpSessionListener implements HttpSessionListener {
 			if (updateEmpLogoutSuccess) {
 				logger.debug("로그아웃 기록에 성공했습니다.(세션 만료)");
 			}
+
+
 		}
 		
 	}

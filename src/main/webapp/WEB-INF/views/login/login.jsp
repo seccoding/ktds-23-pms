@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8"/>
     <title>로그인 페이지</title>
-    <link rel="stylesheet" href="../css/common.css"/>
     <style type="text/css">
         html {
             background-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         .container {
@@ -41,11 +46,34 @@
             padding-left: 30px;
         }
 
-        img {
-            position: absolute;
-            margin-left: 30vw;
+        .logo {
+            position: sticky;
+            left: 45vw;
+            top: 5vh;
+        }
 
+        .logo2 {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            top: 5px;
+            left: 30px;
+        }
 
+        .loginLogo {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            right: 35px;
+            top: 32px;
+        }
+
+        .passwordLogo {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            right: 42px;
+            top: 32px;
         }
 
         form {
@@ -55,7 +83,7 @@
         }
 
         form > div:nth-child(1) {
-            background-color: #007bff;
+            background-color: #FD3636FF;
             border-bottom-left-radius: 10px;
             border-top-left-radius: 10px;
         }
@@ -63,40 +91,144 @@
         form > div:nth-child(2) {
             padding-top: 170px;
             padding-left: 100px;
-            background-color: rgba(100, 100 ,100, 0.05);
+            /*background-color: rgba(100, 100, 100, 0.05);*/
             border-bottom-right-radius: 10px;
             border-top-right-radius: 10px;
         }
 
-        .inputText > div:nth-child(even) {
-            margin-bottom: 17px;
+        .formBackground {
+            background-color: rgba(100, 100, 100, 0.1);
         }
 
-        input {
-            width: 80%;
-            height: 25px;
+        input[type="text"], input[type="password"] {
+            font-size: 18px;
+            color: #222222;
+            border: none;
+            border-bottom: solid #aaaaaa 1px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            position: relative;
+            background: none;
+            z-index: 5;
+        }
+
+        input::placeholder {
+            color: #FD3636FF;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        span {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: #666;
+            width: 0;
+            height: 2px;
+            border-radius: 2px;
+            transition: 0.5s;
+        }
+
+        label {
+            position: absolute;
+            color: #aaa;
+            left: 10px;
+            font-size: 15px;
+            bottom: 8px;
+            transition: all .2s;
+        }
+
+        input:focus ~ label, input:valid ~ label {
+            font-size: 16px;
+            bottom: 30px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        input:focus ~ span, input:valid ~ span {
+            width: 100%;
         }
 
         .leftForm {
             color: #ffffff;
-            font-size: 30px;
+        }
+
+        .id, .pwd {
+            position: relative;
+            width: 240px;
+            margin-top: 20px;
+        }
+
+        .inputText {
+            position: relative;
+            left: 35px;
+            bottom: 30px;
+        }
+
+        .id {
+            bottom: 30px;
+        }
+
+        .pwd {
+            bottom: 40px;
+        }
+
+        #empId, #pwd {
+            width: 240px;
+        }
+
+        button textarea {
+            margin: 0;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+
+        button {
+            width: 240px;
+            height: 2.5rem;
+            color: #fff;
+            border: 0px;
+            font-weight: bold;
+            border-radius: 0.25rem;
+            background-color: #EE6953FF;
+            cursor: pointer;
+        }
+
+        button:hover {
+            color: #fff;
+            background-color: #FD3636FF;
+        }
+
+        button:disabled {
+            background-color: var(--border-color);
+        }
+
+        #loginForm {
+            position: sticky;
+        }
+
+        .login-btn {
+            position: relative;
+            bottom: 25px;
         }
 
         .footer {
-            position: absolute;
-            bottom: 0;
+            display: grid;
+            justify-items: center;
+            position: relative;
+            bottom: 200px;
+            gap: 9px;
         }
 
-        input[type="password"] {
-            width: 16rem;
-            height: 2rem;
-            border: 0;
-            border-radius: var(--box-border-radius);
-            padding-left: 10px;
-            outline: none;
-            background-color: var(--border-color);
+        .login-btn {
+            margin-top: 10px;
         }
     </style>
+    <%--    <link rel="stylesheet" href="../css/common.css"/>--%>
     <script type="text/javascript" src="/js/lib/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="/js/common.js"></script>
     <script type="text/javascript" src="/js/login/login.js"></script>
@@ -104,22 +236,32 @@
 <body>
 <div class="container">
     <div class="item header">
-        <img src="/images/logo.png" alt="" />
+        <img class="logo" src="/images/logo.png" alt=""/>
     </div>
     <div class="item"></div>
     <div class="item">
         <input type="hidden" name="next" id="next" value="${nextUrl}"/>
         <form id="loginForm">
             <div class="leftForm">
-                <span>PMS</span>
+                <img class="logo2" src="/images/logo2.png">
             </div>
-            <div class="inputText">
-                <div><label for="empId">사원번호</label></div>
-                <div><input id="empId" type="text" name="empId" value="${employeeVO.empId}"/></div>
-                <div><label for="pwd">비밀번호</label></div>
-                <div><input id="pwd" type="password" name="pwd" value="${employeeVO.pwd}"/></div>
-                <div>
-                    <button type="button" id="login-btn">로그인</button>
+            <div class="formBackground">
+                <div class="inputText">
+                    <div class="id">
+                        <img class="loginLogo" src="/images/login.png"/>
+                        <input id="empId" type="text" name="empId" value="${employeeVO.empId}" required/>
+                        <label for="empId">ID</label>
+                        <span></span>
+                    </div>
+                    <div class="pwd">
+                        <img class="passwordLogo" src="/images/header-login.png"/>
+                        <input id="pwd" type="password" name="pwd" value="${employeeVO.pwd}" required/>
+                        <label for="pwd">PASSWORD</label>
+                        <span></span>
+                    </div>
+                    <div class="login-btn">
+                        <button type="button" id="login-btn">LOGIN</button>
+                    </div>
                 </div>
             </div>
         </form>
@@ -127,16 +269,10 @@
     <div class="item"></div>
 </div>
 <div class="footer">
-    <div>
-        <div>
-            management는 회사 임직원 관리, 비품 관리 및 예정 프로젝트를 관리하는
-            프로그램입니다. 로그인후 이용하실 수 있으며 임/직원 신규 등록은
-            경영지원부(tel:123-1234)로 문의 부탁드립니다.
-        </div>
-    </div>
-    <div>회원 가입 문의: 경영지원부 (전화번호):123-1234</div>
-    <div>회사 정보(이름, 사업자 번호, 대표명, 전호번호, 이메일)</div>
-    <div>회사 주소</div>
+    <div>management는 회사 임직원 관리, 비품 관리 및 예정 프로젝트를 관리하는 프로그램입니다.</div>
+    <div>로그인후 이용하실 수 있으며 임/직원 신규 등록은 경영지원부(tel:123-1234)로 문의 부탁드립니다.</div>
+    <div>회사 정보(KtdsUniversity 이메일 : kwon@kt.ds)</div>
+    <div>회사 주소 : 효령로 176</div>
     <div>
 
     </div>
