@@ -32,42 +32,68 @@
         .input-custom {
             padding: 5px;
             outline: none;
-            width: 25%; /* 입력 필드의 폭을 조정합니다. */
-            height: 30px; /* 높이 조정 */
-            border: 1px solid #CCCCCC; /* 테두리 색 변경 */
-            border-radius: 4px; /* 테두리 둥근 정도 변경 */
-            color: #333333; /* 글자 색 변경 */
+            height: 30px;
+            border: 1px solid #CCCCCC;
+            border-radius: 4px;
+            color: #333333;
         }
 
         .datalist-custom {
-            margin-left: 49px;
+            margin: 0;
             position: absolute;
             background-color: white;
             border: 1px solid #CCCCCC;
             border-radius: 0 0 5px 5px;
             border-top: none;
             overflow-y: auto;
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* 드롭다운에 그림자 추가 */
-            max-height: 200px; /* 드롭다운의 최대 높이 조정 */
-            width: 25%; /* 드롭다운의 폭을 입력 필드와 일치시킵니다. */
-            z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 조정 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            max-height: 200px;
+            width: 11.35%;
+            z-index: 1000;
         }
 
         .option-custom {
             background-color: white;
             cursor: pointer;
             border-bottom: 1px solid #ddd;
-            padding: 8px 10px; /* 옵션의 패딩 조정 */
-            color: #333333; /* 옵션의 글자 색 변경 */
+            padding: 8px 10px;
+            color: #333333;
         }
 
         .option-custom:hover, .option-custom:active {
-            background-color: #E6E6E6; /* 호버 및 활성 옵션 배경색 변경 */
+            background-color: #E6E6E6;
+        }
+
+        .input-form {
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .form-row {
+            margin-bottom: 10px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .checkbox div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-<div>
+<div class="input-form overflow-scroll">
     <h4>프로젝트 생성</h4>
     <form>
         <div class="grid" data-grid-columns="auto"
@@ -75,18 +101,18 @@
              data-column-gap="1rem"
              data-row-gap="1rem">
             <%-- 프로젝트 명, 고객사명 --%>
-            <div>
+            <div class="form-row">
                 <label for="project-name">프로젝트명</label>
                 <input type="text" id="project-name" name="prjName" value="${project.prjName}" autocomplete="off"/>
             </div>
 
-            <div>
+            <div class="form-row">
                 <label for="client-info">고객사명</label>
                 <input type="text" id="client-info" name="clntInfo" value="${project.clntInfo}" autocomplete="off"/>
             </div>
 
             <%-- 게시판 생성 여부 --%>
-            <div>
+            <div class="form-row checkbox">
                 <div>
                     <input type="checkbox" id="requirement-check" name="reqYn" value="Y"/>
                     <label for="requirement-check"></label>
@@ -109,7 +135,7 @@
             </div>
 
             <%-- 담당 부서 선택 --%>
-            <div>
+            <div class="form-row">
                 <label for="dept-list">담당부서 </label>
                 <select id="dept-list">
                     <option value="" selected disabled hidden>부서 선택</option>
@@ -121,7 +147,7 @@
             </div>
 
             <%-- 담당자 (PM) 선택 --%>
-            <div>
+            <div class="form-row">
                 <label for="hidden-pm-id">담당자 </label>
                 <input id="pm-search" autocomplete="off" placeholder="담당자 검색" class="input-custom">
                 <input id="hidden-pm-id" type="hidden" name="pmId"/>
@@ -135,21 +161,17 @@
 
 
             <%--    html date type 사용으로 해결, datepicker는 미사용    --%>
-            <div>
+            <div class="form-row">
                 <div>
                     <label for="start-date">시작일</label>
                     <input type="date" id="start-date" name="strtDt" value="${project.strtDt}"/>
-                </div>
-                <div>
                     <label for="end-date">종료일</label>
                     <input type="date" id="end-date" name="endDt" value="${project.endDt}"/>
                 </div>
             </div>
 
-            <div>
-                <div>
-                    <button id="btn-create" type="button">생성</button>
-                </div>
+            <div class="form-row">
+                <button id="btn-create" type="button">생성</button>
             </div>
         </div>
     </form>

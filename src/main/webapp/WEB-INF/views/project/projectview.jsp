@@ -23,17 +23,17 @@
         <ul>
             <c:if test='${project.reqYn eq "Y"}'>
                 <li>
-                    <a href="/requirement/search?prjId=${project.prjId}"><span class="badge bg-success">요구사항관리</span></a>
+                    <span class="badge bg-success">요구사항관리</span>
                 </li>
             </c:if>
             <c:if test='${project.isYn eq "Y"}'>
                 <li>
-                    <span class="badge bg-label-warning">이슈관리</span>
+                    <span class="badge bg-label-danger">이슈관리</span>
                 </li>
             </c:if>
             <c:if test='${project.knlYn eq "Y"}'>
                 <li>
-                    <span class="badge bg-label-danger">지식관리</span>
+                    <span class="badge bg-label-warning">지식관리</span>
                 </li>
             </c:if>
             <c:if test='${project.qaYn eq "Y"}'>
@@ -41,7 +41,7 @@
                     <span class="badge bg-label-info">묻고답하기</span>
                 </li>
             </c:if>
-            <c:if test='${project.outYn eq "Y" and (sessionScope._LOGIN_USER_.admnCode eq "301")}' >
+            <c:if test='${project.outYn eq "Y" and (sessionScope._LOGIN_USER_.admnCode eq "301" or sessionScope._LOGIN_USER_.empId eq pm.tmId)}' >
                 <li>
                     <a href="/output/search?prjId=${project.prjId}"><span class="badge bg-success">산출물관리</span></a>
                 </li>
@@ -138,7 +138,7 @@
 
         <c:choose>
             <c:when test='${project.reqYn eq "Y"}'>
-                <div>
+                <div class="overflow-scroll">
                     <table class="table text-center">
                         <thead>
                         <tr>
