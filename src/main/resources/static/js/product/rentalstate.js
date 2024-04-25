@@ -1,25 +1,5 @@
 $().ready(function () {
-  function confirmModal(a) {
-    var alertModal = $(".modal-confirm-window");
-    var modalButton = $(".confirm-confirm-button");
-    var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text(a);
-    modalButton.text("확인");
-    modalButton1.text("취소");
-    alertModal[0].showModal();
-    var confirm = false;
 
-    $(".confirm-confirm-button").on("click", function () {
-      alertModal[0].close();
-      confirm = true;
-    });
-    $(".cancel-confirm-button").on("click", function () {
-      alertModal[0].close();
-      confirm = false;
-    });
-    return confirm;
-  }
 
   $("#search-btn").on("click", function () {
     search(0);
@@ -70,43 +50,69 @@ $().ready(function () {
   });
 
   $(".return-btn").on("click", function () {
+
+    var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
+    var modalButton11 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text("정말 반납하시겠습니까?");
+    modalButton.text("확인");
+    modalButton11.text("취소");
+    alertModal[0].showModal();
+    var confirm = false;
+
     var id = $(this).val();
     var manageId = $(this).data("prdtmgid");
-    if (confirmModal("정말 반납하시겠습니까?")) {
-      $.get(
-        "/ajax/product/rentalstate/return",
-        {
-          brrwHistId: id,
-          prdtMngId: manageId,
-        },
-        function (res) {
-          if (res.data.isSuccess) {
-            var alertModal = $(".modal-window");
-            var modalButton = $(".confirm-button");
-            var modalText = $(".modal-text");
-            modalText.text("정상적으로 반납처리되었습니다.");
-            modalButton.text("확인");
-
-            alertModal[0].showModal();
-            $(".confirm-button").on("click", function () {
-              alertModal[0].close();
-            });
-          } else {
-            var alertModal = $(".modal-window");
-            var modalButton = $(".confirm-button");
-            var modalText = $(".modal-text");
-            modalText.text("반납처리 중 오류가 발생했습니다.");
-            modalButton.text("확인");
-
-            alertModal[0].showModal();
-            $(".confirm-button").on("click", function () {
-              alertModal[0].close();
-            });
+    $(".confirm-confirm-button").on("click", function () {
+      confirm = true;
+      if (confirm == true) {
+        $.get(
+          "/ajax/product/rentalstate/return",
+          {
+            brrwHistId: id,
+            prdtMngId: manageId,
+          },
+          function (res) {
+            if (res.data.isSuccess) {
+              var alertModal1 = $(".modal-window");
+              var modalButton1 = $(".confirm-button");
+              var modalText1 = $(".modal-text");
+              modalText1.text("정상적으로 반납처리되었습니다.");
+              modalButton1.text("확인");
+  
+              alertModal1[0].showModal();
+              $(".confirm-button").on("click", function () {
+                alertModal1[0].close();
+                location.href = res.data.next;
+              });
+            } else {
+              var alertModal2 = $(".modal-window");
+              var modalButton2 = $(".confirm-button");
+              var modalText2 = $(".modal-text");
+              modalText2.text("반납처리 중 오류가 발생했습니다.");
+              modalButton2.text("확인");
+  
+              alertModal2[0].showModal();
+              $(".confirm-button").on("click", function () {
+                alertModal2[0].close();
+              });
+            }
+            
           }
-          location.href = res.data.next;
-        }
-      );
-    }
+        );
+      }
+      
+    });
+    $(".cancel-confirm-button").on("click", function () {
+      
+      confirm = false;
+      alertModal[0].close();
+    });
+
+    
+
+
+   
   });
 
   $(".selected-change-apply").on("click", function () {
@@ -135,6 +141,7 @@ $().ready(function () {
         alertModal[0].showModal();
         $(".confirm-button").on("click", function () {
           alertModal[0].close();
+          location.href = res.data.next;
         });
       } else {
         var alertModal = $(".modal-window");
@@ -146,9 +153,9 @@ $().ready(function () {
         alertModal[0].showModal();
         $(".confirm-button").on("click", function () {
           alertModal[0].close();
+          location.href = res.data.next;
         });
       }
-      location.href = res.data.next;
     });
 
     alert("!");
@@ -175,6 +182,7 @@ $().ready(function () {
         alertModal[0].showModal();
         $(".confirm-button").on("click", function () {
           alertModal[0].close();
+          location.href = res.data.next;
         });
       } else {
         var alertModal = $(".modal-window");
@@ -186,9 +194,10 @@ $().ready(function () {
         alertModal[0].showModal();
         $(".confirm-button").on("click", function () {
           alertModal[0].close();
+          location.href = res.data.next;
         });
       }
-      location.href = res.data.next;
+      
     });
   });
 });

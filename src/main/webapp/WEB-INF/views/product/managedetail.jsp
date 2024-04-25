@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>비품 상세 목록</title>
 <jsp:include page="../commonheader.jsp" />
+<jsp:include page="../commonmodal.jsp" />
 <style type="text/css">
     div.grid div.right-align {
         text-align: right;
@@ -24,7 +25,7 @@
         margin: 4rem 2rem;
     }
 </style>
-<script type="text/javascript" src="/views/commonmodal.jsp"></script>
+
 <script type="text/javascript" src="/js/product/managedetail.js"></script>
 </head>
 <body>

@@ -1,25 +1,8 @@
 $().ready(function () {
-  function confirmModal(a) {
-    var alertModal = $(".modal-confirm-window");
-    var modalButton = $(".confirm-confirm-button");
-    var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text(a);
-    modalButton.text("확인");
-    modalButton1.text("취소");
-    alertModal[0].showModal();
-    var confirm = false;
-
-    $(".confirm-confirm-button").on("click", function () {
-      alertModal[0].close();
-      confirm = true;
-    });
-    $(".cancel-confirm-button").on("click", function () {
-      alertModal[0].close();
-      confirm = false;
-    });
-    return confirm;
-  }
+  
+    
+    
+  
 
   $("#search-btn").on("click", function () {
     search(0);
@@ -91,6 +74,7 @@ $().ready(function () {
       alertModal[0].showModal();
       $(".confirm-button").on("click", function () {
         alertModal[0].close();
+        location.href = res.data.next;
       });
     } else {
       $.post(
@@ -113,6 +97,7 @@ $().ready(function () {
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               alertModal[0].close();
+              location.href = res.data.next;
             });
           } else {
             var alertModal = $(".modal-window");
@@ -124,9 +109,10 @@ $().ready(function () {
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               alertModal[0].close();
+              location.href = res.data.next;
             });
           }
-          location.href = res.data.next;
+          
         }
       );
     }
@@ -136,36 +122,76 @@ $().ready(function () {
     var id = $(this).data("product");
     $.get("/product/manage/list/iscandel?prdtId=" + id, function (res) {
       if (res.data.canDel) {
-        if (confirmModal("정말 삭제하시겠습니까?")) {
-          $.get("/product/manage/list/del?prdtId=" + id, function (res) {
-            if (res.data.result) {
-              var alertModal = $(".modal-window");
-              var modalButton = $(".confirm-button");
-              var modalText = $(".modal-text");
-              modalText.text("삭제가 완료되었습니다.");
-              modalButton.text("확인");
 
-              alertModal[0].showModal();
-              $(".confirm-button").on("click", function () {
-                alertModal[0].close();
-              });
-            } else {
-              var alertModal = $(".modal-window");
-              var modalButton = $(".confirm-button");
-              var modalText = $(".modal-text");
-              modalText.text("삭제 중 오류가 발생했습니다.");
-              modalButton.text("확인");
 
-              alertModal[0].showModal();
-              $(".confirm-button").on("click", function () {
-                alertModal[0].close();
-              });
-            }
-            location.href = res.data.next;
-          });
-        }
+        var alertModal = $(".modal-confirm-window");
+        var modalButton = $(".confirm-confirm-button");
+        var modalButton1 = $(".cancel-confirm-button");
+        var modalText = $(".modal-confirm-text");
+        modalText.text("정말 삭제하시겠습니까?");
+        modalButton.text("확인");
+        modalButton1.text("취소");
+        alertModal[0].showModal();
+        var confirm = false;
+
+        $(".confirm-confirm-button").on("click", function () {
+          confirm = true;
+
+          if (confirm == true) {
+            $.get("/product/manage/list/del?prdtId=" + id, function (res) {
+              if (res.data.result) {
+                var alertModal = $(".modal-window");
+                var modalButton = $(".confirm-button");
+                var modalText = $(".modal-text");
+                modalText.text("삭제가 완료되었습니다.");
+                modalButton.text("확인");
+  
+                alertModal[0].showModal();
+                $(".confirm-button").on("click", function () {
+                  alertModal[0].close();
+                  location.href = res.data.next;
+                });
+              } else {
+                var alertModal = $(".modal-window");
+                var modalButton = $(".confirm-button");
+                var modalText = $(".modal-text");
+                modalText.text("삭제 중 오류가 발생했습니다.");
+                modalButton.text("확인");
+  
+                alertModal[0].showModal();
+                $(".confirm-button").on("click", function () {
+                  alertModal[0].close();
+                  location.href = res.data.next;
+                });
+              }
+              
+            });
+          }
+
+          
+        });
+        $(".cancel-confirm-button").on("click", function () {
+          alertModal[0].close();
+          confirm = false;
+        });
+
+
+
+        
       } else {
-        alert("해당 비품은 상세 품목이 존재하여 삭제할 수 없습니다.");
+
+        var alertModal = $(".modal-window");
+                var modalButton = $(".confirm-button");
+                var modalText = $(".modal-text");
+                modalText.text("해당 비품은 상세 품목이 존재하여 삭제할 수 없습니다.");
+                modalButton.text("확인");
+  
+                alertModal[0].showModal();
+                $(".confirm-button").on("click", function () {
+                  alertModal[0].close();
+                  
+                });
+       
       }
     });
   });

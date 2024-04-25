@@ -1,25 +1,8 @@
 $().ready(function () {
-  function confirmModal(a) {
-    var alertModal = $(".modal-confirm-window");
-    var modalButton = $(".confirm-confirm-button");
-    var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text(a);
-    modalButton.text("확인");
-    modalButton1.text("취소");
-    alertModal[0].showModal();
-    var confirm = false;
+  
+    
 
-    $(".confirm-confirm-button").on("click", function () {
-      alertModal[0].close();
-      confirm = true;
-    });
-    $(".cancel-confirm-button").on("click", function () {
-      alertModal[0].close();
-      confirm = false;
-    });
-    return confirm;
-  }
+  
 
   var paramId = $(".body").data("paramid");
   $(".remove").on("click", function () {
@@ -40,7 +23,21 @@ $().ready(function () {
         alertModal[0].close();
       });
     } else {
-      if (confirmModal("정말 삭제하시겠습니까?")) {
+
+      var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
+    var modalButton1 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text("정말 삭제하시겠습니까?");
+    modalButton.text("확인");
+    modalButton1.text("취소");
+    alertModal[0].showModal();
+    var confirm = false;
+
+    $(".confirm-confirm-button").on("click", function () {
+      confirm = true;
+
+      if (confirm == true) {
         $.get(url, function (res) {
           if (res.data.result) {
             var alertModal = $(".modal-window");
@@ -52,6 +49,7 @@ $().ready(function () {
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               alertModal[0].close();
+              location.href = "/product/manage/view?prdtId=" + paramId;
             });
           } else {
             var alertModal = $(".modal-window");
@@ -63,11 +61,22 @@ $().ready(function () {
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               alertModal[0].close();
+              location.href = "/product/manage/view?prdtId=" + paramId;
             });
           }
-          location.href = "/product/manage/view?prdtId=" + paramId;
+          
         });
       }
+
+
+    });
+    $(".cancel-confirm-button").on("click", function () {
+      alertModal[0].close();
+      confirm = false;
+    });
+
+  
+      
     }
   });
 
@@ -122,6 +131,7 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
+            location.href = res.data.next;
           });
         } else {
           var alertModal = $(".modal-window");
@@ -133,9 +143,10 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
+            location.href = res.data.next;
           });
         }
-        location.href = res.data.next;
+        
       }
     );
   });
@@ -172,6 +183,7 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
+            location.href = res.data.next;
           });
         } else {
           var alertModal = $(".modal-window");
@@ -183,9 +195,10 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
+            location.href = res.data.next;
           });
         }
-        location.href = res.data.next;
+        
       }
     );
   });
