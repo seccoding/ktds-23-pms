@@ -1,28 +1,25 @@
 package com.ktdsuniversity.edu.pms.login.service;
 
 
-import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
-import com.ktdsuniversity.edu.pms.beans.SHA;
-import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
-import com.ktdsuniversity.edu.pms.login.vo.*;
-import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
-
 import org.apache.tika.utils.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ktdsuniversity.edu.pms.beans.SHA;
-import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.exceptions.EmpIdAndPwdIsNotMatchException;
-import com.ktdsuniversity.edu.pms.exceptions.LimitLoginException;
-import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
+import com.ktdsuniversity.edu.pms.beans.SHA;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.EmpIdAndPwdIsNotMatchException;
+import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
+import com.ktdsuniversity.edu.pms.exceptions.LimitLoginException;
+import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
+import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
+import com.ktdsuniversity.edu.pms.login.vo.VisitedListVO;
+import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
 
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
@@ -34,9 +31,6 @@ public class LoginLogServiceImpl implements LoginLogService {
 	 */
 	@Autowired
 	private LoginLogDao loginLogDao;
-
-	@Autowired
-	private EmployeeDao employeeDao;
 
 	@Autowired
 	private SHA sha;
@@ -154,9 +148,6 @@ public class LoginLogServiceImpl implements LoginLogService {
 	@Transactional
 	@Override
 	public EmployeeVO updateEmpLog(EmployeeVO employee) {
-		TeamListVO teamList = new TeamListVO();
-		
-		
 		return this.loginLogDao.updateEmpLog(employee);
 	}
 
@@ -173,7 +164,7 @@ public class LoginLogServiceImpl implements LoginLogService {
 	}
 
 	@Override
-	public int getCommuteDt(String empId) {
+	public CommuteVO getCommuteDt(String empId) {
 		return this.loginLogDao.getCommuteDt(empId);
 	}
 
