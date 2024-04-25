@@ -62,7 +62,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <%-- editor 생성부 --%>
             <div class="editor" data-name="knlCntnt"></div>
           </div>
-          >
 
           <div class="btn-group">
             <div class="right-align">
