@@ -66,8 +66,9 @@ public class ProductController {
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/apply")
-	public AjaxResponse doProductApply(BorrowListVO borrowList, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-//		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
+	public AjaxResponse doProductApply(@RequestParam String prdtName, BorrowListVO borrowList
+									, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
 		
 //		@RequestParam String namevalue,
 		
@@ -82,9 +83,9 @@ public class ProductController {
 		
 //		int productCurstr = this.productService.getProductCurstr(namevalue);
 		
-		return new AjaxResponse().append("next", "/product/list");
+		return new AjaxResponse().append("next", "/product/list")
+								 .append("oneProduct", oneProduct);
 //								 .append("productCurstr", productCurstr);
-//								 .append("oneProduct", oneProduct);
 	}
 	
 	
