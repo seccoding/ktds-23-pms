@@ -16,6 +16,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <h1>Qna 게시글 조회</h1>
 
     <div class="grid" data-id="${qnaVO.qaId}">
+      <span style="display: none;" hidden id="login-email">${sessionScope._LOGIN_USER_.empId}</span>
       <label for="qaTtl">제목</label>
       <div>${qnaVO.qaTtl}</div>
 
@@ -46,6 +47,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
       <label for="qaRecCnt">추천수</label>
       <div id="qaRecCnt">${qnaVO.qaRecCnt}</div>
+
+      <div class="replies">
+        <div class="reply-items"></div>
+        <div class="write-reply">
+          <textarea id="txt-reply" name="rplCntnt" data-issue-id="${qnaVO.qaId}"></textarea>
+          <button id="btn-save-reply" data-mode ="">등록</button>
+          <button id="btn-cancel-reply">취소</button>
+        </div>
+      </div>
 
       <div class="btn-group">
         <button type="button" class= "recommend-qna" value="${qnaVO.qaId}">
@@ -85,26 +95,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         })
       </script>
 
-
-
-      <div class="answer">
-        <div class="title">
-          ${employeeVO.empId}님, 답변해주세요!
-        </div>
-        <button class="answer-btn" style="border-color: #60a4f0;
-        background-color: #6cacf2;
-        color: #fff;" >
-          <span>답변하기</span>
-        </button>
-
-        <div class="answer-form" style="display: none;"> 
-          <!-- 답변 입력란 -->
-          <textarea placeholder="답변을 작성해주세요!"></textarea>
-          <button class="submit-answer-btn" style="border-color: #60a4f0;
-          background-color: #6cacf2;
-          color: #fff;">답변 게시</button>
-      </div>
-        
-      </div>
+    </div>
   </body>
 </html>
