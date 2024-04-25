@@ -92,7 +92,7 @@ public class OutputController {
 		
 		
 		
-		Map<String,List<String>> error =this.outputvalidator(outputVO);
+		Map<String,List<String>> error =this.outputvalidator(outputVO,file);
 		if(error !=null) {
 			return new AjaxResponse().append("error", error);
 		}
