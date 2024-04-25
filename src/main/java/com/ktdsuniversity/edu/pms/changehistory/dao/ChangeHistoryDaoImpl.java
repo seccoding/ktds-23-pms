@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Repository
@@ -80,6 +81,12 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	@Override
 	public List<CommonCodeVO> getAllJob() {
 		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllJob");
+	}
+
+	// PSH - 충돌난 메서드 확인
+	@Override
+	public List<CommonCodeVO> getAllPosition() {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllPosition");
 	}
 
 

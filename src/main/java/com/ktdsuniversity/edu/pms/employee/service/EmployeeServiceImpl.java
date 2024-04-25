@@ -132,6 +132,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.getOneEmpIdIsExist(empId);
 	}
 
+	// PSH - 충돌 확인 필요
 	@Transactional
 	@Override
 	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
@@ -146,19 +147,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employeeVO.setPwd(newPwd);
 			employeeVO.setSalt(salt);
 		}
-		
-		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
-		
-		
+
 		// 부서가 변경된 경우 부서 변경 이력 추가
 		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
 			
 			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
+
 			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
 			if(deptHistList.size() > 0) {
-				String provDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
+				String preDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
 				
-				employeeVO.setHireDt(provDate);		
+				employeeVO.setHireDt(preDate);		
 			}
 			
 			employeeVO.setDeptId(originEmployee.getDeptId());
@@ -168,7 +167,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if(insertCnt == 0) {
 				return false;
 			}
-			
 		}
 		
 		// 팀리스트가 추가되었을 경우
@@ -197,7 +195,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 			
 		}
-
 		if(!employeeVO.getPwd().equals(originEmployee.getPwd())) {
 			String newSalt = this.sha.generateSalt();
 			String newPwd = this.sha.getEncrypt(employeeVO.getPwd(), newSalt);
@@ -207,10 +204,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		}
 		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
-
-		
-		
-		
 		return updatedCount > 0;
 	}
 
@@ -254,14 +247,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		String encryptPwd = sha.getEncrypt(employeeVO.getNewPwd(), salt);
 		employeeVO.setPwd(encryptPwd);
 		employeeVO.setSalt(salt);
+		return false; //error
+	}
+	
+	// PSH - git history 없는 부분
+//	어느 메서드에 써준 로직이죠?
+//	int updateCount = this.employeeDao.updatePwd(employeeVO);
+//	return updateCount > 0;
+
 	@Override
 	public EmployeeVO getOneEmployeeNoTeam(String empId) {
 		return this.employeeDao.getOneEmployee(empId);
 	}
-
-		int updateCount = this.employeeDao.updatePwd(employeeVO);
-		return updateCount > 0;
-	}
-
 
 }

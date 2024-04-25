@@ -22,8 +22,6 @@ public interface TeamService {
 
 	public boolean deleteOneTeam(String teamId);
 	
-	public TeamListVO getaAllTeam();
-
 	public List<EmployeeVO> getAllEmployeeInTeam(String teamId);
 
 }

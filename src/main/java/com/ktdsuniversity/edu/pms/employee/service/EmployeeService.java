@@ -24,7 +24,6 @@ public interface EmployeeService {
 
 	public EmployeeListVO searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
-
 	public List<EmployeeVO> findEmployeesByTeamId(String teamId);
 
 	public int getOneEmpIdIsExist(String empId);
@@ -40,7 +39,9 @@ public interface EmployeeService {
 	public List<EmployeeVO> findEmployeesByDeptId(String deptId);
 
 	public List<EmployeeVO> getCanBeDeptLead();
+	
 	public boolean updatePwd(EmployeeVO employeeVO);
+	
 	public EmployeeVO getOneEmployeeNoTeam(String empId);
 
 	public List<EmployeeVO> getChangeToDeptLead(String departmentId);

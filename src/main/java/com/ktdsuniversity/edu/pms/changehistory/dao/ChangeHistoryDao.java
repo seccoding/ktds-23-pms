@@ -5,37 +5,39 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public interface ChangeHistoryDao {
 	
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao";
 
-	int insertOneChangeDeptHistory(EmployeeVO employeeVO);
+	// PSH - public 추가
+	public int insertOneChangeDeptHistory(EmployeeVO employeeVO);
 
-	String getRecentDeptHist(String empId);
+	public String getRecentDeptHist(String empId);
 
-	List<DepartmentHistoryVO> getAllDeptHist(String empId);
+	public List<DepartmentHistoryVO> getAllDeptHist(String empId);
 
-	List<JobHistoryVO> getAllJobHist(String empId);
+	public List<JobHistoryVO> getAllJobHist(String empId);
 
-	List<PositionHistoryVO> getUserPositionHistory(String empId);
+	public List<PositionHistoryVO> getUserPositionHistory(String empId);
 	
-	int insertOneChangeJobHistory(EmployeeVO employeeVO);
+	public int insertOneChangeJobHistory(EmployeeVO employeeVO);
 	
-	String getRecentJobHist(String empId);
+	public String getRecentJobHist(String empId);
 	
-	int insertOneChangePositionHistory(EmployeeVO employeeVO);
+	public int insertOneChangePositionHistory(EmployeeVO employeeVO);
 	
-	String getRecentPositionHist(String empId);
+	public String getRecentPositionHist(String empId);
 
-	List<CommonCodeVO> getAllPosition();
+	public List<CommonCodeVO> getAllPosition();
 
-	List<JobHistoryVO> getUserJobHistory(String empId);
+	public List<JobHistoryVO> getUserJobHistory(String empId);
 
-	int insertPositionHist(EmployeeVO employeeVO);
+	public int insertPositionHist(EmployeeVO employeeVO);
 
-	List<CommonCodeVO> getAllJob();
+	public List<CommonCodeVO> getAllJob();
 
 	
 

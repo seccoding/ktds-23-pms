@@ -5,24 +5,25 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public interface ChangeHistoryService {
 
-	List<DepartmentHistoryVO> getUserDeptHisory(String empId);
+	// PSH - public 추가
+	public List<DepartmentHistoryVO> getUserDeptHisory(String empId);
 
-	List<JobHistoryVO> getUserJobHistory(String empId);
+	public List<JobHistoryVO> getUserJobHistory(String empId);
 
-	List<PositionHistoryVO> getUserPositionHistory(String empId);
+	public List<PositionHistoryVO> getUserPositionHistory(String empId);
 
-	List<CommonCodeVO> getAllPosition();
+	public List<CommonCodeVO> getAllPosition();
 
-	boolean changePosition(EmployeeVO employeeVO);
+	public boolean changePosition(EmployeeVO employeeVO);
 
-	boolean changeJob(EmployeeVO employeeVO);
+	public boolean changeJob(EmployeeVO employeeVO);
 
-	List<CommonCodeVO> getAllJob();
-
-	
-	
+	// PSH - 충돌 메서드 추가
+	public List<CommonCodeVO> getAllJob();
 
 }

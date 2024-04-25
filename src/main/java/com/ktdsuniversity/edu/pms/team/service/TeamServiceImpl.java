@@ -20,23 +20,19 @@ public class TeamServiceImpl implements TeamService{
 	@Transactional
 	@Override
 	public boolean createNewTeam(TeamVO teamVO) {
-		
 		int insertedCount = this.teamDao.createNewTeam(teamVO);
 		return insertedCount > 0;
 	}
 
 	@Override
 	public TeamVO selectOneTeam(String teamId) {
-
 		TeamVO teamVO = this.teamDao.getOneTeam(teamId);
-		
 		return teamVO;
 	}
 
 	@Transactional
 	@Override
 	public boolean modifyOneTeam(TeamVO teamVO) {
-		
 		return teamDao.updateOneTeam(teamVO) > 0;
 	}
 
@@ -59,7 +55,6 @@ public class TeamServiceImpl implements TeamService{
 
 	@Override
 	public boolean isPossibleDelete(String teamId) {
-
 		return teamDao.isPossibleDelete(teamId) == 0;
 	}
 
@@ -68,8 +63,6 @@ public class TeamServiceImpl implements TeamService{
 	public boolean deleteOneTeam(String teamId) {
 		return teamDao.deleteOneTeam(teamId) > 0;
 	}
-
-	
 
 	@Override
 	public List<EmployeeVO> getAllEmployeeInTeam(String teamId) {

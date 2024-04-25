@@ -33,7 +33,6 @@ public interface EmployeeDao {
 
 	public String saltByEmp(String empId);
 
-
 	public List<EmployeeVO> findEmployeesByTeamId(String teamId);
 
 	public int getOneEmpIdIsExist(String empId);
@@ -50,14 +49,13 @@ public interface EmployeeDao {
 
 	public List<EmployeeVO> findEmployeesByDeptID(String deptId);
 
-	public int updatePwd(EmployeeVO employeeVO);
-
 	public List<EmployeeVO> getCanBeDeptLead();
 
 	public List<EmployeeVO> getChangeToDeptLead(String departmentId);
 
 	public int modifyEmployeeJob(EmployeeVO employeeVO);
 
+	public int modifyEmployeePosition(EmployeeVO employeeVO);
 
 
 }

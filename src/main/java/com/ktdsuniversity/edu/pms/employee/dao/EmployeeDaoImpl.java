@@ -44,7 +44,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public List<EmployeeVO> searchAllEmployee(SearchEmployeeVO searchEmployeeVO) {
 
-		return getSqlSession().selectList(EmployeeDao.NAME_SPAC                                E + ".searchAllEmployee", searchEmployeeVO);
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".searchAllEmployee", searchEmployeeVO);
 	}
 
 	@Override
@@ -135,11 +135,6 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 	@Override
-	public int updatePwd(EmployeeVO employeeVO) {
-		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".updatePwd", employeeVO);
-	}
-
-	@Override
 	public List<EmployeeVO> getCanBeDeptLead() {
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getCanBeDeptLead");
 	}
@@ -152,6 +147,12 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public int modifyEmployeeJob(EmployeeVO employeeVO) {
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyEmployeeJob", employeeVO);
+	}
+
+	@Override
+	public int modifyEmployeePosition(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE+".modifyEmployeePosition", employeeVO);
+
 	}
 
 

@@ -43,6 +43,7 @@ public class EmployeeVO {
     private String lgnTryDt;
     private String lgnYn;
     private String fileName;
+    
     private DepartmentVO departmentVO;
     private CommonCodeVO commonCodeVO;
     private DepartmentHistoryVO departmentHistoryVO;
@@ -51,8 +52,6 @@ public class EmployeeVO {
 	private String newPwd;
 	private String oldPwd;
     private PositionHistoryVO positionHistoryVO;
-    private String confirmPwd;
-	private String newPwd;
 
     public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
@@ -383,19 +382,4 @@ public class EmployeeVO {
 		this.oldPwd = oldPwd;
 	}
 
-	public String getConfirmPwd() {
-		return confirmPwd;
-	}
-
-	public void setConfirmPwd(String confirmPwd) {
-		this.confirmPwd = confirmPwd;
-	}
-
-	public String getNewPwd() {
-		return newPwd;
-	}
-
-	public void setNewPwd(String newPwd) {
-		this.newPwd = newPwd;
-	}
 }
