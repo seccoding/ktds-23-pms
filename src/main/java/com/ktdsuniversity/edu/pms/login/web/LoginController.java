@@ -228,7 +228,7 @@ public class LoginController {
 
         boolean updatePwdCnDtSuccess = this.loginLogService.updatePwdDtThirtyDay(employeeVO.getEmpId());
         if (updatePwdCnDtSuccess) {
-            logger.debug("비밀번호 변경일 30일 증가에 성공했습니다.");
+            logger.debug("비밀번호 변경일 변경(SYSDATE - 60) 성공했습니다.");
         }
 
         return new AjaxResponse().append("next", "/");
