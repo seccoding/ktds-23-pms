@@ -117,7 +117,12 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	}
 
 	@Override
-	public int getProductCurstr(String namevalue) {
-		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".getProductCurstr", namevalue);
+	public int getProductCurstr(String prdtIdByprdtName) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE+".getProductCurstr", prdtIdByprdtName);
+	}
+
+	@Override
+	public int changeOnePrdtStoredByPrdtId(String prdtIdByprdtName) {
+		return getSqlSession().update(ProductDao.NAME_SPACE + ".changeOnePrdtStoredByPrdtId", prdtIdByprdtName);
 	}
 }

@@ -65,27 +65,31 @@ public class ProductController {
 	
 	
 	@ResponseBody
-	@PostMapping("/ajax/product/apply")
-	public AjaxResponse doProductApply(@RequestParam String prdtName, BorrowListVO borrowList
-									, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
+	@GetMapping("/ajax/product/apply/{namevalue}")
+	public AjaxResponse viewProductApply(@RequestParam String productName, @PathVariable String namevalue) {
+		int oneProductCurStr = this.productService.getOneProductCurStr(productName);
+		System.out.println("**********************" + oneProductCurStr + "**********************");
 		
-//		@RequestParam String namevalue,
+		return new AjaxResponse().append("oneProductCurStr", oneProductCurStr);
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/ajax/product/apply")
+	public AjaxResponse doProductApply(@RequestParam String productName, BorrowListVO borrowList
+									, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
 		
 		borrowList.setEmployeeVO(employeeVO);
 		
 		int isApplySuccess = this.productService.createNewApplyProduct(borrowList);
 		
-//		System.out.println("^^^^^^^^^^^^^^^^^" + borrowList.getBorrowList().get +"^^^^^^^^^^^^^^^^^^");
 		if(isApplySuccess != borrowList.getBorrowList().size()) {
 			throw new PageNotFoundException();
 		}
 		
-//		int productCurstr = this.productService.getProductCurstr(namevalue);
 		
-		return new AjaxResponse().append("next", "/product/list")
-								 .append("oneProduct", oneProduct);
-//								 .append("productCurstr", productCurstr);
+		return new AjaxResponse().append("next", "/product/list");
 	}
 	
 	

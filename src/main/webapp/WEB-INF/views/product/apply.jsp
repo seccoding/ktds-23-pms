@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <title>비품 신청</title>
     <jsp:include page="../commonheader.jsp" />
+    <jsp:include page="../commonmodal.jsp" />
+
     <script type="text/javascript" src="/js/product/apply.js" ></script>
     <style type="text/css">
         .form-grid {

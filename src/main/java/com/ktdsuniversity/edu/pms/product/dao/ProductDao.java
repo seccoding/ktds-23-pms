@@ -48,7 +48,7 @@ public interface ProductDao {
 	public List<ProductVO> getAllProductList();
 
 	/**
-	 * 해당 비품명을 가진 비품의 모든 정보를 조
+	 * 해당 비품명을 가진 비품의 모든 정보를 조회
 	 * @param prdtName 조회할 비품
 	 * @return 비품의 정보들 
 	 */
@@ -67,7 +67,7 @@ public interface ProductDao {
 	// YSH0424
 	
 	/**
-	 * 비품명으로 비품ID 조회
+	 * 비품명으로 수량이 0이 아닌 비품ID 조회, 비품명이 동일할 시에 생성된지 오래된 비품의 정보를 가져옴
 	 * @return
 	 */
 	public String selectPrdtIdByPrdtName(String productName);
@@ -86,11 +86,17 @@ public interface ProductDao {
 	public List<ProductVO> getAllProductName();
 
 	/**
-	 * 비품명으로 해당 비품의 수량을 조회
+	 * 비품ID 값으로 해당 비품의 수량을 조회
 	 * @param namevalue
 	 * @return
 	 */
-	public int getProductCurstr(String namevalue);
+	public int getProductCurstr(String prdtIdByprdtName);
+
+	/**
+	 * 비품 ID 값으로 해당 비품의 수량을 변경
+	 * @param prdtIdByprdtName
+	 */
+	public int changeOnePrdtStoredByPrdtId(String prdtIdByprdtName);
 
 	
 
