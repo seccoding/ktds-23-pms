@@ -29,7 +29,7 @@ $().ready(function () {
     })
 
     $(".delete-team").on("click", function(){
-        var tmName = $("#tmName").text()
+        var tmName = $("#tmName").val()
         if(confirm(tmName+"에서 삭제하시겠습니까?")){
             $.get("/ajax/employee/delete/team", {
                 empId:empId,

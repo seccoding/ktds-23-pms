@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
 import com.ktdsuniversity.edu.pms.product.service.ProductService;
@@ -91,7 +92,7 @@ public class ProductController {
 	public String viewProductManageListPage(Model model, ProductVO productVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
 								, SearchProductVO searchProductVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
 		model.addAttribute("productList", productListVO);
@@ -117,7 +118,7 @@ public class ProductController {
 	public String viewProductManageDetailPage(Model model, ProductManagementVO productManagementVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
 									, SearchProductVO searchProductVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 //		ProductManagementListVO productManagementListVO = this.productManagementService.getAllProductdetail();
 		ProductManagementListVO productManagementListVO = this.productManagementService.searchAllProductDetail(searchProductVO);
@@ -131,7 +132,7 @@ public class ProductController {
 	@GetMapping("/product/manage/view")
 	public String viewProductManageViewPage(@RequestParam String prdtId, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 		ProductVO productVO = this.productService.getOneProduct(prdtId);
 		ProductManagementListVO productDetailListVO= this.productManagementService.getFilteringProductdetail(prdtId);
@@ -145,7 +146,7 @@ public class ProductController {
 	@GetMapping("/product/manage/add")
 	public String viewProductManageAddPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 		return "product/manageadd";
 	}

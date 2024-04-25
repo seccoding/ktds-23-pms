@@ -79,10 +79,10 @@
                 <label for="noneTmName" >팀</label>
                 <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
             </c:if>
+            <label for="tmName">팀</label>
             <c:forEach items="${employeeVO.teamList}" var="teamList">
-                <label for="tmName">팀</label>
-                <div>
-                    <div id="tmName">${teamList.tmName}</div>
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="text" id="tmName" id="tmName" value="${teamList.tmName}" disabled/>
                     <button class="delete-team" data-tmid="${teamList.tmId}">삭제</button>
 
                 </div>
@@ -142,8 +142,8 @@
                 <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
             </c:if>
             <c:forEach items="${employeeVO.teamList}" var="teamList">
-                <label for="tmName">팀</label>
-                <div id="tmName">${teamList.tmName}</div>
+                <input style="margin-bottom: 0.2rem;" type="text" id="tmName" id="tmName" value="${teamList.tmName}" disabled/>
+    
             </c:forEach>
 
             <label for="dept-select" >부서</label>
