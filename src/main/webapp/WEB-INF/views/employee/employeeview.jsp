@@ -57,10 +57,10 @@
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
     <div class="grid-container" data-id="${employeeVO.empId}">
       <div class="info-container">
-    <div>
+    <div style="text-align: center;">
       <c:choose>
         <c:when test="${not empty employeeVO.prfl}">
-          <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
+          <img src="${employeeVO.prfl}" alt="프로필 사진" class="photo" >
         </c:when>
         <c:otherwise>
           <img src="/images/login.png" alt="프로필 사진" class="photo">
