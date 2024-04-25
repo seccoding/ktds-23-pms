@@ -54,5 +54,7 @@ public interface RequirementService {
 
 	public boolean deleteOneRequirement(RequirementVO RequirementVO);
 	public ResponseEntity<Resource> getDownloadFile(RequirementVO requirement);
+	
+	public List<RequirementVO> getAllRequirementByTeammateId(String empId);
 
 }

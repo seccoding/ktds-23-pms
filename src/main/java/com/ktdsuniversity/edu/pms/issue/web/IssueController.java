@@ -77,8 +77,14 @@ public class IssueController {
 		//RQM-YN Y , IS-YN Y PRJID = PROJECT-LIST
 //		this.requirementService.getAllRequirementByPrjIdList(List<String> list);
 //		this.requirementService.getAllRequirementByTmIdList(String empId)
-		
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			requirementList=  this.requirementService.getAllRequirementByTeammateId(employeeVO.getEmpId());
+		}
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchIssueVO.setEmpId(employeeVO.getEmpId());
+		}
 		IssueListVO issueList = this.issueService.searchAllIssue(searchIssueVO);
+		
 		
 		model.addAttribute("projectList", projectList)
 			 .addAttribute("requirementList", requirementList)

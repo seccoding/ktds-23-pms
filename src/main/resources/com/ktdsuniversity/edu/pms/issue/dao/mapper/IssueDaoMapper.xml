@@ -4,212 +4,226 @@
 	"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.issue.dao.IssueDao">
 	<resultMap type="com.ktdsuniversity.edu.pms.issue.vo.IssueVO"
-			   id="issueVOMap" autoMapping="true">
-		<id column="IS_ID" property="isId"/>
+		id="issueVOMap" autoMapping="true">
+		<id column="IS_ID" property="isId" />
 		<result column="RQM_ID" property="rqmId" />
 		<result column="PRJ_ID" property="prjId" />
 		<result column="EMP_ID" property="empId" />
-		<result column="EMP_NAME" property="empName"/>
-		<result column="MNGR_YN" property="mngrYn"/>
-		
+		<result column="EMP_NAME" property="empName" />
+		<result column="MNGR_YN" property="mngrYn" />
+
 		<association property="requirementVO"
-					 javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
-			<id column="RQM_ID" property="rqmId"/>
-			<result column="RQM_TTL" property="rqmTtl"/>
+			javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+			<id column="RQM_ID" property="rqmId" />
+			<result column="RQM_TTL" property="rqmTtl" />
 		</association>
 		<association property="projectVO"
-					 javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
-			<id column="PRJ_ID" property="prjId"/>
-			<result column="PRJ_NAME" property="prjName"/>
+			javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+			<id column="PRJ_ID" property="prjId" />
+			<result column="PRJ_NAME" property="prjName" />
 		</association>
 		<association property="employeeVO"
-					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-			<id column="EMP_ID" property="empId"/>
-			<result column="EMP_NAME" property="empName"/>
-			<result column="MNGR_YN" property="mngrYn"/>
+			javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+			<result column="MNGR_YN" property="mngrYn" />
 		</association>
 	</resultMap>
 
-	<select id="getAllIssueCount"
-			resultType="_int">
+	<select id="getAllIssueCount" resultType="_int">
 		SELECT COUNT(1)
-		  FROM ISSUE
-		 WHERE DEL_YN = 'N'
+		FROM ISSUE
+		WHERE DEL_YN = 'N'
 	</select>
-	
-	<select id="getAllIssue"
-			resultMap="issueVOMap">
+
+	<select id="getAllIssue" resultMap="issueVOMap">
 		SELECT P.PRJ_NAME
-		     , R.RQM_TTL 
-		     , I.IS_ID
-		     , I.RQM_ID
-		     , I.IS_TTL
-		     , I.IS_CNT
-		     , I.IS_LV
-		     , I.IS_FILE
-		     , I.IS_CNTNT
-		     , I.IS_MNGR
-		     , I.IS_STS
-		     , TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
-		     , I.CRTR_ID
-		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
-		     , I.MDFR_ID
-		     , I.DEL_YN
-		     , I.FILE_NAME
-		     , I.ORIGIN_FILE_NAME
-		  FROM ISSUE I
-		 INNER JOIN REQUIREMENT R
-		    ON I.RQM_ID = R.RQM_ID
-		 INNER JOIN PROJECT P
-		    ON R.PRJ_ID = P.PRJ_ID 
-		 WHERE I.DEL_YN = 'N'
-		   AND R.DEL_YN = 'N'
+		, R.RQM_TTL
+		, I.IS_ID
+		, I.RQM_ID
+		, I.IS_TTL
+		, I.IS_CNT
+		, I.IS_LV
+		, I.IS_FILE
+		, I.IS_CNTNT
+		, I.IS_MNGR
+		, I.IS_STS
+		, TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		, I.CRTR_ID
+		, TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		, I.MDFR_ID
+		, I.DEL_YN
+		, I.FILE_NAME
+		, I.ORIGIN_FILE_NAME
+		FROM ISSUE I
+		INNER JOIN REQUIREMENT R
+		ON I.RQM_ID = R.RQM_ID
+		INNER JOIN PROJECT P
+		ON R.PRJ_ID = P.PRJ_ID
+		WHERE I.DEL_YN = 'N'
+		AND R.DEL_YN = 'N'
 	</select>
-	
+
 	<select id="searchIssueAllCount"
-			parameterType="com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO"
-			resultType="_int">
+		parameterType="com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO"
+		resultType="_int">
 		SELECT COUNT(1)
-		  FROM ISSUE I
-		 INNER JOIN REQUIREMENT R
-		    ON I.RQM_ID = R.RQM_ID
-		 INNER JOIN PROJECT P
-		    ON R.PRJ_ID = P.PRJ_ID 
-		 WHERE I.DEL_YN = 'N'
-		 <if test='searchKeyword != null and searchKeyword != ""'>
+		FROM ISSUE I
+		INNER JOIN REQUIREMENT R
+		ON I.RQM_ID = R.RQM_ID
+		INNER JOIN PROJECT P
+		ON R.PRJ_ID = P.PRJ_ID
+		WHERE I.DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "project"'>
-		   AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+					AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "requirement"'>
-		   AND R.RQM_TTL LIKE '%' ||  #{searchKeyword} || '%'
+					AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "title"'>
-		   AND I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.IS_TTL LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "content"'>
-		   AND I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.IS_CNTNT LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "creator"'>
-		   AND I.CRTR_ID LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.CRTR_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "originFileName"'>
-		   AND I.ORIGIN_FILE_NAME LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.ORIGIN_FILE_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "status"'>
-		   AND I.IS_STS LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.IS_STS LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
-		 </if>
+		</if>
+		<if test='empId != null and  empId !=""'>
+		 AND i.RQM_ID IN( SELECT RQM_ID 
+	       					FROM REQUIREMENT r 
+	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
+	       				      					 FROM PROJECT_TEAMMATE pt 
+	       				      					WHERE PT.TM_ID =#{empId}
+	       				   					)
+	     				)
+		</if>
 	</select>
-	
+
 	<select id="searchAllIssue"
-			parameterType="com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO"
-			resultMap="issueVOMap">
+		parameterType="com.ktdsuniversity.edu.pms.issue.vo.SearchIssueVO"
+		resultMap="issueVOMap">
 		<include refid="Common.pagenate_header" />
 		SELECT P.PRJ_NAME
-		     , R.RQM_TTL 
-		     , I.IS_ID
-		     , I.RQM_ID
-		     , I.IS_TTL
-		     , I.IS_CNT
-		     , I.IS_LV
-		     , I.IS_FILE
-		     , I.IS_CNTNT
-		     , I.IS_MNGR
-		     , I.IS_STS
-		     , TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
-		     , I.CRTR_ID
-		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
-		     , I.MDFR_ID
-		     , I.DEL_YN
-		     , I.FILE_NAME
-		     , I.ORIGIN_FILE_NAME
-		     , E.EMP_ID
-		     , E.EMP_NAME
-		  FROM ISSUE I
-		 INNER JOIN REQUIREMENT R
-		    ON I.RQM_ID = R.RQM_ID
-		 INNER JOIN PROJECT P
-		    ON R.PRJ_ID = P.PRJ_ID 
-		 INNER JOIN EMPLOYEE E
-		    ON E.EMP_ID = I.CRTR_ID
-		 WHERE I.DEL_YN = 'N'
-		   AND R.DEL_YN = 'N'
-		 <if test='searchKeyword != null and searchKeyword != ""'>
+		, R.RQM_TTL
+		, I.IS_ID
+		, I.RQM_ID
+		, I.IS_TTL
+		, I.IS_CNT
+		, I.IS_LV
+		, I.IS_FILE
+		, I.IS_CNTNT
+		, I.IS_MNGR
+		, I.IS_STS
+		, TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		, I.CRTR_ID
+		, TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		, I.MDFR_ID
+		, I.DEL_YN
+		, I.FILE_NAME
+		, I.ORIGIN_FILE_NAME
+		, E.EMP_ID
+		, E.EMP_NAME
+		FROM ISSUE I
+		INNER JOIN REQUIREMENT R
+		ON I.RQM_ID = R.RQM_ID
+		INNER JOIN PROJECT P
+		ON R.PRJ_ID = P.PRJ_ID
+		INNER JOIN EMPLOYEE E
+		ON E.EMP_ID = I.CRTR_ID
+		WHERE I.DEL_YN = 'N'
+		AND R.DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "project"'>
-		   AND P.PRJ_NAME LIKE '%' ||  #{searchKeyword} || '%'
+					AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "requirement"'>
-		   AND R.RQM_TTL LIKE '%' ||  #{searchKeyword} || '%'
+					AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "title"'>
-		   AND I.IS_TTL LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.IS_TTL LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "content"'>
-		   AND I.IS_CNTNT LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.IS_CNTNT LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "creator"'>
-		   AND I.CRTR_ID LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.CRTR_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "originFileName"'>
-		   AND I.ORIGIN_FILE_NAME LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.ORIGIN_FILE_NAME LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "status"'>
-		   AND I.IS_STS LIKE '%' ||  #{searchKeyword} || '%'
+					AND I.IS_STS LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
-		 </if>
-		 ORDER BY I.CRT_DT DESC
+		</if>
+		<if test='empId != null and  empId !=""'>
+		 AND i.RQM_ID IN( SELECT RQM_ID 
+	       					FROM REQUIREMENT r 
+	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
+	       				      					 FROM PROJECT_TEAMMATE pt 
+	       				      					WHERE PT.TM_ID =#{empId}
+	       				   					)
+	     				)
+		</if>
+		ORDER BY I.CRT_DT DESC
 		<include refid="Common.pagenate_footer" />
 	</select>
-	
-	<select id="selectOneIssue"
-			resultMap="issueVOMap">
+
+	<select id="selectOneIssue" resultMap="issueVOMap">
 		SELECT P.PRJ_NAME
-		     , R.RQM_TTL 
-		     , I.IS_ID
-		     , I.RQM_ID
-		     , I.IS_TTL
-		     , I.IS_CNT
-		     , I.IS_LV
-		     , I.IS_FILE
-		     , I.IS_CNTNT
-		     , I.IS_MNGR
-		     , I.IS_STS
-		     , TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
-		     , I.CRTR_ID
-		     , TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
-		     , I.MDFR_ID
-		     , I.DEL_YN
-		     , I.FILE_NAME
-		     , I.ORIGIN_FILE_NAME
-		     , E.EMP_NAME
-		  FROM ISSUE I
-		 INNER JOIN REQUIREMENT R
-		    ON I.RQM_ID = R.RQM_ID
-		 INNER JOIN PROJECT P
-		    ON R.PRJ_ID = P.PRJ_ID 
-		 INNER JOIN EMPLOYEE E
-		    ON E.EMP_ID = I.CRTR_ID 
-		 WHERE I.DEL_YN = 'N'
-		   AND R.DEL_YN = 'N'
-		   AND I.IS_ID = #{_parameter}
+		, R.RQM_TTL
+		, I.IS_ID
+		, I.RQM_ID
+		, I.IS_TTL
+		, I.IS_CNT
+		, I.IS_LV
+		, I.IS_FILE
+		, I.IS_CNTNT
+		, I.IS_MNGR
+		, I.IS_STS
+		, TO_CHAR(I.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		, I.CRTR_ID
+		, TO_CHAR(I.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		, I.MDFR_ID
+		, I.DEL_YN
+		, I.FILE_NAME
+		, I.ORIGIN_FILE_NAME
+		, E.EMP_NAME
+		FROM ISSUE I
+		INNER JOIN REQUIREMENT R
+		ON I.RQM_ID = R.RQM_ID
+		INNER JOIN PROJECT P
+		ON R.PRJ_ID = P.PRJ_ID
+		INNER JOIN EMPLOYEE E
+		ON E.EMP_ID = I.CRTR_ID
+		WHERE I.DEL_YN = 'N'
+		AND R.DEL_YN = 'N'
+		AND I.IS_ID = #{_parameter}
 	</select>
-	
-	<update id="increaseViewCount"
-			parameterType="String">
-		UPDATE ISSUE 
-		   SET IS_CNT = IS_CNT + 1
-		 WHERE DEL_YN = 'N'
-		   AND IS_ID = #{_parameter}
+
+	<update id="increaseViewCount" parameterType="String">
+		UPDATE ISSUE
+		SET IS_CNT = IS_CNT + 1
+		WHERE DEL_YN = 'N'
+		AND IS_ID = #{_parameter}
 	</update>
-	
+
 	<insert id="insertNewIssue"
-			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
-		INSERT INTO ISSUE 
-		 (IS_ID
+		parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		INSERT INTO ISSUE
+		(IS_ID
 		, RQM_ID
 		, IS_TTL
 		, IS_CNT
@@ -222,62 +236,63 @@
 		, MDFR_ID
 		, FILE_NAME
 		, ORIGIN_FILE_NAME)
-		VALUES 
-		 (('IS_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ISSUE_PK.NEXTVAL, 6, '0'))
+		VALUES
+		(('IS_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ISSUE_PK.NEXTVAL, 6,
+		'0'))
 		, #{rqmId}
 		, #{isTtl}
 		, 0
 		, #{isFile}
 		, #{isCntnt}
 		, #{isMngr}
-		, SYSDATE
+		,
+		SYSDATE
 		, #{crtrId}
 		, NULL
 		, #{mdfrId}
 		, #{fileName}
-	    , #{originFileName})
+		, #{originFileName})
 	</insert>
-	
+
 	<update id="updateOneIssue"
-			parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		parameterType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
 		UPDATE ISSUE
-		   SET IS_TTL = #{isTtl}
-		     , IS_CNTNT = #{isCntnt}
-		     , MDF_DT = SYSDATE
-		     <if test='fileName != null and fileName != ""'>
-		     , FILE_NAME = #{fileName}
-		     , ORIGIN_FILE_NAME = #{originFileName}
-		     </if>
-		 WHERE IS_ID = #{isId}
+		SET IS_TTL = #{isTtl}
+		, IS_CNTNT = #{isCntnt}
+		, MDF_DT = SYSDATE
+		<if test='fileName != null and fileName != ""'>
+			, FILE_NAME = #{fileName}
+			, ORIGIN_FILE_NAME = #{originFileName}
+		</if>
+		WHERE IS_ID = #{isId}
 	</update>
-	
-	<update id="deleteOneIssue"
-			parameterType="string">
+
+	<update id="deleteOneIssue" parameterType="string">
 		UPDATE ISSUE
-		   SET DEL_YN = 'Y'
-		 WHERE IS_ID = #{isId}
+		SET DEL_YN = 'Y'
+		WHERE IS_ID = #{isId}
 	</update>
-	
-	<select id="selectManyIssue" 
-  			parameterType="list" 
-  			resultType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
-  		SELECT FILE_NAME
-  		  FROM ISSUE
-  		 WHERE IS_ID IN 
-  		<foreach collection="list" item="isId" open="(" close=")" separator=", ">
-  			#{isId}
-  		</foreach>
-  		   AND DEL_YN = 'N'
-  	</select>
-  	
-  	<update id="deleteManyIssue" 
-  			parameterType="list">
-  		UPDATE ISSUE
-  		   SET DEL_YN = 'Y'
-  		     , MDF_DT = SYSDATE
-  		 WHERE IS_ID IN 
-  		<foreach collection="list" item="isId" open="(" close=")" separator=", ">
-  			#{isId}
-  		</foreach>
-  	</update>
+
+	<select id="selectManyIssue" parameterType="list"
+		resultType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		SELECT FILE_NAME
+		FROM ISSUE
+		WHERE IS_ID IN
+		<foreach collection="list" item="isId" open="(" close=")"
+			separator=", ">
+			#{isId}
+		</foreach>
+		AND DEL_YN = 'N'
+	</select>
+
+	<update id="deleteManyIssue" parameterType="list">
+		UPDATE ISSUE
+		SET DEL_YN = 'Y'
+		, MDF_DT = SYSDATE
+		WHERE IS_ID IN
+		<foreach collection="list" item="isId" open="(" close=")"
+			separator=", ">
+			#{isId}
+		</foreach>
+	</update>
 </mapper>
