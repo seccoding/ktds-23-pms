@@ -1,4 +1,11 @@
 $().ready(function () {
+  $("form").on("keypress", function (e) {
+    if (e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
   $("#deleteMassiveKnowledge").on("click", function () {
     // 선택된 체크박스만 가져온다.
     var checkedItems = $(".target-knl-id:checked");

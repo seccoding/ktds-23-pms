@@ -24,6 +24,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <col width="80px" />
           <col width="80px" />
           <col width="150px" />
+          <col width="150px" />
         </colgroup>
         <thead>
           <tr>
@@ -38,6 +39,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <th>조회수</th>
             <th>추천수</th>
             <th>작성일자</th>
+            <th>수정일자</th>
           </tr>
         </thead>
         <tbody>
@@ -63,6 +65,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <td>${qna.qaCnt}</td>
                   <td>${qna.qaRecCnt}</td>
                   <td>${qna.crtDt}</td>
+                  <td>${qna.mdfDt}</td>
                 </tr>
               </c:forEach>
             </c:when>
@@ -71,7 +74,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <tr>
                 <td colspan="6"></td>
                 <a href="/qna/write">
-                  등록된 게시글이 없습니다. 첫 번째 글의 주인공이 되어보세요!
+                  등록된 게시글이 없습니다!
                 </a>
               </tr>
             </c:otherwise>
@@ -105,6 +108,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <button type="button" id="search-btn">검색</button>
         <button type="button" id="search-btn-cancel">초기화</button>
 
+        <div>
+          <button class="btn-group">
+            <a class="btn-group" href="/qna/write">새 글 등록</a>
+          </button>
+          <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+              <button>
+                <a href="/qna/excel/download">엑셀 다운</a>
+              </button>
+              <button>
+                <a id="deleteMassiveQna" href="javaScript:void(0)">일괄 삭제</a>
+              </button>
+          </c:if>
+        </div>
+
         <!-- pagination -->
         <ul class="pagination">
           <c:if test="${searchQnaVO.hasPrevGroup}">
@@ -134,18 +151,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </form>
     </nav>
 <!-- Paginator 끝 -->
-    <div>
-      <button class="btn-group">
-        <a class="btn-group" href="/qna/write">새 글 등록</a>
-      </button>
-      <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-          <button>
-            <a href="/qna/excel/download">엑셀 다운</a>
-          </button>
-          <button>
-            <a id="deleteMassiveQna" href="javaScript:void(0)">일괄 삭제</a>
-          </button>
-      </c:if>
-    </div>
+
   </body>
 </html>
