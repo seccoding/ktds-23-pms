@@ -42,7 +42,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public List<EmployeeVO> searchAllEmployee(SearchEmployeeVO searchEmployeeVO) {
 
-		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".searchAllEmployee", searchEmployeeVO);
+		return getSqlSession().selectList(EmployeeDao.NAME_SPAC                                E + ".searchAllEmployee", searchEmployeeVO);
 	}
 
 	@Override
