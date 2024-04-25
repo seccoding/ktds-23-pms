@@ -118,6 +118,7 @@
   
   
   <select id="searchAllQna" parameterType="com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO" resultMap="qnaVOMap">
+  <include refid="Common.pagenate_header" />
 	    SELECT Q.QA_ID
 			 , Q.RQM_ID
 			 , Q.QA_TTL
@@ -163,6 +164,7 @@
 	 </choose>
 	 </if>
 		ORDER BY Q.CRT_DT DESC
+	<include refid="Common.pagenate_footer" />
   </select>
   
   
@@ -239,6 +241,7 @@
 		   SET QA_TTL = #{qaTtl}
 		   	 , QA_CNTNT = #{qaCntnt}
 		   	 , MDF_DT = SYSDATE
+		   	 , MDFR_ID = #{mdfrId}
 		   	 <if test='fileName != null and fileName != ""'>
 		   	 , FILE_NAME = #{fileName}
 		   	 , ORIGIN_FILE_NAME = #{originFileName}

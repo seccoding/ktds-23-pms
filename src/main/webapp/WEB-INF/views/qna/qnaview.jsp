@@ -10,7 +10,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/qna/qnaview.js"
     ></script>
-    <!-- <link rel="stylesheet"  type="text/css" href="/static/css/qna/qna.css"> -->
   </head>
   <body>
     <h1>Qna 게시글 조회</h1>
@@ -84,27 +83,5 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           })
         })
       </script>
-
-
-
-      <div class="answer">
-        <div class="title">
-          ${employeeVO.empId}님, 답변해주세요!
-        </div>
-        <button class="answer-btn" style="border-color: #60a4f0;
-        background-color: #6cacf2;
-        color: #fff;" >
-          <span>답변하기</span>
-        </button>
-
-        <div class="answer-form" style="display: none;"> 
-          <!-- 답변 입력란 -->
-          <textarea placeholder="답변을 작성해주세요!"></textarea>
-          <button class="submit-answer-btn" style="border-color: #60a4f0;
-          background-color: #6cacf2;
-          color: #fff;">답변 게시</button>
-      </div>
-        
-      </div>
   </body>
 </html>
