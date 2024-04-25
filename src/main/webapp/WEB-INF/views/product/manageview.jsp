@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>비품관리 정보</title>
     <jsp:include page="../commonheader.jsp" />
-    <script type="text/javascript" src="/views/commonmodal.jsp"></script>
+    <jsp:include page="../commonmodal.jsp" />
     <script type="text/javascript" src="/js/product/manageview.js"></script>
     <style>
       .main-grid {

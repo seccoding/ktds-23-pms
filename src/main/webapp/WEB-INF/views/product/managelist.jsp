@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>비품 관리 목록</title>
 <jsp:include page="../commonheader.jsp" />
+<jsp:include page="../commonmodal.jsp" />
 <style type="text/css">
     div.grid div.right-align {
         text-align: right;
@@ -27,7 +28,6 @@
         padding: 3rem;
     }
 </style>
-<script type="text/javascript" src="/views/commonmodal.jsp"></script>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 <script>
     $().ready( function () {
