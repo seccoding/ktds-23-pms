@@ -339,7 +339,7 @@
 
     <update id="updatePwdDtThirtyDay" parameterType="string">
         UPDATE EMPLOYEE
-           SET PWD_CN_DT = SYSDATE + 30
+           SET PWD_CN_DT = SYSDATE - 60
          WHERE EMP_ID = #{_parameter}
     </update>
 

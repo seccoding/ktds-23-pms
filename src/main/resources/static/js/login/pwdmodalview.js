@@ -1,7 +1,8 @@
 $().ready(function () {
 
     var pwdMessage = $("#pwdCheck").data("pwd");
-    var deptId = $("#deptId").data("dept");
+    var empId = $("#empId").data("empId");
+    var deptId = $("#deptId").data("deptId");
 
     if (pwdMessage) {
 
@@ -20,7 +21,7 @@ $().ready(function () {
 
         $(".confirm-confirm-button").on("click", function () {
             $.get(
-                "/ajax/employee/modify",
+                "/ajax/employee/modify/",
                 {
                     deptId: $("#deptId").val()
                 }, function (response) {

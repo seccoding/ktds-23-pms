@@ -131,22 +131,14 @@ public class EmployeeController {
 
 		return "employee/employeemodify";
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/ajax/employee/modify")
-	public AjaxResponse getEmployeeInput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
-		TeamListVO teamList = this.teamService.getAllTeamList(employeeVO.getDeptId());
-		
+	public AjaxResponse getEmployeeInput(@RequestParam String empId,  String deptId) {
+		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
+		TeamListVO teamList = this.teamService.getAllTeamList(deptId);
+
 		return new AjaxResponse().append("employeeDept", employee.getDeptId()).append("teamList", teamList.getTeamList()).append("empTeamList", employee.getTeamList());
-	}
-	
-	@ResponseBody
-	@PostMapping("/ajax/employee/modify")
-	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
-		
-		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
-		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
 		
 	//수정
