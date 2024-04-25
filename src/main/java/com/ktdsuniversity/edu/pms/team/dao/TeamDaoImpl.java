@@ -59,5 +59,11 @@ public class TeamDaoImpl extends SqlSessionDaoSupport implements TeamDao{
 		return getSqlSession().update(TeamDao.NAME_SPACE + ".deleteOneTeam", teamId);
 	}
 
+	@Override
+	public List<TeamVO> getaAllTeam() {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList(TeamDao.NAME_SPACE+".getaAllTeam");
+	}
+
 	
 }

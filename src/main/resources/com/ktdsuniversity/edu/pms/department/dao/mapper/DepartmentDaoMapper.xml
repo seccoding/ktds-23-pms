@@ -98,6 +98,10 @@
 		 WHERE DEPT_ID = #{_parameter}		
 	</select>
 	
-	
+	<select id="getOnlypstnid" parameterType="string" resultType="string">
+		SELECT PSTN_ID 
+			FROM EMPLOYEE 
+			WHERE EMP_ID  =#{_parameter}
+	</select>
 
 </mapper>

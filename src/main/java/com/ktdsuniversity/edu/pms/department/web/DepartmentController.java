@@ -20,6 +20,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.StringUtil;
 
@@ -79,21 +80,53 @@ public class DepartmentController {
 //	
 	@ResponseBody
 	@PostMapping("/ajax/department/create")
-	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model) {
-		boolean isEmptyName = StringUtil.isEmpty(departmentVO.getDeptName());
-		boolean isEmptyLeaderId = StringUtil.isEmpty(departmentVO.getDeptLeadId());
+	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model, @RequestParam("deptLeadId") String deptLeadId) {
+		String str= this.departmentService.getOnlypstnid(deptLeadId);
 		
-		
-		
-		if (isEmptyName) {
-			model.addAttribute("errorMessage", "부서 이름은 필수 입력 값입니다.");
-			model.addAttribute("departmentVO", departmentVO);
-			return new AjaxResponse().append("errormessage", model);
-		}
-		if (isEmptyLeaderId) {
-			model.addAttribute("errorMessage", "부서장 아이디는 필수 입력 값입니다.");
-			model.addAttribute("departmentVO", departmentVO);
-			return new AjaxResponse().append("errormessage", model);
+		if (str != null) {
+		    int number = Integer.parseInt(str);
+		    
+		    boolean isEmptyName = StringUtil.isEmpty(departmentVO.getDeptName());
+			boolean isEmptyLeaderId = StringUtil.isEmpty(departmentVO.getDeptLeadId());
+			
+			if(deptLeadId==null) {
+				return new AjaxResponse().append("message", "아이디를 확인하세요");
+			}
+			
+			if (isEmptyName) {
+				model.addAttribute("errorMessage", "부서 이름은 필수 입력 값입니다.");
+				model.addAttribute("departmentVO", departmentVO);
+				return new AjaxResponse().append("errormessage", model);
+			}
+			if (isEmptyLeaderId) {
+				model.addAttribute("errorMessage", "부서장 아이디는 필수 입력 값입니다.");
+				model.addAttribute("departmentVO", departmentVO);
+				return new AjaxResponse().append("errormessage", model);
+			}
+			
+			DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
+			TeamListVO teamListVO = this.teamService.getaAllTeam();
+			
+			for (DepartmentVO dept : departmentListVO.getDepartmentList()) {
+			    if (dept.getDeptLeadId().equals(deptLeadId)) {
+			        return new AjaxResponse().append("message", "중복된 부서장 ID 값은 사용할 수 없습니다");
+			    }
+			    else if(number<105) {
+			    	return new AjaxResponse().append("message", "부서장 ID에 차장 이상만 작성할 수 있습니다");
+			    }
+			}
+			
+			for (TeamVO team : teamListVO.getTeamList()) {
+			    if (team.getTmLeadId().equals(deptLeadId) ) {
+			        return new AjaxResponse().append("message", "중복된 팀장 ID 값은 사용할 수 없습니다");
+			    }
+			    else if(number<105) {
+			    	return new AjaxResponse().append("message", "부서장 ID에 차장 이상만 작성할 수 있습니다");
+			    }
+			}
+		    
+		} else {
+		    return new AjaxResponse().append("message", "아이디를 확인하세요");
 		}
 		
 		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
@@ -109,8 +142,25 @@ public class DepartmentController {
 	@ResponseBody
 	@PostMapping("/ajax/department/modify")
 	public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
+		String deptLeadId=departmentVO.getDeptLeadId();
+		
+		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
+		TeamListVO teamListVO = this.teamService.getaAllTeam();
+		
+		for (DepartmentVO dept : departmentListVO.getDepartmentList()) {
+		    if (dept.getDeptLeadId().equals(deptLeadId) ) {
+		        return new AjaxResponse().append("message", "중복된 부서장 ID 값은 사용할 수 없습니다.");
+		    }
+		}
+		
+		for (TeamVO team : teamListVO.getTeamList()) {
+			    if (team.getTmLeadId().equals(departmentVO.getDeptLeadId())) {
+			        return new AjaxResponse().append("message", "중복된 팀장 ID 값은 사용할 수 없습니다.");
+			}
+			    
+		}
+		
 		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
-
 		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 	}
 
