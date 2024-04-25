@@ -21,7 +21,7 @@ public interface BorrowService {
 	// PSH0422
 	public boolean getIsNotReturnCount(String dmdId);
 
-	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO);
+//	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO);
 
 
 
