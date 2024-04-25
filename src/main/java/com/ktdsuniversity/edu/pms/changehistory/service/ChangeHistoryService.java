@@ -5,6 +5,8 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public interface ChangeHistoryService {
 
@@ -13,6 +15,11 @@ public interface ChangeHistoryService {
 	List<JobHistoryVO> getUserJobHistory(String empId);
 
 	List<PositionHistoryVO> getUserPositionHistory(String empId);
+
+	List<CommonCodeVO> getAllPosition();
+
+	boolean changePosition(EmployeeVO employeeVO);
+
 	
 	
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
+import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
@@ -46,8 +47,18 @@ public class EmployeeVO {
     private DepartmentHistoryVO departmentHistoryVO;
     private String originPrflFileName; 
     private JobHistoryVO jobHistoryVO;
+    private PositionHistoryVO positionHistoryVO;
+    
 
-    public JobHistoryVO getJobHistoryVO() {
+    public PositionHistoryVO getPositionHistoryVO() {
+		return positionHistoryVO;
+	}
+
+	public void setPositionHistoryVO(PositionHistoryVO positionHistoryVO) {
+		this.positionHistoryVO = positionHistoryVO;
+	}
+
+	public JobHistoryVO getJobHistoryVO() {
 		return jobHistoryVO;
 	}
 

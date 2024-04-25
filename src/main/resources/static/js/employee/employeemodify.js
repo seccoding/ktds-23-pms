@@ -1,5 +1,6 @@
 $().ready(function () {
 
+
     var empId = $("#empId").text()
     var canAdd = true;
 

@@ -48,7 +48,11 @@ public interface EmployeeDao {
 	
 	public String getDeptIdByEmployeeId(String empId);
 
+
 	public List<EmployeeVO> findEmployeesByDeptID(String deptId);
+
+	public int modifyEmployeePosition(EmployeeVO employeeVO);
+
 
 
 }

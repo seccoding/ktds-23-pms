@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Repository
@@ -65,6 +66,18 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	public String getRecentPositionHist(String empId) {
 		return getSqlSession().selectOne(ChangeHistoryDao.NAME_SPACE + ".getRecentPositionHist", empId);
 	}
+
+	@Override
+	public List<CommonCodeVO> getAllPosition() {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllPosition");
+	}
+
+	@Override
+	public int insertPositionHist(EmployeeVO employeeVO) {
+		return getSqlSession().insert(ChangeHistoryDao.NAME_SPACE + ".insertPositionHist", employeeVO);
+	}
+
+
 
 
 }

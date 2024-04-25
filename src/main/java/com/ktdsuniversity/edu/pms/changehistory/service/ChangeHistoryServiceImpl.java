@@ -4,17 +4,24 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Service
 public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 	
 	@Autowired
 	private ChangeHistoryDao changeHistoryDao;
+	
+	@Autowired
+	private EmployeeDao employeeDao;
 
 	@Override
 	public List<DepartmentHistoryVO> getUserDeptHisory(String empId) {
@@ -33,5 +40,34 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 		List<PositionHistoryVO> PositionHistoryVO = this.changeHistoryDao.getUserPositionHistory(empId);
 		return PositionHistoryVO;
 	}
+
+	@Override
+	public List<CommonCodeVO> getAllPosition() {
+		List<CommonCodeVO> positionList = this.changeHistoryDao.getAllPosition();
+		return positionList;
+	}
+
+	@Transactional
+	@Override
+	public boolean changePosition(EmployeeVO employeeVO) {
+		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
+		
+		List<PositionHistoryVO> posiHistList = this.changeHistoryDao.getUserPositionHistory(employeeVO.getEmpId());
+		
+		int updatedCount = this.employeeDao.modifyEmployeePosition(employeeVO);
+		
+		if(posiHistList.size() > 0) {
+			String prevDate = this.changeHistoryDao.getRecentPositionHist(employeeVO.getEmpId());
+			
+			employeeVO.setHireDt(prevDate);			
+		}else {
+			employeeVO.setHireDt(originEmployee.getHireDt());	
+		}
+		
+		int insertHistCnt = this.changeHistoryDao.insertOneChangePositionHistory(employeeVO);
+		return insertHistCnt > 0 && updatedCount == insertHistCnt;
+	}
+
+	
 
 }

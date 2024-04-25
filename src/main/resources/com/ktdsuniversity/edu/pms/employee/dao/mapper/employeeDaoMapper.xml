@@ -379,6 +379,7 @@
 		, #{teamVO.tmId}
 		, 'N')
 	</insert>
+
 	<select id="findEmployeesByDeptID"
 			parameterType="string"
 			resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
@@ -390,5 +391,13 @@
 		 WHERE DEPT_ID = #{_parameter}
 			
 	</select>
+
+	
+	<update id="modifyEmployeePosition" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		   SET PSTN_ID = #{pstnId}
+		 WHERE EMP_ID = #{empId}
+	</update>
+
 
 </mapper>

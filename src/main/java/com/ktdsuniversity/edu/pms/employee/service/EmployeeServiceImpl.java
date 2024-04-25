@@ -145,9 +145,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
 			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
 			if(deptHistList.size() > 0) {
-				String provDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
+				String prevDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
 				
-				employeeVO.setHireDt(provDate);		
+				employeeVO.setHireDt(prevDate);		
 			}
 			
 			employeeVO.setDeptId(originEmployee.getDeptId());
@@ -186,7 +186,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 			
 		} 
-		
 		
 		
 		return updatedCount > 0;
