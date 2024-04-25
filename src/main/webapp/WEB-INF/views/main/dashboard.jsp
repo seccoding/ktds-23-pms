@@ -52,6 +52,7 @@
 	font-size: 20px;
 	font-weight: 700;
 }
+
 </style>
 </head>
 <body>
@@ -62,24 +63,27 @@
 					<div class="card row-1-2">
 						<h6>출퇴근</h6>
 						<div class="card-body">
-							<c:if
-								test="${not empty sessionScope._LOGIN_USER_.commuteVO.cmmtTime}">
-								<div>출근시간: ${sessionScope._LOGIN_USER_.commuteVO.cmmtTime}</div>
-							</c:if>
-							<c:choose>
-								<c:when
-									test="${not empty sessionScope._LOGIN_USER_.commuteVO.fnshTime}">
-									<div>퇴근시간:
-										${sessionScope._LOGIN_USER_.commuteVO.fnshTime}</div>
-								</c:when>
-								<c:otherwise>
-									<div>퇴근 처리되지 않았습니다</div>
-								</c:otherwise>
-							</c:choose>
-							<div>
-								<a href="/employee/logout">
-									<button type="button" id="fnsh-btn">퇴근</button>
-								</a>
+							<div class="commute-grid">
+								<div>
+									<c:if test="${not empty sessionScope._LOGIN_USER_.commuteVO.cmmtTime}">
+										<div>출근시간: ${sessionScope._LOGIN_USER_.commuteVO.cmmtTime}</div>
+									</c:if>
+								</div>
+								<div>
+									<c:choose>
+										<c:when test="${not empty sessionScope._LOGIN_USER_.commuteVO.fnshTime}">
+											<div>퇴근시간: ${sessionScope._LOGIN_USER_.commuteVO.fnshTime}</div>
+										</c:when>
+										<c:otherwise>
+											<div>퇴근 처리되지 않았습니다</div>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="">
+									<a href="/employee/logout">
+										<button type="button" id="fnsh-btn">퇴근</button>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -125,4 +129,3 @@
 	</div>
 </body>
 </html>
->>>>>>> 로그인16-박재현
