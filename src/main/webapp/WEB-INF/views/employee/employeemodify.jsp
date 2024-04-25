@@ -58,8 +58,8 @@
     <label for="email">이메일</label>
     <input type="text" id="email" value="${employeeVO.email}"/>
 
-        <label for="pwd">비밀번호</label>
-        <input type="text" id="pwd" name="pwd" value="${employeeVO.pwd}">
+        <label for="newPwd">비밀번호</label>
+        <input type="text" id="newPwd" name="newPwd" value="${employeeVO.newPwd}">
      
         <label for="confirmPwd">비밀번호 확인</label>
         <input type="text" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}">

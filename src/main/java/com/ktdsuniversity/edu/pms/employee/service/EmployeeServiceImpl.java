@@ -137,7 +137,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
 		
-		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
+
 		
 		// 부서가 변경된 경우 부서 변경 이력 추가
 		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
@@ -185,7 +185,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 				return false;
 			}
 			
-		} 
+		}
+
+		if(!employeeVO.getPwd().equals(originEmployee.getPwd())) {
+			String newSalt = this.sha.generateSalt();
+			String newPwd = this.sha.getEncrypt(employeeVO.getPwd(), newSalt);
+
+			employeeVO.setSalt(newSalt);
+			employeeVO.setPwd(newPwd);
+
+		}
+		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
+
 		
 		
 		
@@ -213,6 +224,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.findEmployeesByDeptID(deptId);
 	}
 
-	
+	@Override
+	public boolean updatePwd(EmployeeVO employeeVO) {
+		String salt = sha.generateSalt();
+		String encryptPwd = sha.getEncrypt(employeeVO.getNewPwd(), salt);
+		employeeVO.setPwd(encryptPwd);
+		employeeVO.setSalt(salt);
+
+		int updateCount = this.employeeDao.updatePwd(employeeVO);
+		return updateCount > 0;
+	}
+
 
 }

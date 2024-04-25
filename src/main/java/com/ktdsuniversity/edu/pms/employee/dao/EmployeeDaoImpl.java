@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.employee.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -131,5 +133,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	public List<EmployeeVO> findEmployeesByDeptID(String deptId) {
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".findEmployeesByDeptID", deptId);
 	}
+
+	@Override
+	public int updatePwd(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".updatePwd", employeeVO);
+	}
+
 
 }
