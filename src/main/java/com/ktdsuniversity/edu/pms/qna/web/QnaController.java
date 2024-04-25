@@ -175,7 +175,7 @@ public class QnaController {
 	
 	// 1사원 1추천
 	@ResponseBody
-	@PostMapping("/qna/recommend/{pPostId}")
+	@PostMapping("/ajax/qna/recommend/{pPostId}")
 	public AjaxResponse getRecommendQna (@PathVariable String pPostId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
 		QnaRecommendVO qnaRecommendVO = new QnaRecommendVO();
@@ -193,6 +193,25 @@ public class QnaController {
         }
         
 	}
+	
+	// 1사원 1추천 취소
+//	@ResponseBody
+//	@PostMapping("/ajax/qna/recommend/{pPostId}")
+//	public AjaxResponse cancelRecommendQna (@PathVariable String pPostId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//		
+//		QnaRecommendVO qnaRecommendVO = new QnaRecommendVO();
+//		
+//		qnaRecommendVO.setpPostId(pPostId);
+//		qnaRecommendVO.setCrtrId(employeeVO.getEmpId());
+//		
+//		boolean isCancelRecommend = qnaService.cancelRecommend(qnaRecommendVO);
+//		
+//		// 해당 사원이 이미 추천을 취소 했는지 확인
+//        if (isCancelRecommend) {
+//            return new AjaxResponse().append("result", "추천이 취소되었습니다.").append("resultStatus", true);
+//        }
+//        
+//	}
 	
 	
 	// 글 수정 페이지

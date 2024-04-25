@@ -202,15 +202,15 @@ public class QnaServiceImpl implements QnaService{
 	@Transactional
 	@Override
 	public boolean updateRecommend(QnaRecommendVO qnaRecommendVO) {
-	// knowledgeRecommendVO를 파라미터로 하나의 추천 정보를 가져온다.
+		// knowledgeRecommendVO를 파라미터로 하나의 추천 정보를 가져온다.
 		QnaRecommendVO originQnaRecommendVO = qnaDao.selectOneRecommend(qnaRecommendVO);
 		
 		if(originQnaRecommendVO == null) {
 //			추천한 기록이 없으면 실행됨
-			boolean isInsert = qnaDao.insertOneRecommend(qnaRecommendVO) > 0;
+			boolean isInsert = this.qnaDao.insertOneRecommend(qnaRecommendVO) > 0;
 			
 			if (isInsert) {
-				boolean isRecommend = qnaDao.recommendOneQna(qnaRecommendVO.getpPostId()) > 0;
+				boolean isRecommend = this.qnaDao.recommendOneQna(qnaRecommendVO.getpPostId()) > 0;
 				return isRecommend;
 			} else {
 				throw new CreationException();
@@ -221,22 +221,30 @@ public class QnaServiceImpl implements QnaService{
 		}
 	}
 
-
-
-
-
-
-
-
-
+//	@Transactional
+//	@Override
+//	public boolean cancelRecommend(QnaRecommendVO qnaRecommendVO) {
+//		
+//		QnaRecommendVO originQnaRecommendVO = qnaDao.selectOneRecommend(qnaRecommendVO);
+//		
+//		// 추천한 기록이 있으면 실행
+//		if(originQnaRecommendVO != null) {
+//			boolean isDelete = this.qnaDao.deleteOneRecommend(qnaRecommendVO) > 0;
+//			
+//			if(isDelete) {
+//				boolean isCancelRecommend = this.qnaDao.cancelRecommendOneQna(qnaRecommendVO.getpPostId()) > 0;
+//				return isCancelRecommend;
+//			} else {
+//				throw new CreationException();
+//			}
+//		}
+//		
+//		
+//		return false;
+//	}
 	
 	
 	
 	
 	
-	
-	
-	
-	
-
 }

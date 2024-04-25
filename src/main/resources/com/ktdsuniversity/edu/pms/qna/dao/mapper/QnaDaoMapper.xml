@@ -282,13 +282,13 @@
 		   AND QA_ID = #{qaId}
 	</update>
 	
-	<!-- 추천 취소 
+	<!-- 추천 취소 -->
   	<update id="cancelRecommendOneQna" parameterType="String">
 	UPDATE QNA 
 	   SET QA_REC_CNT = QA_REC_CNT - 1
 	 WHERE DEL_YN = 'N'
 	   AND QA_ID = #{qaId}
-	</update>  -->
+	</update>  
 	
 	<!-- 1사원 1추천 -->
 	<select id="selectOneRecommend" 

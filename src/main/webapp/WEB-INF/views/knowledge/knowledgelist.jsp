@@ -142,10 +142,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <button>
       <a href="/knowledge/excel/download">엑셀 다운</a>
       </button>
-      <!-- <button>
-        <a id="uploadExcelfile" href="javaScript:void(0)">일괄 등록</a>
-        <input type="file" id="excelfile" style="display: none;">
-        </button> -->
         <button>
           <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
         </button>

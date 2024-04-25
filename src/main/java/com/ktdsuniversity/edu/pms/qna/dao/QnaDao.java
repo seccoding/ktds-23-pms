@@ -41,6 +41,7 @@ public interface QnaDao {
 	public int selectOneRecommendCount(String qaId);
 
 
+
 	
 	
 
