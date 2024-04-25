@@ -1,13 +1,13 @@
 $().ready(function () {
-    
+
     var empId = $("#empId").text()
     var canAdd = true;
-    
-    $.get("/ajax/employee/modify/", {
+
+    $.get("/ajax/employee/modify?empId="+empId, {
         deptId : $("#dept-select").val()
     }, function(res){
-         $("#dept-select").val(res.data.employeeDept).prop("selected")
-        
+        $("#dept-select").val(res.data.employeeDept).prop("selected")
+
     })
 
     $(".change-dept-btn").on("click", function(){
@@ -17,11 +17,11 @@ $().ready(function () {
             location.reload();
         }else{
             console.log("가능")
-        $("#add-team-select option").remove()
-        $("#dept-change-cmt").removeClass("hidden")
-        $("#hidden-selectbox").removeClass("hidden")
-        
-    }
+            $("#add-team-select option").remove()
+            $("#dept-change-cmt").removeClass("hidden")
+            $("#hidden-selectbox").removeClass("hidden")
+
+        }
     })
 
     $("#dept-select").on("change", function(){
@@ -44,9 +44,9 @@ $().ready(function () {
             })
         }
     })
-    
 
-   
+
+
 
     var dialog = $(".alert-dialog");
     if(dialog.length > 0) {
@@ -60,13 +60,13 @@ $().ready(function () {
         $.get("/ajax/employee/modify?empId="+empId, {
             deptId : $("#dept-select").val()
         }, function(res){
-             res.data.teamList.forEach(team=>{
-                 var optionDom = $("<option></option>")
-                 optionDom.prop("value", team.tmId)
-                 optionDom.text(team.tmName)
-                 $("#add-team-select").append(optionDom)
-    
-             })
+            res.data.teamList.forEach(team=>{
+                var optionDom = $("<option></option>")
+                optionDom.prop("value", team.tmId)
+                optionDom.text(team.tmName)
+                $("#add-team-select").append(optionDom)
+
+            })
         })
 
         $("#add-team-cancel").on("click", function(){
@@ -76,16 +76,16 @@ $().ready(function () {
         $("#add-team-final").on("click", function(){
 
             $.get("/ajax/employee/modify?empId="+empId, function(res){
-               
-                 res.data.empTeamList.forEach(team=>{
+
+                res.data.empTeamList.forEach(team=>{
                     if(team.tmId==$("#add-team-select").val()){
                         alert("이미 속해있는 팀입니다.")
                         canAdd = false;
                     }
-        
-                 })
 
-                 if(canAdd){
+                })
+
+                if(canAdd){
                     if($("#"+$("#add-team-select").val()).length==0){
                         var pDom = $("<p></p>")
                         pDom.text($("#add-team-select option:selected").text())
@@ -94,8 +94,8 @@ $().ready(function () {
                         $("#will-add-team").removeClass("hidden")
 
                     }
-                 }
-                 
+                }
+
             })
         })
 
@@ -103,7 +103,7 @@ $().ready(function () {
 
     $(".save-modify").on("click", function(){
         var willAddList = {}
-        
+
         $(".will-add-team-list")?.each((idx, item)=>{
             console.log($(item))
             console.log($(item).attr("id")+"!!!!")
@@ -122,10 +122,10 @@ $().ready(function () {
         willAddList.deptId = $("#dept-select option:selected").val()
         willAddList["departmentHistoryVO.cnNote"] = $("#dept-change-cmt").val()
         console.log(willAddList)
-        
-       
-           
-            $.post("/ajax/employee/modify", willAddList, function(res){
+
+
+
+        $.post("/ajax/employee/modify", willAddList, function(res){
                 if(res.data.isSuccess){
                     alert("수정이 성공했습니다.")
                     location.href = res.data.next
@@ -133,8 +133,7 @@ $().ready(function () {
                     alert("수정 중 오류가 발생했습니다.")
                 }
             }
-            )
-       
+        )
+
     })
 })
-
