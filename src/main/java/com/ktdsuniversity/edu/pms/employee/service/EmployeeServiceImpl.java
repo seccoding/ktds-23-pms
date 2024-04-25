@@ -212,6 +212,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.findEmployeesByDeptID(deptId);
 	}
 
+	@Override
+	public List<EmployeeVO> getCanBeDeptLead() {
+		List<EmployeeVO> empList = this.employeeDao.getCanBeDeptLead();
+		return empList;
+	}
+
+	@Override
+	public List<EmployeeVO> getChangeToDeptLead(String departmentId) {
+		List<EmployeeVO> empList = this.employeeDao.getChangeToDeptLead(departmentId);
+		return empList;
+	}
+
 	
 
 }

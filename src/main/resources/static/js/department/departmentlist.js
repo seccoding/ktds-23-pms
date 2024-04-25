@@ -216,6 +216,7 @@ $().ready(function () {
   }
   $(".department-create").on("click", function () {
     var modal = $(".create-modal");
+   
     modal[0].showModal();
   });
 
@@ -349,10 +350,37 @@ $().ready(function () {
 
   $(".team-create").on("click", function () {
     var modal = $(".create-modal-team");
-    $("#department-selectbox").val($("#codeDeptId").text());
+    var deptId = $("#department-selectbox").val();
+    $.get("/ajax/team/emp?deptId="+deptId, function(res){
+      console.log(res)
+      var empList = res.data.empList
+      empList.forEach(item=>{
+        var option = $("<option></option>")
+        console.log(item.empId)
+        option.val(item.empId)
+        option.text(item.empId + " (" + item.empName + ")")
+        $("#team-leader").append(option)
+      })
+    })
 
     modal[0].showModal();
   });
+
+  $("#department-selectbox").on("change", function(){
+    $("#team-leader").html("")
+    var deptId = $("#department-selectbox").val();
+    $.get("/ajax/team/emp?deptId="+deptId, function(res){
+      console.log(res)
+      var empList = res.data.empList
+      empList.forEach(item=>{
+        var option = $("<option></option>")
+        console.log(item.empId)
+        option.val(item.empId)
+        option.text(item.empId + " (" + item.empName + ")")
+        $("#team-leader").append(option)
+      })
+    })
+  })
 
   $("#team-cancel-button").on("click", function () {
     location.reload();
@@ -381,6 +409,14 @@ $().ready(function () {
     $.get(
       "/ajax/department/show?departmentId=" + departmentId,
       function (response) {
+        var emplist = response.data.empList
+        emplist.forEach(item=>{
+          var option = $("<option></option>")
+          console.log(item.empId)
+          option.val(item.empId)
+          option.text(item.empId + " (" + item.empName + ")")
+          $("#department-leader-mod").append(option)
+        })
         var dataDept = response.data.oneDepartment;
         modal.find("#mod-dept-id").text(dataDept.deptId);
         modal.find("#department-name-mod").val(dataDept.deptName);
@@ -393,9 +429,18 @@ $().ready(function () {
   });
 
   $("#modify-select-box").on("change", function () {
+    $("#department-leader-mod").html("")
     var deptId = $(this).val();
     console.log(deptId);
     $.get("/ajax/department/show?departmentId=" + deptId, function (response) {
+      var emplist = response.data.empList
+      emplist.forEach(item=>{
+        var option = $("<option></option>")
+        console.log(item.empId)
+        option.val(item.empId)
+        option.text(item.empId + " (" + item.empName + ")")
+        $("#department-leader-mod").append(option)
+      })
       var dataDept = response.data.oneDepartment;
       $("#mod-dept-id").text(dataDept.deptId);
       $("#department-name-mod").val(dataDept.deptName);
@@ -438,11 +483,18 @@ $().ready(function () {
     var teamId = modal.find("#modify-team-select-box").val();
     $.get("/ajax/team/show?teamId=" + teamId, function (response) {
       var dataTm = response.data.oneTeam;
-      console.log(dataTm);
+      var empList = response.data.empList;
+      empList.forEach(item=>{
+        var option = $("<option></option>")
+        console.log(item.empId)
+        option.val(item.empId)
+        option.text(item.empId + " (" + item.empName + ")")
+        $("#team-leader-mod").append(option)
+      })
+      modal.find("#team-leader-mod").val(dataTm.tmLeadId);
       modal.find("#mod-team-id").text(dataTm.tmId);
       modal.find("#team-name-mod").val(dataTm.tmName);
       modal.find("#mod-team-crd-dt").text(dataTm.tmCrDt);
-      modal.find("#team-leader-mod").val(dataTm.tmLeadId);
       modal.find("#team-dept-mod").val(dataTm.deptId);
     });
 
@@ -451,8 +503,16 @@ $().ready(function () {
 
   $("#modify-team-select-box").on("change", function () {
     var teamId = $(this).val();
+    $("#team-leader-mod").html("")
     $.get("/ajax/team/show?teamId=" + teamId, function (response) {
       var dataTm = response.data.oneTeam;
+      var empList = response.data.empList;
+      empList.forEach(item=>{
+        var option = $("<option></option>")
+        option.val(item.empId)
+        option.text(item.empId + " (" + item.empName + ")")
+        $("#team-leader-mod").append(option)
+      })
       $("#mod-team-id").text(dataTm.tmId);
       $("#team-name-mod").val(dataTm.tmName);
       $("#mod-team-crd-dt").text(dataTm.deptCrDt);

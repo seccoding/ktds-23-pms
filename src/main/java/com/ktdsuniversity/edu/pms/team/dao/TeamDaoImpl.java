@@ -7,6 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 @Repository
@@ -57,6 +58,13 @@ public class TeamDaoImpl extends SqlSessionDaoSupport implements TeamDao{
 	@Override
 	public int deleteOneTeam(String teamId) {
 		return getSqlSession().update(TeamDao.NAME_SPACE + ".deleteOneTeam", teamId);
+	}
+
+	
+
+	@Override
+	public List<EmployeeVO> getAllEmployeeInTeam(String teamId) {
+		return getSqlSession().selectList(TeamDao.NAME_SPACE+".getAllEmployeeInTeam", teamId);
 	}
 
 	

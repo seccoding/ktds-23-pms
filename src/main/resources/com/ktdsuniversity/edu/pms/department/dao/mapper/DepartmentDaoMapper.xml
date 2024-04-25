@@ -122,4 +122,13 @@
 	</select>
 	
 
+	<select id="getEmpByDeptId" parameterType="string" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT EMP_ID
+			 , EMP_NAME
+		  FROM EMPLOYEE
+		 WHERE DEPT_ID = #{_parameter}
+		   AND WORK_STS != '204'
+	</select>
+
+
 </mapper>

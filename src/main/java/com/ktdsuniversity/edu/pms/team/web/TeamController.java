@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
@@ -58,10 +59,18 @@ public class TeamController {
 	}
 	
 	@ResponseBody
+	@GetMapping("/ajax/team/emp")
+	public AjaxResponse getEmpByDeptId(@RequestParam String deptId) {
+		List<EmployeeVO> empList = this.departmentservice.getEmpByDeptId(deptId);
+		return new AjaxResponse().append("empList", empList);
+	}
+	
+	@ResponseBody
 	@GetMapping("/ajax/team/show")
 	public AjaxResponse selectOptionShowTeam(@RequestParam String teamId) {
 		TeamVO teamVO = this.teamService.selectOneTeam(teamId);
-		return new AjaxResponse().append("oneTeam", teamVO);
+		List<EmployeeVO> empInTeam = this.teamService.getAllEmployeeInTeam(teamId);
+		return new AjaxResponse().append("oneTeam", teamVO).append("empList", empInTeam);
 	}
 	
 	@ResponseBody
