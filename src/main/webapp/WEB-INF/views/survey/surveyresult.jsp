@@ -11,21 +11,19 @@
 <body>
     <c:choose>
         <c:when test="${not empty replyList.replyList}">
-            <c:forEach items="${replyList.replyList}" var="reply">
-                <p>${reply.srvQst}</p>
-                <c:if test="${question.typeYn eq 'N'}">
+            <c:forEach items="${replyList.questionList}" var="question">
+                <p>${question.srvQst}</p>
                     <ul>
-                        <c:forEach items="${pickList.pickList}" var="pick">
-                            <li>${pick.sqpCntnt}</li>
+                        <c:forEach items="${replyList.replyList}" var="reply">
+                            <li>${reply.srvRplCntnt}</li>
                         </c:forEach>
                     </ul>
-                </c:if>
             </c:forEach>
         </c:when>
         <c:otherwise>
             <div>
                 <a href="/survey/list">
-                    등록된 설문지가 없습니다.
+                    작성한 설문지가 없습니다.
                 </a>
             </div>
         </c:otherwise>

@@ -54,6 +54,9 @@
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N' && !isPM}">
                         <th>설문 작성 여부</th>
                     </c:if>
+                    <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
+                        <th>설문 결과</th>
+                    </c:if>
                 </tr>
             </thead>
             <tbody>
@@ -75,12 +78,15 @@
                                         <td class="survey-yn" data-survey-yn="${teammate.srvYn}">${teammate.srvYn}</td>
                                     </c:forEach>
                                 </c:if>
+                                <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
+                                    <th><a href="survey/result?prjId=${survey.prjId}">설문 결과</a></th>
+                                </c:if>
                             </tr>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div>참여 중인 프로젝트가 없거나 프로젝트의 설문 관리가 불가능한 상태인 것 같습니다.</div>
                             </td>
                         </tr>

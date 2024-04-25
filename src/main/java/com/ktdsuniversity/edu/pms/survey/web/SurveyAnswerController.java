@@ -49,7 +49,7 @@ public class SurveyAnswerController {
 		return "redirect:/survey/list";
 	}
 	
-	@GetMapping("/survey/result/")
+	@GetMapping("/survey/result")
 	public String viewSurveyResultPage(@RequestParam String prjId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 		SurveyListVO replyList = this.surveyReplyService.getAllReplys(prjId);
 		
