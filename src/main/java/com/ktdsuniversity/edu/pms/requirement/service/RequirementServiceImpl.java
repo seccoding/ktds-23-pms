@@ -117,6 +117,10 @@ public class RequirementServiceImpl implements RequirementService{
 				 this.fileHandler.download(requirement.getRqmFile(), requirement.getRqmEncodeFile());
 		return downloadFile;
 	}
+	@Override
+	public List<RequirementVO> getAllRequirementByTeammateId(String empId) {
+		return this.requirementDao.getAllRequirementByTeammateId(empId);
+	}
 
 	
 

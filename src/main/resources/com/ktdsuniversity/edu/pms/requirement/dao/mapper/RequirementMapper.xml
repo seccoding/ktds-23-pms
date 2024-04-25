@@ -419,6 +419,21 @@ SELECT  R.RQM_ID
 		 WHERE RQM_ID=#{rqmId}
 	</update>
 	
+	<select id="getAllRequirementByTeammateId"
+			parameterType="String"
+			resultMap="requirementVOMap">
+  		SELECT r.RQM_TTL
+	    	 , r.RQM_ID 
+	      FROM REQUIREMENT r 
+	     WHERE r.PRJ_ID  in(
+			  SELECT p.PRJ_ID 
+			    FROM PROJECT p
+			    JOIN PROJECT_TEAMMATE pt 
+			      ON P.PRJ_ID = PT.PRJ_ID
+			   WHERE PT.TM_ID = #{_parameter}
+			     AND P.IS_YN ='Y')			
+	</select>
+	
 	<!-- 참고용 사용X -->
 	<sql id="join">
 	  JOIN	COMMON_CODE STS 
