@@ -178,6 +178,14 @@
 		  </if>
 	<include refid="Common.pagenate_footer" />
 	</select>
+	
+	<select id="getDeptIdByEmployeeId"
+			parameterType="string"
+			resultType="string">
+		SELECT DEPT_ID
+		  FROM EMPLOYEE
+		 WHERE EMP_ID = #{_parameter}		
+	</select>
 
 	
 	<select id="getOneEmployee" 
@@ -359,7 +367,7 @@
 		, TM_ID
 		, DEL_YN)
 		VALUES 
-		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_ASGN_PK.NEXTVAL, 6, '0')
+		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ASGN_PK.NEXTVAL, 6, '0')
 		, #{empId}
 		, #{teamVO.tmId}
 		, 'N')

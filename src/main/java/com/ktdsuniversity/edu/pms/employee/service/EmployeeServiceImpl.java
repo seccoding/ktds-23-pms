@@ -203,6 +203,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.addTeam(employeeVO) > 0;
 	}
 
+	@Override
+	public String getDeptIdByEmployeeId(String empId) {
+		return this.employeeDao.getDeptIdByEmployeeId(empId);
+	}
+
 	
 
 }

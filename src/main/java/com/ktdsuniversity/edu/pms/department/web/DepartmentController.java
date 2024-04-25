@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.department.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,20 +159,34 @@ public class DepartmentController {
 		List<EmployeeVO> empInTeam = this.employeeService.findEmployeesByTeamId(teamId);
 		int successCnt = 0;
 		int willAddCnt = 0;
-		for(EmployeeVO employeeVO : employeeListVO.getEmployeeList()) {
-			if(!empInTeam.contains(employeeVO)) {
-				willAddCnt++;
-				if(this.employeeService.addTeam(employeeVO)) {
-					successCnt++;
-				};
-				
-			}
-			
+		int isNotDeptPerson = 0;
+		List<String> IdList = new ArrayList<>();
+		for(EmployeeVO emp:empInTeam) {
+			IdList.add(emp.getEmpId());
 			
 		}
-		boolean isSuccessMake = willAddCnt == successCnt;
+		for(EmployeeVO employeeVO : employeeListVO.getEmployeeList()) {
+			if(employeeVO.getDeptId().equals(this.employeeService.getDeptIdByEmployeeId(employeeVO.getEmpId()))) {
+				if(!IdList.contains(employeeVO.getEmpId())) {
+					willAddCnt++;
+					if(this.employeeService.addTeam(employeeVO)) {
+						successCnt++;
+					};
+					
+				}
+				
+				
+			}else {
+				isNotDeptPerson++;
+			}
+			
+		}
+	
+			boolean isSuccessMake = willAddCnt == successCnt;
+			
+			return new AjaxResponse().append("success", isSuccessMake).append("alreadyexist", willAddCnt==0).append("nopartof", isNotDeptPerson);
 		
-		return new AjaxResponse().append("success", isSuccessMake);
+		
 	}
 	
 }
