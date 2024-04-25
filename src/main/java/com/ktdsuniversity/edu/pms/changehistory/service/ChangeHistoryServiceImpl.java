@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.changehistory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,29 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 		return insertHistCnt > 0 && updatedCount == insertHistCnt;
 	}
 
-	
+	@Override
+	public boolean changeJob(EmployeeVO employeeVO) {
+		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
+
+		List<JobHistoryVO> jobHistList = this.changeHistoryDao.getUserJobHistory(employeeVO.getEmpId());
+
+		int updatedCount = this.employeeDao.modifyEmployeeJob(employeeVO);
+		if(jobHistList.size() > 0) {
+			String prevDate = this.changeHistoryDao.getRecentJobHist(employeeVO.getEmpId());
+			employeeVO.setHireDt(prevDate);
+		}else {
+			employeeVO.setHireDt(originEmployee.getHireDt());
+		}
+		int insertHistCnt = this.changeHistoryDao.insertOneChangeJobHistory(employeeVO);
+		return insertHistCnt > 0 && updatedCount == insertHistCnt;
+
+	}
+
+	@Override
+	public List<CommonCodeVO> getAllJob() {
+		List<CommonCodeVO> jobList =this.changeHistoryDao.getAllJob();
+		return jobList;
+	}
+
 
 }

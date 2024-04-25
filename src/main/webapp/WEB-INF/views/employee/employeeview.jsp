@@ -67,6 +67,21 @@
       <button class="change-pstn-cancel">취소</button>
     </div>
   </dialog>
+
+  <dialog class="job-modal">
+    <select class="job-select-box" data-origin="${employeeVO.jobId}">
+      <c:forEach items="${jobList}" var="job" >
+        <option value="${job.cmcdId}">${job.cmcdName}</option>
+      </c:forEach>
+    </select>
+    <label for="job-change-note">변경사유</label>
+    <input type="text" id="job-change-note">
+    <div>
+      <button class="change-job-btn">변경</button>
+      <button class="change-job-cancel">취소</button>
+    </div>
+  </dialog>
+
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
     <div class="grid-container" data-id="${employeeVO.empId}">
       <div class="info-container">
@@ -150,6 +165,7 @@
             </button>
             <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
               <button class="change-pstn">직급 변경</button>
+              <button class="change-job">직무 변경</button>
               <button class="delete-employee">퇴사 처리</button>
             </c:if>
           </div>

@@ -48,7 +48,8 @@ public class EmployeeVO {
     private String originPrflFileName; 
     private JobHistoryVO jobHistoryVO;
     private PositionHistoryVO positionHistoryVO;
-    
+    private String confirmPwd;
+	private String newPwd;
 
     public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
@@ -353,7 +354,21 @@ public class EmployeeVO {
 	public void setOriginPrflFileName(String originPrflFileName) {
 		this.originPrflFileName = originPrflFileName;
 	}
-	
-	
 
+
+	public String getConfirmPwd() {
+		return confirmPwd;
+	}
+
+	public void setConfirmPwd(String confirmPwd) {
+		this.confirmPwd = confirmPwd;
+	}
+
+	public String getNewPwd() {
+		return newPwd;
+	}
+
+	public void setNewPwd(String newPwd) {
+		this.newPwd = newPwd;
+	}
 }

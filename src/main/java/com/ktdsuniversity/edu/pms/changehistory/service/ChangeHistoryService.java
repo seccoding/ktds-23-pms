@@ -20,6 +20,10 @@ public interface ChangeHistoryService {
 
 	boolean changePosition(EmployeeVO employeeVO);
 
+	boolean changeJob(EmployeeVO employeeVO);
+
+	List<CommonCodeVO> getAllJob();
+
 	
 	
 

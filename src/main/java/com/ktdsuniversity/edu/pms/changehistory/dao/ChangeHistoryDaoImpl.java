@@ -73,11 +73,19 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	}
 
 	@Override
+	public List<JobHistoryVO> getUserJobHistory(String empId) {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE +".getUserJobHistory", empId);
+	}
+
+	@Override
 	public int insertPositionHist(EmployeeVO employeeVO) {
 		return getSqlSession().insert(ChangeHistoryDao.NAME_SPACE + ".insertPositionHist", employeeVO);
 	}
 
-
+	@Override
+	public List<CommonCodeVO> getAllJob() {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllJob");
+	}
 
 
 }

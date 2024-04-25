@@ -53,6 +53,8 @@ public interface EmployeeDao {
 
 	public int modifyEmployeePosition(EmployeeVO employeeVO);
 
+	public int modifyEmployeeJob(EmployeeVO employeeVO);
+
 
 
 }

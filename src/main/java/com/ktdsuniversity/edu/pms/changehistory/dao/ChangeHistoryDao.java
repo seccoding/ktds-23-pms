@@ -32,7 +32,11 @@ public interface ChangeHistoryDao {
 
 	List<CommonCodeVO> getAllPosition();
 
+	List<JobHistoryVO> getUserJobHistory(String empId);
+
 	int insertPositionHist(EmployeeVO employeeVO);
+
+	List<CommonCodeVO> getAllJob();
 
 	
 	

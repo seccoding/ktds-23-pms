@@ -39,6 +39,6 @@ public interface EmployeeService {
 
 	public List<EmployeeVO> findEmployeesByDeptId(String deptId);
 
-
+	public EmployeeVO getOneEmployeeNoTeam(String empId);
 
 }
