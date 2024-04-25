@@ -23,6 +23,7 @@ import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
 @Controller
@@ -120,6 +121,13 @@ public class ApprovalController {
 								 .append("next", "approval/approvallist");
 	}
 	
+//	@ResponseBody
+//	@PostMapping("/ajax/approval/product")
+//	public AjaxResponse addProductForNewApproval(ProductManagementListVO prdtMngListVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//		boolean isSuccessSelected = this.approvalService.getPrdtForNewAppr(prdtMngListVO);
+//		return new AjaxResponse().append("result", isSuccessSelected);
+//	}
+	
 	// 결재승인,반려
 	@ResponseBody
 	@PostMapping("/ajax/approval/statuschange/{apprId}")
@@ -179,14 +187,12 @@ public class ApprovalController {
 									, Model model, SearchApprovalVO searchApprovalVO) {
 		
 		// 관리자로 로그인하면 결재 페이지 오류 남(teamList == null)
-		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
-//		if(employee.getTeamList() == null && employeeVO.getTeamList().size() == 0) {
-//			employee.setTeamList(teamList);
-//		}
+//		EmployeeVO employee = this.employeeService.getOneEmployeeNoTeam(employeeVO.getEmpId());
+
 		searchApprovalVO.setEmployeeVO(employeeVO);
 		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
 
-		model.addAttribute("employee", employee);
+//		model.addAttribute("employee", employee);
 		model.addAttribute("apprList", apprListVO);
 		model.addAttribute("searchApproval", searchApprovalVO);
 	}

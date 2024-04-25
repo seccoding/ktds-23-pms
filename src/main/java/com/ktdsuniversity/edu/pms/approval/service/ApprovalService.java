@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.approval.service;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 
 public interface ApprovalService {
 
@@ -67,5 +68,7 @@ public interface ApprovalService {
 	 * view 페이지 에 보여질 페이지 개수와 리스트를 출력 한다
 	 */
 	public ApprovalListVO searchApprovalView(SearchApprovalVO searchapprovalvo, String id);
+
+//	public boolean getPrdtForNewAppr(ProductManagementListVO prdtMngListVO);
 
 }
