@@ -106,29 +106,34 @@ public class EmployeeController {
 	}
 	
 	
-	// 사원 삭제 
+	//삭제 
 	@ResponseBody
 	@GetMapping("ajax/employee/delete")
-	public AjaxResponse deleteEmp(@RequestParam String empId) {
-		boolean isSuccess = this.employeeService.deleteEmployee(empId);
-
-		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/search");
+	public AjaxResponse deleteEmp(EmployeeVO employeeVO) {
+		boolean isSuccess = this.employeeService.deleteEmployee(employeeVO.getEmpId());
+//		if(isSuccess) {
+//			session.invalidate();
+//		}
+		return new AjaxResponse().append("next", isSuccess ? "/employee/success-delete-emp"
+											: "/employee/failed-delete-emp");
 	}
-
+	
+	
 
 	//수정페이지
 	@GetMapping("/employee/modify/{empId}")
-	public String viewEmpModifyPage(@PathVariable String empId, Model model,
-									EmployeeVO employeeVO) {
+	public String viewEmpModifyPage(@PathVariable String empId, Model model, 
+									 EmployeeVO employeeVO) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
 
+		
 		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
-		model.addAttribute("departmentlist", departmentList);
-
+		 model.addAttribute("departmentlist", departmentList);
+		
 //		TeamListVO teamList = this.teamService.getAllTeamList(employee.getDeptId());
 //		model.addAttribute("teamListinDept", teamList.getTeamList());
-
+		
 		return "employee/employeemodify";
 	}
 
@@ -189,6 +194,13 @@ public class EmployeeController {
 	@GetMapping("/employee/regist")
 	public String viewRegistPage() {
 		return "employee/regist";
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/employee/findbydeptid")
+	public AjaxResponse findEmployeesByDeptId(String deptId) {
+		List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
+		return new AjaxResponse().append("result", employeeListVO);
 	}
 
 	@ResponseBody

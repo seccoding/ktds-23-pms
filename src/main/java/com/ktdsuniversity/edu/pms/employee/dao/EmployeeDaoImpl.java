@@ -7,6 +7,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
@@ -124,6 +125,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public String getDeptIdByEmployeeId(String empId) {
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE+".getDeptIdByEmployeeId", empId);
+	}
+
+	@Override
+	public List<EmployeeVO> findEmployeesByDeptID(String deptId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".findEmployeesByDeptID", deptId);
 	}
 
 }

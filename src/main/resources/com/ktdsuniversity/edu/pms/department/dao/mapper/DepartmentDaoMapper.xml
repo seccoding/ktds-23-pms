@@ -90,6 +90,13 @@
 		  FROM DEPARTMENT
 		 WHERE DEPT_ID = #{_parameter}
 	</select>
+	<select id="getDepartmentNameById"
+			parameterType="string"
+			resultType="string">
+		SELECT DEPT_NAME
+		  FROM DEPARTMENT
+		 WHERE DEPT_ID = #{_parameter}		
+	</select>
 	
 	
 

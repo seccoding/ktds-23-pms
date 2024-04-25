@@ -379,5 +379,16 @@
 		, #{teamVO.tmId}
 		, 'N')
 	</insert>
+	<select id="findEmployeesByDeptID"
+			parameterType="string"
+			resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT EMP_ID
+			 , EMP_NAME
+			 , PRFL
+			 , LGN_YN
+		  FROM EMPLOYEE
+		 WHERE DEPT_ID = #{_parameter}
+			
+	</select>
 
 </mapper>

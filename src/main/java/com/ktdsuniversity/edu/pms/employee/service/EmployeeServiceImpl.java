@@ -208,6 +208,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.getDeptIdByEmployeeId(empId);
 	}
 
+	@Override
+	public List<EmployeeVO> findEmployeesByDeptId(String deptId) {
+		return this.employeeDao.findEmployeesByDeptID(deptId);
+	}
+
 	
 
 }
