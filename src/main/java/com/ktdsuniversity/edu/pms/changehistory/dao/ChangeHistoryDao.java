@@ -5,6 +5,7 @@ import java.util.List;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public interface ChangeHistoryDao {
@@ -28,6 +29,12 @@ public interface ChangeHistoryDao {
 	int insertOneChangePositionHistory(EmployeeVO employeeVO);
 	
 	String getRecentPositionHist(String empId);
+
+	List<CommonCodeVO> getAllPosition();
+
+	int insertPositionHist(EmployeeVO employeeVO);
+
+	
 	
 
 

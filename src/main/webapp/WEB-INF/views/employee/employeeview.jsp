@@ -54,6 +54,19 @@
       </style>
 </head>
 <body>
+  <dialog class="pstn-modal">
+    <select class="pstn-select-box" data-origin="${employeeVO.pstnId}">
+      <c:forEach items="${positionList}" var="posi" >
+        <option value="${posi.cmcdId}">${posi.cmcdName}</option>
+      </c:forEach>
+    </select>
+    <label for="pstn-change-note">변경사유</label>
+    <input type="text" id="pstn-change-note">
+    <div>
+      <button class="change-pstn-btn">변경</button>
+      <button class="change-pstn-cancel">취소</button>
+    </div>
+  </dialog>
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
     <div class="grid-container" data-id="${employeeVO.empId}">
       <div class="info-container">
@@ -136,7 +149,7 @@
               <a href="/employee/modify/${employeeVO.empId}">수정</a>
             </button>
             <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-
+              <button class="change-pstn">직급 변경</button>
               <button class="delete-employee">퇴사 처리</button>
             </c:if>
           </div>
@@ -182,7 +195,6 @@
 
                   <th>순서</th>
                   <th>이전 직급</th>
-                  <th>변경된 직급</th>
                   <th>근무 시작일</th>
                   <th>근무 종료일</th>
                   <th>변경 사유</th>
@@ -200,7 +212,6 @@
                 <c:forEach items="${positionHistList}" var="posotionHist" varStatus="item">
                   <tr>
                     <td>${item.count}</td>
-                    <td>${posotionHist.pastCommonVO.cmcdName}</td>
                     <td>${posotionHist.commonVO.cmcdName}</td>
                     <td>${posotionHist.pstnStrtDt}</td>
                     <td>${posotionHist.pstnEndDt}</td>

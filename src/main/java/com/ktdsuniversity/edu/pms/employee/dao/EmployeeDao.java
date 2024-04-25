@@ -47,5 +47,7 @@ public interface EmployeeDao {
 	
 	public String getDeptIdByEmployeeId(String empId);
 
+	public int modifyEmployeePosition(EmployeeVO employeeVO);
+
 
 }
