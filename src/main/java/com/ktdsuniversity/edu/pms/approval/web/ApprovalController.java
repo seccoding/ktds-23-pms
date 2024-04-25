@@ -85,20 +85,20 @@ public class ApprovalController {
 	}
 
 
-	@GetMapping("/approval/write")
-	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
-		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
-		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
-
-		if (borrowListVO == null) {
-			throw new PageNotFoundException();
-		}
-
-		model.addAttribute("employee", dmdEmployeeVO);
-		model.addAttribute("borrowList", borrowListVO);
-		return "approval/approvalwrite";
-	}
+//	@GetMapping("/approval/write")
+//	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//
+//		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
+////		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
+//
+//		if (borrowListVO == null) {
+//			throw new PageNotFoundException();
+//		}
+//
+//		model.addAttribute("employee", dmdEmployeeVO);
+//		model.addAttribute("borrowList", borrowListVO);
+//		return "approval/approvalwrite";
+//	}
 
 	@ResponseBody
 	@PostMapping("/ajax/approval/write")
