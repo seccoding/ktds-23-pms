@@ -1,20 +1,33 @@
 $().ready(function () {
-  // CKEditor 로드
-  var editors = loadEditor(".editor", "내용을 입력하세요.");
+  $(".address").click(function (event) {
+    event.preventDefault(); // 폼 제출 방지
 
-  // CKEditor가 로드 완료되면 추가 작업을 수행
-  editors.on("instanceReady", function () {
-    // 여기서 추가 작업 가능
-    console.log("CKEditor 로드 완료");
-
-    // 만약 CKEditor가 로드된 후에 다른 페이지를 인클루드하려면
-    $.get("../commonemployeelist.jsp", function (data) {
-      $("#include-target").html(data); // JSP 내용 로드
-    });
-  });
-
-  $(".address").click(function () {
     var modal = $(".modal-employee-list");
     modal[0].showModal();
   });
+  $("#sendButton").click(function () {
+    $("#writeForm").submit(); // 폼 제출
+  });
+
+  // MutationObserver 설정
+  var observer = new MutationObserver(function (mutationsList, observer) {
+    mutationsList.forEach(function (mutation) {
+      if (mutation.type === "characterData" || mutation.type === "childList") {
+        var newValue = $("#special-hidden-datalist").text(); // div에서 새 값 가져오기
+        $("#rcvId").val(newValue); // input에 값 설정
+      }
+    });
+  });
+
+  // 감시할 div 선택
+  var targetNode = $("#special-hidden-datalist")[0]; // jQuery 객체를 DOM 요소로 변환
+
+  // 감시 설정
+  var config = {
+    attributes: false,
+    childList: true,
+    subtree: true,
+    characterData: true,
+  };
+  observer.observe(targetNode, config);
 });

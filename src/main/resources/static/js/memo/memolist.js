@@ -1,4 +1,24 @@
 $().ready(function () {
+  $(".Receive-loadLink").click(function (event) {
+    event.preventDefault(); // 기본 동작 방지
+    var targetUrl = $(this).data("url");
+    $("#receive-memo-detail").load(targetUrl);
+  });
+
+  $(".Sent-loadLink").click(function (event) {
+    event.preventDefault(); // 기본 동작 방지
+    var targetUrl = $(this).data("url");
+    $("#sent-memo-detail").load(targetUrl);
+  });
+
+  $(".Storage-loadLink").click(function (event) {
+    event.preventDefault(); // 기본 동작 방지
+    var targetUrl = $(this).data("url");
+    $("#storage-memo-detail").load(targetUrl);
+  });
+
+  $("#result").load("ajax/test.html");
+
   $("#deleteMassiveMemo").on("click", function () {
     // 선택된 체크박스만 가져온다.
     var checkedItems = $(".target-memo-id:checked");
