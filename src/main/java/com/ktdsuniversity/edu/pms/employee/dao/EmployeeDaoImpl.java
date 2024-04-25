@@ -138,4 +138,14 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 
 	}
 
+	@Override
+	public List<EmployeeVO> getCanBeDeptLead() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getCanBeDeptLead");
+	}
+
+	@Override
+	public List<EmployeeVO> getChangeToDeptLead(String departmentId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getChangeToDeptLead", departmentId);
+	}
+
 }

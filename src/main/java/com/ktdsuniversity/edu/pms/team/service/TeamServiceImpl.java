@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.dao.TeamDao;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
@@ -76,6 +77,12 @@ public class TeamServiceImpl implements TeamService{
 		teamlistVo.setTeamList(teamlist);
 		
 		return teamlistVo;
+	}
+
+	@Override
+	public List<EmployeeVO> getAllEmployeeInTeam(String teamId) {
+		List<EmployeeVO> empListInTeam = this.teamDao.getAllEmployeeInTeam(teamId);
+		return empListInTeam;
 	}
 
 }

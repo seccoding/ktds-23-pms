@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.dao.TeamDao;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 
@@ -88,6 +89,12 @@ public class DepartmentServiceImpl implements DepartmentService{
 	public String getOnlypstnid(String pstnid) {
 		// TODO Auto-generated method stub
 		return this.departmentDao.getOnlypstnid(pstnid);
+	}
+
+	@Override
+	public List<EmployeeVO> getEmpByDeptId(String deptId) {
+		List<EmployeeVO> empList =  this.departmentDao.getEmpByDeptId(deptId);
+		return empList;
 	}
 
 	

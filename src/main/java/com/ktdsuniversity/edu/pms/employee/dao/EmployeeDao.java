@@ -53,6 +53,10 @@ public interface EmployeeDao {
 
 	public int modifyEmployeePosition(EmployeeVO employeeVO);
 
+	public List<EmployeeVO> getCanBeDeptLead();
+
+	public List<EmployeeVO> getChangeToDeptLead(String departmentId);
+
 
 
 }

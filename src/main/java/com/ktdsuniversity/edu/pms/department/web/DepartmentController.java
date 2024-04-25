@@ -41,7 +41,7 @@ public class DepartmentController {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
 		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
 		TeamListVO getOnlyTeamListVO = this.teamService.getOnlyTeam();
-		
+		List<EmployeeVO> empList = this.employeeService.getCanBeDeptLead();
 
 
 		
@@ -49,7 +49,7 @@ public class DepartmentController {
 		model.addAttribute("departmentList", departmentListVO.getDepartmentList());
 		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
 		model.addAttribute("onlyTeamList", getOnlyTeamListVO);
-		
+		model.addAttribute("empList", empList);
 		return "department/departmentlist";
 	}
 	@GetMapping("/department/create")
@@ -133,11 +133,14 @@ public class DepartmentController {
 		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
 	}
 	
+	
+	
 	@ResponseBody
 	@GetMapping("/ajax/department/show")
 	public AjaxResponse selectOptionShowDepartment(@RequestParam String departmentId) {
 		DepartmentVO departmentVO = this.departmentService.selectOneDepartment(departmentId);
-		return new AjaxResponse().append("oneDepartment", departmentVO);
+		List<EmployeeVO> empList = this.employeeService.getChangeToDeptLead(departmentId);
+		return new AjaxResponse().append("oneDepartment", departmentVO).append("empList", empList);
 	}
 	@ResponseBody
 	@PostMapping("/ajax/department/modify")

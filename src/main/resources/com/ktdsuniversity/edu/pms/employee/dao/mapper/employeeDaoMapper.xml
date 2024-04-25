@@ -398,6 +398,36 @@
 		   SET PSTN_ID = #{pstnId}
 		 WHERE EMP_ID = #{empId}
 	</update>
+	
+	<select id="getCanBeDeptLead" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT EMP_ID
+			 , EMP_NAME 
+		  FROM EMPLOYEE
+		 WHERE EMP_ID NOT IN (SELECT DISTINCT E.EMP_ID
+								FROM EMPLOYEE E
+							   INNER JOIN DEPARTMENT D
+							      ON E.EMP_ID = D.DEPT_LEAD_ID
+							   INNER JOIN TEAM T 
+								  ON T.TM_LEAD_ID = E.EMP_ID)
+		   AND PSTN_ID IN ('105', '106','107','108','109','110')
+		
+	</select>
+
+	<select id="getChangeToDeptLead" parameterType="string" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT EMP_ID
+			 , EMP_NAME 
+		  FROM EMPLOYEE
+		 WHERE EMP_ID NOT IN (SELECT DISTINCT E.EMP_ID
+								FROM EMPLOYEE E
+							   INNER JOIN DEPARTMENT D
+							      ON E.EMP_ID = D.DEPT_LEAD_ID
+							   INNER JOIN TEAM T 
+								  ON T.TM_LEAD_ID = E.EMP_ID
+							   WHERE D.DEPT_ID != #{_parameter})
+		   AND PSTN_ID IN ('105', '106','107','108','109','110')
+		
+	</select>
+
 
 
 </mapper>
