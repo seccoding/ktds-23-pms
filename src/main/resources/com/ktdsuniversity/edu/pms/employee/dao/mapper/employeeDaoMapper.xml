@@ -391,5 +391,14 @@
 		 WHERE DEPT_ID = #{_parameter}
 			
 	</select>
+	<update id="updatePwd"
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		   SET PWD = #{pwd}
+		 	 , SALT = #{salt}
+		 WHERE EMP_ID = #{empId}
+	</update>
+
+
 
 </mapper>

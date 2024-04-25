@@ -45,7 +45,7 @@ $().ready(function () {
         }
     })
     $("#confirmPwd").on("input", function() {
-        var newPwd = $("#pwd").val();
+        var newPwd = $("#newPwd").val();
         var confirmPwd = $(this).val();
 
         if (newPwd === confirmPwd) {

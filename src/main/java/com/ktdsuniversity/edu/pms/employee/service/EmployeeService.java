@@ -39,6 +39,8 @@ public interface EmployeeService {
 
 	public List<EmployeeVO> findEmployeesByDeptId(String deptId);
 
+	public boolean updatePwd(EmployeeVO employeeVO);
+
 
 
 }

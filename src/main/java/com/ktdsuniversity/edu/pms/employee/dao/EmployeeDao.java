@@ -50,5 +50,7 @@ public interface EmployeeDao {
 
 	public List<EmployeeVO> findEmployeesByDeptID(String deptId);
 
+	public int updatePwd(EmployeeVO employeeVO);
+
 
 }
