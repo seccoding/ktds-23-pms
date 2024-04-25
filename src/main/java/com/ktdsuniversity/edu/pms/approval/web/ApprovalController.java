@@ -85,17 +85,11 @@ public class ApprovalController {
 	}
 
 
-	// 비품대여현황 jsp에서 전달받을 파라미터: String empId
 	@GetMapping("/approval/write")
 	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		// test code
 		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
 		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
-
-//		if(dmdEmployeeVO == null || ! dmdEmployeeVO.getEmpId().equals(employeeVO.getEmpId())) {
-//			throw new PageNotFoundException();
-//		}
 
 		if (borrowListVO == null) {
 			throw new PageNotFoundException();
@@ -114,7 +108,7 @@ public class ApprovalController {
 		if (!employeeVO.getEmpId().equals(newApprovalVO.getDmdId()) && !newApprovalVO.getApprCtgr().equals("902")) {
 			throw new PageNotFoundException();
 		}
-
+		// validator로 수정
 		if (newApprovalVO.getApprTtl() == null) {
 			return new AjaxResponse().append("errorMessage", "기안서 제목은 필수 입력 항목입니다.");
 		}
@@ -122,7 +116,8 @@ public class ApprovalController {
 		newApprovalVO.setApprId(apprId);
 		boolean isSuccessCreate = this.approvalService.createApproval(newApprovalVO);
 
-		return new AjaxResponse().append("result", isSuccessCreate);
+		return new AjaxResponse().append("result", isSuccessCreate)
+								 .append("next", "approval/approvallist");
 	}
 	
 	// 결재승인,반려
@@ -149,13 +144,12 @@ public class ApprovalController {
     }
 
 	// 결재 승인 후 신규비품 대여
-	// url 소문자로 바꾸기
 	@ResponseBody
-	@PostMapping("/ajax/product/newPrdtBorrow")
-	public AjaxResponse doNewPrdtForAppr(String apprId) {
-		boolean isSuccessBorrow = this.approvalService.getNewPrdtBorrowForAppr(apprId);
-		return new AjaxResponse().append("result", isSuccessBorrow)
-								 .append("next", "/approval/list");
+	@PostMapping("/ajax/product/newprdtborrow")
+	public AjaxResponse doNewPrdtForAppr(String apprId, ApprovalVO approvalVO) {
+		approvalVO.setApprId(apprId);
+		boolean isSuccessBorrow = this.approvalService.getNewPrdtBorrowForAppr(approvalVO);
+		return new AjaxResponse().append("result", isSuccessBorrow);
 	}
 
 	@ResponseBody
