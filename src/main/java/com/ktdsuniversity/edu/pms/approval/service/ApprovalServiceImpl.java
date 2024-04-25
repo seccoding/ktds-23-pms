@@ -112,12 +112,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return updateApprStsCount > 0;
 	}
 	
+	@Transactional
 	@Override
 	public boolean approvalRntlStatusChange(ApprovalVO approvalVO) {
 		int updateRntlStsCount =  this.approvalDao.updateRentalStatus(approvalVO);
 		return updateRntlStsCount > 0;
 	}
 
+	@Transactional
 	@Override
 	public boolean updateUnusablePrdt(ApprovalVO approvalVO) {
 		// 1.비품 반납
@@ -169,6 +171,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return isProcessSuccess;
 	}
 	
+	@Transactional
 	@Override
 	public boolean deleteOneApproval(String apprId) {
 		// 결재상세내역 삭제

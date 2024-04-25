@@ -7,7 +7,10 @@
   $("#btn-appr-sts-ok").on("click", function() {
     var apprSts = $(this).data("appr-sts");
     var chooseValue = confirm("결재를 승인합니다.");
-    var params = {apprSts:apprSts};
+    var params = {
+      apprSts : apprSts, 
+      rntlSts : rntlSts, 
+    };
 
     if(chooseValue) {
       $.post(url, params, function(response) {
@@ -92,25 +95,62 @@
     var returnBtn = $(".confirm-confirm-button");
     var modalButton1 = $(".cancel-confirm-button");
     var modalText = $(".modal-confirm-text");
-    modalText.text("대여 비품을 반납합니다.");
+    modalText.text("변경 신청한 비품을 반납합니다.");
     returnBtn.text("확인");
     modalButton1.text("취소");
     returnPrdtModal[0].showModal();
 
+    // 반납
     $(returnBtn).on("click", function() {
+      var rntlSts = $("#btn-return-prdt").data("rntl-sts");
+      alert(rntlSts);
       $.post("/ajax/approval/unusablePrdt", 
-      { apprId : apprId }, 
+        { apprId : apprId, 
+          rntlSts : rntlSts }, 
+        function(response) {
+          if(response.data.result) {
+            alert("기대여 비품이 반납되었습니다.");
+            location.reload();
+          } else {
+            alert(response.date.errorMessage);
+          }
+      });
+      returnPrdtModal[0].close();
+    });
+
+  // 신규 비품 대여
+  $("#btn-brrw-prdt").on("click", function() {
+    alert("확인");
+    // 비품 반납 확인 모달
+    var brrwPrdtModal = $(".modal-confirm-window");
+    var brrwBtn = $(".confirm-confirm-button");
+    var modalButton1 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text("변경 신청한 비품을 반납합니다.");
+    brrwBtn.text("승인");
+    modalButton1.text("취소");
+    brrwPrdtModal[0].showModal();
+
+    // 대여
+    var rntlSts = $("#btn-brrw-prdt").data("rntl-sts");
+    alert(rntlSts);
+
+    $(brrwBtn).on("click", function() {
+      $.post("/ajax/product/newprdtborrow", 
+      { apprId : apprId, 
+        rntlSts : rntlSts }, 
       function(response) {
         if(response.data.result) {
-          alert("기대여 비품이 반납되었습니다.");
+          alert("신규 비품이 대여되었습니다.");
           location.reload();
         } else {
           alert(response.date.errorMessage);
         }
       });
-      returnPrdtModal[0].close();
+      brrwPrdtModal[0].close();
     });
   });
+});
 
   // 확인 모달 닫기
   $(".modal-confirm-close").on("click", function () {
