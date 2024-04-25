@@ -163,7 +163,7 @@
 	</select>
   	
 	<select id="selectOnePrdtId" resultType="string">
-		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
 		  FROM DUAL
 	</select>
 	

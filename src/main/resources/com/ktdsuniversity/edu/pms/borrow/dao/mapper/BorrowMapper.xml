@@ -285,7 +285,7 @@
 	
 	<!-- YSH0424 -->
 	<select id="selectBrrwHistId" resultType="string">
-		SELECT 'BRRW_HT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		SELECT 'BRRW_HT_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
 		  FROM DUAL
 	</select>
 	

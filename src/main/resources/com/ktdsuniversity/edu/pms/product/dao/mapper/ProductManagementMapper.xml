@@ -172,7 +172,7 @@
 			, PRDT_ID
 			, DEL_YN)
 			VALUES 
-			 ('PRDT_MN_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_MN_PK.NEXTVAL, 6, '0')
+			 ('PRDT_MN_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PRDT_MN_PK.NEXTVAL, 6, '0')
 			, #{prdtPrice}
 			, #{buyDt}
 			, 'N'
