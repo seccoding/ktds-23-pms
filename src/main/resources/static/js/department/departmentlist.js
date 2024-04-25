@@ -335,6 +335,14 @@ $().ready(function () {
       { deptName: departmentName, deptLeadId: departmentLeader },
       function (response) {
         location.href = response.data.nextUrl;
+        var message=response.data.message
+		if(message){
+			alert(message)
+		}
+		else{
+			location.href = response.data.nextUrl;
+		}
+        
       }
     );
   });
@@ -408,7 +416,13 @@ $().ready(function () {
       },
       function (response) {
         var returnUrl = response.data.next;
-        location.href = returnUrl;
+        var message=response.data.message
+		if(message){
+			confirm(message)
+		}
+		else{
+			location.href = returnUrl;
+		}
       }
     );
   });
@@ -455,7 +469,13 @@ $().ready(function () {
       },
       function (response) {
         var returnUrl = response.data.next;
-        location.href = returnUrl;
+        var message=response.data.message
+		if(message){
+			confirm(message)
+		}
+		else{
+			location.href = returnUrl;   
+		}
       }
     );
   });

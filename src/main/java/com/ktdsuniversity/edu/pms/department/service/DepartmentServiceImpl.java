@@ -10,6 +10,7 @@ import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.team.dao.TeamDao;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 
 
 @Service
@@ -82,6 +83,18 @@ public class DepartmentServiceImpl implements DepartmentService{
 	public String getDepartmentNameById(String deptId) {
 		return departmentDao.getDepartmentNameById(deptId);
 	}
+	
+	@Override
+	public String getOnlypstnid(String pstnid) {
+		// TODO Auto-generated method stub
+		return this.departmentDao.getOnlypstnid(pstnid);
+	}
+
+	
+
+	
+	
+	
 
 	
 }

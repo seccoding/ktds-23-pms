@@ -24,5 +24,6 @@ public interface TeamDao {
 
 	public int deleteOneTeam(String teamId);
 
-
+	//팀 전체조회	
+	public List<TeamVO> getaAllTeam();
 }

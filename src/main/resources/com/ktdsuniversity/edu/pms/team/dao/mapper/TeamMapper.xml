@@ -91,5 +91,9 @@
 		 WHERE TM_ID = #{_parameter}
 	</update>
 	
+	<select id="getaAllTeam">
+		SELECT DISTINCT TM_LEAD_ID  FROM TEAM
+	</select>
+	
 
 </mapper>
