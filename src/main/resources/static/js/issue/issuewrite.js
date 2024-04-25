@@ -5,12 +5,13 @@ $().ready(function () {
       "${issueVO.isCntnt}"
     );
 
-    $("#submit-btn").on("click", function (event) {
+    $("#submit").on("click", function (event) {
       var isCntnt = "";
       event.preventDefault();
 
       isCntnt = editors.getData();
-      var file = $("#file").prop("files");
+      var fileArr = $("#file").prop("files");
+      var file = fileArr[0];  
       var isTtl = $("#issue-title").val();
       var rqmId = $("#rqm-id").val();
 

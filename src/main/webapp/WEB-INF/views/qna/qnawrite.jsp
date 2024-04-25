@@ -22,7 +22,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
           qaCntnt = editors.getData();
 
-          $("#qa-cntnt").val(qaCntnt);
+          $("#qaCntnt").val(qaCntnt);
 
           $("#writeForm").submit();
         });
