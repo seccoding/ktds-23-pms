@@ -5,24 +5,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
-import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
-import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Service
 public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 	
 	@Autowired
 	private ChangeHistoryDao changeHistoryDao;
-	
-	@Autowired
-	private EmployeeDao employeeDao;
 
 	@Override
 	public List<DepartmentHistoryVO> getUserDeptHisory(String empId) {

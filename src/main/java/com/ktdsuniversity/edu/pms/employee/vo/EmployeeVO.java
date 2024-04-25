@@ -36,6 +36,7 @@ public class EmployeeVO {
     private String jobId;
     private String pstnId;
     private String pwd;
+	private String confirmPwd;
     private String salt;
     private int lgnTry;
     private String pwdCnDt;
@@ -47,6 +48,8 @@ public class EmployeeVO {
     private DepartmentHistoryVO departmentHistoryVO;
     private String originPrflFileName; 
     private JobHistoryVO jobHistoryVO;
+	private String newPwd;
+	private String oldPwd;
     private PositionHistoryVO positionHistoryVO;
     private String confirmPwd;
 	private String newPwd;
@@ -57,6 +60,14 @@ public class EmployeeVO {
 
 	public void setPositionHistoryVO(PositionHistoryVO positionHistoryVO) {
 		this.positionHistoryVO = positionHistoryVO;
+	}
+
+	public String getConfirmPwd() {
+		return confirmPwd;
+	}
+
+	public void setConfirmPwd(String confirmPwd) {
+		this.confirmPwd = confirmPwd;
 	}
 
 	public JobHistoryVO getJobHistoryVO() {
@@ -355,6 +366,22 @@ public class EmployeeVO {
 		this.originPrflFileName = originPrflFileName;
 	}
 
+
+	public String getNewPwd() {
+		return newPwd;
+	}
+
+	public void setNewPwd(String newPwd) {
+		this.newPwd = newPwd;
+	}
+
+	public String getOldPwd() {
+		return oldPwd;
+	}
+
+	public void setOldPwd(String oldPwd) {
+		this.oldPwd = oldPwd;
+	}
 
 	public String getConfirmPwd() {
 		return confirmPwd;

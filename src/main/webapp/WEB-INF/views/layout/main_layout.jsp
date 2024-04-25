@@ -23,8 +23,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <ul class="frame-list"></ul>
     <%-- 비밀번호 변경 공지를 위한 div 생성 --%>
     <div id="pwdCheck" data-pwd="${pwdMessage}" style="display: none"></div>
-    <div id="empId" data-empId="${sessionScope._LOGIN_USER_.empId}" style="display: none"></div>
-    <div id="deptId" data-deptId="${sessionScope._LOGIN_USER_.deptId}" style="display: none"></div>
+    <div id="empId" style="display: none">${sessionScope._LOGIN_USER_.empId}</div>
+    <div id="deptId" style="display: none">${sessionScope._LOGIN_USER_.deptId}</div>
     <jsp:include page="../layout/layout_close.jsp" />
   </body>
 </html>

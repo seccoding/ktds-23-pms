@@ -1,6 +1,5 @@
 $().ready(function () {
 
-
     var empId = $("#empId").text()
     var canAdd = true;
 
@@ -45,6 +44,17 @@ $().ready(function () {
             })
         }
     })
+    $("#confirmPwd").on("input", function() {
+        var newPwd = $("#newPwd").val();
+        var confirmPwd = $(this).val();
+
+        if (newPwd === confirmPwd) {
+            $("#password-match-status").text("비밀번호가 일치합니다.").css("color", "green");
+        } else {
+            $("#password-match-status").text("비밀번호가 일치하지 않습니다.").css("color", "green");
+        }
+    });
+    
 
     $("#confirmPwd").on("input", function() {
         var newPwd = $("#newPwd").val();

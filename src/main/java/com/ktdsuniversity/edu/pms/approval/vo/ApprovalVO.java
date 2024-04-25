@@ -7,6 +7,7 @@ import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class ApprovalVO extends PaginateVO {
 
@@ -28,6 +29,7 @@ public class ApprovalVO extends PaginateVO {
 	private EmployeeVO employeeManagerVO;
 	private CommonCodeVO commonCodeVO;
 	private DepartmentVO departmentVO;
+	private List<TeamVO> teamList;
 	private List<ApprovalDetailVO> approvalDetailVOList;
 	private List<ProductVO> productListVO;
 
@@ -183,4 +185,13 @@ public class ApprovalVO extends PaginateVO {
 	public void setProductListVO(List<ProductVO> productListVO) {
 		this.productListVO = productListVO;
 	}
+
+	public List<TeamVO> getTeamList() {
+		return teamList;
+	}
+
+	public void setTeamList(List<TeamVO> teamList) {
+		this.teamList = teamList;
+	}
+	
 }

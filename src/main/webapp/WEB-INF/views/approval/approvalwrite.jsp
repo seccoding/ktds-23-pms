@@ -57,6 +57,66 @@
 		.dmd-info-btn {
 			text-align: end;
 		}
+		.modal-window,
+	.modal-confirm-window {
+		position: absolute;
+		border-radius: 20px;
+		border: 0;
+		box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+		transition: box-shadow 0.3s ease;
+
+		justify-content: center;
+		top: 30%;
+		left: 30%;
+
+		width: 600px;
+		height: fit-content;
+		padding: 1rem;
+
+		background-color: rgba(F, F, F, 0.8);
+	}
+	.modal-close,
+	.modal-confirm-close {
+		text-align: right;
+		color: gray;
+	}
+	.modal-close:hover,
+	.modal-confirm-close:hover {
+		color: black;
+	}
+	.grid-modal,
+	.grid-confirm-modal {
+		display: grid;
+		grid-template-rows: 1fr 6fr 1fr;
+	}
+	.modal-content {
+		align-items: center;
+		display: flex;
+		justify-content: space-around;
+		vertical-align: middle;
+		overflow-y: auto;
+		max-height: 11rem;
+	}
+	.modal-confirm-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		overflow-y: auto;
+		max-height: 11rem;
+	}
+	/* .modal-text,
+	.modal-confirm-text {
+		text-align: center;
+		color: #b00;
+		font-size: 1.2rem;
+		font-weight: bold;
+	} */
+	.input-space,
+	.input-confirm-space {
+		text-align: right;
+		align-items: end;
+	}
 	</style>
 </head>
 <body>
@@ -139,7 +199,7 @@
 								<th>종류</th>
 								<th>품목</th>
 								<th>대여일</th>
-								<th><button id="btn-add-prdt">추가</button></th>
+								<th><button type="button" id="btn-add-prdt-modal">추가</button></th>
 							</tr>
 						</thead>
 						<tbody id="prdt-list">
@@ -155,7 +215,7 @@
 									<td><input type="text" value="${borrow.productVO.prdtCtgr}" readonly></td>
 									<td><input type="text" value="${borrow.productVO.prdtName}" readonly></td>
 									<td><input type="text" value="${borrow.brrwDt}" readonly></td>
-									<td><button id="btn-remove-prdt">삭제</button></td>
+									<td><button class="btn-remove-prdt" data-delete-item="${borrow.prdtMngId}">삭제</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -163,18 +223,47 @@
 				</div>
 			</div>
 		</form>
-		<!-- 모달 시작 -->
-		<!-- <div id="modalWrap">
-			<div id="modalBody">
-				<span id="closeBtn">&times;</span> 
-				<p>
-					<form id="searchForm" action="/search" method="GET">
-						<input type="text" id="searchInput" name="q" placeholder="검색어를 입력하세요">
-						<button type="submit" id="searchButton">검색</button>
-					</form>
-				</p> 
-			</div>
-		</div> -->
 	</div>
+	<dialog class="modal-confirm-window">
+		<div class="grid-confirm-modal">
+		<div class="modal-confirm-close">X</div>
+		<div class="modal-confirm-content">
+			<!-- <div class="modal-confirm-text"></div> -->
+			<div class="modal-header">
+				<h5>변경 신청 가능한 비품 목록</h5>
+			</div>
+			<div class="modal-body">
+				<table class="modal-table">
+					<thead>
+						<tr>
+							<th>
+								<input type="checkbox" id="m-appr-item-checked-all"  data-target-class="modal-item modal">
+							</th>
+							<th>비품코드</th>
+							<th>종류</th>
+							<th>품목</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${borrowList.borrowList}" var="borrow">
+							<tr>
+								<th id="modal-prdt-th">
+									<input type="checkbox" id="${borrow.prdtMngId}" class="modal-item modal" name="mPrdtId" value="${borrow.prdtMngId}"/>
+								</th>
+								<th>${borrow.prdtMngId}</th>
+								<th>${borrow.productVO.prdtCtgr}</th>
+								<th>${borrow.productVO.prdtName}</th>	
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="input-confirm-space">
+			<button class="confirm-confirm-button button">추가</button>
+			<button class="cancel-confirm-button button">취소</button>
+		</div>
+		</div>
+	</dialog>
 </body>
 </html>

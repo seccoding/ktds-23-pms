@@ -21,6 +21,8 @@ import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
+import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 @Service
@@ -112,12 +114,23 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return updateApprStsCount > 0;
 	}
 	
+	@Transactional
 	@Override
 	public boolean approvalRntlStatusChange(ApprovalVO approvalVO) {
 		int updateRntlStsCount =  this.approvalDao.updateRentalStatus(approvalVO);
 		return updateRntlStsCount > 0;
 	}
+	
 
+//	@Override
+//	public boolean getPrdtForNewAppr(ProductManagementListVO prdtMngListVO) {
+//		for(ProductManagementVO prdtMngVO : prdtMngListVO.getProductManagementList()) {
+//			ProductManagementVO prdtMng =  this.productManagementDao.selectPrdtForNewAppr(prdtMngListVO.getProductManagementList().get(0).getPrdtMngId());
+//		}
+//		return false;
+//	}
+
+	@Transactional
 	@Override
 	public boolean updateUnusablePrdt(ApprovalVO approvalVO) {
 		// 1.비품 반납
@@ -169,6 +182,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return isProcessSuccess;
 	}
 	
+	@Transactional
 	@Override
 	public boolean deleteOneApproval(String apprId) {
 		// 결재상세내역 삭제
@@ -266,5 +280,4 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return approvallistvo;
 	}
-
 }

@@ -26,12 +26,13 @@
             color: #f00;
             padding-left: 1rem;
             margin: 0;
-            animation: fadeIn 0.5s ease-out; /* 애니메이션 지속시간 및 효과 지정 */
+            animation: fadeIn 0.5s ease-out;
         }
 
         .input-custom {
             padding: 5px;
             outline: none;
+            width: 25%;
             height: 30px;
             border: 1px solid #CCCCCC;
             border-radius: 4px;
@@ -39,16 +40,16 @@
         }
 
         .datalist-custom {
-            margin: 0;
+            margin-left: 49px;
             position: absolute;
             background-color: white;
             border: 1px solid #CCCCCC;
             border-radius: 0 0 5px 5px;
             border-top: none;
             overflow-y: auto;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
             max-height: 200px;
-            width: 11.35%;
+            width: 25%;
             z-index: 1000;
         }
 
@@ -64,55 +65,29 @@
             background-color: #E6E6E6;
         }
 
-        .input-form {
-            padding: 20px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-            margin: 40px auto;
-        }
-
-        .form-row {
-            margin-bottom: 10px;
-        }
-
-        .form-row label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .checkbox div {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
     </style>
 </head>
 <body>
-<div class="input-form overflow-scroll">
-    <h4>프로젝트 수정</h4>
+<div>
+    <h4>프로젝트 생성</h4>
     <form>
         <div class="grid" data-grid-columns="auto"
              data-grid-rows="auto"
              data-column-gap="1rem"
              data-row-gap="1rem">
             <%-- 프로젝트 명, 고객사명 --%>
-            <div class="form-row">
+            <div>
                 <label for="project-name">프로젝트명</label>
                 <input type="text" id="project-name" name="prjName" value="${project.prjName}" autocomplete="off"/>
             </div>
 
-            <div class="form-row">
+            <div>
                 <label for="client-info">고객사명</label>
                 <input type="text" id="client-info" name="clntInfo" value="${project.clntInfo}" autocomplete="off"/>
             </div>
 
             <%-- 게시판 생성 여부 --%>
-            <div class="form-row checkbox">
+            <div>
                 <div>
                     <input type="checkbox" id="requirement-check" name="reqYn" value="Y"
                            <c:if test="${project.reqYn == 'Y'}">checked</c:if> />
@@ -140,7 +115,7 @@
             </div>
 
             <%-- 상태코드 변경 --%>
-            <div class="form-row">
+            <div>
                 <label for="status">프로젝트 상태</label>
                 <select id="status" name="prjSts">
                     <c:forEach items="${commonCodeList}" var="code">
@@ -150,7 +125,7 @@
             </div>
 
             <%-- 담당 부서 선택 --%>
-            <div class="form-row">
+            <div>
                 <label for="dept-list">담당부서 </label>
                 <select id="dept-list">
                     <option value="" selected disabled hidden>부서 선택</option>
@@ -162,7 +137,7 @@
             </div>
 
             <%-- 담당자 (PM) 선택 --%>
-            <div class="form-row">
+            <div>
                 <label for="hidden-pm-id">담당자 </label>
                 <input id="pm-search" autocomplete="off" placeholder="담당자 검색" class="input-custom"
                        value="${pm.employeeVO.empName}-${project.deptVO.deptName}">
@@ -176,18 +151,21 @@
             </div>
 
             <%--    html date type 사용으로 해결, datepicker는 미사용    --%>
-            <div class="form-row">
+            <div>
                 <div>
                     <label for="start-date">시작일</label>
                     <input type="date" id="start-date" name="strtDt" value="${project.strtDt}"/>
-
+                </div>
+                <div>
                     <label for="end-date">종료일</label>
                     <input type="date" id="end-date" name="endDt" value="${project.endDt}"/>
                 </div>
             </div>
 
-            <div class="form-row">
+            <div>
+                <div>
                     <button id="btn-modify" type="button" value="${project.prjId}">수정</button>
+                </div>
             </div>
         </div>
     </form>

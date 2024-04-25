@@ -203,6 +203,19 @@
 				 ORDER BY PM.BUY_DT ASC) PRDT
 				 WHERE ROWNUM = 1
 	</select>
+	
+	<select id="selectPrdtForNewAppr" parameterType="string" resultMap="ProductManagementVOMap">
+		SELECT PM.PRDT_MNG_ID 
+	    	 , P.PRDT_CTGR 
+	    	 , P.PRDT_NAME 
+	    	 , BH.BRRW_DT 
+	      FROM PRODUCT_MANAGEMENT PM
+	     INNER JOIN PRODUCT P
+	        ON P.PRDT_ID = PM.PRDT_ID 
+	     INNER JOIN BORROW_HISTORY BH
+	        ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
+	     WHERE PM.PRDT_MNG_ID = #{_parameter}
+	</select>
 
 	<update id="unusablePrdtByAppr" parameterType="string">
 		UPDATE PRODUCT_MANAGEMENT

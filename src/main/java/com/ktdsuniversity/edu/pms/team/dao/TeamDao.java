@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.team.dao;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public interface TeamDao {
@@ -24,5 +25,10 @@ public interface TeamDao {
 
 	public int deleteOneTeam(String teamId);
 
+
+	//팀 전체조회	
+//	public List<TeamVO> getaAllTeam();
+
+	public List<EmployeeVO> getAllEmployeeInTeam(String teamId);
 
 }

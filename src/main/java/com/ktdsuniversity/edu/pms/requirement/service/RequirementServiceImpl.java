@@ -55,7 +55,7 @@ public class RequirementServiceImpl implements RequirementService{
 	public boolean insertOneRequirement(RequirementVO requirementVO, MultipartFile file) {
 		// TODO 파일 네임 저장 복호화 & 실제내임 2개 필요
 //		파일이 잇다면
-		if( file !=null &&! file.isEmpty() ) {
+		if( file !=null && ! file.isEmpty() ) {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if(storedFile !=null) {
 				requirementVO.setRqmFile(storedFile.getFileName());
@@ -71,7 +71,7 @@ public class RequirementServiceImpl implements RequirementService{
 	public boolean updateRequirement(RequirementVO requirementVO,  MultipartFile file) {
 		// TODO Auto-generated method stub
 //		파일이 잇다면
-		if(! file.isEmpty() && ! file.equals(null)) {
+		if( file !=null && ! file.isEmpty() ) {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if(storedFile !=null) {
 				requirementVO.setRqmFile(storedFile.getFileName());
@@ -116,6 +116,10 @@ public class RequirementServiceImpl implements RequirementService{
 		ResponseEntity<Resource> downloadFile=
 				 this.fileHandler.download(requirement.getRqmFile(), requirement.getRqmEncodeFile());
 		return downloadFile;
+	}
+	@Override
+	public List<RequirementVO> getAllRequirementByTeammateId(String empId) {
+		return this.requirementDao.getAllRequirementByTeammateId(empId);
 	}
 
 	

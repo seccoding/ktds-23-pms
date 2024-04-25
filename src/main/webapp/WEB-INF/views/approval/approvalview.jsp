@@ -58,13 +58,13 @@
         </div>
         <div class="btn-area">
             <div class="btn-change">
-                <c:if test="${approvalVO.apprSts eq
-                                '802' && sessionScope._LOGIN_USER_.admnCode eq '302'}">
-                    <button id="btn-return-prdt">비품반납</button>
+                <c:if test="${approvalVO.rntlSts eq '1101' 
+                                && sessionScope._LOGIN_USER_.admnCode eq '302'}">
+                    <button id="btn-return-prdt" data-rntl-sts="1102">비품반납</button>
                 </c:if>
                 <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'
-                                && approvalVO.apprSts eq '804'}">
-                    <button id="btn-brrw-prdt">신규비품대여</button>
+                                && approvalVO.rntlSts eq '1102' }">
+                    <button id="btn-brrw-prdt" data-rntl-sts="1103">신규비품대여</button>
                 </c:if>
             </div>
             <div class="btn-change">
@@ -73,9 +73,10 @@
                 </a>
                 <button id="btn-delete-appr">삭제</button>
             </div>
-			<c:if test="${approvalVO.apprSts eq '801'}">
+			<c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301' 
+                            && approvalVO.apprSts eq '801'}">
 				<div class="btn-status">
-					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="802">승인</button>
+					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="802" data-rntl-sts="1101">승인</button>
 					<button id="btn-appr-sts-no" data-appr-id="${approvalVO.apprId}" data-appr-sts="803">반려</button>
 				</div>
 			</c:if>
@@ -161,7 +162,7 @@
                                 <th>재고수량</th>
                                 <th>변경가능여부</th>
                             </c:if>
-                            <th>대여여부</th>
+                            <th>반납여부</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,7 +190,10 @@
                                                 </c:choose>
                                             </td>
                                         </c:if>
-                                        <td>${approvalDetail.productManagementVO.brrwYn}</td>
+                                        <td>
+                                            <c:set var="returnYn" value="${approvalDetail.productManagementVO.brrwYn eq 'Y' ? '미반납' : '반납'}"/>
+                                            <c:out value="${returnYn}"/>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </c:when>

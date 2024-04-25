@@ -136,12 +136,11 @@ public class ProjectController {
 
 
         ProjectVO project = projectService.getOneProject(prjId);
-        List<ProjectTeammateVO> projectTeammateList = project.getProjectTeammateList();
         int teammateCount = projectService.getProjectTeammateCount(prjId);
         List<ProjectTeammateVO> teammate = projectService.getAllProjectTeammateByProjectId(prjId);
 
         // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
-        boolean isTeammate = projectTeammateList.stream()
+        boolean isTeammate = project.getProjectTeammateList().stream()
                 .anyMatch(tm -> tm.getTmId().equals(employeeVO.getEmpId()));
 
         if (!employeeVO.getAdmnCode().equals("301")) {
@@ -150,20 +149,10 @@ public class ProjectController {
             }
         }
 
-        Optional<ProjectTeammateVO> pmOptional = projectTeammateList.stream()
-                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
-                .findFirst();
-
-        if (pmOptional.isPresent()) {
-            ProjectTeammateVO pm = pmOptional.get();
-            model.addAttribute("deptId", project.getDeptId());
-            model.addAttribute("project", project);
-            model.addAttribute("teammateCount", teammateCount);
-            model.addAttribute("teammate", teammate);
-            model.addAttribute("pm", pm);
-        } else {
-            throw new PageNotFoundException();
-        }
+        model.addAttribute("deptId", project.getDeptId());
+        model.addAttribute("project", project);
+        model.addAttribute("teammateCount", teammateCount);
+        model.addAttribute("teammate", teammate);
 
         return "project/teammate";
     }

@@ -85,10 +85,10 @@
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
     <div class="grid-container" data-id="${employeeVO.empId}">
       <div class="info-container">
-    <div>
+    <div style="text-align: center;">
       <c:choose>
         <c:when test="${not empty employeeVO.prfl}">
-          <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
+          <img src="${employeeVO.prfl}" alt="프로필 사진" class="photo" >
         </c:when>
         <c:otherwise>
           <img src="/images/login.png" alt="프로필 사진" class="photo">
@@ -211,6 +211,7 @@
 
                   <th>순서</th>
                   <th>이전 직급</th>
+                  <th>변경된 직급</th>
                   <th>근무 시작일</th>
                   <th>근무 종료일</th>
                   <th>변경 사유</th>
@@ -228,6 +229,7 @@
                 <c:forEach items="${positionHistList}" var="posotionHist" varStatus="item">
                   <tr>
                     <td>${item.count}</td>
+                    <td>${posotionHist.pastCommonVO.cmcdName}</td>
                     <td>${posotionHist.commonVO.cmcdName}</td>
                     <td>${posotionHist.pstnStrtDt}</td>
                     <td>${posotionHist.pstnEndDt}</td>

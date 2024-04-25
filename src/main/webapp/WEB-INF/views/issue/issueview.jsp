@@ -8,6 +8,7 @@
 <title>이슈 관리 상세 페이지</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
 <script type="text/javascript" src="/js/issue/issueview.js"></script>
+<jsp:include page="../commonmodal.jsp"></jsp:include>
 </head>
 <body>
 	<div class="grid" data-id="${issueVO.isId}">

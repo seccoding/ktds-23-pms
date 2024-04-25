@@ -147,6 +147,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employeeVO.setSalt(salt);
 		}
 		
+		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
 		
 		
 		// 부서가 변경된 경우 부서 변경 이력 추가
@@ -155,9 +156,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
 			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
 			if(deptHistList.size() > 0) {
-				String prevDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
+				String provDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
 				
-				employeeVO.setHireDt(prevDate);		
+				employeeVO.setHireDt(provDate);		
 			}
 			
 			employeeVO.setDeptId(originEmployee.getDeptId());
@@ -194,10 +195,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if (willAddTeam != addTeamCount) {
 				return false;
 			}
-
+			
 		}
 
+		if(!employeeVO.getPwd().equals(originEmployee.getPwd())) {
+			String newSalt = this.sha.generateSalt();
+			String newPwd = this.sha.getEncrypt(employeeVO.getPwd(), newSalt);
+
+			employeeVO.setSalt(newSalt);
+			employeeVO.setPwd(newPwd);
+
+		}
 		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
+
+		
+		
+		
 		return updatedCount > 0;
 	}
 
@@ -223,8 +236,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+	public List<EmployeeVO> getCanBeDeptLead() {
+		List<EmployeeVO> empList = this.employeeDao.getCanBeDeptLead();
+		return empList;
+	}
+
+	@Override
+	public List<EmployeeVO> getChangeToDeptLead(String departmentId) {
+		List<EmployeeVO> empList = this.employeeDao.getChangeToDeptLead(departmentId);
+		return empList;
+	}
+
+	
+	@Override
+	public boolean updatePwd(EmployeeVO employeeVO) {
+		String salt = sha.generateSalt();
+		String encryptPwd = sha.getEncrypt(employeeVO.getNewPwd(), salt);
+		employeeVO.setPwd(encryptPwd);
+		employeeVO.setSalt(salt);
+	@Override
 	public EmployeeVO getOneEmployeeNoTeam(String empId) {
 		return this.employeeDao.getOneEmployee(empId);
+	}
+
+		int updateCount = this.employeeDao.updatePwd(employeeVO);
+		return updateCount > 0;
 	}
 
 

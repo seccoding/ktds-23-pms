@@ -108,7 +108,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="grid-item">부서명</div>
         <input id="department-name" type="text" class="grid-item" />
         <div class="grid-item">부서장ID</div>
-        <input id="department-leader" type="text" class="grid-item" />
+        <select id="department-leader"  class="grid-item" >
+          <c:forEach items="${empList}" var="item">
+            <option value="${item.empId}">${item.empId} (${item.empName})</option>
+          </c:forEach>
+        </select>
+        <!-- <input id="department-leader" type="text" class="grid-item" /> -->
       </div>
       <div class="flex">
         <input
@@ -127,7 +132,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="grid-item">팀명</div>
         <input id="team-name" type="text" class="grid-item" />
         <div class="grid-item">팀장ID</div>
-        <input id="team-leader" type="text" class="grid-item" />
+        <select id="team-leader"  class="grid-item" >
+          
+        </select>
+        <!-- <input id="team-leader" type="text" class="grid-item" /> -->
         <div class="grid-item">담당부서ID</div>
         <select
           class="grid-item department-selectbox"
@@ -173,7 +181,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <p>부서생성날짜</p>
         <p id="mod-dept-crd-dt"></p>
         <div class="grid-item">부서장ID</div>
-        <input id="department-leader-mod" type="text" class="grid-item" />
+        <select id="department-leader-mod" class="grid-item" >
+
+        </select>
+        <!-- <input id="department-leader-mod" type="text" class="grid-item" /> -->
       </div>
 
       <div class="flex">
@@ -207,7 +218,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <p>팀생성날짜</p>
         <p id="mod-team-crd-dt"></p>
         <div class="grid-item">팀장ID</div>
-        <input id="team-leader-mod" type="text" class="grid-item" />
+        <select id="team-leader-mod"  class="grid-item" >
+
+        </select>
+        <!-- <input id="team-leader-mod" type="text" class="grid-item" /> -->
         <div class="grid-item">담당부서ID</div>
         <input id="team-dept-mod" type="text" class="grid-item" />
       </div>

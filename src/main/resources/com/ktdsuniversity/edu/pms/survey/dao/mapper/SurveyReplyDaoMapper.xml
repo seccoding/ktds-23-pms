@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.survey.dao.SurveyReplyDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO" 
+			   id="surveyReplyVOMap"
+			   autoMapping="true">
+		<id column="SRV_RPL_ID" property="srvRplId"/>
+		<association property="surveyQuestionVO"
+					 javaType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+			<id column="SRV_ID" property="srvId"/>
+			<result column="PRJ_ID" property="prjId"/>
+			<result column="SRV_QST" property="srvQst"/>
+		</association>
+	</resultMap>
+
+	<insert id="insertSurveyAnswer" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO">
+		INSERT INTO SURVEY_REPLY
+		 (SRV_RPL_ID
+		, SRV_ID
+		, SRV_RPL_CNTNT
+		, CRTR_ID
+		, CRT_DT
+		, MDFR_ID
+		, MDF_DT
+		, DEL_YN)
+		VALUES
+		 ('SRV_RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_REPLY_PK.NEXTVAL, 6, '0')
+		, #{srvId}
+		, #{srvRplCntnt}
+		, ${crtrId}
+		, SYSDATE
+		, NULL
+		, NULL
+		, 'N')
+	</insert>
+	
+	<select id="getAllReplys" parameterType="String" resultMap="surveyReplyVOMap">
+		SELECT sr.SRV_RPL_ID
+			 , sr.SRV_ID
+			 , sr.SRV_RPL_CNTNT
+			 , sr.CRTR_ID
+			 , sr.CRT_DT
+			 , sr.MDFR_ID
+			 , sr.MDF_DT
+			 , sr.DEL_YN
+			 , sq.PRJ_ID 
+			 , sq.SRV_QST
+		  FROM SURVEY_REPLY sr
+		  JOIN SURVEY_QUESTION sq
+		    ON sq.SRV_ID = sr.SRV_ID
+		 WHERE sq.PRJ_ID = #{_parameter}
+	</select>
+
+</mapper>

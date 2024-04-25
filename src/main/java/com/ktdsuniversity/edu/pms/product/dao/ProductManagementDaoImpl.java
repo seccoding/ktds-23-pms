@@ -109,8 +109,13 @@ public class ProductManagementDaoImpl extends SqlSessionDaoSupport implements Pr
 
 	@Override
 	public int changeItemBrrwStateY(String prdtMngId) {
-		System.out.println("changeItemBrrwStateY >>>> " + prdtMngId);
 		return getSqlSession().update(ProductManagementDao.NAME_SPACE + ".changeManyItemBrrwState", prdtMngId);
+	}
+
+
+	@Override
+	public ProductManagementVO selectPrdtForNewAppr(String prdtMngId) {
+		return getSqlSession().selectOne(ProductManagementDao.NAME_SPACE + ".selectPrdtForNewAppr", prdtMngId);
 	}
 
 }

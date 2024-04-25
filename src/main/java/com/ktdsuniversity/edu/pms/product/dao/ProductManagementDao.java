@@ -44,6 +44,8 @@ public interface ProductManagementDao {
 	public String getNewPrdtMngIdForBorrow(String prdtName);
 
 	public int changeItemBrrwStateY(String prdtMngId);
+	
+	public ProductManagementVO selectPrdtForNewAppr(String prdtMngId);
 
 	
 

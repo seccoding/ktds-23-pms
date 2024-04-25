@@ -1,11 +1,10 @@
 package com.ktdsuniversity.edu.pms.login.service;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
-import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
-import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
-import com.ktdsuniversity.edu.pms.login.vo.VisitedListVO;
-import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
+import com.ktdsuniversity.edu.pms.login.vo.*;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+
+import java.util.List;
 
 public interface LoginLogService {
     /**
@@ -33,7 +32,7 @@ public interface LoginLogService {
 
     public boolean insertCommuteIn(EmployeeVO employee);
 
-    public CommuteVO getCommuteDt(String empId);
+    public int getCommuteDt(String empId);
 
     public boolean updateCommuteFnsh(EmployeeVO employee);
 
@@ -48,4 +47,5 @@ public interface LoginLogService {
     public VisitedListVO getOneVisitedLog(String empId);
 
     public boolean updatePwdDtThirtyDay(String empId);
+
 }

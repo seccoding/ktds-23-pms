@@ -1,16 +1,17 @@
 package com.ktdsuniversity.edu.pms.login.dao;
 
-import java.util.List;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
+import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
+import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
-import com.ktdsuniversity.edu.pms.login.vo.LoginLogVO;
-import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
+import java.util.List;
 
 @Repository
 public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao {
@@ -63,7 +64,7 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-    public CommuteVO getCommuteDt(String empId) {
+    public int getCommuteDt(String empId) {
         return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getCommuteDt", empId);
     }
 

@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.employee.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -42,7 +44,7 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public List<EmployeeVO> searchAllEmployee(SearchEmployeeVO searchEmployeeVO) {
 
-		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".searchAllEmployee", searchEmployeeVO);
+		return getSqlSession().selectList(EmployeeDao.NAME_SPAC                                E + ".searchAllEmployee", searchEmployeeVO);
 	}
 
 	@Override
@@ -131,11 +133,20 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	public List<EmployeeVO> findEmployeesByDeptID(String deptId) {
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".findEmployeesByDeptID", deptId);
 	}
-	
-	@Override
-	public int modifyEmployeePosition(EmployeeVO employeeVO) {
-		return getSqlSession().update(EmployeeDao.NAME_SPACE+".modifyEmployeePosition", employeeVO);
 
+	@Override
+	public int updatePwd(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".updatePwd", employeeVO);
+	}
+
+	@Override
+	public List<EmployeeVO> getCanBeDeptLead() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getCanBeDeptLead");
+	}
+
+	@Override
+	public List<EmployeeVO> getChangeToDeptLead(String departmentId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getChangeToDeptLead", departmentId);
 	}
 
 	@Override

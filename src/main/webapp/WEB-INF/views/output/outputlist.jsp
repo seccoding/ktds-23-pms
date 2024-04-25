@@ -100,18 +100,23 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </table>
 
     <!--pagination-->
+
     <ul class="pagination">
       <c:if test="${outputList.listCnt > 0}">
         <!--처음-->
         <c:if test="${outputSearchVO.hasPrevGroup}">
-          <li><a href="javascript:search(0)">처음</a></li>
+          <li class="page-item first">
+            <a href="javascript:search(0)"
+              ><img src="/images/chevron-double-left.svg"
+            /></a>
+          </li>
         </c:if>
         <!--이전-->
         <c:if test="${outputSearchVO.hasPrevGroup}">
-          <li>
+          <li class="page-item prev">
             <a href="javascript:search(${outputSearchVO.prevGroupStartPageNo})"
-              >이전</a
-            >
+              ><img src="/images/chevron-left.svg"
+            /></a>
           </li>
         </c:if>
         <!-- 각 페이지 링크 -->
@@ -120,8 +125,11 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
           begin="${outputSearchVO.groupStartPageNo}"
           end="${outputSearchVO.groupEndPageNo}"
         >
-          <li>
+          <li
+            class="${outputSearchVO.pageNo eq outputSearchVO.groupStartPageNo+status.count-1 ? 'active' : ''} page-item"
+          >
             <a
+              class="page-link"
               href="javascript:search(${outputSearchVO.groupStartPageNo+status.count-1})"
               >${outputSearchVO.groupStartPageNo+status.count}</a
             >

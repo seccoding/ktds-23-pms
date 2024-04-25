@@ -40,7 +40,9 @@ public class MenuServiceImpl implements MenuService {
                 .peek(menu -> {
                     // 자식 메뉴도 같은 필터를 적용
                     List<MenuVO> filteredChildren = filterMenus(menu.getChildren());
-                    if (filteredChildren != null && !filteredChildren.isEmpty()) {
+                    if (filteredChildren == null || filteredChildren.isEmpty()) {
+                        menu.setChildren(null);
+                    } else {
                         menu.setChildren(filteredChildren);
                     }
                 })
@@ -55,7 +57,9 @@ public class MenuServiceImpl implements MenuService {
                 .peek(menu -> {
                     // 자식 메뉴도 같은 필터를 적용
                     List<MenuVO> filteredChildren = filterBusinessSupportMenus(menu.getChildren());
-                    if (filteredChildren != null && !filteredChildren.isEmpty()) {
+                    if (filteredChildren == null || filteredChildren.isEmpty()) {
+                        menu.setChildren(null);
+                    } else {
                         menu.setChildren(filteredChildren);
                     }
                 })

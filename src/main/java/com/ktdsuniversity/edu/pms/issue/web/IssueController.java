@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.issue.service.IssueService;
 import com.ktdsuniversity.edu.pms.issue.vo.IssueListVO;
@@ -61,12 +62,33 @@ public class IssueController {
 	private FileHandler fileHandler;
 	
 	@GetMapping("/issue")
-	public String viewSearchIssueListPage(Model model, SearchIssueVO searchIssueVO) {
+	public String viewSearchIssueListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, SearchIssueVO searchIssueVO) {
+		
 		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchIssueVO.setEmpId(employeeVO.getEmpId());
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {} 
+		
+		projectList.setProjectList(
+				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
+		
+		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		//RQM-YN Y , IS-YN Y PRJID = PROJECT-LIST
+//		this.requirementService.getAllRequirementByPrjIdList(List<String> list);
+//		this.requirementService.getAllRequirementByTmIdList(String empId)
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			requirementList=  this.requirementService.getAllRequirementByTeammateId(employeeVO.getEmpId());
+		}
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchIssueVO.setEmpId(employeeVO.getEmpId());
+		}
 		IssueListVO issueList = this.issueService.searchAllIssue(searchIssueVO);
 		
-		model.addAttribute("projectList", projectList);
-		model.addAttribute("issueList", issueList);
+		
+		model.addAttribute("projectList", projectList)
+			 .addAttribute("requirementList", requirementList)
+			 .addAttribute("issueList", issueList);
 		
 		return "/issue/issuelist";
 	}
@@ -84,20 +106,16 @@ public class IssueController {
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
 		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+		
 		model.addAttribute("requirement", requirementList);
 		return "/issue/issuewrite";
 	}
 	
 	@ResponseBody
 	@PostMapping("/ajax/issue/write")
-	public AjaxResponse doWriteIssue(IssueVO issueVO, Model model, @RequestParam MultipartFile file,
+	public AjaxResponse doWriteIssue(IssueVO issueVO, Model model, MultipartFile file,
 								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) throws Exception {
 
-		issueVO.setCrtrId(employeeVO.getEmpId());
-		if (!issueVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
-		}
-		
 		Map<String, List<String>> error = this.issueValidator(issueVO);
 		if (error != null) {
 			return new AjaxResponse().append("error", error);
@@ -105,9 +123,10 @@ public class IssueController {
 		
 		issueVO.setCrtrId(employeeVO.getEmpId());
 		issueVO.setIsMngr(employeeVO.getEmpId());
-	
+		if (!issueVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+			throw new AccessDeniedException();
+		}
 		boolean isSuccess = this.issueService.createNewIssue(issueVO, file);
-		String isId = issueVO.getIsId();
 		
 		return new AjaxResponse().append("result", isSuccess);
 	}
@@ -116,9 +135,9 @@ public class IssueController {
 	public String viewModifyIssuePage(@PathVariable String isId, Model model,
 									@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		IssueVO issueVO = this.issueService.getOneIssue(isId, false);
-		if (!employeeVO.getEmpId().equals(issueVO.getCrtrId())
-					&& employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
+		
+		if (!employeeVO.getEmpId().equals(issueVO.getCrtrId()) && employeeVO.getMngrYn().equals("N")) {
+			throw new AccessDeniedException();
 		}
 		
 		model.addAttribute("issueVO", issueVO);
@@ -127,8 +146,8 @@ public class IssueController {
 	
 	@PostMapping("/issue/modify/{isId}")
 	public String doModifyIssue(@PathVariable String isId, Model model,
-			@RequestParam MultipartFile file, IssueVO issueVO,
-			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+								MultipartFile file, IssueVO issueVO,
+								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		IssueVO originalIssueVO = this.issueService.getOneIssue(isId, false);
 		if (!originalIssueVO.getCrtrId().equals(employeeVO.getEmpId())
@@ -191,7 +210,7 @@ public class IssueController {
 										@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
 		if (employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 		
 		boolean deleteResult = this.issueService.deleteManyIssue(deleteItems);
@@ -318,4 +337,13 @@ public class IssueController {
 			return null;
 		}
 	}
+	
+//	private boolean throwUnauthorizedUser(EmployeeVO employeeVO, String empId) {
+//		if(! employeeVO.getAdmnCode().equals("301")) { //관리자가 아닌경우
+//			if(! employeeVO.getEmpId().equals(empId)) {//본인이 작성한글이 아니면
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 }

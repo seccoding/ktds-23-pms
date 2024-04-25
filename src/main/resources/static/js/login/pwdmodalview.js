@@ -1,8 +1,8 @@
 $().ready(function () {
 
+    var empId = $("#empId").text();
+    var deptId = $("#deptId").text();
     var pwdMessage = $("#pwdCheck").data("pwd");
-    var empId = $("#empId").data("empId");
-    var deptId = $("#deptId").data("deptId");
 
     if (pwdMessage) {
 
@@ -12,22 +12,24 @@ $().ready(function () {
         var passwordAlertModalButton = $(".confirm-confirm-button");
         var passwordAlertModalCancleButton = $(".cancel-confirm-button");
         var passwordAlertModalText = $(".modal-confirm-text");
+        var aTegjavascript = $("<a href='javascript:void(0)'></a>")
 
         passwordAlertModalText.prepend(passwordContent);
         passwordAlertModalText.prepend(passwordH2);
         passwordAlertModalButton.text("변경하기");
         passwordAlertModalCancleButton.text("30일 후 변경");
+        passwordAlertModalCancleButton.append(aTegjavascript);
         passwordAlertModal[0].showModal();
 
         $(".confirm-confirm-button").on("click", function () {
             $.get(
-                "/ajax/employee/modify/",
+                "/employee/modify?empId="+empId,
                 {
                     deptId: $("#deptId").val()
                 }, function (response) {
                     $("#dept").val(response.data.employeeDept).prop("selected");
                 },
-                location.href = "/employee/modify"
+                location.href = "/employee/modify/"+empId
 
         )
         });
@@ -37,15 +39,9 @@ $().ready(function () {
                 "/ajax/login/pwdCnDt",
                 {
                     empId: empId,
-                    next: next,
+                    next: "redirect:/",
                 },
-                function (response) {
-                    var nextUrl = response.data.next;
 
-                    if (nextUrl) {
-                        location.href = nextUrl;
-                    }
-                }
             );
         })
 

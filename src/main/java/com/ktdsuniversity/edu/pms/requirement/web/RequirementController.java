@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
@@ -166,17 +167,18 @@ public class RequirementController {
 
 	@GetMapping("/project/requirement/modify")
 	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId, Model model) {
+			@RequestParam String prjId,
+			@RequestParam String rqmId
+			, Model model) {
 		if (employeeVO.getAdmnCode() != "301") {
 			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
 					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
 		}
-		
+
 		ProjectListVO projectList = this.projectService.getAllProject();
 		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
 			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
 		} else {// 관리자라면
-
 		}
 		projectList.setProjectList(
 				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
@@ -184,11 +186,11 @@ public class RequirementController {
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
-		
-		if(throwUnauthorizedUser(employeeVO , requirement.getCrtrId())) {
-			throw new PageNotFoundException();
+
+		if (throwUnauthorizedUser(employeeVO, requirement.getCrtrId())) {
+			throw new AccessDeniedException();
 		}
-		
+
 		model.addAttribute("requirement", requirement).addAttribute("projectList", projectList)
 				.addAttribute("scdSts", scdSts).addAttribute("rqmSts", rqmSts)
 				.addAttribute("prjTeammateList", prjTeammateList);
@@ -197,20 +199,20 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@PostMapping("/requirement/modify")
-	public AjaxResponse modifyRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam String rqmId, RequirementVO requirementVO, @RequestParam MultipartFile file) {
-		if (employeeVO.getAdmnCode() != "301") {
+	@PostMapping("/ajax/requirement/modify")
+	public AjaxResponse modifyRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, String rqmId,
+			RequirementVO requirementVO, MultipartFile file) {
+		if (!employeeVO.getAdmnCode().equals("301")) {
 			List<ProjectTeammateVO> tmList = this.projectService
 					.getAllProjectTeammateByProjectId(requirementVO.getPrjId()).stream()
 					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
 
 			if (tmList.size() == 0) {
-				throw new PageNotFoundException();
+				throw new AccessDeniedException();
 			}
 		}
-		if(throwUnauthorizedUser(employeeVO , requirementVO.getCrtrId())) {
-			throw new PageNotFoundException();
+		if (throwUnauthorizedUser(employeeVO, requirementVO.getCrtrId())) {
+			throw new AccessDeniedException();
 		}
 
 		Map<String, List<String>> error = this.requirementValidator(requirementVO);
@@ -228,17 +230,21 @@ public class RequirementController {
 
 	}
 
+	@ResponseBody
 	@PostMapping("/project/requirement/delete")
-	public String deleteRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam String rqmId) {
+	public AjaxResponse deleteRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, String rqmId) {
 		// 사용자 체크: 삭제는 본인과 관리자만 가능함
 
 		RequirementVO requirementVO = this.requirementService.getOneRequirement(rqmId);
-
+		if (throwUnauthorizedUser(employeeVO, requirementVO.getCrtrId())) {
+			return new AjaxResponse().append("result", false);
+		}
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.deleteOneRequirement(requirementVO);
+		return new AjaxResponse().append("result", isSuccess).append("url",
+				"redirect:/project/requirement?prjId=" + requirementVO.getPrjId());
 
-		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
+//		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
 	}
 
 	@ResponseBody
@@ -286,14 +292,14 @@ public class RequirementController {
 			return null;
 		}
 	}
+
 	private boolean throwUnauthorizedUser(EmployeeVO employeeVO, String empId) {
-		if(! employeeVO.getAdmnCode().equals("301")) {//관리자가 아닌경우
-			if(! employeeVO.getEmpId().equals(empId)) {//본인이 작성한글이 아니면
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아닌경우
+			if (!employeeVO.getEmpId().equals(empId)) {// 본인이 작성한글이 아니면
 				return true;
 			}
 		}
 		return false;
 	}
-	
 
 }
