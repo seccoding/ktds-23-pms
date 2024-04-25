@@ -7,9 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
-import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
@@ -147,6 +145,30 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 			throw new PageNotFoundException();
 		}
 		return this.surveyQuestionDao.deleteOneSurvey(surveyQuestionVO) > 0;
+	}
+
+	@Override
+	public List<SurveyQuestionVO> getAllQuestionsByPrjId(String prjId) {
+		return this.surveyQuestionDao.getAllQuestionsByPrjId(prjId);
+	}
+
+	@Override
+	public SurveyListVO searchAllQuestions(SurveyQuestionVO surveyQuestionVO) {
+		List<SurveyQuestionVO> questionList = this.surveyQuestionDao.getAllQuestions(surveyQuestionVO);
+		
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setQuestionList(questionList);
+		
+		return surveyListVO;
+	}
+
+	@Override
+	public SurveyListVO searchTeammate(SearchSurveyVO searchSurveyVO) {
+		List<ProjectSurveyQuestionVO> teammateList = this.surveyQuestionDao.searchTeammate(searchSurveyVO);
+		
+		SurveyListVO surveyListVO = new SurveyListVO();
+		surveyListVO.setProjectTeammateList(teammateList);
+		return surveyListVO;
 	}
 
 }

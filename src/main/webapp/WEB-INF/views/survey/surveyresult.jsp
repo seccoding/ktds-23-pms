@@ -5,25 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>설문 상세 정보</title>
+<title>설문 결과</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
-<style type="text/css">
-    div {
-        border: 1px solid #000;
-    }
-    div.grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        grid-template-rows: 100px 100px;
-        margin-top: 1rem;
-    }
-</style>
 </head>
 <body>
     <c:choose>
-        <c:when test="${not empty questionList.questionList}">
-            <c:forEach items="${questionList.questionList}" var="question">
-                <p>${question.srvQst}</p>
+        <c:when test="${not empty replyList.replyList}">
+            <c:forEach items="${replyList.replyList}" var="reply">
+                <p>${reply.srvQst}</p>
                 <c:if test="${question.typeYn eq 'N'}">
                     <ul>
                         <c:forEach items="${pickList.pickList}" var="pick">

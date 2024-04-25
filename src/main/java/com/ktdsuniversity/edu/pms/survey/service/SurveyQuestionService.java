@@ -2,7 +2,7 @@ package com.ktdsuniversity.edu.pms.survey.service;
 
 import java.util.List;
 
-import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyReplyVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
@@ -35,5 +35,11 @@ public interface SurveyQuestionService {
 	public SurveyListVO searchProject(SearchSurveyVO searchSurveyVO);
 
 	public boolean deleteOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
+	public List<SurveyQuestionVO> getAllQuestionsByPrjId(String prjId);
+
+	public SurveyListVO searchAllQuestions(SurveyQuestionVO surveyQuestionVO);
+
+	public SurveyListVO searchTeammate(SearchSurveyVO searchSurveyVO);
 
 }

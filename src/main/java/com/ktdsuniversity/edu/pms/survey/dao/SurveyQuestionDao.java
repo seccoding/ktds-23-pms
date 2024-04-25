@@ -3,7 +3,10 @@ package com.ktdsuniversity.edu.pms.survey.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
@@ -40,5 +43,9 @@ public interface SurveyQuestionDao {
 	public List<ProjectSurveyQuestionVO> searchBoard(SearchSurveyVO searchSurveyVO);
 
 	public int deleteOneSurvey(SurveyQuestionVO surveyQuestionVO);
+
+	public List<SurveyQuestionVO> getAllQuestionsByPrjId(String prjId);
+
+	public List<ProjectSurveyQuestionVO> searchTeammate(SearchSurveyVO searchSurveyVO);
 
 }

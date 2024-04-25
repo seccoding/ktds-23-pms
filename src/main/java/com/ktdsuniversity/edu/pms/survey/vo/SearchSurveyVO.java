@@ -5,11 +5,25 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public class SearchSurveyVO extends PaginateVO {
 	
+	private String searchStatus;
 	private String searchType;
 	private String searchKeyword;
 	private String prjId;
+	private String empId;
 	private EmployeeVO employeeVO;
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
 	
+	public String getSearchStatus() {
+		return searchStatus;
+	}
+	public void setSearchStatus(String searchStatus) {
+		this.searchStatus = searchStatus;
+	}
 	public String getSearchType() {
 		return searchType;
 	}
