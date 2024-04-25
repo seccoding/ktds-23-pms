@@ -143,19 +143,23 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </table>
     <nav aria-label="Page navigation">
       <!--pagination-->
-      <ul class="page-nav">
+      <ul class="pagination">
         <c:if test="${resultList.count > 0}">
           <!--처음-->
           <c:if test="${requirementSearch.hasPrevGroup}">
-            <li><a href="javascript:search(0)">처음</a></li>
+            <li class="page-item first">
+              <a href="javascript:search(0)"
+                ><img src="/images/chevron-double-left.svg"
+              /></a>
+            </li>
           </c:if>
           <!--이전-->
           <c:if test="${requirementSearch.hasPrevGroup}">
-            <li>
+            <li class="page-item prev">
               <a
                 href="javascript:search(${requirementSearch.prevGroupStartPageNo})"
-                >이전</a
-              >
+                ><img src="/images/chevron-left.svg"
+              /></a>
             </li>
           </c:if>
           <!-- 각 페이지 링크 -->
@@ -164,8 +168,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             begin="${requirementSearch.groupStartPageNo}"
             end="${requirementSearch.groupEndPageNo}"
           >
-            <li>
+            <li
+              class="${requirementSearch.pageNo eq requirementSearch.groupStartPageNo+status.count-1 ? 'active' : ''} page-item"
+            >
               <a
+                class="page-link"
                 href="javascript:search(${requirementSearch.groupStartPageNo+status.count-1})"
                 >${requirementSearch.groupStartPageNo+status.count}</a
               >
@@ -175,15 +182,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <c:if test="${requirementSearch.hasNextGroup}">
             <a
               href="javascript:search(${requirementSearch.nextGroupStartPageNo})"
-              >다음</a
-            ></c:if
-          >
+              ><img src="/images/chevron-right.svg" /></a
+          ></c:if>
           <!--마지막-->
           <c:if test="${requirementSearch.hasNextGroup}"
             ><a href="javascript:search(${requirementSearch.pageCount-1})"
-              >마지막</a
-            ></c:if
-          >
+              ><img src="/images/chevron-double-right.svg" /></a
+          ></c:if>
         </c:if>
       </ul>
     </nav>

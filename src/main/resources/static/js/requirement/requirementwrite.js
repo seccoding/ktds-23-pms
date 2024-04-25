@@ -66,6 +66,7 @@ $().ready(function () {
     var endDt = $("#end-date").val();
     var scdSts = $("#scd-sts").val();
     var rqmSts = $("#rqm-sts").val();
+    var rqmId = $(".grid").data("rqm-id");
 
     var formData = new FormData();
     formData.append("file", file);
@@ -79,11 +80,14 @@ $().ready(function () {
     formData.append("scdSts", scdSts);
     formData.append("rqmSts", rqmSts);
     formData.append("rqmCntnt", rqmCntnt);
+    formData.append("rqmId", rqmId);
 
     $("#rqm-cntnt").val(rqmCntnt);
+    var type = $(this).data("type");
+    var url = "/ajax/requirement/" + type;
 
     $.ajax({
-      url: "/ajax/requirement/write",
+      url: url,
       type: "POST",
       data: formData,
       processData: false,

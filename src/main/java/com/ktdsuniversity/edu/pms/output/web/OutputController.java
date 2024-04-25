@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.output.service.OutputService;
 import com.ktdsuniversity.edu.pms.output.vo.OutputListVO;
@@ -58,8 +59,14 @@ public class OutputController {
 		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
 			outputSearchVO.setEmpId(employeeVO.getEmpId());
 		}
+		
+		List<ProjectVO> projectList;
+		if(employeeVO.getAdmnCode().equals("301")) {
+			projectList=this.projectService.getAllProject().getProjectList();
+		}else {
+			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
 
-		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+		}
 		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
@@ -75,13 +82,22 @@ public class OutputController {
 	@GetMapping("/output/write")
 	public String viewCreateOutput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 		this.checkAccess(employeeVO);
+		
 
-		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+		List<ProjectVO> projectList;
+		if(employeeVO.getAdmnCode().equals("301")) {
+			projectList=this.projectService.getAllProject().getProjectList();
+		}else {
+			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+
+		}
+		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType).addAttribute("prjSts",
 				prjSts);
+		
 		return "output/outputwrite";
 	}
 	@ResponseBody
@@ -128,6 +144,9 @@ public class OutputController {
 		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		OutputVO output = this.outputService.getOneOutput(outId);
 
+		if(this.throwUnauthorizedUser(employeeVO,output.getCrtrId())) {
+			throw new AccessDeniedException();		
+			}
 		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType)
 				.addAttribute("output", output).addAttribute("prjSts", prjSts);
 
@@ -145,12 +164,17 @@ public class OutputController {
 				.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.").start();
 
 		boolean isSuccess = this.outputService.updateOneOutput(outputVO, file);
+		
 		return "redirect:/output";
 	}
 
 	@GetMapping("/output/delete/{outId}")
 	public String deleteOutputment(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String outId) {
 		this.checkAccess(employeeVO);
+		OutputVO output = this.outputService.getOneOutput(outId);
+		if(this.throwUnauthorizedUser(employeeVO,output.getCrtrId())) {
+			throw new AccessDeniedException();		
+			}
 
 		boolean isSuccess = this.outputService.deleteOneOutput(outId);
 
@@ -161,7 +185,7 @@ public class OutputController {
 	private void checkAccess(EmployeeVO employeeVO, String prjId) {
 		ProjectTeammateVO pmVO = this.projectDao.findPmByProjectId(prjId);
 		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아닌경우
-			if (pmVO != null) {// 프로젝트 아이디가 주어진경우
+			if (! prjId.equals("") || ! prjId.isBlank() ) {// 프로젝트 아이디가 주어진경우
 				if (pmVO.getTmId().equals(employeeVO.getEmpId())) {// pm인경우
 				} else {// pm이 아닌경우
 					throw new PageNotFoundException();
@@ -188,7 +212,7 @@ public class OutputController {
 					.toList();
 
 			if (tmList == null || tmList.isEmpty()) {// PM을 맏은 포지션이 없다면
-				throw new PageNotFoundException();
+				throw new AccessDeniedException ();
 			} else {
 			} // pm을 맞은 포지션이 있다면
 		}
@@ -204,7 +228,7 @@ public class OutputController {
 		.add("outTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
 		.add("outType", Type.NOT_EMPTY, "산출물 타입은 필수 입력값입니다")
 		.add("prjId", Type.NOT_EMPTY, "올바르지 않은 프로젝트에서 생성했습니다.")
-		.add("file", Type.NOT_EMPTY, "파일은 필수입력값입니다")
+		.add("outFile", Type.NOT_EMPTY, "파일은 필수입력값입니다")
 		.start();
 	
 		
@@ -213,5 +237,13 @@ public class OutputController {
 		}
 		
 		return null;
+	}
+	private boolean throwUnauthorizedUser(EmployeeVO employeeVO, String empId) {
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아닌경우
+			if (!employeeVO.getEmpId().equals(empId)) {// 본인이 작성한글이 아니면
+				return true;
+			}
+		}
+		return false;
 	}
 }

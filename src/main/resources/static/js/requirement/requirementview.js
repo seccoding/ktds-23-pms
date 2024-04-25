@@ -26,7 +26,7 @@ $().ready(function () {
     var rqmId = $("#rqmId").data("rqmId");
     var url = window.location.href;
 
-    $.get(
+    $.post(
       "/project/requirement/delaycall?rqmId=" + rqmId,
       {},
       function (response) {
@@ -39,5 +39,42 @@ $().ready(function () {
         location.href = url;
       }
     );
+  });
+
+  $("#delete").on("click", function () {
+    var rqmId = $(".grid").data("rqm-id");
+
+    $.post(
+      "/project/requirement/delete",
+      { rqmId: rqmId },
+      function (response) {
+        var result = response.data.result;
+        var url = response.data.url;
+        if (result) {
+          alert("삭제완료");
+          location.href = url;
+        } else {
+          alert("삭제권한이 없습니다");
+        }
+      }
+    );
+  });
+
+  $("#modify").on("click", function () {
+    var rqmId = $(".grid").data("rqm-id");
+    var prjId = $(".grid").data("prj-id");
+
+    var sessionId = $(".grid").data("session-id");
+    var crtrId = $(".grid").data("crtr-id");
+    var adminCode = $(".grid").data("admin-code");
+    if (adminCode == 302) {
+      if (crtrId != sessionId) {
+        alert("권한이 없습니다");
+        return;
+      }
+    }
+
+    location.href =
+      "/project/requirement/modify?prjId=" + prjId + "&rqmId=" + rqmId;
   });
 });
