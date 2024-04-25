@@ -8,13 +8,14 @@ $().ready(function () {
       "내용을 입력하세요.",
       "${knowledge.knlCntnt}"
     );
-    
+
     $("#submit-btn").on("click", function (event) {
       var knlCntnt = "";
       event.preventDefault();
 
       knlCntnt = editors.getData();
       var file = $("#file").prop("files");
+      var file = fileArr[0];
       var knlTtl = $("#knlTtl").val();
       var rqmId = $("#rqm-id").val();
 
@@ -23,8 +24,6 @@ $().ready(function () {
       formData.append("knlTtl", knlTtl);
       formData.append("rqmId", rqmId);
       formData.append("knlCntnt", knlCntnt);
-
-      // $("#knl-cntnt").val(knlCntnt);
 
       $.ajax({
         url: "/ajax/knowledge/write",

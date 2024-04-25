@@ -18,11 +18,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <colgroup>
           <col width="40px" />
           <col width="100px" />
-          <col width="180px" />
+          <col width="150px" />
           <col width="100px" />
           <col width="*" />
           <col width="80px" />
           <col width="80px" />
+          <col width="150px" />
           <col width="150px" />
         </colgroup>
         <thead>
@@ -38,6 +39,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <th>조회수</th>
             <th>추천수</th>
             <th>작성일자</th>
+            <th>수정일자</th>
           </tr>
         </thead>
         <tbody>
@@ -63,6 +65,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <td>${knowledge.knlCnt}</td>
                   <td>${knowledge.knlRecCnt}</td>
                   <td>${knowledge.crtDt}</td>
+                  <td>${knowledge.mdfDt}</td>
                 </tr>
               </c:forEach>
             </c:when>
@@ -81,7 +84,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </div>
 
     <!-- 검색 -->
-    <div>
+    <nav aria-label="Page navigation">
       <form id="search-form">
         <input type="hidden" id="page-no" name="pageNo" value="0">
         <select name="listSize" id="list-size">
@@ -106,48 +109,46 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <button type="button" id="search-btn-cancel">초기화</button>
 
         <!-- pagination -->
-        <ul>
+        <ul class="pagination">
           <c:if test="${searchKnowledgeVO.hasPrevGroup}">
-            <li>
-              <a href="javascript:search(0);">처음</a>
-            </li>
-            <li>
-              <a href="javascript:search(${searchKnowledgeVO.prevGroupStartPageNo});">이전</a>
-            </li>
+              <li class="page-item first">
+                  <a class="page-link" href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a>
+              </li>
+              <li class="page-item prev">
+                  <a class="page-link" href="javascript:search(${searchQnaVO.prevGroupStartPageNo});"><img src="/images/chevron-left.svg"/></a>
+              </li>
           </c:if>
-          <c:forEach begin = "${searchKnowledgeVO.groupStartPageNo}"
-                      end = "${searchKnowledgeVO.groupEndPageNo}"  step="1" var="p">
-            <li class="${searchKnowledgeVO.pageNo eq p ? 'active' : ''}">
-              <a href="javascript:search(${p});">${p+1}</a>
-            </li>
+          <c:forEach begin="${searchKnowledgeVO.groupStartPageNo}" end="${searchKnowledgeVO.groupEndPageNo}" step="1" var="p">
+              <li class="${searchKnowledgeVO.pageNo eq p ? 'active' : ''} page-item">
+                  <a class="page-link" href="javascript:search(${p});">${p+1}</a>
+              </li>
           </c:forEach>
-
           <c:if test="${searchKnowledgeVO.hasNextGroup}">
-              <li>
-                <a href="javascript:search(${searchKnowledgeVO.nextGroupStartPageNo});">다음</a>
+              <li class="page-item next">
+                  <a class="page-link" 
+                  
+                  href="javascript:search(${searchKnowledgeVO.nextGroupStartPageNo});"><img src="/images/chevron-right.svg"/></a>
               </li>
-              <li>
-                <a href="javascript:search(${searchKnowledgeVO.pageCount - 1});">마지막</a>
+              <li class="page-item last">
+                  <a class="page-link" href="javascript:search(${searchKnowledgeVO.groupCount - 1});"><img src="/images/chevron-double-right.svg"/></a>
               </li>
-            </c:if>
-        </ul>
+          </c:if>
+      </ul>
       </form>
-    </div>
+    </nav>
 <!-- Paginator 끝 -->
-
     <div>
       <button class="btn-group">
       <a class="btn-group" href="/knowledge/write">새 글 등록</a>
     </button>
+    <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
     <button>
       <a href="/knowledge/excel/download">엑셀 다운</a>
       </button>
         <button>
           <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
         </button>
+      </c:if>
     </div>
-
-  </div>
-  </div>
   </body>
 </html>
