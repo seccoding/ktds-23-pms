@@ -60,11 +60,20 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE + ".getDepartmentNameById", deptId);
 	}
 	
+
+	@Override
+	public int getDepartment(String id) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE+".getDepartment", id);
+	}
+
 	@Override
 	public String getOnlypstnid(String pstnid) {
 		// TODO Auto-generated method stub
 		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE+".getOnlypstnid", pstnid);
 	}
+
+	
 
 
 }

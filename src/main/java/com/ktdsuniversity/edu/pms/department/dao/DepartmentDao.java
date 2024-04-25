@@ -24,5 +24,7 @@ public interface DepartmentDao {
 
 	public String getDepartmentNameById(String deptId);
 	
-	public String  getOnlypstnid(String pstnid);  
+	public  int getDepartment(String id);
+	
+	public String  getOnlypstnid(String pstnid); 
 }

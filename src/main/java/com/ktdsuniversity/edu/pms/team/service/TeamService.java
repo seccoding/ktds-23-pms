@@ -19,6 +19,6 @@ public interface TeamService {
 
 	public boolean deleteOneTeam(String teamId);
 	
-	public TeamListVO getaAllTeam();
+	
 
 }
