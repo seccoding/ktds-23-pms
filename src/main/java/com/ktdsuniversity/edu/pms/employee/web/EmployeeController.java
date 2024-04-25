@@ -21,6 +21,7 @@ import com.ktdsuniversity.edu.pms.changehistory.service.ChangeHistoryService;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
@@ -90,10 +91,13 @@ public class EmployeeController {
 		List<DepartmentHistoryVO> departmentHistList = this.changeHistoryService.getUserDeptHisory(empId);
 		List<JobHistoryVO> jobHistList = this.changeHistoryService.getUserJobHistory(empId);
 		List<PositionHistoryVO> positionHistList = this.changeHistoryService.getUserPositionHistory(empId);
+		List<CommonCodeVO> positionList = this.changeHistoryService.getAllPosition();
+		
 		model.addAttribute("employeeVO", employeeVO);
 		model.addAttribute("departmentHistList", departmentHistList);
 		model.addAttribute("jobHistList", jobHistList);
 		model.addAttribute("positionHistList", positionHistList);
+		model.addAttribute("positionList", positionList);
 		return "employee/employeeview";
 	}
 	
@@ -144,6 +148,14 @@ public class EmployeeController {
 		TeamListVO teamList = this.teamService.getAllTeamList(deptId);
 
 		return new AjaxResponse().append("employeeDept", employee.getDeptId()).append("teamList", teamList.getTeamList()).append("empTeamList", employee.getTeamList());
+	}
+	
+	@ResponseBody
+	@PostMapping("/ajax/employee/modify")
+	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
+		
+		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
+		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
 		
 	//수정
