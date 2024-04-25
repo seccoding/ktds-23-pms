@@ -30,5 +30,7 @@ public interface QnaService {
 	public int getQnaRecommendCount(String qaId);
 
 	public boolean updateRecommend(QnaRecommendVO qnaRecommendVO);
+//
+//	public boolean cancelRecommend(QnaRecommendVO qnaRecommendVO);
 
 }

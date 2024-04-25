@@ -98,6 +98,8 @@ public class QnaDaoImpl extends SqlSessionDaoSupport implements QnaDao {
 
 
 
+
+
 	
 	
 
