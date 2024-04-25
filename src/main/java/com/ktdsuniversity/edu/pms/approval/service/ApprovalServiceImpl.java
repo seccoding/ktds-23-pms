@@ -109,16 +109,32 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public boolean approvalStatusChange(ApprovalVO approvalVO) {
 		int updateApprStsCount =  this.approvalDao.updateApprovalStatus(approvalVO);
-//		approvalVO.set
-//		int updateRntlStsCount = this.approvalDao.updateRentalStatus(approvalVO);
 		return updateApprStsCount > 0;
+	}
+	
+	@Override
+	public boolean approvalRntlStatusChange(ApprovalVO approvalVO) {
+		int updateRntlStsCount =  this.approvalDao.updateRentalStatus(approvalVO);
+		return updateRntlStsCount > 0;
+	}
+
+	@Override
+	public boolean updateUnusablePrdt(ApprovalVO approvalVO) {
+		// 1.비품 반납
+		int returnPrdtCount = this.borrowDao.returnOneItemByAppr(approvalVO.getApprId());
+		// 2.반납비품 사용불가
+		int unusablePrdtCount = this.productManagementDao.unusablePrdtByAppr(approvalVO.getApprId());
+		// 3.대여상태 -> 반납완료
+		int updateRntlCount =  this.approvalDao.updateRentalStatus(approvalVO);
+
+		return ((returnPrdtCount > 0) && (unusablePrdtCount > 0) && (updateRntlCount > 0));
 	}
 	
 	@Transactional
 	@Override
-	public boolean getNewPrdtBorrowForAppr(String apprId) {
+	public boolean getNewPrdtBorrowForAppr(ApprovalVO approvalVO) {
 		// 1. 기대여 비품 선택
-		List<String> prdtNameList = this.approvalDetailDao.getPrdtNameByApprId(apprId);
+		List<String> prdtNameList = this.approvalDetailDao.getPrdtNameByApprId(approvalVO.getApprId());
 		// 2. 신규 대여 비품 선택
 		List<BorrowVO> borrowVOList = new ArrayList<>();
 		int isSuccessprdtMng = 0;
@@ -127,11 +143,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 			isSuccessprdtMng += this.productManagementDao.changeItemBrrwStateY(newBrrwPrdtId);
 			// 신규 대여이력정보
 			BorrowVO borrowVO = new BorrowVO();
-			borrowVO.setBrrwId(this.approvalDao.selectOneApproval(apprId).getDmdId());
+			borrowVO.setBrrwId(this.approvalDao.selectOneApproval(approvalVO.getApprId()).getDmdId());
 			borrowVO.setPrdtMngId(newBrrwPrdtId);
 			borrowVOList.add(i, borrowVO);
 		}
-		// 3. 신규 대여 대여처리
+		// 3. 선택비품 대여처리
 		int isSuccessBrrwHt = this.borrowDao.newBrrwPrdtByAppr(borrowVOList);
 		if( (isSuccessprdtMng != isSuccessBrrwHt) && (isSuccessBrrwHt != borrowVOList.size())) {
 			throw new PageNotFoundException();
@@ -145,24 +161,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 		if(isSuccessChange != prdtNameList.size()) {
 			throw new PageNotFoundException();
 		}
+		// 5. 대여상태 -> 신규비품제공
+		int updateRntlCount =  this.approvalDao.updateRentalStatus(approvalVO);
 
-		boolean isProcessSuccess = (isSuccessprdtMng > 0) && (isSuccessBrrwHt > 0) && (isSuccessChange > 0);
+		boolean isProcessSuccess = (isSuccessprdtMng > 0) && (isSuccessBrrwHt > 0)
+									&& (isSuccessChange > 0) && (updateRntlCount > 0);
 		return isProcessSuccess;
 	}
 	
-	@Override
-	public boolean updateUnusablePrdt(ApprovalVO approvalVO) {
-		// 1.비품 반납
-		int returnPrdtCount = this.borrowDao.returnOneItemByAppr(approvalVO.getApprId());
-		// 2.반납비품 사용불가
-		int unusablePrdtCount = this.productManagementDao.unusablePrdtByAppr(approvalVO.getApprId());
-		// 3.결재상태 -> 반납완료
-		approvalVO.setApprSts("804"); // ???
-		int updateCount =  this.approvalDao.updateApprovalStatus(approvalVO);
-		
-		return ((returnPrdtCount > 0) && (unusablePrdtCount > 0) && (updateCount > 0));
-	}
-
 	@Override
 	public boolean deleteOneApproval(String apprId) {
 		// 결재상세내역 삭제
