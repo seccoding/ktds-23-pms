@@ -54,13 +54,22 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       method="post"
       enctype="multipart/form-data"
     >
-      <div class="grid">
+      <div class="grid" data-rqm-id="${requirement.rqmId}">
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
         <label for="prj-id">프로젝트명</label>
         <div>
           <select name="prjId" id="prj-id">
             <c:forEach items="${projectList.projectList}" var="project">
-              <option value="${project.prjId}">${project.prjName}</option>
+              <c:choose>
+                <c:when test="${project.prjId eq requirement.prjId}">
+                  <option value="${project.prjId}" selected>
+                    ${project.prjName}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${project.prjId}">${project.prjName}</option>
+                </c:otherwise>
+              </c:choose>
             </c:forEach>
           </select>
         </div>
@@ -90,8 +99,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                     ${prjTeammateList.employeeVO.empName}
                   </option>
                 </c:otherwise>
-              </c:choose> </c:forEach
-            >re
+              </c:choose>
+            </c:forEach>
           </select>
         </div>
 
@@ -99,9 +108,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div>
           <select id="cfrmr-check" name="cfrmr" id="cfrmr">
             <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-              <option value="${prjTeammateList.tmId}">
-                ${prjTeammateList.employeeVO.empName}
-              </option>
+              <c:choose>
+                <c:when test="${prjTeammateList.tmId eq requirement.cfrmr}">
+                  <option value="${prjTeammateList.tmId}" selected>
+                    ${prjTeammateList.employeeVO.empName}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${prjTeammateList.tmId}">
+                    ${prjTeammateList.employeeVO.empName}
+                  </option>
+                </c:otherwise>
+              </c:choose>
             </c:forEach>
           </select>
         </div>
@@ -109,9 +127,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div>
           <select id="tstr-check" name="tstr" id="tstr">
             <c:forEach items="${prjTeammateList}" var="prjTeammateList">
-              <option value="${prjTeammateList.tmId}">
-                ${prjTeammateList.employeeVO.empName}
-              </option>
+              <c:choose>
+                <c:when test="${prjTeammateList.tmId eq requirement.tstr}">
+                  <option value="${prjTeammateList.tmId}" selected>
+                    ${prjTeammateList.employeeVO.empName}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${prjTeammateList.tmId}">
+                    ${prjTeammateList.employeeVO.empName}
+                  </option>
+                </c:otherwise>
+              </c:choose>
             </c:forEach>
           </select>
         </div>
@@ -159,7 +186,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <select name="scdSts" id="scd-sts" value="${requirement.rqmSts}">
           <c:forEach items="${scdSts}" var="scdSts">
             <c:if test="${ scdSts.cmcdId != '503'}">
-              <option value="${scdSts.cmcdId}">${scdSts.cmcdName}</option>
+              <c:choose>
+                <c:when test="${scdSts.cmcdId eq requirement.scdSts}">
+                  <option value="${scdSts.cmcdId}" selected>
+                    ${scdSts.cmcdName}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${scdSts.cmcdId}">${scdSts.cmcdName}</option>
+                </c:otherwise>
+              </c:choose>
             </c:if>
           </c:forEach>
         </select>
@@ -168,13 +204,22 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <label for="rqm-sts">진행상태</label>
         <select name="rqmSts" id="rqm-sts" value="${requirement.rqmSts}">
           <c:forEach items="${rqmSts}" var="rqmSts">
-            <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+            <c:choose>
+              <c:when test="${rqmSts.cmcdId eq requirement.rqmSts}">
+                <option value="${rqmSts.cmcdId}" selected>
+                  ${rqmSts.cmcdName}
+                </option>
+              </c:when>
+              <c:otherwise>
+                <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+              </c:otherwise>
+            </c:choose>
           </c:forEach>
         </select>
 
         <!--담당자 확인자 테스터 테스트결과는 아직 어떤 기준으로 해야하는지 알 수 없음-->
 
-        <button type="button">등록</button>
+        <button type="button" data-type="modify">등록</button>
       </div>
     </form>
   </body>

@@ -21,7 +21,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
 
   <body>
-    <div class="grid">
+    <div
+      class="grid"
+      data-rqm-id="${requirement.rqmId}"
+      data-prj-id="${requirement.prjId}"
+      data-session-id="${sessionScope._LOGIN_USER_.empId}"
+      data-admin-code="${sessionScope._LOGIN_USER_.admnCode}"
+      data-crtr-id="${requirement.crtrId}"
+    >
       <div>프로젝트명</div>
       <div>${requirement.projectVO.prjName}</div>
       <div>요구사항 아이디</div>
@@ -55,15 +62,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     <div>
       <button>
-        <a
-          href="/project/requirement/modify?prjId=${requirement.prjId}&rqmId=${requirement.rqmId}"
-          >수정</a
-        >
+        <a id="modify" href="javascript:void(0)">수정</a>
       </button>
       <button>
-        <a href="/project/requirement/delete?rqmId=${requirement.rqmId}"
-          >삭제</a
-        >
+        <a id="delete" href="javascript:void(0)">삭제</a>
       </button>
 
       <c:choose>
