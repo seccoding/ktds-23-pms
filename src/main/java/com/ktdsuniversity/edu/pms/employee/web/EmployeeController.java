@@ -117,20 +117,21 @@ public class EmployeeController {
 		return new AjaxResponse().append("next", isSuccess ? "/employee/success-delete-emp"
 											: "/employee/failed-delete-emp");
 	}
-	
-	
+
 
 	//수정페이지
-	@GetMapping("/employee/modify")
-	public String viewEmpModifyPage(Model model,
-									@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	@GetMapping("/employee/modify/{empId}")
+	public String viewEmpModifyPage(@PathVariable String empId, Model model,
+									EmployeeVO employeeVO) {
+		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
+		model.addAttribute("employeeVO", employee);
 
 		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
 		model.addAttribute("departmentlist", departmentList);
-		
+
 //		TeamListVO teamList = this.teamService.getAllTeamList(employee.getDeptId());
 //		model.addAttribute("teamListinDept", teamList.getTeamList());
-		
+
 		return "employee/employeemodify";
 	}
 	
