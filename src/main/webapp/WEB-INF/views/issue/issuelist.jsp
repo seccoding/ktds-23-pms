@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>이슈 목록 페이지</title>
 <jsp:include page="../commonheader.jsp" />
+<jsp:include page="../commonmodal.jsp" />
 <script type="text/javascript" src="/js/issue/issuelist.js"></script>
 </head>
 <body>
@@ -108,9 +109,7 @@
               <button>
                   <a href="/issue/excel/download">엑셀다운</a>
               </button>
-              <button>
-                  <a id="deleteMassiveIssue" href="javascript:void(0);">일괄삭제</a>
-              </button>
+              <button type="button" id="deleteMassiveIssue" href="javascript:void(0);">일괄삭제</button>
             </c:if>   
           </div>
         </div>
