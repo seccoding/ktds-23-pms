@@ -78,7 +78,7 @@ public class LoginController {
 
         // 사용중 여부 확인
         if (!SessionUtil.wasLoginEmployee(employee.getEmpId())) {
-        	
+
             // 로그인 기록 DB 저장 메서드
             boolean insertLoginLogSuccess = this.loginLogService.insertLoginLog(employee);
             if (insertLoginLogSuccess) {
@@ -96,7 +96,7 @@ public class LoginController {
             } else {
                 logger.debug("로그인 상태 변경('Y')에 실패했습니다.");
             }
-            
+
             int commuteCheck = this.loginLogService.getCommuteDt(employee.getEmpId());
             if (commuteCheck == 0) {
                 logger.debug("오늘 출근 기록이 없습니다. 출근을 기록하겠습니다.");
@@ -111,7 +111,7 @@ public class LoginController {
                 logger.debug("이미 출근을 기록했습니다.");
             }
 
-            session.setAttribute("_LOGIN_USER_", employee);            
+            session.setAttribute("_LOGIN_USER_", employee);
             session.setMaxInactiveInterval(20 * 60);
             SessionUtil.addSession(employee.getEmpId(), session);
 
@@ -143,28 +143,27 @@ public class LoginController {
 
         return "redirect:/employee/login";
     }
-    
-	//출퇴근을 보여주는 페이지
-	@GetMapping("/commute/view")
-	public String doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
-		/**
-		 * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
-		 * true: 전체 조회
-		 * false: 입력받은 본인의 출퇴근만 조회
-		 */ 
-		String AdmnCodeIsSystemFormat = "301";
-		if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
-			CommuteListVO commuteListVO = commuteService.getAllCommuteData(commuteVO);
-			model.addAttribute("commuteList", commuteListVO);
-			model.addAttribute("commuteVO", commuteVO);
-			return "commute/view";
-		} 
-		else{
-			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
-			model.addAttribute("commuteList", commuteListVO);
-			return "commute/view";
-		}
-	}
+
+    //출퇴근을 보여주는 페이지
+    @GetMapping("/commute/view")
+    public String doCommuteSearch(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, CommuteVO commuteVO, Model model) {
+        /**
+         * 현재 로그인한 사원의 CDMN_CODE가 301인지 조회
+         * true: 전체 조회
+         * false: 입력받은 본인의 출퇴근만 조회
+         */
+        String AdmnCodeIsSystemFormat = "301";
+        if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
+            CommuteListVO commuteListVO = commuteService.getAllCommuteData(commuteVO);
+            model.addAttribute("commuteList", commuteListVO);
+            model.addAttribute("commuteVO", commuteVO);
+            return "commute/view";
+        } else {
+            CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
+            model.addAttribute("commuteList", commuteListVO);
+            return "commute/view";
+        }
+    }
 
     // 로그인 기록 확인 페이지
     @GetMapping("/loginlog/view")
@@ -175,7 +174,7 @@ public class LoginController {
             model.addAttribute("loginLogList", loginLogListVO);
             model.addAttribute("loginLogVO", loginLogVO);
             return "login/loginlogview";
-        }else {
+        } else {
             LoginLogListVO loginLogListVO = this.loginLogService.getOneLoginLog(employeeVO.getEmpId());
             model.addAttribute("loginLogList", loginLogListVO);
             return "login/loginlogview";
@@ -186,15 +185,27 @@ public class LoginController {
     @GetMapping("/visitedlog/view")
     public String viewVisitedLog(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, VisitedVO visitedVO) {
         String AdmnCodeIsSystemFormat = "301";
-        if(employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)){
+        if (employeeVO.getAdmnCode().equals(AdmnCodeIsSystemFormat)) {
             VisitedListVO visitedList = this.loginLogService.getAllVisitedLog(visitedVO);
             model.addAttribute("visitedVO", visitedVO);
             model.addAttribute("visitedList", visitedList);
             return "login/visitedlogview";
-        }else {
+        } else {
             VisitedListVO visitedList = this.loginLogService.getOneVisitedLog(employeeVO.getEmpId());
             model.addAttribute("visitedList", visitedList);
             return "login/visitedlogview";
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/ajax/login/pwdCnDt")
+    public AjaxResponse updatePwdCnDt(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+        boolean updatePwdCnDtSuccess = this.loginLogService.updatePwdDtThirtyDay(employeeVO.getEmpId());
+        if (updatePwdCnDtSuccess) {
+            logger.debug("비밀번호 변경일 30일 증가에 성공했습니다.");
+        }
+
+        return new AjaxResponse().append("next", "/");
     }
 }

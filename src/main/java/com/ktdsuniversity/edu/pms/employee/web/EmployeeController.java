@@ -128,14 +128,12 @@ public class EmployeeController {
 	}
 
 	//수정페이지
-	@GetMapping("/employee/modify/{empId}")
-	public String viewEmpModifyPage(@PathVariable String empId, Model model, 
-									 EmployeeVO employeeVO) {
-		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
-		model.addAttribute("employeeVO", employee);
-		
+	@GetMapping("/employee/modify")
+	public String viewEmpModifyPage(Model model,
+									@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
 		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
-		 model.addAttribute("departmentlist", departmentList);
+		model.addAttribute("departmentlist", departmentList);
 		
 //		TeamListVO teamList = this.teamService.getAllTeamList(employee.getDeptId());
 //		model.addAttribute("teamListinDept", teamList.getTeamList());
@@ -145,9 +143,9 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@GetMapping("/ajax/employee/modify")
-	public AjaxResponse getEmployeeInput(@RequestParam String empId,  String deptId) {
-		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
-		TeamListVO teamList = this.teamService.getAllTeamList(deptId);
+	public AjaxResponse getEmployeeInput(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		TeamListVO teamList = this.teamService.getAllTeamList(employeeVO.getDeptId());
 		
 		return new AjaxResponse().append("employeeDept", employee.getDeptId()).append("teamList", teamList.getTeamList()).append("empTeamList", employee.getTeamList());
 	}

@@ -36,32 +36,32 @@
     method="post"
     enctype="multipart/form-data"> -->
 
-    <div class="grid" data-teamlist="${employeeVO.teamList}">
+    <div class="grid" data-teamlist="${sessionScope._LOGIN_USER_.teamList}">
         <label for="empId">사원 ID</label>
         <input type="text" id="empId"
-                name="empId" value="${employeeVO.empId}"/>
+                name="empId" value="${sessionScope._LOGIN_USER_.empId}"/>
 
         <label for="empName">사원 이름</label>
         <input type="text" id="empName"
-                name="empName" value="${employeeVO.empName}"/>
+                name="empName" value="${sessionScope._LOGIN_USER_.empName}"/>
 
         <label for="workSts">재직 상태</label>
         <input type="text" id="workSts"
-               name="workSts" value="${employeeVO.workSts}"/>
+               name="workSts" value="${sessionScope._LOGIN_USER_.workSts}"/>
 
         <label for="hireYear">입사 연차</label>
         <input type="text" id="hireYear"
-        name="hireYear" value="${employeeVO.hireYear}"/>
+        name="hireYear" value="${sessionScope._LOGIN_USER_.hireYear}"/>
 
         <label for="hireDt">입사일</label>
         <input type="text" id="hireDt"
-        name="hireDt" value="${employeeVO.hireDt}"/>
+        name="hireDt" value="${sessionScope._LOGIN_USER_.hireDt}"/>
 
-        <c:if test="${empty employeeVO.teamList}">
+        <c:if test="${empty sessionScope._LOGIN_USER_.teamList}">
           <label for="noneTmName" >팀</label>
           <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
         </c:if>
-        <c:forEach items="${employeeVO.teamList}" var="teamList">
+        <c:forEach items="${sessionScope._LOGIN_USER_.teamList}" var="teamList">
             <label for="tmName">팀</label>
             <div>
                 <div id="tmName">${teamList.tmName}</div>
@@ -90,7 +90,7 @@
         
         <label for="dept-select">부서</label>
         <div>
-            <select id="dept-select" class="dept-select" data-origin="${employeeVO.deptId}">
+            <select id="dept-select" class="dept-select" data-origin="${sessionScope._LOGIN_USER_.deptId}">
                 <c:forEach items="${departmentlist.departmentList}" var="department">
                     <option  value="${department.deptId}" >${department.deptName}</option>
                 </c:forEach>

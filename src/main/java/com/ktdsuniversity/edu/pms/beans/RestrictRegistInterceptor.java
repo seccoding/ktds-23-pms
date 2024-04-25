@@ -17,7 +17,7 @@ public class RestrictRegistInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
 
         if (uri.equals("/ajax/employee/regist") || uri.equals("/employee/regist")) {
-            if (employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+            if (employeeVO.getDeptId().equals("DEPT_230101_000010") || employeeVO.getAdmnCode().equals("301")) {
                 return true;
             } else {
                 response.sendRedirect("/");

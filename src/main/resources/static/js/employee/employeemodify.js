@@ -2,7 +2,7 @@ $().ready(function () {
     
     var empId = $("#empId").val()
     
-    $.get("/ajax/employee/modify?empId="+empId, {
+    $.get("/ajax/employee/modify/", {
         deptId : $("#dept-select").val()
     }, function(res){
          $("#dept-select").val(res.data.employeeDept).prop("selected")

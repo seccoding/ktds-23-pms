@@ -49,6 +49,8 @@
 	              , E.REST_END_DT
 	              , E.MNGR_YN
 	              , E.DEPT_ID
+                  , E.HIRE_DT
+                  , E.HIRE_YEAR
 	              , T.TM_ID
 	              , T.TM_NAME
 	           FROM EMPLOYEE E
@@ -334,5 +336,11 @@
           AND V.EMP_ID = #{empId}
         ORDER BY V.ACCS_DT
     </select>
+
+    <update id="updatePwdDtThirtyDay" parameterType="string">
+        UPDATE EMPLOYEE
+           SET PWD_CN_DT = SYSDATE + 30
+         WHERE EMP_ID = #{_parameter}
+    </update>
 
 </mapper>

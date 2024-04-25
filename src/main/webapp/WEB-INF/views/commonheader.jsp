@@ -4,14 +4,3 @@
 <script type="text/javascript" src="/js/lib/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/modal.js"></script>
-<script>
-    $().ready(function () {
-
-        var pwdMessage = "${pwdMessage}";
-
-        if (pwdMessage) {
-            alert(pwdMessage);
-        }
-
-    })
-</script>
