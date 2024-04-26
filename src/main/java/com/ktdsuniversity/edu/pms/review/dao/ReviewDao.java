@@ -75,5 +75,9 @@ public interface ReviewDao {
 	public int deleteManyReview(List<String> reviewIds);
 
 	public List<ReviewVO> selectManyReview(List<String> reviewIds);
+
+	public int searchAdminReviewAllCount(SearchReviewVO searchReviewVO);
+
+	public List<ReviewVO> searchAdminReview(SearchReviewVO searchReviewVO);
 	
 }

@@ -28,17 +28,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       
     </style>
  
-    <script type="text/javascript" src="/js/review/revewlist.js"></script>
     <script type="text/javascript" src="/js/review/reviewresult.js"></script>
 
     
   </head>
   <body>
-  <div>
-   세션값: ${sessionScope._LOGIN_USER_.mngrYn}
-   isPm : ${isPM}
-   isRVY : ${isRVY}
-  </div>
+    <jsp:include page="../commonmodal.jsp"/>
+  
     <div>
       <table class="table">
         <colgroup>
@@ -76,6 +72,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 				             <a href="/review/prjId/${review.projectVO.prjId}/write">
 				                ${review.projectVO.prjName}
 				             </a>
+						  <!-- <a href="#" class="delete-button">삭제하기!</a> -->
 				          </td>
 				      </c:otherwise>
 				   </c:choose>

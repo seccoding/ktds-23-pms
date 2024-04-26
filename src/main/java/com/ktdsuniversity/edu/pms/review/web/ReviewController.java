@@ -96,6 +96,10 @@ public class ReviewController {
 	@GetMapping("/review/prjId/{id}/write")
 	public String viewReviewWritePage(@PathVariable String id, Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		
+		if (employeeVO.getAdmnCode().equals("301") || employeeVO.getMngrYn().equals("Y")) {
+			return "redirect:/review"; 
+		}
+		
 		List<ProjectTeammateVO> tmList =this.projectService.getAllProjectTeammateByProjectId(id).stream()
 		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
 		.filter(tm->tm.getRvYn().equals("Y"))
