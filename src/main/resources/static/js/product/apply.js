@@ -104,12 +104,9 @@ $().ready(function(){
         $("form").each(function(index, form) {
             formData["borrowList["+index+"].productVO.prdtName"] = $(form).find("#select-prdtName").val();
             formData["borrowList["+index+"].productVO.prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
-            formData["borrowList["+index+"].productVO.curStr"] = $(form).find("#apply-stock").val();
+            formData["borrowList["+index+"].productVO.curStr"] = $(form).find("#apply-quantity").val();
             formData["borrowList["+index+"].brrwDt"] = $(form).find("#apply-date").val();
-
-            
         });
-
 
         var addConfirm = confirm("신청하시겠습니까?");
         if(addConfirm){
@@ -127,38 +124,38 @@ $().ready(function(){
 
     
     $(".cancel-button").on("click", function() {
-        // var cancelConfirm = confirm("취소하시겠습니까?");
-        // if(cancelConfirm){
-        //     location.href = "/product/list";
-        // }
-
-
-        var alertModal = $(".modal-confirm-window");
-        var modalButton = $(".confirm-confirm-button");
-        var modalButton1 = $(".cancel-confirm-button");
-        var modalText = $(".modal-confirm-text");
-        modalText.text("취소하시겠습니까?");
-        modalButton.text("확인");
-        modalButton1.text("취소");
-
-
-        // 확인 버튼 클릭 시
-        $(modalButton).on("click", function () {
+        var cancelConfirm = confirm("취소하시겠습니까?");
+        if(cancelConfirm){
             location.href = "/product/list";
-        });
-
-        // 취소 버튼 클릭 시
-        $(modalButton1).on("click", function () {
-            alertModal[0].close();
-        });
+        }
 
 
-        alertModal[0].showModal();
+        // var alertModal = $(".modal-confirm-window");
+        // var modalButton = $(".confirm-confirm-button");
+        // var modalButton1 = $(".cancel-confirm-button");
+        // var modalText = $(".modal-confirm-text");
+        // modalText.text("취소하시겠습니까?");
+        // modalButton.text("확인");
+        // modalButton1.text("취소");
 
-        // Modal 창 닫기 버튼 클릭
-        $(".modal-confirm-close").on("click", function () {
-            alertModal[0].close();
-        });
+
+        // // 확인 버튼 클릭 시
+        // $(modalButton).on("click", function () {
+        //     location.href = "/product/list";
+        // });
+
+        // // 취소 버튼 클릭 시
+        // $(modalButton1).on("click", function () {
+        //     alertModal[0].close();
+        // });
+
+
+        // alertModal[0].showModal();
+
+        // // Modal 창 닫기 버튼 클릭
+        // $(".modal-confirm-close").on("click", function () {
+        //     alertModal[0].close();
+        // });
         
     });
 
