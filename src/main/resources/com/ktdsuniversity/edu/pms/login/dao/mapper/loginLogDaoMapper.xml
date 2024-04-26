@@ -197,11 +197,12 @@
 
     <select id="getCommuteDt"
             parameterType="string"
-            resultType="_int">
-        SELECT COUNT(1)
-        FROM COMMUTE
-        WHERE TO_CHAR(CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-        AND EMP_ID = #{empId}
+            resultType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO">
+		SELECT CMMT_TIME 
+			 , FNSH_TIME
+		  FROM COMMUTE
+		 WHERE TO_CHAR(CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+           AND EMP_ID = #{empId}
     </select>
 
     <update id="updateCommuteFnsh"
