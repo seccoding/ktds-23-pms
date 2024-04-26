@@ -6,6 +6,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>Qna 리스트</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    <jsp:include page="../commonmodal.jsp" />
     <script
       type="text/javascript"
       src="/js/qna/qnalist.js"
@@ -29,8 +30,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <thead>
           <tr>
             <th>
+              <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
               <input type="checkbox" id="checked-all" data-target-class="target-qna-id">
               <label for="checked-all"></label>
+            </c:if>
             </th>
             <th>프로젝트</th>
             <th>요구사항명</th>
@@ -48,7 +51,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <c:forEach items="${qnaList.qnaList}" var="qna" varStatus="loop">
               <tr>
                 <td>
+                  <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
                   <input type="checkbox" class="target-qna-id" id="target-qna-id-${loop.index}" value="${qna.qaId}">
+                </c:if>
                   <label for="target-qna-id-${loop.index}"></label>
                 </td>
                   <td>${qna.projectVO.prjName}</td>

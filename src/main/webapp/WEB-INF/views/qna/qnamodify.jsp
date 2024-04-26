@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib
+prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,22 +7,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <title>Qna 수정 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <jsp:include page="../ckeditor.jsp" />
-    <script type="text/javascript" src="/js/qna/qnamodify.js"></script>
-    <script
-      type="text/javascript"
-      src="/js/knowledge/knowledgewrite.js"
-    ></script>
+    <script type="text/javascript" src="/js/qna/qnawrite.js"></script>
   </head>
   <body>
     <h1>Qna 수정</h1>
-    <form
-      action="/qna/modify/${qnaVO.qaId}"
-      method="post"
-      enctype="multipart/form-data"
-    >
+    <form action="/ajax/qna/modify/${qnaVO.qaId}" method="put" enctype="multipart/form-data">
       <div class="grid">
         <label for="title">제목</label>
-        <input id="title" type="text" name="qaTtl" value="${qnaVO.qaTtl}" />
+        <input id="qaTtl" type="text" name="qaTtl" value="${qnaVO.qaTtl}" />
 
         <label for="file">첨부파일</label>
         <div>
@@ -36,15 +28,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <div class="hereCkEditor5">
             <%-- editor 생성부 --%>
             <div class="editor" data-name="qaCntnt"></div>
-            <input
-              type="text"
-              id="qaCntnt"
-              name="qaCntnt"
-              style="visibility: hidden"
-            />
+            <input type="text" id="qaCntnt" name="qaCntnt" style="visibility: hidden" />
           </div>
         </div>
-        <button id="submit-btn" type="button" data-type="modify">저장</button>
+        <button id="submit-btn2" type="button" data-key="${qnaVO.qaId}">저장</button>
       </div>
     </form>
   </body>

@@ -17,17 +17,36 @@ $().ready(function () {
     $(".answer-form").show();
   });
 
+  // $(".delete-qna").on("click", function () {
+  //   var chooseValue = confirm("이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.");
+
+  //   var qaId = $(this).closest(".grid").data("id");
+  //   console.log("qaId  " + qaId);
+
+  //   if (chooseValue) {
+  //     location.href = "/qna/delete/" + qaId;
+  //   }
+  // });
+
   $(".delete-qna").on("click", function () {
-    var chooseValue = confirm(
-      "이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다."
-    );
-
-    var qaId = $(this).closest(".grid").data("id");
-    console.log("qaId  " + qaId);
-
-    if (chooseValue) {
-      location.href = "/qna/delete/" + qaId;
-    }
+    var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
+    var modalButton1 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text("이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.");
+    modalButton.text("확인");
+    modalButton1.text("취소");
+    alertModal[0].showModal();
+  });
+  $(".modal-confirm-close").on("click", function () {
+    location.reload();
+  });
+  $(".confirm-confirm-button").on("click", function () {
+    var qaId = $(".grid").data("id");
+    location.href = "/qna/delete/" + qaId;
+  });
+  $(".cancel-confirm-button").on("click", function () {
+    location.reload();
   });
 
   var modifyReply = function (event) {
@@ -71,11 +90,10 @@ $().ready(function () {
 
   var loadReplies = function (pPostId) {
     $.get("/ajax/qna/reply/" + pPostId, function (response) {
-
       var replies = response.data.qnaReplies;
 
       for (var i in replies) {
-        var reply = replies[i]; 
+        var reply = replies[i];
 
         /***********************이미 불러온 댓글 수정*************************/
         // 이미 불러온 댓글인지 확인
@@ -104,19 +122,17 @@ $().ready(function () {
           continue;
         }
 
-        var appendedParentReply = $(
-          ".reply[data-reply-id=" + reply.rplPid + "]"
-        );
+        var appendedParentReply = $(".reply[data-reply-id=" + reply.rplPid + "]");
 
         /***********************새로운 댓글 추가*************************/
         // <div class="reply" data-reply-id="댓글번호" style="padding-left: (level - 1) * 40px">
         var replyDom = $("<div></div>");
         replyDom.addClass("reply");
-       
+
         replyDom.attr("data-reply-id", reply.rplId);
         replyDom.data("reply-id", reply.rplId);
         replyDom.css({
-          "padding-left": (reply.level === 1 ? 0 : reply.level-1) * 40 + "px",
+          "padding-left": (reply.level === 1 ? 0 : reply.level - 1) * 40 + "px",
           color: "#333",
         });
 
@@ -160,7 +176,7 @@ $().ready(function () {
 
           var loginEmail = $("#login-email").text();
           var controlDom = $("<div></div>");
-      
+
           if (reply.crtrId === loginEmail) {
             // <span class="modify-reply">수정</span>
             var modifyReplyDom = $("<span></span>");

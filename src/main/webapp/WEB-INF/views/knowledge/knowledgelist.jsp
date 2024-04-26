@@ -6,6 +6,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>지식관리 목록</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    <jsp:include page="../commonmodal.jsp" />
     <script
       type="text/javascript"
       src="/js/knowledge/knowledgelist.js"
@@ -29,8 +30,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <thead>
           <tr>
             <th>
+              <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
               <input type="checkbox" id="checked-all" data-target-class="target-knl-id">
               <label for="checked-all"></label>
+            </c:if>
             </th>
             <th>프로젝트</th>
             <th>요구사항명</th>
@@ -48,7 +51,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <c:forEach items="${knowledgeList.knowledgeList}" var="knowledge" varStatus="loop">
               <tr>
                 <td>
+                  <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
                   <input type="checkbox" class="target-knl-id" id="target-knl-id-${loop.index}" value="${knowledge.knlId}">
+                </c:if>
                   <label for="target-knl-id-${loop.index}"></label>
                 </td>
                   <td>${knowledge.projectVO.prjName}</td>
@@ -114,10 +119,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </button>
           <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
               <button>
-                <a href="/qna/excel/download">엑셀 다운</a>
+                <a href="/knowledge/excel/download">엑셀 다운</a>
               </button>
               <button>
-                <a id="deleteMassiveQna" href="javaScript:void(0)">일괄 삭제</a>
+                <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
               </button>
           </c:if>
         </div>
@@ -129,7 +134,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <a class="page-link" href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a>
               </li>
               <li class="page-item prev">
-                  <a class="page-link" href="javascript:search(${searchQnaVO.prevGroupStartPageNo});"><img src="/images/chevron-left.svg"/></a>
+                  <a class="page-link" href="javascript:search(${searchKnowledgeVO.prevGroupStartPageNo});"><img src="/images/chevron-left.svg"/></a>
               </li>
           </c:if>
           <c:forEach begin="${searchKnowledgeVO.groupStartPageNo}" end="${searchKnowledgeVO.groupEndPageNo}" step="1" var="p">
