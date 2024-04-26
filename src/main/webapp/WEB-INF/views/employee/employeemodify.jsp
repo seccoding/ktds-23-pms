@@ -58,41 +58,39 @@
     <label for="email">이메일</label>
     <input type="text" id="email" value="${employeeVO.email}"/>
 
-        <label for="newPwd">비밀번호</label>
-        <input type="text" id="newPwd" name="newPwd" value="${employeeVO.newPwd}">
-     
-        <label for="confirmPwd">비밀번호 확인</label>
-        <input type="text" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}">
+    <label for="newPwd">비밀번호</label>
+    <input type="password" id="newPwd" name="newPwd" value="${employeeVO.newPwd}">
+        
+    <label for="confirmPwd">비밀번호 확인</label>
+    <input type="password" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}"> <span id="password-match-status"></span>
 
-        
-        <c:choose>
-            <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-                <label for="workSts">재직 상태</label>
-                <input type="text" id="workSts" name="workSts" id="${employeeVO.workSts}" value="${employeeVO.workSts}"/>
-                <label for="hireYear">입사 연차</label>
-                <input type="text" id="hireYear"
-                name="hireYear" value="${employeeVO.hireYear}"/>
-        
-                <label for="hireDt">입사일</label>
-                <input type="text" id="hireDt"
-                name="hireDt" value="${employeeVO.hireDt}"/>
-        
-                <label for="posiHist">직급</label>
-                <input type="text" id="posiHist"
-                name="posiHist" value="${employeeVO.commonCodeVO.cmcdName}"/>
-        
-        
-                <c:if test="${empty employeeVO.teamList}">
-                  <label for="noneTmName" >팀</label>
-                  <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
-                </c:if>
-                <c:forEach items="${employeeVO.teamList}" var="teamList">
-                    <label for="tmName">팀</label>
-                    <div>
-                        <div id="tmName">${teamList.tmName}</div>
-                        <button class="delete-team" data-tmid="${teamList.tmId}">삭제</button>
-        
-                    </div>
+
+    <c:choose>
+        <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+            <label for="workSts">재직 상태</label>
+            <input type="text" id="workSts" name="workSts" id="${employeeVO.workSts}" value="${employeeVO.workSts}"/>
+            <label for="hireYear">입사 연차</label>
+            <input type="text" id="hireYear"
+                   name="hireYear" value="${employeeVO.hireYear}"/>
+
+            <label for="hireDt">입사일</label>
+            <input type="text" id="hireDt"
+                   name="hireDt" value="${employeeVO.hireDt}"/>
+
+            <label for="posiHist">직급</label>
+            <input type="text" id="posiHist"
+                   name="posiHist" value="${employeeVO.commonCodeVO.cmcdName}"/>
+            
+             <c:if test="${empty employeeVO.teamList}">
+                <label for="noneTmName" >팀</label>
+                <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
+            </c:if>
+            <label for="tmName">팀</label>
+            <c:forEach items="${employeeVO.teamList}" var="teamList">
+                <div style="margin-bottom: 0.2rem;">
+                    <input type="text" id="tmName" id="tmName" value="${teamList.tmName}" disabled/>
+                    <button class="delete-team" data-tmid="${teamList.tmId}">삭제</button>
+
                 </div>
             </c:forEach>
             <div id="will-add-team" class="hidden">
