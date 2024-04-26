@@ -37,10 +37,10 @@
 		   AND PRDT_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "category"'>
-		   AND PRDT_CTGR LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(PRDT_CTGR, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
 		</if>
@@ -64,10 +64,10 @@
 		   AND PRDT_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "category"'>
-		   AND PRDT_CTGR LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(PRDT_CTGR, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
 		</if>
@@ -163,7 +163,7 @@
 	</select>
   	
 	<select id="selectOnePrdtId" resultType="string">
-		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
 		  FROM DUAL
 	</select>
 	

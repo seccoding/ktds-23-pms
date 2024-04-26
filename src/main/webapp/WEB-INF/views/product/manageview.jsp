@@ -36,6 +36,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       .hidden {
         display: none;
       }
+      table.table > tbody td[colspan] {
+        text-align: center;
+      }
     </style>
     <link
       rel="stylesheet"
@@ -123,7 +126,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </thead>
         <tbody>
           <c:choose>
+            <%-- productManagementList의 내용이 존재한다면 (1개 이상 있다면) --%>
             <c:when test="${not empty productDetailList.productManagementList}">
+              <%-- 내용을 반복하면서 보여주고 --%>
               <c:forEach
                 items="${productDetailList.productManagementList}"
                 var="product"
@@ -172,6 +177,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </tr>
               </c:forEach>
             </c:when>
+            <%-- productManagementList의 내용이 존재하지 않는다면 --%>
+            <c:otherwise>
+                <tr>
+                    <td colspan="8">
+                        등록된 비품이 존재하지 않습니다.
+                    </td>
+                </tr>
+            </c:otherwise>
           </c:choose>
         </tbody>
       </table>

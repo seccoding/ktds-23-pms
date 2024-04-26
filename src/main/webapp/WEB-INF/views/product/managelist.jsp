@@ -27,6 +27,9 @@
     #add-modal{
         padding: 3rem;
     }
+    table.table > tbody td[colspan] {
+        text-align: center;
+    }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 <script>
@@ -89,7 +92,9 @@
             </thead>
             <tbody>
                 <c:choose>
+                    <%-- productList의 내용이 존재한다면 (1개 이상 있다면) --%>
                     <c:when test="${not empty productList.productList}">
+                        <%-- 내용을 반복하면서 보여주고 --%>
                         <c:forEach items="${productList.productList}" var="product">
                             <tr >
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtId}</td>
@@ -106,6 +111,14 @@
                         </c:forEach>
                         
                     </c:when>
+                    <%-- productList의 내용이 존재하지 않는다면 --%>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="6">
+                                등록된 비품이 존재하지 않습니다.
+                            </td>
+                        </tr>
+                    </c:otherwise>
                     
                 </c:choose>
                 

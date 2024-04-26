@@ -59,7 +59,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
 		</if>
@@ -88,7 +88,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 			</choose>
 		</if>

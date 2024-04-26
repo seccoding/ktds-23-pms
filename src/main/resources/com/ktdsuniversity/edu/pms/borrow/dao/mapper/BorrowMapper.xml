@@ -77,7 +77,7 @@
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productManagementId"'>
 		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
@@ -109,7 +109,7 @@
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productManagementId"'>
 		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
@@ -170,7 +170,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "borrowId"'>
 		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'
@@ -204,7 +204,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "borrowId"'>
 		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'
