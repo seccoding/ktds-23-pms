@@ -43,50 +43,50 @@ public abstract class StringUtil {
 		return str.matches(passwordFormat);
 	}
 	
-	/**
-	 * 입력받은 문자가 DEPT_(숫자6자리)_(숫자6자리)인지 확인해주는 메소드
-	 * @param str 입력한 부서ID
-	 * @return 입력한 부서ID 형식이 맞다면 true, 틀리다면 false
-	 */
-	public final static boolean isDeptIdFormat(final String str) {
-		if (isEmpty(str)) {
-			return false;
-		}
-		
-		String DeptIdFormat = "^DEPT_\\d{6}_\\d{6}$";
-		
-		return str.matches(DeptIdFormat);
-	}
-	
-	/**
-	 * 입력받은 문자가 JOB_(숫자6자리)_(숫자6자리)인지 확인해주는 메소드
-	 * @param str 입력한 직무ID
-	 * @return 입력한 직무ID 형식이 맞다면 true, 틀리다면 false
-	 */
-	public final static boolean isJobIdFormat(final String str) {
-		if (isEmpty(str)) {
-			return false;
-		}
-		
-		String JobIdFormat = "^JOB_\\d{6}_\\d{6}$";
-		
-		return str.matches(JobIdFormat);
-	}
-	
-	/**
-	 * 입력받은 문자가 101~110사이의 숫자인지 확인해주는 메소드
-	 * @param str 입력한 직급ID
-	 * @return 입력한 직급ID 형식이 맞다면 true, 틀리다면 false
-	 */
-	public final static boolean isPstnIdFormat(final String str) {
-		if (isEmpty(str)) {
-			return false;
-		}
-		
-		String PstnIdFormat = "^10[1-9]$|^110$";
-		
-		return str.matches(PstnIdFormat);
-	}
+//	/**
+//	 * 입력받은 문자가 DEPT_(숫자6자리)_(숫자6자리)인지 확인해주는 메소드
+//	 * @param str 입력한 부서ID
+//	 * @return 입력한 부서ID 형식이 맞다면 true, 틀리다면 false
+//	 */
+//	public final static boolean isDeptIdFormat(final String str) {
+//		if (isEmpty(str)) {
+//			return false;
+//		}
+//		
+//		String DeptIdFormat = "^DEPT_\\d{6}_\\d{6}$";
+//		
+//		return str.matches(DeptIdFormat);
+//	}
+//	
+//	/**
+//	 * 입력받은 문자가 JOB_(숫자6자리)_(숫자6자리)인지 확인해주는 메소드
+//	 * @param str 입력한 직무ID
+//	 * @return 입력한 직무ID 형식이 맞다면 true, 틀리다면 false
+//	 */
+//	public final static boolean isJobIdFormat(final String str) {
+//		if (isEmpty(str)) {
+//			return false;
+//		}
+//		
+//		String JobIdFormat = "^JOB_\\d{6}_\\d{6}$";
+//		
+//		return str.matches(JobIdFormat);
+//	}
+//	
+//	/**
+//	 * 입력받은 문자가 101~110사이의 숫자인지 확인해주는 메소드
+//	 * @param str 입력한 직급ID
+//	 * @return 입력한 직급ID 형식이 맞다면 true, 틀리다면 false
+//	 */
+//	public final static boolean isPstnIdFormat(final String str) {
+//		if (isEmpty(str)) {
+//			return false;
+//		}
+//		
+//		String PstnIdFormat = "^10[1-9]$|^110$";
+//		
+//		return str.matches(PstnIdFormat);
+//	}
 	
 	public final static String replaceTagSymbols(final String str) {
 		return nullToValue(str, "").replace(">", "&gt;")

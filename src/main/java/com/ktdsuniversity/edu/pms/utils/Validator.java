@@ -69,12 +69,6 @@ public class Validator<T> {
 					result = StringUtil.isEmailFormat(value);
 				} else if (type == Type.EMPID) {
 					result = StringUtil.isEmpIdFormat(value);
-				} else if (type == Type.DEPTID) {
-					result = StringUtil.isDeptIdFormat(value);
-				} else if (type == Type.JOBID) {
-					result = StringUtil.isJobIdFormat(value);
-				} else if (type == Type.PSTNID) {
-					result = StringUtil.isPstnIdFormat(value);
 				} else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {
 						Object otherObjectValue = this.getRefValue(key, type);
