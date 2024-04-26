@@ -112,6 +112,17 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 
 	}
 
+	@Override
+	public int searchAdminReviewAllCount(SearchReviewVO searchReviewVO) {
+		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".searchAdminReviewAllCount", searchReviewVO);
+	}
+
+	@Override
+	public List<ReviewVO> searchAdminReview(SearchReviewVO searchReviewVO) {
+		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".searchAdminReview", searchReviewVO);
+
+	}
+
 	
 
 

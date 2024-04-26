@@ -40,8 +40,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
   
   <body>
+  <jsp:include page="../commonmodal.jsp"/>
   <div>
 	총 ${reviewList.reviewCnt}건의 후기가 검색되었습니다.
+	${review.projectVO.prjName}의 후기 답변 현황 : ${reviewList.reviewCnt} / ${reviewList.reviewCnt}
   </div>
 	<button id="deleteMassiveReview" href="javascript:void(0)">삭제</button>
     <!--<a id="deleteMassiveMReview" href="javascript:void(0)">삭제</a>-->
@@ -79,7 +81,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
              <td class="center-align ellipsis">${review.rvCntnt}</td>
              <td class="btn-group">
                <div class="right-align">
-                 <a href="#" class="delete-button">삭제하기!</a>
+<!--                  <a href="#" class="delete-button">삭제하기!</a> -->
+				<button href = "#" class="delete-button">삭제</button>
                </div>
              </td>
            </tr>

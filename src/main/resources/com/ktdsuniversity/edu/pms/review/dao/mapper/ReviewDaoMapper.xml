@@ -36,9 +36,10 @@
 					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 			<id column="EMP_ID" property="empId" />
 			<result column="EMP_NAME" property="empName" />
+			<result column="ADMN_CODE" property="admnCode" />
+			
 		</association>
 	</resultMap>
-
 
 	<insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
 		INSERT INTO PROJECT_REVIEW
@@ -63,54 +64,22 @@
 	</insert>
 
 
-	<!-- <update id="updateReviewRvYn" 
-			parameterType="com.ktdsuniversity.edu.pms.review.vo.ProjectTeammateVO">
-		UPDATE PROJECT_TEAMMATE
-		   SET RV_YN = 'Y'
-		 WHERE RV_ID = #{_parameter}
-	</update> -->
-	
-	
-	
-	<!-- <insert id="insertNewReview" parameterType="com.ktdsuniversity.edu.pms.review.vo.ReviewVO">
-		<selectKey resultType="string" keyProperty="rvId" order="BEFORE">
-	        SELECT (('RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))) FROM DUAL;       
-	    </selectKey> 
-		INSERT INTO PROJECT_REVIEW
-			 (RV_ID
-			, RV_CNTNT
-			, PRJ_ID
-			, CRT_DT
-			, CRTR_ID
-			, MDF_DT
-			, MDFR_ID
-			, DEL_YN
-			)
-		VALUES
-		 	 (#{rvId}
-			, #{rvCntnt}
-			, #{prjId}
-			, SYSDATE
-			, #{crtrId}
-			, NULL
-			, NULL
-			, 'N')
-	</insert> -->
-   
-      
-   <select id="searchReviewAllCount" 
+	<select id="searchReviewAllCount" 
    		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
            resultType="_int">
 		  
-  		SELECT COUNT(DISTINCT p.PRJ_ID)
-	        FROM PROJECT p
-	        JOIN DEPARTMENT d
-	          ON p.DEPT_ID = d.DEPT_ID  
-	        LEFT JOIN PROJECT_TEAMMATE PT 
-	          ON P.PRJ_ID  = PT.PRJ_ID 
-	       WHERE p.DEL_YN = 'N' 
-	         AND p.PRJ_STS = '409'
-	         <if test='searchKeyword != null and searchKeyword !=""'>
+  		SELECT 
+  			COUNT(DISTINCT p.PRJ_ID)
+	    FROM 
+			PROJECT_TEAMMATE PT
+	        JOIN PROJECT P ON PT.PRJ_ID  = P.PRJ_ID
+	        JOIN DEPARTMENT d ON p.DEPT_ID = d.DEPT_ID  
+		WHERE 
+			pt.TM_ID = #{employeeVO.empId}
+        	AND PT.DEL_YN = 'N'
+			AND P.DEL_YN = 'N' 
+			AND P.PRJ_STS = '409'
+	        <if test='searchKeyword != null and searchKeyword !=""'>
 				<choose>
 					<when test='searchType == "prjName"'>
 						AND p.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
@@ -123,43 +92,33 @@
 					</when>
 				</choose>
 			</if>
-  <if test='employeeVO.empId != null and employeeVO.empId != ""'>
-            <choose>
-                <when test='employeeVO.admnCode == "301"'>
-                </when>
-                <otherwise>
-                    AND p.PRJ_ID IN (
-                    SELECT PRJ_ID
-                    FROM PROJECT_TEAMMATE pt
-                    WHERE pt.TM_ID = #{employeeVO.empId}
-                    AND pt.DEL_YN = 'N'
-                    )
-                </otherwise>
-            </choose>
-        </if>
    </select>
 	
 	<select id="searchReview" 
 	        parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO" 
 	        resultMap="ReviewVOMap">
 		<include refid ="Common.pagenate_header"/>
-		  SELECT DISTINCT p.PRJ_ID
-	          , p.PRJ_NAME
-	          , p.CLNT_INFO
-	          , p.DEPT_ID
-	          , p.PRJ_STS
-	          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
-	          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
-	          , d.DEPT_NAME
-	          , PT.RV_YN 
-	        FROM PROJECT p
-	        JOIN DEPARTMENT d
-	          ON p.DEPT_ID = d.DEPT_ID  
-	        LEFT JOIN PROJECT_TEAMMATE PT 
-	          ON P.PRJ_ID  = PT.PRJ_ID 
-	       WHERE p.DEL_YN = 'N' 
-	         AND p.PRJ_STS = '409'
-	         <if test='searchKeyword != null and searchKeyword !=""'>
+		SELECT 
+		  	DISTINCT p.PRJ_ID
+	        , p.PRJ_NAME
+	        , p.CLNT_INFO
+	        , p.DEPT_ID           
+	        , p.PRJ_STS
+	        , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
+	        , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
+	        , d.DEPT_NAME
+	        , PT.RV_YN 
+	        , '${employeeVO.admnCode}' AS ADMN_CODE
+		FROM 
+			PROJECT_TEAMMATE PT
+	        JOIN PROJECT P ON PT.PRJ_ID  = P.PRJ_ID
+	        JOIN DEPARTMENT d ON p.DEPT_ID = d.DEPT_ID  
+		WHERE 
+			pt.TM_ID = #{employeeVO.empId}
+        	AND PT.DEL_YN = 'N'
+			AND P.DEL_YN = 'N' 
+			AND P.PRJ_STS = '409'
+	        <if test='searchKeyword != null and searchKeyword !=""'>
 				<choose>
 					<when test='searchType == "prjName"'>
 						AND p.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
@@ -172,24 +131,73 @@
 					</when>
 				</choose>
 			</if>
-	        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
-            <choose>
-                <when test='employeeVO.admnCode == "301"'>
-                </when>
-                <otherwise>
-                    AND p.PRJ_ID IN (
-                    SELECT PRJ_ID
-                    FROM PROJECT_TEAMMATE pt
-                    WHERE pt.TM_ID = #{employeeVO.empId}
-                    AND pt.DEL_YN = 'N'
-                    )
-                </otherwise>
-            </choose>
-        </if>
     	<include refid ="Common.pagenate_footer"/>
 	</select>
 
-
+	
+		<select id="searchAdminReviewAllCount" 
+   		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
+           resultType="_int">
+		  
+  		SELECT 
+  			COUNT(DISTINCT p.PRJ_ID)
+	    FROM 
+	        PROJECT P 
+	        JOIN DEPARTMENT d ON p.DEPT_ID = d.DEPT_ID  
+		WHERE 
+			P.DEL_YN = 'N' 
+			AND P.PRJ_STS = '409'
+	        <if test='searchKeyword != null and searchKeyword !=""'>
+				<choose>
+					<when test='searchType == "prjName"'>
+						AND p.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+					</when>
+					<when test='searchType == "clntInfo"'>
+						AND p.CLNT_INFO LIKE '%' || #{searchKeyword} || '%'
+					</when>
+					<when test='searchType == "deptName"'>
+						AND d.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
+					</when>
+				</choose>
+			</if>
+   </select>
+	
+	<select id="searchAdminReview" 
+	        parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO" 
+	        resultMap="ReviewVOMap">
+		<include refid ="Common.pagenate_header"/>
+		SELECT 
+		  	DISTINCT p.PRJ_ID
+	        , p.PRJ_NAME
+	        , p.CLNT_INFO
+	        , p.DEPT_ID           
+	        , p.PRJ_STS
+	        , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
+	        , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
+	        , d.DEPT_NAME
+	        , '${employeeVO.admnCode}' AS ADMN_CODE
+		FROM 
+	        PROJECT P 
+	        JOIN DEPARTMENT d ON p.DEPT_ID = d.DEPT_ID  
+		WHERE 
+			P.DEL_YN = 'N' 
+			AND P.PRJ_STS = '409'
+	        <if test='searchKeyword != null and searchKeyword !=""'>
+				<choose>
+					<when test='searchType == "prjName"'>
+						AND p.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+					</when>
+					<when test='searchType == "clntInfo"'>
+						AND p.CLNT_INFO LIKE '%' || #{searchKeyword} || '%'
+					</when>
+					<when test='searchType == "deptName"'>
+						AND d.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
+					</when>
+				</choose>
+			</if>
+    	<include refid ="Common.pagenate_footer"/>
+	</select>
+	
    <select id="searchviewReviewCntntAllCount" 
    		   parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO"
            resultType="_int">
@@ -233,14 +241,6 @@
     	<include refid ="Common.pagenate_footer"/>
 	</select>
 
-
-
-
-
-
-
-
-
 	<select id="viewReviewCntnt" resultMap="ReviewVOMap">
 			SELECT p.PRJ_NAME
 				 , pr.RV_CNTNT 
@@ -250,48 +250,6 @@
 			    ON p.PRJ_ID = pr.PRJ_ID
 			 WHERE pr.DEL_YN = 'N'
 	</select>
-
-	<!-- <select id="selectAllReview" 
-	        parameterType="com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO" 
-	        resultMap="ReviewVOMap">
-		SELECT DISTINCT sq.PRJ_ID
-	          , p.PRJ_NAME
-	          , p.CLNT_INFO
-	          , p.DEPT_ID
-	          , p.PRJ_STS
-	          , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
-	          , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
-	          , d.DEPT_NAME
-	        FROM PROJECT_REVIEW sq
-	        JOIN PROJECT p
-	          ON p.PRJ_ID = sq.PRJ_ID
-	        JOIN DEPARTMENT d
-	          ON d.DEPT_ID = p.DEPT_ID
-	       WHERE p.DEL_YN = 'N'
-	</select>	 -->
-	
-	
-	
-	
-<!-- 	<select id="viewReviewCntnt" resultMap="ReviewVOMap">
-			SELECT p.PRJ_NAME
-				 , pr.RV_CNTNT 
-				 , pr.RV_ID 
-			  FROM PROJECT_REVIEW pr
-			  JOIN PROJECT p
-			    ON p.PRJ_ID = pr.PRJ_ID
-			 WHERE pr.DEL_YN = 'N'
-	</select> -->
-
-
-
-	<!-- <update id="deleteOneReview" 
-			parameterType="string">
-		UPDATE PROJECT_REVIEW
-		   SET DEL_YN = 'Y'
-		 WHERE RV_ID = #{_parameter}
-	</update> -->
-	
 	
 	<update id="deleteReviewViewResult" 
 			parameterType="string">

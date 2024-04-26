@@ -42,8 +42,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <input type="hidden" id="delYn" name="delYn" value="N" />
   
           <label for="rvCntnt">후기 내용</label>
+          <c:forEach items="${errorMessage.rvCntnt}" var="error">
+          <div>${error}</div>
+        </c:forEach>
           <textarea id="content" name="rvCntnt" style="height: 300px">
-  ${reviewVO.rvCntnt}</textarea
+  			${reviewVO.rvCntnt}</textarea
           >
   
           <div class="btn-group">

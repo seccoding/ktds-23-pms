@@ -1,11 +1,12 @@
 package com.ktdsuniversity.edu.pms.review.vo;
 
+import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
-public class ReviewVO {
+public class ReviewVO extends PaginateVO {
 
 	private String rvId;
 	private String rvCntnt;
@@ -15,13 +16,27 @@ public class ReviewVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String delYn;
+	private String empId;
 		
 	private ProjectVO projectVO;
 	private DepartmentVO departmentVO;
 	private String deptName;
 	private ProjectTeammateVO projectTeammateVO;
 	private EmployeeVO employeeVO;
+	private String rvYn;
 	
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	public String getRvYn() {
+		return rvYn;
+	}
+	public void setRvYn(String rvYn) {
+		this.rvYn = rvYn;
+	}
 	public String getDeptName() {
 		return deptName;
 	}

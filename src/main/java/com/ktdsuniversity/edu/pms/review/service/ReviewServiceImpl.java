@@ -30,17 +30,29 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public ReviewListVO getAllReview(SearchReviewVO searchReviewVO) {
-
-		int reviewCount = this.reviewDao.searchReviewAllCount(searchReviewVO);
-		searchReviewVO.setPageCount(reviewCount);
 		
-		List<ReviewVO> reviewList = this.reviewDao.searchReview(searchReviewVO);
 		
 		ReviewListVO reviewListVO = new ReviewListVO();
-		reviewListVO.setReviewList(reviewList);
-		reviewListVO.setReviewCnt(reviewCount);
-		
-        return reviewListVO;
+		if (searchReviewVO.getEmployeeVO() != null 
+				&& (searchReviewVO.getEmployeeVO().getAdmnCode().equals("301") 
+						|| searchReviewVO.getEmployeeVO().getMngrYn().equals("Y"))) {
+			int reviewCount = this.reviewDao.searchAdminReviewAllCount(searchReviewVO);
+			searchReviewVO.setPageCount(reviewCount);
+			
+			List<ReviewVO> reviewList = this.reviewDao.searchAdminReview(searchReviewVO);
+			
+			reviewListVO.setReviewList(reviewList);
+			reviewListVO.setReviewCnt(reviewCount);
+		} else {
+			int reviewCount = this.reviewDao.searchReviewAllCount(searchReviewVO);
+			searchReviewVO.setPageCount(reviewCount);
+			
+			List<ReviewVO> reviewList = this.reviewDao.searchReview(searchReviewVO);
+			
+			reviewListVO.setReviewList(reviewList);
+			reviewListVO.setReviewCnt(reviewCount);
+		}
+        return reviewListVO;		
 	}
 	
 	@Override

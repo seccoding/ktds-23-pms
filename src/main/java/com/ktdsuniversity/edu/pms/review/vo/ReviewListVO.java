@@ -7,7 +7,6 @@ public class ReviewListVO {
 	private int reviewCnt;
 	
 	private List<ReviewVO> reviewList;
-
 	
 	public List<ReviewVO> getReviewList() {
 		return reviewList;
