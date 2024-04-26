@@ -10,10 +10,6 @@
 			<id column="CMCD_ID" property="cmcdId"/>
 			<result column="CMCD_NAME" property="cmcdName"/>
 		</association>
-		<association property="pastCommonVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-			<id column="CMCD_ID" property="cmcdId"/>
-			<result column="CMCD_NAME" property="cmcdName"/>
-		</association>
 	</resultMap>
 	
 	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO" id="jobHistMap" autoMapping="true">
@@ -124,21 +120,22 @@
 	
 	<insert id="insertOneChangePositionHistory" 
 			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-		SELECT PSTN_ID
-			 , EMP_ID
-			 , PSTN_STRT_DT
-			 , PSTN_END_DT
-			 , CN_NOTE
-			 , DEL_YN
-			 , PAST_PSTN_ID
-			 VALUES  
-			   ('PSTN_HT' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PSTN_HT_PK.NEXTVAL, 6, 0)
-			 , #{empId}
-			 , #{hireDt}
-			 , SYSDATE
-			 , #{PositionHistoryVO.cnNote}
-			 , 'N'
-			 , #{pstnId})
+		INSERT INTO POSITION_HISTORY
+		 (PSTN_ID
+		 , EMP_ID
+		 , PSTN_STRT_DT
+		 , PSTN_END_DT
+		 , CN_NOTE
+		 , DEL_YN
+		 , PAST_PSTN_ID)
+		 VALUES  
+		 ('PSTN_HT' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PSTN_H_PK.NEXTVAL, 6, 0)
+		 , #{empId}
+		 , #{hireDt}
+		 , SYSDATE
+		 , #{positionHistoryVO.cnNote}
+		 , 'N'
+		 , #{positionHistoryVO.pastPstnId})
 	</insert>
 	
 	<select id="getUserPositionHistory" parameterType="string" resultMap="positionHistMap">
@@ -149,12 +146,9 @@
 			 , TO_CHAR(PH.PSTN_END_DT, 'YYYY-MM-DD') PSTN_END_DT
 			 , PH.CN_NOTE
 			 , C.CMCD_NAME
-			 , PC.CMCD_NAME
 		  FROM POSITION_HISTORY PH
 		 INNER JOIN COMMON_CODE C
-		    ON C.CMCD_ID = PH.PSTN_ID 
-		 INNER JOIN COMMON_CODE PC
-		    ON PC.CMCD_ID = PH.PAST_PSTN_ID 
+		    ON C.CMCD_ID = PH.PAST_PSTN_ID
 		 WHERE PH.EMP_ID = #{_parameter}
 		   AND PH.DEL_YN = 'N'
 		 ORDER BY PSTN_STRT_DT DESC
@@ -166,10 +160,15 @@
 				  FROM POSITION_HISTORY
 				 WHERE EMP_ID = #{_parameter}
 				   AND DEL_YN = 'N'
-				 ORDER BY PSTN_HIST_ID DESC ) PH
+				 ORDER BY PSTN_ID DESC ) PH
 		 WHERE ROWNUM = 1
 	</select>
 	
-	
+	<select id="getAllPosition" resultType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+		SELECT CMCD_ID
+			 , CMCD_NAME
+		  FROM COMMON_CODE
+		 WHERE CMCD_PID = '100'
+	</select>
 	
 </mapper>

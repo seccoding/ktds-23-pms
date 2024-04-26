@@ -16,57 +16,47 @@ public class EmployeeVO {
 
 
 
-    private String empId;
-    private String empName;
-    private String workSts;
-    private int salYear;
-    private String prfl;
-    private String hireDt;
-    private String hireYear;
-    private String endDt;
-    private String restStDt;
-    private String restEndDt;
-    private String cntct;
-    private String addr;
-    private String brth;
-    private String email;
-    private String mngrYn;
-    private String admnCode;
-    private String deptId;
-    private String jobId;
-    private String pstnId;
-    private String pwd;
+	private String empId;
+	private String empName;
+	private String workSts;
+	private int salYear;
+	private String prfl;
+	private String hireDt;
+	private String hireYear;
+	private String endDt;
+	private String restStDt;
+	private String restEndDt;
+	private String cntct;
+	private String addr;
+	private String brth;
+	private String email;
+	private String mngrYn;
+	private String admnCode;
+	private String deptId;
+	private String jobId;
+	private String pstnId;
+	private String pwd;
+	private String salt;
+	private int lgnTry;
+	private String pwdCnDt;
+	private String lgnTryDt;
+	private String lgnYn;
+	private String fileName;
+	private DepartmentVO departmentVO;
+	private CommonCodeVO commonCodeVO;
+	private DepartmentHistoryVO departmentHistoryVO;
+	private String originPrflFileName;
+	private JobHistoryVO jobHistoryVO;
+	private PositionHistoryVO positionHistoryVO;
 	private String confirmPwd;
-    private String salt;
-    private int lgnTry;
-    private String pwdCnDt;
-    private String lgnTryDt;
-    private String lgnYn;
-    private String fileName;
-    
-    private DepartmentVO departmentVO;
-    private CommonCodeVO commonCodeVO;
-    private DepartmentHistoryVO departmentHistoryVO;
-    private String originPrflFileName; 
-    private JobHistoryVO jobHistoryVO;
 	private String newPwd;
-	private String oldPwd;
-    private PositionHistoryVO positionHistoryVO;
 
-    public PositionHistoryVO getPositionHistoryVO() {
+	public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
 	}
 
 	public void setPositionHistoryVO(PositionHistoryVO positionHistoryVO) {
 		this.positionHistoryVO = positionHistoryVO;
-	}
-
-	public String getConfirmPwd() {
-		return confirmPwd;
-	}
-
-	public void setConfirmPwd(String confirmPwd) {
-		this.confirmPwd = confirmPwd;
 	}
 
 	public JobHistoryVO getJobHistoryVO() {
@@ -366,6 +356,14 @@ public class EmployeeVO {
 	}
 
 
+	public String getConfirmPwd() {
+		return confirmPwd;
+	}
+
+	public void setConfirmPwd(String confirmPwd) {
+		this.confirmPwd = confirmPwd;
+	}
+
 	public String getNewPwd() {
 		return newPwd;
 	}
@@ -373,13 +371,4 @@ public class EmployeeVO {
 	public void setNewPwd(String newPwd) {
 		this.newPwd = newPwd;
 	}
-
-	public String getOldPwd() {
-		return oldPwd;
-	}
-
-	public void setOldPwd(String oldPwd) {
-		this.oldPwd = oldPwd;
-	}
-
 }
