@@ -48,8 +48,8 @@ $().ready(function () {
 
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
-              alertModal[0].close();
-              location.href = "/product/manage/view?prdtId=" + paramId;
+             
+              location.reload();
             });
           } else {
             var alertModal = $(".modal-window");
@@ -61,7 +61,7 @@ $().ready(function () {
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               alertModal[0].close();
-              location.href = "/product/manage/view?prdtId=" + paramId;
+              location.reload();
             });
           }
           
@@ -131,7 +131,7 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
-            location.href = res.data.next;
+            location.reload();
           });
         } else {
           var alertModal = $(".modal-window");
@@ -143,7 +143,7 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
-            location.href = res.data.next;
+            location.reload();
           });
         }
         
@@ -183,7 +183,7 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
-            location.href = res.data.next;
+            location.reload();
           });
         } else {
           var alertModal = $(".modal-window");
@@ -195,7 +195,7 @@ $().ready(function () {
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
             alertModal[0].close();
-            location.href = res.data.next;
+            location.reload();
           });
         }
         

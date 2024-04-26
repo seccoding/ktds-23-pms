@@ -81,7 +81,6 @@ $().ready(function () {
   
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
-              alertModal[0].close();
               location.href = "/product/manage/detail";
             });
           } else {
@@ -171,7 +170,7 @@ $().ready(function () {
 
           alertModal[0].showModal();
           $(".confirm-button").on("click", function () {
-            alertModal[0].close();
+            
             location.href = res.data.detailUrl;
           });
         }

@@ -87,6 +87,8 @@ $().ready(function () {
           "productVO.curStr": $(".add-count").val(),
         },
         function (res) {
+
+          console.log(res);
           if (res.data.result) {
             var alertModal = $(".modal-window");
             var modalButton = $(".confirm-button");
@@ -96,7 +98,6 @@ $().ready(function () {
 
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
-              alertModal[0].close();
               location.href = res.data.next;
             });
           } else {
