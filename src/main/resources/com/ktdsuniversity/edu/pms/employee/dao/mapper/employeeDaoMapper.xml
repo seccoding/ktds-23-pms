@@ -212,7 +212,6 @@
 		 , E.EMAIL
 		 , E.MNGR_YN
 		 , E.ADMN_CODE
-
 		 , E.DEPT_ID
 		 , E.JOB_ID
 		 , E.PSTN_ID

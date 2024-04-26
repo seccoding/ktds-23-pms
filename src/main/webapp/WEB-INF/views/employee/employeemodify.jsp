@@ -68,6 +68,12 @@
     <c:choose>
         <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
             <label for="workSts">재직 상태</label>
+            <!-- <select>
+                <option value="201">재직중</option>
+                <option value="202">휴직중</option>
+                <option value="203">퇴사예정</option>
+                <option value="204">퇴사</option>
+            </select> -->
             <input type="text" id="workSts" name="workSts" id="${employeeVO.workSts}" value="${employeeVO.workSts}"/>
             <label for="hireYear">입사 연차</label>
             <input type="text" id="hireYear"
