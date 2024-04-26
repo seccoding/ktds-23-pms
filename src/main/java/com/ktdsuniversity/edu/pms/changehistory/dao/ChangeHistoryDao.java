@@ -12,7 +12,6 @@ public interface ChangeHistoryDao {
 	
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao";
 
-	// PSH - public 추가
 	public int insertOneChangeDeptHistory(EmployeeVO employeeVO);
 
 	public String getRecentDeptHist(String empId);

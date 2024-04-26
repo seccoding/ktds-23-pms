@@ -67,6 +67,10 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 		return getSqlSession().selectOne(ChangeHistoryDao.NAME_SPACE + ".getRecentPositionHist", empId);
 	}
 
+	@Override
+	public List<CommonCodeVO> getAllPosition() {
+		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllPosition");
+	}
 
 	@Override
 	public List<JobHistoryVO> getUserJobHistory(String empId) {
@@ -81,12 +85,6 @@ public class ChangeHistoryDaoImpl extends SqlSessionDaoSupport implements Change
 	@Override
 	public List<CommonCodeVO> getAllJob() {
 		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllJob");
-	}
-
-	// PSH - 충돌난 메서드 확인
-	@Override
-	public List<CommonCodeVO> getAllPosition() {
-		return getSqlSession().selectList(ChangeHistoryDao.NAME_SPACE + ".getAllPosition");
 	}
 
 

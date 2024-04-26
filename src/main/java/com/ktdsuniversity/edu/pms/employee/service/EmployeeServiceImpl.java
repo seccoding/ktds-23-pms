@@ -131,8 +131,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public int getOneEmpIdIsExist(String empId) {
 		return this.employeeDao.getOneEmpIdIsExist(empId);
 	}
-
-	// PSH - 충돌 확인 필요
+							  
 	@Transactional
 	@Override
 	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
@@ -147,7 +146,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employeeVO.setPwd(newPwd);
 			employeeVO.setSalt(salt);
 		}
-
+		
+		
+		
 		// 부서가 변경된 경우 부서 변경 이력 추가
 		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
 			
@@ -155,9 +156,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
 			if(deptHistList.size() > 0) {
-				String preDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
+				String prevDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
 				
-				employeeVO.setHireDt(preDate);		
+				employeeVO.setHireDt(prevDate);		
 			}
 			
 			employeeVO.setDeptId(originEmployee.getDeptId());
@@ -167,6 +168,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if(insertCnt == 0) {
 				return false;
 			}
+			
 		}
 		
 		// 팀리스트가 추가되었을 경우
@@ -193,16 +195,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if (willAddTeam != addTeamCount) {
 				return false;
 			}
-			
-		}
-		if(!employeeVO.getPwd().equals(originEmployee.getPwd())) {
-			String newSalt = this.sha.generateSalt();
-			String newPwd = this.sha.getEncrypt(employeeVO.getPwd(), newSalt);
-
-			employeeVO.setSalt(newSalt);
-			employeeVO.setPwd(newPwd);
 
 		}
+
 		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
 		return updatedCount > 0;
 	}
@@ -240,20 +235,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return empList;
 	}
 
-	
-	@Override
-	public boolean updatePwd(EmployeeVO employeeVO) {
-		String salt = sha.generateSalt();
-		String encryptPwd = sha.getEncrypt(employeeVO.getNewPwd(), salt);
-		employeeVO.setPwd(encryptPwd);
-		employeeVO.setSalt(salt);
-		return false; //error
-	}
-	
-	// PSH - git history 없는 부분
-//	어느 메서드에 써준 로직이죠?
-//	int updateCount = this.employeeDao.updatePwd(employeeVO);
-//	return updateCount > 0;
 
 	@Override
 	public EmployeeVO getOneEmployeeNoTeam(String empId) {

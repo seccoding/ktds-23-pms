@@ -40,8 +40,6 @@ public interface EmployeeService {
 
 	public List<EmployeeVO> getCanBeDeptLead();
 	
-	public boolean updatePwd(EmployeeVO employeeVO);
-	
 	public EmployeeVO getOneEmployeeNoTeam(String empId);
 
 	public List<EmployeeVO> getChangeToDeptLead(String departmentId);

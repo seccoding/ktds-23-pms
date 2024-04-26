@@ -10,20 +10,21 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public interface ChangeHistoryService {
 
-	// PSH - public 추가
-	public List<DepartmentHistoryVO> getUserDeptHisory(String empId);
+	List<DepartmentHistoryVO> getUserDeptHisory(String empId);
 
-	public List<JobHistoryVO> getUserJobHistory(String empId);
+	List<JobHistoryVO> getUserJobHistory(String empId);
 
-	public List<PositionHistoryVO> getUserPositionHistory(String empId);
+	List<PositionHistoryVO> getUserPositionHistory(String empId);
 
-	public List<CommonCodeVO> getAllPosition();
+	List<CommonCodeVO> getAllPosition();
 
-	public boolean changePosition(EmployeeVO employeeVO);
+	boolean changePosition(EmployeeVO employeeVO);
 
-	public boolean changeJob(EmployeeVO employeeVO);
+	boolean changeJob(EmployeeVO employeeVO);
 
-	// PSH - 충돌 메서드 추가
-	public List<CommonCodeVO> getAllJob();
+	List<CommonCodeVO> getAllJob();
+
+	
+	
 
 }

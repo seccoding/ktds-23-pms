@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.changehistory.service.ChangeHistoryService;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
+import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 

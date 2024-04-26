@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.changehistory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 	
 	@Autowired
 	private ChangeHistoryDao changeHistoryDao;
-	// PSH : 충돌 추가
+	
 	@Autowired
 	private EmployeeDao employeeDao;
 
@@ -53,7 +54,7 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
 		
 		List<PositionHistoryVO> posiHistList = this.changeHistoryDao.getUserPositionHistory(employeeVO.getEmpId());
-
+		
 		int updatedCount = this.employeeDao.modifyEmployeePosition(employeeVO);
 		
 		if(posiHistList.size() > 0) {
