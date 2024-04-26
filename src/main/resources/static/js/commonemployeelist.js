@@ -175,6 +175,7 @@ $().ready(function () {
       list.push($(item).text());
     });
 
+    $("#special-hidden-datalist").text(list);
     var alertModal = $(".modal-confirm-window");
     var confirmButton = $(".confirm-confirm-button");
     var cancelButton = $(".cancel-confirm-button");
@@ -185,9 +186,9 @@ $().ready(function () {
     alertModal[0].showModal();
 
     confirmButton.on("click", function () {
-      $("#special-hidden-datalist").text(list);
       $(".modal-confirm-window")[0].close();
       $(".modal-employee-list")[0].close();
+      $("#special-super-datalist").text(list);
     });
 
     cancelButton.on("click", function () {
