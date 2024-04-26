@@ -109,6 +109,7 @@ $().ready(function(){
         });
 
         var addConfirm = confirm("신청하시겠습니까?");
+        console.log(formData);
         if(addConfirm){
             $.post(url, formData, 
                 function (response) {
