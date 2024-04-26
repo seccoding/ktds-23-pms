@@ -40,6 +40,10 @@ window.onload = function () {
 
 // 사이드바 서브메뉴 접는 기능
 $().ready(function () {
+  $(".modal-confirm-close").on("click", function () {
+    location.reload();
+  });
+
   $(".fixed[data-fixed-top]").each(function () {
     var top = $(this).data("fixed-top");
     if (top === "fix") {
