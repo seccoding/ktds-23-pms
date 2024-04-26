@@ -76,7 +76,7 @@ public class ProductController {
 	
 	@ResponseBody
 	@PostMapping("/ajax/product/apply")
-	public AjaxResponse doProductApply(@RequestParam String productName, BorrowListVO borrowList
+	public AjaxResponse doProductApply(BorrowListVO borrowList
 									, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 //		ProductVO oneProduct = this.productService.getOneSelectedProduct(prdtName);
 		
