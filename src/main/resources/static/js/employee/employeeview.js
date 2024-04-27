@@ -17,7 +17,7 @@ $().ready(function (){
     })
 
    
-        $(".change-pstn").on("click", function(){
+    $(".change-pstn").on("click", function(){
         $(".pstn-select-box").val($(".pstn-select-box").data("origin"))
         $(".pstn-modal")[0].showModal()
     })
@@ -26,20 +26,20 @@ $().ready(function (){
         $(".pstn-modal")[0].close()
     })
 
-    $(".change-position-btn").on("click", function(){
-        var selectPositionId = $(".position-select-box").val()
-        var pastPositionId = $(".position-select-box").data("origin")
-        console.log(pastPositionId)
-        console.log(selectPositionId)
-        if(selectPositionId==pastPositionId){
+    $(".change-pstn-btn").on("click", function(){
+        var selectPstnId = $(".pstn-select-box").val()
+        var pastPstnId = $(".pstn-select-box").data("origin")
+        console.log(pastPstnId)
+        console.log(selectPstnId)
+        if(selectPstnId==pastPstnId){
             alert("동일한 직급으로 변경할 수 없습니다.")
             return
         }
-        var reason = $("#position-change-note").val()
+        var reason = $("#pstn-change-note").val()
         $.post("/ajax/change/position", {
             empId:empId,
-            positionId:selectPositionId,
-            "positionHistoryVO.pastPositionId":pastPositionId,
+            pstnId:selectPstnId,
+            "positionHistoryVO.pastPstnId":pastPstnId,
             "positionHistoryVO.cnNote":reason,
         }, function(res){
             if(res.data.isSuccess){
@@ -50,6 +50,7 @@ $().ready(function (){
             location.href = res.data.next
         })
     })
+
 
     $(".change-job").on("click", function(){
         $(".job-select-box").val($(".job-select-box").data("origin"))
