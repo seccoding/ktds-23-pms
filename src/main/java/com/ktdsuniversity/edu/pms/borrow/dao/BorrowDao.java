@@ -18,16 +18,10 @@ public interface BorrowDao {
 	 */
 	public int getBorrowCount(EmployeeVO employeeVO);
 
-	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO);
-	
 	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO);
 
 	public List<BorrowVO> searchAllUserRentalState(SearchBorrowVO searchBorrowVO);
 	
-
-	public int getProductManageStateAllCount();
-
-	public List<BorrowVO> getProductManageState();
 	
 	public int searchProductManagementStateAllCount(SearchBorrowVO searchBorrowVO);
 

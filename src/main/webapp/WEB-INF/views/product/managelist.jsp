@@ -23,12 +23,16 @@
         grid-template-columns: 5rem 1fr;
         grid-template-rows: repeat(4, 1fr);
         gap: 1rem;
+        margin-bottom: 1rem;
     }
     #add-modal{
         padding: 3rem;
     }
     table.table > tbody td[colspan] {
         text-align: center;
+    }
+    .btn-group{
+        text-align: right;
     }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
@@ -53,7 +57,7 @@
 </script>
 </head>
 <body>
-    <dialog id="add-modal">
+    <dialog id="add-modal" class="modal-window">
         <h4>비품 재고 추가</h3>
         <div class="add-grid">
             <p>비품</p>
@@ -65,8 +69,12 @@
             <p>구매일</p>
             <input type="date" class="buy-day"/>
         </div>
-        <input type="button" value="추가" id="add-count-btn"/>
-        <input type="button" value="취소" id="cancel-btn"/>
+        <div class="btn-group">
+            <button type="button" value="추가" id="add-count-btn" class="button">추가</button>
+            <button type="button" value="취소" id="cancel-btn" class="button">취소</button>
+
+        </div>
+
     </dialog>
     
     <h2>비품 관리 목록</h2>

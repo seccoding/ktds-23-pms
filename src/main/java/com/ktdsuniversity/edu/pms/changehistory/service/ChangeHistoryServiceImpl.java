@@ -69,6 +69,7 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 		return insertHistCnt > 0 && updatedCount == insertHistCnt;
 	}
 
+	@Transactional
 	@Override
 	public boolean changeJob(EmployeeVO employeeVO) {
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());

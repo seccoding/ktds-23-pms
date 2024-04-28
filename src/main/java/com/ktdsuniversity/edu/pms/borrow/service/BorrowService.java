@@ -8,11 +8,11 @@ import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface BorrowService {
 
-	public BorrowListVO getUserRentalState(EmployeeVO employeeVO);
+
 
 	public BorrowListVO searchUserRentalState(SearchBorrowVO searchBorrowVO);
 	
-	public BorrowListVO getProductManageState();
+
 
 	public BorrowListVO searchProductManageState(SearchBorrowVO searchBorrowVO);
 	

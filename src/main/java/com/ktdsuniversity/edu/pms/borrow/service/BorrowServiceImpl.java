@@ -28,17 +28,7 @@ public class BorrowServiceImpl implements BorrowService{
 	@Autowired
 	private ProductManagementDao productManagementDao;
 	
-	@Override
-	public BorrowListVO getUserRentalState(EmployeeVO employeeVO) {
-		int borrowCount = this.borrowDao.getBorrowCount(employeeVO);
-		List<BorrowVO> borrowList = this.borrowDao.getUserRentalState(employeeVO);
-		
-		BorrowListVO borrowListVO = new BorrowListVO();
-		borrowListVO.setBorrowCnt(borrowCount);
-		borrowListVO.setBorrowList(borrowList);
-		
-		return borrowListVO;
-	}
+
 	
 	@Override
 	public BorrowListVO searchUserRentalState(SearchBorrowVO searchBorrowVO) {
@@ -54,18 +44,7 @@ public class BorrowServiceImpl implements BorrowService{
 		return borrowListVO;
 	}
 
-	@Override
-	public BorrowListVO getProductManageState() {
-		int borrowCount = this.borrowDao.getProductManageStateAllCount();
-		
-		List<BorrowVO> borrowList = this.borrowDao.getProductManageState();
-		
-		BorrowListVO borrowListVO = new BorrowListVO();
-		borrowListVO.setBorrowCnt(borrowCount);
-		borrowListVO.setBorrowList(borrowList);
-		
-		return borrowListVO;
-	}
+
 	
 	@Override
 	public BorrowListVO searchProductManageState(SearchBorrowVO searchBorrowVO) {

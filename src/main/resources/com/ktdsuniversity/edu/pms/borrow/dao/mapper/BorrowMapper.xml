@@ -39,27 +39,9 @@
 		   AND BH.BRRW_ID = #{_parameter}
 		   AND BH.RTN_DT IS NULL
 		   AND P.ONCE_YN = 'N'
+		   AND PM.LOST_YN = 'N'
 	</select>
 
-	<select id="getUserRentalState" resultMap="borrowVOMap" parameterType="string">
-		SELECT BH.BRRW_HIST_ID
-			 , BH.BRRW_ID
-			 , BH.PRDT_MNG_ID
-			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
-			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
-			 , BH.DEL_YN
-			 , P.PRDT_NAME
-			 , P.ONCE_YN 
-			 , P.PRDT_CTGR
-		  FROM BORROW_HISTORY BH
-		 INNER JOIN PRODUCT_MANAGEMENT PM
-		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
-		 INNER JOIN PRODUCT P
-		    ON P.PRDT_ID = PM.PRDT_ID 
-		 WHERE BH.DEL_YN = 'N'
-		   AND BH.BRRW_ID = #{_parameter}
-		 ORDER BY BRRW_DT DESC
-	</select>
 	
 	<select id="searchBorrowAllCount" 
 			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
@@ -73,6 +55,7 @@
 		 WHERE BH.DEL_YN = 'N'
 		   AND BH.BRRW_ID = #{employeeVO.empId}
 		   AND BH.RTN_DT IS NULL
+		   AND PM.LOST_YN = 'N'
 		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
@@ -121,36 +104,6 @@
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
-	<select id="getProductManageStateAllCount" resultType="_int">
-		SELECT COUNT(1)
-		  FROM BORROW_HISTORY BH
-		 INNER JOIN PRODUCT_MANAGEMENT PM
-		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
-		 INNER JOIN PRODUCT P
-		    ON P.PRDT_ID = PM.PRDT_ID
-		 WHERE BH.DEL_YN ='N'
-		   AND BH.RTN_DT IS NULL
-		   AND P.ONCE_YN = 'N'
-	</select>
-
-	<select id="getProductManageState" resultMap="borrowVOMap">
-		SELECT BH.BRRW_HIST_ID
-			 , BH.BRRW_ID
-			 , BH.PRDT_MNG_ID
-			 , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
-			 , TO_CHAR(BH.RTN_DT, 'YYYY-MM-DD') RTN_DT
-			 , BH.DEL_YN
-			 , P.PRDT_NAME
-			 , P.ONCE_YN 
-			 , P.PRDT_CTGR
-		  FROM BORROW_HISTORY BH
-		 INNER JOIN PRODUCT_MANAGEMENT PM
-		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
-		 INNER JOIN PRODUCT P
-		    ON P.PRDT_ID = PM.PRDT_ID 
-		 WHERE BH.DEL_YN = 'N'
-		 ORDER BY BH.BRRW_DT DESC
-	</select>
 	
 	<select id="searchProductManagementStateAllCount" 
 			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
@@ -164,6 +117,7 @@
 		 WHERE BH.DEL_YN ='N'
 		   AND BH.RTN_DT IS NULL
 		   AND P.ONCE_YN = 'N'
+		   AND PM.LOST_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productManagementId"'>
@@ -198,6 +152,8 @@
 		 INNER JOIN PRODUCT P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
+		   AND PM.LOST_YN = 'N'
+		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productManagementId"'>

@@ -1,6 +1,4 @@
 $().ready(function () {
-
-
   $("#search-btn").on("click", function () {
     search(0);
   });
@@ -44,13 +42,10 @@ $().ready(function () {
   $(".target-checkbox").on("click", function () {
     var total = $(".target-checkbox").length;
     var checkedBox = $(".target-checkbox:checked").length;
-    total === checkedBox
-      ? $("#checked-all").prop("checked", true)
-      : $("#checked-all").prop("checked", false);
+    total === checkedBox ? $("#checked-all").prop("checked", true) : $("#checked-all").prop("checked", false);
   });
 
   $(".return-btn").on("click", function () {
-
     var alertModal = $(".modal-confirm-window");
     var modalButton = $(".confirm-confirm-button");
     var modalButton11 = $(".cancel-confirm-button");
@@ -79,7 +74,7 @@ $().ready(function () {
               var modalText1 = $(".modal-text");
               modalText1.text("정상적으로 반납처리되었습니다.");
               modalButton1.text("확인");
-  
+
               alertModal1[0].showModal();
               $(".confirm-button").on("click", function () {
                 alertModal1[0].close();
@@ -91,28 +86,20 @@ $().ready(function () {
               var modalText2 = $(".modal-text");
               modalText2.text("반납처리 중 오류가 발생했습니다.");
               modalButton2.text("확인");
-  
+
               alertModal2[0].showModal();
               $(".confirm-button").on("click", function () {
                 alertModal2[0].close();
               });
             }
-            
           }
         );
       }
-      
     });
     $(".cancel-confirm-button").on("click", function () {
-      
       confirm = false;
       alertModal[0].close();
     });
-
-    
-
-
-   
   });
 
   $(".selected-change-apply").on("click", function () {
@@ -122,11 +109,24 @@ $().ready(function () {
 
     var param = {};
 
+    if (changeApplyPrdts.length == 0) {
+      var alertModal = $(".modal-window");
+      var modalButton = $(".confirm-button");
+      var modalText = $(".modal-text");
+      modalText.text("선택된 항목이 없습니다.");
+      modalButton.text("확인");
+
+      alertModal[0].showModal();
+      $(".confirm-button").on("click", function () {
+        alertModal[0].close();
+        location.href = res.data.next;
+      });
+    }
+
     changeApplyPrdts.each(function (index, data) {
       param["borrowList[" + index + "].brrwHistId"] = $(data).val(); // 대여이력 ID
       param["borrowList[" + index + "].prdtMngId"] = $(data).data("prdtmgid"); // 비품관리 ID
-      param["borrowList[" + index + "].productVO.prdtName"] =
-        $(data).data("productName"); // 비품명
+      param["borrowList[" + index + "].productVO.prdtName"] = $(data).data("productName"); // 비품명
     });
 
     $.post(url, param, function (res) {
@@ -157,8 +157,6 @@ $().ready(function () {
         });
       }
     });
-
-    alert("!");
   });
 
   $(".selected-return").on("click", function () {
@@ -170,6 +168,19 @@ $().ready(function () {
       param["borrowList[" + idx + "].prdtMngId"] = $(data).data("prdtmgid");
     });
     console.log(param);
+    if (brrwProducts.length == 0) {
+      var alertModal = $(".modal-window");
+      var modalButton = $(".confirm-button");
+      var modalText = $(".modal-text");
+      modalText.text("선택된 항목이 없습니다.");
+      modalButton.text("확인");
+
+      alertModal[0].showModal();
+      $(".confirm-button").on("click", function () {
+        alertModal[0].close();
+        location.href = res.data.next;
+      });
+    }
 
     $.get("/ajax/product/rentalstate/selectedreturn", param, function (res) {
       if (res.data.isSuccess) {
@@ -197,7 +208,6 @@ $().ready(function () {
           location.href = res.data.next;
         });
       }
-      
     });
   });
 });
