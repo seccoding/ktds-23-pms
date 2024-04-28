@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.approval.web;
 
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +23,15 @@ import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
+import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ApprovalController {
@@ -38,46 +45,65 @@ public class ApprovalController {
 	@Autowired
 	private EmployeeService employeeService;
 	@Autowired
+	private DepartmentService departmentService;
+	@Autowired
 	private BorrowService borrowService;
 
-	// PSH0422
-	// 조건에 따른 count 어떻게 뿌려줄지 생각해보기
-	@GetMapping("/approval/home")
+	@GetMapping(value ={"/approval/home", "/approval/home/waiting"})
 	public String viewApprovalHomePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-									   Model model, SearchApprovalVO searchApprovalVO) {
+									   Model model, SearchApprovalVO searchApprovalVO, HttpServletRequest request) {
 
+//		String url = request.getRequestURI();
+//		String uri = url.substring(url.lastIndexOf('/') + 1);
+//		searchApprovalVO.setSearchStatus(uri);
+//		if(uri.equals("waiting")) {
+//			searchApprovalVO.setSearchStatus(uri);
+//		}
+		boolean searchAuth = compareDeptLeader(employeeVO.getEmpId());
+		// 완료되지 않은 결재
+		SearchApprovalVO searchWatingApproval = new SearchApprovalVO("waiting", searchAuth, "", employeeVO);
+		ApprovalListVO apprWatingListVO = this.approvalService.searchAllApproval(searchWatingApproval);
+		model.addAttribute("apprWaitingList", apprWatingListVO);
+
+		// 일주일 이상 지연된 결재
+		SearchApprovalVO searchDelayApproval = new SearchApprovalVO("waiting", searchAuth, "delay", employeeVO);
+		ApprovalListVO approvalDelayListVO =this.approvalService.searchAllApproval(searchDelayApproval);
+		model.addAttribute("approvalDelayList", approvalDelayListVO);
+
+		// 한달 이내 결재
+		SearchApprovalVO searchOneMonthApprovalVO = new SearchApprovalVO("", searchAuth, "oneMonth", employeeVO);
+		ApprovalListVO approvalOneMonthListVO = this.approvalService.searchAllApproval(searchOneMonthApprovalVO);
+		model.addAttribute("approvalOneMonthList", approvalOneMonthListVO);
+		
+		// 전체 목록
+		searchApprovalVO.setSearchAuth(searchAuth);
 		commonSearchApproval(employeeVO, model, searchApprovalVO);
 		return "approval/approvalhome";
 	}
- 
 
-	@GetMapping("/approval/progresslist")
-	public String viewApprProgressListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-										   Model model, SearchApprovalVO searchApprovalVO) {
+	@GetMapping(value = {"/approval/progresslist", "/approval/completelist"})
+	public String viewApprovalListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+										   Model model, SearchApprovalVO searchApprovalVO, HttpServletRequest request) {
 
-		searchApprovalVO.setSearchStatus("801"); // CommonCode...?									 
+		String url = request.getRequestURI();
+		String uri = url.substring(url.lastIndexOf('/') + 1);
+		searchApprovalVO.setSearchStatus(uri);
+		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
+
 		commonSearchApproval(employeeVO, model, searchApprovalVO);
 		return "approval/approvallist";					 
 	}
- 
 
-	@GetMapping("/approval/completelist")
-	public String viewApprCompleteListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-									   Model model, SearchApprovalVO searchApprovalVO) {
-		searchApprovalVO.setSearchStatus("800");
-		commonSearchApproval(employeeVO, model, searchApprovalVO);
-
-		return "approval/approvallist";
-	}
-
-	
 	@GetMapping("/approval/view")
-	public String doApprovalViewPage(@RequestParam String apprId, Model model) {
+	public String doApprovalViewPage(@RequestParam String apprId, Model model, SearchApprovalVO searchApprovalVO,
+									 @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		ApprovalVO approvalVO = this.approvalService.selectOneApprovalAll(apprId);
 		model.addAttribute("approvalVO", approvalVO);
 		ApprovalDetailListVO approvalListVO = this.approvalDetailService.getPersonApprovalDetail(apprId);
 		model.addAttribute("approvalList", approvalListVO);
+		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
+		model.addAttribute("searchApproval", searchApprovalVO);
 
 		if (approvalVO == null || approvalVO.getApprovalDetailVOList() == null) {
 			throw new PageNotFoundException();
@@ -85,15 +111,16 @@ public class ApprovalController {
 		return "approval/approvalview";
 	}
 
-
 	@GetMapping("/approval/write")
 	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		EmployeeVO dmdEmployeeVO = employeeService.getOneEmployee(employeeVO.getEmpId());
-		BorrowListVO borrowListVO = borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
+		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		BorrowListVO borrowListVO = this.borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
+		// 부서 정보 얻어와야함
 
-		if (borrowListVO == null) {
-			throw new PageNotFoundException();
+		if (borrowListVO.getBorrowCnt() == 0 && borrowListVO.getBorrowList().size() == 0) {
+			model.addAttribute("errorMessage", "대여중인 비품이 없으므로 비품변경신청을 할 수 없습니다.");
+			return "approval/approvalhome";
 		}
 
 		model.addAttribute("employee", dmdEmployeeVO);
@@ -109,25 +136,35 @@ public class ApprovalController {
 		if (!employeeVO.getEmpId().equals(newApprovalVO.getDmdId()) && !newApprovalVO.getApprCtgr().equals("902")) {
 			throw new PageNotFoundException();
 		}
-		// validator로 수정
-		if (newApprovalVO.getApprTtl() == null) {
-			return new AjaxResponse().append("errorMessage", "기안서 제목은 필수 입력 항목입니다.");
+
+		Validator<ApprovalVO> validator = new Validator<>(newApprovalVO);
+		validator.add("apprTtl", Validator.Type.NOT_EMPTY, "기안서 제목을 입력해주세요.")
+				 .add("approvalDetailVOList", Validator.Type.NOT_EMPTY, "변경신청할 비품을 선택해주세요")
+				 .start();
+		if(validator.hasErrors()) {
+			Map<String,List<String>> errors = validator.getErrors();
+			return new AjaxResponse().append("errors", errors);
 		}
+
 		String apprId = approvalService.selectNewApprId();
 		newApprovalVO.setApprId(apprId);
 		boolean isSuccessCreate = this.approvalService.createApproval(newApprovalVO);
 
 		return new AjaxResponse().append("result", isSuccessCreate)
-								 .append("next", "approval/approvallist");
+								 .append("next", "/approval/progresslist");
 	}
-	
-//	@ResponseBody
-//	@PostMapping("/ajax/approval/product")
-//	public AjaxResponse addProductForNewApproval(ProductManagementListVO prdtMngListVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-//		boolean isSuccessSelected = this.approvalService.getPrdtForNewAppr(prdtMngListVO);
-//		return new AjaxResponse().append("result", isSuccessSelected);
-//	}
-	
+
+	@ResponseBody
+	@PostMapping("/ajax/approval/addProduct")
+	public AjaxResponse addProductForNewApproval(@RequestParam("addProducts[]") List<String> addProducts,
+												 @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+
+		logger.info(addProducts.size()+"<<<<<<<<<<<<<<<<<<<<<<<<<<");
+
+		List<BorrowVO> borrowList = this.approvalService.getAddProductApproval(addProducts);
+		return new AjaxResponse().append("borrowList", borrowList);
+	}
+
 	// 결재승인,반려
 	@ResponseBody
 	@PostMapping("/ajax/approval/statuschange/{apprId}")
@@ -179,22 +216,27 @@ public class ApprovalController {
 
 		boolean isDeleteSuccess = this.approvalService.deleteOneApproval(apprId);
 		return new AjaxResponse().append("result", isDeleteSuccess)
-								 .append("next", "approval/list");
+								 .append("next", "/approval/completelist");
 	}
 	
-	// searchAllApproval 공통 메서드
+	// searchAllApproval 공통
 	private void commonSearchApproval(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
 									, Model model, SearchApprovalVO searchApprovalVO) {
-		
-		// 관리자로 로그인하면 결재 페이지 오류 남(teamList == null)
-//		EmployeeVO employee = this.employeeService.getOneEmployeeNoTeam(employeeVO.getEmpId());
 
 		searchApprovalVO.setEmployeeVO(employeeVO);
+		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
 		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
-
-//		model.addAttribute("employee", employee);
+		model.addAttribute("employee", employee);
 		model.addAttribute("apprList", apprListVO);
 		model.addAttribute("searchApproval", searchApprovalVO);
 	}
 
+	// 경영지원부장 체크
+	private boolean compareDeptLeader(String empId) {
+		String authId = this.departmentService.selectOneDepartment("DEPT_230101_000010").getDeptLeadId();
+		if(empId.equals(authId)) {
+			return true;
+		}
+		return false;
+	}
 }

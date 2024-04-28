@@ -13,6 +13,12 @@ $().ready(function(){
     var prdtValues = $(".target-prdt-dtl-id");
 
     $("#btn-add-prdt-modal").on("click", function() {
+       
+        if(deleteItem.length === 0) {
+            alert("추가할 비품이 없습니다.");
+            return;
+        }
+
         // 대여 목록 모달 열기
         addPrdtModal[0].showModal();
         var itemsArray = prdtValues.map(function () {
@@ -45,45 +51,102 @@ $().ready(function(){
         // $("input[id=" + $(".btn-remove-prdt").data("delete-item") + "]").prop('disabled', false);
         // 추가 버튼 클릭
         $(addPrdtBtn).on("click", function() {
-            alert("???");
-            // 체크한 요소 선택
-            var checkedItem = $('input[name="mPrdtId"]:checked');
-            console.log(checkedItem);
 
-            var checkedData = [];
-            checkedItem.each(function() {
-                checkedData.push(checkedItem.val());
-            });
-            console.log(checkedData);
+            var checkedProducts = [];
+            $('input:checkbox[name="mPrdtId"]').each(function (index) {
+                if( $(this).is(":checked") == true ){
+                    console.log($(this).val());
+                    checkedProducts.push($(this).val());
+                }
+            })
+            console.log("왜 하나만 들어가?", checkedProducts);
+            
+            $.post("/ajax/approval/addProduct", { addProducts : checkedProducts },  
+                function(response) {
+                    var borrowList = response.data.borrowList
+                    console.log(borrowList);
+                    console.log(borrowList.length);
 
-            $.get("")
+                    // 선택한 비품 추가!
+                    for (var i in borrowList) {
+                        var borrow = borrowList[i];
 
-            // 비품 추가 (checkedData 배열 길이만큼 for문 돌려서 테이블 append)
-            var prdtList = $("#prdt-list");
-            var prdtDom = $("<tr></tr>");
-            var prdtItemCheckDom = $("<input type='checkbox'>");
-            var prdtItemRemoveBtn = $("<button class='btn-remove-prdt'>삭제</button>");
-            var prdtItemCheckDom = $("<td></td>").append("<input type='checkbox'>");
-            prdtDom.append(prdtItemCheckDom);
-            for (var i = 0; i < 4; i++) {
-                var prdtItemInputDom = $("<td></td>").append("<input type='text'>");
-                prdtDom.append(prdtItemInputDom);
-            }
-            var prdtItemRemoveBtnDom = $("<td></td>").append(prdtItemRemoveBtn);
-            prdtDom.append(prdtItemRemoveBtnDom);
-            prdtList.append(prdtDom);
+                        console.log("몇번 도는거야 >>> ", i);
+                        console.log("번호번호 >>> ", borrow.prdtMngId);
 
+                        var borrowList = $("#prdt-list");
+                        var borrowListDom = $("<tr></tr>");
+
+                        // 체크박스 추가
+                        var borrowCheckDom = $("<input type='checkbox'>");
+                        borrowCheckDom.addClass("target-prdt-dtl-id");
+                        borrowCheckDom.attr({
+                            'id' : "prdt-check", 
+                            'name' : "prdtId", 
+                            'value' : borrow.prdtMngId, 
+                        });
+                        var borrowCheckTdDom = $("<td></td>").append(borrowCheckDom);
+                        borrowListDom.append(borrowCheckTdDom);
+
+                        // 비품번호 추가
+                        var prdtMngIdInputDom = $("<input type='text'>");
+                        prdtMngIdInputDom.attr({
+                            'value' : borrow.prdtMngId, 
+                            'readonly' : true,
+                        });
+                        var prdtMngIdInputTdDom = $("<td></td>").append(prdtMngIdInputDom);
+                        borrowListDom.append(prdtMngIdInputTdDom);
+
+                        // 종류 추가
+                        var prdtCtgrInputDom = $("<input type='text'>");
+                        prdtCtgrInputDom.attr({
+                            'value' : borrow.productVO.prdtCtgr, 
+                            'readonly' : true,
+                        });
+                        var prdtCtgrInputTdDom = $("<td></td>").append(prdtCtgrInputDom);
+                        borrowListDom.append(prdtCtgrInputTdDom);
+
+                        // 품목 추가
+                        var prdtNameInputDom = $("<input type='text'>");
+                        prdtNameInputDom.attr({
+                            'value' : borrow.productVO.prdtName, 
+                            'readonly' : true,
+                        });
+                        var prdtNameInputTdDom = $("<td></td>").append(prdtNameInputDom);
+                        borrowListDom.append(prdtNameInputTdDom);
+
+                        // 대여일 추가
+                        var brrwDtInputDom = $("<input type='text'>");
+                        brrwDtInputDom.attr({
+                            'value' : borrow.brrwDt,
+                            'readonly' : true,
+                        });
+                        var brrwDtInputTdDom = $("<td></td>").append(brrwDtInputDom);
+                        borrowListDom.append(brrwDtInputTdDom);
+
+                        // 삭제 추가
+                        var prdtItemRemoveBtn = $("<button class='btn-remove-prdt'>삭제</button>");
+                        prdtItemRemoveBtn.addClass("btn-remove-prdt");
+                        prdtItemRemoveBtn.data("delete-item", borrow.prdtMngId);
+                        var prdtItemRemoveBtnDom = $("<td></td>").append(prdtItemRemoveBtn);
+                        borrowListDom.append(prdtItemRemoveBtnDom);
+                        borrowList.append(borrowListDom);
+                        
+                    }
+                });
             // 비품 추가 모달 닫기
-            addPrdtModal[0].close();
+            addPrdtModal[0].close(); 
         });
     });
 
     // 비품 추가 모달 닫기
     $(".modal-confirm-close").on("click", function () {
-        location.reload();
+        addPrdtModal[0].close();
+        $(input["name=mPrdtId"]).prop("checked", false);
     });
     $(".cancel-confirm-button").on("click", function() {
         addPrdtModal[0].close();
+        $(input["name=mPrdtId"]).prop("checked", false);
     });
 
     // 상신버튼
@@ -96,42 +159,47 @@ $().ready(function(){
         // 각 요소의 값을 배열에 담기
         prdtId.each(function(index) {
             formData["productListVO[" + index + "].prdtId"] = ($(this).val());
-            // console.log($(this).val());
         }); 
 
-    // console.log(formData);
-
-    // if(formData.productListVO.length < 1) {
-    //   var checkItem = confirm("변경할 비품을 하나 이상 선택해주세요");
-    //   return;
-    // }
-
-    formData.dmdId = $("#empId").val();
-    formData.apprMngId = $("#apprMngId").val();
-    formData.apprCtgr = $("#apprCtgr").val();
-    formData.apprTtl = $("#apprTtl").val();
-
-    $.ajax({
-        url: "/ajax/approval/write", 
-        type: "POST",
-        data: formData,
-        success: function(response) {
-        console.log(response);
-        var data = response.data; // reponse 체크해볼것!!! 페이지 이동안함
-        if(data.result && data.next) {
-            location.href = data.next;
-        } else {
-            alert(response.data.errorMessage);
+        formData.dmdId = $("#empId").val();
+        formData.dmdDt = $("#dmdDt").val();
+        formData.apprMngId = $("#apprMngId").val();
+        formData.apprTtl = $("#apprTtl").val();
+        if($("#apprCtgr").val() === '비품변경') {
+            formData.apprCtgr = '902';
         }
-        },
-    });
+
+        if(Object.keys(formData).length < 6) {
+            alert("변경신청할 비품을 체크해주세요.");
+            return;
+        }
+
+        var chooseValue = confirm("작성한 기안서를 상신합니다.");
+        if(chooseValue) {
+        // $(modalButton).on("click", function() {
+            // 상신 req
+            $.ajax({
+                url: "/ajax/approval/write", 
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    var data = response.data;
+                    if(data.result && data.next) {
+                        location.href = data.next;
+                    } else {
+                        alert(response.data.errors);
+                    }
+                },
+            });
+        // });
+        }
     });
 
-    // 취소버튼
-    $("#btn-appr-cancel").on("click", function() {
-        var chooseValue = confirm("비품 변경을 취소합니다.");
-        if(chooseValue) {
-        location.href = "/product/rentalstate";
+    // 기안서 작성 취소 버튼
+    $("#btn-appr-cancel").on("click", function() {      
+        var writeCancel = confirm("기안서 작성을 취소하시겠습니까?");
+        if(writeCancel) {
+            location.href = "/approval/progresslist";
         }
     });
 
@@ -140,11 +208,10 @@ $().ready(function(){
     $(".btn-remove-prdt").on("click", function() {
         var length = $("#prdt-list").find("tr").length;
         if (length === 1) {
-            alert("삭제할 수 없습니다.\n 하나 이상의 비품을 신청해주세요.");
+            alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
             return;
         }
-        
-        // console.log($("input[id=" + $(this).data("delete-item") + "]").val());
+
         $(this).closest("tr").remove(); 
         deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
     });

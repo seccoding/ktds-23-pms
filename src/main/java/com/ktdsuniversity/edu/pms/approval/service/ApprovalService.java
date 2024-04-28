@@ -1,9 +1,11 @@
 package com.ktdsuniversity.edu.pms.approval.service;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
-import com.ktdsuniversity.edu.pms.product.vo.ProductManagementListVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 
 public interface ApprovalService {
 
@@ -34,41 +36,15 @@ public interface ApprovalService {
 	
 	// PHS - search
 	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO);
-	
-
-	/**
-	 * 승인되지 않은 결재 내역 개수
-	 */
-	public ApprovalListVO getAllApprove();
-
-	/**
-	 * 일주일이상 지연된 결재
-	 */
-	public ApprovalListVO getAllOneWeekApproval();
-
-	/**
-	 * 한 달 이내 결재내역
-	 */
-	public ApprovalListVO getAllMonthApproval();
 
 	public ApprovalVO selectOneApprovalAll(String apprId);
 
 	public boolean approvalStatusChange(ApprovalVO approvalVO);
-	
+
 	public boolean approvalRntlStatusChange(ApprovalVO approvalVO);
 
 	public boolean deleteOneApproval(String apprId);
 
-	/**
-	 * 페이지 개수와 리스트를 구한다
-	 */
-	public ApprovalListVO searchAllBoard(ApprovalVO approvaVo);
-
-	/**
-	 * view 페이지 에 보여질 페이지 개수와 리스트를 출력 한다
-	 */
-	public ApprovalListVO searchApprovalView(SearchApprovalVO searchapprovalvo, String id);
-
-//	public boolean getPrdtForNewAppr(ProductManagementListVO prdtMngListVO);
+	public List<BorrowVO> getAddProductApproval(List<String> addProducts);
 
 }

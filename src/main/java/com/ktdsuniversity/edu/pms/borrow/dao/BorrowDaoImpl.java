@@ -71,15 +71,20 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	}
 
 	// 대여중인 전체 비품 목록
-	@Override
-	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
-	}
+//	@Override
+//	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
+//		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
+//	}
 	
 	// 반납신청 한 비품을 제외한 비품 목록
 	@Override
 	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO) {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalNotAppr", employeeVO.getEmpId());
+	}
+
+	@Override
+	public List<BorrowVO> getBorrowProduct(List<String> addProducts) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE + ".getBorrowProduct", addProducts);
 	}
 
 	// YSH0424

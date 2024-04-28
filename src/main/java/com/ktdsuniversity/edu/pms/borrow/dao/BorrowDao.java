@@ -37,9 +37,11 @@ public interface BorrowDao {
 
     public int newBrrwPrdtByAppr(List<BorrowVO> borrowVOList);
 
-	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
+//	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
 	
 	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO);
+	
+	public List<BorrowVO> getBorrowProduct(List<String> addProducts);
 
 	
 	// YSH0424

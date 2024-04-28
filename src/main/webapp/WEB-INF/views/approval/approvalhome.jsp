@@ -32,21 +32,20 @@
         flex-direction: column;
         min-width: 0;
         word-wrap: break-word;
-        background-color: #FFF;
         padding: 0 0.8125rem;
     }
     .card-body {
         flex: 1 1 auto;
         padding: 1.5rem 1.5rem;
-        background-color: #f0f0f0;
+        background-color: #FFF;
         border-radius: 0.5rem;
     }
     .card-icon {
-        margin-bottom: 0.875rem;
+        text-align: right;
     }
     .card-list {
         display: flex;
-        background-color: #f0f0f0;
+        background-color: #FFF;
         justify-content: space-between;
         align-items: center;
         padding: 1.5rem 1.5rem;
@@ -61,9 +60,27 @@
         flex-direction: column;
         align-items: center;
     }	
+    .card-empty {
+      height: 30rem;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .count-appr {
+      display: flex;
+      align-items: baseline;
+    }
 	</style>
+  <script type="text/javascript" src=/js/approval/approvalhome.js></script>
+  <jsp:include page="../commonmodal.jsp"></jsp:include>
 </head>
 <body>
+  <c:if test="${not empty errorMessage}">
+    <!-- css 변경 -->
+    <dialog class="alert-dialog">
+      <h1>${errorMessage}</h1>
+      <button type="button" class="alert-button">확인</button>
+    </dialog>
+  </c:if>
 	<div class="container">
         <div class="title">
             <h2>결재 현황</h2>
@@ -71,23 +88,40 @@
         <div class="row">
             <div class="card col-1-3">
                 <div class="card-body">
-                    <div class="card-icon">⚫</div>
-                    <span>승인되지 않은 결재</span>
-                    <h2>${approveList.getApprCnt()}</h2>
+                    <a href="/approval/home/waiting">
+                      <span>완료되지 않은 결재</span>
+                      <div class="count-appr">
+                        <h2>${apprWaitingList.getApprCnt()}</h2>
+                        <h6>건</h6>
+                      </div>
+                    </a>
+                    <div class="card-icon">
+                      <img src="/images/sidebar-approval.png"/>
+                    </div>
                 </div>
             </div>
             <div class="card col-1-3">
                 <div class="card-body">
-                    <div class="card-icon">⚫</div>
                     <span>일주일 이상 지연된 결재</span>
-                    <h2>${OneWeekApprovalList.getApprCnt()}</h2>
+                    <div class="count-appr">
+                      <h2>${approvalDelayList.getApprCnt()}</h2>
+                      <h6>건</h6>
+                    </div>
+                    <div class="card-icon">
+                      <img src="/images/sidebar-approval.png"/>
+                    </div>
                 </div>
             </div>
             <div class="card col-1-3">
                 <div class="card-body">
-                    <div class="card-icon">⚫</div>
                     <span>한 달 이내 결재내역</span>
-                    <h2>${monthApprovalList.getApprCnt()}</h2>
+                    <div class="count-appr">
+                      <h2>${approvalOneMonthList.getApprCnt()}</h2>
+                      <h6>건</h6>
+                    </div>
+                    <div class="card-icon">
+                      <img src="/images/sidebar-approval.png"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,7 +131,7 @@
                 <c:when test="${not empty apprList.apprList}">
                   <c:forEach items="${apprList.apprList}" var="approval">
                     <a href="/approval/view?apprId=${approval.apprId}">
-                      <div class="card-list">
+                      <div class="card-list card-body">
                         <div class="card-list-category">
                           <div class="category">
                             <img src="/images/sidebar-approval.png" alt="img">
@@ -134,6 +168,14 @@
                     </a>
                   </c:forEach>
                 </c:when>
+                <c:otherwise>
+                  <div class="card-list card-body card-empty">
+                    <span>결재 진행 중인 문서가 없습니다.</span>
+                    <c:if test="${!searchApproval.searchAuth}">
+                      <button type="button" id="btn-appr-write">기안서 작성</button>
+                    </c:if>
+                  </div>
+                </c:otherwise>
               </c:choose>		
             </div>
         </div>

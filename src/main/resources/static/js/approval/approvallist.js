@@ -8,18 +8,25 @@ $().ready(function() {
     });
 
     // 기안서 작성
-    $(".btn-appr-write").on("click", function() {
+    $("#btn-appr-write").on("click", function() {
         location.href = "/approval/write";
-    })
+    });
+
     // 검색
     $("#search-btn").on("click", function() {
         search(0);
     });
+
     // 초기화
     $("#cancel-search-btn").on("click", function() {
-        location.href = "/approval/list";
-    })
+        var path = $(location).attr('pathname');
+        location.href = path;
+    });
 
+    // 날짜 검색
+    $("#btn-search-date").on("click", function() {
+        search(0);
+    });
 });
 
 function search(pageNo) {

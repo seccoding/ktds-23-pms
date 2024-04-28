@@ -120,15 +120,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int updateRntlStsCount =  this.approvalDao.updateRentalStatus(approvalVO);
 		return updateRntlStsCount > 0;
 	}
-	
-
-//	@Override
-//	public boolean getPrdtForNewAppr(ProductManagementListVO prdtMngListVO) {
-//		for(ProductManagementVO prdtMngVO : prdtMngListVO.getProductManagementList()) {
-//			ProductManagementVO prdtMng =  this.productManagementDao.selectPrdtForNewAppr(prdtMngListVO.getProductManagementList().get(0).getPrdtMngId());
-//		}
-//		return false;
-//	}
 
 	@Transactional
 	@Override
@@ -196,10 +187,15 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return deleteCount > 0;
 	}
 
-	// PSH - search
+	@Override
+	public List<BorrowVO> getAddProductApproval(List<String> addProducts) {
+		List<BorrowVO> borrowList = this.borrowDao.getBorrowProduct(addProducts);
+		return borrowList;
+	}
+
 	@Override
 	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
-		int approvalCount = this.approvalDao.searchApprAllCount(searchApprovalVO);
+		int approvalCount = this.approvalDao.searchAllApprovalCount(searchApprovalVO);
 		searchApprovalVO.setPageCount(approvalCount);
 
 		List<ApprovalVO> approvalList = this.approvalDao.searchAllApproval(searchApprovalVO);
@@ -210,74 +206,5 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 		return approvalListVO;
 	}
-
-	// PHS End ----------
-	
-	@Override
-	public ApprovalListVO getAllApprove() {
-		// TODO Auto-generated method stub
-		int approveCount = this.approvalDao.getAllApproveCount();
-		
-		ApprovalListVO approvalListVO = new ApprovalListVO();
-		approvalListVO.setApprCnt(approveCount);
-		
-		return approvalListVO;
-	}
-
-	@Override
-	public ApprovalListVO getAllOneWeekApproval() {
-		// TODO Auto-generated method stub
-		int approvalweeKCount = this.approvalDao.getAllOneWeekApprovalCount();
-		
-		ApprovalListVO approvalListVO = new ApprovalListVO();
-		approvalListVO.setApprCnt(approvalweeKCount);
-		
-		return approvalListVO;
-	}
-	
-	@Override
-	public ApprovalListVO getAllMonthApproval() {
-		// TODO Auto-generated method stub
-		int approvalMonthCount = this.approvalDao.getAllMonthApprovalCount();
-		
-		ApprovalListVO approvalListVO = new ApprovalListVO();
-		approvalListVO.setApprCnt(approvalMonthCount);
-		
-		return approvalListVO;
-	}
-	
-
-	@Override
-	public ApprovalListVO searchAllBoard(ApprovalVO approvaVo) {
-		// TODO Auto-generated method stub
-		int boardcount=this.approvalDao.searchBoardAllCount(approvaVo);
-		approvaVo.setPageCount(boardcount);
-		
-		List<ApprovalVO> boardList=this.approvalDao.searchAllBoard(approvaVo);
-		
-		ApprovalListVO boardListVO=new ApprovalListVO();
-		boardListVO.setApprCnt(boardcount);
-		boardListVO.setApprList(boardList);
-		
-		return boardListVO;
-	}
-
-	@Transactional
-	@Override
-	public ApprovalListVO searchApprovalView(SearchApprovalVO searchapprovalvo, String id) {
-		// TODO Auto-generated method stub
-		int ApprovalCount=this.approvalDao.selectAllApprovalCount(id);
-		searchapprovalvo.setPageCount(ApprovalCount);
-		
-		SearchApprovalVO searchapprova=new SearchApprovalVO();
-		searchapprova.setEmpId(id);
-		
-		List<ApprovalVO> approval=approvalDao.searchBoard(searchapprovalvo);
-		
-		ApprovalListVO approvallistvo=new ApprovalListVO();
-		approvallistvo.setApprCnt(ApprovalCount);
-		approvallistvo.setApprList(approval);
-		
-		return approvallistvo;
-	}
+  
 }

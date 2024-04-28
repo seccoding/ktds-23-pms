@@ -40,8 +40,7 @@
 			<result column="CMCD_NAME" property="cmcdName"/>
 			<result column="CMCD_DEL_YN" property="delYn"/>
 		</association>
-		<collection property="approvalDetailVOList" ofType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO"
-					column="APPR_ID">
+		<collection property="approvalDetailVOList" ofType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO">
 			<id column="APPR_DTL_ID" property="apprDtlId"/>
 			<result column="APPR_DTL_CUR_STR" property="curStr"/>
 			<result column="APPR_DTL_DEL_YN" property="delYn"/>
@@ -142,7 +141,7 @@
 	
 	<select id="getAllApprovalByEmpId" parameterType="string" resultMap="approvalVOMap">
 		SELECT A.APPR_ID
-	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MM') DMD_DT 
+	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT 
 	         , A.APPR_CTGR
 	         , A.APPR_STS
 	         , A.APPR_TTL
@@ -166,7 +165,7 @@
 
 	<select id="selectOneApproval" parameterType="string" resultMap="approvalVOMap">
 		SELECT A.APPR_ID
-		     , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MM') DMD_DT
+		     , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
 		     , A.APPR_CTGR
 		     , A.APPR_STS
 		     , A.APPR_TTL
@@ -245,7 +244,8 @@
   	</update>
   	
   	<!-- PSH - search -->
-  	<select id="searchApprAllCount" resultType="_int" parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO">
+  	<select id="searchAllApprovalCount" resultType="_int"
+			parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO">
 		SELECT COUNT(1)
 		  FROM APPROVAL A
 		 INNER JOIN EMPLOYEE E
@@ -253,7 +253,7 @@
 		 WHERE A.DEL_YN = 'N'
 		<if test='searchStatus != null and searchStatus != ""'>
 			<choose>
-				<when test='searchStatus == "801"'>
+				<when test='searchStatus == "progresslist" or searchStatus == "waiting"'>
 					AND A.APPR_STS = '801'
 				</when>
 				<otherwise>
@@ -271,9 +271,22 @@
 				</when>
 			</choose>
 		</if>
+		<if test='searchDate != null and searchDate != ""'>
+			<choose>
+				<when test='searchDate == "delay"'>
+					AND A.DMD_DT <![CDATA[<=]]> TO_CHAR(SYSDATE - 7, 'YYYY-MM-DD HH24:MI')
+				</when>
+				<when test='searchDate == "oneMonth"'>
+					AND A.DMD_DT <![CDATA[>=]]> ADD_MONTHS(SYSDATE, -1)
+				</when>
+				<otherwise>
+					AND TO_CHAR(A.DMD_DT, 'YYYY-MM-DD') = #{searchDate}
+				</otherwise>
+			</choose>
+		</if>
 		<if test='employeeVO.empId != null and employeeVO.empId != ""'>
 			<choose>
-				<when test='employeeVO.admnCode == "301"'>
+				<when test='searchAuth'>
 				</when>
 				<otherwise>
 					AND A.DMD_ID = #{employeeVO.empId}
@@ -311,7 +324,7 @@
 		 WHERE A.DEL_YN = 'N'
 		<if test='searchStatus != null and searchStatus != ""'>
 			<choose>
-				<when test='searchStatus == "801"'>
+				<when test='searchStatus == "progresslist" or searchStatus == "waiting"'>
 					AND A.APPR_STS = '801'
 				</when>
 				<otherwise>
@@ -329,9 +342,22 @@
 				</when>
 			</choose>
 		</if>
+		<if test='searchDate != null and searchDate != ""'>
+			<choose>
+				<when test='searchDate == "delay"'>
+					AND A.DMD_DT <![CDATA[<=]]> TO_CHAR(SYSDATE - 7, 'YYYY-MM-DD HH24:MI')
+				</when>
+				<when test='searchDate == "oneMonth"'>
+					AND A.DMD_DT <![CDATA[>=]]> ADD_MONTHS(SYSDATE, -1)
+				</when>
+				<otherwise>
+					AND TO_CHAR(A.DMD_DT, 'YYYY-MM-DD') = #{searchDate}
+				</otherwise>
+			</choose>
+		</if>
 		<if test='employeeVO.empId != null and employeeVO.empId != ""'>
 			<choose>
-				<when test='employeeVO.admnCode == "301"'>
+				<when test='searchAuth'>
 				</when>
 				<otherwise>
 					AND A.DMD_ID = #{employeeVO.empId}
@@ -342,123 +368,5 @@
 		<include refid="Common.pagenate_footer"/>
 	</select>
 	<!-- PSH - searchEnd -->
-  	
-  	
-  	<select id="getAllApproveCount" resultType="_int">
-  		SELECT COUNT(1)
-		  FROM APPROVAL A
-		 INNER JOIN EMPLOYEE e
-		    ON e.EMP_ID =A.DMD_ID
-		 WHERE A.DEL_YN = 'N'
-		   AND APPR_STS  IN ('801','803')
-  	</select>
-  	
-  	<select id="getAllOneWeekApprovalCount" resultType="_int"> 
-  		SELECT COUNT(1)
-			FROM APPROVAL A
-			INNER JOIN EMPLOYEE e 
-			ON e.EMP_ID = A.DMD_ID
-			<![CDATA[WHERE DMD_DT < SYSDATE - 7]]>
-			AND APPR_STS  IN ('801','803') 
-  	</select>
-  	
-   <select id="getAllMonthApprovalCount" resultType="_int">
-   		SELECT COUNT(1)
-		FROM APPROVAL a
-		INNER JOIN EMPLOYEE e 
-		ON e.EMP_ID =a.DMD_ID
-		<![CDATA[WHERE DMD_DT >= TRUNC(SYSDATE) - INTERVAL '1' MONTH]]> 
-		AND APPR_STS  IN ('802') 
-   </select>
-   
-   <select id="searchBoardAllCount" resultType="_int">
-		SELECT COUNT(1) 
-		FROM APPROVAL a
-		INNER JOIN EMPLOYEE e 
-		ON e.EMP_ID =a.DMD_ID 
-	</select>
-   
-   <select id="searchAllBoard" 
-   			parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" 
-			resultMap="approvalVOMap">
-		<include refid="Common.pagenate_header" />
-		SELECT A.APPR_ID
-	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
-	         , A.APPR_CTGR
-	         , A.APPR_STS
-	         , A.APPR_TTL
-	         , A.APPR_CNTNT
-	         , A.DMD_ID
-	         , A.APPR_MNG_ID
-	         , A.ARRP_RJCT
-	         , A.LAST_CN_DT
-	         , A.APPR_FNSH_DT
-	         , E.EMP_NAME
-	         , E.PRFL
-	      FROM APPROVAL A
-	     INNER JOIN EMPLOYEE E
-	        ON A.DMD_ID = E.EMP_ID 
-	     WHERE A.DEL_YN = 'N'
-		<include refid="Common.pagenate_footer" />
-  </select>
-   
-   
-   <select id="selectAllApprovalCount" parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO" 
-			resultType="_int">
-		SELECT COUNT(*) 
-		FROM APPROVAL
-		INNER JOIN EMPLOYEE e
-		ON  e.EMP_ID=#{empId}
-		<if test='searchKeyword != null and searchKeyword != ""'>
-		    <choose>
-		        <when test='searchType == "title"'>
-		            AND APPR_TTL LIKE '%' ||  #{searchKeyword} || '%'
-		        </when>
-		        <when test='searchType == "employ"'>
-		            AND e.EMP_ID LIKE '%' ||  #{searchKeyword} || '%'
-		        </when>
-		    </choose>
-		</if>
-		
-  </select>
- 
-  <select id="searchBoard" 
-   			parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO" 
-			resultMap="approvalVOMap">
-		<include refid="Common.pagenate_header" />
-		SELECT A.APPR_ID
-	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MM') DMD_DT 
-	         , A.APPR_CTGR
-	         , A.APPR_STS
-	         , A.APPR_TTL
-	         , A.APPR_CNTNT
-	         , A.DMD_ID
-	         , A.APPR_MNG_ID
-	         , A.ARRP_RJCT
-	         , A.LAST_CN_DT
-	         , A.APPR_FNSH_DT
-	         , E.EMP_NAME 
-	         , CC.CMCD_NAME 
-	      FROM APPROVAL A
-	     INNER JOIN EMPLOYEE E
-	        ON A.DMD_ID = E.EMP_ID 
-	     INNER JOIN COMMON_CODE CC
-	        ON E.PSTN_ID = CC.CMCD_ID 
-	     WHERE A.DMD_ID = #{empId}         
-	       AND A.DEL_YN = 'N'
-	     <if test='searchKeyword != null and searchKeyword != ""'>
-		    <choose>
-		        <when test='searchType == "title"'>
-		           AND a.APPR_TTL =  #{searchKeyword} 
-		        </when>
-		        <when test='searchType == "employ"'>
-		               AND e.EMP_ID =  #{searchKeyword}
-		        </when>
-		    </choose>
-		</if>
-		<include refid="Common.pagenate_footer" />
-  </select>
-   
-  	
   	
 </mapper> 
