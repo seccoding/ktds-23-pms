@@ -166,10 +166,8 @@ public class RequirementController {
 	}
 
 	@GetMapping("/project/requirement/modify")
-	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam String prjId,
-			@RequestParam String rqmId
-			, Model model) {
+	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String prjId,
+			@RequestParam String rqmId, Model model) {
 		if (employeeVO.getAdmnCode() != "301") {
 			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
 					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
@@ -211,7 +209,7 @@ public class RequirementController {
 				throw new AccessDeniedException();
 			}
 		}
-		if (throwUnauthorizedUser(employeeVO, requirementVO.getCrtrId())) {
+		if (throwUnauthorizedUser(employeeVO, this.requirementService.getOneRequirement(rqmId).getCrtrId())) {
 			throw new AccessDeniedException();
 		}
 

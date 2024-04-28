@@ -127,8 +127,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </td>
                 <td>${requirememt.scdStsVO.cmcdName}</td>
                 <td>${requirememt.rqmStsVO.cmcdName}</td>
-                <td>${requirememt.crtrId}</td>
-                <td>${requirememt.cfrmrVO.empName}</td>
+                <td>${requirememt.crtrIdVO.empName}</td>
+                <td>${requirememt.crtDt}</td>
               </tr>
             </c:forEach>
           </c:when>
