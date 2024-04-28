@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.utils;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 /**
  * 유틸리티들은 추상클래스로 만들어 인스턴스화 못하게 한다.
  */
@@ -19,7 +22,7 @@ public abstract class StringUtil {
 	 */
 	public final static boolean isEmpIdFormat(final String str) {
 		if (isEmpty(str)) {
-			return false;
+			return true;
 		}
 		
 		String EmpIdFormat = "(\\d{7}|.*system.*)";
@@ -35,13 +38,26 @@ public abstract class StringUtil {
 	 */
 	public final static boolean correctPasswordFormat(final String str) {
 		if (isEmpty(str)) {
-			return false;
+			return true;
 		}
 		
 		String passwordFormat = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+|~=`{}\\[\\]:\";'<>?,./\\\\\\-])[a-zA-Z0-9!@#$%^&*()_+|~=`{}\\[\\]:\";'<>?,./\\\\\\-]{10,}$";
 		
 		return str.matches(passwordFormat);
 	}
+	
+	/**
+	 * 이미지 파일 형식 검사
+	 */
+//	public final static boolean isImageFileFormat(final String str) {
+//		if (isEmpty(str)) {
+//			return false;
+//		}
+//		
+//		String ImageFileFormat = ".*\\.(jpeg|jpg|img|png)$";
+//		
+//		return str.matches(ImageFileFormat);
+//	}
 	
 //	/**
 //	 * 입력받은 문자가 DEPT_(숫자6자리)_(숫자6자리)인지 확인해주는 메소드
@@ -88,6 +104,20 @@ public abstract class StringUtil {
 //		return str.matches(PstnIdFormat);
 //	}
 	
+	/**
+	 * 입력받은 문자가 현재날짜(LocalDate.now())보다 작은지 검사하는 메소드 
+	 * @param str 입력받은 날짜
+	 * @return 현재 날짜 보다 작다면 true, 크다면 false 
+	 */
+	public final static boolean isBeforeLocalDateNow(final String str) {
+		if (isEmpty(str)) {
+			return true;
+		}
+		LocalDate nowLocalDate = LocalDate.now();
+		
+		return LocalDate.parse(str).isBefore(nowLocalDate);
+	}
+	
 	public final static String replaceTagSymbols(final String str) {
 		return nullToValue(str, "").replace(">", "&gt;")
 					.replace("<", "&lt;")
@@ -124,7 +154,7 @@ public abstract class StringUtil {
 	
 	public final static boolean isEmailFormat(final String str) {
 		if (isEmpty(str)) {
-			return false;
+			return true;
 		}
 		
 		String emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])";
@@ -133,7 +163,7 @@ public abstract class StringUtil {
 	
 	public final static boolean isPhoneFormat(final String str) {
 		if (isEmpty(str)) {
-			return false;
+			return true;
 		}
 		
 		String phoneFormat = "\\d{2,4}( |-|\\.)(\\d{4}( |-|\\.)\\d{4})";

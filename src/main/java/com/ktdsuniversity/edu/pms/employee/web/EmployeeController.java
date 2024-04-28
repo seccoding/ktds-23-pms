@@ -228,6 +228,7 @@ public class EmployeeController {
 		 */
 		int isEmpIdUseCount = this.employeeService.getOneEmpIdIsExist(empId);
 		if(isEmpIdUseCount == 1) {
+			// 수정사항
 			return new AjaxResponse().append("errorMessage", "이미 사용중인 사원번호 입니다.");
 		}
 		
@@ -241,9 +242,11 @@ public class EmployeeController {
 				.add("pwd", Type.PASSWORD, "비밀번호 형식으로 입력해 주세요.")
 				.add("empName", Type.NOT_EMPTY, "사원이름을 입력해 주세요.")
 				.add("hireDt", Type.NOT_EMPTY, "입사일을 지정해 주세요.")
-//				.add("hireDt", Type.DATE, String.format("yyyy-MM-dd"), "입사일은 현재 날짜보다 이전이어야 합니다.")
+				.add("hireDt", Type.NOW_DATE, "입사일은 현재 날짜보다 이전이어야 합니다.")
+//				.add("originPrflFileName", Type.IMAGE_FILE, "프로필 사진은 이미지형식 이어야 합니다.")
 				.add("addr", Type.NOT_EMPTY, "주소를 입력해 주세요.")
 				.add("brth", Type.NOT_EMPTY, "생일을 지정해 주세요.")
+				.add("brth", Type.NOW_DATE, "생일은 현재 날짜보다 이전이어야 합니다.")
 				.add("email", Type.NOT_EMPTY, "이메일을 입력해 주세요.")
 				.add("email", Type.EMAIL, "이메일 형식으로 입력해 주세요.").start();
 		
@@ -257,9 +260,9 @@ public class EmployeeController {
 		
 		// 사원 회원가입에 성공했다면
 		if (createEmpSuccess) {
-			// 임시로 메인페이지로 이동
 			return new AjaxResponse().append("next", nextUrl);
 		}
+		// 수정사항
 		return new AjaxResponse().append("errorMessage", "실패사유");
 	}
 

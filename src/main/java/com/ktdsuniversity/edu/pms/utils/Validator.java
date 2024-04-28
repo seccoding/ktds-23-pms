@@ -11,7 +11,7 @@ import java.util.Map;
 public class Validator<T> {
 
 	public enum Type {
-		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE
+		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE, NOW_DATE, IMAGE_FILE
 	}
 
 	private T object;
@@ -108,7 +108,12 @@ public class Validator<T> {
 									|| !valueLocalDate.isAfter(refValueLocalDate);
 						}
 					}
-				}
+				} else if (type == Type.NOW_DATE) {
+					result = StringUtil.isBeforeLocalDateNow(value);
+				} 
+//				else if (type == Type.IMAGE_FILE) {
+//					result = StringUtil.isImageFileFormat(value);
+//				}
 
 				if (!result) {
 					if (!this.results.containsKey(key)) {
