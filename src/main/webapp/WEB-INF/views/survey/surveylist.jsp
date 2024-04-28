@@ -108,13 +108,6 @@
                         <option value="100" ${searchSurveyVO.listSize eq 100 ? 'selected' : ''}>100개</option>
                     </select>
 
-                    <select id="status" name="searchStatus">
-                        <option value="all" ${searchProjectVO.searchStatus eq 'all' ? 'selected' : ''}>전체상태</option>
-                        <c:forEach items="${commonCodeList}" var="code">
-                            <option value="${code.cmcdId}" ${searchProjectVO.searchStatus eq code.cmcdId ? 'selected' : ''}>${code.cmcdName}</option>
-                        </c:forEach>
-                    </select>
-
                     <select id="search-type" name="searchType">
                         <option value="" selected disabled hidden>검색 옵션</option>
                         <option value="project" ${searchSurveyVO.searchType eq 'project' ? 'selected' : ''}>프로젝트명
