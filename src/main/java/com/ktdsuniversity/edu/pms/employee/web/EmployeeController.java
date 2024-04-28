@@ -147,12 +147,14 @@ public class EmployeeController {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		TeamListVO teamList = this.teamService.getAllTeamList(deptId);
 
-		return new AjaxResponse().append("employeeDept", employee.getDeptId()).append("teamList", teamList.getTeamList()).append("empTeamList", employee.getTeamList());
+		return new AjaxResponse().append("employee", employee).append("teamList", teamList.getTeamList()).append("empTeamList", employee.getTeamList());
 	}
 	
 	@ResponseBody
 	@PostMapping("/ajax/employee/modify")
 	public AjaxResponse modifyEmployee(EmployeeVO employeeVO) {
+		
+		System.out.println(employeeVO.getWorkSts());
 		
 		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
 		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());

@@ -28,7 +28,7 @@ public class BorrowController {
 	@GetMapping("/product/rentalstate")
 	public String viewRentalStatePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
 				,BorrowVO borrowVO, ProductVO productVO, ProductManagementVO productManagementVO, SearchBorrowVO searchBorrowVO) {
-//		BorrowListVO borrowListVO = this.borrowService.getUserRentalState(employeeVO);
+
 		
 		searchBorrowVO.setEmployeeVO(employeeVO);
 		searchBorrowVO.setProductVO(productVO);
@@ -52,7 +52,7 @@ public class BorrowController {
 			throw new PageNotFoundException();
 		}
 		
-//		BorrowListVO borrowListVO = this.borrowService.getProductManageState();
+
 		
 		searchBorrowVO.setEmployeeVO(employeeVO);
 		searchBorrowVO.setProductVO(productVO);

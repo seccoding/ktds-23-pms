@@ -1,4 +1,13 @@
 $().ready(function () {
+  $(".select").on("change", function () {
+    if ($(this).val() == "X") {
+      $(".lost-day").val("");
+      $(".lost-day").prop("disabled", true);
+    } else {
+      $(".lost-day").prop("disabled", false);
+    }
+  });
+
   function confirmModal(a) {
     var alertModal = $(".modal-confirm-window");
     var modalButton = $(".confirm-confirm-button");
@@ -78,7 +87,7 @@ $().ready(function () {
             var modalText = $(".modal-text");
             modalText.text("정상적으로 삭제되었습니다.");
             modalButton.text("확인");
-  
+
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               location.href = "/product/manage/detail";
@@ -89,13 +98,12 @@ $().ready(function () {
             var modalText = $(".modal-text");
             modalText.text("삭제 중 오류가 발생되었습니다.");
             modalButton.text("확인");
-  
+
             alertModal[0].showModal();
             $(".confirm-button").on("click", function () {
               alertModal[0].close();
             });
           }
-          
         });
       }
     });
@@ -103,11 +111,10 @@ $().ready(function () {
       confirm = false;
       alertModal[0].close();
     });
-
-    
   });
 
   $(".modify").on("click", function () {
+    $(".lost-day").prop("max", new Date().toISOString().substring(0, 10));
     var modifyModal = $(".modify-modal");
     var id = $(this).data("product");
     var name = $(this).data("name");
@@ -126,10 +133,26 @@ $().ready(function () {
         $(".select").val("O");
       } else {
         $(".select").val("X");
+        $(".lost-day").prop("disabled", true);
       }
     });
 
     modifyModal[0].showModal();
+  });
+  $(".lost-day").on("change", function () {
+    if ($(this).val() < $(".buy-day").val()) {
+      var alertModal = $(".modal-window");
+      var modalButton = $(".confirm-button");
+      var modalText = $(".modal-text");
+      modalText.text("분실일은 구매일 전으로 설정할 수 없습니다.");
+      modalButton.text("확인");
+
+      alertModal[0].showModal();
+      $(".confirm-button").on("click", function () {
+        $(".lost-day").val("");
+        alertModal[0].close();
+      });
+    }
   });
 
   $("#cancel-btn").on("click", function () {
@@ -137,45 +160,56 @@ $().ready(function () {
   });
 
   $("#modify-btn").on("click", function () {
-    console.log($(".buy-day").val());
-    $.post(
-      "/ajax/product/manage/view/modify",
-      {
-        prdtMngId: $(".manage-id").text(),
-        prdtPrice: $(".price").val(),
-        buyDt: $(".buy-day").val(),
-        lostYn: $(".select").val() === "O" ? "Y" : "N",
-        lostDt: $(".lost-day").val(),
-        prdtId: paramId,
-      },
-      function (res) {
-        if (res.data.result) {
-          var alertModal = $(".modal-window");
-          var modalButton = $(".confirm-button");
-          var modalText = $(".modal-text");
-          modalText.text("정상적으로 수정되었습니다.");
-          modalButton.text("확인");
+    if ($(".select").val() === "O" && $(".lost-day").val() == "") {
+      var alertModal = $(".modal-window");
+      var modalButton = $(".confirm-button");
+      var modalText = $(".modal-text");
+      modalText.text("분실일을 지정해주세요");
+      modalButton.text("확인");
 
-          alertModal[0].showModal();
-          $(".confirm-button").on("click", function () {
-            alertModal[0].close();
-            location.href = res.data.detailUrl;
-          });
-        } else {
-          var alertModal = $(".modal-window");
-          var modalButton = $(".confirm-button");
-          var modalText = $(".modal-text");
-          modalText.text("수정 중 오류가 발생했습니다.");
-          modalButton.text("확인");
+      alertModal[0].showModal();
+      $(".confirm-button").on("click", function () {
+        alertModal[0].close();
+      });
+    } else {
+      console.log($(".buy-day").val());
+      $.post(
+        "/ajax/product/manage/view/modify",
+        {
+          prdtMngId: $(".manage-id").text(),
+          prdtPrice: $(".price").val(),
+          buyDt: $(".buy-day").val(),
+          lostYn: $(".select").val() === "O" ? "Y" : "N",
+          lostDt: $(".lost-day").val(),
+          prdtId: paramId,
+        },
+        function (res) {
+          if (res.data.result) {
+            var alertModal = $(".modal-window");
+            var modalButton = $(".confirm-button");
+            var modalText = $(".modal-text");
+            modalText.text("정상적으로 수정되었습니다.");
+            modalButton.text("확인");
 
-          alertModal[0].showModal();
-          $(".confirm-button").on("click", function () {
-            
-            location.href = res.data.detailUrl;
-          });
+            alertModal[0].showModal();
+            $(".confirm-button").on("click", function () {
+              alertModal[0].close();
+              location.href = res.data.detailUrl;
+            });
+          } else {
+            var alertModal = $(".modal-window");
+            var modalButton = $(".confirm-button");
+            var modalText = $(".modal-text");
+            modalText.text("수정 중 오류가 발생했습니다.");
+            modalButton.text("확인");
+
+            alertModal[0].showModal();
+            $(".confirm-button").on("click", function () {
+              location.href = res.data.detailUrl;
+            });
+          }
         }
-        
-      }
-    );
+      );
+    }
   });
 });

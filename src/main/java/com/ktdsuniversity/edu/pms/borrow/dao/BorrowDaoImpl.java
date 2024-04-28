@@ -27,10 +27,6 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getBorrowCount", employeeVO.getEmpId());
 	}
 
-	@Override
-	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO) {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalState", employeeVO.getEmpId());
-	}
 	
 	@Override
 	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO) {
@@ -42,15 +38,6 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".searchAllUserRentalState", searchBorrowVO);
 	}
 
-	@Override
-	public int getProductManageStateAllCount() {
-		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getProductManageStateAllCount");
-	}
-
-	@Override
-	public List<BorrowVO> getProductManageState() {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState");
-	}
 	
 	@Override
 	public int searchProductManagementStateAllCount(SearchBorrowVO searchBorrowVO) {
