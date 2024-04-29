@@ -71,24 +71,22 @@ th, td {
             <tbody>
                 <c:choose>
                     <c:when test="${not empty surveyList.projectList}">
-                        <c:forEach items="${surveyList.projectList}" var="survey">
-                            <tr class="prj-list" data-prj-id="${survey.prjId}" data-srv-sts="${survey.srvSts}">     
-                                <td>${survey.prjName}</td>
-                                <td>${survey.clntInfo}</td>
-                                <td>${survey.deptVO.deptName}</td>
-                                <td>${survey.prjSts}</td>
-                                <td>${survey.strtDt}</td>
-                                <td>${survey.endDt}</td>
+                        <c:forEach items="${surveyList.projectList}" var="project">
+                            <tr class="prj-list" data-prj-id="${project.prjId}" data-srv-sts="${project.srvSts}">     
+                                <td>${project.prjName}</td>
+                                <td>${project.clntInfo}</td>
+                                <td>${project.deptVO.deptName}</td>
+                                <td>${project.prjSts}</td>
+                                <td>${project.strtDt}</td>
+                                <td>${project.endDt}</td>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                                    <td><c:out value="${empty survey.srvSts ? 'N' : survey.srvSts}" /></td>
+                                    <td class="survey-status"><c:out value="${empty project.srvSts ? 'N' : project.srvSts}" /></td>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">
-                                    <c:forEach items="${teammate.projectTeammateList}" var="teammate">
-                                        <td class="survey-yn" data-survey-yn="${teammate.projectTeammateList.srvYn}">${teammate.srvYn}</td>
-                                    </c:forEach>
+                                    <td class="survey-yn" data-survey-yn="${project.srvYn}">${project.srvYn}</td>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                                    <th><a href="survey/result?prjId=${survey.prjId}">설문 결과</a></th>
+                                    <th><a href="survey/result?prjId=${project.prjId}">설문 결과</a></th>
                                 </c:if>
                             </tr>
                         </c:forEach>
@@ -138,10 +136,7 @@ th, td {
                     <li class="page-item first">
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>
                     <li class="page-item prev">
-                        <a
-                                href="javascript:search(${searchSurveyVO.prevGroupStartPageNo});"
-                        ><img src="/images/chevron-left.svg"/></a
-                        >
+                        <a href="javascript:search(${searchSurveyVO.prevGroupStartPageNo});"><img src="/images/chevron-left.svg"/></a>
                     </li>
                 </c:if>
 
@@ -159,10 +154,7 @@ th, td {
 
                 <c:if test="${searchSurveyVO.hasNextGroup}">
                     <li class="page-item next">
-                        <a
-                                href="javascript:search(${searchSurveyVO.nextGroupStartPageNo});"
-                        ><img src="/images/chevron-right.svg"/></a
-                        >
+                        <a><img src="/images/chevron-right.svg"/></a>
                     </li>
                     <li class="page-item last">
                         <a href="javascript:search(${searchSurveyVO.pageCount - 1});"
