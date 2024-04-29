@@ -14,15 +14,21 @@
     table.table > tbody td[colspan] {
         text-align: center;
     }
+    .sub-head-flex{
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
 <script type="text/javascript" src="/js/product/managestate.js"></script>
 </head>
 <body>
     <h2>비품 대여 현황(관리자)</h2>
-    <div class="flex">
+    <div class="sub-head-flex">
         <div>대여중인 비품은 ${productState.borrowCnt}건입니다.</div>
-        <div class="flex">
-
+        <div>
+            <input id="rental-item-list" type="checkbox" />
+            <label for="rental-item-list"></label>
+            <label for="rental-item-list">대여중인 비품만 보기</label>
         </div>
     </div>
     <div class="grid">
@@ -38,11 +44,9 @@
                     <th>대여상태</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="return-state-list">
                 <c:choose>
-                    <%-- borrowList의 내용이 존재한다면 (1개 이상 있다면) --%>
                     <c:when test="${not empty productState.borrowList}">
-                        <%-- 내용을 반복하면서 보여주고 --%>
                         <c:forEach items="${productState.borrowList}" var="product">
                             <tr>
                                 <td>${product.prdtMngId}</td>
@@ -66,7 +70,6 @@
                             </tr>
                         </c:forEach>
                     </c:when>
-                    <%-- borrowList의 내용이 존재하지 않는다면 --%>
                     <c:otherwise>
                         <tr>
                             <td colspan="6">
