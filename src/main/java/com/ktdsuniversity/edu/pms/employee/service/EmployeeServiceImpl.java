@@ -81,16 +81,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
-		List<TeamVO> nullList = new ArrayList<>();
-		
-		if(teamList.size() >0 && teamList != null) {
-			
-			employeeVO.setTeamList(teamList);
-		}else {
-			employeeVO.setTeamList(nullList);
-		}
+	
+		employeeVO.setTeamList(teamList);
 
 			
+		return employeeVO;
+		
+	}
+	@Override
+	public EmployeeVO getOneEmployeenullCheck(String empId) {
+		
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
+		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
+
+		
+		if(teamList.size() >0 && teamList != null) {
+		
+		employeeVO.setTeamList(teamList);
+		}
 		return employeeVO;
 		
 	}
