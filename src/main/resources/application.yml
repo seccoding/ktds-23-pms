@@ -34,7 +34,7 @@ app:
       /employee/login
   multipart:
     #파일 업로드 위치 지정
-    base-dir: Z:\uploadfile
+    base-dir: C:\uploadfile
     # 난독화 여부 설정
     obfuscation:
       # 파일명 난독화 할 경우 true
@@ -46,29 +46,8 @@ app:
     available-file-list:
       handler: tika
       enable: true
-      list: audio/aac,
-        video/x-msvideo,
-        text/css,
-        text/csv,
-        application/msword,
+      list: 
         image/gif,
-        text/html,
         image/jpeg,
-        application/json,
-        audio/midi,
-        video/mpeg,
-        audio/ogg,
-        video/ogg,
-        application/ogg,
-        application/pdf,
-        application/vnd.ms-powerpoint,
         image/png,
         image/tiff,
-        application/vnd.ms-excel,
-        application/zip,
-        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-        application/vnd.openxmlformats-officedocument.presentationml.presentation,
-        text/plain,
-        application/x-tika-ooxml

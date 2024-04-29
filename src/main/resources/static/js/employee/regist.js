@@ -3,12 +3,12 @@ $().ready(function() {
 		$(".error").remove();
 
 		var file = $("#prfl")[0].files[0];
-
 		var formData = new FormData();
 
 		formData.append("file", file);
 		formData.append("empId", $("#empId").val());
 		formData.append("pwd", $("#pwd").val());
+		formData.append("confirmPwd", $("#confirmPwd").val());
 		formData.append("empName", $("#empName").val());
 		formData.append("hireDt", $("#hireDt").val());
 		formData.append("cntct", $("#cntct").val());
@@ -37,7 +37,9 @@ $().ready(function() {
 				var errors = response.data.errors;
 				var next = response.data.next;
 				var errorMessage = response.data.errorMessage;
-
+				
+				console.log(errors);
+				
 				if (errors) {
 					for (var key in errors) {
 						var errorDiv = $("<div></div>");
