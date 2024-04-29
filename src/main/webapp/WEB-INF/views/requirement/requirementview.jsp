@@ -14,8 +14,21 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <style>
       .grid {
         display: grid;
+
         grid-template-columns: 200px 1fr;
-        grid-template-rows: repeat(9 40px);
+        grid-template-rows: 60px 40px 40px 40px 600px 40px;
+      }
+      .grid :nth-child(3) {
+        grid-column: 1 / -1;
+      }
+      .grid :nth-child(4) {
+        grid-column: 1 / -1;
+      }
+
+      .flex-child {
+        display: flex;
+        /* grid-template-columns: 15% 15% 15% 15% 15% 15%;
+        grid-template-rows: 40px; */
       }
     </style>
   </head>
@@ -29,31 +42,42 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       data-admin-code="${sessionScope._LOGIN_USER_.admnCode}"
       data-crtr-id="${requirement.crtrId}"
     >
-      <div>프로젝트명</div>
-      <div>${requirement.projectVO.prjName}</div>
-      <div>요구사항 아이디</div>
-      <div id="rqmId" data-rqm-id="${requirement.rqmId}">
-        ${requirement.rqmId}
+      <div class="title">요구사항 제목</div>
+      <div class="title">${requirement.rqmTtl}</div>
+      <div class="item flex-child">
+        <!-- 프로젝트 좌측 나머지 우측가야됨 -->
+        <div class="sub-item">프로젝트명</div>
+        <div class="sub-item">${requirement.projectVO.prjName}</div>
+        <div class="sub-item">작성자</div>
+        <div class="sub-item">${requirement.crtrIdVO.empName}</div>
+        <div class="sub-item">작성일</div>
+        <div class="sub-item">${requirement.crtDt}</div>
       </div>
-      <div>요구사항 제목</div>
-      <div>${requirement.rqmTtl}</div>
+      <!-- 일정상태 진행상태 각각 반반  -->
+      <div class="item flex-child">
+        <div class="sub-item">일정상태</div>
+        <div class="sub-item">${requirement.scdStsVO.cmcdName}</div>
+        <div class="sub-item">진행상태</div>
+        <div class="sub-item">${requirement.rqmStsVO.cmcdName}</div>
+      </div>
+      <!-- 담당자 목록 3등분 -->
+      <div class="item">담당자 목록</div>
+      <div class="item">
+        <div class="flex-child">
+          <div class="sub-item">담당개발자</div>
+          <div class="sub-item">${requirement.dvlrpVO.empName}</div>
+          <div class="sub-item">확인자</div>
+          <div class="sub-item">${requirement.cfrmrVO.empName}</div>
+          <div class="sub-item">테스터</div>
+          <div class="sub-item">${requirement.tstrVO.empName}</div>
+        </div>
+      </div>
 
-      <div>담당개발자</div>
-      <div>${requirement.dvlrpVO.empName}</div>
-      <div>확인자</div>
-      <div>${requirement.cfrmrVO.empName}</div>
-      <div>테스터</div>
-      <div>${requirement.tstrVO.empName}</div>
+      <div class="item">요구사항 내용</div>
+      <div class="item">${requirement.rqmCntnt}</div>
 
-      <div>요구사항 내용</div>
-      <div>${requirement.rqmCntnt}</div>
-
-      <div>일정상태</div>
-      <div>${requirement.scdStsVO.cmcdName}</div>
-      <div>진행상태</div>
-      <div>${requirement.rqmStsVO.cmcdName}</div>
-      <div>파일</div>
-      <div>
+      <div class="item">파일</div>
+      <div class="item">
         <a href="/requirement/downloadFile/${requirement.rqmId}"
           >${requirement.rqmFile}</a
         >
