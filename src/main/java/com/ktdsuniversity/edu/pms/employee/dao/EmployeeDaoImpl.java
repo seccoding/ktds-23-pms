@@ -9,6 +9,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -155,5 +156,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 
 	}
 
+	@Override
+	public int modifyEmployeeDept(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE+".modifyEmployeeDept", employeeVO);
+	}
+
+	
 
 }

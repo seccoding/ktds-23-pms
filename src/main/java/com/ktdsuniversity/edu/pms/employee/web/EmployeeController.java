@@ -30,6 +30,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -92,7 +93,10 @@ public class EmployeeController {
 		List<JobHistoryVO> jobHistList = this.changeHistoryService.getUserJobHistory(empId);
 		List<PositionHistoryVO> positionHistList = this.changeHistoryService.getUserPositionHistory(empId);
 		List<CommonCodeVO> positionList = this.changeHistoryService.getAllPosition();
-		
+		System.out.println(employeeVO.getTeamList()+"!!!!!!!!!!!!!!");
+		for(TeamVO team:employeeVO.getTeamList()) {
+			System.out.println(team.getTmId()+"?????????");
+		}
 		model.addAttribute("employeeVO", employeeVO);
 		model.addAttribute("departmentHistList", departmentHistList);
 		model.addAttribute("jobHistList", jobHistList);

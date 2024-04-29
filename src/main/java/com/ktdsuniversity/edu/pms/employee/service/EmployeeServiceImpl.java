@@ -81,9 +81,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
+		List<TeamVO> nullList = new ArrayList<>();
 		
-	
-		employeeVO.setTeamList(teamList);
+		if(teamList.size() >0 && teamList != null) {
+			
+			employeeVO.setTeamList(teamList);
+		}else {
+			employeeVO.setTeamList(nullList);
+		}
+
 			
 		return employeeVO;
 		
@@ -241,6 +247,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeVO getOneEmployeeNoTeam(String empId) {
 		return this.employeeDao.getOneEmployee(empId);
+	}
+
+	@Override
+	public EmployeeVO getOneEmployeeCheckNull(String empId) {
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
+		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
+		
+		if(teamList.size()>0) {
+			
+			employeeVO.setTeamList(teamList);
+		}
+
+			
+		return employeeVO;
 	}
 
 }

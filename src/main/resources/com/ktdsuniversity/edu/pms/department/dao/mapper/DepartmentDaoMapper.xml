@@ -129,6 +129,13 @@
 		 WHERE DEPT_ID = #{_parameter}
 		   AND WORK_STS != '204'
 	</select>
+	
+	<select id="getDeptIdByName" parameterType="string">
+		SELECT DEPT_ID 
+		  FROM DEPARTMENT
+		 WHERE DEPT_NAME = #{_parameter}
+		   AND DEL_YN = 'N'
+	</select>
 
 
 </mapper>

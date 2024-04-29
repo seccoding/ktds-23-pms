@@ -64,7 +64,6 @@ uri="jakarta.tags.core" %>
       <span id="password-match-status"></span>
 
       <c:choose>
-        <!-- 개인 정보 수정 화면 -->
         <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <label for="workSts">재직 상태</label>
           <div>
@@ -104,10 +103,7 @@ uri="jakarta.tags.core" %>
             <div class="flex-col">
               <div>추가할 팀을 선택해주세요</div>
               <select id="add-team-select">
-                <!-- <c:forEach items="${teamListinDept}" var="team">
-                                <option value="${team.tmId}">${team.tmName}</option>
-
-                            </c:forEach> -->
+               
               </select>
               <div>
                 <button id="add-team-final">추가</button>
@@ -130,7 +126,7 @@ uri="jakarta.tags.core" %>
           </div>
         </c:when>
 
-        <!-- 관리자일 경우 개인 정보 수정 -->
+        
         <c:otherwise>
           <label for="workSts">재직 상태</label>
           <select id="workSts" name="workSts" value="${employeeVO.workSts}" disabled>
@@ -168,16 +164,14 @@ uri="jakarta.tags.core" %>
         </c:otherwise>
       </c:choose>
 
-      <!-- <input type="text" id="deptName"
-        name="deptName" value="${employeeVO.departmentVO.deptName}"/> -->
-
+      
       <div class="btn-group">
         <div class="right-align">
-          <!-- <input type="submit" value="저장"/> -->
+         
           <button type="button" class="save-modify">저장</button>
         </div>
       </div>
     </div>
-    <!-- </form> -->
+   
   </body>
 </html>
