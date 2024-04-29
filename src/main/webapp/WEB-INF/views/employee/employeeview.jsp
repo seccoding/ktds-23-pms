@@ -71,7 +71,7 @@
   <dialog class="job-modal">
     <select class="job-select-box" data-origin="${employeeVO.jobId}">
       <c:forEach items="${jobList}" var="job" >
-        <option value="${job.cmcdId}">${job.cmcdName}</option>
+        <option value="${job.jobId}">${job.jobName}</option>
       </c:forEach>
     </select>
     <label for="job-change-note">변경사유</label>
@@ -138,9 +138,12 @@
 
         </div>
       </div>  
-       <div class="table-container">
-        <div class="grid">
-          <label for="cntct">연락처</label>
+     <div class="table-container">
+      <div class="grid">
+        <label for="pstn">직급</label>
+        <div>${employeeVO.commonCodeVO.cmcdName}</div>
+
+        <label for="cntct">연락처</label>
         <div>${employeeVO.cntct}</div>
 
         <label for="addr">주소</label>
@@ -194,13 +197,13 @@
                     </td>
                   </tr>
                 </c:if>
-                <c:forEach items="${jobHistList}" var="jobHist" varStatus="item">
+                <c:forEach items="${jobHistList}" var="jHL" varStatus="item">
                   <tr>
                     <td>${item.count}</td>
-                    <td>${jobHist.jobVO.jobName}</td>
-                    <td>${jobHist.jobStrtDt}</td>
-                    <td>${jobHist.jobEndDt}</td>
-                    <td>${jobHist.cnNote}</td>
+                    <td>${jHL.jobVO.jobName}</td>
+                    <td>${jHL.jobStrtDt}</td>
+                    <td>${jHL.jobEndDt}</td>
+                    <td>${jHL.cnNote}</td>
                   </tr>
                 </c:forEach>
               </tbody>

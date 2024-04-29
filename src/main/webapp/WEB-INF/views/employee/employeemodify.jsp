@@ -57,12 +57,13 @@ uri="jakarta.tags.core" %>
       <input type="text" id="email" value="${employeeVO.email}" />
 
       <label for="newPwd">비밀번호</label>
-      <input type="password" id="newPwd" name="newPwd" value="${employeeVO.newPwd}" />
+      <input type="password" id="newPwd" name="hashedNewPwd" value="${employeeVO.hashedNewPwd}" />
 
       <label for="confirmPwd">비밀번호 확인</label>
       <input type="password" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}" />
       <span id="password-match-status"></span>
 
+      <!-- 개인 정보 수정 화면 -->
       <c:choose>
         <c:when test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <label for="workSts">재직 상태</label>

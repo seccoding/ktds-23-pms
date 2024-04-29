@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.job.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,11 @@ public class JobDaoImpl extends SqlSessionDaoSupport implements JobDao{
 	public JobVO getOneJob(String jobId) {
 
 		return getSqlSession().selectOne(JobDao.NAME_SPACE + ".getOneJob", jobId);
+	}
+
+	@Override
+	public List<JobVO> getAllJob() {
+		return getSqlSession().selectList(JobDao.NAME_SPACE + ".getAllJob");
 	}
 
 

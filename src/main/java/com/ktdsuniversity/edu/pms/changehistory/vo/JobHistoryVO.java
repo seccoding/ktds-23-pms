@@ -7,7 +7,7 @@ public class JobHistoryVO {
 
     private String jobHistId;
     private String empId;
-    private String jobId;
+    private String pastJobId;
     private String jobStrtDt;
     private String jobEndDt;
     private String cnNote;
@@ -34,11 +34,11 @@ public class JobHistoryVO {
 	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
-	public String getJobId() {
-		return jobId;
+	public String getPastJobId() {
+		return pastJobId;
 	}
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
+	public void setPastJobId(String pastJobId) {
+		this.pastJobId = pastJobId;
 	}
 	public String getJobStrtDt() {
 		return jobStrtDt;

@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.changehistory.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,8 @@ import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.job.dao.JobDao;
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 
 @Service
 public class ChangeHistoryServiceImpl implements ChangeHistoryService{
@@ -23,6 +24,9 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 	
 	@Autowired
 	private EmployeeDao employeeDao;
+	
+	@Autowired
+	private JobDao jobDao;
 
 	@Override
 	public List<DepartmentHistoryVO> getUserDeptHisory(String empId) {
@@ -74,10 +78,10 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 	public boolean changeJob(EmployeeVO employeeVO) {
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
 
-		List<JobHistoryVO> jobHistList = this.changeHistoryDao.getUserJobHistory(employeeVO.getEmpId());
+		List<JobHistoryVO> jbHistList = this.changeHistoryDao.getUserJobHistory(employeeVO.getEmpId());
 
 		int updatedCount = this.employeeDao.modifyEmployeeJob(employeeVO);
-		if(jobHistList.size() > 0) {
+		if(jbHistList.size() > 0) {
 			String prevDate = this.changeHistoryDao.getRecentJobHist(employeeVO.getEmpId());
 			employeeVO.setHireDt(prevDate);
 		}else {
@@ -89,8 +93,8 @@ public class ChangeHistoryServiceImpl implements ChangeHistoryService{
 	}
 
 	@Override
-	public List<CommonCodeVO> getAllJob() {
-		List<CommonCodeVO> jobList =this.changeHistoryDao.getAllJob();
+	public List<JobVO> getAllJob() {
+		List<JobVO> jobList = this.jobDao.getAllJob();
 		return jobList;
 	}
 

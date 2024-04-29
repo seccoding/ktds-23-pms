@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.job.dao;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 
 public interface JobDao {
@@ -13,6 +15,8 @@ public interface JobDao {
 	public int getNameCount(String jobName);
 
 	public JobVO getOneJob(String jobId);
+
+	public List<JobVO> getAllJob();
 	
 
 }

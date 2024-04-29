@@ -4,4 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.job.dao.JobDao">
 
+	<select id="getAllJob"
+			resultType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
+			
+		SELECT JOB_ID
+			 , JOB_NAME
+		  FROM JOB 
+		 WHERE DEL_YN = 'N'
+	
+	</select>
+
 </mapper>

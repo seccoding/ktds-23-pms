@@ -116,7 +116,14 @@ $().ready(function () {
   });
 
   $(".save-modify").on("click", function () {
-    var willAddList = {};
+    var newPwd = $("#newPwd").val();
+    var confirmPwd = $("#confirmPwd").val();
+
+    if(newPwd == confirmPwd) {
+      var willAddList = {};
+      willAddList.hashedNewPwd = newPwd;
+    
+
 
     $(".will-add-team-list")?.each((idx, item) => {
       console.log($(item));
@@ -130,7 +137,6 @@ $().ready(function () {
     willAddList.hireYear = $("#hireYear").val();
     willAddList.hireDt = $("#hireDt").val();
     willAddList.cntct = $("#cntct").val();
-    willAddList.newPwd = $("#pwd").val();
     willAddList.addr = $("#addr").val();
     willAddList.brth = $("#brth").val();
     willAddList.email = $("#email").val();
@@ -146,5 +152,8 @@ $().ready(function () {
         alert("수정 중 오류가 발생했습니다.");
       }
     });
+  } else {
+    alert("비밀번호가 서로 일치하지 않습니다.");
+   }
   });
 });
