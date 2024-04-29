@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeService;
@@ -64,16 +65,33 @@ public class KnowledgeController {
 
 	// 목록 조회
 	@GetMapping("/knowledge")
-	public String viewKnowledgeListPage(Model model, SearchKnowledgeVO searchKnowledgeVO,
+	public String viewKnowledgeListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, SearchKnowledgeVO searchKnowledgeVO,
 			@RequestParam(required = false) String knlId) {
+		
 		ProjectListVO projectList = this.projectService.getAllProject();
-
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchKnowledgeVO.setEmpId(employeeVO.getEmpId());
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {} 
+		
+		projectList.setProjectList(
+				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
+		
+		
+		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			requirementList=  this.requirementService.getAllRequirementByTeammateId(employeeVO.getEmpId());
+		}
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchKnowledgeVO.setEmpId(employeeVO.getEmpId());
+		}
+		
 		KnowledgeListVO knowledgeList = this.knowledgeService.searchAllKnowledge(searchKnowledgeVO);
 
-		model.addAttribute("projectList", projectList);
-		model.addAttribute("knowledgeList", knowledgeList);
-
-		model.addAttribute("searchKnowledgeVO", searchKnowledgeVO);
+		model.addAttribute("projectList", projectList)
+			 .addAttribute("requirementList", requirementList)
+			 .addAttribute("knowledgeList", knowledgeList);
+//			 .addAttribute("searchKnowledgeVO", searchKnowledgeVO);
 		return "/knowledge/knowledgelist";
 	}
 
@@ -82,16 +100,12 @@ public class KnowledgeController {
 	public String viewDetailKnowledgeListPage(@RequestParam String knlId, Model model,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
+		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
+		
 		// 유저 검증
 		if (employeeVO == null || employeeVO.getLgnYn() == "N") {
 			throw new EmployeeNotLoggedInException();
 		}
-
-		logger.info(knlId);
-
-		KnowledgeVO knowledgeVO = this.knowledgeService.getOneKnowledge(knlId, true);
-
-		// int recommendCount = knowledgeService.getKnowledgeRecommendCount(knlId);
 
 		// knowledge/view 페이지에 데이터를 전송.
 		model.addAttribute("knowledgeVO", knowledgeVO);
@@ -104,9 +118,9 @@ public class KnowledgeController {
 	@GetMapping("/knowledge/write")
 	public String viewKnowledgeWritePage(Model model) {
 
-		ProjectListVO projectList = projectService.getAllProject();
-		List<RequirementVO> requirementList = requirementService.getAllRequirement();
-		requirementList.stream().filter(rqm -> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+		
 		model.addAttribute("requirement", requirementList);
 
 		return "/knowledge/knowledgewrite";
@@ -116,27 +130,31 @@ public class KnowledgeController {
 	@ResponseBody
 	@PostMapping("/ajax/knowledge/write")
 	public AjaxResponse doKnowledgeWrite(KnowledgeVO knowledgeVO,@RequestParam(value="file", required=false) MultipartFile file,
-			Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-
-		// 유저 검증
-		if (employeeVO == null || employeeVO.getLgnYn() == "N") {
-			throw new EmployeeNotLoggedInException();
-		}
+											Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		Map<String, List<String>> error = this.knowledgeValidator(knowledgeVO);
 		if (error != null) {
 			return new AjaxResponse().append("error", error);
 		}
-
+		
+		// 유저 검증
 		knowledgeVO.setCrtrId(employeeVO.getEmpId());
-		// knowledgeVO.setIsMngr(employeeVO.getEmpId());
+//		knowledgeVO.setIsMngr(employeeVO.getEmpId());
+		if (!knowledgeVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+			throw new AccessDeniedException();
+		}
+		
+//		// 로그인 검증
+//		if (employeeVO == null || employeeVO.getLgnYn() == "N") {
+//			throw new EmployeeNotLoggedInException();
+//		}
 
 		boolean isCreateSuccess = this.knowledgeService.createNewKnowledge(knowledgeVO, file);
-		if (isCreateSuccess) {
-			logger.info("글 등록이 완료되었습니다.");
-		} else {
-			logger.info("글 등록이 실패되었습니다.");
-		}
+//		if (isCreateSuccess) {
+//			logger.info("글 등록이 완료되었습니다.");
+//		} else {
+//			logger.info("글 등록이 실패되었습니다.");
+//		}
 
 		String knlId = knowledgeVO.getKnlId();
 
@@ -154,7 +172,7 @@ public class KnowledgeController {
 
 		if (!employeeVO.getEmpId().equals(knowledgeVO.getCrtrId())
 				&& employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 
 		// 게시글의 정보를 화면에 보내준다.
@@ -171,7 +189,6 @@ public class KnowledgeController {
 			KnowledgeVO knowledgeVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
-
 		// 유저 검증
 		if (!originKnowledgeVO.getCrtrId().equals(employeeVO.getEmpId()) && !employeeVO.getMngrYn().equals('N')) {
 			throw new PageNotFoundException();
@@ -184,6 +201,7 @@ public class KnowledgeController {
 
 		// Command Object 에는 전달된 knlId가 없으니 @PathVariable로 전달된 knlId를 세팅해준다.
 		knowledgeVO.setKnlId(knlId);
+		knowledgeVO.setCrtrId(employeeVO.getEmpId());
 
 		boolean isUpdateSuccess = this.knowledgeService.updateOneKnowledge(knowledgeVO, file);
 

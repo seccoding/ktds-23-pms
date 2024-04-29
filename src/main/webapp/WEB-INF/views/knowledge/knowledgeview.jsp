@@ -15,7 +15,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <h1>지식관리 게시글 조회</h1>
 
     <div class="grid" data-id="${knowledgeVO.knlId}">
-      <span style="display: none;" hidden id="login-email">${sessionScope._LOGIN_USER_.empId}</span>
+      <span style="display: none" hidden id="login-email"
+        >${sessionScope._LOGIN_USER_.empId}</span
+      >
       <label for="knlTtl">제목</label>
       <div>${knowledgeVO.knlTtl}</div>
 
@@ -42,7 +44,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div>${knowledgeVO.knlCntnt}</div>
 
       <label for="knlCnt">조회수</label>
-      <div >${knowledgeVO.knlCnt}</div>
+      <div>${knowledgeVO.knlCnt}</div>
 
       <label for="knlRecCnt">추천수</label>
       <div id="knlRecCnt">${knowledgeVO.knlRecCnt}</div>
@@ -50,24 +52,32 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <div class="replies">
         <div class="reply-items"></div>
         <div class="write-reply">
-          <textarea id="txt-reply" name="rplCntnt" data-issue-id="${knowledgeVO.knlId}"></textarea>
-          <button id="btn-save-reply" data-mode ="">등록</button>
+          <textarea
+            id="txt-reply"
+            name="rplCntnt"
+            data-issue-id="${knowledgeVO.knlId}"
+          ></textarea>
+          <button id="btn-save-reply" data-mode="">등록</button>
           <button id="btn-cancel-reply">취소</button>
         </div>
       </div>
 
       <div class="btn-group">
-        <button type="button" class="recommend-knowledge" value="${knowledgeVO.knlId}">
-          추천하기</button>
-          
-        <button> 
+        <button
+          type="button"
+          class="recommend-knowledge"
+          value="${knowledgeVO.knlId}"
+        >
+          추천하기
+        </button>
+
+        <button>
           <a href="/knowledge/modify/${knowledgeVO.knlId}">수정</a>
         </button>
         <button>
           <a class="delete-knowledge" href="javascript:void(0);">삭제</a>
         </button>
       </div>
-
-     
+    </div>
   </body>
 </html>

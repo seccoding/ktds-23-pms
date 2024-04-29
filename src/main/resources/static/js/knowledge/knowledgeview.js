@@ -21,8 +21,8 @@ $().ready(function () {
         location.href = "/knowledge/delete/" + knlId;
       },
       fnNegativeBtnHandler: function () {
-        var knlId = $(".grid").data("id");
-        location.href = "/knowledge/delete/" + knlId;
+        // var knlId = $(".grid").data("id");
+        // location.href = "/knowledge/view/" + knlId;
       },
     });
   });

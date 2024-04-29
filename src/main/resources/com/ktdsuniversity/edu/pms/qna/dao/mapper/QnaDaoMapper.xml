@@ -83,7 +83,9 @@
   </select>
   
   
-    <select id="searchAllQnaCount" resultType="_int">
+    <select id="searchAllQnaCount" 
+    parameterType="com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO"
+    resultType="_int">
   	SELECT COUNT(1) 
 	  FROM QNA Q
 	 INNER JOIN REQUIREMENT R
@@ -91,6 +93,7 @@
 	 INNER JOIN PROJECT P
 	    ON P.PRJ_ID = R.PRJ_ID
 	 WHERE Q.DEL_YN = 'N'
+	   AND R.DEL_YN = 'N'
 	 <if test='searchKeyword != null and searchKeyword != ""'>
 	 <choose>
 	 	<when test='searchType == "prjName"'>
@@ -114,6 +117,15 @@
 	 	</when>
 	 </choose>
 	 </if>
+	 <if test='empId != null and  empId !=""'>
+		 AND Q.RQM_ID IN( SELECT RQM_ID 
+	       					FROM REQUIREMENT R
+	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
+	       				      					 FROM PROJECT_TEAMMATE PT 
+	       				      					WHERE PT.TM_ID =#{empId}
+	       				   					)
+	     				)
+		</if>
   </select>
   
   
@@ -125,8 +137,8 @@
 			 , Q.QA_CNTNT
 			 , Q.QA_CNT
 			 , Q.QA_REC_CNT
-			 , Q.CRT_DT
-			 , Q.MDF_DT
+			 , TO_CHAR(Q.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+			 , TO_CHAR(Q.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
 			 , Q.DEL_YN
 			 , Q.CRTR_ID
 			 , Q.MDFR_ID
@@ -140,6 +152,7 @@
 		 INNER JOIN PROJECT P
 		    ON P.PRJ_ID = R.PRJ_ID
 		  WHERE Q.DEL_YN = 'N'
+		    AND R.DEL_YN = 'N'
 		  <if test='searchKeyword != null and searchKeyword != ""'>
 	 <choose>
 	 	<when test='searchType == "prjName"'>
@@ -163,6 +176,15 @@
 	 	</when>
 	 </choose>
 	 </if>
+	  <if test='empId != null and  empId !=""'>
+		 AND Q.RQM_ID IN( SELECT RQM_ID 
+	       					FROM REQUIREMENT R
+	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
+	       				      					 FROM PROJECT_TEAMMATE PT 
+	       				      					WHERE PT.TM_ID =#{empId}
+	       				   					)
+	     				)
+		</if>
 		ORDER BY Q.CRT_DT DESC
 	<include refid="Common.pagenate_footer" />
   </select>

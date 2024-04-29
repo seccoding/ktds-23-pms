@@ -81,7 +81,9 @@
   </select>
   
   
-  <select id="searchAllKnowledgeCount" resultType="_int">
+  <select id="searchAllKnowledgeCount" 
+  parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO"
+  resultType="_int">
   	SELECT COUNT(1) 
 	  FROM KNOWLEDGE K
 	 INNER JOIN REQUIREMENT R
@@ -89,6 +91,7 @@
 	 INNER JOIN PROJECT P
 	    ON P.PRJ_ID = R.PRJ_ID
 	 WHERE K.DEL_YN = 'N'
+	   AND R.DEL_YN = 'N'
 	 <if test='searchKeyword != null and searchKeyword != ""'>
 	 <choose>
 	 	<when test='searchType == "prjName"'>
@@ -112,7 +115,15 @@
 	 	</when>
 	 </choose>
 	 </if>
-  
+	 <if test='empId != null and  empId !=""'>
+		 AND K.RQM_ID IN( SELECT RQM_ID 
+	       					FROM REQUIREMENT R
+	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
+	       				      					 FROM PROJECT_TEAMMATE PT 
+	       				      					WHERE PT.TM_ID =#{empId}
+	       				   					)
+	     				)
+		</if>
   </select>
   
   
@@ -135,6 +146,8 @@
          , K.ORIGIN_FILE_NAME
          , P.PRJ_NAME 
          , R.RQM_TTL
+         , E.EMP_ID
+		 , E.EMP_NAME
      FROM KNOWLEDGE K
     INNER JOIN REQUIREMENT R
        ON R.RQM_ID = K.RQM_ID
@@ -143,31 +156,41 @@
     INNER JOIN EMPLOYEE E
        ON E.EMP_ID = K.CRTR_ID 
     WHERE K.DEL_YN = 'N' 
+      AND R.DEL_YN = 'N'
  <if test='searchKeyword != null and searchKeyword != ""'>
  <choose>
 	<when test='searchType == "prjName"'>
- AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
- </when>
-		 	<when test='searchType == "rqmTtl"'>
-		   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
-		 	</when>
-		 	<when test='searchType == "knlTtl"'>
-		   AND K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
-		 	</when>
-		 <when test='searchType == "knlCntnt"'>
-		   AND K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%'		
-		 </when>
-		 <when test='searchType == "knlTtl_knlCntnt"'>
-		   AND (K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
-	    	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
-		 </when>
-		 <when test='searchType == "crtrId"'>
-		   AND K.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
-		 </when>
-		 </choose>
+ 		AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
+ 	</when>
+	 	<when test='searchType == "rqmTtl"'>
+	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 	<when test='searchType == "knlTtl"'>
+	   AND K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
+	 	</when>
+	 <when test='searchType == "knlCntnt"'>
+	   AND K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%'		
+	 </when>
+	 <when test='searchType == "knlTtl_knlCntnt"'>
+	   AND (K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
+    	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+	 </when>
+	 <when test='searchType == "crtrId"'>
+	   AND K.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
+	 </when>
+	 </choose>
 	 </if>
- ORDER BY K.CRT_DT DESC 
- <include refid="Common.pagenate_footer" />
+	 <if test='empId != null and  empId !=""'>
+		 AND K.RQM_ID IN( SELECT RQM_ID 
+	       					FROM REQUIREMENT R
+	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
+	       				      					 FROM PROJECT_TEAMMATE PT 
+	       				      					WHERE PT.TM_ID =#{empId}
+	       				   					)
+	     				)
+		</if>
+		 ORDER BY K.CRT_DT DESC 
+ 		<include refid="Common.pagenate_footer" />
   </select>
 	
 	
