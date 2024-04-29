@@ -39,16 +39,15 @@
         top: 3px;
 
     }
-    input[type="checkbox"] {
-        display: inline-block;
+   
+    table.table > tbody td[colspan] {
+        text-align: center;
     }
 </style>
 </head>
 <body>
     <h2>비품 대여 현황</h2>
-    <div class="flex">
-        <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
-    </div>
+    <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
     <div class="grid">
 
         <table class="table">
@@ -56,8 +55,8 @@
                 <tr>
                     <th>
                         <input type="checkbox" class="checkbox" id="checked-all"/>
-                        <!-- <label for="checkbox1"></label>
-                        <label for="checkbox1"></label> -->
+                        <label for="checked-all"></label>
+                        <!-- <label for="checkbox1"></label> -->
                     </th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>
@@ -68,17 +67,19 @@
             </thead>
             <tbody>
                 <c:choose>
+                    <%-- borrowList의 내용이 존재한다면 (1개 이상 있다면) --%>
                     <c:when test="${not empty userRentalState.borrowList}">
-                        <c:forEach items="${userRentalState.borrowList}" var="product">
+                        <%-- 내용을 반복하면서 보여주고 --%>
+                        <c:forEach items="${userRentalState.borrowList}" var="product" varStatus="status">
                             <tr>
                                 <td>
                                     <c:choose>
                                         <c:when test="${product.productVO.onceYn eq 'Y' || not empty product.rtnDt}">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="checkbox" class="checkbox target-checkbox" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}"/>
-                                            <!-- <label for="checkbox1"></label>
-                                            <label for="checkbox1"></label> -->
+                                            <input id="checkbox-${status.count}" type="checkbox" class="checkbox target-checkbox" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}"/>
+                                            <label for="checkbox-${status.count}"></label>
+                                            <!-- <label for="checkbox1"></label> -->
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
@@ -107,6 +108,14 @@
                         </c:forEach>
     
                     </c:when>
+                    <%-- borrowList의 내용이 존재하지 않는다면 --%>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="6">
+                                등록된 비품이 존재하지 않습니다.
+                            </td>
+                        </tr>
+                    </c:otherwise>
                     
                 </c:choose>
     

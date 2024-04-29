@@ -7,19 +7,29 @@ public class SearchApprovalVO extends PaginateVO {
 
     private String searchType;
     private String searchKeyword;
-    private String searchStatus;
-    private String empId;
+    private String searchStatus; // 결재상태
+    private boolean searchAuth; // 경영관리부장 여부
+    private String searchDate; // 날짜검색용
     private EmployeeVO employeeVO;
-    
-	public String getEmpId() {
-		return empId;
-	}
 
-	public void setEmpId(String empId) {
-		this.empId = empId;
-	}
+    // 기본 생성자
+    public SearchApprovalVO() {
+    }
 
-	public String getSearchType() {
+    // employeeVO, searchStatus, searchAuth 생성자
+    public SearchApprovalVO(String searchStatus, boolean searchAuth, EmployeeVO employeeVO) {
+        this(searchStatus, searchAuth, "", employeeVO);
+    }
+
+    // employeeVO, searchStatus, searchAuth, searchDate 생성자
+    public SearchApprovalVO(String searchStatus, boolean searchAuth, String searchDate, EmployeeVO employeeVO) {
+        this.searchStatus = searchStatus;
+        this.searchAuth = searchAuth;
+        this.searchDate = searchDate;
+        this.employeeVO = employeeVO;
+    }
+
+    public String getSearchType() {
         return searchType;
     }
 
@@ -35,7 +45,6 @@ public class SearchApprovalVO extends PaginateVO {
         this.searchKeyword = searchKeyword;
     }
 
-    
 	public String getSearchStatus() {
 		return searchStatus;
 	}
@@ -51,5 +60,21 @@ public class SearchApprovalVO extends PaginateVO {
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
 	}
-    
+
+    public boolean getSearchAuth() {
+        return searchAuth;
+    }
+
+    public void setSearchAuth(boolean searchAuth) {
+        this.searchAuth = searchAuth;
+    }
+
+    public String getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(String searchDate) {
+        this.searchDate = searchDate;
+    }
+
 }

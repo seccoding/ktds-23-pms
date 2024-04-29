@@ -58,11 +58,11 @@
         </div>
         <div class="btn-area">
             <div class="btn-change">
-                <c:if test="${approvalVO.rntlSts eq '1101' 
-                                && sessionScope._LOGIN_USER_.admnCode eq '302'}">
+                <c:if test="${!searchApproval.searchAuth 
+                                && approvalVO.rntlSts eq '1101'}">
                     <button id="btn-return-prdt" data-rntl-sts="1102">비품반납</button>
                 </c:if>
-                <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'
+                <c:if test="${searchApproval.searchAuth
                                 && approvalVO.rntlSts eq '1102' }">
                     <button id="btn-brrw-prdt" data-rntl-sts="1103">신규비품대여</button>
                 </c:if>
@@ -73,8 +73,7 @@
                 </a>
                 <button id="btn-delete-appr">삭제</button>
             </div>
-			<c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301' 
-                            && approvalVO.apprSts eq '801'}">
+			<c:if test="${searchApproval.searchAuth && approvalVO.apprSts eq '801'}">
 				<div class="btn-status">
 					<button id="btn-appr-sts-ok" data-appr-id="${approvalVO.apprId}" data-appr-sts="802" data-rntl-sts="1101">승인</button>
 					<button id="btn-appr-sts-no" data-appr-id="${approvalVO.apprId}" data-appr-sts="803">반려</button>
@@ -157,12 +156,14 @@
                             <th>비품종류</th>
                             <th>비품명</th>
                             <th>변경신청수량</th>
-                            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'
-                                            && approvalVO.apprSts eq '801'}">
+                            <c:if test="${searchApprovalVO.searchAuth
+                                            && (approvalVO.apprSts eq '801' || approvalVO.rntlSts eq '1102')}">
                                 <th>재고수량</th>
                                 <th>변경가능여부</th>
                             </c:if>
-                            <th>반납여부</th>
+                            <c:if test="${searchApprovalVO.searchAuth && approvalVO.apprSts ne '801'}">
+                                <th>반납여부</th>
+                            </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,8 +175,8 @@
                                         <td>${approvalDetail.productVO.prdtCtgr}</td>
                                         <td>${approvalDetail.productVO.prdtName}</td>
                                         <td>${approvalDetail.curStr}</td>
-                                        <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301' 
-                                                        && approvalVO.apprSts eq '801'}">
+                                        <c:if test="${searchApprovalVO.searchAuth
+                                                        && (approvalVO.apprSts eq '801' || approvalVO.rntlSts eq '1102')}">
                                             <td>${approvalDetail.productVO.curStr}</td>
                                             <td>
                                                 <c:set var="apprStr" value="${approvalDetail.curStr}"/>
@@ -190,10 +191,12 @@
                                                 </c:choose>
                                             </td>
                                         </c:if>
-                                        <td>
-                                            <c:set var="returnYn" value="${approvalDetail.productManagementVO.brrwYn eq 'Y' ? '미반납' : '반납'}"/>
-                                            <c:out value="${returnYn}"/>
-                                        </td>
+                                        <c:if test="${searchApprovalVO.searchAuth && approvalVO.apprSts ne '801'}">
+                                            <td>
+                                                <c:set var="returnYn" value="${approvalDetail.productManagementVO.brrwYn eq 'Y' ? '미반납' : '반납'}"/>
+                                                <c:out value="${returnYn}"/>
+                                            </td>
+                                        </c:if>
                                     </tr>
                                 </c:forEach>
                             </c:when>

@@ -27,10 +27,6 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getBorrowCount", employeeVO.getEmpId());
 	}
 
-	@Override
-	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO) {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalState", employeeVO.getEmpId());
-	}
 	
 	@Override
 	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO) {
@@ -42,15 +38,6 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".searchAllUserRentalState", searchBorrowVO);
 	}
 
-	@Override
-	public int getProductManageStateAllCount() {
-		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getProductManageStateAllCount");
-	}
-
-	@Override
-	public List<BorrowVO> getProductManageState() {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getProductManageState");
-	}
 	
 	@Override
 	public int searchProductManagementStateAllCount(SearchBorrowVO searchBorrowVO) {
@@ -84,15 +71,20 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	}
 
 	// 대여중인 전체 비품 목록
-	@Override
-	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
-		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
-	}
+//	@Override
+//	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO) {
+//		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForAppr", employeeVO.getEmpId());
+//	}
 	
 	// 반납신청 한 비품을 제외한 비품 목록
 	@Override
 	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO) {
 		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalNotAppr", employeeVO.getEmpId());
+	}
+
+	@Override
+	public List<BorrowVO> getBorrowProduct(List<String> addProducts) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE + ".getBorrowProduct", addProducts);
 	}
 
 	// YSH0424
@@ -104,6 +96,11 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 	@Override
 	public int insertNewBorrowHist(BorrowVO borrowVO) {
 		return getSqlSession().insert(BorrowDao.NAME_SPACE+".insertNewBorrowHist", borrowVO);
+	}
+
+	@Override
+	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".searchProductManageStateNotReturn", searchBorrowVO);
 	}
 
 }

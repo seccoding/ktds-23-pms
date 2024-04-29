@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	
-
+	@Transactional
 	@Override
 	public boolean deleteEmployee(String empId) {
 		
@@ -89,6 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 	}
 
+	@Transactional
 	@Override
 	public boolean createEmployee(EmployeeVO employeeVO, MultipartFile file) {
 		String pwd = employeeVO.getPwd();
@@ -207,7 +208,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean deleteTeam(EmployeeVO employeeVO) {
 		return this.employeeDao.deleteTeam(employeeVO) > 0;
 	}
-
+	
+	@Transactional
 	@Override
 	public boolean addTeam(EmployeeVO employeeVO) {
 		return this.employeeDao.addTeam(employeeVO) > 0;

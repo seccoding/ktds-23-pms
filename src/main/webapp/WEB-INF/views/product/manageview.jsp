@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib prefix="c"
+uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,10 +22,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         justify-content: flex-end;
       }
 
-      .modify-modal {
+      /* .modify-modal {
         top: 10rem;
         left: 40%;
-      }
+      } */
       .modal-grid {
         display: grid;
         grid-template-columns: 6rem 1fr;
@@ -35,6 +35,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       }
       .hidden {
         display: none;
+      }
+      table.table > tbody td[colspan] {
+        text-align: center;
+      }
+      .modal-btn-group {
+        text-align: right;
       }
     </style>
     <link
@@ -48,28 +54,28 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
   <body>
     <div class="body" data-paramid="${productVO.prdtId}">
-      <dialog class="modify-modal">
-        <form>
-          <div class="modal-grid">
-            <p>비품관리ID</p>
-            <p class="manage-id"></p>
-            <p>비품명</p>
-            <p class="product-name"></p>
-            <p>구매가격</p>
-            <input type="number" class="price" />
-            <p>구매일</p>
-            <input type="date" class="buy-day" />
-            <p>분실상태</p>
-            <select class="select">
-              <option value="O">O</option>
-              <option value="X">X</option>
-            </select>
-            <p>분실신고일</p>
-            <input type="date" class="lost-day" />
-          </div>
-          <input type="button" value="수정" id="modify-btn" />
-          <input type="button" value="취소" id="cancel-btn" />
-        </form>
+      <dialog class="modify-modal modal-window">
+        <div class="modal-grid">
+          <p>비품관리ID</p>
+          <p class="manage-id"></p>
+          <p>비품명</p>
+          <p class="product-name"></p>
+          <p>구매가격</p>
+          <input type="number" class="price" />
+          <p>구매일</p>
+          <input type="date" class="buy-day" />
+          <p>분실상태</p>
+          <select class="select">
+            <option value="O">O</option>
+            <option value="X">X</option>
+          </select>
+          <p>분실신고일</p>
+          <input type="date" class="lost-day" />
+        </div>
+        <div class="modal-btn-group">
+          <button type="button" value="수정" id="modify-btn">수정</button>
+          <button type="button" value="취소" id="cancel-btn">취소</button>
+        </div>
       </dialog>
       <h2>비품관리 정보</h2>
       <div class="bar">
@@ -104,10 +110,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="product-ctgr-origin">${productVO.prdtCtgr}</div>
       </div>
 
-      <div>
-        ${productVO.prdtName}에 대한 상세 정보가
-        ${productDetailList.productManagementCnt}건 존재합니다.
-      </div>
+      <div>${productVO.prdtName}에 대한 상세 정보가 ${productDetailList.productManagementCnt}건 존재합니다.</div>
       <table class="table">
         <thead>
           <tr>
@@ -123,11 +126,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </thead>
         <tbody>
           <c:choose>
+            <%-- productManagementList의 내용이 존재한다면 (1개 이상 있다면) --%>
             <c:when test="${not empty productDetailList.productManagementList}">
-              <c:forEach
-                items="${productDetailList.productManagementList}"
-                var="product"
-              >
+              <%-- 내용을 반복하면서 보여주고 --%>
+              <c:forEach items="${productDetailList.productManagementList}" var="product">
                 <tr>
                   <td>${product.prdtMngId}</td>
                   <td>${product.productVO.prdtName}</td>
@@ -172,6 +174,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </tr>
               </c:forEach>
             </c:when>
+            <%-- productManagementList의 내용이 존재하지 않는다면 --%>
+            <c:otherwise>
+              <tr>
+                <td colspan="8">등록된 비품이 존재하지 않습니다.</td>
+              </tr>
+            </c:otherwise>
           </c:choose>
         </tbody>
       </table>

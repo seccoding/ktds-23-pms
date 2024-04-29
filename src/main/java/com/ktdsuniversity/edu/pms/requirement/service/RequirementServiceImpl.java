@@ -98,7 +98,7 @@ public class RequirementServiceImpl implements RequirementService{
 	@Transactional
 	@Override
 	public boolean deleteOneRequirement(RequirementVO RequirementVO) {
-		if(! RequirementVO.getRqmEncodeFile().equals(null)) {
+		if(RequirementVO.getRqmEncodeFile() != null && ! RequirementVO.getRqmEncodeFile().equals("")) {
 			this.fileHandler.deleteFileByFileName(RequirementVO.getRqmEncodeFile());
 		}
 		

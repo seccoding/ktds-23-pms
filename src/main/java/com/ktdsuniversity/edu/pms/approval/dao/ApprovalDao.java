@@ -53,11 +53,6 @@ public interface ApprovalDao {
 	
 	public int updateRentalStatus(ApprovalVO approvalVO);
 
-	/**
-	 * 버튼 클릭시 승인 상태로 바뀐다
-	 */
-	public int updateApproval(String id);
-
 	// PSH - 0422
 	public String selectOneApprId();
 
@@ -66,43 +61,8 @@ public interface ApprovalDao {
 	public int deleteApproval(String apprId);
 	
 	// PSH - search
-	public int searchApprAllCount(SearchApprovalVO searchApprovalVO);
+	public int searchAllApprovalCount(SearchApprovalVO searchApprovalVO);
 
-	public List<ApprovalVO> searchAllApproval(SearchApprovalVO searchApprovalVO);
-
-	/**
-	 * 승인되지 않은 결재 내역 개수
-	 */
-	public int getAllApproveCount();
-
-	/**
-	 * 일주일이상 지연된 결재 개수
-	 */
-	public int getAllOneWeekApprovalCount();
-
-	/**
-	 * 한 달 이내 결재내역
-	 */
-	public int getAllMonthApprovalCount();
-
-	/**
-	 * 페이지 개수 구하는 쿼리
-	 */
-	public int searchBoardAllCount(ApprovalVO approvaVo);
-
-	/**
-	 * 전체리스트 구하는 공식
-	 */
-	public List<ApprovalVO> searchAllBoard(ApprovalVO approvaVo);
-
-	/**
-	 * 검색 만큼 개수 찾기
-	 */
-	public int selectAllApprovalCount(String id);
-
-	/**
-	 * 검색 리스트 출력
-	 */
-	public List<ApprovalVO> searchBoard(SearchApprovalVO searchapprovalvo);
+	public List<ApprovalVO> searchAllApproval(SearchApprovalVO searchApprovalVO);													
 
 }

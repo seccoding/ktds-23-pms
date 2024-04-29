@@ -131,7 +131,7 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@PostMapping("ajax/requirement/write")
+	@PostMapping("/ajax/requirement/write")
 	public AjaxResponse createRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, MultipartFile file,
 			RequirementVO requirementVO, Model model) throws Exception {
 
@@ -166,10 +166,8 @@ public class RequirementController {
 	}
 
 	@GetMapping("/project/requirement/modify")
-	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@RequestParam String prjId,
-			@RequestParam String rqmId
-			, Model model) {
+	public String viewModifyPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String prjId,
+			@RequestParam String rqmId, Model model) {
 		if (employeeVO.getAdmnCode() != "301") {
 			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
 					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
@@ -211,7 +209,7 @@ public class RequirementController {
 				throw new AccessDeniedException();
 			}
 		}
-		if (throwUnauthorizedUser(employeeVO, requirementVO.getCrtrId())) {
+		if (throwUnauthorizedUser(employeeVO, this.requirementService.getOneRequirement(rqmId).getCrtrId())) {
 			throw new AccessDeniedException();
 		}
 
@@ -242,7 +240,7 @@ public class RequirementController {
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.deleteOneRequirement(requirementVO);
 		return new AjaxResponse().append("result", isSuccess).append("url",
-				"redirect:/project/requirement?prjId=" + requirementVO.getPrjId());
+				"/requirement/search?prjId=" + requirementVO.getPrjId());
 
 //		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
 	}

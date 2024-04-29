@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.product.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,8 @@ import com.ktdsuniversity.edu.pms.product.vo.SearchProductVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
+	
+	Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 	
 	@Autowired
 	private ProductDao productDao;
@@ -151,24 +155,29 @@ public class ProductServiceImpl implements ProductService{
 			
 			// 비품명으로 비품ID 값을 가져온다.
 			String productName = borrowVO.getProductVO().getPrdtName();
-			String prdtIdByprdtName = this.productDao.selectPrdtIdByPrdtName(productName);
+			int productCount = borrowVO.getProductVO().getCurStr(); // 신청한 수량
+			String prdtIdByprdtName = this.productDao.selectPrdtIdByPrdtName(productName); // 키보드 03번의 비품ID
 			
 			
 			// 비품ID 값으로 비품관리 ID 값들을 가져온다.
-			List<String> prdtManageId = this.productDao.selectPrdtMngIdByPrdtId(prdtIdByprdtName);
-			
+			List<String> prdtManageId = this.productDao.selectPrdtMngIdByPrdtId(prdtIdByprdtName); 
+			logger.info(prdtManageId.size()+"<<<<<<<<<<<<<<<<<<<<<");
+			logger.info(prdtManageId.getFirst()+"<<<<<<<<<<<<<<<<<<<<<");
+
 			
 			// 대여 신청자의 ID를 employee ID 로 받아와서 set
 			String brrwID = borrowList.getEmployeeVO().getEmpId();
 			borrowVO.setBrrwId(brrwID);
-			
-			
+			logger.info(">>>>>>>>>>>>>>>>> 대여아이디" + brrwID);
+			logger.info(">>>>>>>>>>>>>>>>> 수량" + borrowVO.getProductVO().getCurStr());
+
 			// 신청수량만큼만 비품 대여현황, 비품 대여현황(관리자)에 비품을 추가
 			for(int i=0; i < borrowVO.getProductVO().getCurStr(); i++) {
 				
 				// 추가할 대여이력ID의 시퀀스 값을 가져온다.
 				String brrwHistId = this.borrowDao.selectBrrwHistId();
 				borrowVO.setBrrwHistId(brrwHistId);
+				logger.info(">>>>>>>>>>>>>>>>대여이력아이디" + brrwHistId);
 				
 				String productManageId = prdtManageId.get(i);
 				borrowVO.setPrdtMngId(productManageId);

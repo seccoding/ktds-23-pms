@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
 	<title>결재작성</title>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
+	
 	<script type="text/javascript" src="/js/approval/approvalwrite.js" ></script>
 	<style>
 		table { 
@@ -58,53 +59,53 @@
 			text-align: end;
 		}
 		.modal-window,
-	.modal-confirm-window {
-		position: absolute;
-		border-radius: 20px;
-		border: 0;
-		box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
-		transition: box-shadow 0.3s ease;
+		.modal-confirm-window {
+			position: absolute;
+			border-radius: 20px;
+			border: 0;
+			box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+			transition: box-shadow 0.3s ease;
 
-		justify-content: center;
-		top: 30%;
-		left: 30%;
+			justify-content: center;
+			top: 30%;
+			left: 30%;
 
-		width: 600px;
-		height: fit-content;
-		padding: 1rem;
+			width: 600px;
+			height: fit-content;
+			padding: 1rem;
 
-		background-color: rgba(F, F, F, 0.8);
-	}
-	.modal-close,
-	.modal-confirm-close {
-		text-align: right;
-		color: gray;
-	}
-	.modal-close:hover,
-	.modal-confirm-close:hover {
-		color: black;
-	}
-	.grid-modal,
-	.grid-confirm-modal {
-		display: grid;
-		grid-template-rows: 1fr 6fr 1fr;
-	}
-	.modal-content {
-		align-items: center;
-		display: flex;
-		justify-content: space-around;
-		vertical-align: middle;
-		overflow-y: auto;
-		max-height: 11rem;
-	}
-	.modal-confirm-content {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: center;
-		overflow-y: auto;
-		max-height: 11rem;
-	}
+			background-color: rgba(F, F, F, 0.8);
+		}
+		.modal-close,
+		.modal-confirm-close {
+			text-align: right;
+			color: gray;
+		}
+		.modal-close:hover,
+		.modal-confirm-close:hover {
+			color: black;
+		}
+		.grid-modal,
+		.grid-confirm-modal {
+			display: grid;
+			grid-template-rows: 1fr 6fr 1fr;
+		}
+		.modal-content {
+			align-items: center;
+			display: flex;
+			justify-content: space-around;
+			vertical-align: middle;
+			overflow-y: auto;
+			max-height: 11rem;
+		}
+		.modal-confirm-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+			overflow-y: auto;
+			max-height: 11rem;
+		}
 	/* .modal-text,
 	.modal-confirm-text {
 		text-align: center;
@@ -127,8 +128,8 @@
 		<form class="form-group">
 			<div class="card col-1-1">
 				<div class="dmd-info-btn">
-					<button id="btn-appr-regist" >상신</button>
-					<button id="btn-appr-cancel">취소</button>
+					<button type="button" id="btn-appr-regist" >상신</button>
+					<button type="button" id="btn-appr-cancel">취소</button>
 				</div>
 			</div>
 			<div class="card col-1-1">
@@ -152,13 +153,15 @@
 							<label for="apprCtgr"><h6>결재종류</h6></label>
 						</div>
 						<div class="grid-item">
-							<input id="apprCtgr" type="text" name="apprCtgr" value="902" readonly>
+							<input id="apprCtgr" type="text" name="apprCtgr" value="비품변경" readonly>
 						</div>
 						<div class="grid-item">
 							<label for="brrwDt"><h6>신청일</h6></label>
 						</div>
 						<div class="grid-item">
-							<input id="brrwDt" type="text" name="brrwDt" value="날짜" readonly>
+							<input type="date" id="dmdDt" name="dmdDt"/>
+							<!-- <input type="datetime-local" id="dmdDt" name="dmdDt"/> -->
+							<!-- <input id="brrwDt" type="text" name="brrwDt" value="날짜" readonly> -->
 						</div>
 						<div class="grid-item">
 							<label for="apprMngName"><h6>결재자</h6></label>
@@ -215,7 +218,7 @@
 									<td><input type="text" value="${borrow.productVO.prdtCtgr}" readonly></td>
 									<td><input type="text" value="${borrow.productVO.prdtName}" readonly></td>
 									<td><input type="text" value="${borrow.brrwDt}" readonly></td>
-									<td><button class="btn-remove-prdt" data-delete-item="${borrow.prdtMngId}">삭제</button></td>
+									<td><button type="button" class="btn-remove-prdt" data-delete-item="${borrow.prdtMngId}">삭제</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -233,7 +236,7 @@
 				<h5>변경 신청 가능한 비품 목록</h5>
 			</div>
 			<div class="modal-body">
-				<table class="modal-table">
+				<table class="modal-table" data-brrw-id="${employee.empId}">
 					<thead>
 						<tr>
 							<th>
@@ -260,8 +263,8 @@
 			</div>
 		</div>
 		<div class="input-confirm-space">
-			<button class="confirm-confirm-button button">추가</button>
-			<button class="cancel-confirm-button button">취소</button>
+			<button type="button" class="confirm-confirm-button button">추가</button>
+			<button type="button" class="cancel-confirm-button button">취소</button>
 		</div>
 		</div>
 	</dialog>

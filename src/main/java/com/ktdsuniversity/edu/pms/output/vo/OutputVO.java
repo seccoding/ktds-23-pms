@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.output.vo;
 
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class OutputVO {
@@ -24,6 +25,8 @@ public class OutputVO {
 	private CommonCodeVO outTypeVO;
 	
 	private ProjectVO project;
+	
+	private EmployeeVO crtrIdVO;
 	
 	public String getOutId() {
 		return outId;
@@ -122,6 +125,12 @@ public class OutputVO {
 	}
 	public void setOutVerSts(CommonCodeVO outVerSts) {
 		this.outVerSts = outVerSts;
+	}
+	public EmployeeVO getCrtrIdVO() {
+		return crtrIdVO;
+	}
+	public void setCrtrIdVO(EmployeeVO crtrIdVO) {
+		this.crtrIdVO = crtrIdVO;
 	}
 	
 	

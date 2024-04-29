@@ -12,11 +12,11 @@
     div.grid div.right-align {
         text-align: right;
     }
-    .modify-modal{
+    /* .modify-modal{
         top: 10rem;
         left: 40%;
        
-    }
+    } */
     .modal-grid{
         display: grid;
         grid-template-columns: 6rem 1fr;
@@ -24,14 +24,19 @@
         gap: .3rem;
         margin: 4rem 2rem;
     }
+    table.table > tbody td[colspan] {
+        text-align: center;
+    }
+    .modal-btn-group{
+        text-align: right;
+    }
 </style>
 
 <script type="text/javascript" src="/js/product/managedetail.js"></script>
 </head>
 <body>
     <div class="body" data-paramid="${productVO.prdtId}">
-        <dialog class="modify-modal">
-            <form>
+        <dialog class="modify-modal modal-window" >
                 <div class="modal-grid">
                     <p>비품관리ID</p>
                     <p class="manage-id"></p>
@@ -49,9 +54,10 @@
                     <p>분실신고일</p>
                     <input type="date" class="lost-day" />
                 </div>
-                <input type="button" value="취소" id="cancel-btn"/>
-                <input type="button" value="수정" id="modify-btn"/>
-            </form>
+                <div class="modal-btn-group">
+                    <button type="button" value="수정" id="modify-btn">수정</button>
+                    <button type="button" value="취소" id="cancel-btn">취소</button>
+                </div>
         </dialog>
         <h2>비품 상세 목록</h2>
         <div class="flex">
@@ -77,7 +83,9 @@
                 </thead>
                 <tbody>
                     <c:choose>
+                        <%-- productManagementList의 내용이 존재한다면 (1개 이상 있다면) --%>
                         <c:when test="${not empty productManagementList.productManagementList}">
+                            <%-- 내용을 반복하면서 보여주고 --%>
                             <c:forEach items="${productManagementList.productManagementList}" var="product">
                                 <tr>
                                     <td>${product.prdtMngId}</td>
@@ -109,6 +117,14 @@
                                 </tr>
                             </c:forEach>
                         </c:when>
+                        <%-- productManagementList의 내용이 존재하지 않는다면 --%>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="6">
+                                    등록된 비품이 존재하지 않습니다.
+                                </td>
+                            </tr>
+                        </c:otherwise>
                     </c:choose>
                 </tbody>
             </table>

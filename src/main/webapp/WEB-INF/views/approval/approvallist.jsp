@@ -33,6 +33,11 @@
         .search-keyword > * {
             padding-right: 0.825rem;
         }
+        .search-data {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 1rem;
+        }
     </style>
 <script type="text/javascript" src=/js/approval/approvallist.js></script>
 </head>
@@ -41,20 +46,14 @@
         <div class="title">
             <h2>결재 목록조회</h2>
         </div>
-        <div class="search-area">
-            <div class="search-date">
-                <input type="text">
-                <button>날짜검색</button>
-            </div>
-        </div>
         <div>
             <div>
                 총 ${apprList.apprCnt} 건
             </div>
-            <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '302' 
-                            && searchApprovalVO.searchStatus eq '801'}">
+            <c:if test="${!searchApproval.searchAuth 
+                            && searchApproval.searchStatus eq 'progresslist'}">
                 <div style="text-align: end;">
-                    <button class="btn-appr-write">기안서 작성</button>
+                    <button type="button" id="btn-appr-write">기안서 작성</button>
                 </div>
             </c:if>
         </div>
@@ -63,7 +62,8 @@
                 <thead>
                     <tr>
                         <th>
-                            <input type="checkbox" id="prdt-check-all" data-target-class="target-appr-id"/>
+                            <input type="checkbox" id="prdt-check-all" 
+                                    data-target-class="target-appr-id"/>
                             <!-- <label for="prdt-check-all"></label>
                             <label for="prdt-check-all"></label> -->
                         </th>
@@ -73,7 +73,7 @@
                         <th>문서제목</th>
                         <th>기안자</th>
                         <th>결재상태</th>
-                        <c:if test="${searchApprovalVO.searchStatus ne '801'}">
+                        <c:if test="${searchApproval.searchStatus eq 'completelist'}">
                             <th>비품변경상태</th>
                         </c:if>
                     </tr>
@@ -112,20 +112,24 @@
 										<span class="badge bg-label-danger">결재반려</span>
 									</c:if>
                                 </td>
-                                <c:if test="${searchApprovalVO.searchStatus ne '801'}">
+                                <c:if test="${searchApproval.searchStatus eq 'completelist'}">
                                     <td>
-                                        <c:if test="${approval.apprSts eq '803'}">
-                                            <span class="badge bg-label-danger">비품변경불가</span>
-                                        </c:if>
-                                        <c:if test="${approval.rntlSts eq '1101'}">
-                                            <span class="badge bg-label-warning">비품반납대기</span>
-                                        </c:if>
-                                        <c:if test="${approval.rntlSts eq '1102'}">
-                                            <span class="badge bg-label-warning">비품반납완료</span>
-                                        </c:if>
-                                        <c:if test="${approval.rntlSts eq '1103'}">
-                                            <span class="badge bg-success">비품변경완료</span>
-                                        </c:if>
+                                        <c:choose>
+                                            <c:when test="${approval.apprSts eq '802'}">
+                                                <c:if test="${approval.rntlSts eq '1101'}">
+                                                    <span class="badge bg-label-warning">비품반납대기</span>
+                                                </c:if>
+                                                <c:if test="${approval.rntlSts eq '1102'}">
+                                                    <span class="badge bg-label-warning">비품반납완료</span>
+                                                </c:if>
+                                                <c:if test="${approval.rntlSts eq '1103'}">
+                                                    <span class="badge bg-success">비품변경완료</span>
+                                                </c:if>
+                                            </c:when>
+                                            <c:when test="${approval.apprSts eq '803'}">
+                                                <span class="badge bg-label-danger">비품변경불가</span>
+                                            </c:when>
+                                        </c:choose>
                                     </td>
                                 </c:if>
                             </tr>
@@ -133,10 +137,10 @@
                         </c:when>
                         <c:otherwise>
 							<tr>
-								<td>
-									<a href="/approval/write">
+								<td colspan="8">
+									<!-- <a href="/approval/write"> -->
 										기안서가 존재하지 않습니다.
-									</a>
+									<!-- </a> -->
 								</td>
 							</tr>
 						</c:otherwise>
@@ -146,22 +150,28 @@
         </div>
         <nav aria-label="Page navigation">
             <form id="search-form">
-                <div class="search-keyword">
-                    <div class="search-category">
-                        <input type="hidden" id="page-no" name="pageNo" value="0"/>
-                        <select id="list-size" name="listSize">
-                            <option value="5" ${searchApproval.listSize eq 5 ? 'selected' : ''}>5개</option>
-                            <option value="10" ${searchApproval.listSize eq 10 ? 'selected' : ''}>10개</option>
-                        </select>
-                        <select name="searchType" id="search-type">
-                            <option value="title" ${searchApproval.searchType eq 'title' ? 'selected' : ''}>제목</option>
-                            <option value="dmdId" ${searchApproval.searchType eq 'dmdId' ? 'selected' : ''}>사원번호</option>
-                        </select>
+                <div class="search-data">
+                    <div class="search-date">
+                        <input type="date" name="searchDate" value="${searchApproval.searchDate}">
+                        <button type="button" id="btn-search-date">날짜검색</button>
                     </div>
-                    <div class="search-text">
-                        <input type="text" name="searchKeyword" value="${searchApproval.searchKeyword}"/>
-                        <button type="button" id="search-btn">검색</button>
-                        <button type="button" id="cancel-search-btn">초기화</button>
+                    <div class="search-keyword">
+                        <div class="search-category">
+                            <input type="hidden" id="page-no" name="pageNo" value="0"/>
+                            <select id="list-size" name="listSize">
+                                <option value="5" ${searchApproval.listSize eq 5 ? 'selected' : ''}>5개</option>
+                                <option value="10" ${searchApproval.listSize eq 10 ? 'selected' : ''}>10개</option>
+                            </select>
+                            <select name="searchType" id="search-type">
+                                <option value="title" ${searchApproval.searchType eq 'title' ? 'selected' : ''}>제목</option>
+                                <option value="dmdId" ${searchApproval.searchType eq 'dmdId' ? 'selected' : ''}>사원번호</option>
+                            </select>
+                        </div>
+                        <div class="search-text">
+                            <input type="text" name="searchKeyword" value="${searchApproval.searchKeyword}"/>
+                            <button type="button" id="search-btn">검색</button>
+                            <button type="button" id="cancel-search-btn">초기화</button>
+                        </div>
                     </div>
                 </div>
 				<ul class="pagination">

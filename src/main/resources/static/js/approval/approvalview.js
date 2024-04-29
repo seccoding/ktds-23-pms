@@ -1,4 +1,4 @@
-  $().ready(function() {
+$().ready(function() {
       
   var apprId = $("#grid-container").data("appr-id");
   var url = "/ajax/approval/statuschange/" + apprId; 
@@ -6,6 +6,8 @@
   // 결재승인
   $("#btn-appr-sts-ok").on("click", function() {
     var apprSts = $(this).data("appr-sts");
+    var rntlSts = $(this).data("rntl-sts");
+
     var chooseValue = confirm("결재를 승인합니다.");
     var params = {
       apprSts : apprSts, 
@@ -84,12 +86,12 @@
           rjctDivDom.append(alertDiv);
         }
       });
+
     });
   });
 
   // 비품 반납
   $("#btn-return-prdt").on("click", function() {
-    alert("확인");
     // 비품 반납 확인 모달
     var returnPrdtModal = $(".modal-confirm-window");
     var returnBtn = $(".confirm-confirm-button");
@@ -103,7 +105,6 @@
     // 반납
     $(returnBtn).on("click", function() {
       var rntlSts = $("#btn-return-prdt").data("rntl-sts");
-      alert(rntlSts);
       $.post("/ajax/approval/unusablePrdt", 
         { apprId : apprId, 
           rntlSts : rntlSts }, 
@@ -117,24 +118,23 @@
       });
       returnPrdtModal[0].close();
     });
-
+  });
+  
   // 신규 비품 대여
   $("#btn-brrw-prdt").on("click", function() {
-    alert("확인");
+    var rntlSts = $(this).data("rntl-sts");
+
     // 비품 반납 확인 모달
     var brrwPrdtModal = $(".modal-confirm-window");
     var brrwBtn = $(".confirm-confirm-button");
     var modalButton1 = $(".cancel-confirm-button");
     var modalText = $(".modal-confirm-text");
-    modalText.text("변경 신청한 비품을 반납합니다.");
+    modalText.text("신규 비품을 대여합니다.");
     brrwBtn.text("승인");
     modalButton1.text("취소");
     brrwPrdtModal[0].showModal();
 
     // 대여
-    var rntlSts = $("#btn-brrw-prdt").data("rntl-sts");
-    alert(rntlSts);
-
     $(brrwBtn).on("click", function() {
       $.post("/ajax/product/newprdtborrow", 
       { apprId : apprId, 
@@ -150,22 +150,16 @@
       brrwPrdtModal[0].close();
     });
   });
-});
 
   // 확인 모달 닫기
   $(".modal-confirm-close").on("click", function () {
-    location.reload();
+    $(".modal-confirm-window")[0].close();
   });
 
   // 확인 모달 취소
   $(".cancel-confirm-button").on("click", function() {
-    location.reload();
+    $(".modal-confirm-window")[0].close();
   })
-
-  // 결재목록 이동
-  // $("#btn-list-appr").on("click", function() {
-  //  role & sts
-  // });
 
   // 결재내역 삭제
   $("#btn-delete-appr").on("click", function() {
@@ -180,4 +174,5 @@
       });
     }
   });
+
 });

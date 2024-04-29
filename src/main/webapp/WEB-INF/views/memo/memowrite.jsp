@@ -36,7 +36,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             value="${memoVO.rcvId}"
             placeholder="여러 명은 쉼표(,)로 구분해주세요."
           />
-          <div id="special-hidden-datalist" style="display: none"></div>
+          <div id="special-super-datalist" style="display: none"></div>
           <button class="address">주소록</button>
           <c:forEach items="${errorMessage.rcvId}" var="error">
             <div>${error}</div>

@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.borrow.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +15,6 @@ import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.product.service.ProductManagementService;
 import com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO;
 import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -28,7 +29,7 @@ public class BorrowController {
 	@GetMapping("/product/rentalstate")
 	public String viewRentalStatePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO
 				,BorrowVO borrowVO, ProductVO productVO, ProductManagementVO productManagementVO, SearchBorrowVO searchBorrowVO) {
-//		BorrowListVO borrowListVO = this.borrowService.getUserRentalState(employeeVO);
+
 		
 		searchBorrowVO.setEmployeeVO(employeeVO);
 		searchBorrowVO.setProductVO(productVO);
@@ -52,7 +53,7 @@ public class BorrowController {
 			throw new PageNotFoundException();
 		}
 		
-//		BorrowListVO borrowListVO = this.borrowService.getProductManageState();
+
 		
 		searchBorrowVO.setEmployeeVO(employeeVO);
 		searchBorrowVO.setProductVO(productVO);
@@ -61,6 +62,15 @@ public class BorrowController {
 		model.addAttribute("productState", borrowListVO);
 		model.addAttribute("productVO", productVO);
 		return "product/managestate";
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/manage/state")
+	public AjaxResponse getProductManageStateforRetrunCheck(SearchBorrowVO searchBorrowVO) {
+		BorrowListVO AllBorrowList = this.borrowService.searchProductManageState(searchBorrowVO);
+		List<BorrowVO> notReturnList = this.borrowService.searchProductManageStateNotReturn(searchBorrowVO);
+		
+		return new AjaxResponse().append("AllBorrowList", AllBorrowList.getBorrowList()).append("notReturnList", notReturnList);
 	}
 	
 	@ResponseBody

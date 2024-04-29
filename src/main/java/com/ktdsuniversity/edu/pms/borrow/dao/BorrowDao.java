@@ -18,16 +18,10 @@ public interface BorrowDao {
 	 */
 	public int getBorrowCount(EmployeeVO employeeVO);
 
-	public List<BorrowVO> getUserRentalState(EmployeeVO employeeVO);
-	
 	public int searchBorrowAllCount(SearchBorrowVO searchBorrowVO);
 
 	public List<BorrowVO> searchAllUserRentalState(SearchBorrowVO searchBorrowVO);
 	
-
-	public int getProductManageStateAllCount();
-
-	public List<BorrowVO> getProductManageState();
 	
 	public int searchProductManagementStateAllCount(SearchBorrowVO searchBorrowVO);
 
@@ -43,9 +37,11 @@ public interface BorrowDao {
 
     public int newBrrwPrdtByAppr(List<BorrowVO> borrowVOList);
 
-	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
+//	public List<BorrowVO> getUserRentalStateForAppr(EmployeeVO employeeVO);
 	
 	public List<BorrowVO> getUserRentalNotAppr(EmployeeVO employeeVO);
+	
+	public List<BorrowVO> getBorrowProduct(List<String> addProducts);
 
 	
 	// YSH0424
@@ -62,6 +58,8 @@ public interface BorrowDao {
 	 * @return
 	 */
 	public int insertNewBorrowHist(BorrowVO borrowVO);
+
+	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
 
 	
 

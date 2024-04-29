@@ -155,7 +155,10 @@
        </div> 
       </div>
     </div>  
-        <c:if test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
+    <c:choose>
+
+   
+        <c:when test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <div class="btn-group">
             <button class="backto-list">
               <a href="/employee/search">목록</a>
@@ -271,6 +274,14 @@
               </tbody>
             </table>
           </div>
-        </c:if>
+        </c:when>
+        <c:otherwise>
+          <div class="btn-group">
+            <button class="backto-list">
+              <a href="/employee/search">목록</a>
+            </button>
+          </div>
+        </c:otherwise>
+      </c:choose>
 </body>
 </html>

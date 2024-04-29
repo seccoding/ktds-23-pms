@@ -22,7 +22,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     >
       <!-- 요구사항 ID 선택창 -->
       <div class="grid">
-        <label for="=rqm-id">요구사항</label>
+        <label for="rqm-id">요구사항</label>
         <div>
           <select name="rqmId" id="rqm-id">
             <option value="">요구사항을 선택해주세요</option>

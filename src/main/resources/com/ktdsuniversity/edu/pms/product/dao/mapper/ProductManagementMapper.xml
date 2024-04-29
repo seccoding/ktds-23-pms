@@ -50,7 +50,10 @@
 			resultType="_int">
 		SELECT COUNT(1)
 		  FROM PRODUCT_MANAGEMENT PM
-		 INNER JOIN PRODUCT P
+		 INNER JOIN (SELECT P_I.*
+						  , REPLACE(P_I.PRDT_NAME, ' ', '') AS SEARCH_PRDT_NAME
+						  , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+					   FROM PRODUCT P_I) P
 		    ON P.PRDT_ID = PM.PRDT_ID
 		 WHERE PM.DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
@@ -59,7 +62,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 			</choose>
 		</if>
@@ -79,7 +82,10 @@
 			 , PM.DEL_YN
 			 , P.PRDT_NAME 
 		  FROM PRODUCT_MANAGEMENT PM
-		 INNER JOIN PRODUCT P
+		 INNER JOIN (SELECT P_I.*
+						  , REPLACE(P_I.PRDT_NAME, ' ', '') AS SEARCH_PRDT_NAME
+						  , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+					   FROM PRODUCT P_I) P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE PM.DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
@@ -88,7 +94,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND P.PRDT_NAME LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 			</choose>
 		</if>

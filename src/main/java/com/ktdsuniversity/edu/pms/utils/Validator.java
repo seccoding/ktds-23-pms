@@ -11,7 +11,7 @@ import java.util.Map;
 public class Validator<T> {
 
 	public enum Type {
-		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE
+		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE, NOW_DATE, IMAGE_FILE
 	}
 
 	private T object;
@@ -69,12 +69,6 @@ public class Validator<T> {
 					result = StringUtil.isEmailFormat(value);
 				} else if (type == Type.EMPID) {
 					result = StringUtil.isEmpIdFormat(value);
-				} else if (type == Type.DEPTID) {
-					result = StringUtil.isDeptIdFormat(value);
-				} else if (type == Type.JOBID) {
-					result = StringUtil.isJobIdFormat(value);
-				} else if (type == Type.PSTNID) {
-					result = StringUtil.isPstnIdFormat(value);
 				} else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {
 						Object otherObjectValue = this.getRefValue(key, type);
@@ -114,7 +108,12 @@ public class Validator<T> {
 									|| !valueLocalDate.isAfter(refValueLocalDate);
 						}
 					}
-				}
+				} else if (type == Type.NOW_DATE) {
+					result = StringUtil.isBeforeLocalDateNow(value);
+				} 
+//				else if (type == Type.IMAGE_FILE) {
+//					result = StringUtil.isImageFileFormat(value);
+//				}
 
 				if (!result) {
 					if (!this.results.containsKey(key)) {

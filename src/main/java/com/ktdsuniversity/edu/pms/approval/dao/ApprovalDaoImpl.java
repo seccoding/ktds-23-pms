@@ -78,8 +78,8 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	
 	// PSH - search
 	@Override
-	public int searchApprAllCount(SearchApprovalVO searchApprovalVO) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".searchApprAllCount", searchApprovalVO);
+	public int searchAllApprovalCount(SearchApprovalVO searchApprovalVO) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".searchAllApprovalCount", searchApprovalVO);
 	}
 	
 	@Override
@@ -87,44 +87,5 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchAllApproval", searchApprovalVO);
 	}
 
-	@Override
-	public int getAllApproveCount() {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllApproveCount");
-	}
-
-	@Override
-	public int getAllOneWeekApprovalCount() {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllOneWeekApprovalCount");
-	}
-
-	@Override
-	public int getAllMonthApprovalCount() {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllMonthApprovalCount");
-	}
-
-	@Override
-	public int updateApproval(String id) {
-		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateApproval", id);
-	}
-
-	@Override
-	public int searchBoardAllCount(ApprovalVO approvaVo) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".searchBoardAllCount", approvaVo);
-	}
-
-	@Override
-	public List<ApprovalVO> searchAllBoard(ApprovalVO approvaVo) {
-		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchAllBoard", approvaVo);
-	}
-
-	@Override
-	public int selectAllApprovalCount(String id) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectAllApprovalCount", id);
-	}
-
-	@Override
-	public List<ApprovalVO> searchBoard(SearchApprovalVO searchapprovalvo) {
-		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchBoard", searchapprovalvo);
-	}
 
 }

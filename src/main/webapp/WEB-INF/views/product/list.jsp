@@ -12,7 +12,14 @@
         text-align: right;
     }
     .btn-group {
-        margin: 0 0 1rem 2rem;;
+        margin: 1rem 0 1rem 2rem;
+    }
+    table.table > tbody td[colspan] {
+        text-align: center;
+    }
+    .check-option {
+        text-align: right;
+        margin: 0 2rem 1rem 0;
     }
 </style>
 
@@ -43,10 +50,17 @@
     <div class="flex">
         <div>총 ${productList.productCnt}건의 비품이 조회되었습니다.</div>
     </div>
+    
     <div class="grid">
 
         <div class="btn-group">
             <button type="button" class="apply-product">신청</button>
+        </div>
+        <div class="check-option">
+            <input type="checkbox" id="product-exist-search" 
+                   name="existed-product" value="existed-product-checked"/>
+            <label for="product-exist-search"></label>
+            <label for="product-exist-search">재고가 있는 비품만 조회</label>
         </div>
 
         <table class="table">
@@ -61,7 +75,9 @@
             </thead>
             <tbody>
                 <c:choose>
+                	<%-- productList의 내용이 존재한다면 (1개 이상 있다면) --%>
                     <c:when test="${not empty productList.productList}">
+                        <%-- 내용을 반복하면서 보여주고 --%>
                         <c:forEach items="${productList.productList}" var="product">
                             <tr>
                                 <td>${product.prdtId}</td>
@@ -73,6 +89,14 @@
                         </c:forEach>
     
                     </c:when>
+                    <%-- productList의 내용이 존재하지 않는다면 --%>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="5">
+                                등록된 비품이 존재하지 않습니다.
+                            </td>
+                        </tr>
+                    </c:otherwise>
                     
                 </c:choose>
     
@@ -140,12 +164,7 @@
                 </c:if>
             </ul>
 
-            <div class="check-option">
-                <input type="checkbox" id="product-exist-search" 
-                       name="existed-product" value="existed-product-checked"/>
-                <label for="product-exist-search"></label>
-                <label for="product-exist-search">재고가 있는 비품만 조회</label>
-            </div>
+            
         </form>
 
         

@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.borrow.service;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO;
@@ -8,11 +10,11 @@ import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 
 public interface BorrowService {
 
-	public BorrowListVO getUserRentalState(EmployeeVO employeeVO);
+
 
 	public BorrowListVO searchUserRentalState(SearchBorrowVO searchBorrowVO);
 	
-	public BorrowListVO getProductManageState();
+
 
 	public BorrowListVO searchProductManageState(SearchBorrowVO searchBorrowVO);
 	
@@ -22,6 +24,9 @@ public interface BorrowService {
 	public boolean getIsNotReturnCount(String dmdId);
 
 	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO);
+
+
+	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
 
 
 

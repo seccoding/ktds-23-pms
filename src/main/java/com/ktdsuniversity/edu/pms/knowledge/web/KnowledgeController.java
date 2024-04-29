@@ -264,7 +264,7 @@ public class KnowledgeController {
 	public AjaxResponse getRecommendKnowledge(@PathVariable String pPostId,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		KnowledgeRecommendVO knowledgeRecommendVO = new KnowledgeRecommendVO();
+ 		KnowledgeRecommendVO knowledgeRecommendVO = new KnowledgeRecommendVO();
 
 		knowledgeRecommendVO.setpPostId(pPostId);
 		knowledgeRecommendVO.setCrtrId(employeeVO.getEmpId());
