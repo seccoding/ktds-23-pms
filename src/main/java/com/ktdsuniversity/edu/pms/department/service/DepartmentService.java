@@ -32,6 +32,8 @@ public interface DepartmentService {
 
 	public List<EmployeeVO> getEmpByDeptId(String deptId);
 
+	public boolean getDeptIdByName(DepartmentVO departmentVO);
+
 	
 
 

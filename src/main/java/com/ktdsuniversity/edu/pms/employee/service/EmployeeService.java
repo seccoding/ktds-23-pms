@@ -44,6 +44,8 @@ public interface EmployeeService {
 
 	public List<EmployeeVO> getChangeToDeptLead(String departmentId);
 
+	public EmployeeVO getOneEmployeeCheckNull(String empId);
+
 
 
 }
