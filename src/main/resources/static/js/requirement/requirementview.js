@@ -40,7 +40,7 @@ $().ready(function () {
   });
 
   $("#delay-request").on("click", function () {
-    var rqmId = $("#rqmId").data("rqmId");
+    var rqmId = $("#rqm-info").data("rqmId");
     var url = window.location.href;
 
     $.post(
@@ -70,7 +70,7 @@ $().ready(function () {
   });
 
   $("#delete").on("click", function () {
-    var rqmId = $(".grid").data("rqm-id");
+    var rqmId = $("#rqm-info").data("rqm-id");
     loadModal({
       content: "삭제하시겠습니까?",
       fnPositiveBtnHandler: function () {
@@ -100,12 +100,12 @@ $().ready(function () {
   });
 
   $("#modify").on("click", function () {
-    var rqmId = $(".grid").data("rqm-id");
-    var prjId = $(".grid").data("prj-id");
+    var rqmId = $("#rqm-info").data("rqm-id");
+    var prjId = $("#rqm-info").data("prj-id");
+    var sessionId = $("#rqm-info").data("session-id");
+    var crtrId = $("#rqm-info").data("crtr-id");
+    var adminCode = $("#rqm-info").data("admin-code");
 
-    var sessionId = $(".grid").data("session-id");
-    var crtrId = $(".grid").data("crtr-id");
-    var adminCode = $(".grid").data("admin-code");
     if (adminCode == 302) {
       if (crtrId != sessionId) {
         alert("권한이 없습니다");

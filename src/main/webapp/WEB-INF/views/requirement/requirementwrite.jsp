@@ -37,6 +37,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       enctype="multipart/form-data"
     >
       <div class="grid">
+        <label for="rqm-ttl">요구사항 제목</label>
+        <div>
+          <input
+            type="text"
+            id="rqm-ttl"
+            name="rqmTtl"
+            value="${requirement.rqmTtl}"
+          />
+        </div>
+
         <!--프로젝트명 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
         <label for="prj-id">프로젝트</label>
         <div>
@@ -46,16 +56,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <option value="${project.prjId}">${project.prjName}</option>
             </c:forEach>
           </select>
-        </div>
-
-        <label for="rqm-ttl">요구사항 제목</label>
-        <div>
-          <input
-            type="text"
-            id="rqm-ttl"
-            name="rqmTtl"
-            value="${requirement.rqmTtl}"
-          />
         </div>
 
         <label for="dvlrp">담당개발자</label>

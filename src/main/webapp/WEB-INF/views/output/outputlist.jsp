@@ -7,6 +7,22 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <title>산출물관리 리스트 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/output/outputlist.js"></script>
+    <style>
+      .flex-row {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+      }
+      .flex-row > button {
+        margin-left: 10px;
+
+        align-self: center;
+      }
+      button[id="new"] {
+        margin-left: auto;
+        margin-right: 10px;
+      }
+    </style>
   </head>
   <body>
     <div>총 ${outputList.listCnt}건의 산출물이 조회되었습니다</div>
@@ -99,57 +115,7 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
       </tbody>
     </table>
 
-    <!--pagination-->
-
-    <ul class="pagination">
-      <c:if test="${outputList.listCnt > 0}">
-        <!--처음-->
-        <c:if test="${outputSearchVO.hasPrevGroup}">
-          <li class="page-item first">
-            <a href="javascript:search(0)"
-              ><img src="/images/chevron-double-left.svg"
-            /></a>
-          </li>
-        </c:if>
-        <!--이전-->
-        <c:if test="${outputSearchVO.hasPrevGroup}">
-          <li class="page-item prev">
-            <a href="javascript:search(${outputSearchVO.prevGroupStartPageNo})"
-              ><img src="/images/chevron-left.svg"
-            /></a>
-          </li>
-        </c:if>
-        <!-- 각 페이지 링크 -->
-        <c:forEach
-          varStatus="status"
-          begin="${outputSearchVO.groupStartPageNo}"
-          end="${outputSearchVO.groupEndPageNo}"
-        >
-          <li
-            class="${outputSearchVO.pageNo eq outputSearchVO.groupStartPageNo+status.count-1 ? 'active' : ''} page-item"
-          >
-            <a
-              class="page-link"
-              href="javascript:search(${outputSearchVO.groupStartPageNo+status.count-1})"
-              >${outputSearchVO.groupStartPageNo+status.count}</a
-            >
-          </li>
-        </c:forEach>
-        <!--다음-->
-        <c:if test="${outputSearchVO.hasNextGroup}">
-          <a href="javascript:search(${outputSearchVO.nextGroupStartPageNo})"
-            >다음</a
-          ></c:if
-        >
-        <!--마지막-->
-        <c:if test="${outputSearchVO.hasNextGroup}"
-          ><a href="javascript:search(${outputSearchVO.pageCount-1})"
-            >마지막</a
-          ></c:if
-        >
-      </c:if>
-    </ul>
-    <nav>
+    <div class="flex-row">
       <!--프로젝트-->
       <label for="prj-id"></label>
       <select name="prjId" id="prj-id">
@@ -208,9 +174,58 @@ pageEncoding="UTF-8"%><%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
       <button id="search-output">검색</button>
       <button id="reset"><a href="/output/search?prjId=">초기화</a></button>
-    </nav>
-    <div>
-      <button><a href="/output/write">신규</a></button>
+      <button id="new"><a href="/output/write">신규</a></button>
     </div>
+
+    <!--pagination-->
+
+    <ul class="pagination">
+      <c:if test="${outputList.listCnt > 0}">
+        <!--처음-->
+        <c:if test="${outputSearchVO.hasPrevGroup}">
+          <li class="page-item first">
+            <a href="javascript:search(0)"
+              ><img src="/images/chevron-double-left.svg"
+            /></a>
+          </li>
+        </c:if>
+        <!--이전-->
+        <c:if test="${outputSearchVO.hasPrevGroup}">
+          <li class="page-item prev">
+            <a href="javascript:search(${outputSearchVO.prevGroupStartPageNo})"
+              ><img src="/images/chevron-left.svg"
+            /></a>
+          </li>
+        </c:if>
+        <!-- 각 페이지 링크 -->
+        <c:forEach
+          varStatus="status"
+          begin="${outputSearchVO.groupStartPageNo}"
+          end="${outputSearchVO.groupEndPageNo}"
+        >
+          <li
+            class="${outputSearchVO.pageNo eq outputSearchVO.groupStartPageNo+status.count-1 ? 'active' : ''} page-item"
+          >
+            <a
+              class="page-link"
+              href="javascript:search(${outputSearchVO.groupStartPageNo+status.count-1})"
+              >${outputSearchVO.groupStartPageNo+status.count}</a
+            >
+          </li>
+        </c:forEach>
+        <!--다음-->
+        <c:if test="${outputSearchVO.hasNextGroup}">
+          <a href="javascript:search(${outputSearchVO.nextGroupStartPageNo})"
+            >다음</a
+          ></c:if
+        >
+        <!--마지막-->
+        <c:if test="${outputSearchVO.hasNextGroup}"
+          ><a href="javascript:search(${outputSearchVO.pageCount-1})"
+            >마지막</a
+          ></c:if
+        >
+      </c:if>
+    </ul>
   </body>
 </html>

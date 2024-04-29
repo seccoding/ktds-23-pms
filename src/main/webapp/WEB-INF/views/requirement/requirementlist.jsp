@@ -10,75 +10,34 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/requirement/requirementlist.js"
     ></script>
     <title>요구사항 리스트 페이지</title>
+    <style>
+      .flex-row {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+      }
+      button {
+        margin-left: 10px;
+        align-self: center;
+      }
+      button[id="new"] {
+        margin-left: auto;
+        margin-right: 10px;
+      }
+    </style>
   </head>
   <body>
     <div>총 ${resultList.count}건의 요구사항이 검색됬습니다.</div>
-    <label for="prj-id"></label>
-    <select name="prjId" id="prj-id">
-      <option value="" selected>프로젝트</option>
-      <c:forEach items="${projectList.projectList}" var="project">
-        <c:choose>
-          <c:when test="${project.prjId eq prjId}">
-            <option value="${project.prjId}" selected>
-              ${project.prjName}
-            </option>
-          </c:when>
-          <c:otherwise>
-            <option value="${project.prjId}">${project.prjName}</option>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-    </select>
-
-    <label for="scd-sts"></label>
-    <select name="scdSts" id="scd-sts" value="${requirement.rqmSts}">
-      <option value="" selected>일정상태</option>
-      <c:forEach items="${scdSts}" var="scdSts">
-        <c:choose>
-          <c:when test="${searchOption.scdSts eq scdSts.cmcdId}">
-            <option value="${scdSts.cmcdId}" selected>
-              ${scdSts.cmcdName}
-            </option>
-          </c:when>
-          <c:otherwise>
-            <option value="${scdSts.cmcdId}">${scdSts.cmcdName}</option>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-    </select>
-
-    <!--체크박스 진행상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
-    <label for="rqm-sts"></label>
-    <select name="rqmSts" id="rqm-sts" value="${requirement.rqmSts}">
-      <option value="" selected>진행상태</option>
-      <c:forEach items="${rqmSts}" var="rqmSts">
-        <c:choose>
-          <c:when test="${searchOption.rqmSts eq rqmSts.cmcdId}">
-            <option value="${rqmSts.cmcdId}" selected>
-              ${rqmSts.cmcdName}
-            </option>
-          </c:when>
-          <c:otherwise>
-            <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-    </select>
-
-    <button id="search">검색</button>
-    <button id="reset">초기화</button>
 
     <table class="table">
       <colgroup>
         <col width="40px" />
         <col width="160px" />
+        <col width="600px" />
         <col width="160px" />
         <col width="160px" />
         <col width="160px" />
         <col width="160px" />
-        <col width="160px" />
-        <col width="120px" />
-        <col width="120px" />
       </colgroup>
       <thead>
         <tr>
@@ -90,9 +49,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             />
             <label for="checked-all"></label>
           </th>
-          <th>프로젝트명</th>
-          <th>요구사항 아이디</th>
-          <th>요구사항 제목</th>
+          <th>프로젝트</th>
+          <th>제목</th>
           <th>일정상태</th>
           <th>진행상태</th>
           <th>작성자</th>
@@ -118,7 +76,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <label for="checked-requirement-${status.index}"></label>
                 </td>
                 <td>${requirememt.projectVO.prjName}</td>
-                <td>${requirememt.rqmId}</td>
                 <td>
                   <a
                     href="/requirement/view?prjId=${requirememt.prjId}&rqmId=${requirememt.rqmId}"
@@ -141,6 +98,65 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:choose>
       </tbody>
     </table>
+
+    <div class="flex-row">
+      <label for="prj-id"></label>
+      <select name="prjId" id="prj-id">
+        <option value="" selected>프로젝트</option>
+        <c:forEach items="${projectList.projectList}" var="project">
+          <c:choose>
+            <c:when test="${project.prjId eq prjId}">
+              <option value="${project.prjId}" selected>
+                ${project.prjName}
+              </option>
+            </c:when>
+            <c:otherwise>
+              <option value="${project.prjId}">${project.prjName}</option>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </select>
+
+      <label for="scd-sts"></label>
+      <select name="scdSts" id="scd-sts" value="${requirement.rqmSts}">
+        <option value="" selected>일정상태</option>
+        <c:forEach items="${scdSts}" var="scdSts">
+          <c:choose>
+            <c:when test="${searchOption.scdSts eq scdSts.cmcdId}">
+              <option value="${scdSts.cmcdId}" selected>
+                ${scdSts.cmcdName}
+              </option>
+            </c:when>
+            <c:otherwise>
+              <option value="${scdSts.cmcdId}">${scdSts.cmcdName}</option>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </select>
+
+      <!--체크박스 진행상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
+      <label for="rqm-sts"></label>
+      <select name="rqmSts" id="rqm-sts" value="${requirement.rqmSts}">
+        <option value="" selected>진행상태</option>
+        <c:forEach items="${rqmSts}" var="rqmSts">
+          <c:choose>
+            <c:when test="${searchOption.rqmSts eq rqmSts.cmcdId}">
+              <option value="${rqmSts.cmcdId}" selected>
+                ${rqmSts.cmcdName}
+              </option>
+            </c:when>
+            <c:otherwise>
+              <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </select>
+
+      <button id="search">검색</button>
+      <button id="reset">초기화</button>
+      <button id="new"><a href="/requirement/write">신규</a></button>
+    </div>
+
     <nav aria-label="Page navigation">
       <!--pagination-->
       <ul class="pagination">
@@ -192,11 +208,5 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </c:if>
       </ul>
     </nav>
-
-    <div>
-      <p>
-        <button><a href="/requirement/write">신규</a></button>
-      </p>
-    </div>
   </body>
 </html>
