@@ -41,9 +41,9 @@
                     <span class="badge bg-label-info">묻고답하기</span>
                 </li>
             </c:if>
-            <c:if test='${project.outYn eq "Y" and (sessionScope._LOGIN_USER_.admnCode eq "301" or sessionScope._LOGIN_USER_.empId eq pm.tmId)}' >
+            <c:if test='${project.outYn eq "Y" and (sessionScope._LOGIN_USER_.admnCode eq "301" or sessionScope._LOGIN_USER_.empId eq pm.tmId)}'>
                 <li>
-                    <a href="/output/search?prjId=${project.prjId}"><span class="badge bg-success">산출물관리</span></a>
+                    <span class="badge bg-success">산출물관리</span>
                 </li>
             </c:if>
         </ul>

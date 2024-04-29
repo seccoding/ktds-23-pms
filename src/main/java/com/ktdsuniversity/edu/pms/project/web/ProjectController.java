@@ -410,6 +410,6 @@ public class ProjectController {
 
         boolean addResult = projectService.insertOneTeammate(newProjectTeammate);
 
-        return new AjaxResponse().append("result", addResult).append("message", "이미 존재하는 팀원입니다.");
+        return new AjaxResponse().append("result", addResult).append("message", "팀원을 등록할 수 없습니다.");
     }
 }
