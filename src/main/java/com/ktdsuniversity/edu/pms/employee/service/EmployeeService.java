@@ -46,6 +46,8 @@ public interface EmployeeService {
 
 	public EmployeeVO getOneEmployeeCheckNull(String empId);
 
+	public EmployeeVO getOneEmployeenullCheck(String empId);
+
 
 
 }
