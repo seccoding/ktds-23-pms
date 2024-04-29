@@ -38,6 +38,7 @@ $().ready(function(){
             itemsArray.forEach(function(item) {
                 if(modalItem === item) {
                     $("input[id=" + modalItem + "]").prop('disabled', true);
+                    $("input[id=" + modalItem + "]").prop('checked', false);
                 }
             });
         });
@@ -46,17 +47,20 @@ $().ready(function(){
             $("input[id=" + deleteItem[i] + "]").prop('disabled', false);
         }
 
-        // $("input[id=" + $(".btn-remove-prdt").data("delete-item") + "]").prop('disabled', false);
-        // 추가 버튼 클릭
-        $(addPrdtBtn).on("click", function() {
+    });
 
+    // $("input[id=" + $(".btn-remove-prdt").data("delete-item") + "]").prop('disabled', false);
+        // 추가 버튼 클릭
+        addPrdtBtn.on("click", function() {
+            
             var checkedProducts = [];
-            $('input:checkbox[name="mPrdtId"]').each(function (index) {
-                if( $(this).is(":checked") == true ){
+            $('input[type="checkbox"][name="mPrdtId"]:checked').each(function () {
                     console.log($(this).val());
                     checkedProducts.push($(this).val());
-                }
+                
             })
+
+            console.log("checkedProducts", checkedProducts)
 
             $.post("/ajax/approval/addProduct", { addProducts : checkedProducts },  
                 function(response) {
@@ -123,26 +127,30 @@ $().ready(function(){
                         var prdtItemRemoveBtn = $("<button class='btn-remove-prdt'>삭제</button>");
                         prdtItemRemoveBtn.addClass("btn-remove-prdt");
                         prdtItemRemoveBtn.data("delete-item", borrow.prdtMngId);
-                        $(prdtItemRemoveBtn).on("click", function(event) {
-                            event.preventDefault();
-                            var length = $("#prdt-list").find("tr").length;
-                            if (length === 1) {
-                                alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
-                                return;
-                            }
-                            $(this).closest("tr").remove(); 
-                            deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
-                        });
+                        prdtItemRemoveBtn.on("click", productRemoveHandler);
                         var prdtItemRemoveBtnDom = $("<td></td>").append(prdtItemRemoveBtn);
                         borrowListDom.append(prdtItemRemoveBtnDom);
                         borrowList.append(borrowListDom);
                         
                     }
                 });
+            // modalItemArray.forEach(function(modalItem) {   
+            //     $("input[id=" + modalItem + "]").prop('disabled', false);
+            //     $("input[id=" + modalItem + "]").prop('checked', false);
+            // });
             // 비품 추가 모달 닫기
+            deleteItem = [];
+            console.log(deleteItem);
             addPrdtModal[0].close(); 
+            // for(var i = 0; i < deleteItem.length; i++) {
+            //     for(var j = 0; j < checkedProducts.length; j++) {
+            //         if(deleteItem[i] === checkedProducts[j]) {
+            //             deleteItem.splice(i, 1);
+            //         }
+            //     }
+            // }
+            // addPrdtModal[0].reset();
         });
-    });
 
     // 비품 추가 모달 닫기
     $(".modal-confirm-close").on("click", function () {
@@ -207,18 +215,20 @@ $().ready(function(){
             location.href = "/approval/progresslist";
         }
     });
-
-    var deleteItem = [];
+    
     // 삭제버튼 누르면 제거
-    $(".btn-remove-prdt").on("click", function(event) {
-        deleteItem = [];
-        event.preventDefault();
-        var length = $("#prdt-list").find("tr").length;
-        if (length === 1) {
-            alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
-            return;
-        }
-        $(this).closest("tr").remove(); 
-        deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
-    });
+    $(".btn-remove-prdt").on("click", productRemoveHandler);
 });
+
+var deleteItem = [];
+function productRemoveHandler() {
+    // deleteItem = [];
+    var length = $("#prdt-list").find("tr").length;
+    if (length === 1) {
+        alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
+        return;
+    }
+    deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
+    console.log("Product Delete Handler: ", deleteItem)
+    $(this).closest("tr").remove(); 
+}

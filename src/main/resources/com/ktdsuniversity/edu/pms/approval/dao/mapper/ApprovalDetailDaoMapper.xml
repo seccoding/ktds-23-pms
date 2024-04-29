@@ -7,7 +7,8 @@
 	<resultMap type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO" id="approvalDetailVOMap" autoMapping="true">
 		<id column="APPR_DTL_ID" property="apprDtlId"/>	  
 		<association property="approvalVO" javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
-			<id column="APPR_ID" property="apprId"/>							   
+			<id column="APPR_ID" property="apprId"/>		
+			<result column=" ARRP_RJCT" property="apprRjct"/>					   
 		</association>
 		<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 			<id column="PRDT_ID" property="prdtId"/>								   
@@ -42,20 +43,20 @@
   	
   	<!-- PSH0422 -->
 	<select id="getPersonApproval"  parameterType="string" resultMap="approvalDetailVOMap">
-  		SELECT ad.APPR_ID
-			  
-			 , ad.PRDT_ID
-			 , ad.CUR_STR
-			 , p.PRDT_NAME
-		 FROM APPROVAL_DETAIL ad
-		INNER JOIN APPROVAL a
-		   ON ad.APPR_ID = a.APPR_ID
-		INNER JOIN EMPLOYEE e
-		   ON e.EMP_ID = a.DMD_ID
-		INNER JOIN PRODUCT p
-		   ON p.PRDT_ID = ad.PRDT_ID
-		WHERE a.DEL_YN = 'N'
-		  AND ad.APPR_ID = #{_parameter}
+  		SELECT AD.APPR_ID
+			 , A.ARRP_RJCT
+			 , AD.PRDT_ID
+			 , AD.CUR_STR
+			 , P.PRDT_NAME
+		 FROM APPROVAL_DETAIL AD
+		INNER JOIN APPROVAL A
+		   ON AD.APPR_ID = A.APPR_ID
+		INNER JOIN EMPLOYEE E
+		   ON E.EMP_ID = A.DMD_ID
+		INNER JOIN PRODUCT P
+		   ON P.PRDT_ID = AD.PRDT_ID
+		WHERE A.DEL_YN = 'N'
+		  AND AD.APPR_ID = #{_parameter}
   	</select>
 
 	<insert id="insertApprovalDetailList" parameterType="list">

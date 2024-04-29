@@ -48,10 +48,10 @@
         }
 	</style>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
+    <jsp:include page="../commonmodal.jsp"></jsp:include>
 	<script type="text/javascript" src="/js/approval/approvalview.js" ></script>
 </head>
 <body>
-    <jsp:include page="../commonmodal.jsp"></jsp:include>
 	<div class="container">
         <div class="title">
             <h2>결재 상세정보</h2>
@@ -142,6 +142,15 @@
                 <div class="grid-item">
                     <div class="grid-item-content">
                         <span>${approvalVO.apprCntnt}</span>
+                    </div>
+                </div>
+                <div class="grid-item">
+                    <h5>반려사유</h5>
+                    <span>결재 반려 사유</span>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-item-content">
+                        <span>${approvalVO.arrpRjct}</span>
                     </div>
                 </div>
             </div>

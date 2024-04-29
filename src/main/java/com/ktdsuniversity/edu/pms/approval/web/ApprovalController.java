@@ -117,7 +117,7 @@ public class ApprovalController {
 	@GetMapping("/approval/write")
 	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
 		BorrowListVO borrowListVO = this.borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
 		// 부서 정보 얻어와야함
 
@@ -162,8 +162,6 @@ public class ApprovalController {
 	public AjaxResponse addProductForNewApproval(@RequestParam("addProducts[]") List<String> addProducts,
 												 @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		logger.info(addProducts.size()+"<<<<<<<<<<<<<<<<<<<<<<<<<<");
-
 		List<BorrowVO> borrowList = this.approvalService.getAddProductApproval(addProducts);
 		return new AjaxResponse().append("borrowList", borrowList);
 	}
@@ -206,7 +204,7 @@ public class ApprovalController {
 
 		ApprovalVO approvalVO = this.approvalService.selectOneApproval(apprId);
 		// 퇴사: true
-		boolean isLeaveEmployee = this.employeeService.getOneEmployee(approvalVO.getDmdId()).getWorkSts().equals("204");
+		boolean isLeaveEmployee = this.employeeService.getOneEmployeeCheckNull(approvalVO.getDmdId()).getWorkSts().equals("204");
 		// 대여중인 물품이 없음: true
 		boolean isNoReturnProduct = this.borrowService.getIsNotReturnCount(approvalVO.getDmdId());
 
@@ -228,7 +226,7 @@ public class ApprovalController {
 
 		searchApprovalVO.setEmployeeVO(employeeVO);
 		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
-		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
+		EmployeeVO employee = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
 		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
 		model.addAttribute("employee", employee);
 		model.addAttribute("apprList", apprListVO);

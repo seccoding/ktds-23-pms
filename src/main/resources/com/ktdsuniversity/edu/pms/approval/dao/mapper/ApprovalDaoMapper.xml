@@ -194,6 +194,7 @@
 			 , A.APPR_TTL
 			 , A.APPR_CNTNT
 			 , A.RNTL_STS
+			 , A.ARRP_RJCT
 			 , E.EMP_NAME
 			 , E_MNG.EMP_NAME MNG_EMP_NAME
 			 , CC.CMCD_NAME

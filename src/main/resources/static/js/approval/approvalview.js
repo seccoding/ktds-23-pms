@@ -8,26 +8,66 @@ $().ready(function() {
     var apprSts = $(this).data("appr-sts");
     var rntlSts = $(this).data("rntl-sts");
 
-    var chooseValue = confirm("결재를 승인합니다.");
     var params = {
       apprSts : apprSts, 
       rntlSts : rntlSts, 
     };
+    var chooseValue = confirm("결재를 승인합니다.");
 
-    if(chooseValue) {
-      $.post(url, params, function(response) {
+
+    loadModal({
+      content: "결재를 승인합니다.",
+      fnPositiveBtnHandler: function () {
+
+        $.post(url, params, function(response) {
           if(response.data.result) {
-            alert("결재가 승인되었습니다.");
-            location.reload();
+
+            loadModal({
+              content: "결재가 승인되었습니다.",
+              fnPositiveBtnHandler: function () {
+                location.reload();
+              },showNegativeBtn: false,
+            });
           } else {
-            alert(response.data.errorMessage);
+
+            loadModal({
+              content: response.data.errorMessage,
+              fnPositiveBtnHandler: function () {
+                location.reload();
+              },showNegativeBtn: false,
+            });
+
           }
       });
-    }
+
+
+
+
+      }, fnNegativeBtnHandler: function () {
+        alertModal[0].close();
+      },
+  });
+
+
+
+
+
+    // if(chooseValue) {
+    //   $.post(url, params, function(response) {
+    //       if(response.data.result) {
+    //         alert("결재가 승인되었습니다.");
+    //         location.reload();
+    //       } else {
+    //         alert(response.data.errorMessage);
+    //       }
+    //   });
+    // }
   });
 
   // 결재반려
   $("#btn-appr-sts-no").on("click", function() {
+
+    
     // 결재 반려 확인 모달
     var alertModal = $(".modal-confirm-window");
     var modalButton = $(".confirm-confirm-button");
