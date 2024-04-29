@@ -67,7 +67,7 @@ public class OutputController {
 			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
 
 		}
-		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
+		projectList= projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
 		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
@@ -91,8 +91,7 @@ public class OutputController {
 			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
 
 		}
-		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
-		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
+		projectList =projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		model.addAttribute("projectList", projectList).addAttribute("outputType", outputType).addAttribute("prjSts",
@@ -139,7 +138,7 @@ public class OutputController {
 		this.checkAccess(employeeVO);
 
 		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
-		projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
+		projectList = projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		OutputVO output = this.outputService.getOneOutput(outId);
@@ -168,7 +167,7 @@ public class OutputController {
 		return "redirect:/output";
 	}
 
-	@GetMapping("/output/delete/{outId}")
+	@PostMapping("/output/delete/{outId}")
 	public String deleteOutputment(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String outId) {
 		this.checkAccess(employeeVO);
 		OutputVO output = this.outputService.getOneOutput(outId);

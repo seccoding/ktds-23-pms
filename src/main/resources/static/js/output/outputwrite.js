@@ -21,7 +21,10 @@ $().ready(function () {
     var file = fileArr[0];
 
     if (file === undefined) {
-      alert("파일은 필수입니다");
+      loadModal({
+        content: "파일은 필수입니다",
+        showNegativeBtn: false,
+      });
       return;
     }
 

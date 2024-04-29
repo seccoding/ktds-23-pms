@@ -11,6 +11,7 @@ public interface OutputDao {
 
 	public List<OutputVO> getAllOutputList();
 	
+	
 	public List<OutputVO> searchAllOutPutList(OutputSearchVO outputSearchVO);
 	
 	public int getOutputCnt ();

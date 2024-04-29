@@ -131,14 +131,16 @@
 	<select id="searchOutputCnt"
 		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO"
 		resultType="_int">
-		SELECT count(1) AS LIST_CNT
-		FROM "OUTPUT" O
+		SELECT COUNT(1)
+		FROM PMS."OUTPUT" O
 		JOIN COMMON_CODE CC
 		ON O.OUT_TYPE = CC.CMCD_ID
 		JOIN PROJECT P
 		ON O.PRJ_ID = P.PRJ_ID
 		JOIN COMMON_CODE OUTVERSTS
 		ON O.OUT_VER = OUTVERSTS.CMCD_ID
+		JOIN EMPLOYEE EMP
+		ON O.CRTR_ID = EMP.EMP_ID
 		WHERE O.DEL_YN='N'
 		AND P.OUT_YN='Y'
 		<choose>
