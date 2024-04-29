@@ -13,22 +13,19 @@ $().ready(function () {
   // });
 
   $(".delete-knowledge").on("click", function () {
-    var alertModal = $(".modal-confirm-window");
-    var modalButton = $(".confirm-confirm-button");
-    var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text("이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.");
-    modalButton.text("확인");
-    modalButton1.text("취소");
-    alertModal[0].showModal();
+    loadModal({
+      content:
+        "이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.",
+      fnPositiveBtnHandler: function () {
+        var knlId = $(".grid").data("id");
+        location.href = "/knowledge/delete/" + knlId;
+      },
+    });
   });
   $(".modal-confirm-close").on("click", function () {
     location.reload();
   });
-  $(".confirm-confirm-button").on("click", function () {
-    var knlId = $(".grid").data("id");
-    location.href = "/knowledge/delete/" + knlId;
-  });
+
   $(".cancel-confirm-button").on("click", function () {
     location.reload();
   });
@@ -106,7 +103,9 @@ $().ready(function () {
           continue;
         }
 
-        var appendedParentReply = $(".reply[data-reply-id=" + reply.rplPid + "]");
+        var appendedParentReply = $(
+          ".reply[data-reply-id=" + reply.rplPid + "]"
+        );
 
         /***********************새로운 댓글 추가*************************/
         // <div class="reply" data-reply-id="댓글번호" style="padding-left: (level - 1) * 40px">
@@ -247,5 +246,38 @@ $().ready(function () {
     $("#txt-reply").val("");
     $("#txt-reply").removeData("mode");
     $("#txt-reply").removeData("target");
+  });
+
+  $(".recommend-knowledge").on("click", function () {
+    var knlId = $(".recommend-knowledge").val();
+
+    $.post("/knowledge/recommend/" + knlId, function (response) {
+      loadModal({
+        content: response.data.result,
+        fnPositiveBtnHandler: function () {
+          location.reload();
+        },
+        showNegativeBtn: false,
+      });
+
+      // var alertModal = $(".modal-confirm-window");
+      // var modalButton = $(".confirm-confirm-button");
+
+      // var modalButton1 = $(".cancel-confirm-button");
+      // var modalText = $(".modal-confirm-text");
+      // modalText.text(response.data.result);
+      // modalButton.text("확인");
+      // modalButton..on("click", function () {
+      //   location.reload();
+      // });
+
+      // modalButton1.css("display", "none");
+      // alertModal[0].showModal();
+      // $("#knlRecCnt").html(response.data.count);
+    });
+  });
+
+  $(".confirm-confirm-button").on("click", function () {
+    // location.reload();
   });
 });

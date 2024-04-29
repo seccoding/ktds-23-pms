@@ -1,5 +1,9 @@
 $().ready(function () {
-  var editors = loadEditor(".editor", "내용을 입력하세요.", "${knowledgeVO.knlCntnt}");
+  var editors = loadEditor(
+    ".editor",
+    "내용을 입력하세요.",
+    "${knowledgeVO.knlCntnt}"
+  );
   // var dialog = $(".alert-dialog");
   // if (dialog.length > 0) {
   //   dialog[0].showModal();
