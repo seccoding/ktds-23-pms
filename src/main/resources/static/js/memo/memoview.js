@@ -38,18 +38,26 @@ $().ready(function () {
     });
   });
 
-  $(".list-button").click(function () {
-    sessionStorage.setItem("previousPage", document.referrer);
-    var previousPage = sessionStorage.getItem("previousPage");
-    if (previousPage) {
-      window.location.href = previousPage;
-    } else {
-      window.location.href = "/memo/sent";
-    }
-  });
+  // list 버튼이 삭제됨..
+  // $(".list-button").click(function () {
+  //   sessionStorage.setItem("previousPage", document.referrer);
+  //   var previousPage = sessionStorage.getItem("previousPage");
+  //   if (previousPage) {
+  //     window.location.href = previousPage;
+  //   } else {
+  //     window.location.href = "/memo/sent";
+  //   }
+  // });
+
+  // $(".write-button").click(function () {
+  //   window.location.href = "/memo/write";
+  // });
 
   $(".write-button").click(function () {
-    window.location.href = "/memo/write";
+    var crtrId = $("#memodetail-crtrId").data("crtrid"); // 데이터 속성 가져오기
+    console.log(crtrId);
+    sessionStorage.setItem("crtrId", crtrId); // 세션 스토리지에 저장
+    window.location.href = "/memo/write"; // 새로운 페이지로 이동
   });
 
   $(".save-button").click(function () {

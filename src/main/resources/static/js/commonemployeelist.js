@@ -199,4 +199,11 @@ $().ready(function () {
   $(".modal-list-close").on("click", function () {
     $(".modal-employee-list")[0].close();
   });
+  $(".modal-employee-list").keydown(function (event) {
+    if (event.key === "Enter") {
+      // Enter 키가 눌렸을 때
+      event.preventDefault(); // 기본 동작 방지
+      $("#search-btn").click(); // 검색 버튼 클릭
+    }
+  });
 });

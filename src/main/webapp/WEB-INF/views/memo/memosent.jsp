@@ -83,7 +83,14 @@
                                             <td class="center-align">${memo.rcvId} ${memo.rcvName} : (${memo.rcvEmail})</td>
                                             <td class="center-align">${memo.crtrId} ${memo.crtrName} : (${memo.crtrEmail})</td>
                                             <td class="center-align">${memo.crtDt}</td>
-                                            <td class="center-align">${memo.readYn}</td>     
+                                            <td class="center-align">
+                                                <c:if test="${memo.readYn eq 'Y'}">
+                                                    <span class="badge bg-success">확인</span>
+                                                </c:if>
+                                                <c:if test="${memo.readYn eq 'N'}">
+                                                    <span class="badge bg-label-danger">미확인</span>
+                                                </c:if>
+                                            </td>     
                                         </tr>
                                     </c:forEach>
                                 </c:when>
