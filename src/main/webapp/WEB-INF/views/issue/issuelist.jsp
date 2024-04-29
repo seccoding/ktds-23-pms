@@ -9,6 +9,14 @@
 <jsp:include page="../commonheader.jsp" />
 <jsp:include page="../commonmodal.jsp" />
 <script type="text/javascript" src="/js/issue/issuelist.js"></script>
+<style>
+    .search-keyword {
+        display: flex;
+    }
+    .create-btn {
+        text-align: right;
+    }
+</style>
 </head>
 <body>
 <div>
@@ -76,7 +84,7 @@
 <!-- Paginator 시작 -->
 <nav aria-label="Page navigation">
   <form id="search-form">
-      <div class="search-keyword">
+    <div class="search-keyword">
         <input type="hidden" id="page-no" name="pageNo" value="0" />
         <select id="list-size" name="listSize">
           <option value="5" ${searchIssueVO.listSize eq 5 ? 'selected' : ''}>5개</option>
@@ -96,24 +104,22 @@
         </select>
         
         <div>
-          <div>
             <input type="text" name="searchKeyword" value="${searchIssueVO.searchKeyword}" />
             <button type="button" id="search-btn">검색</button>
             <button type="button" id="cancel-search-btn">초기화</button>
-          </div>
-          <div>
+        </div>
+    </div>
+        <div class="create-btn">
             <button>
-                <a href="/issue/write">신규등록</a>
+                <a href="/issue/write">이슈등록</a>
             </button>
             <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
-              <button>
-                  <a href="/issue/excel/download">엑셀다운</a>
-              </button>
-              <button type="button" id="deleteMassiveIssue" href="javascript:void(0);">일괄삭제</button>
+                <button>
+                    <a href="/issue/excel/download">엑셀다운</a>
+                </button>
+                <button type="button" id="deleteMassiveIssue" href="javascript:void(0);">일괄삭제</button>
             </c:if>   
-          </div>
         </div>
-      </div>
       <ul class="pagination">
           <c:if test="${searchIssueVO.hasPrevGroup}">
               <li class="page-item first">

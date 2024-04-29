@@ -8,11 +8,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <jsp:include page="../ckeditor.jsp" />
     <script type="text/javascript" src="/js/issue/issuewrite.js"></script>
+    <style>
+
+    </style>
   </head>
   <body>
-    <h1>이슈 수정</h1>
-    <form action="/issue/modify/${issueVO.isId}" method="post" enctype="multipart/form-data">
-      <div class="grid">
+    <form
+      id="writeForm"
+      action="/issue/modify/?isId=${issueVO.isId}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="grid" data-id="${issueVO.isId}">
           <label for="issue-title">이슈명</label>
           <input type="text" id="issue-title" name="isTtl" value="${issueVO.isTtl}"/>
 
@@ -36,9 +43,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 />
             </div>
           </div>
-
-          <button id="submit" type="button">저아</button>
-          
+          <div>
+            <button type="button" data-type="modify">수정</button>
+          </div>
       </div>
     </form>
   </body>

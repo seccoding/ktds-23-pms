@@ -9,9 +9,18 @@
 <jsp:include page="../commonheader.jsp"></jsp:include>
 <script type="text/javascript" src="/js/issue/issueview.js"></script>
 <jsp:include page="../commonmodal.jsp"></jsp:include>
+<style>
+    .btn-wrapper {
+        text-align: right;
+    }
+</style>
 </head>
 <body>
-	<div class="grid" data-id="${issueVO.isId}">
+	<div 
+        class="grid"
+        data-id="${issueVO.isId}"
+        data-crtr-id="${issuVO.crtrId}"
+    >
         <span style="display: none;" hidden id="login-email">${sessionScope._LOGIN_USER_.empId}</span>
         <label for="subject">제목</label>
         <div>${issueVO.isTtl}</div>
@@ -38,27 +47,26 @@
         <label for="content">내용</label>
         <div>${issueVO.isCntnt}</div>
 
-        <div class="replies">
-            <div class="reply-items"></div>
-            <div class="write-reply">
-              <textarea id="txt-reply" name="rplCntnt" data-issue-id="${issueVO.isId}"></textarea>
-              <button id="btn-save-reply" data-mode ="">등록</button>
-              <button id="btn-cancel-reply">취소</button>
-            </div>
-        </div>
-
-        <div>
+        <div class="btn-wrapper">
             <button>
                 <a href="/issue">목록</a>
             </button>
             <c:if test="${sessionScope._LOGIN_USER_.empId eq issueVO.crtrId || sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
                 <button>
-                    <a href="/issue/modify/${issueVO.isId}">수정</a>
+                    <a id="modify" href="javascript:void(0)">수정</a>
                 </button>
                 <button>
                     <a class="delete-issue" href="javascript:void(0);">삭제</a>
                 </button>
             </c:if>
+        </div>
+    </div>
+    <div class="replies">
+        <div class="reply-items"></div>
+        <div class="write-reply">
+          <textarea id="txt-reply" name="rplCntnt" data-issue-id="${issueVO.isId}"></textarea>
+          <button id="btn-save-reply" data-mode ="">등록</button>
+          <button id="btn-cancel-reply">취소</button>
         </div>
     </div>
 </body>

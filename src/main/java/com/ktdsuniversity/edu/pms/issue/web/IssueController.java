@@ -40,7 +40,6 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
-import com.ktdsuniversity.edu.pms.utils.StringUtil;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
@@ -51,13 +50,10 @@ public class IssueController {
 
 	@Autowired
 	private IssueService issueService;
-	
 	@Autowired
 	private RequirementService requirementService;
-	
 	@Autowired
 	private ProjectService projectService;
-	
 	@Autowired
 	private FileHandler fileHandler;
 	
@@ -131,8 +127,8 @@ public class IssueController {
 		return new AjaxResponse().append("result", isSuccess);
 	}
 	
-	@GetMapping("/issue/modify/{isId}")
-	public String viewModifyIssuePage(@PathVariable String isId, Model model,
+	@GetMapping("/issue/modify")
+	public String viewModifyIssuePage(@RequestParam String isId, Model model,
 									@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 		IssueVO issueVO = this.issueService.getOneIssue(isId, false);
 		
@@ -144,44 +140,24 @@ public class IssueController {
 		return "issue/issuemodify";
 	}
 	
-	@PostMapping("/issue/modify/{isId}")
-	public String doModifyIssue(@PathVariable String isId, Model model,
+	@ResponseBody
+	@PostMapping("/ajax/issue/modify")
+	public AjaxResponse doModifyIssue(@RequestParam String isId, Model model,
 								MultipartFile file, IssueVO issueVO,
 								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		IssueVO originalIssueVO = this.issueService.getOneIssue(isId, false);
 		if (!originalIssueVO.getCrtrId().equals(employeeVO.getEmpId())
 					&& employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
-		}
-		
-		boolean isEmptyTitle = StringUtil.isEmpty(issueVO.getIsTtl());
-		boolean isEmptyContent = StringUtil.isEmpty(issueVO.getIsCntnt());
-		
-		if (isEmptyTitle) {
-			model.addAttribute("errorMessage", "제목은 필수 입력 값입니다.");
-			model.addAttribute("issueVO", issueVO);
-			return "issue/issuemofidy";
-		}
-		
-		if (isEmptyContent) {
-			model.addAttribute("errorMessage", "내용은 필수 입력 값입니다.");
-			model.addAttribute("issueVO", issueVO);
-			return "board/boardmodify";
+			throw new AccessDeniedException();
 		}
 		
 		issueVO.setIsId(isId);
-		issueVO.setCrtrId(employeeVO.getEmpId());
+		issueVO.setMdfrId(employeeVO.getEmpId());
 		
 		boolean isUpdateSuccess = this.issueService.updateOneIssue(issueVO, file);
 		
-		if (isUpdateSuccess) {
-			logger.info("수정 성공했습니다!");
-		}
-		else {
-			logger.info("수정 실패했습니다!");
-		}
-		return "redirect:/issue/view?isId=" + isId;
+		return new AjaxResponse().append("result", isUpdateSuccess);
 	}
 	
 	@GetMapping("/issue/delete/{isId}")
@@ -190,17 +166,11 @@ public class IssueController {
 		IssueVO originalIssueVO = this.issueService.getOneIssue(isId, false);
 		
 		if (!originalIssueVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 		
 		boolean isSuccess = this.issueService.deleteOneIssue(isId);
 		
-		if (isSuccess) {
-			logger.info("삭제 성공!");
-		}
-		else {
-			logger.info("삭제 실패!");
-		}
 		return "redirect:/issue";
 	}
 	
@@ -329,6 +299,7 @@ public class IssueController {
 		Validator<IssueVO> validator = new Validator<>(issueVO);
 		validator.add("isTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
 				.add("isCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+				.add("rqmId", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
 				.start();
 		if (validator.hasErrors()) {
 			return validator.getErrors();
