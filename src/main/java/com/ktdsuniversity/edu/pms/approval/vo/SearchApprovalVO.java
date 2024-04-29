@@ -3,8 +3,6 @@ package com.ktdsuniversity.edu.pms.approval.vo;
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
-import java.util.Date;
-
 public class SearchApprovalVO extends PaginateVO {
 
     private String searchType;

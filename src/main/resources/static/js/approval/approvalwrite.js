@@ -13,7 +13,7 @@ $().ready(function(){
     var prdtValues = $(".target-prdt-dtl-id");
 
     $("#btn-add-prdt-modal").on("click", function() {
-       
+    
         if(deleteItem.length === 0) {
             alert("추가할 비품이 없습니다.");
             return;
@@ -35,9 +35,7 @@ $().ready(function(){
         // modal 비품id 
         // console.log(modalItemArray);
         modalItemArray.forEach(function(modalItem) {
-            console.log(modalItem);
             itemsArray.forEach(function(item) {
-                console.log(item);
                 if(modalItem === item) {
                     $("input[id=" + modalItem + "]").prop('disabled', true);
                 }
@@ -59,8 +57,7 @@ $().ready(function(){
                     checkedProducts.push($(this).val());
                 }
             })
-            console.log("왜 하나만 들어가?", checkedProducts);
-            
+
             $.post("/ajax/approval/addProduct", { addProducts : checkedProducts },  
                 function(response) {
                     var borrowList = response.data.borrowList
@@ -68,10 +65,8 @@ $().ready(function(){
                     console.log(borrowList.length);
 
                     // 선택한 비품 추가!
-                    for (var i in borrowList) {
-                        var borrow = borrowList[i];
-
-                        console.log("몇번 도는거야 >>> ", i);
+                    for (var borrow of borrowList) {
+                        // var borrow = borrowList[i];
                         console.log("번호번호 >>> ", borrow.prdtMngId);
 
                         var borrowList = $("#prdt-list");
@@ -128,6 +123,16 @@ $().ready(function(){
                         var prdtItemRemoveBtn = $("<button class='btn-remove-prdt'>삭제</button>");
                         prdtItemRemoveBtn.addClass("btn-remove-prdt");
                         prdtItemRemoveBtn.data("delete-item", borrow.prdtMngId);
+                        $(prdtItemRemoveBtn).on("click", function(event) {
+                            event.preventDefault();
+                            var length = $("#prdt-list").find("tr").length;
+                            if (length === 1) {
+                                alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
+                                return;
+                            }
+                            $(this).closest("tr").remove(); 
+                            deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
+                        });
                         var prdtItemRemoveBtnDom = $("<td></td>").append(prdtItemRemoveBtn);
                         borrowListDom.append(prdtItemRemoveBtnDom);
                         borrowList.append(borrowListDom);
@@ -142,11 +147,9 @@ $().ready(function(){
     // 비품 추가 모달 닫기
     $(".modal-confirm-close").on("click", function () {
         addPrdtModal[0].close();
-        $(input["name=mPrdtId"]).prop("checked", false);
     });
     $(".cancel-confirm-button").on("click", function() {
         addPrdtModal[0].close();
-        $(input["name=mPrdtId"]).prop("checked", false);
     });
 
     // 상신버튼
@@ -187,7 +190,9 @@ $().ready(function(){
                     if(data.result && data.next) {
                         location.href = data.next;
                     } else {
+
                         alert(response.data.errors);
+                        console.log(response.data.errors);
                     }
                 },
             });
@@ -205,13 +210,14 @@ $().ready(function(){
 
     var deleteItem = [];
     // 삭제버튼 누르면 제거
-    $(".btn-remove-prdt").on("click", function() {
+    $(".btn-remove-prdt").on("click", function(event) {
+        deleteItem = [];
+        event.preventDefault();
         var length = $("#prdt-list").find("tr").length;
         if (length === 1) {
             alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
             return;
         }
-
         $(this).closest("tr").remove(); 
         deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
     });

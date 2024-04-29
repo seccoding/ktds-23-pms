@@ -49,35 +49,39 @@ public class ApprovalController {
 	@Autowired
 	private BorrowService borrowService;
 
-	@GetMapping(value ={"/approval/home", "/approval/home/waiting"})
+	@GetMapping(value ={"/approval/home", "/approval/home/waiting", "/approval/home/delay", "/approval/home/oneMonth"})
 	public String viewApprovalHomePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
 									   Model model, SearchApprovalVO searchApprovalVO, HttpServletRequest request) {
 
-//		String url = request.getRequestURI();
-//		String uri = url.substring(url.lastIndexOf('/') + 1);
-//		searchApprovalVO.setSearchStatus(uri);
-//		if(uri.equals("waiting")) {
-//			searchApprovalVO.setSearchStatus(uri);
-//		}
+		String url = request.getRequestURI();
+		String uri = url.substring(url.lastIndexOf('/') + 1);
 		boolean searchAuth = compareDeptLeader(employeeVO.getEmpId());
+		
 		// 완료되지 않은 결재
-		SearchApprovalVO searchWatingApproval = new SearchApprovalVO("waiting", searchAuth, "", employeeVO);
-		ApprovalListVO apprWatingListVO = this.approvalService.searchAllApproval(searchWatingApproval);
+		SearchApprovalVO searchWatingApprovalVO = new SearchApprovalVO("waiting", searchAuth, "", employeeVO);
+		ApprovalListVO apprWatingListVO = this.approvalService.searchAllApproval(searchWatingApprovalVO);
 		model.addAttribute("apprWaitingList", apprWatingListVO);
 
 		// 일주일 이상 지연된 결재
-		SearchApprovalVO searchDelayApproval = new SearchApprovalVO("waiting", searchAuth, "delay", employeeVO);
-		ApprovalListVO approvalDelayListVO =this.approvalService.searchAllApproval(searchDelayApproval);
+		SearchApprovalVO searchDelayApprovalVO = new SearchApprovalVO("waiting", searchAuth, "delay", employeeVO);
+		ApprovalListVO approvalDelayListVO =this.approvalService.searchAllApproval(searchDelayApprovalVO);
 		model.addAttribute("approvalDelayList", approvalDelayListVO);
 
 		// 한달 이내 결재
-		SearchApprovalVO searchOneMonthApprovalVO = new SearchApprovalVO("", searchAuth, "oneMonth", employeeVO);
+		SearchApprovalVO searchOneMonthApprovalVO = new SearchApprovalVO("complete", searchAuth, "oneMonth", employeeVO);
 		ApprovalListVO approvalOneMonthListVO = this.approvalService.searchAllApproval(searchOneMonthApprovalVO);
 		model.addAttribute("approvalOneMonthList", approvalOneMonthListVO);
 		
 		// 전체 목록
-		searchApprovalVO.setSearchAuth(searchAuth);
-		commonSearchApproval(employeeVO, model, searchApprovalVO);
+		if(uri.equals("waiting")) {
+			commonSearchApproval(employeeVO, model, searchWatingApprovalVO);
+		} else if(uri.equals("delay")) {
+			commonSearchApproval(employeeVO, model, searchDelayApprovalVO);
+		} else if(uri.equals("oneMonth")) {
+			commonSearchApproval(employeeVO, model, searchOneMonthApprovalVO);
+		} else {
+			commonSearchApproval(employeeVO, model, searchApprovalVO);
+		}
 		return "approval/approvalhome";
 	}
 
@@ -88,7 +92,6 @@ public class ApprovalController {
 		String url = request.getRequestURI();
 		String uri = url.substring(url.lastIndexOf('/') + 1);
 		searchApprovalVO.setSearchStatus(uri);
-		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
 
 		commonSearchApproval(employeeVO, model, searchApprovalVO);
 		return "approval/approvallist";					 
@@ -139,7 +142,7 @@ public class ApprovalController {
 
 		Validator<ApprovalVO> validator = new Validator<>(newApprovalVO);
 		validator.add("apprTtl", Validator.Type.NOT_EMPTY, "기안서 제목을 입력해주세요.")
-				 .add("approvalDetailVOList", Validator.Type.NOT_EMPTY, "변경신청할 비품을 선택해주세요")
+				 .add("productListVO", Validator.Type.NOT_EMPTY, "변경신청할 비품을 선택해주세요")
 				 .start();
 		if(validator.hasErrors()) {
 			Map<String,List<String>> errors = validator.getErrors();
@@ -224,6 +227,7 @@ public class ApprovalController {
 									, Model model, SearchApprovalVO searchApprovalVO) {
 
 		searchApprovalVO.setEmployeeVO(employeeVO);
+		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
 		EmployeeVO employee = this.employeeService.getOneEmployee(employeeVO.getEmpId());
 		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
 		model.addAttribute("employee", employee);
