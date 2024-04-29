@@ -29,7 +29,11 @@
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
 			resultType="_int">
 		SELECT COUNT(1)
-		  FROM PRODUCT
+		  FROM (SELECT P_I.*
+		  			 , REPLACE(P_I.PRDT_NAME, ' ', '') SEARCH_PRDT_NAME
+			 		 , REPLACE(P_I.PRDT_CTGR, ' ', '') SEARCH_PRDT_CTGR
+			 		 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+			 	  FROM PRODUCT P_I) P
 		 WHERE DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
@@ -37,10 +41,10 @@
 		   AND PRDT_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND REPLACE(PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 				<when test='searchType == "category"'>
-		   AND REPLACE(PRDT_CTGR, ' ', '') LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 			</choose>
 		</if>
@@ -50,13 +54,17 @@
 			parameterType="com.ktdsuniversity.edu.pms.product.vo.ProductVO"
 			resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
 		<include refid="Common.pagenate_header" />
-		SELECT PRDT_ID
-			 , PRDT_NAME
-			 , PRDT_CTGR
-			 , ONCE_YN
-			 , CUR_STR
-			 , DEL_YN
-		  FROM PRODUCT
+		SELECT *
+		  FROM (SELECT PRDT_ID
+					 , PRDT_NAME
+					 , PRDT_CTGR
+					 , ONCE_YN
+					 , CUR_STR
+					 , DEL_YN
+					 , REPLACE(PRDT_NAME, ' ', '') AS SEARCH_PRDT_NAME
+					 , REPLACE(PRDT_CTGR, ' ', '') AS SEARCH_PRDT_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+		  FROM PRODUCT)
 		 WHERE DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
@@ -64,10 +72,10 @@
 		   AND PRDT_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND REPLACE(PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 				<when test='searchType == "category"'>
-		   AND REPLACE(PRDT_CTGR, ' ', '') LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 			</choose>
 		</if>

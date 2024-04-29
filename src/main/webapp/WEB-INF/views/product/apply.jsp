@@ -72,7 +72,7 @@
 
                 <div>
                     <label for="apply-date">신청일</label>
-                    <input type="date" id="apply-date" />
+                    <input type="date" id="apply-date" readonly />
                 </div>
             </div>
             <hr />
