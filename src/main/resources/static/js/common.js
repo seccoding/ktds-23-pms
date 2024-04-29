@@ -439,8 +439,16 @@ function loadModal({
         modal.remove();
       }
     });
+
     modalButton1.text(negatgiveBtnName);
-    modalButton1.on("click", fnNegativeBtnHandler);
+    modalButton1.on("click", function () {
+      try {
+        fnNegativeBtnHandler();
+      } finally {
+        alertModal[0].close();
+        modal.remove();
+      }
+    });
 
     if (!showNegativeBtn) {
       modalButton1.css("display", "none");
