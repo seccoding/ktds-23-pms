@@ -13,10 +13,9 @@
     <style type="text/css">
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 15rem);
+            grid-template-columns: repeat(2, 20rem);
             grid-template-rows: repeat(2, 4rem);
             position: relative;
-            text-align: center;
             align-items: center;
             justify-content: center;
             border-radius: 1rem;
@@ -62,7 +61,7 @@
 
                 <div class="category-list" data-ctgrList="${categoryList.productList}" data-category="${category.prdtCtgr}">
                     <label for="select-prdtCtgr">카테고리</label>
-                    <select name="select-prdtCtgr" id="select-prdtCtgr">
+                    <select name="select-prdtCtgr" id="select-prdtCtgr" disabled>
                         <option value="">카테고리 선택</option>
                         <c:forEach items="${categoryList.productList}" var="category">
                             <option value="${category.prdtCtgr}" >${category.prdtCtgr}</option>

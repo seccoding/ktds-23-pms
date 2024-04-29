@@ -204,12 +204,13 @@
 	</select>
 	
 	<select id="getAllProductName" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
-		SELECT DISTINCT PRDT_NAME, 1
+		SELECT DISTINCT PRDT_NAME, CUR_STR 
 		  FROM PRODUCT
+		 WHERE CUR_STR > 0
 	</select>
 	
-	<select id="getProductCurstr" parameterType="string" resultType="_int">
-		SELECT CUR_STR
+	<select id="getProductStockAndCategory" parameterType="string" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
+		SELECT CUR_STR, PRDT_CTGR
 		  FROM PRODUCT
 		 WHERE PRDT_ID = #{_parameter}
 	</select>
