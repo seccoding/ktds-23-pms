@@ -91,7 +91,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 		}
 		
 		// 조회수 1 증가시키기
-		if (isIncrease) {
+ 		if (isIncrease) {
 			int updatedCount = this.knowledgeDao.increaseViewCount(knowledgeId);
 		}
 		

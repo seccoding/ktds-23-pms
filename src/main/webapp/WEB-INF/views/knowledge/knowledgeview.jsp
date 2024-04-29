@@ -6,7 +6,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>지식관리 상세 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
-    <jsp:include page="../commonmodal.jsp" />
     <script
       type="text/javascript"
       src="/js/knowledge/knowledgeview.js"
@@ -69,28 +68,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </button>
       </div>
 
-      <script>
-
-        $().ready(function () {
-          knlId = $(".recommend-knowledge").val();
-          
-          $(".recommend-knowledge").on("click", function() {
-            $.post("/knowledge/recommend/" + knlId, function(response) {
-              var alertModal = $(".modal-confirm-window");
-              var modalButton = $(".confirm-confirm-button");
-              var modalButton1 = $(".cancel-confirm-button");
-              var modalText = $(".modal-confirm-text");
-              modalText.text(response.data.result);
-              modalButton.text("확인");
-              modalButton1.css("display", "none");
-              alertModal[0].showModal();
-              $("#knlRecCnt").html(response.data.count);
-            });
-          });
-          $(".confirm-confirm-button").on("click", function () {
-            location.reload();
-          });
-        })
-      </script>
+     
   </body>
 </html>

@@ -412,3 +412,39 @@ function sessionTimer() {
     target.sessionTimerObject = target.setTimeout(logoutTimer, 1000);
   }, 1000);
 }
+
+function loadModal({
+  content = "",
+  positiveBtnName = "확인",
+  fnPositiveBtnHandler = () => {},
+  showNegativeBtn = true,
+  negatgiveBtnName = "취소",
+  fnNegativeBtnHandler = () => {},
+}) {
+  $.get("/html/newmodal.html", function (modalHtml) {
+    var modal = $(modalHtml);
+    $("body").prepend(modal);
+
+    var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
+    var modalButton1 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text(content);
+    modalButton.text(positiveBtnName);
+    modalButton.on("click", function () {
+      try {
+        fnPositiveBtnHandler();
+      } finally {
+        alertModal[0].close();
+        modal.remove();
+      }
+    });
+    modalButton1.text(negatgiveBtnName);
+    modalButton1.on("click", fnNegativeBtnHandler);
+
+    if (!showNegativeBtn) {
+      modalButton1.css("display", "none");
+    }
+    alertModal[0].showModal();
+  });
+}
