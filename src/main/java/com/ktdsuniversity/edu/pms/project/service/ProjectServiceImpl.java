@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.project.service;
 
+import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
@@ -8,6 +9,8 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,8 @@ import java.util.Map;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
+    Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+
     @Autowired
     private ProjectDao projectDao;
 
@@ -175,22 +180,54 @@ public class ProjectServiceImpl implements ProjectService {
         // project id와 employee id로 한 명의 팀원을 가져온다. 팀원이 삭제된 팀원인지 아닌지를 판단하는 여부를 여기서 확인함
         ProjectTeammateVO originTeammate = projectDao.findTeammateByProjectIdAndEmployeeId(newProjectTeammate);
 
-        // 만약 기존에 있던 팀원이라면
-        if (originTeammate != null) {
-            // del_yn을 체크해야한다!
-            // 만약 삭제되었던 팀원이라면?
-            if (originTeammate.getDelYn().equals("Y")) {
-                // del_yn을 바꿔준 후, true 를 리턴!
-                originTeammate.setRole(newProjectTeammate.getRole());
+        int maxProjectLeaderCount = 2;
 
-                return projectDao.updateTeammateDeleteYnAndRoleByProjectTeammateId(originTeammate) > 0;
+        // 기존 및 삭제 팀원에 대한 수정 후 등록 로직
+        if (originTeammate != null) {
+            // PL 추가인지 NONE 추가인지 체크
+            if (newProjectTeammate.getRole().equals("PL")) {
+                if (maxProjectLeaderCount > projectDao.selectTeammateRolePLCountByProjectId(newProjectTeammate.getPrjId())) {
+                    if (originTeammate.getDelYn().equals("Y")) {
+                        originTeammate.setRole(newProjectTeammate.getRole());
+                        return projectDao.updateTeammateDeleteYnAndRoleByProjectTeammateId(originTeammate) > 0;
+
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else if (newProjectTeammate.getRole().equals("NONE")) {
+
+                if (originTeammate.getDelYn().equals("Y")) {
+
+                    originTeammate.setRole(newProjectTeammate.getRole());
+                    return projectDao.updateTeammateDeleteYnAndRoleByProjectTeammateId(originTeammate) > 0;
+
+                }
+
             } else {
-                return false;
+                throw new CreationException();
             }
         } else {
-            // 기존 팀원이 아니라면!
-            return projectDao.insertNewProjectTeammate(newProjectTeammate) > 0;
+            // PL 추가인지 NONE 추가인지 체크
+            if (newProjectTeammate.getRole().equals("PL")) {
+                logger.debug("팀원의 역할 :" + newProjectTeammate.getTmId());
+                if (maxProjectLeaderCount > projectDao.selectTeammateRolePLCountByProjectId(newProjectTeammate.getPrjId())) {
+                    logger.debug("해당 프로젝트의 현재 PL 인원 :" +  projectDao.selectTeammateRolePLCountByProjectId(newProjectTeammate.getPrjId()));
+                    return projectDao.insertNewProjectTeammate(newProjectTeammate) > 0;
+                } else {
+                    return false;
+                }
+
+            } else if (newProjectTeammate.getRole().equals("NONE")) {
+                return projectDao.insertNewProjectTeammate(newProjectTeammate) > 0;
+            } else {
+                throw new CreationException();
+            }
         }
+
+        return false;
     }
 
     @Override

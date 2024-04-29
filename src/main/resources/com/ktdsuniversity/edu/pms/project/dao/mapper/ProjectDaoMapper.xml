@@ -532,7 +532,7 @@
         AND TM_ID = #{tmId}
     </select>
 
-    <update id="updateTeammateDeleteYnByProjectTeammateId"
+    <update id="updateTeammateDeleteYnAndRoleByProjectTeammateId"
             parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO">
         UPDATE PROJECT_TEAMMATE
         SET DEL_YN = 'N',
@@ -608,4 +608,11 @@
         WHERE PRJ_ID = #{prjId}
         AND TM_ID = #{tmId}
     </update>
+
+    <select id="selectTeammateRolePLCountByProjectId"
+            parameterType="String">
+        SELECT COUNT(1)
+        FROM PROJECT_TEAMMATE PT
+        WHERE PRJ_ID = #{_parameter} AND DEL_YN = 'N' AND PT."ROLE" = 'PL'
+    </select>
 </mapper>
