@@ -98,4 +98,9 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().insert(BorrowDao.NAME_SPACE+".insertNewBorrowHist", borrowVO);
 	}
 
+	@Override
+	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".searchProductManageStateNotReturn", searchBorrowVO);
+	}
+
 }
