@@ -98,22 +98,16 @@
 		 WHERE DEPT_ID = #{_parameter}		
 	</select>
 	
-	<select id="getDepartment" parameterType="string" resultType="int">
-		SELECT COUNT(*) AS dept_lead_count
-			FROM (
-			    SELECT DISTINCT DEPT_LEAD_ID
-			    FROM PMS.DEPARTMENT
-			    WHERE DEPT_LEAD_ID =#{_parameter}
-			) dept_lead,
-			(
-			    SELECT COUNT(*) AS tm_lead_count
-			    FROM (
-			        SELECT DISTINCT TM_LEAD_ID
-			        FROM PMS.TEAM
-			        WHERE TM_LEAD_ID =#{_parameter}
-			    ) tm_lead
-			)
+	<select id="getDepartment" parameterType="string" resultType="string">
+		SELECT DISTINCT e.EMP_ID 
+			FROM EMPLOYEE e
+			LEFT JOIN DEPARTMENT d 
+			ON d.DEPT_LEAD_ID = e.EMP_ID
+			LEFT JOIN TEAM t 
+			ON t.TM_LEAD_ID = e.EMP_ID  
+			WHERE d.DEPT_LEAD_ID = #{_parameter} OR t.TM_LEAD_ID = #{_parameter}
 	</select>
+	
 	
 	<select id="getOnlypstnid" parameterType="string" resultType="string">
 		SELECT PSTN_ID 

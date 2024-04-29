@@ -26,7 +26,7 @@ public interface DepartmentService {
 	public String getDepartmentNameById(String deptId);
 	
 
-	public int  getDepartMent(String id);
+	public DepartmentListVO  getDepartMent(String id);
 
 	public String  getOnlypstnid(String pstnid);
 

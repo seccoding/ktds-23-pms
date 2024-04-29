@@ -362,7 +362,13 @@ $().ready(function () {
       "/ajax/department/create",
       { deptName: departmentName, deptLeadId: departmentLeader },
       function (response) {
-        location.href = response.data.nextUrl;
+        var message = response.data.message;
+        console.log(message);
+        if (message) {
+          confirm(message);
+        } else {
+          location.href = response.data.nextUrl;
+        }
       }
     );
   });
@@ -416,7 +422,13 @@ $().ready(function () {
       "/ajax/team/create",
       { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
       function (response) {
-        location.href = response.data.nextUrl;
+       
+        var message = response.data.message;
+        if (message) {
+          confirm(message);
+        } else {
+           location.href = response.data.nextUrl;
+        }
       }
     );
   });
@@ -481,7 +493,6 @@ $().ready(function () {
       function (response) {
         var returnUrl = response.data.next;
         var message = response.data.message;
-        console.log(message);
 
         if (message) {
           confirm(message);
@@ -549,7 +560,14 @@ $().ready(function () {
       },
       function (response) {
         var returnUrl = response.data.next;
-        location.href = returnUrl;
+    	
+        var message = response.data.message;
+        console.log(message);
+        if (message) {
+          confirm(message);
+        } else {
+          location.href = returnUrl;
+        }
       }
     );
   });

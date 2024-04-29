@@ -63,9 +63,9 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 	
 
 	@Override
-	public int getDepartment(String id) {
+	public List<DepartmentVO> getDepartment(String id) {
 		// TODO Auto-generated method stub
-		return getSqlSession().selectOne(DepartmentDao.NAME_SPACE+".getDepartment", id);
+		return getSqlSession().selectList(DepartmentDao.NAME_SPACE+".getDepartment", id);
 	}
 
 	@Override

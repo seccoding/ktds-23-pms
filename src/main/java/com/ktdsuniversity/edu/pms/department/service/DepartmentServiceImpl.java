@@ -85,9 +85,14 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 	@Override
-	public int getDepartMent(String id) {
+	public DepartmentListVO getDepartMent(String id) {
 		// TODO Auto-generated method stub
-		return departmentDao.getDepartment(id);
+		List<DepartmentVO> departmentList = this.departmentDao.getDepartment(id);
+		
+		DepartmentListVO departmentListVO = new DepartmentListVO();
+		departmentListVO.setDepartmentList(departmentList);
+		
+		return departmentListVO;
 	}
 
 	@Override

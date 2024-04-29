@@ -80,22 +80,11 @@ public class DepartmentController {
 	@ResponseBody
 	@PostMapping("/ajax/department/create")
 	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model, @RequestParam("deptLeadId") String deptLeadId) {
-		String str =  this.departmentService.getOnlypstnid(deptLeadId);
-		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
 		
-		if(str!=null) {
-			int number = Integer.parseInt(str);
-			if(number < 105) {
-				return new AjaxResponse().append("message", "차장 이상부터 등록 가능합니다");
-			}
-			if(count==1) {
-				return new AjaxResponse().append("message", "아이디가 존재 합니다");
-			}
-			
-			
-		}
-		else {
-			return new AjaxResponse().append("message", "아이디를 확인하세요");
+		DepartmentListVO departmentListVo=this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
+		
+		if(departmentListVo.getDepartmentList().size() > 0) {
+			return new AjaxResponse().append("message", "이미 사용중인 아이디 입니다");
 		}
 		
 		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
@@ -114,16 +103,15 @@ public class DepartmentController {
 	@ResponseBody
 	@PostMapping("/ajax/department/modify")
 	public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
-	
-		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
-		System.out.println("count:"+count);
+		this.departmentService.getEmpByDeptId(departmentVO.getDeptLeadId());
 		
-		if(count==1) {
-			return new AjaxResponse().append("message", "아이디가 존재 합니다");
+		
+		DepartmentListVO departmentListVo=this.departmentService.getDepartMent(departmentVO.getDeptLeadId());	
+		if(departmentListVo.getDepartmentList().size() > 0) {
+			return new AjaxResponse().append("message", "이미 사용중인 아이디 입니다");
 		}
 		
 		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
-
 		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 	}
 

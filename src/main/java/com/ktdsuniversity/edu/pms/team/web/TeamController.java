@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
@@ -50,6 +52,11 @@ public class TeamController {
 			return new AjaxResponse().append("errormessage", model);
 		}
 		
+		DepartmentListVO departmentListVo=this.departmentService.getDepartMent(teamVO.getTmLeadId());
+		if(departmentListVo.getDepartmentList().size() > 0) {
+			return new AjaxResponse().append("message", "이미 사용중인 아이디 입니다");
+		}
+		
 		boolean isSuccess = this.teamService.createNewTeam(teamVO);
 		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
 		
@@ -73,22 +80,12 @@ public class TeamController {
 	@ResponseBody
 	@PostMapping("/ajax/team/modify")
 	public AjaxResponse modifyOneTeam(TeamVO teamVO) {
-		String str =  this.departmentService.getOnlypstnid(teamVO.getTmLeadId());
-		int count=  this.departmentService.getDepartMent(teamVO.getTmLeadId());
 		
-		if(str!=null) {
-			int number = Integer.parseInt(str);
-			if(number == 101) {
-				return new AjaxResponse().append("message", "사원 부터 사용이 가능 합니다");
-			}
-			if(count==1) {
-				return new AjaxResponse().append("message", "아이디가 존재 합니다");
-			}
+		DepartmentListVO departmentListVo=this.departmentService.getDepartMent(teamVO.getTmLeadId());
+		if(departmentListVo.getDepartmentList().size() > 0) {
+			return new AjaxResponse().append("message", "이미 사용중인 아이디 입니다");
 		}
-		else {
-			return new AjaxResponse().append("message", "아이디를 확인하세요");
-		}
-
+		
 		boolean isModifySuccess = this.teamService.modifyOneTeam(teamVO);
 		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 		
