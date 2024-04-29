@@ -8,7 +8,6 @@ $().ready(function () {
   $(".confirm-confirm-button").on("click", function () {
     var data = {};
     var list = $(".special-hidden-datalist").text().split(",");
-    console.log($(".special-hidden-datalist").text());
     var tmId = $("#codeTmId").text();
     var deptId = $("#codeDeptId").text();
     list.forEach((item, idx) => {
@@ -446,11 +445,9 @@ $().ready(function () {
     var modal = $(".create-modal-team");
     var deptId = $("#department-selectbox").val();
     $.get("/ajax/team/emp?deptId=" + deptId, function (res) {
-      console.log(res);
       var empList = res.data.empList;
       empList.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#team-leader").append(option);
@@ -464,11 +461,9 @@ $().ready(function () {
     $("#team-leader").html("");
     var deptId = $("#department-selectbox").val();
     $.get("/ajax/team/emp?deptId=" + deptId, function (res) {
-      console.log(res);
       var empList = res.data.empList;
       empList.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#team-leader").append(option);
@@ -515,7 +510,6 @@ $().ready(function () {
           var emplist = response.data.empList;
           emplist.forEach((item) => {
             var option = $("<option></option>");
-            console.log(item.empId);
             option.val(item.empId);
             option.text(item.empId + " (" + item.empName + ")");
             $("#department-leader-mod").append(option);
@@ -536,12 +530,10 @@ $().ready(function () {
   $("#modify-select-box").on("change", function () {
     $("#department-leader-mod").html("");
     var deptId = $(this).val();
-    console.log(deptId);
     $.get("/ajax/department/show?departmentId=" + deptId, function (response) {
       var emplist = response.data.empList;
       emplist.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#department-leader-mod").append(option);
@@ -572,7 +564,6 @@ $().ready(function () {
         function (response) {
           var returnUrl = response.data.next;
           var message = response.data.message;
-          console.log(message);
 
           if (message) {
             confirm(message);
@@ -593,7 +584,6 @@ $().ready(function () {
       var empList = response.data.empList;
       empList.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#team-leader-mod").append(option);
@@ -655,7 +645,6 @@ $().ready(function () {
 
   $(".employee-info-enter").on("click", function () {
     var id = $("#codeEmpId").text();
-    console.log(id);
     location.href = "/employee/view?empId=" + id;
   });
 });

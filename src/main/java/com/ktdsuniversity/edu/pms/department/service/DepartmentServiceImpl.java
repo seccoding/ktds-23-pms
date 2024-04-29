@@ -71,7 +71,6 @@ public class DepartmentServiceImpl implements DepartmentService{
 		boolean updateEmp = false;
 		
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(departmentVO.getDeptLeadId());
-		System.out.println("team??????????"+teamList);
 		TeamVO teamVO = new TeamVO();
 		changeDeptEmpl.setTeamVO(teamVO);
 		int deleteTeamCnt = 0;
@@ -84,8 +83,6 @@ public class DepartmentServiceImpl implements DepartmentService{
 			
 		}
 		
-		System.out.println("?>>>>>>>" + deleteTeamCnt);
-		System.out.println(departmentVO.getDeptId() + " /////// " + departmentVO.getDeptLeadId());
 		changeDeptEmpl.setDeptId(deptId);
 		if (this.employeeDao.modifyEmployeeDept(changeDeptEmpl) > 0 && deleteTeamCnt==teamList.size()){
 			updateEmp = true;
