@@ -37,39 +37,101 @@ $().ready(function () {
 
     var formData = {};
 
-    $("form").each(function (index, form) {
-      formData["productList[" + index + "].prdtName"] = $(form)
-        .find("#prdtName")
-        .val();
-      formData["productList[" + index + "].prdtCtgr"] = $(form)
-        .find("#prdtCtgr")
-        .val();
-      formData["productList[" + index + "].onceYn"] =
-        $(form).find("#onceYn").val() === "소모품" ? "Y" : "N";
-      formData["productList[" + index + "].curStr"] = $(form)
-        .find("#curStr")
-        .val();
-      formData["productList[" + index + "].productManagementVO.buyDt"] = $(form)
-        .find("#buyDt")
-        .val();
-      formData["productList[" + index + "].productManagementVO.prdtPrice"] = $(
-        form
-      )
-        .find("#prdtPrice")
-        .val();
-    });
 
-    loadModal({
-      content: "추가하시겠습니까?",
-      fnPositiveBtnHandler: function () {
-        $.post(url, formData, function (response) {
-          location.href = response.data.next;
+    if( $("#prdtName").val() == "" || $("#prdtCtgr").val() == "" || $("#curStr").val() == "" ||
+        $("#buyDt").val() == "" || $("#prdtPrice").val() == "" ) {
+
+        loadModal({
+            content: "빈칸에 값을 입력해주세요.",
+            fnPositiveBtnHandler: function () {
+                alertModal[0].close();
+            },
+            showNegativeBtn: false,
         });
-      },
-      fnNegativeBtnHandler: function () {
-        alertModal[0].close();
-      },
-    });
+    }
+    else if ($("#prdtName").val() != "" && $("#prdtCtgr").val() != "" && $("#curStr").val() > 50 &&
+             $("#buyDt").val() != "" && $("#prdtPrice").val() != ""){
+
+        loadModal({
+            content: "최대 추가 재고수는 50개입니다.",
+            fnPositiveBtnHandler: function () {
+                alertModal[0].close();
+            },
+            showNegativeBtn: false,
+        });
+    }
+    else {
+
+        var inputname = $("#prdtName").val();
+
+        console.log("~~~~~~~~~~~~~~~~" + inputname + "~~~~~~~~~~~~~~~");
+
+        var getUrl = "/ajax/product/manage/add/" + inputname;
+
+        var existResult;
+
+        $.get(getUrl, { inputName: inputname }, function (response) {
+            existResult = response.data.result;
+            if(existResult) {
+                loadModal({
+                    content: "비품이 이미 존재합니다.",
+                    fnPositiveBtnHandler: function () {
+                        alertModal[0].close();
+                    },
+                    showNegativeBtn: false,
+                });
+            }
+            else {
+                $("form").each(function (index, form) {
+                    formData["productList[" + index + "].prdtName"] = $(form)
+                    .find("#prdtName")
+                    .val();
+                    formData["productList[" + index + "].prdtCtgr"] = $(form)
+                    .find("#prdtCtgr")
+                    .val();
+                    formData["productList[" + index + "].onceYn"] =
+                    $(form).find("#onceYn").val() === "소모품" ? "Y" : "N";
+                    formData["productList[" + index + "].curStr"] = $(form)
+                    .find("#curStr")
+                    .val();
+                    formData["productList[" + index + "].productManagementVO.buyDt"] = $(form)
+                    .find("#buyDt")
+                    .val();
+                    formData["productList[" + index + "].productManagementVO.prdtPrice"] = $(
+                    form
+                    )
+                    .find("#prdtPrice")
+                    .val();
+                });
+            
+                loadModal({
+                    content: "추가하시겠습니까?",
+                    fnPositiveBtnHandler: function () {
+                    $.post(url, formData, function (response) {
+                        location.href = response.data.next;
+                    });
+                    },
+                    fnNegativeBtnHandler: function () {
+                    alertModal[0].close();
+                    },
+                });
+            }
+        });
+
+
+        // if( !existResult ){
+
+            
+
+        // }
+        
+        
+
+
+        
+    }
+
+
 
     // var addConfirm = confirm("추가하시겠습니까?");
     // if (addConfirm) {

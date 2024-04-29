@@ -97,6 +97,14 @@ public interface ProductDao {
 	 */
 	public int changeOnePrdtStoredByPrdtId(String prdtIdByprdtName);
 
+	/**
+	 * 입력한 비품명이 테이블 내 존재하는지 확인
+	 * 개수가 1개 이상이면 존재하는 것으로 판별 
+	 * @param inputName
+	 * @return
+	 */
+	public int getOneExistCount(String inputName);
+
 	
 
 }

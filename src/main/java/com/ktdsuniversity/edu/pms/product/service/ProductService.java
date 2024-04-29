@@ -74,6 +74,13 @@ public interface ProductService {
 	 */
 	public ProductVO getOneProductStockAndCategory(String productName);
 
+	/**
+	 * 입력한 비품명이 테이블 내 존재하는지 확인
+	 * @param inputName
+	 * @return
+	 */
+	public boolean getOneExistProduct(String inputName);
+
 	
 
 }

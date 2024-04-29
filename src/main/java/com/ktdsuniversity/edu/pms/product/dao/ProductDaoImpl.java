@@ -125,4 +125,9 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	public int changeOnePrdtStoredByPrdtId(String prdtIdByprdtName) {
 		return getSqlSession().update(ProductDao.NAME_SPACE + ".changeOnePrdtStoredByPrdtId", prdtIdByprdtName);
 	}
+
+	@Override
+	public int getOneExistCount(String inputName) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".getOneExistCount", inputName);
+	}
 }

@@ -150,11 +150,27 @@ public class ProductController {
 	
 	
 	@GetMapping("/product/manage/add")
-	public String viewProductManageAddPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String viewProductManageAddPage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, ProductVO productVO) {
 		if (employeeVO.getAdmnCode().equals("302")) {
 			throw new AccessDeniedException();
 		}
+		
+		// 카테고리 선택
+		ProductListVO categoryList = this.productService.getAllProductCategory();
+		model.addAttribute("categoryList", categoryList);
+		
 		return "product/manageadd";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("ajax/product/manage/add/{inputname}")
+	public AjaxResponse viewProductAdd(@RequestParam String inputName, @PathVariable String inputname) {
+		boolean isExistResult = this.productService.getOneExistProduct(inputName);
+		
+		System.out.println("~~~~~~~~~~~~" + isExistResult + "~~~~~~~~~~~~~~~");
+		
+		return new AjaxResponse().append("result", isExistResult);
 	}
 	
 	@ResponseBody
@@ -169,6 +185,8 @@ public class ProductController {
 		if(isCreateSuccess != productList.getProductList().size()) {
 			throw new PageNotFoundException();
 		}
+		
+		
 		
 		return new AjaxResponse().append("result1", isCreateSuccess).append("next", "/product/manage/list");
 	}

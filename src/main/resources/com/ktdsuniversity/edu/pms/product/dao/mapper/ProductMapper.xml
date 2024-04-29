@@ -204,7 +204,7 @@
 	</select>
 	
 	<select id="getAllProductName" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
-		SELECT DISTINCT PRDT_NAME, CUR_STR 
+		SELECT DISTINCT PRDT_NAME, 1
 		  FROM PRODUCT
 		 WHERE CUR_STR > 0
 	</select>
@@ -220,6 +220,12 @@
 		SET CUR_STR = CUR_STR - 1
 		WHERE PRDT_ID = #{_parameter}
 	</update>
+	
+	<select id="getOneExistCount" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		  FROM PRODUCT
+		 WHERE PRDT_NAME = #{_parameter}
+	</select>
 	
 	
 </mapper>

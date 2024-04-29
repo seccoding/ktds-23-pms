@@ -51,9 +51,10 @@
                 <div>
                     <label for="prdtCtgr">카테고리</label>
                     <select id="prdtCtgr" name="prdtCtgr" >
-                        <option value="컴퓨터기기" >컴퓨터기기</option>
-                        <option value="사무용품" >사무용품</option>
-                        <option value="프린터용품" >프린터용품</option>
+                        <option value="">카테고리 선택</option>
+                        <c:forEach items="${categoryList.productList}" var="category">
+                            <option value="${category.prdtCtgr}" >${category.prdtCtgr}</option>
+                        </c:forEach>
                     </select>
                 </div>
 
@@ -67,7 +68,7 @@
 
                 <div>
                     <label for="curStr">재고수</label>
-                    <input type="number" id="curStr" name="curStr"/>
+                    <input type="number" min="1" max="50" id="curStr" name="curStr" value="1" />
                 </div>
 
                 <div>

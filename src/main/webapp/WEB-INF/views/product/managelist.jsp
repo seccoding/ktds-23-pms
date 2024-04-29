@@ -34,6 +34,10 @@
     .btn-group{
         text-align: right;
     }
+    .check-option {
+        text-align: right;
+        margin: 0 2rem 1rem 0;
+    }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
 <script>
@@ -85,6 +89,12 @@
 
         <div class="btn-group">
             <button type="button" class="create-product">생성</button>
+        </div>
+        <div class="check-option">
+            <input type="checkbox" id="product-exist-search" 
+                   name="existed-product" value="existed-product-checked"/>
+            <label for="product-exist-search"></label>
+            <label for="product-exist-search">재고가 있는 비품만 조회</label>
         </div>
 
         <table class="table">
@@ -194,12 +204,7 @@
                 </c:if>
             </ul>
 
-            <div class="check-option">
-                <input type="checkbox" id=" " 
-                       name="existed-product" value="existed-product-checked"/>
-                <label for="product-exist-search"></label>
-                <label for="product-exist-search">재고가 있는 비품만 조회</label>
-            </div>
+            
         </form>
     </div>
 
