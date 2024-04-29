@@ -63,4 +63,6 @@ public interface ProjectDao {
     int updateOneTeammateReviewStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO);
 
     int updateOneTeammateSurveyStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO);
+
+    int selectTeammateRolePLCountByProjectId(String prjId);
 }

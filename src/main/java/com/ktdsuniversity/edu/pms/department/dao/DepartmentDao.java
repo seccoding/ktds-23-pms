@@ -30,6 +30,8 @@ public interface DepartmentDao {
 
 	public String  getOnlypstnid(String pstnid);
 
-	public List<EmployeeVO> getEmpByDeptId(String deptId);  
+	public List<EmployeeVO> getEmpByDeptId(String deptId);
+
+	public String getDeptIdByName(String deptName);  
 
 }

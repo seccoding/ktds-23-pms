@@ -44,6 +44,10 @@ public interface EmployeeService {
 
 	public List<EmployeeVO> getChangeToDeptLead(String departmentId);
 
+	public EmployeeVO getOneEmployeeCheckNull(String empId);
+
+	public EmployeeVO getOneEmployeenullCheck(String empId);
+
 
 
 }

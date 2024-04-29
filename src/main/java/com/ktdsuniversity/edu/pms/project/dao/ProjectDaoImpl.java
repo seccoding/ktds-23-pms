@@ -123,7 +123,7 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
 
     @Override
     public int updateTeammateDeleteYnAndRoleByProjectTeammateId(ProjectTeammateVO originTeammate) {
-        return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateTeammateDeleteYnByProjectTeammateId", originTeammate);
+        return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateTeammateDeleteYnAndRoleByProjectTeammateId", originTeammate);
     }
 
     @Override
@@ -149,5 +149,10 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     @Override
     public int updateOneTeammateSurveyStatusByProjectIdAndEmployeeId(ProjectTeammateVO projectTeammateVO) {
         return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneTeammateSurveyStatusByProjectIdAndEmployeeId", projectTeammateVO);
+    }
+
+    @Override
+    public int selectTeammateRolePLCountByProjectId(String prjId) {
+        return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".selectTeammateRolePLCountByProjectId", prjId);
     }
 }

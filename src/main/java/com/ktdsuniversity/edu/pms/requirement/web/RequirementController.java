@@ -131,7 +131,7 @@ public class RequirementController {
 	}
 
 	@ResponseBody
-	@PostMapping("ajax/requirement/write")
+	@PostMapping("/ajax/requirement/write")
 	public AjaxResponse createRequirement(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, MultipartFile file,
 			RequirementVO requirementVO, Model model) throws Exception {
 
@@ -240,7 +240,7 @@ public class RequirementController {
 //		TODO isSuccess 의 결과에 따라 값을 다르게 반환
 		boolean isSuccess = this.requirementService.deleteOneRequirement(requirementVO);
 		return new AjaxResponse().append("result", isSuccess).append("url",
-				"redirect:/project/requirement?prjId=" + requirementVO.getPrjId());
+				"/requirement/search?prjId=" + requirementVO.getPrjId());
 
 //		return "redirect:/project/requirement?prjId=" + requirementVO.getPrjId();
 	}

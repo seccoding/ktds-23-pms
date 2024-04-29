@@ -1,175 +1,186 @@
-$().ready(function(){
+$().ready(function () {
+  // 신청 form 추가
+  $(".plus-btn").on("click", function () {
+    var formDom = $("<form></form>");
+    formDom.attr("action", "/product/apply");
+    formDom.attr("method", "post");
+    formDom.attr("enctype", "multipart/form-data");
 
-    // 신청 form 추가
-    $(".plus-btn").on("click", function () {
+    var formData = $("form").html();
+    formDom.append(formData);
 
-        var formDom = $("<form></form>");
-        formDom.attr("action", "/product/apply");
-        formDom.attr("method", "post");
-        formDom.attr("enctype", "multipart/form-data");
+    $(".form-group").append(formDom);
 
-        var formData = $("form").html();
-        formDom.append(formData);
+    // 새로운 form에 비품명 선택 이벤트 바인딩
+    formDom.find("#select-prdtName").on("change", autoPrdtCtgrSelect);
+    formDom.find("#select-prdtName").on("change", autoPrdtCurStrSelect);
+  });
 
-        $(".form-group").append(formDom);
+  // 신청 form 삭제
+  $(".minus-btn").on("click", function () {
+    var formCount = $("form").length;
+    if (formCount > 1) {
+      $("form:last").remove();
+    } else {
+      loadModal({
+        content: "비품 신청을 취소하시겠습니까?",
+        fnPositiveBtnHandler: function () {
+          location.href = "/product/list";
+        },
+        showNegativeBtn: false,
+      });
 
-        // 새로운 form에 비품명 선택 이벤트 바인딩
-        formDom.find("#select-prdtName").on("change", autoPrdtCtgrSelect);
-        formDom.find("#select-prdtName").on("change", autoPrdtCurStrSelect);
-    });
-
-
-    // 신청 form 삭제
-    $(".minus-btn").on("click", function () {
-        var formCount = $("form").length;
-        if(formCount > 1){
-            $("form:last").remove();
-        }
-        else{
-            var deleteConfirm = confirm("비품 신청을 취소하시겠습니까?");
-            if(deleteConfirm){
-                location.href = "/product/list";
-            }
-        }
-    });
-
-
-    // 카테고리 목록
-    var categories = {
-        "컴퓨터기기": ["모니터", "마우스", "키보드", "프린터"],
-        "컴퓨터용품": ["마이크", "화상카메라"],
-        "저장장치": ["USB"],
-        "가구": ["의자", "책상"],
-        "가전": ["탁상용 선풍기", "가습기"],
-        "사무용품": ["연필", "볼펜", "형광펜", "노트", "메모지"],
-        "프린터용품": ["복사지", "토너"],
-    };
-
-
-    // 비품명 선택 시, 카테고리를 자동으로 선택해주는 함수
-    function autoPrdtCtgrSelect(){
-
-        // 선택한 비품명
-        var namevalue = $(this).val();
-
-        // 선택된 비품명에 속한 form을 가져옴
-        var parentForm = $(this).closest("form");
-        
-        // 카테고리 선택
-        for(var item in categories){
-            if(categories[item].includes(namevalue)){
-                parentForm.find("#select-prdtCtgr").val(item);
-                break;
-            }
-        }
-
-        
-    };
-
-
-    function autoPrdtCurStrSelect(){
-
-        // 선택한 비품명
-        var namevalue = $(this).val();
-
-        // 선택된 비품명에 속한 form을 가져옴
-        var parentForm = $(this).closest("form");
-
-        var url = "/ajax/product/apply/" + namevalue;
-
-        $.get(url, { productName: namevalue },
-            function(response){
-                var curstr = response.data.oneProductCurStr;
-                console.log("재고: " + curstr + "개");
-                parentForm.find("#apply-stock").attr("max", curstr);
-            }
-        );
+      //   var deleteConfirm = confirm("비품 신청을 취소하시겠습니까?");
+      //   if (deleteConfirm) {
+      //     location.href = "/product/list";
+      //   }
     }
+  });
 
+  // 카테고리 목록
+  var categories = {
+    컴퓨터기기: ["모니터", "마우스", "키보드", "프린터"],
+    컴퓨터용품: ["마이크", "화상카메라"],
+    저장장치: ["USB"],
+    가구: ["의자", "책상"],
+    가전: ["탁상용 선풍기", "가습기"],
+    사무용품: ["연필", "볼펜", "형광펜", "노트", "메모지"],
+    프린터용품: ["복사지", "토너"],
+  };
 
-    // 비품명이 바뀔때마다 함수 호출
-    // $("#select-prdtName").on("change", autoPrdtCtgrSelect);
-    // $("#select-prdtName").on("change", autoPrdtCurStrSelect);
-    $(".form-group").on("change", "#select-prdtName", autoPrdtCtgrSelect);
-    $(".form-group").on("change", "#select-prdtName", autoPrdtCurStrSelect);
-    
+  // 비품명 선택 시, 카테고리를 자동으로 선택해주는 함수
+  function autoPrdtCtgrSelect() {
+    // 선택한 비품명
+    var namevalue = $(this).val();
 
-    var today = new Date().toISOString().substring(0, 10);
-    console.log(today);
+    // 선택된 비품명에 속한 form을 가져옴
+    var parentForm = $(this).closest("form");
 
-    // 오늘 날짜로 기본설정
-    $("#apply-date").val(today);
+    // 카테고리 선택
+    for (var item in categories) {
+      if (categories[item].includes(namevalue)) {
+        parentForm.find("#select-prdtCtgr").val(item);
+        break;
+      }
+    }
+  }
 
+  function autoPrdtCurStrSelect() {
+    // 선택한 비품명
+    var namevalue = $(this).val();
 
+    // 선택된 비품명에 속한 form을 가져옴
+    var parentForm = $(this).closest("form");
 
-    // 신청 버튼
-    $(".add-button").on("click", function(){
-        var url = "/ajax/product/apply";
+    var url = "/ajax/product/apply/" + namevalue;
 
-        var formData = {};
+    $.get(url, { productName: namevalue }, function (response) {
+      var curstr = response.data.oneProductCurStr;
+      console.log("재고: " + curstr + "개");
+      parentForm.find("#apply-stock").attr("max", curstr);
+    });
+  }
 
-        $("form").each(function(index, form) {
-            formData["borrowList["+index+"].productVO.prdtName"] = $(form).find("#select-prdtName").val();
-            formData["borrowList["+index+"].productVO.prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
-            formData["borrowList["+index+"].productVO.curStr"] = $(form).find("#apply-quantity").val();
-            formData["borrowList["+index+"].brrwDt"] = $(form).find("#apply-date").val();
-        });
+  // 비품명이 바뀔때마다 함수 호출
+  // $("#select-prdtName").on("change", autoPrdtCtgrSelect);
+  // $("#select-prdtName").on("change", autoPrdtCurStrSelect);
+  $(".form-group").on("change", "#select-prdtName", autoPrdtCtgrSelect);
+  $(".form-group").on("change", "#select-prdtName", autoPrdtCurStrSelect);
 
-        var addConfirm = confirm("신청하시겠습니까?");
-        console.log(formData);
-        if(addConfirm){
-            $.post(url, formData, 
-                function (response) {
-                    location.href = response.data.next;
-                }
-            );
-        }
-        else{
-            location.reload();
-        }
-        
+  var today = new Date().toISOString().substring(0, 10);
+  console.log(today);
+
+  // 오늘 날짜로 기본설정
+  $("#apply-date").val(today);
+
+  // 신청 버튼
+  $(".add-button").on("click", function () {
+    var url = "/ajax/product/apply";
+
+    var formData = {};
+
+    $("form").each(function (index, form) {
+      formData["borrowList[" + index + "].productVO.prdtName"] = $(form)
+        .find("#select-prdtName")
+        .val();
+      formData["borrowList[" + index + "].productVO.prdtCtgr"] = $(form)
+        .find("#select-prdtCtgr")
+        .val();
+      formData["borrowList[" + index + "].productVO.curStr"] = $(form)
+        .find("#apply-quantity")
+        .val();
+      formData["borrowList[" + index + "].brrwDt"] = $(form)
+        .find("#apply-date")
+        .val();
+      loadModal({
+        content: "신청하시겠습니까?",
+        fnPositiveBtnHandler: function () {
+          $.post(url, formData, function (response) {
+            location.href = response.data.next;
+          });
+        },
+        fnNegativeBtnHandler: function () {
+          alertModal[0].close();
+        },
+      });
+
+      // var addConfirm = confirm("신청하시겠습니까?");
+      // console.log(formData);
+      // if (addConfirm) {
+      //   $.post(url, formData, function (response) {
+      //     location.href = response.data.next;
+      //   });
+      // } else {
+      //   location.reload();
+      // }
     });
 
-    
-    $(".cancel-button").on("click", function() {
-        var cancelConfirm = confirm("취소하시겠습니까?");
-        if(cancelConfirm){
-            location.href = "/product/list";
-        }
+    $(".cancel-button").on("click", function () {
+      loadModal({
+        content: "취소하시겠습니까",
+        fnPositiveBtnHandler: function () {
+          location.href = "/product/list";
+        },
+        showNegativeBtn: true,
+        fnNegativeBtnHandler: function () {
+          alertModal[0].close();
+        },
+      });
 
+      // var cancelConfirm = confirm("취소하시겠습니까?");
+      // if (cancelConfirm) {
+      //   location.href = "/product/list";
+      // }
 
-        // var alertModal = $(".modal-confirm-window");
-        // var modalButton = $(".confirm-confirm-button");
-        // var modalButton1 = $(".cancel-confirm-button");
-        // var modalText = $(".modal-confirm-text");
-        // modalText.text("취소하시겠습니까?");
-        // modalButton.text("확인");
-        // modalButton1.text("취소");
+      // var alertModal = $(".modal-confirm-window");
+      // var modalButton = $(".confirm-confirm-button");
+      // var modalButton1 = $(".cancel-confirm-button");
+      // var modalText = $(".modal-confirm-text");
+      // modalText.text("취소하시겠습니까?");
+      // modalButton.text("확인");
+      // modalButton1.text("취소");
 
+      // // 확인 버튼 클릭 시
+      // $(modalButton).on("click", function () {
+      //     location.href = "/product/list";
+      // });
 
-        // // 확인 버튼 클릭 시
-        // $(modalButton).on("click", function () {
-        //     location.href = "/product/list";
-        // });
+      // // 취소 버튼 클릭 시
+      // $(modalButton1).on("click", function () {
+      //     alertModal[0].close();
+      // });
 
-        // // 취소 버튼 클릭 시
-        // $(modalButton1).on("click", function () {
-        //     alertModal[0].close();
-        // });
+      // alertModal[0].showModal();
 
-
-        // alertModal[0].showModal();
-
-        // // Modal 창 닫기 버튼 클릭
-        // $(".modal-confirm-close").on("click", function () {
-        //     alertModal[0].close();
-        // });
-        
+      // // Modal 창 닫기 버튼 클릭
+      // $(".modal-confirm-close").on("click", function () {
+      //     alertModal[0].close();
+      // });
     });
+  });
 
-
-    
-
-    
-    
+  // // Modal 창 닫기 버튼 클릭
+  // $(".modal-confirm-close").on("click", function () {
+  //     alertModal[0].close();
+  // });
 });

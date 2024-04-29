@@ -4,20 +4,37 @@ $().ready(function () {
     var url = window.location.href;
     var rqmId = $("#rqmId").data("rqmId");
 
-    $.get(
+    $.post(
       "/project/requirement/delayaccess?rqmId=" + rqmId,
       { dalayApprove: dalayApprove },
       function (response) {
         var result = response.data.result;
         var dalayApprove = response.data.dalayApprove;
         if (dalayApprove && result) {
-          alert("승인 요청 성공");
+          loadModal({
+            content: "승인 요청 성공",
+            fnPositiveBtnHandler: function () {
+              location.href = url;
+            },
+            showNegativeBtn: false,
+          });
         } else if (!dalayApprove && result) {
-          alert("거절 요청 성공");
+          loadModal({
+            content: "거절 요청 성공",
+            fnPositiveBtnHandler: function () {
+              location.href = url;
+            },
+            showNegativeBtn: false,
+          });
         } else if (!result) {
-          alert("요청 실패: 관리자에게 문의해주세요");
+          loadModal({
+            content: "요청 실패: 관리자에게 문의해주세요",
+            fnPositiveBtnHandler: function () {
+              location.href = url;
+            },
+            showNegativeBtn: false,
+          });
         }
-        location.href = url;
       }
     );
   });
@@ -32,32 +49,54 @@ $().ready(function () {
       function (response) {
         var result = response.data.result;
         if (result) {
-          alert("요청 성공");
+          loadModal({
+            content: "요청 성공",
+            fnPositiveBtnHandler: function () {
+              location.href = url;
+            },
+            showNegativeBtn: false,
+          });
         } else {
-          alert("요청 실패: 관리자에게 문의해주세요");
+          loadModal({
+            content: "요청 실패: 관리자에게 문의해주세요",
+            fnPositiveBtnHandler: function () {
+              location.href = url;
+            },
+            showNegativeBtn: false,
+          });
         }
-        location.href = url;
       }
     );
   });
 
   $("#delete").on("click", function () {
     var rqmId = $(".grid").data("rqm-id");
-
-    $.post(
-      "/project/requirement/delete",
-      { rqmId: rqmId },
-      function (response) {
-        var result = response.data.result;
-        var url = response.data.url;
-        if (result) {
-          alert("삭제완료");
-          location.href = url;
-        } else {
-          alert("삭제권한이 없습니다");
-        }
-      }
-    );
+    loadModal({
+      content: "삭제하시겠습니까?",
+      fnPositiveBtnHandler: function () {
+        $.post(
+          "/project/requirement/delete",
+          { rqmId: rqmId },
+          function (response) {
+            var result = response.data.result;
+            var url = response.data.url;
+            if (result) {
+              loadModal({
+                content: "삭제완료",
+                fnPositiveBtnHandler: function () {
+                  location.href = url;
+                },
+              });
+              location.href = url;
+            } else {
+              loadModal({
+                content: "삭제권한이 없습니다",
+              });
+            }
+          }
+        );
+      },
+    });
   });
 
   $("#modify").on("click", function () {

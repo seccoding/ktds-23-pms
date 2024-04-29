@@ -80,26 +80,35 @@ public class DepartmentController {
 	@ResponseBody
 	@PostMapping("/ajax/department/create")
 	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model, @RequestParam("deptLeadId") String deptLeadId) {
-		String str =  this.departmentService.getOnlypstnid(deptLeadId);
-		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
 		
-		if(str!=null) {
-			int number = Integer.parseInt(str);
-			if(number < 105) {
-				return new AjaxResponse().append("message", "차장 이상부터 등록 가능합니다");
-			}
-			if(count==1) {
-				return new AjaxResponse().append("message", "아이디가 존재 합니다");
-			}
-			
-			
-		}
-		else {
-			return new AjaxResponse().append("message", "아이디를 확인하세요");
-		}
+//		String str =  this.departmentService.getOnlypstnid(deptLeadId);
+//		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
+//		
+//		if(str!=null) {
+//			int number = Integer.parseInt(str);
+//			if(number < 105) {
+//				return new AjaxResponse().append("message", "차장 이상부터 등록 가능합니다");
+//			}
+//			if(count==1) {
+//				return new AjaxResponse().append("message", "아이디가 존재 합니다");
+//			}
+//			
+//			
+//		}
+//		else {
+//			return new AjaxResponse().append("message", "아이디를 확인하세요");
+//		}
 		
 		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
 		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
+	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/department/cancreate")
+	public AjaxResponse canCreateDeptByThisName(DepartmentVO departmentVO) {
+		boolean canCreate = this.departmentService.getDeptIdByName(departmentVO);
+		
+		return new AjaxResponse().append("cancreate", canCreate);
 	}
 	
 	

@@ -6,6 +6,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <meta charset="UTF-8" />
     <title>후기 목록</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    
+    <script type="text/javascript" src="/js/review/reviewresult.js"></script>
     <style type="text/css">
       div.grid {
         display: grid;
@@ -13,28 +15,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         grid-template-rows: 1fr 28px 1fr;
         row-gap: 10px;
       }
-      #search-form {
-        position: fixed; /* 화면 스크롤에 고정 */
-        bottom: 20px; /* 하단 여백 설정 */
-        left: 50%; 
-        transform: translateX(-50%); 
-        background-color: #f9f9f9;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0px 2px 5px #000000;
-        z-index: 999; 
-      }
-      
-      
     </style>
- 
-    <script type="text/javascript" src="/js/review/reviewresult.js"></script>
-
-    
   </head>
   <body>
     <jsp:include page="../commonmodal.jsp"/>
-  
     <div>
       <table class="table">
         <colgroup>

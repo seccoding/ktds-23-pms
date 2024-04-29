@@ -110,8 +110,8 @@ public class MemoServiceImpl implements MemoService{
 
 	@Transactional
 	@Override
-	public boolean saveOneMemo(String id, String empId) {
-		int savedCount = this.memoDao.saveOneMemo(id, empId);
+	public boolean saveOneMemo(MemoVO memoVO) {
+		int savedCount = this.memoDao.saveOneMemo(memoVO);
 		return savedCount > 0;
 	}
 	

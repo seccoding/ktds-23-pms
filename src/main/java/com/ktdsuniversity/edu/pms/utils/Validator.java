@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Validator<T> {
-
+	
 	public enum Type {
 		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE, NOW_DATE, IMAGE_FILE
 	}
@@ -111,9 +111,15 @@ public class Validator<T> {
 				} else if (type == Type.NOW_DATE) {
 					result = StringUtil.isBeforeLocalDateNow(value);
 				} 
-//				else if (type == Type.IMAGE_FILE) {
-//					result = StringUtil.isImageFileFormat(value);
-//				}
+				else if (type == Type.IMAGE_FILE) {
+					
+					if (value.matches("^image\\/.*")) {
+						result = true;
+					} else {
+						result = false;
+					}
+					
+				}
 
 				if (!result) {
 					if (!this.results.containsKey(key)) {

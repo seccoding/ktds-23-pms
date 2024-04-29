@@ -2,6 +2,8 @@ $().ready(function () {
   var empId = $("#empId").text();
   var canAdd = true;
 
+  $("#hireDt").prop("max", new Date().toISOString().substring(0, 10));
+
   $.get(
     "/ajax/employee/modify?empId=" + empId,
     {

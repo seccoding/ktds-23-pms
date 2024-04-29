@@ -62,12 +62,6 @@
     text-align: center;
     color: #333;
     text-decoration: none;
-    transition: 0.3s;
-}
-
-.project-boards ul li:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 /* border solid */

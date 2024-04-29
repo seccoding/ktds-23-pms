@@ -108,18 +108,10 @@ public class MemoController {
 		validator
 		.add("memoTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다.")
 		.add("rcvId", Type.NOT_EMPTY, "받는 사람은 필수 입력값입니다.")
+//		.add("rcvId", Type.EMPID, "사원 번호에 맞는 형식대로 입력해주세요.")
 		.add("memoCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다.")
 		.start();
-		
-		List<EmployeeVO> memoList = this.employeeService.getAllEmployee().getEmployeeList().stream()
-				.filter(emp -> emp.getEmpId().equals(memoVO.getRcvId()))
-				.toList();
-				
-		if(memoList.size() == 0) {
-				//중복값이 없다-> 아이디가 없다
-			model.addAttribute("rcvIdMatch", false);
-			
-		}
+	
 		
 		if(validator.hasErrors()) {
 			Map<String, List<String>> errors = validator.getErrors();
@@ -172,8 +164,14 @@ public class MemoController {
 	@ResponseBody
 	@GetMapping("/ajax/memo/save/{id}")
 	public AjaxResponse saveMemo(@PathVariable String id,@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-		String empId = employeeVO.getEmpId();
-		return new AjaxResponse().append("result", memoService.saveOneMemo(id, empId));
+		MemoVO memoVO = new MemoVO();
+		
+		memoVO.setEmpId(employeeVO.getEmpId());
+		memoVO.setMemoId(id);
+		
+		 logger.info("MemoVO Content: {}", memoVO.getEmpId()); 
+		 logger.info("MemoVO Content: {}", memoVO.getMemoId()); 
+		return new AjaxResponse().append("result", memoService.saveOneMemo(memoVO));
 	}
 	
 }

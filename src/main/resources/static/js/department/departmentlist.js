@@ -8,7 +8,6 @@ $().ready(function () {
   $(".confirm-confirm-button").on("click", function () {
     var data = {};
     var list = $(".special-hidden-datalist").text().split(",");
-    console.log($(".special-hidden-datalist").text());
     var tmId = $("#codeTmId").text();
     var deptId = $("#codeDeptId").text();
     list.forEach((item, idx) => {
@@ -29,6 +28,7 @@ $().ready(function () {
                   alertModal[0].close();
                   location.reload();
                 },
+                showNegativeBtn: false,
               });
             } else {
               loadModal({
@@ -37,9 +37,11 @@ $().ready(function () {
                   alertModal[0].close();
                   location.reload();
                 },
+                showNegativeBtn: false,
               });
             }
           },
+          showNegativeBtn: false,
         });
       } else {
         if (res.data.nopartof == 0 && res.data.alreadyexist) {
@@ -49,6 +51,7 @@ $().ready(function () {
               location.reload();
               alertModal[0].close();
             },
+            showNegativeBtn: false,
           });
         } else if (res.data.success) {
           loadModal({
@@ -58,6 +61,7 @@ $().ready(function () {
               location.reload();
               alertModal[0].close();
             },
+            showNegativeBtn: false,
           });
         } else {
           loadModal({
@@ -65,6 +69,7 @@ $().ready(function () {
             fnPositiveBtnHandler: function () {
               alertModal[0].close();
             },
+            showNegativeBtn: false,
           });
         }
       }
@@ -244,6 +249,7 @@ $().ready(function () {
                   fnPositiveBtnHandler: function () {
                     location.href = delResponse.data.next;
                   },
+                  showNegativeBtn: false,
                 });
               } else {
                 loadModal({
@@ -251,6 +257,7 @@ $().ready(function () {
                   fnPositiveBtnHandler: function () {
                     location.reload();
                   },
+                  showNegativeBtn: false,
                 });
               }
             });
@@ -266,6 +273,7 @@ $().ready(function () {
           fnPositiveBtnHandler: function () {
             location.reload();
           },
+          showNegativeBtn: false,
         });
       }
     });
@@ -287,6 +295,7 @@ $().ready(function () {
                     fnPositiveBtnHandler: function () {
                       location.reload();
                     },
+                    showNegativeBtn: false,
                   });
                 } else {
                   loadModal({
@@ -294,6 +303,7 @@ $().ready(function () {
                     fnPositiveBtnHandler: function () {
                       location.reload();
                     },
+                    showNegativeBtn: false,
                   });
                 }
               }
@@ -310,6 +320,7 @@ $().ready(function () {
           fnPositiveBtnHandler: function () {
             location.reload();
           },
+          showNegativeBtn: false,
         });
 
         // var alertModal = $(".modal-window");
@@ -374,24 +385,69 @@ $().ready(function () {
   $(".dep-submit-button").on("click", function () {
     var departmentName = $("#department-name").val();
     var departmentLeader = $("#department-leader").val();
-    $.post(
-      "/ajax/department/create",
-      { deptName: departmentName, deptLeadId: departmentLeader },
-      function (response) {
-        location.href = response.data.nextUrl;
-      }
-    );
+
+    if(departmentName.length > 10){
+      alert("부서명은 10글자를 넘을 수 없습니다.")
+    }else if(departmentName == ""){
+      alert("부서명은 필수값입니다.")
+    }else{
+      $.get("/ajax/department/cancreate", {deptName: departmentName}, function(res){
+         if(!res.data.cancreate){
+  
+          loadModal({
+            content: "이미 존재하는 부서명입니다.",
+            fnPositiveBtnHandler: function () {
+              alertModal[0].close();
+            },showNegativeBtn: false,
+          });
+  
+  
+          // alert("이미 존재하는 부서명입니다.")
+        }else{
+          $.post(
+            "/ajax/department/create",
+            { deptName: departmentName, deptLeadId: departmentLeader },
+            function (response) {
+  
+  
+              if(response.data.result){
+  
+  
+                loadModal({
+                  content: "부서 생성에 성공했습니다.",
+                  fnPositiveBtnHandler: function () {
+                    location.reload();
+                    alertModal[0].close();
+                  },showNegativeBtn: false,
+                });
+  
+              }else{
+                loadModal({
+                  content: "부서 생성 중 오류가 발생했습니다.",
+                  fnPositiveBtnHandler: function () {
+                    location.reload();
+                    alertModal[0].close();
+                  },showNegativeBtn: false,
+                });
+              }
+              
+  
+            }
+          );
+  
+        }
+      })
+
+    }
   });
 
   $(".team-create").on("click", function () {
     var modal = $(".create-modal-team");
     var deptId = $("#department-selectbox").val();
     $.get("/ajax/team/emp?deptId=" + deptId, function (res) {
-      console.log(res);
       var empList = res.data.empList;
       empList.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#team-leader").append(option);
@@ -405,11 +461,9 @@ $().ready(function () {
     $("#team-leader").html("");
     var deptId = $("#department-selectbox").val();
     $.get("/ajax/team/emp?deptId=" + deptId, function (res) {
-      console.log(res);
       var empList = res.data.empList;
       empList.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#team-leader").append(option);
@@ -428,37 +482,47 @@ $().ready(function () {
 
     var teamDepartment = $(".department-selectbox").val();
 
-    $.post(
-      "/ajax/team/create",
-      { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
-      function (response) {
-        location.href = response.data.nextUrl;
-      }
-    );
+    if(teamName.length > 10){
+      alert("팀명은 10글자를 넘길 수 없습니다.")
+    }else if(teamName == ''){
+      
+      alert("팀명은 필수값입니다.")
+    }else{
+      $.post(
+        "/ajax/team/create",
+        { tmName: teamName, tmLeadId: teamLeader, deptId: teamDepartment },
+        function (response) {
+          location.href = response.data.nextUrl;
+        }
+      );
+
+    }
   });
 
   $(".department-modify").on("click", function () {
     var modal = $(".modify-modal-dept");
 
     var departmentId = modal.find("#modify-select-box").val();
-    $.get(
-      "/ajax/department/show?departmentId=" + departmentId,
-      function (response) {
-        var emplist = response.data.empList;
-        emplist.forEach((item) => {
-          var option = $("<option></option>");
-          console.log(item.empId);
-          option.val(item.empId);
-          option.text(item.empId + " (" + item.empName + ")");
-          $("#department-leader-mod").append(option);
-        });
-        var dataDept = response.data.oneDepartment;
-        modal.find("#mod-dept-id").text(dataDept.deptId);
-        modal.find("#department-name-mod").val(dataDept.deptName);
-        modal.find("#mod-dept-crd-dt").text(dataDept.deptCrDt);
-        modal.find("#department-leader-mod").val(dataDept.deptLeadId);
-      }
-    );
+    
+      $.get(
+        "/ajax/department/show?departmentId=" + departmentId,
+        function (response) {
+          var emplist = response.data.empList;
+          emplist.forEach((item) => {
+            var option = $("<option></option>");
+            option.val(item.empId);
+            option.text(item.empId + " (" + item.empName + ")");
+            $("#department-leader-mod").append(option);
+          });
+          var dataDept = response.data.oneDepartment;
+          modal.find("#mod-dept-id").text(dataDept.deptId);
+          modal.find("#department-name-mod").val(dataDept.deptName);
+          modal.find("#mod-dept-crd-dt").text(dataDept.deptCrDt);
+          modal.find("#department-leader-mod").val(dataDept.deptLeadId);
+        }
+      )
+
+    
 
     modal[0].showModal();
   });
@@ -466,12 +530,10 @@ $().ready(function () {
   $("#modify-select-box").on("change", function () {
     $("#department-leader-mod").html("");
     var deptId = $(this).val();
-    console.log(deptId);
     $.get("/ajax/department/show?departmentId=" + deptId, function (response) {
       var emplist = response.data.empList;
       emplist.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#department-leader-mod").append(option);
@@ -487,25 +549,30 @@ $().ready(function () {
     location.reload();
   });
   $("#dep-modify-submit-button").on("click", function () {
-    $.post(
-      "/ajax/department/modify",
-      {
-        deptId: $("#mod-dept-id").text(),
-        deptName: $("#department-name-mod").val(),
-        deptLeadId: $("#department-leader-mod").val(),
-      },
-      function (response) {
-        var returnUrl = response.data.next;
-        var message = response.data.message;
-        console.log(message);
+    if($("#department-name-mod").val().length > 10){
+      alert("부서명은 10글자를 넘을 수 없습니다.")
+    }else if($("#department-name-mod").val() == ""){
+      alert("부서명은 필수값입니다.")
+    }else{
+      $.post(
+        "/ajax/department/modify",
+        {
+          deptId: $("#mod-dept-id").text(),
+          deptName: $("#department-name-mod").val(),
+          deptLeadId: $("#department-leader-mod").val(),
+        },
+        function (response) {
+          var returnUrl = response.data.next;
+          var message = response.data.message;
 
-        if (message) {
-          confirm(message);
-        } else {
-          location.href = returnUrl;
+          if (message) {
+            confirm(message);
+          } else {
+            location.href = returnUrl;
+          }
         }
-      }
-    );
+      );
+    }
   });
 
   $(".team-modify").on("click", function () {
@@ -517,7 +584,6 @@ $().ready(function () {
       var empList = response.data.empList;
       empList.forEach((item) => {
         var option = $("<option></option>");
-        console.log(item.empId);
         option.val(item.empId);
         option.text(item.empId + " (" + item.empName + ")");
         $("#team-leader-mod").append(option);
@@ -555,24 +621,30 @@ $().ready(function () {
     location.reload();
   });
   $("#tm-modify-submit-button").on("click", function () {
-    $.post(
-      "/ajax/team/modify",
-      {
-        tmId: $("#mod-team-id").text(),
-        tmName: $("#team-name-mod").val(),
-        tmLeadId: $("#team-leader-mod").val(),
-        deptId: $("#team-dept-mod").val(),
-      },
-      function (response) {
-        var returnUrl = response.data.next;
-        location.href = returnUrl;
-      }
-    );
+    if($("#team-name-mod").val().length > 10){
+      alert("팀명은 10글자를 넘길 수 없습니다.")
+    }else if($("#team-name-mod").val() == ''){
+      
+      alert("팀명은 필수값입니다.")
+    }else{
+      $.post(
+        "/ajax/team/modify",
+        {
+          tmId: $("#mod-team-id").text(),
+          tmName: $("#team-name-mod").val(),
+          tmLeadId: $("#team-leader-mod").val(),
+          deptId: $("#team-dept-mod").val(),
+        },
+        function (response) {
+          var returnUrl = response.data.next;
+          location.href = returnUrl;
+        }
+      );
+    }
   });
 
   $(".employee-info-enter").on("click", function () {
     var id = $("#codeEmpId").text();
-    console.log(id);
     location.href = "/employee/view?empId=" + id;
   });
 });

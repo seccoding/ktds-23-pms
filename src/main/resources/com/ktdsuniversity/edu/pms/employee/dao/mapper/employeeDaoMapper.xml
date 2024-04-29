@@ -229,8 +229,6 @@
 	    ON D.DEPT_ID = E.DEPT_ID
 	  JOIN JOB J
 	    ON J.JOB_ID = E.JOB_ID
-	  JOIN TEAM T
-	    ON T.DEPT_ID = E.DEPT_ID
 	  JOIN COMMON_CODE C
 	    ON C.CMCD_ID = E.PSTN_ID
 	 WHERE E.EMP_ID = #{_parameter}
@@ -402,10 +400,12 @@
 		  FROM EMPLOYEE
 		 WHERE EMP_ID NOT IN (SELECT DISTINCT E.EMP_ID
 								FROM EMPLOYEE E
-							   INNER JOIN DEPARTMENT D
+							    LEFT JOIN DEPARTMENT D
 							      ON E.EMP_ID = D.DEPT_LEAD_ID
-							   INNER JOIN TEAM T 
-								  ON T.TM_LEAD_ID = E.EMP_ID)
+							    LEFT JOIN TEAM T 
+								  ON T.TM_LEAD_ID = E.EMP_ID
+							   WHERE D.DEPT_LEAD_ID IS NOT NULL 
+							      OR T.TM_LEAD_ID IS NOT NULL)
 		   AND PSTN_ID IN ('105', '106','107','108','109','110')
 		
 	</select>
@@ -415,18 +415,26 @@
 			 , EMP_NAME 
 		  FROM EMPLOYEE
 		 WHERE EMP_ID NOT IN (SELECT DISTINCT E.EMP_ID
-								FROM EMPLOYEE E
-							   INNER JOIN DEPARTMENT D
+		 						FROM EMPLOYEE E
+							    LEFT JOIN DEPARTMENT D
 							      ON E.EMP_ID = D.DEPT_LEAD_ID
-							   INNER JOIN TEAM T 
+							    LEFT JOIN TEAM T 
 								  ON T.TM_LEAD_ID = E.EMP_ID
-							   WHERE D.DEPT_ID != #{_parameter})
+							   WHERE (D.DEPT_LEAD_ID IS NOT NULL 
+							      OR T.TM_LEAD_ID IS NOT NULL)
+							   AND D.DEPT_ID != #{_parameter})
 		   AND PSTN_ID IN ('105', '106','107','108','109','110')
 	</select>
 	
 	<update id="modifyEmployeePosition" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">														 
 		UPDATE EMPLOYEE
 		   SET PSTN_ID = #{pstnId}
+		 WHERE EMP_ID = #{empId}
+	</update>
+	
+	<update id="modifyEmployeeDept" parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+		UPDATE EMPLOYEE 
+		   SET DEPT_ID = #{deptId}
 		 WHERE EMP_ID = #{empId}
 	</update>
 

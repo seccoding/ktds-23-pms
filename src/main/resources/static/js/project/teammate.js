@@ -1,4 +1,6 @@
 $().ready(function () {
+        var modalStatus;
+
         // 전체체크 로직
         $("#checked-all").on("change", function () {
             // 영향을 받을 다른 체크박스를 조회한다.
@@ -40,7 +42,7 @@ $().ready(function () {
             var teammateId = alertModal.data('teammateId');
             var teammateIds = alertModal.data('teammateIds'); // 이 줄을 추가
 
-            if (teammateId) {
+            if (teammateId && modalStatus === 'deleteOne') {
                 var teammateId = alertModal.data('teammateId');
                 $.get("/ajax/teammate/delete/" + teammateId, function (response) {
                     var oneDeleteResult = response.data.result;
@@ -51,7 +53,7 @@ $().ready(function () {
                 });
 
                 alertModal.hide();
-            } else if (teammateIds && teammateIds.length > 0) {
+            } else if (teammateIds && teammateIds.length > 0 && modalStatus === 'deleteMassive') {
                 // 모달에서 저장된 팀원들의 ID들을 가져옴
                 teammateIds = alertModal.data('teammateIds');
 
@@ -66,20 +68,22 @@ $().ready(function () {
                 if (!selectedEmployeeId) {
                     return;
                 } else {
-                    $.post("/ajax/teammate/add",
-                        {
-                            prjId: projectId,
-                            tmId: selectedEmployeeId,
-                            role: selectedRole,
-                        }, function (response) {
-                            var result = response.data.result;
-                            var message = response.data.message;
-                            if (result === true) {
-                                location.reload();
-                            } else {
-                                alert(message);
-                            }
-                        });
+                    if (modalStatus === 'addTeammate') {
+                        $.post("/ajax/teammate/add",
+                            {
+                                prjId: projectId,
+                                tmId: selectedEmployeeId,
+                                role: selectedRole,
+                            }, function (response) {
+                                var result = response.data.result;
+                                var message = response.data.message;
+                                if (result === true) {
+                                    location.reload();
+                                } else {
+                                    alert(message);
+                                }
+                            });
+                    }
                 }
             }
 
@@ -88,6 +92,8 @@ $().ready(function () {
 
         // 단일 삭제 시 모달을 띄우는 로직
         $("button[name='deleteTeammate']").on("click", function () {
+            modalStatus = 'deleteOne';
+
             if ($("#select-teammate")) {
                 $("#select-teammate").remove();
             }
@@ -99,6 +105,8 @@ $().ready(function () {
 
         // 체크된 아이템 삭제 모달을 띄우는 로직
         $("#delete-massive-teammate").on("click", function () {
+            modalStatus = 'deleteMassive';
+
             if ($("#select-teammate")) {
                 $("#select-teammate").remove();
             }
@@ -129,6 +137,8 @@ $().ready(function () {
 
         // 팀원 등록 버튼 클릭 시 모달을 띄우는 로직
         $("#new-teammate").on("click", function () {
+            modalStatus = 'addTeammate';
+
             var deptId = $("#new-teammate").data('dept-id');
             modalText.text("팀원");
             modalButton.text("등록")

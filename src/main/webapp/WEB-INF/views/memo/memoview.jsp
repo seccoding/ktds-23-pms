@@ -39,7 +39,7 @@
       <div class="memodetail"><label for="rcvId">받은 사람</label>
       ${memoVO.rcvId} ${memoVO.rcvName} ${memoVO.rcvEmail}</div>
       
-      <div class="memodetail"><label for="crtrId">보낸 사람</label>
+      <div class="memodetail" id="memodetail-crtrId" data-crtrid="${memoVO.crtrId}"><label for="crtrId">보낸 사람</label>
       ${memoVO.crtrId} ${memoVO.crtrName} ${memoVO.crtrEmail}</div>
 
       <c:if test="${url eq '/memo/receive/view'}">
