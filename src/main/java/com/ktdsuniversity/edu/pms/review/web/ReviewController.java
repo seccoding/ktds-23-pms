@@ -57,18 +57,7 @@ public class ReviewController {
 		if (tmList.size()>0) { // PM인 경우
 		    isPM = true;
 		}
-//		
-//		List<ProjectTeammateVO> tYList =this.projectService.getAllProjectTeammateByProjectId(id).stream()
-//				.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
-//				.filter(tm->tm.getRvYn().equals("Y"))
-//				.toList();
-//				boolean isRVY = false;
-//				
-//				if (tYList.size()>0) { // rvYn = Y 일 경우
-//					isRVY = true;
-//				}
-		
-		
+
 		searchReviewVO.setEmployeeVO(employeeVO);
 		
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
@@ -163,9 +152,6 @@ public class ReviewController {
 			if (!success) {
 		        return "후기전송에 실패했습니다. 다시 시도해주세요.";
 		    }
-		
-		
-		
 		
 		model.addAttribute("projectTeammateVO", projectTeammateVO);
 		model.addAttribute("employeeVO", employeeVO);

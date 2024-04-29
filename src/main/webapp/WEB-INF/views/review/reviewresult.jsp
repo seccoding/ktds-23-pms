@@ -34,7 +34,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   <jsp:include page="../commonmodal.jsp"/>
   <div>
 	총 ${reviewList.reviewCnt}건의 후기가 검색되었습니다.
-	${review.projectVO.prjName}의 후기 답변 현황 : ${reviewList.reviewCnt} / ${reviewList.reviewCnt}
+	후기 답변 현황 : ${reviewList.reviewCnt} / ${reviewList.reviewCnt}
   </div>
 	<button id="deleteMassiveReview" href="javascript:void(0)">삭제</button>
     <!--<a id="deleteMassiveMReview" href="javascript:void(0)">삭제</a>-->

@@ -49,8 +49,9 @@ $().ready(function () {
     alertModal[0].showModal();
     // console.log("id: " + id);
 /*    if (confirm("후기를 삭제하시겠습니까?")) {
-*/
-  $("#search-btn").on("click", function () {
+*/ 
+    $("#search-btn").on("click", function () {
+    removeSpaces(); // 공백 제거
     search(0);
   });
 
@@ -120,4 +121,10 @@ function search(pageNo) {
   $("#page-no").val(pageNo);
 
   searchForm.attr("method", "get").submit();
+}
+
+
+function removeSpaces() {
+  var inputField = document.querySelector("input[name='searchKeyword']");
+  inputField.value = inputField.value.replace(/\s+/g, ""); // 모든 공백 제거
 }
