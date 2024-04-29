@@ -87,6 +87,12 @@ $().ready(function () {
   $(".form-group").on("change", "#select-prdtName", autoPrdtCtgrSelect);
   $(".form-group").on("change", "#select-prdtName", autoPrdtCurStrSelect);
 
+  var today = new Date().toISOString().substring(0, 10);
+  console.log(today);
+
+  // 오늘 날짜로 기본설정
+  $("#apply-date").val(today);
+
   // 신청 버튼
   $(".add-button").on("click", function () {
     var url = "/ajax/product/apply";
@@ -106,126 +112,75 @@ $().ready(function () {
       formData["borrowList[" + index + "].brrwDt"] = $(form)
         .find("#apply-date")
         .val();
+      loadModal({
+        content: "신청하시겠습니까?",
+        fnPositiveBtnHandler: function () {
+          $.post(url, formData, function (response) {
+            location.href = response.data.next;
+          });
+        },
+        fnNegativeBtnHandler: function () {
+          alertModal[0].close();
+        },
+      });
+
+      // var addConfirm = confirm("신청하시겠습니까?");
+      // console.log(formData);
+      // if (addConfirm) {
+      //   $.post(url, formData, function (response) {
+      //     location.href = response.data.next;
+      //   });
+      // } else {
+      //   location.reload();
+      // }
     });
 
-        // 선택된 비품명에 속한 form을 가져옴
-        var parentForm = $(this).closest("form");
+    $(".cancel-button").on("click", function () {
+      loadModal({
+        content: "취소하시겠습니까",
+        fnPositiveBtnHandler: function () {
+          location.href = "/product/list";
+        },
+        showNegativeBtn: true,
+        fnNegativeBtnHandler: function () {
+          alertModal[0].close();
+        },
+      });
 
-        var url = "/ajax/product/apply/" + namevalue;
+      // var cancelConfirm = confirm("취소하시겠습니까?");
+      // if (cancelConfirm) {
+      //   location.href = "/product/list";
+      // }
 
-        $.get(url, { productName: namevalue },
-            function(response){
-                var curstr = response.data.oneProductCurStr;
-                console.log("재고: " + curstr + "개");
-                parentForm.find("#apply-stock").attr("max", curstr);
-            }
-        );
-    }
+      // var alertModal = $(".modal-confirm-window");
+      // var modalButton = $(".confirm-confirm-button");
+      // var modalButton1 = $(".cancel-confirm-button");
+      // var modalText = $(".modal-confirm-text");
+      // modalText.text("취소하시겠습니까?");
+      // modalButton.text("확인");
+      // modalButton1.text("취소");
 
+      // // 확인 버튼 클릭 시
+      // $(modalButton).on("click", function () {
+      //     location.href = "/product/list";
+      // });
 
-    // 비품명이 바뀔때마다 함수 호출
-    // $("#select-prdtName").on("change", autoPrdtCtgrSelect);
-    // $("#select-prdtName").on("change", autoPrdtCurStrSelect);
-    $(".form-group").on("change", "#select-prdtName", autoPrdtCtgrSelect);
-    $(".form-group").on("change", "#select-prdtName", autoPrdtCurStrSelect);
-    
+      // // 취소 버튼 클릭 시
+      // $(modalButton1).on("click", function () {
+      //     alertModal[0].close();
+      // });
 
-    var today = new Date().toISOString().substring(0, 10);
-    console.log(today);
+      // alertModal[0].showModal();
 
-    // 오늘 날짜로 기본설정
-    $("#apply-date").val(today);
-
-
-
-    // 신청 버튼
-    $(".add-button").on("click", function(){
-        var url = "/ajax/product/apply";
-
-        var formData = {};
-
-        $("form").each(function(index, form) {
-            formData["borrowList["+index+"].productVO.prdtName"] = $(form).find("#select-prdtName").val();
-            formData["borrowList["+index+"].productVO.prdtCtgr"] = $(form).find("#select-prdtCtgr").val();
-            formData["borrowList["+index+"].productVO.curStr"] = $(form).find("#apply-quantity").val();
-            formData["borrowList["+index+"].brrwDt"] = $(form).find("#apply-date").val();
-    loadModal({
-      content: "신청하시겠습니까?",
-      fnPositiveBtnHandler: function () {
-        $.post(url, formData, function (response) {
-          location.href = response.data.next;
-        });
-      },
-      fnNegativeBtnHandler: function () {
-        alertModal[0].close();
-      },
+      // // Modal 창 닫기 버튼 클릭
+      // $(".modal-confirm-close").on("click", function () {
+      //     alertModal[0].close();
+      // });
     });
-
-    // var addConfirm = confirm("신청하시겠습니까?");
-    // console.log(formData);
-    // if (addConfirm) {
-    //   $.post(url, formData, function (response) {
-    //     location.href = response.data.next;
-    //   });
-    // } else {
-    //   location.reload();
-    // }
   });
 
-  $(".cancel-button").on("click", function () {
-    loadModal({
-      content: "취소하시겠습니까",
-      fnPositiveBtnHandler: function () {
-        location.href = "/product/list";
-      },
-      showNegativeBtn: true,
-      fnNegativeBtnHandler: function () {
-        alertModal[0].close();
-      },
-    });
-
-    // var cancelConfirm = confirm("취소하시겠습니까?");
-    // if (cancelConfirm) {
-    //   location.href = "/product/list";
-    // }
-
-    // var alertModal = $(".modal-confirm-window");
-    // var modalButton = $(".confirm-confirm-button");
-    // var modalButton1 = $(".cancel-confirm-button");
-    // var modalText = $(".modal-confirm-text");
-    // modalText.text("취소하시겠습니까?");
-    // modalButton.text("확인");
-    // modalButton1.text("취소");
-
-    // // 확인 버튼 클릭 시
-    // $(modalButton).on("click", function () {
-    //     location.href = "/product/list";
-    // });
-
-    // // 취소 버튼 클릭 시
-    // $(modalButton1).on("click", function () {
-    //     alertModal[0].close();
-    // });
-
-    // alertModal[0].showModal();
-
-    // // Modal 창 닫기 버튼 클릭
-    // $(".modal-confirm-close").on("click", function () {
-    //     alertModal[0].close();
-    // });
-  });
-});
-
-        // // Modal 창 닫기 버튼 클릭
-        // $(".modal-confirm-close").on("click", function () {
-        //     alertModal[0].close();
-        // });
-        
-    });
-
-
-    
-
-    
-    
+  // // Modal 창 닫기 버튼 클릭
+  // $(".modal-confirm-close").on("click", function () {
+  //     alertModal[0].close();
+  // });
 });
