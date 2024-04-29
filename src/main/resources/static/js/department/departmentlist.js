@@ -16,76 +16,55 @@ $().ready(function () {
         (data["employeeList[" + idx + "].teamVO.tmId"] = tmId);
       data["employeeList[" + idx + "].deptId"] = deptId;
     });
-    console.log(data);
     $.post("/ajax/department/team/employee/add", data, function (res) {
-      console.log(res);
       if (res.data.nopartof > 0) {
-        var alertModal = $(".modal-window");
-        var confirmButton = $(".confirm-button");
-        var modalText = $(".modal-text");
-        modalText.text(
-          res.data.nopartof + "명의 인원은 관할 부서 사원이 아닙니다."
-        );
-        confirmButton.text("확인");
-        alertModal[0].showModal();
-        confirmButton.on("click", function () {
-          if (res.data.success) {
-            var alertModal = $(".modal-window");
-            var confirmButton = $(".confirm-button");
-            var modalText = $(".modal-text");
-            modalText.text(
-              "이미 존재하거나 관할 부서 사원이 아닌 사원을 제외하고 추가완료에 성공했습니다!"
-            );
-            confirmButton.text("확인");
-            alertModal[0].showModal();
-            confirmButton.on("click", function () {
-              alertModal[0].close();
-              location.reload();
-            });
-          } else {
-            var alertModal = $(".modal-window");
-            var confirmButton = $(".confirm-button");
-            var modalText = $(".modal-text");
-            modalText.text("추가 중 오류가 발생하였습니다!");
-            confirmButton.text("확인");
-            alertModal[0].showModal();
-            confirmButton.on("click", function () {
-              alertModal[0].close();
-            });
-          }
+        loadModal({
+          content: res.data.nopartof + "명의 인원은 관할 부서 사원이 아닙니다.",
+          fnPositiveBtnHandler: function () {
+            if (res.data.success) {
+              loadModal({
+                content:
+                  "이미 존재하거나 관할 부서 사원이 아닌 사원을 제외하고 추가완료에 성공했습니다!",
+                fnPositiveBtnHandler: function () {
+                  alertModal[0].close();
+                  location.reload();
+                },
+              });
+            } else {
+              loadModal({
+                content: "추가 중 오류가 발생하였습니다!",
+                fnPositiveBtnHandler: function () {
+                  alertModal[0].close();
+                  location.reload();
+                },
+              });
+            }
+          },
         });
       } else {
         if (res.data.nopartof == 0 && res.data.alreadyexist) {
-          var alertModal = $(".modal-window");
-          var confirmButton = $(".confirm-button");
-          var modalText = $(".modal-text");
-          modalText.text("이미 존재하는 사원입니다.");
-          confirmButton.text("확인");
-          alertModal[0].showModal();
-          confirmButton.on("click", function () {
-            alertModal[0].close();
+          loadModal({
+            content: "이미 존재하는 사원입니다.",
+            fnPositiveBtnHandler: function () {
+              location.reload();
+              alertModal[0].close();
+            },
           });
         } else if (res.data.success) {
-          var alertModal = $(".modal-window");
-          var confirmButton = $(".confirm-button");
-          var modalText = $(".modal-text");
-          modalText.text(
-            "이미 존재하거나 관할 부서 사원이 아닌 사원을 제외하고 추가완료에 성공했습니다!"
-          );
-          confirmButton.text("확인");
-          alertModal[0].showModal();
-          confirmButton.on("click", function () {
-            alertModal[0].close();
+          loadModal({
+            content:
+              "이미 존재하거나 관할 부서 사원이 아닌 사원을 제외하고 추가완료에 성공했습니다!",
+            fnPositiveBtnHandler: function () {
+              location.reload();
+              alertModal[0].close();
+            },
           });
         } else {
-          var alertModal = $(".modal-window");
-          var confirmButton = $(".confirm-button");
-          var modalText = $(".modal-text");
-          modalText.text("추가 중 오류가 발생하였습니다!");
-          confirmButton.text("확인");
-          alertModal[0].showModal();
-          confirmButton.on("click", function () {
-            alertModal[0].close();
+          loadModal({
+            content: "추가 중 오류가 발생하였습니다!",
+            fnPositiveBtnHandler: function () {
+              alertModal[0].close();
+            },
           });
         }
       }
@@ -255,49 +234,38 @@ $().ready(function () {
     var deptId = $("#codeDeptId").text();
     $.get("/ajax/department/candelete/" + deptId, function (response) {
       if (response.data.possible) {
-        var alertModal = $(".modal-confirm-window");
-        var confirmButton = $(".confirm-confirm-button");
-        var cancelButton = $(".cancel-confirm-button");
-        var modalText = $(".modal-confirm-text");
-        modalText.text("정말로 삭제하시겠습니까?");
-        confirmButton.text("확인");
-        cancelButton.text("취소");
-        alertModal[0].showModal();
-
-        confirmButton.on("click", function () {
-          $.get("/ajax/department/delete/" + deptId, function (delResponse) {
-            if (delResponse.data.success) {
-              var alertModal = $(".modal-window");
-              var confirmButton = $(".confirm-button");
-              var modalText = $(".modal-text");
-              modalText.text("삭제에 성공하였습니다.");
-              confirmButton.text("확인");
-              alertModal[0].showModal();
-              confirmButton.on("click", function () {
-                location.href = delResponse.data.next;
-              });
-            } else {
-              var alertModal = $(".modal-window");
-              var confirmButton = $(".confirm-button");
-              var modalText = $(".modal-text");
-              modalText.text("삭제중 오류가 발생했습니다.");
-              confirmButton.text("확인");
-              alertModal[0].showModal();
-              confirmButton.on("click", function () {
-                location.reload();
-              });
-            }
-          });
+        loadModal({
+          content: "정말로 삭제하시겠습니까?",
+          fnPositiveBtnHandler: function () {
+            $.get("/ajax/department/delete/" + deptId, function (delResponse) {
+              if (delResponse.data.success) {
+                loadModal({
+                  content: "삭제에 성공하였습니다.",
+                  fnPositiveBtnHandler: function () {
+                    location.href = delResponse.data.next;
+                  },
+                });
+              } else {
+                loadModal({
+                  content: "삭제중 오류가 발생했습니다.",
+                  fnPositiveBtnHandler: function () {
+                    location.reload();
+                  },
+                });
+              }
+            });
+          },
+          showNegativeBtn: true,
+          fnNegativeBtnHandler: function () {
+            location.reload();
+          },
         });
       } else {
-        var alertModal = $(".modal-window");
-        var confirmButton = $(".confirm-button");
-        var modalText = $(".modal-text");
-        modalText.text("부서 내에 팀이 존재하여 삭제할 수 없습니다.");
-        confirmButton.text("확인");
-        alertModal[0].showModal();
-        confirmButton.on("click", function () {
-          location.reload();
+        loadModal({
+          content: "부서 내에 팀이 존재하여 삭제할 수 없습니다.",
+          fnPositiveBtnHandler: function () {
+            location.reload();
+          },
         });
       }
     });
@@ -307,51 +275,99 @@ $().ready(function () {
     var tmId = $("#codeTmId").text();
     $.get("/ajax/department/team/candelete/" + tmId, function (response) {
       if (response.data.possible) {
-        var alertModal = $(".modal-confirm-window");
-        var confirmButton = $(".confirm-confirm-button");
-        var cancelButton = $(".cancel-confirm-button");
-        var modalText = $(".modal-confirm-text");
-        modalText.text("정말로 삭제하시겠습니까?");
-        confirmButton.text("확인");
-        cancelButton.text("취소");
-        alertModal[0].showModal();
-
-        confirmButton.on("click", function () {
-          $.get("/ajax/department/team/delete/" + tmId, function (delResponse) {
-            if (delResponse.data.success) {
-              var alertModal = $(".modal-window");
-              var confirmButton = $(".confirm-button");
-              var modalText = $(".modal-text");
-              modalText.text("삭제에 성공하였습니다.");
-              confirmButton.text("확인");
-              alertModal[0].showModal();
-              confirmButton.on("click", function () {
-                location.reload();
-              });
-            } else {
-              var alertModal = $(".modal-window");
-              var confirmButton = $(".confirm-button");
-              var modalText = $(".modal-text");
-              modalText.text("삭제중 오류가 발생했습니다.");
-              confirmButton.text("확인");
-              alertModal[0].showModal();
-              confirmButton.on("click", function () {
-                location.reload();
-              });
-            }
-          });
+        loadModal({
+          content: "정말로 삭제하시겠습니까?",
+          fnPositiveBtnHandler: function () {
+            $.get(
+              "/ajax/department/team/delete/" + tmId,
+              function (delResponse) {
+                if (delResponse.data.success) {
+                  loadModal({
+                    content: "삭제에 성공하였습니다.",
+                    fnPositiveBtnHandler: function () {
+                      location.reload();
+                    },
+                  });
+                } else {
+                  loadModal({
+                    content: "삭제중 오류가 발생했습니다.",
+                    fnPositiveBtnHandler: function () {
+                      location.reload();
+                    },
+                  });
+                }
+              }
+            );
+          },
+          showNegativeBtn: true,
+          fnNegativeBtnHandler: function () {
+            location.reload();
+          },
         });
       } else {
-        var alertModal = $(".modal-window");
-        var confirmButton = $(".confirm-button");
-        var modalText = $(".modal-text");
-        modalText.text("팀내에 사원이 존재하여 삭제할 수 없습니다.");
-        confirmButton.text("확인");
-        alertModal[0].showModal();
-        confirmButton.on("click", function () {
-          location.reload();
+        loadModal({
+          content: "팀내에 사원이 존재하여 삭제할 수 없습니다.",
+          fnPositiveBtnHandler: function () {
+            location.reload();
+          },
         });
+
+        // var alertModal = $(".modal-window");
+        // var confirmButton = $(".confirm-button");
+        // var modalText = $(".modal-text");
+        // modalText.text("팀내에 사원이 존재하여 삭제할 수 없습니다.");
+        // confirmButton.text("확인");
+        // alertModal[0].showModal();
+        // confirmButton.on("click", function () {
+        //   location.reload();
+        // });
       }
+
+      //   var alertModal = $(".modal-confirm-window");
+      //   var confirmButton = $(".confirm-confirm-button");
+      //   var cancelButton = $(".cancel-confirm-button");
+      //   var modalText = $(".modal-confirm-text");
+      //   modalText.text("정말로 삭제하시겠습니까?");
+      //   confirmButton.text("확인");
+      //   cancelButton.text("취소");
+      //   alertModal[0].showModal();
+
+      //   confirmButton.on("click", function () {
+      //     $.get("/ajax/department/team/delete/" + tmId, function (delResponse) {
+      //       if (delResponse.data.success) {
+      //         var alertModal = $(".modal-window");
+      //         var confirmButton = $(".confirm-button");
+      //         var modalText = $(".modal-text");
+      //         modalText.text("삭제에 성공하였습니다.");
+      //         confirmButton.text("확인");
+      //         alertModal[0].showModal();
+      //         confirmButton.on("click", function () {
+      //           location.reload();
+      //         });
+      //       } else {
+      //         var alertModal = $(".modal-window");
+      //         var confirmButton = $(".confirm-button");
+      //         var modalText = $(".modal-text");
+      //         modalText.text("삭제중 오류가 발생했습니다.");
+      //         confirmButton.text("확인");
+      //         alertModal[0].showModal();
+      //         confirmButton.on("click", function () {
+      //           location.reload();
+      //         });
+      //       }
+      //     });
+      //   });
+      // } else {
+      //   var alertModal = $(".modal-window");
+      //   var confirmButton = $(".confirm-button");
+      //   var modalText = $(".modal-text");
+      //   modalText.text("팀내에 사원이 존재하여 삭제할 수 없습니다.");
+      //   confirmButton.text("확인");
+      //   alertModal[0].showModal();
+      //   confirmButton.on("click", function () {
+      //     location.reload();
+      //   });
+      // }
     });
   });
 
