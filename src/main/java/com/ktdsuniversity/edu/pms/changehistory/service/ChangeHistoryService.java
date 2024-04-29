@@ -7,6 +7,7 @@ import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 
 public interface ChangeHistoryService {
 
@@ -22,7 +23,7 @@ public interface ChangeHistoryService {
 
 	boolean changeJob(EmployeeVO employeeVO);
 
-	List<CommonCodeVO> getAllJob();
+	List<JobVO> getAllJob();
 
 	
 	

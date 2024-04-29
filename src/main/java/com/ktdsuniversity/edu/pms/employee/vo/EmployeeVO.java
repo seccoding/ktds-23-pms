@@ -49,7 +49,7 @@ public class EmployeeVO {
 	private JobHistoryVO jobHistoryVO;
 	private PositionHistoryVO positionHistoryVO;
 	private String confirmPwd;
-	private String newPwd;
+	private String hashedNewPwd;
 
 	public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
@@ -364,11 +364,10 @@ public class EmployeeVO {
 		this.confirmPwd = confirmPwd;
 	}
 
-	public String getNewPwd() {
-		return newPwd;
+	public String getHashedNewPwd() {
+		return hashedNewPwd;
 	}
-
-	public void setNewPwd(String newPwd) {
-		this.newPwd = newPwd;
+	public void setHashedNewPwd(String hashedNewPwd) {
+		this.hashedNewPwd = hashedNewPwd;
 	}
 }

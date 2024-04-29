@@ -1,19 +1,20 @@
 package com.ktdsuniversity.edu.pms.employee.web;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.DataFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
@@ -28,6 +29,8 @@ import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
+import com.ktdsuniversity.edu.pms.job.service.JobService;
+import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -51,6 +54,8 @@ public class EmployeeController {
 	
 	@Autowired
 	private ChangeHistoryService changeHistoryService;
+	
+	
 
 	@Autowired
 	private FileHandler fileHandler;
@@ -92,12 +97,14 @@ public class EmployeeController {
 		List<JobHistoryVO> jobHistList = this.changeHistoryService.getUserJobHistory(empId);
 		List<PositionHistoryVO> positionHistList = this.changeHistoryService.getUserPositionHistory(empId);
 		List<CommonCodeVO> positionList = this.changeHistoryService.getAllPosition();
+		List<JobVO> jobList = this.changeHistoryService.getAllJob();
 		
 		model.addAttribute("employeeVO", employeeVO);
 		model.addAttribute("departmentHistList", departmentHistList);
 		model.addAttribute("jobHistList", jobHistList);
 		model.addAttribute("positionHistList", positionHistList);
 		model.addAttribute("positionList", positionList);
+		model.addAttribute("jobList", jobList);
 		return "employee/employeeview";
 	}
 	

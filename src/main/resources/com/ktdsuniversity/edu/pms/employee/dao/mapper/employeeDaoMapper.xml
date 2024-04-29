@@ -254,7 +254,7 @@
 			 , ADDR = #{addr}
 			 , BRTH = #{brth}
 			 , EMAIL = #{email}
-			 , PWD = #{pwd}
+			 , PWD = #{newPwd}
 			 , MNGR_YN = #{mngrYn}
 			 , ADMN_CODE = #{admnCode}
 			 , DEPT_ID = #{deptId}
@@ -427,6 +427,12 @@
 	<update id="modifyEmployeePosition" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">														 
 		UPDATE EMPLOYEE
 		   SET PSTN_ID = #{pstnId}
+		 WHERE EMP_ID = #{empId}
+	</update>
+	
+	<update id="modifyEmployeeJob" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		   SET JOB_ID = #{jobId}
 		 WHERE EMP_ID = #{empId}
 	</update>
 

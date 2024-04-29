@@ -14,6 +14,7 @@
 	
 	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO" id="jobHistMap" autoMapping="true">
 		<id column="JOB_HIST_ID" property="jobHistId"/>
+		<result column="PAST_JOB_ID" property="pastJobId" />
 		<association property="jobVO" javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
 			<id column="JOB_ID" property="jobId"/>
 			<result column="JOB_NAME" property="jobName"/>
@@ -90,7 +91,7 @@
 		, SYSDATE
 		, #{jobHistoryVO.cnNote}
 		, 'N'
-		, #{jobId})
+		, #{jobHistoryVO.pastJobId})
 	</insert>
 	
 	<select id="getRecentJobHist" parameterType="string" resultType="string">
@@ -103,6 +104,8 @@
 		 WHERE ROWNUM = 1
 	</select>
 	
+	
+	
 	<select id="getAllJobHist" parameterType="string" resultMap="jobHistMap">
 		SELECT JH.JOB_HIST_ID
 			 , JH.EMP_ID
@@ -110,12 +113,29 @@
 			 , TO_CHAR(JH.JOB_STRT_DT, 'YYYY-MM-DD') JOB_STRT_DT
 			 , TO_CHAR(JH.JOB_END_DT, 'YYYY-MM-DD') JOB_END_DT
 			 , JH.CN_NOTE
+			 , J.JOB_NAME
 		  FROM JOB_HISTORY JH
 		 INNER JOIN JOB J
 		    ON J.JOB_ID = JH.PAST_JOB_ID 
 		 WHERE JH.EMP_ID = #{_parameter}
 		   AND JH.DEL_YN = 'Y'
 		 ORDER BY JOB_STRT_DT DESC
+	</select>
+	
+	<select id="getUserJobHistory" parameterType="string" resultMap="jobHistMap">
+	SELECT JH.JOB_HIST_ID
+		 , JH.EMP_ID
+		 , JH.PAST_JOB_ID
+		 , TO_CHAR(JH.JOB_STRT_DT, 'YYYY-MM-DD') JOB_STRT_DT
+		 , TO_CHAR(JH.JOB_END_DT, 'YYYY-MM-DD') JOB_END_DT
+		 , JH.CN_NOTE
+		 , J.JOB_NAME
+	  FROM JOB_HISTORY JH
+	  JOIN JOB J
+	 	ON J.JOB_ID = JH.PAST_JOB_ID
+	 WHERE JH.EMP_ID = #{_parameter}
+	    AND JH.DEL_YN = 'N'
+	  ORDER BY JOB_STRT_DT DESC
 	</select>
 	
 	<insert id="insertOneChangePositionHistory" 
@@ -137,6 +157,8 @@
 		 , 'N'
 		 , #{positionHistoryVO.pastPstnId})
 	</insert>
+	
+	
 	
 	<select id="getUserPositionHistory" parameterType="string" resultMap="positionHistMap">
 		SELECT PH.PSTN_ID

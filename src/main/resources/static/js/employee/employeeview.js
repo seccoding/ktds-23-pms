@@ -66,15 +66,15 @@ $().ready(function (){
         var pastjobId = $(".job-select-box").data("origin")
         console.log(pastjobId)
         console.log(selectjobId)
-        if(selectJobId==pastJobId){
+        if(selectjobId==pastjobId){
             alert("동일한 직무로 변경할 수 없습니다.")
             return
         }
         var reason = $("#job-change-note").val()
-        $.post("/ajax/change/jobHistory", {
+        $.post("/ajax/change/job", {
             empId:empId,
             jobId:selectjobId,
-            "jobHistoryVO.pastjobId":pastjobId,
+            "jobHistoryVO.pastJobId":pastjobId,
             "jobHistoryVO.cnNote":reason,
         }, function(res){
             if(res.data.isSuccess){
