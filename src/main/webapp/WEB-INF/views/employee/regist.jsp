@@ -78,6 +78,14 @@ input[type="checkbox"]:disabled {
 						value="${employeeVO.pwd}"
 						placeholder="영문, 숫자, 특수문자로 이루어지고 한개 이상 포함, 10자리 이상" />
 				</div>
+				<div class="confirmPwd">
+					<label for="confirmPwd">비밀번호 확인: </label>
+				</div>
+				<div>
+					<input id="confirmPwd" type="password" name="confirmPwd"
+						value="${employeeVO.confirmPwd}"
+						placeholder="비밀번호를 다시한번 입력해 주세요" />
+				</div>
 				<div class="empName">
 					<label for="empName">사원이름: </label>
 				</div>
@@ -96,7 +104,7 @@ input[type="checkbox"]:disabled {
 					<label for="prfl">프로필 사진: </label>
 				</div>
 				<div>
-					<input id="prfl" type="file" name="prfl" />
+					<input id="prfl" type="file" name="fileName" />
 				</div>
 				<div>
 					<label for="cntct">연락처: </label>
