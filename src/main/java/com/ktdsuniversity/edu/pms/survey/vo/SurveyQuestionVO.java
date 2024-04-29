@@ -27,8 +27,14 @@ public class SurveyQuestionVO {
 	private ProjectTeammateVO projectTeammateVO;
 	private EmployeeVO employeeVO;
 	private CommonCodeVO commonCodeVO;
-	private List<SurveyQuestionPickVO> surveyQuestionPickList;
+	private List<SurveyQuestionPickVO> pickList;
 	
+	public List<SurveyQuestionPickVO> getPickList() {
+		return pickList;
+	}
+	public void setPickList(List<SurveyQuestionPickVO> pickList) {
+		this.pickList = pickList;
+	}
 	public String getSrvId() {
 		return srvId;
 	}
@@ -124,12 +130,6 @@ public class SurveyQuestionVO {
 	}
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
-	}
-	public List<SurveyQuestionPickVO> getSurveyQuestionPickList() {
-		return surveyQuestionPickList;
-	}
-	public void setSurveyQuestionPickList(List<SurveyQuestionPickVO> surveyQuestionPickList) {
-		this.surveyQuestionPickList = surveyQuestionPickList;
 	}
 
 }
