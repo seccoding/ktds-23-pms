@@ -92,6 +92,13 @@ $().ready(function(){
     // $("#select-prdtName").on("change", autoPrdtCurStrSelect);
     $(".form-group").on("change", "#select-prdtName", autoPrdtCtgrSelect);
     $(".form-group").on("change", "#select-prdtName", autoPrdtCurStrSelect);
+    
+
+    var today = new Date().toISOString().substring(0, 10);
+    console.log(today);
+
+    // 오늘 날짜로 기본설정
+    $("#apply-date").val(today);
 
 
 
@@ -160,6 +167,8 @@ $().ready(function(){
         
     });
 
+
+    
 
     
     
