@@ -67,148 +67,67 @@ $().ready(function() {
   // 결재반려
   $("#btn-appr-sts-no").on("click", function() {
 
-    var rjctModal = $(".modal-confirm-window");
-    var modalBody = $(".modal-confirm-content");
-    var rjctBtn = $(".confirm-confirm-button");
+    
+    // 결재 반려 확인 모달
+    var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
     var modalButton1 = $(".cancel-confirm-button");
     var modalText = $(".modal-confirm-text");
-    var rjctDivDom = $('<div></<div>');
-    var rjctInputDom = $('<input id="arrpRjct" type="text" name="arrpRjct"/>');
-    rjctDivDom.append(rjctInputDom);
-    modalBody.append(rjctDivDom);
-    modalBody.css({
-      "flex-direction" : "column", 
-      "justify-content" : "center",
-    });
-    modalText.text("결재사유를 입력해주세요");
-    rjctBtn.text("반려");
+    modalText.text("결재를 반려하시겠습니까?");
+    modalButton.text("반려");
     modalButton1.text("취소");
-    var apprSts = $("#btn-appr-sts-no").data("appr-sts");
-          var arrpRjct = $(rjctInputDom).val();
-          var params = {
-            apprSts : apprSts, 
-            arrpRjct : arrpRjct
-          };
+    alertModal[0].showModal();
 
-
-    loadModal({
-      content: "결재를 반려하시겠습니까?",
-      fnPositiveBtnHandler: function () {
-         
-        
+    // 반려 사유 입력 모달
+    $(modalButton).on("click", function() {
+      alertModal[0].close();
       
-        rjctModal[0].showModal();
-  
-        // 반려 기능 수행
-        $(rjctBtn).on("click", function() {
-  
-          
-          
-          if(arrpRjct !== "" && arrpRjct !== null) {
-            $.post(url, params, function(response) {
-              if(response.data.result) {
-                alert("결재가 반려되었습니다.");
-                location.reload();
-              } else {
-                alert(response.data.errorMessage);
-              }
-            });
-            location.reload();
-          } else {
-            rjctDivDom.html("");
-            var alertDiv = $("<span>결재 사유를 입력해주세요.</span>");
-            rjctDivDom.append(alertDiv);
-          }
-        });
-  
+      var rjctModal = $(".modal-confirm-window");
+      var modalBody = $(".modal-confirm-content");
+      var rjctBtn = $(".confirm-confirm-button");
+      var modalButton1 = $(".cancel-confirm-button");
+      var modalText = $(".modal-confirm-text");
+      var rjctDivDom = $('<div></<div>');
+      var rjctInputDom = $('<input id="arrpRjct" type="text" name="arrpRjct"/>');
+      rjctDivDom.append(rjctInputDom);
+      modalBody.append(rjctDivDom);
+      modalBody.css({
+        "flex-direction" : "column", 
+        "justify-content" : "center",
+      });
+      modalText.text("결재사유를 입력해주세요");
+      rjctBtn.text("반려");
+      modalButton1.text("취소");
+      rjctModal[0].showModal();
 
-        // loadModal({
-        //   content: response.data.errorMessage,
-        //   positiveBtnName: "반려",
-        //   fnPositiveBtnHandler: function () {
-        //     location.reload();
-        //   },showNegativeBtn: false,
-        // });
+      // 반려 기능 수행
+      $(rjctBtn).on("click", function() {
+
+        var apprSts = $("#btn-appr-sts-no").data("appr-sts");
+        var arrpRjct = $(rjctInputDom).val();
+        var params = {
+          apprSts : apprSts, 
+          arrpRjct : arrpRjct
+        };
         
+        if(arrpRjct !== "" && arrpRjct !== null) {
+          $.post(url, params, function(response) {
+            if(response.data.result) {
+              alert("결재가 반려되었습니다.");
+              location.reload();
+            } else {
+              alert(response.data.errorMessage);
+            }
+          });
+          rjctModal[0].close();
+        } else {
+          rjctDivDom.html("");
+          var alertDiv = $("<span>결재 사유를 입력해주세요.</span>");
+          rjctDivDom.append(alertDiv);
+        }
+      });
 
-       
-
-        
-      },fnNegativeBtnHandler: function () {
-        alertModal[0].close();
-      },
     });
-
-
-
-
-
-
-
-
-
-
-
-    // //결재 반려 확인 모달
-    // var alertModal = $(".modal-confirm-window");
-    // var modalButton = $(".confirm-confirm-button");
-    // var modalButton1 = $(".cancel-confirm-button");
-    // var modalText = $(".modal-confirm-text");
-    // modalText.text("결재를 반려하시겠습니까?");
-    // modalButton.text("반려");
-    // modalButton1.text("취소");
-    // alertModal[0].showModal();
-
-    // //반려 사유 입력 모달
-    // $(modalButton).on("click", function() {
-    //   alertModal[0].close();
-      
-    //   var rjctModal = $(".modal-confirm-window");
-    //   var modalBody = $(".modal-confirm-content");
-    //   var rjctBtn = $(".confirm-confirm-button");
-    //   var modalButton1 = $(".cancel-confirm-button");
-    //   var modalText = $(".modal-confirm-text");
-    //   var rjctDivDom = $('<div></<div>');
-    //   var rjctInputDom = $('<input id="arrpRjct" type="text" name="arrpRjct"/>');
-    //   rjctDivDom.append(rjctInputDom);
-    //   modalBody.append(rjctDivDom);
-    //   modalBody.css({
-    //     "flex-direction" : "column", 
-    //     "justify-content" : "center",
-    //   });
-    //   modalText.text("결재사유를 입력해주세요");
-    //   rjctBtn.text("반려");
-    //   modalButton1.text("취소");
-    //   rjctModal[0].showModal();
-
-    //   // 반려 기능 수행
-    //   $(rjctBtn).on("click", function() {
-
-    //     var apprSts = $("#btn-appr-sts-no").data("appr-sts");
-    //     var arrpRjct = $(rjctInputDom).val();
-    //     var params = {
-    //       apprSts : apprSts, 
-    //       arrpRjct : arrpRjct
-    //     };
-        
-    //     if(arrpRjct !== "" && arrpRjct !== null) {
-    //       $.post(url, params, function(response) {
-    //         if(response.data.result) {
-    //           alert("결재가 반려되었습니다.");
-    //           location.reload();
-    //         } else {
-    //           alert(response.data.errorMessage);
-    //         }
-    //       });
-    //       rjctModal[0].close();
-    //     } else {
-    //       rjctDivDom.html("");
-    //       var alertDiv = $("<span>결재 사유를 입력해주세요.</span>");
-    //       rjctDivDom.append(alertDiv);
-    //     }
-    //   });
-
-    // });
   });
 
   // 비품 반납
