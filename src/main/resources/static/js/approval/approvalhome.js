@@ -9,14 +9,10 @@ $().ready(function() {
         alertDialog[0].close();
     });
 
-    // 대기중인 결재
-    
-
-    // 일주일 이상 지연된 결재
-
-
-    // 한 달 이내 결재내역
-
+    // 전체목록
+    $("#btn-all-appr").on("click", function() {
+        location.href = "/approval/home";
+    });
 
     // 기안서 작성
     $("#btn-appr-write").on("click", function() {

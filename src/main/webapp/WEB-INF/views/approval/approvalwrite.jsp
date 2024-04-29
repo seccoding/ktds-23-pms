@@ -218,7 +218,7 @@
 									<td><input type="text" value="${borrow.productVO.prdtCtgr}" readonly></td>
 									<td><input type="text" value="${borrow.productVO.prdtName}" readonly></td>
 									<td><input type="text" value="${borrow.brrwDt}" readonly></td>
-									<td><button class="btn-remove-prdt" data-delete-item="${borrow.prdtMngId}">삭제</button></td>
+									<td><button type="button" class="btn-remove-prdt" data-delete-item="${borrow.prdtMngId}">삭제</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>

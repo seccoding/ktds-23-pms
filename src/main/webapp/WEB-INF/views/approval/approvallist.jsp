@@ -63,7 +63,7 @@
                     <tr>
                         <th>
                             <input type="checkbox" id="prdt-check-all" 
-                                   data-target-class="target-appr-id"/>
+                                    data-target-class="target-appr-id"/>
                             <!-- <label for="prdt-check-all"></label>
                             <label for="prdt-check-all"></label> -->
                         </th>
