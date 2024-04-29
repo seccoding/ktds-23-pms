@@ -83,10 +83,14 @@ th, td {
                                     <td class="survey-status"><c:out value="${empty project.srvSts ? 'N' : project.srvSts}" /></td>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">
-                                    <td class="survey-yn" data-survey-yn="${project.srvYn}">${project.srvYn}</td>
+                                    <c:forEach items="${surveyYn}" var="surveyYn">
+                                        <c:if test="${surveyYn.prjId == project.prjId}">
+                                            <td class="survey-yn" data-survey-yn="${surveyYn.srvYn}">${surveyYn.srvYn}</td>
+                                        </c:if>
+                                    </c:forEach>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                                    <th><a href="survey/result?prjId=${project.prjId}">설문 결과</a></th>
+                                    <th><a href="result?prjId=${project.prjId}">설문 결과</a></th>
                                 </c:if>
                             </tr>
                         </c:forEach>

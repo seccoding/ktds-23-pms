@@ -27,9 +27,10 @@ public class SurveyReplyServiceImpl implements SurveyReplyService {
 		return insertedCount > 0;
 	}
 
+
 	@Override
-	public SurveyListVO getAllReplys(String prjId) {
-		List<SurveyReplyVO> replyList = this.surveyReplyDao.getAllReplys(prjId);
+	public SurveyListVO getAllReplies(SurveyReplyVO surveyReplyVO) {
+		List<SurveyReplyVO> replyList = this.surveyReplyDao.getAllReplies(surveyReplyVO);
 		
 		SurveyListVO surveyListVO = new SurveyListVO();
 		surveyListVO.setReplyList(replyList);

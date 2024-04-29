@@ -53,6 +53,7 @@ public class SurveyController {
 		SurveyListVO surveyListVO = this.surveyQuestionService.searchProject(searchSurveyVO);
 		
 		List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
+		
 		List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammate().stream()
 		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
 		.filter(tm->tm.getRole().equals("PM"))
@@ -62,6 +63,11 @@ public class SurveyController {
 		    isPM = true;
 		}
 		
+		List<ProjectTeammateVO> surveyYn = this.projectService.getAllProjectTeammate().stream()
+		.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
+		.toList();
+		
+		model.addAttribute("surveyYn", surveyYn);
 		model.addAttribute("teammate", teammate);
 		model.addAttribute("commonCodeList", projectCommonCodeList);
 		model.addAttribute("surveyList", surveyListVO);

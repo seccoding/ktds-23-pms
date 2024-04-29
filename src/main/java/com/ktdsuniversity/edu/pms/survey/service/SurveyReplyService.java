@@ -7,6 +7,8 @@ public interface SurveyReplyService {
 
 	boolean responseSurvey(SurveyReplyVO surveyReplyVO);
 
-	public SurveyListVO getAllReplys(String prjId);
+	SurveyListVO getAllReplies(SurveyReplyVO surveyReplyVO);
+
+	
 
 }

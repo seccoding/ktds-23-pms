@@ -11,6 +11,6 @@ public interface SurveyReplyDao {
 
 	public int insertSurveyAnswer(SurveyReplyVO surveyReplyVO);
 
-	public List<SurveyReplyVO> getAllReplys(String prjId);
+	public List<SurveyReplyVO> getAllReplies(SurveyReplyVO surveyReplyVO);
 
 }

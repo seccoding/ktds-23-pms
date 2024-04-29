@@ -1,5 +1,8 @@
 package com.ktdsuniversity.edu.pms.survey.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +16,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
+import com.ktdsuniversity.edu.pms.survey.service.SurveyQuestionService;
 import com.ktdsuniversity.edu.pms.survey.service.SurveyReplyService;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 
@@ -23,6 +29,9 @@ public class SurveyAnswerController {
 
 	@Autowired
 	private SurveyReplyService surveyReplyService;
+	
+	@Autowired
+	private SurveyQuestionService surveyQuestionService;
 	
 	@Autowired
 	private ProjectService projectService;
@@ -51,9 +60,21 @@ public class SurveyAnswerController {
 	
 	@GetMapping("/survey/result")
 	public String viewSurveyResultPage(@RequestParam String prjId, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
-		SurveyListVO replyList = this.surveyReplyService.getAllReplys(prjId);
+		SurveyQuestionVO surveyQuestionVO = new SurveyQuestionVO();
+	    surveyQuestionVO.setPrjId(prjId);
 		
-		model.addAttribute("replyList", replyList);
+	    SurveyListVO questionList = this.surveyQuestionService.searchAllQuestions(surveyQuestionVO);
+	    List<SurveyReplyVO> allReplies = new ArrayList<>();
+	    
+	    for (SurveyQuestionVO question : questionList.getQuestionList()) {
+	    	SurveyReplyVO surveyReplyVO = new SurveyReplyVO();
+	    	surveyReplyVO.setSrvId(question.getSrvId());
+	        SurveyListVO replyList = this.surveyReplyService.getAllReplies(surveyReplyVO);
+	        allReplies.addAll(replyList.getReplyList());
+	    }
+		
+		model.addAttribute("questionList", questionList);
+		model.addAttribute("replyList", allReplies);
 		
 		return "survey/surveyresult";
 	}

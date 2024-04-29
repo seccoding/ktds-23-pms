@@ -12,6 +12,8 @@ public class SurveyReplyVO {
 	private String delYn;
 	private String prjId;
 	
+	private SurveyQuestionVO surveyQuestionVO;
+	
 	public String getSrvRplId() {
 		return srvRplId;
 	}
@@ -66,5 +68,10 @@ public class SurveyReplyVO {
 	public void setPrjId(String prjId) {
 		this.prjId = prjId;
 	}
-
+	public SurveyQuestionVO getSurveyQuestionVO() {
+		return surveyQuestionVO;
+	}
+	public void setSurveyQuestionVO(SurveyQuestionVO surveyQuestionVO) {
+		this.surveyQuestionVO = surveyQuestionVO;
+	}
 }

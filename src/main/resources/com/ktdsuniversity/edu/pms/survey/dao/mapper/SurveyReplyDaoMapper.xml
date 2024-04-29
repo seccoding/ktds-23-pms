@@ -37,21 +37,18 @@
 		, 'N')
 	</insert>
 	
-	<select id="getAllReplys" parameterType="String" resultMap="surveyReplyVOMap">
-		SELECT sr.SRV_RPL_ID
-			 , sr.SRV_ID
-			 , sr.SRV_RPL_CNTNT
-			 , sr.CRTR_ID
-			 , sr.CRT_DT
-			 , sr.MDFR_ID
-			 , sr.MDF_DT
-			 , sr.DEL_YN
-			 , sq.PRJ_ID 
-			 , sq.SRV_QST
-		  FROM SURVEY_REPLY sr
-		  JOIN SURVEY_QUESTION sq
-		    ON sq.SRV_ID = sr.SRV_ID
-		 WHERE sq.PRJ_ID = #{_parameter}
+	<select id="getAllReplies" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO" resultMap="surveyReplyVOMap">
+		SELECT SRV_RPL_ID
+			 , SRV_ID
+			 , SRV_RPL_CNTNT
+			 , CRTR_ID
+			 , CRT_DT
+			 , MDFR_ID
+			 , MDF_DT
+			 , DEL_YN
+		  FROM SURVEY_REPLY
+		 WHERE SRV_ID = #{srvId}
+		   AND DEL_YN = 'N'
 	</select>
 
 </mapper>
