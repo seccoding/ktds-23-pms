@@ -59,6 +59,8 @@ public interface BorrowDao {
 	 */
 	public int insertNewBorrowHist(BorrowVO borrowVO);
 
+	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
+
 	
 
 	
