@@ -10,10 +10,27 @@
         <jsp:include page="../ckeditor.jsp" />
         <script type="text/javascript" src="/js/issue/issuewrite.js"></script>
         <style>
+            .grid {
+                display: grid;
+                grid-template-columns: 200px 1fr;
+                grid-template-rows: repeat(3, 40px) 1fr;
+            }
+            .right-align {
+                text-align: right;
+            }
+            .error {
+                display: inline-block;
+                margin-left: 20px;
+            }
         </style>
     </head>
     <body>
-        <form action="/issue/write" method="post" enctype="multipart/form-data">
+        <form
+            id="writeForm" 
+            action="/issue/write"
+            method="post"
+            enctype="multipart/form-data"
+        >
             <div class="grid">
                 <label for="=rqm-id">요구사항</label>
                 <div>
@@ -27,32 +44,31 @@
                     </select>
                 </div>
 
+                <label for="issue-title">이슈 제목</label>
                 <div>
-                    <label for="issue-title">이슈 제목</label>
                     <input type="text" id="issue-title" name="isTtl" value="${issueVO.isTtl}"/>
                 </div>
 
-                <div>
-                    <label for="file">첨부파일</label>
-                    <input type="file" name="file" id="file" />
+                <label for="file">첨부파일</label>
+                <input type="file" name="file" id="file" />
+                
+                
+                <label for="content">이슈 내용</label>
+                <div class="hereCkEditor5">
+                    <%-- 여기가 editor 생성부 --%>
+                    <div class="editor" data-name="isCntnt"></div>
+                    <input
+                        type="text"
+                        id="is-content"
+                        name="isCntnt"
+                        style="visibility: hidden"
+                    />
                 </div>
-
-                <div>
-                    <label for="content">이슈 내용</label>
-                    <div class="hereCkEditor5">
-                        <%-- 여기가 editor 생성부 --%>
-                        <div class="editor" data-name="isCntnt"></div>
-                        <input
-                          type="text"
-                          id="is-content"
-                          name="isCntnt"
-                          style="visibility: hidden"
-                        />
-                    </div>
-                </div>
-
-                <button id="submit" type="button">등록</button>
             </div>
         </form>
+        <div class="right-align">
+            <button type="button" data-type="write">등록</button>
+            <button onclick="location.href='/issue'">취소</button>
+        </div>
     </body>
 </html>

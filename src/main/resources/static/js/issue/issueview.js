@@ -2,33 +2,13 @@ $().ready(function () {
   $(".delete-issue").on("click", function () {
     loadModal({
       content:
-        "이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.",
+        "이 게시글을 정말 삭제하시겠습니까?.",
       fnPositiveBtnHandler: function() {
-        var isId = $(this).closest(".grid").data("id");
+        var isId = $(".grid").data("id");
         location.href = "/issue/delete/" + isId;
       },
     });
   });
-
-      // var alertModal = $(".modal-confirm-window");
-      //   var modalButton = $(".confirm-confirm-button");
-      //   var modalButton1 = $(".cancel-confirm-button");
-      //   var modalText = $(".modal-confirm-text");
-      //   modalText.text("이 이슈를 정말 삭제하시겠습니까?");
-      //   modalButton.text("확인");
-      //   modalButton1.text("취소");
-      //   alertModal[0].showModal();
-      //   var isId = $(this).closest(".grid").data("id");
-      //   var confirm = false;
-      //   $(".confirm-confirm-button").on("click", function() {
-      //     confirm = true;
-      //     if (confirm) {
-      //       location.href = "/issue/delete/" + isId;
-      //     }
-      //   })
-      //   $(".cancel-confirm-button").on("click", function() {
-      //     location.reload();
-      //   })
 
     // 댓글
     var modifyReply = function (event) {
@@ -86,7 +66,7 @@ $().ready(function () {
           if (isAppendedReply && reply.delYn === "N") {
             appendedReply.find(".content").text(reply.rplCntnt);
             var modifyDate = appendedReply.find(".mdfDt");
-            if (modifyDate) {
+            if (modifyDate.length !== 0) {
               modifyDate.text("(수정: " + reply.mdfDt + ")");
             } else {
               var mdfyDtDom = $("<span></span>");
@@ -142,8 +122,9 @@ $().ready(function () {
             crtDtDom.addClass("crtdt");
             crtDtDom.text("등록: " + reply.crtDt);
             datetimeDom.append(crtDtDom);
-  
-            if (reply.crtDt !== reply.mdfDt) {
+
+            // reply.crtDt !== reply.mdfDt &&
+            if (reply.mdfDt !== null) {
               // <span class="mdfydt">(수정: 수정날짜)</span>
               var mdfyDtDom = $("<span></span>");
               mdfyDtDom.addClass("mdfDt");
@@ -203,7 +184,7 @@ $().ready(function () {
           }
           // 대댓글은 원 댓글의 자식으로 추가한다.
           else {
-            appendedParentReply.append(replyDom);
+            appendedParentReply.after(replyDom);
           }
         }
       });
@@ -244,10 +225,16 @@ $().ready(function () {
         }
       });
     });
+
     $("#btn-cancel-reply").on("click", function () {
       $("#txt-reply").val("");
       $("#txt-reply").removeData("mode");
       $("#txt-reply").removeData("target");
     });
+
+    $("#modify").on("click", function() {
+      var isId = $(".grid").data("id");
+      location.href = "/issue/modify?isId=" + isId;
+    })
   });
   

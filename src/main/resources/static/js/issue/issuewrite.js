@@ -5,24 +5,37 @@ $().ready(function () {
       "${issueVO.isCntnt}"
     );
 
-    $("#submit").on("click", function (event) {
+    // $("#rqm-id").on("change click", function() {
+    //   var rqmId = $("#rqm-id option:selected").val();
+
+    // });
+    
+    $("button").on("click", function (event) {
       var isCntnt = "";
       event.preventDefault();
 
       isCntnt = editors.getData();
       var fileArr = $("#file").prop("files");
       var file = fileArr[0];  
-      var isTtl = $("#issue-title").val();
+
       var rqmId = $("#rqm-id").val();
+      var isTtl = $("#issue-title").val();
+      var isId = $(".grid").data("id");
+    
 
       var formData = new FormData();
       formData.append("file", file);
+      formData.append("isId", isId);
       formData.append("isTtl", isTtl);
       formData.append("rqmId", rqmId);
       formData.append("isCntnt", isCntnt);
 
+      $("#is-content").val(isCntnt);
+      var type = $(this).data("type");
+      var url = "/ajax/issue/" + type;
+
       $.ajax({
-        url: "/ajax/issue/write",
+        url: url,
         type: "POST",
         data: formData,
         processData: false,

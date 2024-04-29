@@ -7,9 +7,16 @@ $().ready(function () {
     });
 
     $("#deleteMassiveIssue").on("click", function() {
+      loadModal({
+        content: "삭제할 이슈를 선택하세요.",
+        fnPositiveBtnHandler: function() {
+          location.reload();
+        },
+        showNegativeBtn: false
+      });
       var checkedItems = $(".target-issue-id:checked");
       var itemsArray = [];
-      checkedItems.each(function (index, data) {
+        checkedItems.each(function (index, data) {
         itemsArray.push($(data).val());
       });
       $.post(
@@ -18,7 +25,12 @@ $().ready(function () {
         function(response) {
           var result = response.data.result;
           if (result) {
-            location.reload();
+            loadModal({
+              content: "이슈를 일괄삭제 하시겠습니까?",
+              fnPositiveBtnHandler: function() {
+                location.reload();
+              }
+            })
           }
         }
       )
