@@ -57,7 +57,6 @@ public class MemoController {
 		return "memo/memosent";
 	}
 	
-	// 수정필요
 	@GetMapping("/memo/storage")
 	public String viewStorageMemoListPage(Model model, SearchMemoVO searchMemoVO,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
@@ -71,7 +70,6 @@ public class MemoController {
 		return "memo/memostorage";
 	}
 	
-	// 수정필요
 	@GetMapping("/memo/receive")
 	public String viewReceiveMemoListPage(Model model, SearchMemoVO searchMemoVO,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
