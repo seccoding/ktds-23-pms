@@ -58,8 +58,8 @@ function addAnswerItem(ulDom) {
 
     var nextAnsDom = $("<li></li>");
     var nextAnsSeqDom = $("<div></div>").text(nextAnsSeqNum);
-    var nextAnsInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명');
-    var nextLinkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결');
+    var nextAnsInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명').addClass('answer-name');
+    var nextLinkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결').addClass('link-input');
     var deleteSrvAnsButtonDom = $("<button></button>").attr("type", "button").addClass("delete-survey-answer").text("제거");
 
     deleteSrvAnsButtonDom.on("click", function() {
@@ -104,8 +104,8 @@ function handleSelectiveTypeClick(srvQstDom) {
     for (var i = 1; i <= 2; i++) {
         var ansDom = $("<li></li>");
         var ansSeqDom = $("<div></div>").text(i);
-        var ansInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명');
-        var linkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결');
+        var ansInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '답변명').addClass('answer-name');
+        var linkInputDom = $("<input/>").attr('type', 'text').attr('placeholder', '연결').addClass('link-input');
         ansDom.append(ansSeqDom, ansInputDom, linkInputDom);
         ulDom.append(ansDom);
     }
@@ -113,7 +113,7 @@ function handleSelectiveTypeClick(srvQstDom) {
     var addSrvAnsButtonDom = $("<button></button>")
         .attr('type', 'button')
         .addClass("add-survey-answer")
-        .text("답변 항목 추가");
+        .text("답변 추가");
 
     var deleteSrvQstButtonDom = $("<button></button>")
         .attr("type", "button")
@@ -160,15 +160,16 @@ $(document).ready(function() {
     var prjId = $(".survey-body").data("prj-id");
     var typeYn = 'N';
     console.log(prjId);
-
+    
     $.get("/ajax/survey/get/" + prjId, function(response) {
         var surveys = response.data.surveys;
-
+        
         for (let i in surveys) {
             var srvId = surveys[i].srvId;
             var srvQst = surveys[i].srvQst;
             var srvQstDom = $("<div></div>");
             srvQstDom.addClass("survey-question");
+            srvQstDom.attr("data-srv-id", srvId);
 
             var srvQstTopDom = $("<div></div>");
             srvQstTopDom.addClass("survey-question-top");
@@ -205,13 +206,12 @@ $(document).ready(function() {
 
             var ulDom = $("<ul></ul>");
             ulDom.addClass("survey-question-list");
-            ulDom.attr("data-srv-id", srvId);
             
             if (surveys[i].typeYn === "N") {
                 var addSrvQstButtonDom = $("<button></button>");
                 addSrvQstButtonDom.attr('type', 'button');
                 addSrvQstButtonDom.addClass("add-survey-answer");
-                addSrvQstButtonDom.text("답변 항목 추가");
+                addSrvQstButtonDom.text("답변 추가");
             }
 
             var deleteSrvQstButtonDom = $("<button></button>");
@@ -234,7 +234,7 @@ $(document).ready(function() {
         // 답변 선택지 추가
         $("ul.survey-question-list").each(function() {
             var ulDom = $(this);
-            var srvId = ulDom.data("srv-id");
+            var srvId = ulDom.parent().parent().data("srv-id");
 
             $.get("/ajax/survey/get/pick/" + srvId, function(pickResponse) {
                 var picks = pickResponse.data.picks;
@@ -245,11 +245,11 @@ $(document).ready(function() {
                     AnsSeqDom.text(picks[j].seq);
                     var AnsInputDom = $("<input/>");
                     AnsInputDom.attr('type', 'text');
-                    AnsInputDom.attr('placeholder', '답변명');
+                    AnsInputDom.attr('placeholder', '답변명').addClass('answer-name');
                     AnsInputDom.val(picks[j].sqpCntnt);
                     var LinkInputDom = $("<input/>");
                     LinkInputDom.attr('type', 'text');
-                    LinkInputDom.attr('placeholder', '연결');
+                    LinkInputDom.attr('placeholder', '연결').addClass('link-input');
                     LinkInputDom.val(picks[j].nextId);
     
                     AnsDom.append(AnsSeqDom);
@@ -305,10 +305,10 @@ $(document).ready(function() {
         firstAnsSeqDom.text(1);
         var firstAnsInputDom = $("<input/>");
         firstAnsInputDom.attr('type', 'text');
-        firstAnsInputDom.attr('placeholder', '답변명');
+        firstAnsInputDom.attr('placeholder', '답변명').addClass('answer-name');
         var firstLinkInputDom = $("<input/>");
         firstLinkInputDom.attr('type', 'text');
-        firstLinkInputDom.attr('placeholder', '연결');
+        firstLinkInputDom.attr('placeholder', '연결').addClass('link-input');
 
         firstAnsDom.append(firstAnsSeqDom);
         firstAnsDom.append(firstAnsInputDom);
@@ -319,10 +319,10 @@ $(document).ready(function() {
         secondAnsSeqDom.text(2);
         var secondAnsInputDom = $("<input/>");
         secondAnsInputDom.attr('type', 'text');
-        secondAnsInputDom.attr('placeholder', '답변명');
+        secondAnsInputDom.attr('placeholder', '답변명').addClass('answer-name');
         var secondLinkInputDom = $("<input/>");
         secondLinkInputDom.attr('type', 'text');
-        secondLinkInputDom.attr('placeholder', '연결');
+        secondLinkInputDom.attr('placeholder', '연결').addClass('link-input');
 
         secondAnsDom.append(secondAnsSeqDom);
         secondAnsDom.append(secondAnsInputDom);
@@ -334,7 +334,7 @@ $(document).ready(function() {
         var addSrvAnsButtonDom = $("<button></button>")
             .attr('type', 'button')
             .addClass("add-survey-answer")
-            .text("답변 항목 추가");
+            .text("답변 추가");
 
         var deleteSrvQstButtonDom = $("<button></button>");
         deleteSrvQstButtonDom.attr("type", "button");
@@ -415,7 +415,7 @@ $(document).ready(function() {
             var that = this;
             var srvId = $(this).data("srv-id");
             var srvQst = $(this).children("div").eq(1).find("input").val();
-            var newTypeYn = $(this).data("type-yn");
+            var newTypeYn = $(this).data("type-yn") || 'N';
 
             if (newTypeYn) {
                 typeYn = newTypeYn;
@@ -458,10 +458,18 @@ $(document).ready(function() {
                     }
                 });
             });
-        });       
+        });      
         var chooseValue = confirm("설문 작성을 완료하시겠습니까?");
         if (chooseValue) {
             location.href = "/survey/list";
+        }
+        else {
+            $.post("/ajax/survey/createbody/" + prjId, {
+                srvId: srvId,
+                srvQst: srvQst,
+                typeYn: typeYn,
+                srvSts: 'W'
+            });
         }
     });
 

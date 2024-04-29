@@ -24,6 +24,24 @@
 .search-category {
     padding-bottom: 11px;
 }
+table {
+    width: 100%; /* 테이블이 페이지 전체 너비를 차지하도록 설정 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정 */
+}
+
+colgroup > col:first-child {
+    width: auto; /* 첫 번째 열은 가변적으로 너비 설정 */
+}
+
+colgroup > col:not(:first-child) {
+    width: 150px; /* 나머지 열은 150px로 고정 */
+}
+
+th, td {
+    overflow: hidden; /* 내용이 너비를 초과하는 경우 숨김 처리 */
+    text-overflow: ellipsis; /* 너무 긴 문자열은 ...로 표시 */
+    white-space: nowrap; /* 내용을 한 줄로 표시 */
+}
 </style>
 </head>
 <body>
@@ -31,15 +49,6 @@
     <input type="hidden" id="is-pm" value="${isPM}">
     <div>
         <table>
-            <colgroup>
-                <col width="150px" />
-                <col width="150px" />
-                <col width="150px" />
-                <col width="150px" />
-                <col width="150px" />
-                <col width="150px" />
-                <col width="150px" />
-            </colgroup>
             <thead>
                 <tr>
                     <th>프로젝트 명</th>
@@ -51,11 +60,11 @@
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
                         <th>설문지 생성 여부</th>
                     </c:if>
-                    <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N' && !isPM}">
+                    <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">
                         <th>설문 작성 여부</th>
                     </c:if>
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                        <th>설문 결과</th>
+                        <th></th>
                     </c:if>
                 </tr>
             </thead>
@@ -73,9 +82,9 @@
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
                                     <td><c:out value="${empty survey.srvSts ? 'N' : survey.srvSts}" /></td>
                                 </c:if>
-                                <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N' && !isPM}">
+                                <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">
                                     <c:forEach items="${teammate.projectTeammateList}" var="teammate">
-                                        <td class="survey-yn" data-survey-yn="${teammate.srvYn}">${teammate.srvYn}</td>
+                                        <td class="survey-yn" data-survey-yn="${teammate.projectTeammateList.srvYn}">${teammate.srvYn}</td>
                                     </c:forEach>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
@@ -86,7 +95,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="8">
+                            <td colspan="9">
                                 <div>참여 중인 프로젝트가 없거나 프로젝트의 설문 관리가 불가능한 상태인 것 같습니다.</div>
                             </td>
                         </tr>

@@ -11,7 +11,7 @@ $().ready(function() {
 
             $(".survey-question").empty(); // 기존 문항을 지우고 새 문항을 로드
 
-            var srvQstDom = $("<div></div>").text(srvQst);
+            var srvQstDom = $("<div></div>").addClass("questionnaire-question").text(srvQst);
             $(".survey-question").append(srvQstDom);
 
             var srvPickDom = $("<div></div>");
@@ -66,8 +66,10 @@ $().ready(function() {
         if (validateResponse()) {
             // 현재 선택한 옵션 또는 작성한 답변 가져오기
             var responseContent;
-            if ($("input[type='radio'][name='surveyOption" + seqNum + "']:checked").length > 0) {
-                responseContent = $("input[type='radio'][name='surveyOption" + seqNum + "']:checked").data('content');
+            var selectedRadio = $("input[type='radio'][name='surveyOption" + seqNum + "']:checked");
+            if (selectedRadio.length > 0) {
+                responseContent = selectedRadio.data('content');
+                var nextId = selectedRadio.data('next-id');
             } else {
                 responseContent = $("#freeResponse").val().trim();
             }
@@ -83,23 +85,26 @@ $().ready(function() {
                 .done(function(response) {
                     // POST 성공 시 처리할 내용 추가
                     console.log("응답이 성공적으로 전송되었습니다.");
+                    if (nextId !== undefined && nextId !== null) {
+                        seqNum = findQuestionIndexBySeq(nextId); // nextId로 문항 인덱스 찾기
+                        loadQuestion();
+                    } else {
+                        seqNum++; // 다음 문항으로 인덱스 증가
+                        loadQuestion();
+                    }
                 })
                 .fail(function(xhr, status, error) {
                     // POST 실패 시 처리할 내용 추가
                     console.error("응답을 전송하는 동안 오류가 발생했습니다:", error);
                 });
-    
-            var nextId = $("input[type='radio'][name='surveyOption" + seqNum + "']:checked").data('next-id');
-            if (nextId !== undefined && nextId !== null) {
-                seqNum = findQuestionIndexBySeq(nextId); // nextId로 문항 인덱스 찾기
-                loadQuestion();
-            } else {
-                seqNum++; // 다음 문항으로 인덱스 증가
-                loadQuestion();
-            }
         } else {
             alert("답변을 선택하거나 입력해주세요.");
         }
+    });
+
+    $(document).on('change', 'input[type="radio"]', function() {
+        $('li').removeClass('selected');
+        $(this).closest('li').addClass('selected');
     });
 
     function validateResponse() {
