@@ -82,11 +82,12 @@
 <body>
   <c:if test="${not empty errorMessage}">
     <!-- css 변경 -->
-    <dialog class="alert-dialog">
+    <!-- <dialog class="alert-dialog">
       <h1>${errorMessage}</h1>
       <button type="button" class="alert-button">확인</button>
-    </dialog>
+    </dialog> -->
   </c:if>
+  <div class="hidden hidden-data">${errorMessage}</div>
 	<div class="container">
         <div class="title">
             <h2>결재 현황</h2>

@@ -162,8 +162,6 @@ public class ApprovalController {
 	public AjaxResponse addProductForNewApproval(@RequestParam("addProducts[]") List<String> addProducts,
 												 @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		logger.info(addProducts.size()+"<<<<<<<<<<<<<<<<<<<<<<<<<<");
-
 		List<BorrowVO> borrowList = this.approvalService.getAddProductApproval(addProducts);
 		return new AjaxResponse().append("borrowList", borrowList);
 	}
