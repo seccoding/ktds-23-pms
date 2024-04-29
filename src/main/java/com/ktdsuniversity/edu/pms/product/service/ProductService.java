@@ -72,7 +72,7 @@ public interface ProductService {
 	 * @param productName
 	 * @return
 	 */
-	public int getOneProductCurStr(String productName);
+	public ProductVO getOneProductStockAndCategory(String productName);
 
 	
 

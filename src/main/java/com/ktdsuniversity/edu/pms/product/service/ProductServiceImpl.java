@@ -207,12 +207,12 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public int getOneProductCurStr(String productName) {
+	public ProductVO getOneProductStockAndCategory(String productName) {
 		
 		// 비품명으로 비품ID 값을 가져온다.
 		String prdtIdByprdtName = this.productDao.selectPrdtIdByPrdtName(productName);
 		
-		return this.productDao.getProductCurstr(prdtIdByprdtName);
+		return this.productDao.getProductStockAndCategory(prdtIdByprdtName);
 	}
 	
 

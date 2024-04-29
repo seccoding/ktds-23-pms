@@ -40,8 +40,7 @@ public interface ProductDao {
 	
 	/**
 	 * 모든 비품 목록을 중복없이 조회
-	 * 쿼리에서 DISTINCT를 추가해 중복없이 만들고
-	 * 나중에 forEach로 값을 받아올 때 카페고리 값만 받아오도록 해주기 위해 1 컬럼을 추가
+	 * 쿼리에서 DISTINCT를 추가해 중복없이 조회
 	 */
 	public List<ProductVO> getAllProductCategory();
 
@@ -86,11 +85,11 @@ public interface ProductDao {
 	public List<ProductVO> getAllProductName();
 
 	/**
-	 * 비품ID 값으로 해당 비품의 수량을 조회
+	 * 비품ID 값으로 해당 비품의 수량과 카테고리를 조회
 	 * @param namevalue
 	 * @return
 	 */
-	public int getProductCurstr(String prdtIdByprdtName);
+	public ProductVO getProductStockAndCategory(String prdtIdByprdtName);
 
 	/**
 	 * 비품 ID 값으로 해당 비품의 수량을 변경

@@ -67,10 +67,11 @@ public class ProductController {
 	@ResponseBody
 	@GetMapping("/ajax/product/apply/{namevalue}")
 	public AjaxResponse viewProductApply(@RequestParam String productName, @PathVariable String namevalue) {
-		int oneProductCurStr = this.productService.getOneProductCurStr(productName);
-		System.out.println("**********************" + oneProductCurStr + "**********************");
+		ProductVO oneProductStockAndCategory = this.productService.getOneProductStockAndCategory(productName);
+		System.out.println("**********************" + oneProductStockAndCategory.getCurStr() + "**********************");
+		System.out.println("**********************" + oneProductStockAndCategory.getPrdtCtgr() + "**********************");
 		
-		return new AjaxResponse().append("oneProductCurStr", oneProductCurStr);
+		return new AjaxResponse().append("stockAndCategory", oneProductStockAndCategory);
 	}
 	
 	
