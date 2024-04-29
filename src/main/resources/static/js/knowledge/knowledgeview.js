@@ -20,14 +20,11 @@ $().ready(function () {
         var knlId = $(".grid").data("id");
         location.href = "/knowledge/delete/" + knlId;
       },
+      fnNegativeBtnHandler: function () {
+        var knlId = $(".grid").data("id");
+        location.href = "/knowledge/delete/" + knlId;
+      },
     });
-  });
-  $(".modal-confirm-close").on("click", function () {
-    location.reload();
-  });
-
-  $(".cancel-confirm-button").on("click", function () {
-    location.reload();
   });
 
   var modifyReply = function (event) {
@@ -248,6 +245,7 @@ $().ready(function () {
     $("#txt-reply").removeData("target");
   });
 
+  /*********************************추천*************************************/
   $(".recommend-knowledge").on("click", function () {
     var knlId = $(".recommend-knowledge").val();
 
@@ -275,9 +273,5 @@ $().ready(function () {
       // alertModal[0].showModal();
       // $("#knlRecCnt").html(response.data.count);
     });
-  });
-
-  $(".confirm-confirm-button").on("click", function () {
-    // location.reload();
   });
 });
