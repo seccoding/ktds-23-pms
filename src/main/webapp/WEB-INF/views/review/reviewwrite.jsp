@@ -14,10 +14,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <style type="text/css">
         div.grid {
           display: grid;
-          grid-template-columns: 80px 1fr;
+          grid-template-columns: 1fr;
           grid-template-rows: 28px 28px 320px 1fr;
           row-gap: 10px;
         }
+	    .right-align {
+	        text-align: right; 
+	        margin-top: 10px; /* 상단 여백 */
+	    }
+	    label[for="rvCntnt"] {
+        display: none;
+    	}
       </style>
     </head>
     <body>
@@ -26,9 +33,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="grid">
           <input type="hidden" id="prjId" name="prjId" value="${project.prjId}" />
   
+  		<div>
           <label for="prjId">프로젝트명</label>
-          <input type="text" id="prjName" name="prjName" value="${project.prjName}"/>
-  
+          <input type="text" id="prjName" name="prjName" value="${project.prjName}" readonly/>
+  		</div>
           <!-- <label for="crtrId">작성인</label> -->
           <!-- select ? -->
           <input type="hidden" id="crtrId" name="crtrId" value="${crtrId}" />
@@ -41,23 +49,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   
           <input type="hidden" id="delYn" name="delYn" value="N" />
   
-          <label for="rvCntnt">후기 내용</label>
+          <label for="rvCntnt">
+          </label>
           <c:forEach items="${errorMessage.rvCntnt}" var="error">
           <div>${error}</div>
-        </c:forEach>
-          <textarea id="content" name="rvCntnt" style="height: 300px">
-  			${reviewVO.rvCntnt}</textarea
-          >
-  
-          <div class="btn-group">
-          	<!-- <div class="right-align">
-              <input type="submit" value="임시저장" />
-            </div> -->
-            <div class="right-align">
-              <input type="submit" value="저장" />
-            </div>
+          </c:forEach>
+          
+          <textarea id="content" name="rvCntnt" style="height: 300px">${reviewVO.rvCntnt}</textarea>
+          
           </div>
-        </div>
+          <div class="right-align">
+            <input type="submit" value="저장" />
+          </div>
       </form>
     </body>
   </html>

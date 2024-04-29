@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.review.dao.ReviewDao;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
@@ -101,37 +102,38 @@ public class ReviewServiceImpl implements ReviewService {
 		return this.reviewDao.insertNewReviewQuestion(reviewVO) > 0;
 	}
 
-	@Transactional
-	@Override
-	public boolean insertNewReview(ReviewVO reviewVO) {
-		return this.reviewDao.insertNewReview(reviewVO) > 0;
-	}
-
+	
 	/*
 	 * @Transactional
 	 * 
-	 * @Override public boolean updateReviewRvYn(ProjectTeammateVO
+	 * @Override public boolean insertNewReview(ReviewVO reviewVO) { return
+	 * this.reviewDao.insertNewReview(reviewVO) > 0; }
+	 * 
+	 * @Transactional
+	 * 
+	 * @Override public boolean updateReviewStatus(ProjectTeammateVO
 	 * projectTeammateVO) { return
-	 * this.projectTeammateDao.updateReviewRvYn(projectTeammateVO) > 0; }
+	 * projectDao.updateOneTeammateReviewStatusByProjectIdAndEmployeeId(
+	 * projectTeammateVO) > 0;
+	 * 
+	 * }
 	 */
+
+    @Transactional
+    public boolean insertNewReviewAndUpdateStatus(ReviewVO reviewVO, ProjectTeammateVO projectTeammateVO) {
+        boolean reviewResult = reviewDao.insertNewReview(reviewVO) > 0;
+        boolean statusResult = projectDao.updateOneTeammateReviewStatusByProjectIdAndEmployeeId(projectTeammateVO) > 0;
+        
+        // 두 작업 모두 성공했을 경우에만 true 반환
+        return reviewResult && statusResult;
+    }
+	
 	
 	@Transactional
 	@Override
 	public boolean updateOneReview(ReviewVO reviewVO) {
 		return this.reviewDao.insertNewReviewQuestion(reviewVO) > 0;
 	}
-
-	/*
-	 * @Transactional
-	 * 
-	 * @Override public boolean deleteOneReview(String rvId, String email) {
-	 * 
-	 * ReviewVO reviewVO = this.reviewDao.getOneReview(rvId);
-	 * 
-	 * if(!email.equals(reviewVO.getEmployeeVO())) { throw new
-	 * PageNotFoundException(); } return this.reviewDao.deleteOneReview(rvId) > 0; }
-	 */
-
 
 	@Override
 	public ReviewVO getOneReview(String rvId, boolean isdeleted) {
@@ -155,29 +157,6 @@ public class ReviewServiceImpl implements ReviewService {
 		return deletedCount > 0;
 	}
 
-	
-
-
-	
-
-	
-	
-	
-//		int reviewVO = this.reviewDao.getOneReview(reviewId);
-		
-//		ReviewVO reviewVO = this.reviewDao.getAllReview(reviewId);
-//
-//		// PM이상일 경우에만 삭제할 수 있음
-//		if (!email.equals(replyVO.getEmail())) {
-//			throw new PageNotFoundException();
-//		}
-//		return this.reviewDao.deleteOneReview(replyId) > 0;
-
-
-//	@Override
-//	public List<ReviewVO> getAllReview() {
-//		return reviewDao.selectAllReview();
-//	}
 	
 	
 }

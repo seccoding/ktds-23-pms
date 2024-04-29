@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.memo.vo.MemoVO;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
@@ -25,6 +27,8 @@ import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @Controller
 public class ReviewController {
@@ -63,8 +67,6 @@ public class ReviewController {
 //				if (tYList.size()>0) { // rvYn = Y 일 경우
 //					isRVY = true;
 //				}
-		
-		
 		
 		
 		searchReviewVO.setEmployeeVO(employeeVO);
@@ -131,12 +133,39 @@ public class ReviewController {
 	 *   '저장'버튼을 누른 이후 후기는 수정할 수 없음
 	 */
 	@PostMapping("/review/write")
-	public String ReviewWritePage(Model model, ReviewVO reviewVO, ProjectTeammateVO projectTeammateVO,  @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String ReviewWritePage(Model model, ReviewVO reviewVO, ProjectTeammateVO projectTeammateVO,
+								@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, ProjectVO projectVO) {
+		
 		
 		projectTeammateVO.setTmId(employeeVO.getEmpId());
 		
-		this.projectService.updateReviewStatus(projectTeammateVO);
-		this.reviewService.insertNewReview(reviewVO);
+		
+		Validator<ReviewVO> validator = new Validator<>(reviewVO);
+		validator
+		.add("rvCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다.")
+		.start();
+		
+		
+		if(validator.hasErrors()) {
+			
+			Map<String, List<String>> errors = validator.getErrors();
+			model.addAttribute("errorMessage",errors);
+			model.addAttribute("reviewVO",reviewVO);
+			model.addAttribute("project", projectVO);			
+			return "review/reviewwrite";
+		}
+		
+		/*
+		 * this.reviewService.insertNewReview(reviewVO);
+		 * this.reviewService.updateReviewStatus(projectTeammateVO);
+		 */
+		boolean success = reviewService.insertNewReviewAndUpdateStatus(reviewVO, projectTeammateVO);
+			if (!success) {
+		        return "후기전송에 실패했습니다. 다시 시도해주세요.";
+		    }
+		
+		
+		
 		
 		model.addAttribute("projectTeammateVO", projectTeammateVO);
 		model.addAttribute("employeeVO", employeeVO);
@@ -160,70 +189,7 @@ public class ReviewController {
 		
 	}
 	
-	/*
-	 * @GetMapping("/review/viewresult") public String
-	 * viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) { ReviewListVO
-	 * reviewListVO = this.reviewService.viewReviewCntnt();
-	 * model.addAttribute("reviewList", reviewListVO);
-	 * model.addAttribute("SearchReviewVO", searchReviewVO); return
-	 * "review/reviewresult"; // reviewList.jsp 파일 이름 }
-	 */
-	
-	
-	/*
-	 * @GetMapping("/review/viewresult") public String viewReviewCntnt(Model model)
-	 * { ReviewListVO reviewListVO = this.reviewService.viewReviewCntnt();
-	 * model.addAttribute("reviewList", reviewListVO);
-	 * 
-	 * return "review/reviewresult"; // reviewList.jsp 파일 이름 }
-	 */
-	
-	
-	
-	
-	
-	
-//	@GetMapping("/review/modify")
-//	public String viewModifyPage() {
-//		return "review/reviewwrite";   // reviewList.jsp 파일 이름
-//	}
-//	@PostMapping("/review/modify")
-//	public String ReviewModifyPage(Model model, ReviewVO reviewVO) {
-//		
-//		this.reviewService.updateOneReview(reviewVO);
-//		model.addAttribute("reviewVO", reviewVO);
-//		
-//		return "redirect: /review"; 
-//	}
-	
-	
-	/*
-	 * @GetMapping("/board/delete/{id}") public String deleteOneReview(@PathVariable
-	 * String rvId, String email) {
-	 * 
-	 * ReviewVO originalBoardVO = this.reviewService.getOneReview(rvId, false); //삭제
-	 * 요청 boolean isDeletedSuccess = this.reviewService.deleteOneReview(rvId,
-	 * email); //게시글 목록으로 이동 return "redirect:/review/viewresult";
-	 * 
-	 * }
-	 */
-	
-//	@GetMapping("/review/delete")
-//	public String viewDeletePage() {
-//		return "review/rev iewlist";   // reviewList.jsp 파일 이름
-//	}
-//	@PostMapping("/review/delete")
-//	public String reviewDeletePage(Model model, ReviewVO reviewVO, String rvId, String email) {
-//		
-//		this.reviewService.deleteOneReview(rvId, email);
-//		model.addAttribute("reviewVO", reviewVO);
-//		
-//		return "review/reviewresult"; 
-//	}
-	
-	
 
-	
 	
 //	@PostMapping("ajax/review/modify/{reviewId}")
 //	public AjaxResponse doModifyReview(@PathVariable String rvId, ReviewVO reviewVO) {
@@ -241,15 +207,6 @@ public class ReviewController {
 //		return new AjaxResponse().append("review/reviewdelete", isSuccess);
 //	}
 	
-//	@ResponseBody	
-//	@GetMapping("/review")
-//	public AjaxResponse vewReviewListPage() {
-//		ReviewListVO reviewListVO = reviewService.getAllReview();
-//		
-//		return new AjaxResponse().append("reviewList", reviewListVO);
-//		
-//	}
-	
 	
 //	@PostMapping("ajax/review/write/{reviewId}")
 //	public AjaxResponse doCreateNewReview(@PathVariable String rvId, ReviewVO reviewVO) {
@@ -260,10 +217,7 @@ public class ReviewController {
 //		return new AjaxResponse().append("review/reviewwrite", isSuccess);
 //	}
 
-//	@GetMapping("/timer")
-//	public String timer() {
-//		return "review/timer";
-//	}
+
 	
 	
 }

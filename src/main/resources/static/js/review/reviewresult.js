@@ -21,12 +21,40 @@ $().ready(function () {
       }
     );
   });
+  
+  
+  $("#list-size").on("change", function () {
+    search(0);
+  });
+
+  $("#checked-all").on("change", function () {
+    var targetClass = $(this).data("target-class");
+
+    // checked-all 의 체크 상태를 가져온다.
+    // 체크가 되어있다면 true 아니라면 false
+    var isChecked = $(this).prop("checked");
+
+    $("." + targetClass).prop("checked", isChecked);
+  });
 
   $(".delete-button").click(function () {
     // const id = $(".delete-button").closest("tr").attr("id");
     const id = $(this).closest("tr").attr("id");
+    
+    var alertModal = $(".modal-window");
+    var modalButton = $(".confirm-button");
+    var modalText = $(".modal-text");
+    modalText.text("쪽지를 삭제하시겠습니까?");
+    modalButton.text("확인");
+    alertModal[0].showModal();
     // console.log("id: " + id);
-    if (confirm("후기를 삭제하시겠습니까?")) {
+/*    if (confirm("후기를 삭제하시겠습니까?")) {
+*/
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
+
+	$(".confirm-button").on("click", function () {
       $.ajax({
         url: "/ajax/review/viewresult/" + id + "/delete",
         type: "GET",
@@ -36,7 +64,8 @@ $().ready(function () {
           console.log(data.data.result);
           if (data.data.result === true) {
             $("#" + id).remove();
-            alert("삭제를 성공했습니다!");
+            /*alert("삭제를 성공했습니다!");*/
+            window.location.reload();
           } else {
             alert("삭제에 실패했습니다. 잠시후 재시도해주세요.");
           }
@@ -48,17 +77,8 @@ $().ready(function () {
           console.log("complete...");
         },
       });
-    }
+    });
   });
-
-  $("#search-btn").on("click", function () {
-    search(0);
-  });
-
-  /*  var reviewCnt = $(reviewList.reviewCnt);
-  if (reviewCnt === 0) {
-    document.querySelector(".table").style.display = "none";
-  }*/
 });
 
 function showModalWithReviewContent(reviewContent) {
