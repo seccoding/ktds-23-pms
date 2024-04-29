@@ -29,6 +29,7 @@ $().ready(function () {
                   alertModal[0].close();
                   location.reload();
                 },
+                showNegativeBtn: false,
               });
             } else {
               loadModal({
@@ -37,9 +38,11 @@ $().ready(function () {
                   alertModal[0].close();
                   location.reload();
                 },
+                showNegativeBtn: false,
               });
             }
           },
+          showNegativeBtn: false,
         });
       } else {
         if (res.data.nopartof == 0 && res.data.alreadyexist) {
@@ -49,6 +52,7 @@ $().ready(function () {
               location.reload();
               alertModal[0].close();
             },
+            showNegativeBtn: false,
           });
         } else if (res.data.success) {
           loadModal({
@@ -58,6 +62,7 @@ $().ready(function () {
               location.reload();
               alertModal[0].close();
             },
+            showNegativeBtn: false,
           });
         } else {
           loadModal({
@@ -65,6 +70,7 @@ $().ready(function () {
             fnPositiveBtnHandler: function () {
               alertModal[0].close();
             },
+            showNegativeBtn: false,
           });
         }
       }
@@ -244,6 +250,7 @@ $().ready(function () {
                   fnPositiveBtnHandler: function () {
                     location.href = delResponse.data.next;
                   },
+                  showNegativeBtn: false,
                 });
               } else {
                 loadModal({
@@ -251,6 +258,7 @@ $().ready(function () {
                   fnPositiveBtnHandler: function () {
                     location.reload();
                   },
+                  showNegativeBtn: false,
                 });
               }
             });
@@ -266,6 +274,7 @@ $().ready(function () {
           fnPositiveBtnHandler: function () {
             location.reload();
           },
+          showNegativeBtn: false,
         });
       }
     });
@@ -287,6 +296,7 @@ $().ready(function () {
                     fnPositiveBtnHandler: function () {
                       location.reload();
                     },
+                    showNegativeBtn: false,
                   });
                 } else {
                   loadModal({
@@ -294,6 +304,7 @@ $().ready(function () {
                     fnPositiveBtnHandler: function () {
                       location.reload();
                     },
+                    showNegativeBtn: false,
                   });
                 }
               }
@@ -310,6 +321,7 @@ $().ready(function () {
           fnPositiveBtnHandler: function () {
             location.reload();
           },
+          showNegativeBtn: false,
         });
 
         // var alertModal = $(".modal-window");
