@@ -214,6 +214,19 @@ public class ProductServiceImpl implements ProductService{
 		
 		return this.productDao.getProductStockAndCategory(prdtIdByprdtName);
 	}
+
+	@Override
+	public boolean getOneExistProduct(String inputName) {
+		
+		boolean isExist = false;
+		int existCount = this.productDao.getOneExistCount(inputName);
+		
+		if(existCount >= 1) {
+			isExist = true;
+		}
+		
+		return isExist;
+	}
 	
 
 }
