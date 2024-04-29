@@ -18,6 +18,8 @@ public class SearchBorrowVO extends PaginateVO {
 	
 	private BorrowVO borrowVO;
 	
+	private boolean isCheck;
+	
 	
 	public BorrowVO getBorrowVO() {
 		return borrowVO;
@@ -54,5 +56,11 @@ public class SearchBorrowVO extends PaginateVO {
 	}
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
+	}
+	public boolean isCheck() {
+		return isCheck;
+	}
+	public void setCheck(boolean isCheck) {
+		this.isCheck = isCheck;
 	}
 }

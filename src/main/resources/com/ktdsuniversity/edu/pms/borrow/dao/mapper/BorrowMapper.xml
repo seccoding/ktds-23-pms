@@ -166,6 +166,10 @@
 		 WHERE BH.DEL_YN = 'N'
 		   AND PM.LOST_YN = 'N'
 		   AND P.ONCE_YN = 'N'
+	   
+		<if test='isCheck == true'>
+			AND BH.RTN_DT IS NULL
+		</if>
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productManagementId"'>

@@ -85,6 +85,7 @@
     <!-- Paginator 시작 -->
     <div>
         <form id="search-form">
+            <input type="hidden" id="is-check" name="isCheck" value="false" />
             <input type="hidden" id="page-no" name="pageNo" value="0"/>
             <select id="list-size" name="listSize">
                 <option value="10" ${searchBorrowVO.listSize eq 10 ? 'selected' : ''}>10개</option>
