@@ -1,4 +1,10 @@
 $().ready(function () {
+  var crtrId = sessionStorage.getItem("crtrId"); // 세션 스토리지에서 읽기
+  if (crtrId) {
+    $("#rcvId").val(crtrId); // 읽어온 데이터를 설정
+    // sessionStorage.removeItem("crtrId");
+  }
+
   $(".address").click(function (event) {
     event.preventDefault(); // 폼 제출 방지
 

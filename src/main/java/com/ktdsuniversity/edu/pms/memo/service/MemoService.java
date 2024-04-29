@@ -22,6 +22,6 @@ public interface MemoService {
 
 	public boolean deleteManyMemo(List<String> memoIds);
 
-	public boolean saveOneMemo(String id, String empId);
+	public boolean saveOneMemo(MemoVO memoVO);
 
 }

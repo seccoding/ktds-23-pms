@@ -33,7 +33,7 @@ public interface MemoDao {
 
 	public int deleteManyMemo(List<String> memoIds);
 
-	public int saveOneMemo(String memoId, String empId);
+	public int saveOneMemo(MemoVO memoVO);
 
 	
 }
