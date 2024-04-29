@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
@@ -64,14 +65,32 @@ public class QnaController {
 
 	// 전체 리스트 조회
 	@GetMapping("/qna")
-	public String viewQnaListPage(Model model, SearchQnaVO searchQnaVO, @RequestParam(required = false) String qaId) {
+	public String viewQnaListPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model, SearchQnaVO searchQnaVO,
+									@RequestParam(required = false) String qaId) {
 
 		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchQnaVO.setEmpId(employeeVO.getEmpId());
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {} 
+		
+		projectList.setProjectList(
+				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
+		
+		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			requirementList=  this.requirementService.getAllRequirementByTeammateId(employeeVO.getEmpId());
+		}
+		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
+			searchQnaVO.setEmpId(employeeVO.getEmpId());
+		}
+		
 		QnaListVO qnaList = this.qnaService.searchAllQna(searchQnaVO);
 
-		model.addAttribute("projectList", projectList);
-		model.addAttribute("qnaList", qnaList);
-		model.addAttribute("searchQnaVO", searchQnaVO);
+		model.addAttribute("projectList", projectList)
+			 .addAttribute("requirementList", requirementList)
+			 .addAttribute("qnaList", qnaList)
+			 .addAttribute("searchQnaVO", searchQnaVO);
 
 		return "/qna/qnalist";
 	}
@@ -81,14 +100,7 @@ public class QnaController {
 	public String viewDetailQnaListPage(@RequestParam String qaId, Model model,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
-		// 유저 검증
-		if (employeeVO == null || employeeVO.getLgnYn() == "N") {
-			throw new EmployeeNotLoggedInException();
-		}
-
 		QnaVO qnaVO = this.qnaService.getOneQna(qaId, true);
-
-		// int recommendCount = this.qnaService.getQnaRecommendCount(qaId);
 
 		// qna/view 페이지에 데이터를 전송.
 		model.addAttribute("qnaVO", qnaVO);
@@ -101,8 +113,8 @@ public class QnaController {
 	@GetMapping("/qna/write")
 	public String viewQnaWrite(Model model) {
 
-		ProjectListVO projectList = projectService.getAllProject();
-		List<RequirementVO> requirementList = requirementService.getAllRequirement();
+		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
+		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
 
 		model.addAttribute("requirement", requirementList);
 
@@ -115,18 +127,17 @@ public class QnaController {
 	public AjaxResponse doQnaWrite(QnaVO qnaVO, @RequestParam(value="file", required=false) MultipartFile file,
 			@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
 
-		// 유저 검증
-		if (employeeVO == null || employeeVO.getLgnYn() == "N") {
-			throw new EmployeeNotLoggedInException();
-		}
-
 		Map<String, List<String>> error = this.qnaValidator(qnaVO);
 		if (error != null) {
 			return new AjaxResponse().append("error", error);
 		}
-
+		
+		// 유저 검증
 		qnaVO.setCrtrId(employeeVO.getEmpId());
 		// qnaVO.setIsMngr(employeeVO.getEmpId());
+		if (!qnaVO.getCrtrId().equals(employeeVO.getEmpId()) && employeeVO.getMngrYn().equals("N")) {
+			throw new AccessDeniedException();
+		}
 
 		boolean isCreateSuccess = this.qnaService.createNewQna(qnaVO, file);
 		if (isCreateSuccess) {
@@ -225,7 +236,7 @@ public class QnaController {
 		// 유저 검증
 		if (!employeeVO.getEmpId().equals(qnaVO.getCrtrId())
 				&& employeeVO.getMngrYn().equals("N")) {
-			throw new PageNotFoundException();
+			throw new AccessDeniedException();
 		}
 
 		// 게시글의 정보를 화면에 보내준다.
@@ -255,6 +266,7 @@ public class QnaController {
 
 		// Command Object 에는 전달된 qaId가 없으니 @PathVariable로 전달된 qaId를 세팅해준다.
 		qnaVO.setQaId(qaId);
+		qnaVO.setCrtrId(employeeVO.getEmpId());
 
 		boolean isUpdateSuccess = this.qnaService.updateOneQna(qnaVO, file);
 

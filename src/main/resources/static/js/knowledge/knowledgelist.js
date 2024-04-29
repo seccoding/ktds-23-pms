@@ -11,36 +11,35 @@ $().ready(function () {
     var modalButton = $(".confirm-confirm-button");
     var modalButton1 = $(".cancel-confirm-button");
     var modalText = $(".modal-confirm-text");
-    modalText.text("이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.");
+    modalText.text("이 게시글들을 모두 삭제하시겠습니까?");
     modalButton.text("확인");
     modalButton1.text("취소");
     alertModal[0].showModal();
-  });
-  $(".modal-confirm-close").on("click", function () {
-    location.reload();
-  });
+    $(".confirm-confirm-button").on("click", function () {
+      confirm = true;
+      if (confirm) {
+        var checkedItems = $(".target-knl-id:checked");
 
-  $(".confirm-confirm-button").on("click", function () {
-    // 선택된 체크박스만 가져온다.
-    var checkedItems = $(".target-knl-id:checked");
+        var itemsArray = [];
+        checkedItems.each(function (index, data) {
+          itemsArray.push($(data).val());
+        });
 
-    // 선택된 체크박스만 반복하여 서버로 보낼 파라미터 생성
-    var itemsArray = [];
-    checkedItems.each(function (index, data) {
-      itemsArray.push($(data).val());
-    });
-
-    // 서버로 전송(ajax)
-    $.post("/ajax/knowledge/delete/massive", { deleteItems: itemsArray }, function (response) {
-      var result = response.data.result;
-      if (result) {
-        // 삭제가 완료되면 현재페이지를 새로고침
-        location.reload();
+        $.post(
+          "/ajax/knowledge/delete/massive",
+          { deleteItems: itemsArray },
+          function (response) {
+            var result = response.data.result;
+            if (result) {
+              location.reload();
+            }
+          }
+        );
       }
     });
-  });
-  $(".cancel-confirm-button").on("click", function () {
-    location.reload();
+    $(".cancel-confirm-button").on("click", function () {
+      location.reload();
+    });
   });
 
   // checked-all

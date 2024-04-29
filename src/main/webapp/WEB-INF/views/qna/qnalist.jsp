@@ -101,6 +101,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </select>
 
         <select name="searchType" id="search-type">
+          <option value="" selected disabled hidden>검색 옵션</option>
           <option value="prjName" ${searchQnaVO.searchType eq 'prjName' ? 'selected' : ''}>프로젝트</option>
           <option value="rqmTtl" ${searchQnaVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항명</option>
           <option value="qaTtl" ${searchQnaVO.searchType eq 'qaTtl' ? 'selected' : ''}>제목</option>
@@ -115,7 +116,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
         <div>
           <button class="btn-group">
-            <a class="btn-group" href="/qna/write">새 글 등록</a>
+            <a class="btn-group" href="/qna/write">신규 등록</a>
           </button>
           <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
               <button>

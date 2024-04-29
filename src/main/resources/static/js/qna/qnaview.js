@@ -1,54 +1,25 @@
 $().ready(function () {
-  // qaId = $(".recommend-qna").val();
-
-  // $(".recommend-qna").on("click", function () {
-  //   $.post("/qna/recommend/" + qaId, function (response) {
-  //     console.log(response.data.result);
-  //     if (response.data.resultStatus) {
-  //       // 여기서 dom의 추천수를 올려서 보여주는 로직
-  //     } else {
-  //       return;
-  //     }
-  //   });
-  // });
-
   $(".answer-btn").on("click", function () {
     // 답변 입력란을 보여준다.
     $(".answer-form").show();
   });
 
-  // $(".delete-qna").on("click", function () {
-  //   var chooseValue = confirm("이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.");
-
-  //   var qaId = $(this).closest(".grid").data("id");
-  //   console.log("qaId  " + qaId);
-
-  //   if (chooseValue) {
-  //     location.href = "/qna/delete/" + qaId;
-  //   }
-  // });
-
   $(".delete-qna").on("click", function () {
-    var alertModal = $(".modal-confirm-window");
-    var modalButton = $(".confirm-confirm-button");
-    var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text("이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.");
-    modalButton.text("확인");
-    modalButton1.text("취소");
-    alertModal[0].showModal();
-  });
-  $(".modal-confirm-close").on("click", function () {
-    location.reload();
-  });
-  $(".confirm-confirm-button").on("click", function () {
-    var qaId = $(".grid").data("id");
-    location.href = "/qna/delete/" + qaId;
-  });
-  $(".cancel-confirm-button").on("click", function () {
-    location.reload();
+    loadModal({
+      content:
+        "이 게시글을 정말 삭제하시겠습니까?\n삭제작업은 복구할 수 없습니다.",
+      fnPositiveBtnHandler: function () {
+        var qaId = $(".grid").data("id");
+        location.href = "/qna/delete/" + qaId;
+      },
+      fnNegativeBtnHandler: function () {
+        // var qaId = $(".grid").data("id");
+        // location.href = "/qna/view/" + qaId;
+      },
+    });
   });
 
+  /*********************댓글********************/
   var modifyReply = function (event) {
     var target = event.currentTarget;
     var reply = $(target).closest(".reply");
@@ -122,7 +93,9 @@ $().ready(function () {
           continue;
         }
 
-        var appendedParentReply = $(".reply[data-reply-id=" + reply.rplPid + "]");
+        var appendedParentReply = $(
+          ".reply[data-reply-id=" + reply.rplPid + "]"
+        );
 
         /***********************새로운 댓글 추가*************************/
         // <div class="reply" data-reply-id="댓글번호" style="padding-left: (level - 1) * 40px">
@@ -263,5 +236,20 @@ $().ready(function () {
     $("#txt-reply").val("");
     $("#txt-reply").removeData("mode");
     $("#txt-reply").removeData("target");
+  });
+
+  /**********************추천************************/
+  $(".recommend-qna").on("click", function () {
+    var qaId = $(".recommend-qna").val();
+
+    $.post("/qna/recommend/" + qaId, function (response) {
+      loadModal({
+        content: response.data.result,
+        fnPositiveBtnHandler: function () {
+          location.reload();
+        },
+        showNegativeBtn: false,
+      });
+    });
   });
 });

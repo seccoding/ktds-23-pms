@@ -26,13 +26,12 @@ public class KnowledgeVO {
 	
 //	클래스를 선언
 	private RequirementVO requirementVO; 
-	
 	private ProjectVO  projectVO;
-	
 	private EmployeeVO employeeVO;
+	private String empId;
+	private String empName;
 	
 	private CommonCodeVO commonCodeVO;
-	
 	private KnowledgeRecommendVO knowledgeRecommendVO;
 	
 	public String getKnlId() {
@@ -130,6 +129,19 @@ public class KnowledgeVO {
 	}
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
+	}
+	
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	public CommonCodeVO getCommonCodeVO() {
 		return commonCodeVO;

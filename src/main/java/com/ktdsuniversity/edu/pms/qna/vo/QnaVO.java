@@ -29,6 +29,8 @@ public class QnaVO {
 	private ProjectVO  projectVO;
 	
 	private EmployeeVO employeeVO;
+	private String empId;
+	private String empName;
 	
 	private CommonCodeVO commonCodeVO;
 	
@@ -130,6 +132,25 @@ public class QnaVO {
 	}
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
+	}
+	
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public QnaRecommendVO getQnaRecommendVO() {
+		return qnaRecommendVO;
+	}
+	public void setQnaRecommendVO(QnaRecommendVO qnaRecommendVO) {
+		this.qnaRecommendVO = qnaRecommendVO;
 	}
 	public CommonCodeVO getCommonCodeVO() {
 		return commonCodeVO;

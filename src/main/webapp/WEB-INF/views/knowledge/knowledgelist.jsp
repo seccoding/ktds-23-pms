@@ -11,6 +11,32 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/knowledge/knowledgelist.js"
     ></script>
+    <style>
+      .btn-group {
+          float: right;
+      }
+
+      .submit-btn {
+          width: 7rem;
+      }
+
+      .search {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .search-keyword {
+          display: flex;
+      }
+
+      .search-keyword > * {
+          padding-right: 0.825rem;
+      }
+
+      .search-category {
+          padding-bottom: 11px;
+      }
+  </style>
   </head>
   <body>
     <div class="grid">
@@ -91,41 +117,49 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <!-- 검색 -->
     <nav aria-label="Page navigation">
       <form id="search-form">
-        <input type="hidden" id="page-no" name="pageNo" value="0">
-        <select name="listSize" id="list-size">
-          <option value="10" ${searchKnowledgeVO.listSize eq 10 ? 'selected' : ''}>10개</option>
-          <option value="20" ${searchKnowledgeVO.listSize eq 20 ? 'selected' : ''}>20개</option>
-          <option value="30" ${searchKnowledgeVO.listSize eq 30 ? 'selected' : ''}>30개</option>
-          <option value="50" ${searchKnowledgeVO.listSize eq 50 ? 'selected' : ''}>50개</option>
-          <option value="100" ${searchKnowledgeVO.listSize eq 100 ? 'selected' : ''}>100개</option>
-        </select>
+        <div class="search-keyword">
+          <div class="search-category">
+            <input type="hidden" id="page-no" name="pageNo" value="0">
+            <select name="listSize" id="list-size">
+              <option value="10" ${searchKnowledgeVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+              <option value="20" ${searchKnowledgeVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+              <option value="30" ${searchKnowledgeVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+              <option value="50" ${searchKnowledgeVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+              <option value="100" ${searchKnowledgeVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+            </select>
 
-        <select name="searchType" id="search-type">
-          <option value="prjName" ${searchKnowledgeVO.searchType eq 'prjName' ? 'selected' : ''}>프로젝트</option>
-          <option value="rqmTtl" ${searchKnowledgeVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항명</option>
-          <option value="knlTtl" ${searchKnowledgeVO.searchType eq 'knlTtl' ? 'selected' : ''}>제목</option>
-          <option value="knlCntnt" ${searchKnowledgeVO.searchType eq 'knlCntnt' ? 'selected' : ''}>내용</option>
-          <option value="knlTtl_knlCntnt" ${searchKnowledgeVO.searchType eq 'knlTtl_knlCntnt' ? 'selected' : ''}>제목 + 내용</option>
-          <option value="crtrId" ${searchKnowledgeVO.searchType eq 'crtrId' ? 'selected' : ''}>등록자</option>
-        </select>
-
-        <input type="text" name="searchKeyword" value="${searchKnowledgeVO.searchKeyword}">
-        <button type="button" id="search-btn">검색</button>
-        <button type="button" id="search-btn-cancel">초기화</button>
-
-        <div>
-          <button class="btn-group">
-            <a class="btn-group" href="/knowledge/write">새 글 등록</a>
-          </button>
-          <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-              <button>
-                <a href="/knowledge/excel/download">엑셀 다운</a>
-              </button>
-              <button>
-                <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
-              </button>
-          </c:if>
+            <select name="searchType" id="search-type">
+              <option value="" selected disabled hidden>검색 옵션</option>
+              <option value="prjName" ${searchKnowledgeVO.searchType eq 'prjName' ? 'selected' : ''}>프로젝트</option>
+              <option value="rqmTtl" ${searchKnowledgeVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항명</option>
+              <option value="knlTtl" ${searchKnowledgeVO.searchType eq 'knlTtl' ? 'selected' : ''}>제목</option>
+              <option value="knlCntnt" ${searchKnowledgeVO.searchType eq 'knlCntnt' ? 'selected' : ''}>내용</option>
+              <option value="knlTtl_knlCntnt" ${searchKnowledgeVO.searchType eq 'knlTtl_knlCntnt' ? 'selected' : ''}>제목 + 내용</option>
+              <option value="crtrId" ${searchKnowledgeVO.searchType eq 'crtrId' ? 'selected' : ''}>등록자</option>
+            </select>
         </div>
+
+          <div class="search-text">
+            <input type="text" name="searchKeyword" value="${searchKnowledgeVO.searchKeyword}">
+            <button type="button" id="search-btn">검색</button>
+            <button type="button" id="search-btn-cancel">초기화</button>
+          </div>
+      </div>
+
+        <div class="btn-group">
+          <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
+            <button>
+              <a href="/knowledge/excel/download">엑셀 다운</a>
+            </button>
+            <button>
+              <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
+            </button>
+          </c:if>
+            <button>
+              <a href="/knowledge/write">신규 등록</a>
+            </button>
+        </div>
+        
 
         <!-- pagination -->
         <ul class="pagination">
