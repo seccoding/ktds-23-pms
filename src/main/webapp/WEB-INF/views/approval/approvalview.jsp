@@ -144,15 +144,17 @@
                         <span>${approvalVO.apprCntnt}</span>
                     </div>
                 </div>
-                <div class="grid-item">
-                    <h5>반려사유</h5>
-                    <span>결재 반려 사유</span>
-                </div>
-                <div class="grid-item">
-                    <div class="grid-item-content">
-                        <span>${approvalVO.arrpRjct}</span>
+                <c:if test="${not empty approvalVO.arrpRjct}">
+                    <div class="grid-item">
+                        <h5>반려사유</h5>
+                        <span>결재 반려 사유</span>
                     </div>
-                </div>
+                    <div class="grid-item">
+                        <div class="grid-item-content">
+                            <span>${approvalVO.arrpRjct}</span>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </div>
         <div class="card col-1-1">

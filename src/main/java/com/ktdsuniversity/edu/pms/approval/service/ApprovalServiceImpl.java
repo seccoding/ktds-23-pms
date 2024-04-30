@@ -16,7 +16,9 @@ import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
+import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
 import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
@@ -38,6 +40,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private ProductManagementDao productManagementDao;
 	@Autowired
 	private BorrowDao borrowDao;
+	@Autowired
+	private DepartmentDao departmentDao;
 
 	@Override
 	public ApprovalListVO getAllApproval() {
@@ -203,6 +207,15 @@ public class ApprovalServiceImpl implements ApprovalService {
 		approvalListVO.setApprList(approvalList);
 
 		return approvalListVO;
+	}
+
+	@Override
+	public boolean getDeptLeader(String empId) {
+		String authId = this.departmentDao.getOneDepartment("DEPT_230101_000010").getDeptLeadId();
+		if(empId.equals(authId)) {
+			return true;
+		}
+		return false;
 	}
   
 }

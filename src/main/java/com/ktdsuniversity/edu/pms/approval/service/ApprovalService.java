@@ -24,8 +24,7 @@ public interface ApprovalService {
 	public ApprovalListVO getAllApprovalByEmpId(String empId);
 
 	public ApprovalVO selectOneApproval(String apprId);
-	
-	// PSH - 0422
+
 	public String selectNewApprId();
 
 	public boolean createApproval(ApprovalVO approvalVO);
@@ -33,8 +32,7 @@ public interface ApprovalService {
 	public boolean getNewPrdtBorrowForAppr(ApprovalVO approvalVO);
 	
 	public boolean updateUnusablePrdt(ApprovalVO approvalVO);
-	
-	// PHS - search
+
 	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO);
 
 	public ApprovalVO selectOneApprovalAll(String apprId);
@@ -46,5 +44,7 @@ public interface ApprovalService {
 	public boolean deleteOneApproval(String apprId);
 
 	public List<BorrowVO> getAddProductApproval(List<String> addProducts);
+	
+	public boolean getDeptLeader(String empId);
 
 }
