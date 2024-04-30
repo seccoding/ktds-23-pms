@@ -1,0 +1,81 @@
+
+/* 투명도가 점점 증가하는 키프레임 정의 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* .error 클래스에 애니메이션 적용 */
+.error {
+    grid-column: 1 / -1;
+    color: #f00;
+    padding-left: 1rem;
+    margin: 0;
+    animation: fadeIn 0.5s ease-out; /* 애니메이션 지속시간 및 효과 지정 */
+}
+
+.input-custom {
+    padding: 5px;
+    outline: none;
+    height: 30px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    color: #333333;
+}
+
+.datalist-custom {
+    margin: 0;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    border-radius: 0 0 5px 5px;
+    border-top: none;
+    overflow-y: auto;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    max-height: 200px;
+    width: 11.35%;
+    z-index: 1000;
+}
+
+.option-custom {
+    background-color: white;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    padding: 8px 10px;
+    color: #333333;
+}
+
+.option-custom:hover, .option-custom:active {
+    background-color: #E6E6E6;
+}
+
+.input-form {
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.form-row {
+    margin-bottom: 10px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.checkbox div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
