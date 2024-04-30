@@ -34,7 +34,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <th>프로젝트 명</th>
             <th>고객사</th>
             <th>수행부서</th>
-            <th>상태</th>
+            
             <th>시작일</th>
             <th>종료일</th>
             <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
@@ -47,10 +47,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <c:forEach items="${reviewlist.reviewList}" var="review">
                 <tr>
 	              <c:choose>
-				    <c:when test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || 
-				    review.projectTeammateVO.rvYn eq 'Y'}">
-				          <td>${review.projectVO.prjName}</td>
+				    <c:when test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
+				          <td class="mngr-yn" data-review-yn="${review.mngrYn}">
+							${review.projectVO.prjName}</td>
 				    </c:when>
+				    
+				    <c:when test="${review.projectTeammateVO.rvYn eq 'Y'}">
+						  <td class="review-yn" data-review-yn="${review.rvYn}">
+							${review.projectVO.prjName}</td>
+				    </c:when>
+				    
 				       <c:otherwise>
 				          <td>
 				             <a href="/review/prjId/${review.projectVO.prjId}/write">
@@ -62,7 +68,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 				   </c:choose>
                   <td>${review.projectVO.clntInfo}</td>
                   <td>${review.departmentVO.deptName}</td>
-                  <td>${review.projectVO.prjSts}</td>
+                  
                   <td>${review.projectVO.strtDt}</td>
                   <td>${review.projectVO.endDt}</td>
                   <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
@@ -75,6 +81,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </tr>
               </c:forEach>
             </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="6">
+                        <div>참여 중인 프로젝트가 없거나 프로젝트의 후기 관리가 불가능한 상태입니다.</div>
+                    </td>
+                </tr>
+            </c:otherwise>
           </c:choose>
         </tbody>
       </table>

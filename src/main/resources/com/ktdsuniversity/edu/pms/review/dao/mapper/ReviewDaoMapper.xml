@@ -104,6 +104,7 @@
 	        , p.CLNT_INFO
 	        , p.DEPT_ID           
 	        , p.PRJ_STS
+	        , p.CRT_DT
 	        , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
 	        , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
 	        , d.DEPT_NAME
@@ -131,6 +132,7 @@
 					</when>
 				</choose>
 			</if>
+			ORDER BY  P.CRT_DT DESC
     	<include refid ="Common.pagenate_footer"/>
 	</select>
 
@@ -172,6 +174,7 @@
 	        , p.CLNT_INFO
 	        , p.DEPT_ID           
 	        , p.PRJ_STS
+	        , p.CRT_DT
 	        , TO_CHAR(p.STRT_DT, 'YYYY/MM/DD') STRT_DT
 	        , TO_CHAR(p.END_DT, 'YYYY/MM/DD') END_DT
 	        , d.DEPT_NAME
@@ -195,6 +198,7 @@
 					</when>
 				</choose>
 			</if>
+			ORDER BY  P.CRT_DT DESC
     	<include refid ="Common.pagenate_footer"/>
 	</select>
 	
