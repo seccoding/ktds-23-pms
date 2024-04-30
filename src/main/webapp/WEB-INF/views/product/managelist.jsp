@@ -46,6 +46,9 @@
     .check-option {
         text-align: right;
     }
+    .product-item{
+        cursor: pointer;
+    }
     .sub-t-btn-group{
         flex-direction: column;
         align-items: end;
@@ -119,12 +122,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>비품ID</th>
-                    <th>비품명</th>
-                    <th>카테고리</th>
-                    <th class="center">소모품여부</th>
-                    <th class="center">재고</th>
-                    <th class="center">항목관리</th>
+                    <th width="20%">비품ID</th>
+                    <th width="25%">비품명</th>
+                    <th width="15%">카테고리</th>
+                    <th width="10%" class="center">소모품여부</th>
+                    <th width="8%" class="center">재고</th>
+                    <th width="23%" class="center">항목관리</th>
                 </tr>
             </thead>
             <tbody>
@@ -137,8 +140,29 @@
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtId}</td>
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtName}</td>
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtCtgr}</td>
-                                <td class="product-item center" data-product="${product.prdtId}">${product.onceYn}</td>
-                                <td class="product-item center" data-product="${product.prdtId}">${product.curStr}</td>
+                                <td class="product-item center" data-product="${product.prdtId}">
+                                    <c:choose>
+                                        <c:when test="${product.onceYn eq 'Y'}">
+                                            <span class="badge bg-label-warning">소모품</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge bg-label-info">비소모품</span>
+
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td class="product-item center" data-product="${product.prdtId}">
+                                    <c:choose>
+                                        <c:when test="${product.curStr eq 0}">
+                                            <span style="color: var(--main-color);">${product.curStr}</span>
+                                            
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${product.curStr}
+
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td class="center">
                                     <button class="add-product-count" data-productname="${product.prdtName}" data-productid="${product.prdtId}">재고추가</button>
                                     <button class="remove-product" data-product="${product.prdtId}">삭제</button>
@@ -185,7 +209,7 @@
             <input type="text" name="searchKeyword" value="${searchProductVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
 
-            <ul class="pagination">
+            <ul class="pagination" style="margin-top: 1rem;">
                 <c:if test="${searchProductVO.hasPrevGroup}">
                     <li class="page-item first">
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>

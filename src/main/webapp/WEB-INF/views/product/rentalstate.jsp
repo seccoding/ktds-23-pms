@@ -67,16 +67,16 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>
+                    <th width="5%">
                         <input type="checkbox" class="checkbox" id="checked-all"/>
                         <label for="checked-all"></label>
                         <!-- <label for="checkbox1"></label> -->
                     </th>
-                    <th>비품명</th>
-                    <th>비품관리 ID</th>
-                    <th class="center">대여일</th>
-                    <th class="center">반납일</th>
-                    <th class="center">반납신청</th>
+                    <th width="25%">비품명</th>
+                    <th width="25%">비품관리 ID</th>
+                    <th width="15%" class="center">대여일</th>
+                    <th width="15%" class="center">반납일</th>
+                    <th width="15%" class="center">반납신청</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,12 +110,14 @@
                                 <td class="center">
                                     <c:choose>
                                         <c:when test="${product.productVO.onceYn eq 'Y'}">
-                                            -
+                                            <span class="badge bg-label-warning">해당없음</span>
                                         </c:when>
                                         <c:when test="${empty product.rtnDt}">
                                             <button class="return-btn" value="${product.brrwHistId}" data-prdtmgid="${product.prdtMngId}">반납</button>
                                         </c:when>
-                                        <c:otherwise>반납완료</c:otherwise>
+                                        <c:otherwise>
+                                            <span class="badge bg-label-info">반납완료</span>
+                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                             </tr>
@@ -157,7 +159,7 @@
             <input type="text" name="searchKeyword" value="${searchBorrowVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
 
-            <ul class="pagination">
+            <ul class="pagination" style="margin-top: 1rem;">
                 <c:if test="${searchBorrowVO.hasPrevGroup}">
                     <li class="page-item first">
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>

@@ -73,11 +73,11 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>비품ID</th>
-                    <th>비품명</th>
-                    <th>카테고리</th>
-                    <th class="center">소모품여부</th>
-                    <th class="center">재고</th>
+                    <th width="25%">비품ID</th>
+                    <th width="30%">비품명</th>
+                    <th width="20%">카테고리</th>
+                    <th width="12%" class="center">소모품여부</th>
+                    <th width="12%" class="center">재고</th>
                 </tr>
             </thead>
             <tbody>
@@ -90,8 +90,29 @@
                                 <td>${product.prdtId}</td>
                                 <td>${product.prdtName}</td>
                                 <td>${product.prdtCtgr}</td>
-                                <td class="center">${product.onceYn}</td>
-                                <td class="current-quantity center">${product.curStr}</td>
+                                <td class="center"> 
+                                    <c:choose>
+                                        <c:when test="${product.onceYn eq 'Y'}">
+                                            <span class="badge bg-label-warning">소모품</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge bg-label-info">비소모품</span>
+
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td class="current-quantity center">
+                                    <c:choose>
+                                        <c:when test="${product.curStr eq 0}">
+                                            <span style="color: var(--main-color);">${product.curStr}</span>
+                                            
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${product.curStr}
+
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                             </tr>
                         </c:forEach>
     
@@ -133,7 +154,7 @@
             <input type="text" name="searchKeyword" value="${searchProductVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
 
-            <ul class="pagination">
+            <ul class="pagination" style="margin-top: 1rem;">
                 <c:if test="${searchProductVO.hasPrevGroup}">
                     <li class="page-item first">
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>

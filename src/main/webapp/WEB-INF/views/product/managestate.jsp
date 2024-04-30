@@ -50,12 +50,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>비품관리 ID</th>
-                    <th>비품명</th>
-                    <th class="center">대여자 ID</th>
-                    <th class="center">대여일</th>
-                    <th class="center">반납일</th>
-                    <th class="center">대여상태</th>
+                    <th width="20%">비품관리 ID</th>
+                    <th width="25%">비품명</th>
+                    <th width="15%" class="center">대여자 ID</th>
+                    <th width="15%" class="center">대여일</th>
+                    <th width="15%" class="center">반납일</th>
+                    <th width="10%" class="center">대여상태</th>
                 </tr>
             </thead>
             <tbody class="return-state-list">
@@ -74,11 +74,11 @@
                                     </c:when>
                                     <c:when test="${not empty product.rtnDt}">
                                         <td class="center">${product.rtnDt}</td>
-                                        <td class="center">반납완료</td>
+                                        <td class="center"><span class="badge bg-label-info">반납완료</span></td>
                                     </c:when>
                                     <c:otherwise>
                                         <td class="center">-</td>
-                                        <td class="center">대여중</td>
+                                        <td class="center"><span class="badge bg-label-danger">대여중</span></td>
                                     </c:otherwise>
                                 </c:choose>
                             </tr>
@@ -118,7 +118,7 @@
             <input type="text" name="searchKeyword" value="${searchBorrowVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
 
-            <ul class="pagination">
+            <ul class="pagination" style="margin-top: 1rem;">
                 <c:if test="${searchBorrowVO.hasPrevGroup}">
                     <li class="page-item first">
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>

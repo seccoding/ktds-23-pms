@@ -84,14 +84,14 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>비품관리 ID</th>
-                        <th>비품명</th>
-                        <th class="center">가격</th>
-                        <th class="center">구매일</th>
-                        <th class="center">대여여부</th>
-                        <th class="center">분실상태</th>
-                        <th class="center">분실신고일</th>
-                        <th class="center">관리</th>
+                        <th width="15%">비품관리 ID</th>
+                        <th width="18%">비품명</th>
+                        <th width="11%" class="center">가격</th>
+                        <th width="10%" class="center">구매일</th>
+                        <th width="8%" class="center">대여여부</th>
+                        <th width="8%" class="center">분실상태</th>
+                        <th width="10%" class="center">분실신고일</th>
+                        <th width="20%" class="center">관리</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,7 +103,7 @@
                                 <tr>
                                     <td>${product.prdtMngId}</td>
                                     <td>${product.productVO.prdtName}</td>
-                                    <td style="text-align: end;">${product.prdtPrice}</td>
+                                    <td class="center">${product.prdtPrice}</td>
                                     <td class="center">${product.buyDt}</td>
                                     <c:choose>
                                         <c:when test="${product.brrwYn eq 'Y'}">
@@ -163,7 +163,7 @@
             <input type="text" name="searchKeyword" value="${searchProductVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
 
-            <ul class="pagination">
+            <ul class="pagination" style="margin-top: 1rem;">
                 <c:if test="${searchProductVO.hasPrevGroup}">
                     <li class="page-item first">
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>

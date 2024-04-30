@@ -43,19 +43,19 @@ uri="jakarta.tags.core" %>
       .modal-btn-group {
         text-align: right;
       }
-      .center{
+      .center {
         text-align: center;
       }
-      .modal-window{
+      .modal-window {
         height: 450px;
         width: 400px;
         top: 10%;
       }
-      .bold{
-          font-weight: bold;
-          margin: auto 0;
+      .bold {
+        font-weight: bold;
+        margin: auto 0;
       }
-      .fa-regular{
+      .fa-regular {
         margin: 1rem 0.8rem;
         color: gray;
       }
@@ -74,27 +74,27 @@ uri="jakarta.tags.core" %>
       <dialog class="modify-modal modal-window">
         <div class="modal-grid">
           <p class="bold">비품관리ID</p>
-          <p style="margin: auto 0;" class="manage-id"></p>
+          <p style="margin: auto 0" class="manage-id"></p>
           <p class="bold">비품명</p>
-          <p style="margin: auto 0;" class="product-name"></p>
+          <p style="margin: auto 0" class="product-name"></p>
           <p class="bold">구매가격</p>
-          <input type="number" class="price" min="0"/>
+          <input type="number" class="price" min="0" />
           <p class="bold">구매일</p>
           <input type="date" class="buy-day" />
           <p class="bold">분실상태</p>
           <select class="select">
-              <option value="O">O</option>
-              <option value="X">X</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
           </select>
           <p class="bold">분실신고일</p>
           <input type="date" class="lost-day" />
-      </div>
+        </div>
         <div class="modal-btn-group">
           <button type="button" value="수정" id="modify-btn">수정</button>
           <button type="button" value="취소" id="cancel-btn">취소</button>
         </div>
       </dialog>
-      <h2 style="margin: 0;">비품 관리 정보</h2>
+      <h2 style="margin: 0">비품 관리 정보</h2>
       <div class="bar">
         <!-- <i class="fi fi-rr-pencil"></i> -->
         <i class="fa-regular fa-pen-to-square fa-2xl"></i>
@@ -103,9 +103,9 @@ uri="jakarta.tags.core" %>
       </div>
       <div class="main-grid hidden">
         <div class="bold">비품 ID</div>
-        <div style="margin: auto 0;">${productVO.prdtId}</div>
+        <div style="margin: auto 0">${productVO.prdtId}</div>
         <div class="bold">재고수</div>
-        <div style="margin: auto 0;">${productVO.curStr}</div>
+        <div style="margin: auto 0">${productVO.curStr}</div>
         <div class="bold">비품명</div>
         <input type="text" class="product-name-modify" />
         <div class="bold">소모품 분류</div>
@@ -118,29 +118,31 @@ uri="jakarta.tags.core" %>
       </div>
       <div class="main-grid">
         <div class="bold">비품 ID</div>
-        <div style="margin: auto 0;">${productVO.prdtId}</div>
+        <div style="margin: auto 0">${productVO.prdtId}</div>
         <div class="bold">재고수</div>
-        <div style="margin: auto 0;">${productVO.curStr}</div>
+        <div style="margin: auto 0">${productVO.curStr}</div>
         <div class="bold">비품명</div>
-        <div style="margin: auto 0;" class="product-name-origin">${productVO.prdtName}</div>
+        <div style="margin: auto 0" class="product-name-origin">${productVO.prdtName}</div>
         <div class="bold">소모품 분류</div>
-        <div style="margin: auto 0;" class="product-onceyn-origin">${productVO.onceYn}</div>
+        <div style="margin: auto 0" class="product-onceyn-origin">${productVO.onceYn}</div>
         <div class="bold">카테고리</div>
-        <div style="margin: auto 0;" class="product-ctgr-origin">${productVO.prdtCtgr}</div>
+        <div style="margin: auto 0" class="product-ctgr-origin">${productVO.prdtCtgr}</div>
       </div>
 
-      <div class="bold" style="margin: 0.5rem; color: var(--dark);">${productVO.prdtName}에 대한 상세 정보가 ${productDetailList.productManagementCnt}건 존재합니다.</div>
+      <div class="bold" style="margin: 0.5rem; color: var(--dark)">
+        ${productVO.prdtName}에 대한 상세 정보가 ${productDetailList.productManagementCnt}건 존재합니다.
+      </div>
       <table class="table">
         <thead>
           <tr>
-            <th>비품관리 ID</th>
-            <th>비품명</th>
-            <th class="center">가격</th>
-            <th class="center">구매일</th>
-            <th class="center">대여여부</th>
-            <th class="center">분실상태</th>
-            <th class="center">분실신고일</th>
-            <th class="center">관리</th>
+            <th width="15%">비품관리 ID</th>
+            <th width="18%">비품명</th>
+            <th width="11%" class="center">가격</th>
+            <th width="10%" class="center">구매일</th>
+            <th width="8%" class="center">대여여부</th>
+            <th width="8%" class="center">분실상태</th>
+            <th width="10%" class="center">분실신고일</th>
+            <th width="20%" class="center">관리</th>
           </tr>
         </thead>
         <tbody>
@@ -152,7 +154,7 @@ uri="jakarta.tags.core" %>
                 <tr>
                   <td>${product.prdtMngId}</td>
                   <td>${product.productVO.prdtName}</td>
-                  <td style="text-align: right;">${product.prdtPrice}</td>
+                  <td class="center">${product.prdtPrice}</td>
                   <td class="center">${product.buyDt}</td>
                   <c:choose>
                     <c:when test="${product.brrwYn eq 'Y'}">
