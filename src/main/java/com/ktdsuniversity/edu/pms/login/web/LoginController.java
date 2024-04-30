@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.login.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,11 +67,11 @@ public class LoginController {
 
 		// 퇴사, 휴직 상태에 따른 로그인 제한 기능
 		String loginCheck = employee.getWorkSts();
+
 		if (loginCheck.equals("202")) {
-			return new AjaxResponse().append("errorRestDt",
-					"휴직 중인 사원입니다." + "휴직기간 : " + employee.getRestStDt() + " ~ " + employee.getRestEndDt());
+			return new AjaxResponse().append("errorRestDt","휴직 중인 사원입니다.휴직기간 : " + employee.getRestStDt() + " ~ " + employee.getRestEndDt());
 		} else if (loginCheck.equals("204")) {
-			return new AjaxResponse().append("errorEndDt", "퇴사한 사원입니다." + "퇴사일 : " + employee.getEndDt());
+			return new AjaxResponse().append("errorEndDt", "퇴사한 사원입니다.퇴사일 : " + employee.getEndDt());
 		}
 
 		// 사용중 여부 확인

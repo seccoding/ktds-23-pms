@@ -1,5 +1,5 @@
 $().ready(function () {
-	
+
 	if (window.browser) {
 		window.browser.history.deleteAll();
 	}
@@ -9,10 +9,12 @@ $().ready(function () {
       $("#login-btn").click();
     }
   });
-	
+
   $("#login-btn").on("click", function () {
     $(".errorEndDt").remove();
     $(".errorRestDt").remove();
+    $(".endDt").remove();
+    $(".restDt").remove();
 
     $.post(
       "/ajax/employee/login",
@@ -34,7 +36,7 @@ $().ready(function () {
           var errorsH2 = $("<h2>로그인 오류</h2></br></hr></br>");
           var errorsModal = $(".modal-confirm-window");
           var errorsModalButton = $(".confirm-confirm-button");
-          var errorsModalCancleButton = $(".cancel-confirm-button");
+          var errorsModalCancelButton = $(".cancel-confirm-button");
           var errorsModalText = $(".modal-confirm-text");
 
           errorsModal.css({
@@ -42,7 +44,7 @@ $().ready(function () {
             "overflow" : "hidden"
           })
 
-          errorsModalCancleButton.css({
+          errorsModalCancelButton.css({
             "display" : "none"
           });
 
@@ -69,7 +71,7 @@ $().ready(function () {
             errorsModal[0].showModal();
 
             $(".confirm-confirm-button").on("click", function () {
-              $(".modal-confirm-window").remove();
+              $(".modal-confirm-window").close();
             })
           }
           //입력받았지만 Id형식이 아닐때(숫자 7자리 or "system"포함되어있는지)
@@ -90,23 +92,44 @@ $().ready(function () {
 
 
         var errorEndDt = response.data.errorEndDt;
-
-        if (errorEndDt) {
-          var EndDtDiv = $("<div style='gap: 5px; font-size: 5px'></div>");
-          EndDtDiv.addClass("errorEndDt");
-          EndDtDiv.text(errorEndDt);
-
-          $(".workCheck").after(EndDtDiv);
-        }
-
         var errorRestDt = response.data.errorRestDt;
 
         if (errorRestDt) {
-          var RestDiv = $("<div></div>");
-          RestDiv.addClass("errorRestDt");
-          RestDiv.text(errorRestDt);
+          var restDtDiv = $("<div></div>");
+          var restDt = $("<div></div>");
 
-          $("#loginForm").after(RestDiv);
+          restDtDiv.addClass("errorRestDt");
+          restDtDiv.text(errorRestDt.substring(0, 12));
+
+          restDt.addClass("restDt");
+          restDt.text(errorRestDt.substring(12));
+
+          $(".id").after(restDt);
+          $(".id").after(restDtDiv);
+
+          $("div.errorRestDt, div.restDt").css({
+            "color": "red",
+          });
+
+        }
+
+        if (errorEndDt) {
+          var EndDtDiv = $("<div></div>");
+          var endDt = $("<div></div>");
+
+          EndDtDiv.addClass("errorEndDt");
+          EndDtDiv.text(errorEndDt.substring(0, 10));
+
+          endDt.addClass("endDt");
+          endDt.text(errorEndDt.substring(10));
+
+          $(".id").after(endDt);
+          $(".id").after(EndDtDiv);
+
+          $("div.errorEndDt, div.endDt").css({
+            "color": "red",
+          });
+
         }
 
         if (next) {
