@@ -52,7 +52,7 @@
             <th>삭제 여부</th>
         </tr>
         </thead>
-        <tbody id="table">
+        <tbody>
         <c:choose>
             <c:when test="${not empty loginLogList.loginLogList}">
                 <c:forEach items="${loginLogList.loginLogList}" var="loginLog">

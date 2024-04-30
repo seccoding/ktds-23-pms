@@ -41,11 +41,11 @@ public interface LoginLogService {
 
     public LoginLogListVO getAllLoginLog(LoginLogVO loginLogVO);
 
-    public LoginLogListVO getOneLoginLog(String empId);
+    public LoginLogListVO getOneLoginLog(LoginLogVO loginLogVO);
 
     public VisitedListVO getAllVisitedLog(VisitedVO visitedVO);
 
-    public VisitedListVO getOneVisitedLog(String empId);
+    public VisitedListVO getOneVisitedLog(VisitedVO visitedVO);
 
     public boolean updatePwdDtThirtyDay(String empId);
 

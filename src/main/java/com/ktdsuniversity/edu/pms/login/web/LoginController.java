@@ -168,7 +168,8 @@ public class LoginController {
 			model.addAttribute("commuteVO", commuteVO);
 			return "commute/view";
 		} else {
-			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(employeeVO.getEmpId());
+			commuteVO.setEmpId(employeeVO.getEmpId());
+			CommuteListVO commuteListVO = commuteService.getAllCommuteDataByEmpId(commuteVO);
 			model.addAttribute("commuteList", commuteListVO);
 			return "commute/view";
 		}
@@ -203,7 +204,8 @@ public class LoginController {
 			model.addAttribute("loginLogVO", loginLogVO);
 			return "login/loginlogview";
 		} else {
-			LoginLogListVO loginLogListVO = this.loginLogService.getOneLoginLog(employeeVO.getEmpId());
+			loginLogVO.setEmpId(employeeVO.getEmpId());
+			LoginLogListVO loginLogListVO = this.loginLogService.getOneLoginLog(loginLogVO);
 			model.addAttribute("loginLogList", loginLogListVO);
 			return "login/loginlogview";
 		}
@@ -220,7 +222,8 @@ public class LoginController {
 			model.addAttribute("visitedList", visitedList);
 			return "login/visitedlogview";
 		} else {
-			VisitedListVO visitedList = this.loginLogService.getOneVisitedLog(employeeVO.getEmpId());
+			visitedVO.setEmpId(employeeVO.getEmpId());
+			VisitedListVO visitedList = this.loginLogService.getOneVisitedLog(visitedVO);
 			model.addAttribute("visitedList", visitedList);
 			return "login/visitedlogview";
 		}

@@ -108,8 +108,8 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-    public List<LoginLogVO> getOneLoginLog(String empId) {
-        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneLoginLog", empId);
+    public List<LoginLogVO> getOneLoginLog(LoginLogVO loginLogVO) {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneLoginLog", loginLogVO);
     }
 
     @Override
@@ -118,8 +118,8 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-    public List<VisitedVO> getOneVisitedLog(String empId) {
-        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneVisitedLog", empId);
+    public List<VisitedVO> getOneVisitedLog(VisitedVO visitedVO) {
+        return getSqlSession().selectList(LoginLogDao.LOGIN_SPACE + ".getOneVisitedLog", visitedVO);
     }
 
     @Override

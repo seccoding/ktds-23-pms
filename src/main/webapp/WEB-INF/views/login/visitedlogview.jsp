@@ -25,6 +25,12 @@
                 <option value="accsUrl" ${visitedVO.searchType eq 'accsUrl' ? 'selected' : ''}>방문한 URL</option>
                 <option value="accsDt" ${visitedVO.searchType eq 'accsDt' ? 'selected' : ''}>방문한 시간</option>
             </select>
+            <select id="log-type" name="visitedType" >
+                <option value="today" ${visitedVO.visitedType eq 'today' ? 'selected' : ''}>오늘</option>
+                <option value="oneMonth" ${visitedVO.visitedType eq 'oneMonth' ? 'selected' : ''}>1개월</option>
+                <option value="twoMonth" ${visitedVO.visitedType eq 'twoMonth' ? 'selected' : ''}>2개월</option>
+                <option value="thrMonth" ${visitedVO.visitedType eq 'thrMonth' ? 'selected' : ''}>3개월</option>
+            </select>
             <input type="text" name="searchKeyword" value="${visitedVO.searchKeyword}"/>
             <button type="button" id="search-btn">검색</button>
         </div>
@@ -35,12 +41,12 @@
             <th>화면접근기록 아이디</th>
             <th>사원번호</th>
             <th>사원이름</th>
-            <th>접근한 화면의 URL</th>
+            <th style="max-width: 630px;">접근한 화면의 URL</th>
             <th>접근 시간</th>
             <th>삭제 여부</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="table">
         <c:choose>
             <c:when test="${not empty visitedList.visitedList}">
                 <c:forEach items="${visitedList.visitedList}" var="visited">

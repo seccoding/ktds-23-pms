@@ -2,368 +2,423 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ktdsuniversity.edu.pms.login.dao.LoginLogDao">
+<mapper
+	namespace="com.ktdsuniversity.edu.pms.login.dao.LoginLogDao">
 
-    <resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" id="employeeVOMap" autoMapping="true">
-        <id column="EMP_ID" property="empId"/>
-        <association property="loginLogVO" javaType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
-            <id column="LOG_ID" property="logId"/>
-        </association>
-    </resultMap>
+	<resultMap
+		type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+		id="employeeVOMap" autoMapping="true">
+		<id column="EMP_ID" property="empId" />
+		<association property="loginLogVO"
+			javaType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
+			<id column="LOG_ID" property="logId" />
+		</association>
+	</resultMap>
 
-    <resultMap id="loginLogVOMap" type="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" autoMapping="true">
-        <id column="LOG_ID" property="logId"/>
-        <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-            <id column="EMP_NAME" property="empName"/>
-        </association>
-    </resultMap>
+	<resultMap id="loginLogVOMap"
+		type="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO"
+		autoMapping="true">
+		<id column="LOG_ID" property="logId" />
+		<association property="employeeVO"
+			javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_NAME" property="empName" />
+		</association>
+	</resultMap>
 
-    <resultMap id="visitedVOMap" type="com.ktdsuniversity.edu.pms.login.vo.VisitedVO" autoMapping="true">
-        <id column="ACCS_ID" property="accsId"/>
-        <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-            <id column="EMP_NAME" property="empName"/>
-        </association>
-    </resultMap>
+	<resultMap id="visitedVOMap"
+		type="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
+		autoMapping="true">
+		<id column="ACCS_ID" property="accsId" />
+		<association property="employeeVO"
+			javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_NAME" property="empName" />
+		</association>
+	</resultMap>
 
-    <resultMap id="teamVOMap" type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO" autoMapping="true">
-        <id column="EMP_ID" property="empId"/>
-        <collection property="teamList"
-                    ofType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
-            <id column="TM_ID" property="tmId"/>
-            <result column="TM_NAME" property="tmName"/>
-        </collection>
-    </resultMap>
+	<resultMap id="teamVOMap"
+		type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+		autoMapping="true">
+		<id column="EMP_ID" property="empId" />
+		<collection property="teamList"
+			ofType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+			<id column="TM_ID" property="tmId" />
+			<result column="TM_NAME" property="tmName" />
+		</collection>
+	</resultMap>
 
-    <select id="getOneEmployeeByEmpIdAndPwd"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
-            resultMap="teamVOMap">
-        SELECT E.EMP_ID
-        , E.WORK_STS
-        , E.EMP_NAME
-        , E.PWD
-        , E.SALT
-        , E.ADMN_CODE
-        , E.LGN_YN
-        , TO_CHAR(E.END_DT, 'YYYY-DD-MM') END_DT
-        , TO_CHAR(E.REST_ST_DT, 'YYYY-DD-MM') REST_ST_DT
-        , TO_CHAR(E.REST_END_DT, 'YYYY-DD-MM') REST_END_DT
-        , E.MNGR_YN
-        , E.DEPT_ID
-        , E.HIRE_DT
-        , E.HIRE_YEAR
-        , T.TM_ID
-        , T.TM_NAME
-        FROM EMPLOYEE E
-        LEFT OUTER JOIN ASSIGNMENT A
-        ON E.EMP_ID = A.EMP_ID
-        LEFT OUTER JOIN TEAM T
-        ON A.TM_ID = T.TM_ID
-        WHERE E.EMP_ID = #{empId}
-        AND E.PWD = #{pwd}
-    </select>
+	<select id="getOneEmployeeByEmpIdAndPwd"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+		resultMap="teamVOMap">
+		SELECT E.EMP_ID
+		, E.WORK_STS
+		, E.EMP_NAME
+		, E.PWD
+		, E.SALT
+		, E.ADMN_CODE
+		, E.LGN_YN
+		, TO_CHAR(E.END_DT, 'YYYY-DD-MM') END_DT
+		, TO_CHAR(E.REST_ST_DT, 'YYYY-DD-MM') REST_ST_DT
+		, TO_CHAR(E.REST_END_DT, 'YYYY-DD-MM') REST_END_DT
+		, E.MNGR_YN
+		, E.DEPT_ID
+		, E.HIRE_DT
+		, E.HIRE_YEAR
+		, T.TM_ID
+		, T.TM_NAME
+		FROM EMPLOYEE E
+		LEFT OUTER JOIN ASSIGNMENT A
+		ON E.EMP_ID = A.EMP_ID
+		LEFT OUTER JOIN TEAM T
+		ON A.TM_ID = T.TM_ID
+		WHERE E.EMP_ID = #{empId}
+		AND E.PWD = #{pwd}
+	</select>
 
-    <update id="updateOneEmpIdUseOtherPlace"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        UPDATE EMPLOYEE
-        SET LGN_YN = 'Y'
-        WHERE EMP_ID = #{empId}
-    </update>
+	<update id="updateOneEmpIdUseOtherPlace"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		SET LGN_YN = 'Y'
+		WHERE EMP_ID = #{empId}
+	</update>
 
-    <update id="updateOneEmpIdNotUseNow"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        UPDATE EMPLOYEE
-        SET LGN_YN = 'N'
-        WHERE EMP_ID = #{empId}
-    </update>
+	<update id="updateOneEmpIdNotUseNow"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		SET LGN_YN = 'N'
+		WHERE EMP_ID = #{empId}
+	</update>
 
 
-    <insert id="insertLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
-        <selectKey resultType="string" keyProperty="logId" order="BEFORE">
-            SELECT SEQ_LGN_LG_PK.NEXTVAL
-            FROM DUAL
-        </selectKey>
+	<insert id="insertLoginLog"
+		parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO">
+		<selectKey resultType="string" keyProperty="logId"
+			order="BEFORE">
+			SELECT SEQ_LGN_LG_PK.NEXTVAL
+			FROM DUAL
+		</selectKey>
 
-        INSERT INTO LOGIN_LOG
-        (LOG_ID
-        , EMP_ID
-        , LGN_SCC_DT
-        , LGT_DT
-        , DEL_YN)
-        VALUES
-        (#{logId}
-        , #{empId}
-        , SYSDATE
-        , NULL
-        , 'N')
-    </insert>
+		INSERT INTO LOGIN_LOG
+		(LOG_ID
+		, EMP_ID
+		, LGN_SCC_DT
+		, LGT_DT
+		, DEL_YN)
+		VALUES
+		(#{logId}
+		, #{empId}
+		, SYSDATE
+		, NULL
+		, 'N')
+	</insert>
 
-    <select id="updateEmpLog" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
-            resultMap="employeeVOMap">
-        SELECT E.EMP_ID
-        , E.WORK_STS
-        , E.EMP_NAME
-        , E.PWD
-        , E.SALT
-        , E.ADMN_CODE
-        , E.LGN_YN
-        , E.END_DT
-        , E.REST_ST_DT
-        , E.REST_END_DT
-        , E.PWD_CN_DT
-        , E.MNGR_YN
-        , E.DEPT_ID
-        , L.LOG_ID
-        FROM EMPLOYEE E
-        JOIN LOGIN_LOG L
-        ON E.EMP_ID = L.EMP_ID
-        WHERE E.EMP_ID = #{empId}
-        AND L.LGT_DT IS NULL
-    </select>
+	<select id="updateEmpLog"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+		resultMap="employeeVOMap">
+		SELECT E.EMP_ID
+		, E.WORK_STS
+		, E.EMP_NAME
+		, E.PWD
+		, E.SALT
+		, E.ADMN_CODE
+		, E.LGN_YN
+		, E.END_DT
+		, E.REST_ST_DT
+		, E.REST_END_DT
+		, E.PWD_CN_DT
+		, E.MNGR_YN
+		, E.DEPT_ID
+		, L.LOG_ID
+		FROM EMPLOYEE E
+		JOIN LOGIN_LOG L
+		ON E.EMP_ID = L.EMP_ID
+		WHERE E.EMP_ID = #{empId}
+		AND L.LGT_DT IS NULL
+	</select>
 
-    <update id="updateEmpLogout"
-            parameterType="string">
-        UPDATE LOGIN_LOG
-        SET LGT_DT = SYSDATE
-        WHERE LOG_ID = #{_parameter}
-        AND LGT_DT IS NULL
-    </update>
+	<update id="updateEmpLogout" parameterType="string">
+		UPDATE LOGIN_LOG
+		SET LGT_DT = SYSDATE
+		WHERE LOG_ID = #{_parameter}
+		AND LGT_DT IS NULL
+	</update>
 
-    <select id="getOneEmpLgnTryCount"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
-            resultType="_int">
-        SELECT LGN_TRY
-        FROM EMPLOYEE
-        WHERE EMP_ID = #{empId}
-    </select>
+	<select id="getOneEmpLgnTryCount"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+		resultType="_int">
+		SELECT LGN_TRY
+		FROM EMPLOYEE
+		WHERE EMP_ID = #{empId}
+	</select>
 
-    <update id="updateOneEmpLgnTryPlusOne"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        UPDATE EMPLOYEE
-        SET LGN_TRY = LGN_TRY + 1
-        WHERE EMP_ID = #{empId}
-    </update>
+	<update id="updateOneEmpLgnTryPlusOne"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		SET LGN_TRY = LGN_TRY + 1
+		WHERE EMP_ID = #{empId}
+	</update>
 
-    <update id="updateOneEmpLgnTryZero"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        UPDATE EMPLOYEE
-        SET LGN_TRY = 0
-        WHERE EMP_ID = #{empId}
-    </update>
+	<update id="updateOneEmpLgnTryZero"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		SET LGN_TRY = 0
+		WHERE EMP_ID = #{empId}
+	</update>
 
-    <update id="updateOneEmpLgnTryDt"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        UPDATE EMPLOYEE
-        SET LGN_TRY_DT = SYSDATE
-        WHERE EMP_ID = #{empId}
-        AND LGN_TRY <![CDATA[ < ]]> 5
-    </update>
+	<update id="updateOneEmpLgnTryDt"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE EMPLOYEE
+		SET LGN_TRY_DT = SYSDATE
+		WHERE EMP_ID = #{empId}
+		AND LGN_TRY <![CDATA[ < ]]>
+		5
+	</update>
 
-    <select id="getCountPossibleLogin"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
-            resultType="_int">
-        SELECT COUNT(1)
-        FROM EMPLOYEE
-        WHERE SYSDATE > (SELECT LGN_TRY_DT + 1 / 24
-        FROM EMPLOYEE
-        WHERE EMP_ID = 'system01'
-        AND LGN_TRY = 5)
-    </select>
+	<select id="getCountPossibleLogin"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
+		resultType="_int">
+		SELECT COUNT(1)
+		FROM EMPLOYEE
+		WHERE SYSDATE > (SELECT LGN_TRY_DT + 1 / 24
+		FROM EMPLOYEE
+		WHERE EMP_ID = 'system01'
+		AND LGN_TRY = 5)
+	</select>
 
-    <insert id="insertCommuteIn"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        INSERT INTO COMMUTE
-        (CMMT_ID
-        , CMMT_DATE
-        , CMMT_TIME
-        , FNSH_TIME
-        , EMP_ID
-        , DEL_YN)
-        VALUES
-        (SEQ_CMMT_PK.NEXTVAL
-        , SYSDATE
-        , SYSDATE
-        , NULL
-        , #{empId}
-        , 'N')
-    </insert>
+	<insert id="insertCommuteIn"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO COMMUTE
+		(CMMT_ID
+		, CMMT_DATE
+		, CMMT_TIME
+		, FNSH_TIME
+		, EMP_ID
+		, DEL_YN)
+		VALUES
+		(SEQ_CMMT_PK.NEXTVAL
+		, SYSDATE
+		, SYSDATE
+		, NULL
+		, #{empId}
+		, 'N')
+	</insert>
 
-    <select id="selectSalt"
-            parameterType="string"
-            resultType="string">
-        SELECT SALT
-        FROM EMPLOYEE
-        WHERE EMP_ID = #{_parameter}
-    </select>
+	<select id="selectSalt" parameterType="string"
+		resultType="string">
+		SELECT SALT
+		FROM EMPLOYEE
+		WHERE EMP_ID = #{_parameter}
+	</select>
 
-    <select id="getCommuteDt"
-            parameterType="string"
-            resultType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO">
-        SELECT CMMT_TIME
-        , FNSH_TIME
-        FROM COMMUTE
-        WHERE TO_CHAR(CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-        AND EMP_ID = #{empId}
-    </select>
+	<select id="getCommuteDt" parameterType="string"
+		resultType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO">
+		SELECT CMMT_TIME
+		, FNSH_TIME
+		FROM COMMUTE
+		WHERE TO_CHAR(CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+		AND EMP_ID = #{empId}
+	</select>
 
-    <update id="updateCommuteFnsh"
-            parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-        UPDATE COMMUTE
-        SET FNSH_TIME = SYSDATE
-        WHERE EMP_ID = #{empId}
-        AND FNSH_TIME IS NULL
-    </update>
+	<update id="updateCommuteFnsh"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		UPDATE COMMUTE
+		SET FNSH_TIME = SYSDATE
+		WHERE EMP_ID = #{empId}
+		AND FNSH_TIME IS NULL
+	</update>
 
-    <select id="getPwdCndt"
-            parameterType="string"
-            resultType="_int">
-        SELECT COUNT(1)
-        FROM EMPLOYEE
-        WHERE EMP_ID = #{_parameter}
-        AND SYSDATE > PWD_CN_DT + 90
-    </select>
+	<select id="getPwdCndt" parameterType="string" resultType="_int">
+		SELECT COUNT(1)
+		FROM EMPLOYEE
+		WHERE EMP_ID = #{_parameter}
+		AND SYSDATE > PWD_CN_DT + 90
+	</select>
 
-<select id="getOneLoginLog" parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO" resultMap="loginLogVOMap">
-SELECT L.LOG_ID
-, L.EMP_ID
-, TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
-, TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LGT_DT
-, L.DEL_YN
-, E.EMP_NAME
-FROM LOGIN_LOG L
-JOIN EMPLOYEE E
-ON E.EMP_ID = L.EMP_ID
-<!--        WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(LGN_SCC_DT, 'YYYY-MM-DD')-->
-<if test='searchKeyword != null and searchKeyword != ""'>
-    <choose>
-        <when test='searchType == "lgnSccDt"'>
-            AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
-            <!--                    AND #{searchKeyword} BETWEEN L.LGN_SCC_DT - 90 AND L.LGN_SCC_DT + 90-->
-        </when>
-        <when test='searchType == "lgtDt"'>
-            AND TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
-        </when>
-    </choose>
-</if>
-AND L.EMP_ID = #{empId}
-ORDER BY L.LGN_SCC_DT
-</select>
+	
 
-<select id="getAllVisitedLog"
-        parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
-        resultMap="visitedVOMap">
-SELECT V.ACCS_ID
-, V.EMP_ID
-, V.ACCS_URL
-, V.ACCS_DT
-, V.DEL_YN
-, E.EMP_NAME
-FROM VISITED_HISTORY V
-JOIN EMPLOYEE E
-ON E.EMP_ID = V.EMP_ID
-WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(ACCS_DT, 'YYYY-MM-DD')
-<if test='searchKeyword != null and searchKeyword != ""'>
-    <choose>
-        <when test='searchType == "empId"'>
-            AND V.EMP_ID LIKE '%' || #{searchKeyword} || '%'
-        </when>
-        <when test='searchType == "employeeVO.empName"'>
-            AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
-        </when>
-        <when test='searchType == "accsUrl"'>
-            AND V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
-        </when>
-        <when test='searchType == "accsDt"'>
-            AND V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
-        </when>
-    </choose>
-</if>
-ORDER BY ACCS_DT
-</select>
+	<select id="getAllVisitedLog"
+		parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
+		resultMap="visitedVOMap">
+		SELECT V.ACCS_ID
+		, V.EMP_ID
+		, V.ACCS_URL
+		, V.ACCS_DT
+		, V.DEL_YN
+		, E.EMP_NAME
+		FROM VISITED_HISTORY V
+		JOIN EMPLOYEE E
+		ON E.EMP_ID = V.EMP_ID
+		<where>
+			<if test='visitedType == "today" or visitedType == null'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			</if>
+			<if test='visitedType == "oneMonth"'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
+			</if>
+			<if test='visitedType == "twoMonth"'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
+			</if>
+			<if test='visitedType == "thrMonth"'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
+			</if>
+		</where>
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "empId"'>
+					AND V.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "employeeVO.empName"'>
+					AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "accsUrl"'>
+					AND V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "accsDt"'>
+					AND V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+		 AND E.EMP_ID = '2000208'
+		ORDER BY ACCS_DT
+	</select>
 
-<select id="getOneVisitedLog"
-        parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
-        resultMap="visitedVOMap">
-SELECT V.ACCS_ID
-, V.EMP_ID
-, V.ACCS_URL
-, V.ACCS_DT
-, V.DEL_YN
-, E.EMP_NAME
-FROM VISITED_HISTORY V
-JOIN EMPLOYEE E
-ON E.EMP_ID = V.EMP_ID
-WHERE TO_CHAR(SYSDATE, 'YYYY-MM-DD') = TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD')
-<if test='searchKeyword != null and searchKeyword != ""'>
-    <choose>
-        <when test='searchType == "accsUrl"'>
-            AND V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
-        </when>
-        <when test='searchType == "accsDt"'>
-            AND V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
-        </when>
-    </choose>
-</if>
-AND V.EMP_ID = #{empId}
-ORDER BY V.ACCS_DT
-</select>
+	<select id="getOneVisitedLog"
+		parameterType="com.ktdsuniversity.edu.pms.login.vo.VisitedVO"
+		resultMap="visitedVOMap">
+		SELECT V.ACCS_ID
+		, V.EMP_ID
+		, V.ACCS_URL
+		, V.ACCS_DT
+		, V.DEL_YN
+		, E.EMP_NAME
+		FROM VISITED_HISTORY V
+		JOIN EMPLOYEE E
+		ON E.EMP_ID = V.EMP_ID
+		<where>
+			<if test='visitedType == "today" or visitedType == null'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			</if>
+			<if test='visitedType == "oneMonth"'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
+			</if>
+			<if test='visitedType == "twoMonth"'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
+			</if>
+			<if test='visitedType == "thrMonth"'>
+				AND TO_CHAR(V.ACCS_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
+			</if>
+		</where>
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "accsUrl"'>
+					AND V.ACCS_URL LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "accsDt"'>
+					AND V.ACCS_DT LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+		AND V.EMP_ID = #{empId}
+		ORDER BY V.ACCS_DT
+	</select>
 
-<update id="updatePwdDtThirtyDay" parameterType="string">
-UPDATE EMPLOYEE
-SET PWD_CN_DT = SYSDATE - 60
-WHERE EMP_ID = #{_parameter}
-</update>
+	<update id="updatePwdDtThirtyDay" parameterType="string">
+		UPDATE EMPLOYEE
+		SET PWD_CN_DT = SYSDATE - 60
+		WHERE EMP_ID = #{_parameter}
+	</update>
 
-<select id="getCommutFnshCount" parameterType="string" resultType="_int">
-SELECT COUNT(1)
-FROM COMMUTE
-WHERE EMP_ID = #{_parameter}
-AND TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE(182000, 'HH24:MI:SS'), 'HH24:MI:SS')
-</select>
+	<select id="getCommutFnshCount" parameterType="string"
+		resultType="_int">
+		SELECT COUNT(1)
+		FROM COMMUTE
+		WHERE EMP_ID = #{_parameter}
+		AND TO_CHAR(SYSDATE, 'HH24:MI:SS') >= TO_CHAR(TO_DATE(182000,
+		'HH24:MI:SS'), 'HH24:MI:SS')
+	</select>
 
-    <select id="getAllLoginLog"
-            parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO"
-            resultMap="loginLogVOMap">
-        SELECT L.LOG_ID
-        , L.EMP_ID
-        , TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
-        , TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LGT_DT
-        , L.DEL_YN
-        , E.EMP_NAME
-        FROM LOGIN_LOG L
-        JOIN EMPLOYEE E
-        ON E.EMP_ID = L.EMP_ID
+	<select id="getAllLoginLog"
+		parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO"
+		resultMap="loginLogVOMap">
+		SELECT L.LOG_ID
+		, L.EMP_ID
+		, TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
+		, TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LGT_DT
+		, L.DEL_YN
+		, E.EMP_NAME
+		FROM LOGIN_LOG L
+		JOIN EMPLOYEE E
+		ON E.EMP_ID = L.EMP_ID
+		<where>
+			<if test='loginType == "today" or loginType == null'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			</if>
+			<if test='loginType == "oneMonth"'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
+			</if>
+			<if test='loginType == "twoMonth"'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
+			</if>
+			<if test='loginType == "thrMonth"'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
+			</if>
+		</where>
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "empId"'>
+					AND L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "lgnSccDt"'>
+					AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "lgtDt"'>
+					AND TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "employeeVO.empName"'>
+					AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+		ORDER BY L.LGN_SCC_DT DESC
+	</select>
 
-        <where>
-            <if test='loginType == "today" or loginType == null'>
-                AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
-            </if>
-            <if test='loginType == "oneMonth"'>
-                AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
-            </if>
-            <if test='loginType == "twoMonth"'>
-                AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
-            </if>
-            <if test='loginType == "thrMonth"'>
-                AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
-            </if>
-        </where>
-        <if test='searchKeyword != null and searchKeyword != ""'>
-            <choose>
-                <when test='searchType == "empId"'>
-                    AND L.EMP_ID LIKE '%' || #{searchKeyword} || '%'
-                </when>
-                <when test='searchType == "lgnSccDt"'>
-                    AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
-                </when>
-                <when test='searchType == "lgtDt"'>
-                    AND TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
-                </when>
-                <when test='searchType == "employeeVO.empName"'>
-                    AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
-                </when>
-            </choose>
-            </if>
-        ORDER BY L.LGN_SCC_DT DESC
-    </select>
+	<select id="getOneLoginLog"
+		parameterType="com.ktdsuniversity.edu.pms.login.vo.LoginLogVO"
+		resultMap="loginLogVOMap">
+		SELECT L.LOG_ID
+		, L.EMP_ID
+		, TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LGN_SCC_DT
+		, TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LGT_DT
+		, L.DEL_YN
+		, E.EMP_NAME
+		FROM LOGIN_LOG L
+		JOIN EMPLOYEE E
+		ON E.EMP_ID = L.EMP_ID
+		<where>
+			<if test='loginType == "today" or loginType == null'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			</if>
+			<if test='loginType == "oneMonth"'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
+			</if>
+			<if test='loginType == "twoMonth"'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
+			</if>
+			<if test='loginType == "thrMonth"'>
+				AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
+			</if>
+		</where>
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "lgnSccDt"'>
+					AND TO_CHAR(L.LGN_SCC_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "lgtDt"'>
+					AND TO_CHAR(L.LGT_DT, 'YYYY-MM-DD HH24:MI:SS') LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+		AND L.EMP_ID = #{empId}
+		ORDER BY L.LGN_SCC_DT DESC
+	</select>
 
-        </mapper>
+</mapper>

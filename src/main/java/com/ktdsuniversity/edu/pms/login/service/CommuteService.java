@@ -7,6 +7,6 @@ public interface CommuteService {
 
 	CommuteListVO getAllCommuteData(CommuteVO commuteVO);
 
-	CommuteListVO getAllCommuteDataByEmpId(String empId);
+	CommuteListVO getAllCommuteDataByEmpId(CommuteVO commuteVO);
 
 }

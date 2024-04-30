@@ -15,6 +15,8 @@ public class CommuteVO {
     
     private String searchType;
     private String searchKeyword;
+    
+    private String commuteType;
 
     public String getCmmtId() {
         return cmmtId;
@@ -95,4 +97,14 @@ public class CommuteVO {
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
 	}
+
+	public String getCommuteType() {
+		return commuteType;
+	}
+
+	public void setCommuteType(String commuteType) {
+		this.commuteType = commuteType;
+	}
+	
+	
 }

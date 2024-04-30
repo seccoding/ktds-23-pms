@@ -1,7 +1,5 @@
 $().ready(function () {
 
-    $("#log-type").val("today").attr("selected","selected");
-
     $("#search-btn").on("click", function () {
         search();
     });

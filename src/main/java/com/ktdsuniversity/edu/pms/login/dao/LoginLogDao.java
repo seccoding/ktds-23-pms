@@ -50,11 +50,11 @@ public interface LoginLogDao {
 
     public List<LoginLogVO> getAllLoginLog(LoginLogVO loginLogVO);
 
-	public List<LoginLogVO> getOneLoginLog(String empId);
+	public List<LoginLogVO> getOneLoginLog(LoginLogVO loginLogVO);
 
 	public List<VisitedVO> getAllVisitedLog(VisitedVO visitedVO);
 
-	public List<VisitedVO> getOneVisitedLog(String empId);
+	public List<VisitedVO> getOneVisitedLog(VisitedVO visitedVO);
 
 	public int updatePwdDtThirtyDay(String empId);
 
