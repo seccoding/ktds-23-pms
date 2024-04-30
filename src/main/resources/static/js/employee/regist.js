@@ -1,15 +1,47 @@
 $().ready(function() {
 
 
+	$(".confirm-confirm-button").on("keydown", function (enter) {
+		if (enter.code === 'Enter') {
+			errorsModal[0].close();
+		}
+	});
+
 	$("#regist-btn").on("click", function() {
 		$(".error").remove();
-		errorsModalText.remove();
 
 		var errorsH2 = $("<h2>회원가입 오류</h2></br></hr></br>");
 		var errorsModal = $(".modal-confirm-window");
 		var errorsModalButton = $(".confirm-confirm-button");
 		var errorsModalCancelButton = $(".cancel-confirm-button");
 		var errorsModalText = $(".modal-confirm-text");
+
+		$(".confirm-confirm-button").on("click", function() {
+			errorsModal[0].close();
+			registSuccessModal[0].close();
+		});
+
+		errorsModal.css({
+			"height": "300px",
+			"overflow": "hidden"
+		})
+
+		errorsModalCancelButton.css({
+			"display": "none"
+		});
+
+		errorsModalButton.css({
+			"position": "relative",
+			"right": "115px",
+			"bottom": "20px",
+			"width": "200px",
+		});
+
+		errorsModalText.css({
+			"position": "relative",
+			"bottom": "20px"
+
+		});
 
 		var file = $("#prfl")[0].files[0];
 		var formData = new FormData();
@@ -50,27 +82,6 @@ $().ready(function() {
 
 				console.log(errors);
 
-				errorsModal.css({
-					"height": "300px",
-					"overflow": "hidden"
-				})
-
-				errorsModalCancelButton.css({
-					"display": "none"
-				});
-
-				errorsModalButton.css({
-					"position": "relative",
-					"right": "115px",
-					"bottom": "20px",
-					"width": "200px",
-				});
-
-				errorsModalText.css({
-					"position": "relative",
-					"bottom": "20px"
-
-				});
 
 				if (errors) {
 					for (var key in errors) {
@@ -93,18 +104,59 @@ $().ready(function() {
 				}
 
 				if (errorMessage) {
+					$(".modal-confirm-text").html("");
+
 					errorsModalText.prepend(errorMessage);
 					errorsModalText.prepend(errorsH2);
 					errorsModalButton.text("확인");
 					errorsModal[0].showModal();
 
-					$(".confirm-confirm-button").on("click", function() {
-						errorsModal[0].close();
-					});
 				}
 
 				if (next) {
-					location.href = next;
+					$(".modal-confirm-text").html("");
+
+					var registSuccessH2 = $("<h2>회원가입 완료</h2></br></hr></br>");
+					var registSuccessModal = $(".modal-confirm-window");
+					var registSuccessModalButton = $(".confirm-confirm-button");
+					var registSuccessModalCancelButton = $(".cancel-confirm-button");
+					var registSuccessModalText = $(".modal-confirm-text");
+
+					registSuccessModal.css({
+						"height": "300px",
+						"overflow": "hidden"
+					})
+
+					registSuccessModalCancelButton.css({
+						"display": "none"
+					});
+
+					registSuccessModalButton.css({
+						"position": "relative",
+						"right": "115px",
+						"bottom": "20px",
+						"width": "200px",
+					});
+
+					registSuccessModalText.css({
+						"position": "relative",
+						"bottom": "20px"
+					});
+
+					registSuccessModalText.prepend($("<div>사원정보 조회 페이지로 이동합니다.</div>"));
+					registSuccessModalText.prepend($("<div>회원가입이 완료되었습니다.</div>"));
+					registSuccessModalText.prepend(registSuccessH2);
+					registSuccessModalButton.text("확인");
+					registSuccessModal[0].showModal();
+
+					$(".modal-confirm-button").on("click", function () {
+						registSuccessModal[0].close();
+					});
+
+					$(".modal-confirm-window").on("close", function () {
+						location.href = next;
+					});
+
 				}
 			},
 		});

@@ -10,6 +10,12 @@ $().ready(function () {
     }
   });
 
+  $(".confirm-confirm-button").on("keydown", function (enter) {
+    if (enter.code === 'Enter') {
+      errorsModal[0].close();
+    }
+  });
+
   $("#login-btn").on("click", function () {
     $(".errorEndDt").remove();
     $(".errorRestDt").remove();
@@ -30,37 +36,40 @@ $().ready(function () {
         var errorMessage = response.data.errorMessage;
         var next = response.data.next;
 
+        var errorsH2 = $("<h2>로그인 오류</h2></br></hr></br>");
+        var errorsModal = $(".modal-confirm-window");
+        var errorsModalButton = $(".confirm-confirm-button");
+        var errorsModalCancelButton = $(".cancel-confirm-button");
+        var errorsModalText = $(".modal-confirm-text");
+
+        errorsModal.css({
+          "height" : "300px",
+          "overflow" : "hidden"
+        })
+
+        errorsModalCancelButton.css({
+          "display" : "none"
+        });
+
+        errorsModalButton.css({
+          "position" : "relative",
+          "right" : "90px",
+          "bottom" : "60px"
+        });
+
+        errorsModalText.css({
+          "position" : "relative",
+          "bottom" : "20px"
+
+        });
+
+        $(".confirm-confirm-button").on("click", function () {
+          errorsModal[0].close();
+        });
 
         if (errors) {
-
-          var errorsH2 = $("<h2>로그인 오류</h2></br></hr></br>");
-          var errorsModal = $(".modal-confirm-window");
-          var errorsModalButton = $(".confirm-confirm-button");
-          var errorsModalCancelButton = $(".cancel-confirm-button");
-          var errorsModalText = $(".modal-confirm-text");
-
-          errorsModal.css({
-            "height" : "300px",
-            "overflow" : "hidden"
-          })
-
-          errorsModalCancelButton.css({
-            "display" : "none"
-          });
-
-          errorsModalButton.css({
-            "position" : "relative",
-            "right" : "90px",
-            "bottom" : "60px"
-          });
-
-          errorsModalText.css({
-            "position" : "relative",
-            "bottom" : "20px"
-
-          });
-
-
+          $(".modal-confirm-text").html("");
+          // errorsModal[0].html("");
           // 사번 + 비번 둘다 입력되지 않을때
           if (!$("#empId").val() && !$("#pwd").val()) {
 
@@ -70,24 +79,38 @@ $().ready(function () {
             errorsModalButton.text("확인");
             errorsModal[0].showModal();
 
-            $(".confirm-confirm-button").on("click", function () {
-              $(".modal-confirm-window").close();
-            })
           }
           //입력받았지만 Id형식이 아닐때(숫자 7자리 or "system"포함되어있는지)
           else if (errors.empId) {
-            alert(errors.empId[0]);
-          } else if (!$("#pwd").val()) {
-            alert(errors.pwd);
+            $(".modal-confirm-text").html("");
+            errorsModalText.prepend(errors.empId[0]);
+            errorsModalText.prepend(errorsH2);
+            errorsModalButton.text("확인");
+            errorsModal[0].showModal();
+          }
+          else if (!$("#pwd").val()) {
+            $(".modal-confirm-text").html("");
+            errorsModalText.prepend(errors.pwd);
+            errorsModalText.prepend(errorsH2);
+            errorsModalButton.text("확인");
+            errorsModal[0].showModal();
           }
         }
 
         if (errorMessage) {
-          alert(errorMessage);
+          $(".modal-confirm-text").html("");
+          errorsModalText.prepend(errorMessage);
+          errorsModalText.prepend(errorsH2);
+          errorsModalButton.text("확인");
+          errorsModal[0].showModal();
         }
 
         if (errorUseNow) {
-          alert(errorUseNow);
+          $(".modal-confirm-text").html("");
+          errorsModalText.prepend(errorUseNow);
+          errorsModalText.prepend(errorsH2);
+          errorsModalButton.text("확인");
+          errorsModal[0].showModal();
         }
 
 
