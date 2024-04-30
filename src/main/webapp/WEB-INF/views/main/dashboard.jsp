@@ -12,8 +12,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       .person-log-in {
         justify-content: space-between;
         display: flex;
-        overflow-y: scroll;
+        overflow: scroll;
       }
+     
 
       .flex {
         margin: 20px;
@@ -324,8 +325,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                     <%-- projectList의 내용이 존재하지 않는다면 --%>
                     <c:otherwise>
                       <tr>
-                        <td colspan="6">진행 중인 프로젝트가 없습니다.</td>
+                        <td colspan="6" class="center" >진행 중인 프로젝트가 없습니다.</td>
                       </tr>
+
                     </c:otherwise>
                   </c:choose>
                 </tbody>
@@ -361,7 +363,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                     </c:when>
                     <c:otherwise>
                       <tr>
-                        <td colspan="4">대여중인 비품이 없습니다.</td>
+                        <td colspan="4" class="center">대여중인 비품이 없습니다.</td>
                       </tr>
                     </c:otherwise>
                   </c:choose>

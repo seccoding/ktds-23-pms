@@ -43,11 +43,25 @@
     table.table > tbody td[colspan] {
         text-align: center;
     }
+    .f-space{
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .center{
+        text-align: center;
+    }
 </style>
 </head>
 <body>
     <h2>비품 대여 현황</h2>
-    <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
+    <div class="flex f-space">
+        <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
+        <div class="flex" style="margin-right: 0.5rem;">
+            <button class="selected-change-apply">선택항목 변경신청</button>
+            <button class="selected-return">선택항목 반납</button>
+        </div>
+
+    </div>
     <div class="grid">
 
         <table class="table">
@@ -60,9 +74,9 @@
                     </th>
                     <th>비품명</th>
                     <th>비품관리 ID</th>
-                    <th>대여일</th>
-                    <th>반납일</th>
-                    <th>반납신청</th>
+                    <th class="center">대여일</th>
+                    <th class="center">반납일</th>
+                    <th class="center">반납신청</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,15 +99,15 @@
                                 </td>
                                 <td data-productName="${product.productVO.prdtName}">${product.productVO.prdtName}</td>
                                 <td class="manage-id">${product.prdtMngId}</td>
-                                <td>${product.brrwDt}</td>
-                                <td>
+                                <td class="center">${product.brrwDt}</td>
+                                <td class="center">
                                     <c:choose>
                                         <c:when test="${not empty product.rtnDt}">
                                             ${product.rtnDt}
                                         </c:when>
                                         <c:otherwise>-</c:otherwise>
                                     </c:choose>
-                                <td>
+                                <td class="center">
                                     <c:choose>
                                         <c:when test="${product.productVO.onceYn eq 'Y'}">
                                             -
@@ -111,7 +125,7 @@
                     <%-- borrowList의 내용이 존재하지 않는다면 --%>
                     <c:otherwise>
                         <tr>
-                            <td colspan="6">
+                            <td colspan="6" class="center">
                                 등록된 비품이 존재하지 않습니다.
                             </td>
                         </tr>
@@ -187,10 +201,7 @@
     <!-- Paginator 끝 -->
 
 
-    <div class="flex">
-        <button class="selected-change-apply">선택항목 변경신청</button>
-        <button class="selected-return">선택항목 반납</button>
-    </div>
+    
     
 </body>
 </html>

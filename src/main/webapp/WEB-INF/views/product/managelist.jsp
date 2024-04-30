@@ -12,6 +12,15 @@
     div.grid div.right-align {
         text-align: right;
     }
+    .flex{
+        display: flex;
+    }
+    .sub-title{
+        justify-content: space-between;
+    }
+    /* .create-product{
+        margin: 0 1rem;
+    } */
     .table-item{
         text-align: center;
     }
@@ -36,7 +45,22 @@
     }
     .check-option {
         text-align: right;
-        margin: 0 2rem 1rem 0;
+    }
+    .sub-t-btn-group{
+        flex-direction: column;
+        align-items: end;
+        margin: 0 1rem;
+    }
+    .center{
+        text-align: center;
+    }
+    .modal-window{
+        height: 400px;
+        top: 20%;
+    }
+    .bold{
+        font-weight: bold;
+        margin: auto 0;
     }
 </style>
 <script type="text/javascript" src="/js/product/managelist.js"></script>
@@ -55,15 +79,15 @@
 </head>
 <body>
     <dialog id="add-modal" class="modal-window">
-        <h4>비품 재고 추가</h3>
+        <h4 style="margin-bottom: 2rem;">비품 재고 추가</h4>
         <div class="add-grid">
-            <p>비품</p>
-            <p class="add-product"></p>
-            <p>추가수량</p>
+            <p class="bold">비품</p>
+            <p style="margin: auto 0;" class="add-product"></p>
+            <p class="bold">추가수량</p>
             <input type="number" min="1" class="add-count"/>
-            <p>구매가격</p>
+            <p class="bold">구매가격</p>
             <input type="number" min="0" class="buy-price"/>
-            <p>구매일</p>
+            <p class="bold">구매일</p>
             <input type="date" class="buy-day"/>
         </div>
         <div class="btn-group">
@@ -75,21 +99,22 @@
     </dialog>
     
     <h2>비품 관리 목록</h2>
-    <div class="flex">
+    <div class="flex sub-title">
         <div>총 ${productList.productCnt}건의 비품이 조회되었습니다.</div>
-    </div>
-    <div class="grid">
-
-        <div class="btn-group">
+        <div class="flex sub-t-btn-group" >
             <button type="button" class="create-product">생성</button>
+            <div class="check-option">
+                <input type="checkbox" id="product-exist-search" 
+                       name="existed-product" value="existed-product-checked" data-checkstatus="${isCheck}"/>
+                <label for="product-exist-search"></label>
+                <label for="product-exist-search">재고가 있는 비품만 조회</label>
+            </div>
+
         </div>
-        <div class="check-option">
-            <input type="checkbox" id="product-exist-search" 
-                   name="existed-product" value="existed-product-checked"
-                   data-checkstatus="${isCheck}" />
-            <label for="product-exist-search"></label>
-            <label for="product-exist-search">재고가 있는 비품만 조회</label>
-        </div>
+    </div>
+    
+    
+    <div class="grid">
 
         <table class="table">
             <thead>
@@ -97,9 +122,9 @@
                     <th>비품ID</th>
                     <th>비품명</th>
                     <th>카테고리</th>
-                    <th>소모품여부</th>
-                    <th>재고</th>
-                    <th>항목관리</th>
+                    <th class="center">소모품여부</th>
+                    <th class="center">재고</th>
+                    <th class="center">항목관리</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,9 +137,9 @@
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtId}</td>
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtName}</td>
                                 <td class="product-item" data-product="${product.prdtId}">${product.prdtCtgr}</td>
-                                <td class="product-item" data-product="${product.prdtId}">${product.onceYn}</td>
-                                <td class="product-item" data-product="${product.prdtId}">${product.curStr}</td>
-                                <td>
+                                <td class="product-item center" data-product="${product.prdtId}">${product.onceYn}</td>
+                                <td class="product-item center" data-product="${product.prdtId}">${product.curStr}</td>
+                                <td class="center">
                                     <button class="add-product-count" data-productname="${product.prdtName}" data-productid="${product.prdtId}">재고추가</button>
                                     <button class="remove-product" data-product="${product.prdtId}">삭제</button>
                                 </td>
@@ -126,7 +151,7 @@
                     <%-- productList의 내용이 존재하지 않는다면 --%>
                     <c:otherwise>
                         <tr>
-                            <td colspan="6">
+                            <td colspan="6" class="center">
                                 등록된 비품이 존재하지 않습니다.
                             </td>
                         </tr>

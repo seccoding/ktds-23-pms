@@ -18,6 +18,10 @@
     .sub-head-flex{
         display: flex;
         justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .center{
+        text-align: center;
     }
 </style>
 <script>
@@ -35,7 +39,7 @@
     <h2>비품 대여 현황(관리자)</h2>
     <div class="sub-head-flex">
         <div>대여중인 비품은 ${productState.borrowCnt}건입니다.</div>
-        <div>
+        <div style="margin-right: 0.5rem;">
             <input id="rental-item-list" type="checkbox" data-checkstatus="${isCheck}"/>
             <label for="rental-item-list"></label>
             <label for="rental-item-list">대여중인 비품만 보기</label>
@@ -48,10 +52,10 @@
                 <tr>
                     <th>비품관리 ID</th>
                     <th>비품명</th>
-                    <th>대여자 ID</th>
-                    <th>대여일</th>
-                    <th>반납일</th>
-                    <th>대여상태</th>
+                    <th class="center">대여자 ID</th>
+                    <th class="center">대여일</th>
+                    <th class="center">반납일</th>
+                    <th class="center">대여상태</th>
                 </tr>
             </thead>
             <tbody class="return-state-list">
@@ -61,20 +65,20 @@
                             <tr>
                                 <td>${product.prdtMngId}</td>
                                 <td>${product.productVO.prdtName}</td>
-                                <td>${product.brrwId}</td>
-                                <td>${product.brrwDt}</td>
+                                <td class="center">${product.brrwId}</td>
+                                <td class="center">${product.brrwDt}</td>
                                 <c:choose>
                                     <c:when test="${product.productVO.onceYn eq 'Y'}">
-                                        <td>-</td>
-                                        <td>-</td>
+                                        <td class="center">-</td>
+                                        <td class="center">-</td>
                                     </c:when>
                                     <c:when test="${not empty product.rtnDt}">
-                                        <td>${product.rtnDt}</td>
-                                        <td>반납완료</td>
+                                        <td class="center">${product.rtnDt}</td>
+                                        <td class="center">반납완료</td>
                                     </c:when>
                                     <c:otherwise>
-                                        <td>-</td>
-                                        <td>대여중</td>
+                                        <td class="center">-</td>
+                                        <td class="center">대여중</td>
                                     </c:otherwise>
                                 </c:choose>
                             </tr>
@@ -82,7 +86,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="6">
+                            <td colspan="6" class="center">
                                 등록된 비품이 존재하지 않습니다.
                             </td>
                         </tr>

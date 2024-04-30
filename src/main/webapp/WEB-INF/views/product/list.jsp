@@ -19,7 +19,23 @@
     }
     .check-option {
         text-align: right;
-        margin: 0 2rem 1rem 0;
+    }
+    .flex{
+        display: flex;
+    }
+    .sub-title{
+        justify-content: space-between;
+    }
+    .btn-group{
+        flex-direction: column;
+        align-items: end;
+        margin: 0 1rem;
+    }
+    .center{
+        text-align: center;
+    }
+    tr{
+        border-bottom: 1px solid darkgray;
     }
 </style>
 
@@ -39,22 +55,20 @@
 </head>
 <body>
     <h2>비품목록</h2>
-    <div class="flex">
+    <div class="flex sub-title">
         <div>총 ${productList.productCnt}건의 비품이 조회되었습니다.</div>
+        <div class="btn-group flex ">
+            <button type="button" class="apply-product">신청</button>
+            <div class="check-option">
+                <input type="checkbox" id="product-exist" 
+                name="existed-product" value="existed-product-checked" data-checkstatus="${isCheck}" />
+                <label for="product-exist"></label>
+                <label for="product-exist">재고가 있는 비품만 조회</label>
+            </div>
+        </div>
     </div>
     
     <div class="grid">
-
-        <div class="btn-group">
-            <button type="button" class="apply-product">신청</button>
-        </div>
-        <div class="check-option">
-            <input type="checkbox" id="product-exist" 
-                   name="existed-product" value="existed-product-checked"
-                   data-checkstatus="${isCheck}" />
-            <label for="product-exist"></label>
-            <label for="product-exist">재고가 있는 비품만 조회</label>
-        </div>
 
         <table class="table">
             <thead>
@@ -62,8 +76,8 @@
                     <th>비품ID</th>
                     <th>비품명</th>
                     <th>카테고리</th>
-                    <th>소모품여부</th>
-                    <th>재고</th>
+                    <th class="center">소모품여부</th>
+                    <th class="center">재고</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,8 +90,8 @@
                                 <td>${product.prdtId}</td>
                                 <td>${product.prdtName}</td>
                                 <td>${product.prdtCtgr}</td>
-                                <td>${product.onceYn}</td>
-                                <td class="current-quantity">${product.curStr}</td>
+                                <td class="center">${product.onceYn}</td>
+                                <td class="current-quantity center">${product.curStr}</td>
                             </tr>
                         </c:forEach>
     
@@ -85,7 +99,7 @@
                     <%-- productList의 내용이 존재하지 않는다면 --%>
                     <c:otherwise>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="5" class="center">
                                 등록된 비품이 존재하지 않습니다.
                             </td>
                         </tr>
