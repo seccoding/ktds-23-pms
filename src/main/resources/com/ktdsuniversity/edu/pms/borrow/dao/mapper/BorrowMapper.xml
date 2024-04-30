@@ -249,7 +249,7 @@
 		     , BRRW_DT
 		     , RTN_DT
 		     , DEL_YN)
-		     SELECT 'BRRW_HT' || TO_CHAR(SYSDATE, 'YYMMDD')
+		     SELECT 'BRRW_HT_' || TO_CHAR(SYSDATE, 'YYMMDD')
 		     || '_' || LPAD(SEQ_BRRW_HT_PK.NEXTVAL, 6, '0'), BH.*
 		 FROM (
 		<foreach collection="list" item="borrowVO" separator="UNION ALL">

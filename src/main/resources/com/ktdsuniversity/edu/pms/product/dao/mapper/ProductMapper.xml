@@ -180,7 +180,7 @@
 	</select>
   	
 	<select id="selectOnePrdtId" resultType="string">
-		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
+		SELECT 'PRDT_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PRDT_PK.NEXTVAL, 6, '0')
 		  FROM DUAL
 	</select>
 	
@@ -210,6 +210,8 @@
 		SELECT PRDT_MNG_ID
 		  FROM PRODUCT_MANAGEMENT
 		 WHERE PRDT_ID = #{_parameter}
+		   AND BRRW_YN = 'N'
+		   AND LOST_YN = 'N'
 	</select>
 	
 	<select id="getAllProductName" resultType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">

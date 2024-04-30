@@ -179,7 +179,12 @@ public class ProductServiceImpl implements ProductService{
 				borrowVO.setBrrwHistId(brrwHistId);
 				logger.info(">>>>>>>>>>>>>>>>대여이력아이디" + brrwHistId);
 				
+				// PRDT_MNG_ID 값 받아온다.
 				String productManageId = prdtManageId.get(i);
+				// 비품을 대여상태로 설정. BRRW_YN = 'Y' 세팅 
+				this.productManagementDao.changeItemBrrwStateY(productManageId);
+				
+				
 				borrowVO.setPrdtMngId(productManageId);
 				
 				// 대여 이력에 추가
