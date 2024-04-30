@@ -434,7 +434,7 @@
 		  SELECT M.MEMO_ID,
 		         M.RCV_ID,
 		         M.CRTR_ID,
-		         TO_CHAR(M.CRT_DT, 'YYYY-MM-DD(HH24:MM:SS)') AS CRT_DT,
+		         TO_CHAR(M.CRT_DT, 'YYYY-MM-DD') AS CRT_DT,
 		         M.READ_YN,
 		         M.DEL_YN,
 		         M.SAVE_YN,

@@ -61,7 +61,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         height: 100px;
         width: 100%;
       }
-      tr{
+      tr {
         border-bottom: 1px solid lightgrey;
       }
 
@@ -95,16 +95,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         align-items: center;
         margin: 0 20px;
       }
-      .table th{
+      .table th {
         position: sticky;
         top: 0px;
         background-color: var(--body-bg);
       }
-      .f-space-between{
+      .f-space-between {
         display: flex;
         justify-content: space-between;
       }
-      .center{
+      .center {
         text-align: center;
       }
       .col-3-4 {
@@ -126,7 +126,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       }
       .memotable {
         height: 100px;
-        width: 612px;
         overflow-x: hidden;
       }
       .memoimg {
@@ -272,7 +271,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
             <div class="f-space-between">
               <h6>부서 내 사원 로그인현황</h6>
               <!-- <h5 style="margin: 0 0.5rem; font-weight: bold;">${deptname}</h5> -->
-
             </div>
             <div class="card-body">
               <!-- 팀 content 영역 -->
@@ -294,41 +292,42 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
               <!-- 프로젝트 content 영역 -->
               <table class="table">
                 <thead>
-                <tr>
-                  <th>프로젝트</th>
-                  <th>고객사</th>
-                  <th>수행부서</th>
-                  <th>프로젝트 상태</th>
-                  <th class="center">시작일</th>
-                  <th class="center">종료일</th>
-                </tr>
+                  <tr>
+                    <th>프로젝트</th>
+                    <th>고객사</th>
+                    <th>수행부서</th>
+                    <th>프로젝트 상태</th>
+                    <th class="center">시작일</th>
+                    <th class="center">종료일</th>
+                  </tr>
                 </thead>
                 <tbody>
-                <!-- jstl > choose when otherwise / if ~ elif ~ else-->
-                <c:choose>
-                  <%-- projectList 내용이 존재한다면 --%>
-                  <c:when test="${not empty projects}">
-                    <%-- 내용을 반복해서 보여줌 --%>
-                    <c:forEach items="${projects}" var="project">
-                      <tr class="project-row" data-project-id="${project.prjId}">
-                        <td>${project.prjName}</td>
-                        <td>${project.clntInfo}</td>
-                        <td>${project.deptVO.deptName}</td>
-                        <td>${project.prjStsCode.cmcdName}</td>
-                        <td class="center">${project.strtDt}</td>
-                        <td class="center">${project.endDt}</td>
+                  <!-- jstl > choose when otherwise / if ~ elif ~ else-->
+                  <c:choose>
+                    <%-- projectList 내용이 존재한다면 --%>
+                    <c:when test="${not empty projects}">
+                      <%-- 내용을 반복해서 보여줌 --%>
+                      <c:forEach items="${projects}" var="project">
+                        <tr
+                          class="project-row"
+                          data-project-id="${project.prjId}"
+                        >
+                          <td>${project.prjName}</td>
+                          <td>${project.clntInfo}</td>
+                          <td>${project.deptVO.deptName}</td>
+                          <td>${project.prjStsCode.cmcdName}</td>
+                          <td class="center">${project.strtDt}</td>
+                          <td class="center">${project.endDt}</td>
+                        </tr>
+                      </c:forEach>
+                    </c:when>
+                    <%-- projectList의 내용이 존재하지 않는다면 --%>
+                    <c:otherwise>
+                      <tr>
+                        <td colspan="6">진행 중인 프로젝트가 없습니다.</td>
                       </tr>
-                    </c:forEach>
-                  </c:when>
-                  <%-- projectList의 내용이 존재하지 않는다면 --%>
-                  <c:otherwise>
-                    <tr>
-                      <td colspan="6">
-                          진행 중인 프로젝트가 없습니다.
-                      </td>
-                    </tr>
-                  </c:otherwise>
-                </c:choose>
+                    </c:otherwise>
+                  </c:choose>
                 </tbody>
               </table>
             </div>
