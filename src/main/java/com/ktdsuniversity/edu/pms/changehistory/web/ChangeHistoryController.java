@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.changehistory.web;
 
 import java.util.List;
 
+import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,7 @@ public class ChangeHistoryController {
 		boolean isSuccess = this.changeHistoryService.changeJob(employeeVO);
 		return new AjaxResponse().append("isSuccess", isSuccess).append("next", "/employee/view?empId="+employeeVO.getEmpId());
 	}
+
 
 
 }
