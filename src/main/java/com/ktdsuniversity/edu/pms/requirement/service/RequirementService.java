@@ -56,5 +56,6 @@ public interface RequirementService {
 	public ResponseEntity<Resource> getDownloadFile(RequirementVO requirement);
 	
 	public List<RequirementVO> getAllRequirementByTeammateId(String empId);
+	public boolean updateTestResult(RequirementVO requirementVO, boolean testApprove);
 
 }

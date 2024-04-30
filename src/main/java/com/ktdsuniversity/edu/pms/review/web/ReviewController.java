@@ -57,18 +57,7 @@ public class ReviewController {
 		if (tmList.size()>0) { // PM인 경우
 		    isPM = true;
 		}
-//		
-//		List<ProjectTeammateVO> tYList =this.projectService.getAllProjectTeammateByProjectId(id).stream()
-//				.filter(tm->tm.getTmId().equals(employeeVO.getEmpId()))
-//				.filter(tm->tm.getRvYn().equals("Y"))
-//				.toList();
-//				boolean isRVY = false;
-//				
-//				if (tYList.size()>0) { // rvYn = Y 일 경우
-//					isRVY = true;
-//				}
-		
-		
+
 		searchReviewVO.setEmployeeVO(employeeVO);
 		
 		ReviewListVO reviewListVO = reviewService.getAllReview(searchReviewVO);
@@ -78,17 +67,6 @@ public class ReviewController {
 //		.addAttribute("isRVY", isRVY);
 
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
-	}
-	
-	
-	
-	
-	@GetMapping("/review/viewresult")
-	public String viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) {
-		ReviewListVO reviewListVO = this.reviewService.getAllReviewResult(searchReviewVO);
-		model.addAttribute("reviewList", reviewListVO);
-		model.addAttribute("SearchReviewVO", searchReviewVO);
-		return "review/reviewresult"; // reviewList.jsp 파일 이름
 	}
 	
 	/*
@@ -164,9 +142,6 @@ public class ReviewController {
 		        return "후기전송에 실패했습니다. 다시 시도해주세요.";
 		    }
 		
-		
-		
-		
 		model.addAttribute("projectTeammateVO", projectTeammateVO);
 		model.addAttribute("employeeVO", employeeVO);
 		model.addAttribute("reviewVO", reviewVO);
@@ -176,6 +151,26 @@ public class ReviewController {
 		return "redirect:/review"; 
 	}
 		
+	 @GetMapping("/review/viewresult")
+	   public String viewReviewCntnt(@RequestParam("prjId") String id, SearchReviewVO searchReviewVO, Model model) {
+		ReviewListVO reviewListVO = this.reviewService.getAllReviewResult(searchReviewVO);
+	
+			/*
+			 * @GetMapping("/review/viewresult/prjId/{id}") public String
+			 * viewReviewCntnt(@RequestParam("id") String id, SearchReviewVO searchReviewVO,
+			 * Model model) {
+			 */
+		
+		int projectVO = projectService.getProjectTeammateCount(id);
+		
+		model.addAttribute("teammateCount", projectVO);
+		
+		model.addAttribute("reviewList", reviewListVO);
+		model.addAttribute("SearchReviewVO", searchReviewVO);
+		return "review/reviewresult"; // reviewList.jsp 파일 이름
+	
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("/ajax/review/delete/massive")

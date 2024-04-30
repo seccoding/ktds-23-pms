@@ -84,6 +84,15 @@ public class MemoDaoImpl extends SqlSessionDaoSupport implements MemoDao {
 		return getSqlSessionTemplate().update(MemoDao.NAME_SPACE + ".saveOneMemo", memoVO);
 	}
 
+	@Override
+	public int getReceiveMemoReadYCount(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReceiveMemoReadYCount" , searchMemoVO);
+	}
+
+	@Override
+	public List<MemoVO> getReadYReceiveMemo(SearchMemoVO searchMemoVO) {
+		return getSqlSessionTemplate().selectOne(MemoDao.NAME_SPACE + ".getReadYReceiveMemo" , searchMemoVO);	}
+
 	
 	
 }

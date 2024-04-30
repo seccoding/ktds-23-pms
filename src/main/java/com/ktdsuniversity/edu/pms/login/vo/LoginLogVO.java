@@ -13,8 +13,18 @@ public class LoginLogVO {
     private String searchKeyword;
     private String searchType;
 
+    private String loginType;
+
     private EmployeeVO employeeVO;
-    
+
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
+
     public EmployeeVO getEmployeeVO() {
         return employeeVO;
     }

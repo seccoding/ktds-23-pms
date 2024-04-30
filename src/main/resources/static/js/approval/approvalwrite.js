@@ -15,8 +15,19 @@ $().ready(function(){
     $("#btn-add-prdt-modal").on("click", function() {
     
         if(deleteItem.length === 0) {
-            alert("추가할 비품이 없습니다.");
-            return;
+
+            loadModal({
+                content: "추가할 비품이 없습니다.",
+                fnPositiveBtnHandler: function () {
+                 alertModal[0].close();
+                },
+                showNegativeBtn: false,
+              });
+
+
+
+            // alert("추가할 비품이 없습니다.");
+            // return;
         }
 
         // 대여 목록 모달 열기
@@ -134,22 +145,11 @@ $().ready(function(){
                         
                     }
                 });
-            // modalItemArray.forEach(function(modalItem) {   
-            //     $("input[id=" + modalItem + "]").prop('disabled', false);
-            //     $("input[id=" + modalItem + "]").prop('checked', false);
-            // });
+
             // 비품 추가 모달 닫기
             deleteItem = [];
             console.log(deleteItem);
             addPrdtModal[0].close(); 
-            // for(var i = 0; i < deleteItem.length; i++) {
-            //     for(var j = 0; j < checkedProducts.length; j++) {
-            //         if(deleteItem[i] === checkedProducts[j]) {
-            //             deleteItem.splice(i, 1);
-            //         }
-            //     }
-            // }
-            // addPrdtModal[0].reset();
         });
 
     // 비품 추가 모달 닫기
@@ -173,47 +173,107 @@ $().ready(function(){
         }); 
 
         formData.dmdId = $("#empId").val();
-        formData.dmdDt = $("#dmdDt").val();
         formData.apprMngId = $("#apprMngId").val();
         formData.apprTtl = $("#apprTtl").val();
+        formData.apprCntnt = $("#apprCntnt").val();
         if($("#apprCtgr").val() === '비품변경') {
             formData.apprCtgr = '902';
         }
 
         if(Object.keys(formData).length < 6) {
-            alert("변경신청할 비품을 체크해주세요.");
-            return;
-        }
 
-        var chooseValue = confirm("작성한 기안서를 상신합니다.");
-        if(chooseValue) {
-        // $(modalButton).on("click", function() {
-            // 상신 req
-            $.ajax({
-                url: "/ajax/approval/write", 
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    var data = response.data;
-                    if(data.result && data.next) {
-                        location.href = data.next;
-                    } else {
-
-                        alert(response.data.errors);
-                        console.log(response.data.errors);
-                    }
+            loadModal({
+                content: "변경신청할 비품을 체크해주세요.",
+                fnPositiveBtnHandler: function () {
+                 alertModal[0].close();
                 },
-            });
-        // });
+                showNegativeBtn: false,
+              });
+
+
+
+            // alert("변경신청할 비품을 체크해주세요.");
+            // return;
         }
+
+        loadModal({
+            content: "작성한 기안서를 상신합니다.",
+            fnPositiveBtnHandler: function () {
+                $.ajax({
+                    url: "/ajax/approval/write", 
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        var data = response.data;
+                        if(data.result && data.next) {
+                            location.href = data.next;
+                        } else {
+
+                            loadModal({
+                                content: response.data.errors,
+                                fnPositiveBtnHandler: function () {
+                                    location.href = "/approval/progresslist";
+                                },
+                                showNegativeBtn: false,
+                              });
+
+
+
+    
+                            // alert(response.data.errors);
+                            // console.log(response.data.errors);
+                        }
+                    },
+                });
+            },
+            showNegativeBtn: true,fnNegativeBtnHandler: function () {
+                alertModal[0].close();
+              },
+          });
+
+
+        // var chooseValue = confirm("작성한 기안서를 상신합니다.");
+        // if(chooseValue) {
+        // // $(modalButton).on("click", function() {
+        //     // 상신 req
+        //     $.ajax({
+        //         url: "/ajax/approval/write", 
+        //         type: "POST",
+        //         data: formData,
+        //         success: function(response) {
+        //             var data = response.data;
+        //             if(data.result && data.next) {
+        //                 location.href = data.next;
+        //             } else {
+
+        //                 alert(response.data.errors);
+        //                 console.log(response.data.errors);
+        //             }
+        //         },
+        //     });
+        // // });
+        // }
     });
 
     // 기안서 작성 취소 버튼
-    $("#btn-appr-cancel").on("click", function() {      
-        var writeCancel = confirm("기안서 작성을 취소하시겠습니까?");
-        if(writeCancel) {
-            location.href = "/approval/progresslist";
-        }
+    $("#btn-appr-cancel").on("click", function() {     
+        
+        loadModal({
+            content: "기안서 작성을 취소하시겠습니까?",
+            fnPositiveBtnHandler: function () {
+                location.href = "/approval/progresslist";
+            },
+            showNegativeBtn: true,fnNegativeBtnHandler: function () {
+                alertModal[0].close();
+              },
+          });
+        
+
+
+        // var writeCancel = confirm("기안서 작성을 취소하시겠습니까?");
+        // if(writeCancel) {
+        //     location.href = "/approval/progresslist";
+        // }
     });
     
     // 삭제버튼 누르면 제거
@@ -225,8 +285,21 @@ function productRemoveHandler() {
     // deleteItem = [];
     var length = $("#prdt-list").find("tr").length;
     if (length === 1) {
-        alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
-        return;
+
+        loadModal({
+            content: "하나 이상의 비품에 대해 변경 신청이 가능합니다.",
+            fnPositiveBtnHandler: function () {
+             alertModal[0].close();
+            },
+            showNegativeBtn: false,
+          });
+
+
+
+
+
+        // alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
+        // return;
     }
     deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
     console.log("Product Delete Handler: ", deleteItem)

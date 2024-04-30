@@ -418,6 +418,7 @@
 	                </otherwise>
 	            </choose>
 	        </if>
+	        ORDER BY P.CRT_DT DESC
         	<include refid="Common.pagenate_footer"/>
 	</select>
 

@@ -18,7 +18,15 @@ public class SearchBorrowVO extends PaginateVO {
 	
 	private BorrowVO borrowVO;
 	
+	private Boolean isCheck;
 	
+	
+	public Boolean getIsCheck() {
+		return isCheck;
+	}
+	public void setIsCheck(Boolean isCheck) {
+		this.isCheck = isCheck;
+	}
 	public BorrowVO getBorrowVO() {
 		return borrowVO;
 	}

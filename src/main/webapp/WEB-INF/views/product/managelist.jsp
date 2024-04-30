@@ -171,7 +171,7 @@
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>
                     <li class="page-item prev">
                         <a
-                                href="javascript:search(${searchProjectVO.prevGroupStartPageNo});"
+                                href="javascript:search(${searchProductVO.prevGroupStartPageNo});"
                         ><img src="/images/chevron-left.svg"/></a
                         >
                     </li>

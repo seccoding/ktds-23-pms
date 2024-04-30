@@ -35,7 +35,6 @@ public class BorrowController {
 		searchBorrowVO.setProductVO(productVO);
 		searchBorrowVO.setProductManagementVO(productManagementVO);
 		
-		System.out.println("~~~~~~~~~~~~~~~~~"+searchBorrowVO.getEmployeeVO().getEmpId()+"~~~~~~~~~~~~~~");
 		
 		String empID = searchBorrowVO.getEmployeeVO().getEmpId();
 		searchBorrowVO.getEmployeeVO().setEmpId(empID);
@@ -53,13 +52,29 @@ public class BorrowController {
 			throw new PageNotFoundException();
 		}
 		
-
+		boolean isCheck = false;
+		if(searchBorrowVO.getIsCheck() != null) {
+			isCheck = searchBorrowVO.getIsCheck();
+		}
+		int totalNum = 0;
+		if (isCheck) {
+			totalNum = this.borrowService.getNotNullCnt(searchBorrowVO);
+		}else {
+			totalNum = this.borrowService.getAllCnt(searchBorrowVO);
+		}
+		
+		searchBorrowVO.setPageCount(totalNum);
+		
+		BorrowListVO borrowListVO = this.borrowService.searchProductManageState(searchBorrowVO);
+		
+		BorrowListVO notReturnListVO = this.borrowService.searchProductManageStateNotReturn(searchBorrowVO);
+		
 		
 		searchBorrowVO.setEmployeeVO(employeeVO);
 		searchBorrowVO.setProductVO(productVO);
 		searchBorrowVO.setProductManagementVO(productManagementVO);
-		BorrowListVO borrowListVO = this.borrowService.searchProductManageState(searchBorrowVO);
-		model.addAttribute("productState", borrowListVO);
+		model.addAttribute("productState", isCheck?notReturnListVO:borrowListVO);
+		model.addAttribute("isCheck", isCheck);
 		model.addAttribute("productVO", productVO);
 		return "product/managestate";
 	}
@@ -68,7 +83,7 @@ public class BorrowController {
 	@GetMapping("/ajax/manage/state")
 	public AjaxResponse getProductManageStateforRetrunCheck(SearchBorrowVO searchBorrowVO) {
 		BorrowListVO AllBorrowList = this.borrowService.searchProductManageState(searchBorrowVO);
-		List<BorrowVO> notReturnList = this.borrowService.searchProductManageStateNotReturn(searchBorrowVO);
+		BorrowListVO notReturnList = this.borrowService.searchProductManageStateNotReturn(searchBorrowVO);
 		
 		return new AjaxResponse().append("AllBorrowList", AllBorrowList.getBorrowList()).append("notReturnList", notReturnList);
 	}

@@ -35,5 +35,9 @@ public interface MemoDao {
 
 	public int saveOneMemo(MemoVO memoVO);
 
+	public int getReceiveMemoReadYCount(SearchMemoVO searchMemoVO);
+
+	public List<MemoVO> getReadYReceiveMemo(SearchMemoVO searchMemoVO);
+
 	
 }

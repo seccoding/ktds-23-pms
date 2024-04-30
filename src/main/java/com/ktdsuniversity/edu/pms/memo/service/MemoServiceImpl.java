@@ -114,6 +114,19 @@ public class MemoServiceImpl implements MemoService{
 		int savedCount = this.memoDao.saveOneMemo(memoVO);
 		return savedCount > 0;
 	}
+
+	@Override
+	public MemoListVO getReceiveMemoReadYsearch(SearchMemoVO searchMemoVO) {
+		int receiveMemoCount = this.memoDao.getReceiveMemoReadYCount(searchMemoVO);
+		searchMemoVO.setPageCount(receiveMemoCount);
+		List<MemoVO> memoList = this.memoDao.getReadYReceiveMemo(searchMemoVO);
+		
+		MemoListVO memoListVO = new MemoListVO();
+		memoListVO.setMemoCnt(receiveMemoCount);
+		memoListVO.setMemoList(memoList);
+		
+		return memoListVO;
+	}
 	
 	
 }

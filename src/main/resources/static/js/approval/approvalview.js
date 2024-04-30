@@ -12,7 +12,7 @@ $().ready(function() {
       apprSts : apprSts, 
       rntlSts : rntlSts, 
     };
-    var chooseValue = confirm("결재를 승인합니다.");
+    // var chooseValue = confirm("결재를 승인합니다.");
 
 
     loadModal({
@@ -150,10 +150,32 @@ $().ready(function() {
           rntlSts : rntlSts }, 
         function(response) {
           if(response.data.result) {
-            alert("기대여 비품이 반납되었습니다.");
-            location.reload();
+
+            loadModal({
+              content: "기대여 비품이 반납되었습니다.",
+              fnPositiveBtnHandler: function () {
+                location.reload();
+              },
+              showNegativeBtn: false,
+            });
+            
+
+
+            // alert("기대여 비품이 반납되었습니다.");
+            // location.reload();
           } else {
-            alert(response.date.errorMessage);
+
+            loadModal({
+              content: response.date.errorMessage,
+              fnPositiveBtnHandler: function () {
+                location.reload();
+              },
+              showNegativeBtn: false,
+            });
+
+
+
+            // alert(response.date.errorMessage);
           }
       });
       returnPrdtModal[0].close();
@@ -176,15 +198,40 @@ $().ready(function() {
 
     // 대여
     $(brrwBtn).on("click", function() {
+      console.log(apprId, "!!!!!!!!!");
       $.post("/ajax/product/newprdtborrow", 
       { apprId : apprId, 
         rntlSts : rntlSts }, 
       function(response) {
         if(response.data.result) {
-          alert("신규 비품이 대여되었습니다.");
-          location.reload();
+
+
+          loadModal({
+            content: "신규 비품이 대여되었습니다.",
+            fnPositiveBtnHandler: function () {
+              location.reload();
+            },
+            showNegativeBtn: false,
+          });
+
+
+          // alert("신규 비품이 대여되었습니다.");
+          // location.reload();
         } else {
-          alert(response.date.errorMessage);
+
+          loadModal({
+            content: response.date.errorMessage,
+            fnPositiveBtnHandler: function () {
+              location.reload();
+            },
+            showNegativeBtn: false,
+          });
+          
+
+
+
+
+          // alert(response.date.errorMessage);
         }
       });
       brrwPrdtModal[0].close();
@@ -203,16 +250,52 @@ $().ready(function() {
 
   // 결재내역 삭제
   $("#btn-delete-appr").on("click", function() {
-    
-    var chooseValue = confirm("결재 내역을 삭제합니다.");
-    if(chooseValue) {
-      $.get("/ajax/approval/delete/" + apprId, function(response) {
+
+    loadModal({
+      content: "결재 내역을 삭제합니다.",
+      fnPositiveBtnHandler: function () {
+        $.get("/ajax/approval/delete/" + apprId, function(response) {
           if(response.data.result && response.data.next) {
             location.href = response.data.next;
           }
-          alert(response.data.errorMessage);
+
+
+          loadModal({
+            content: response.data.errorMessage,
+            fnPositiveBtnHandler: function () {
+              alertModal[0].close();
+            },
+            showNegativeBtn: false,
+          });
+          // alert(response.data.errorMessage);
       });
-    }
+      },
+      showNegativeBtn: true,fnNegativeBtnHandler: function () {
+        alertModal[0].close();
+      },});
+
+
+
+
+    
+    // var chooseValue = confirm("결재 내역을 삭제합니다.");
+    // if(chooseValue) {
+    //   $.get("/ajax/approval/delete/" + apprId, function(response) {
+    //       if(response.data.result && response.data.next) {
+    //         location.href = response.data.next;
+    //       }
+
+
+    //       loadModal({
+    //         content: response.data.errorMessage,
+    //         fnPositiveBtnHandler: function () {
+    //           alertModal[0].close();
+    //         },
+    //         showNegativeBtn: false,
+    //       });
+    //       // alert(response.data.errorMessage);
+    //   });
+    // }
   });
 
 });

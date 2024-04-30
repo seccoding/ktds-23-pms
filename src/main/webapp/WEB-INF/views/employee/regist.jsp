@@ -48,6 +48,10 @@ input[type="checkbox"]:checked {
 input[type="checkbox"]:disabled {
 	background: var(--secondary);
 }
+
+#prfl {
+	align-content: space-around;
+}
 </style>
 
 <script type="text/javascript" src="/js/employee/regist.js"></script>

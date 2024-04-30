@@ -79,7 +79,7 @@
 		     , #{apprCtgr}
 		     , '801'
 		     , #{apprTtl}
-		     , ''
+		     , #{apprCntnt}
 		     , #{dmdId}
 		     , #{apprMngId}
 		     , NULL
