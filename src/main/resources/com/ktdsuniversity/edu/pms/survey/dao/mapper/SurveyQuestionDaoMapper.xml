@@ -325,6 +325,7 @@
 		 WHERE p.DEL_YN = 'N'
 		   AND d.DEL_YN = 'N'
 		   AND cc.DEL_YN = 'N'
+		   AND p.PRJ_STS = '409'
 			<if test='searchStatus != null and searchStatus != ""'>
 	            <choose>
 	                <when test='searchStatus == "all"'>
