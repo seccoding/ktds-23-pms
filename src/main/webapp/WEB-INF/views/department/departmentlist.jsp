@@ -11,33 +11,78 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/department/departmentlist.js"
     ></script>
     <style>
+      html {
+        width: 100%;
+        height: 100%;
+      }
       .hidden {
         display: none;
       }
-      .create-modal,
-      .create-modal-team {
+      .create-modal {
+        outline: none;
         position: absolute;
 
+        border-radius: 20px;
+        border: 0;
+        box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
         justify-content: center;
         top: 30%;
         left: 30%;
 
-        width: 40%;
+        width: 30%;
         height: 45%;
+        padding: 2.5rem;
+
+        background-color: rgba(F, F, F, 0.8);
+      }
+      .create-modal-team {
+        position: absolute;
+
+        border-radius: 20px;
+        border: 0;
+        box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        justify-content: center;
+        top: 25%;
+        left: 30%;
+
+        width: 30%;
+        height: 50%;
         padding: 2rem;
 
         background-color: rgba(F, F, F, 0.8);
       }
-      .modify-modal-dept,
-      .modify-modal-team {
+      .modify-modal-dept {
         position: absolute;
 
+        border-radius: 20px;
+        border: 0;
+        box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
         justify-content: center;
         top: 20%;
         left: 30%;
 
-        width: 40%;
-        height: 55%;
+        width: 30%;
+        height: 60%;
+        padding: 2rem;
+
+        background-color: rgba(F, F, F, 0.8);
+      }
+      .modify-modal-team {
+        position: absolute;
+
+        border-radius: 20px;
+        border: 0;
+        box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        justify-content: center;
+        top: 17.5%;
+        left: 30%;
+
+        width: 30%;
+        height: 65%;
         padding: 2rem;
 
         background-color: rgba(F, F, F, 0.8);
@@ -95,6 +140,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         margin-top: 1.9rem;
         width: 7rem;
       }
+      .margin-seperate {
+        padding: 1rem;
+        margin-top: 1rem;
+        background-color: var(--box-bg);
+      }
     </style>
   </head>
   <body>
@@ -117,14 +167,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </select>
         <!-- <input id="department-leader" type="text" class="grid-item" /> -->
       </div>
-      <div class="flex">
+      <div class="flex" style="justify-content: flex-end">
+        <input class="button dep-submit-button" type="button" value="등록" />
         <input
           class="button"
           id="dep-cancel-button"
           type="button"
           value="취소"
         />
-        <input class="button dep-submit-button" type="button" value="등록" />
       </div>
     </dialog>
 
@@ -151,14 +201,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </c:forEach>
         </select>
       </div>
-      <div class="flex">
+      <div class="flex" style="justify-content: flex-end">
+        <input class="button team-submit-button" type="button" value="등록" />
         <input
           class="button"
           id="team-cancel-button"
           type="button"
           value="취소"
         />
-        <input class="button team-submit-button" type="button" value="등록" />
       </div>
     </dialog>
 
@@ -185,18 +235,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <!-- <input id="department-leader-mod" type="text" class="grid-item" /> -->
       </div>
 
-      <div class="flex">
-        <input
-          class="button"
-          id="dep-modify-cancel-button"
-          type="button"
-          value="취소"
-        />
+      <div class="flex" style="justify-content: flex-end">
         <input
           class="button"
           id="dep-modify-submit-button"
           type="button"
           value="수정"
+        />
+        <input
+          class="button"
+          id="dep-modify-cancel-button"
+          type="button"
+          value="취소"
         />
       </div>
     </dialog>
@@ -222,18 +272,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <input id="team-dept-mod" type="text" class="grid-item" />
       </div>
 
-      <div class="flex">
-        <input
-          class="button"
-          id="tm-modify-cancel-button"
-          type="button"
-          value="취소"
-        />
+      <div class="flex" style="justify-content: flex-end">
         <input
           class="button"
           id="tm-modify-submit-button"
           type="button"
           value="수정"
+        />
+        <input
+          class="button"
+          id="tm-modify-cancel-button"
+          type="button"
+          value="취소"
         />
       </div>
     </dialog>
@@ -242,7 +292,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       class="grid"
       data-gap="0.5rem"
       data-grid-columns="1fr 1fr 1fr"
-      data-grid-rows="30.7rem 17rem"
+      data-grid-rows="35rem 20rem"
     >
       <div class="overflow-scroll">
         <h4 class="fixed" style="background-color: var(--body-bg)">부서</h4>
@@ -320,8 +370,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
       </div>
 
-      <div class="overflow-scroll">
-        <h4 style="background-color: var(--body-bg)">부서 정보</h4>
+      <div class="overflow-scroll margin-seperate">
+        <h4>부서 정보</h4>
         <div
           class="grid code-info"
           data-grid-columns="1fr 1fr"
@@ -339,7 +389,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
 
         <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-          <div data-columns="1 / -1" style="text-align: right">
+          <div
+            data-columns="1 / -1"
+            style="text-align: right; margin-top: 1rem"
+          >
             <input
               type="button"
               class="department-create button"
@@ -358,8 +411,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </div>
         </c:if>
       </div>
-      <div class="overflow-scroll">
-        <h4 style="background-color: var(--body-bg)">팀 정보</h4>
+      <div class="overflow-scroll margin-seperate">
+        <h4>팀 정보</h4>
         <div
           class="grid code-info sub-code-info"
           data-grid-columns="1fr 1fr"
@@ -379,7 +432,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <div id="codeTmCrtDt"></div>
         </div>
         <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-          <div data-columns="1 / -1" style="text-align: right">
+          <div
+            data-columns="1 / -1"
+            style="text-align: right; margin-top: 1.5rem"
+          >
             <input
               type="button"
               class="emp-team-create button hidden"
@@ -395,8 +451,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </div>
         </c:if>
       </div>
-      <div class="overflow-scroll">
-        <h4 style="background-color: var(--body-bg)">사원 정보</h4>
+      <div class="overflow-scroll margin-seperate">
+        <h4>사원 정보</h4>
         <div class="grid" style="display: flex" data-grid-columns="1fr 3fr">
           <div>
             <img
