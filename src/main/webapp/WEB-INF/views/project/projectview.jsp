@@ -63,18 +63,20 @@
                         <td>${project.prjName}</td>
                         <th>PM</th>
                         <td>${pm.employeeVO.empName}</td>
+                        <th style="text-align: center;">진행상태</th>
                     </tr>
                     <tr>
                         <th>기간</th>
                         <td>${project.strtDt} ~ ${project.endDt}</td>
                         <th>담당부서</th>
                         <td>${project.deptVO.deptName}</td>
+                        <td rowspan="2" style="text-align: center;">${project.prjStsCode.cmcdName}</td>
                     </tr>
                     <tr>
                         <th>인원</th>
                         <td>${teammateCount}</td>
-                        <th>상태</th>
-                        <td>${project.prjStsCode.cmcdName}</td>
+                        <th>고객사</th>
+                        <td>${project.clntInfo}</td>
                     </tr>
                 </table>
             </div>
