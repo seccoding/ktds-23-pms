@@ -27,8 +27,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <label for="name">작성자 ID</label>
       <div>${knowledgeVO.crtrId}</div>
 
-      <label for="name">수정자 ID</label>
-      <div>${knowledgeVO.mdfrId}</div>
+      <!-- <label for="name">수정자 ID</label>
+      <div>${knowledgeVO.mdfrId}</div> -->
 
       <label for="originFileName">첨부파일</label>
       <div>
