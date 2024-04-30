@@ -58,9 +58,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <div class="grid" data-id="${knowledgeVO.knlId}">
       <div class="main-info">
         <div class="grid info-border">
-          <!-- <span style="display: none" hidden id="login-email"
-          >${sessionScope._LOGIN_USER_.empId}</span
-        > -->
+          <!-- <span style="display: hidden" hidden id="login-email"
+            >${sessionScope._LOGIN_USER_.empId}</span
+          > -->
           <!-- <label for="knlTtl">제목</label> -->
           <div class="sub-item">${knowledgeVO.knlTtl}</div>
 

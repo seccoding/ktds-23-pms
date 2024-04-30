@@ -107,12 +107,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div class="hereCkEditor5">
           <%-- 여기가 editor 생성부 --%>
           <div class="editor" data-name="rqmCntnt" data-init-content=""></div>
-          <!-- <input
-            type="text"
-            id="rqm-cntnt"
-            name="rqmCntnt"
-            style="visibility: hidden"
-          /> -->
         </div>
 
         <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->

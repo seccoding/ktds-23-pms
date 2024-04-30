@@ -25,14 +25,14 @@
 <table class="table">
     <colgroup>
         <col width="40px" />
-        <col width="60px" />
+        <col width="120px" />
+        <col width="180px" />
+        <col width="*" />
+        <col width="120px" />
+        <col width="100px" />
         <col width="80px" />
         <col width="80px" />
-        <col width="50px" />
-        <col width="80px" />
-        <col width="50px" />
-        <col width="50px" />
-        <col width="50px" />
+        <col width="110px" />
     </colgroup>
     <thead>
         <tr>
@@ -41,13 +41,13 @@
                 <label for="checked-all"></label>
             </th>
             <th>프로젝트</th>
-            <th>요구사항명</th>
-            <th>이슈제목</th>
-            <th>등록자</th>
-            <th>등록일</th>
+            <th>요구사항</th>
+            <th>제목</th>
+            <th>작성자</th>
             <th>이슈상태</th>
             <th>조회수</th>
             <th>난이도</th>
+            <th>작성일</th>
         </tr>
     </thead>
     <tbody>
@@ -63,10 +63,10 @@
                         <td>${issue.requirementVO.rqmTtl}</td>
                         <td><a href="/issue/view?isId=${issue.isId}">${issue.isTtl}</a></td>
                         <td>${issue.employeeVO.empName}</td>
-                        <td>${issue.crtDt}</td>
                         <td>${issue.isSts}</td>
                         <td>${issue.isCnt}</td>
                         <td>${issue.isLv}</td>
+                        <td>${issue.crtDt}</td>
                     </tr>
                 </c:forEach>
             </c:when>
@@ -95,8 +95,8 @@
   
         <select id="search-type" name="searchType">
           <option value="" selected disabled hidden>검색 옵션</option>
-          <option value="project" ${searchIssueVO.searchType eq 'project' ? 'selected' : ''}>프로젝트명</option>
-          <option value="requirement" ${searchIssueVO.searchType eq 'requirement' ? 'selected' : ''}>요구사항명</option>  
+          <option value="project" ${searchIssueVO.searchType eq 'project' ? 'selected' : ''}>프로젝트</option>
+          <option value="requirement" ${searchIssueVO.searchType eq 'requirement' ? 'selected' : ''}>요구사항</option>  
           <option value="title" ${searchIssueVO.searchType eq 'title' ? 'selected' : ''}>이슈제목</option>
           <option value="content" ${searchIssueVO.searchType eq 'content' ? 'selected' : ''}>내용</option>
           <option value="creator" ${searchIssueVO.searchType eq 'creator' ? 'selected' : ''}>작성자</option>
@@ -112,7 +112,7 @@
     </div>
         <div class="create-btn">
             <button>
-                <a href="/issue/write">이슈등록</a>
+                <a href="/issue/write">신규등록</a>
             </button>
             <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y'}">
                 <button>

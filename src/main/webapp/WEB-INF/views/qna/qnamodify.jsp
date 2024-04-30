@@ -35,19 +35,24 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <label for="qa-cntnt">내용</label>
           <div class="hereCkEditor5">
             <%-- editor 생성부 --%>
-            <div class="editor" data-name="qaCntnt"></div>
-            <input
-              type="text"
-              id="qaCntnt"
-              name="qaCntnt"
-              style="visibility: hidden"
-            />
+            <div
+              class="editor"
+              data-name="qaCntnt"
+              data-init-content="${qnaVO.qaCntnt}"
+            ></div>
           </div>
         </div>
       </div>
     </form>
     <div id="modify-btn">
-      <button type="button" data-key="${qnaVO.qaId}">수정</button>
+      <button
+        id="submit-btn"
+        data-type="modify"
+        type="button"
+        data-key="${qnaVO.qaId}"
+      >
+        수정
+      </button>
     </div>
   </body>
 </html>

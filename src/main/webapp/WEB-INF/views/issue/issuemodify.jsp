@@ -35,14 +35,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             <label for="content">이슈 내용</label>
             <div class="hereCkEditor5">
                 <%-- 여기가 editor 생성부 --%>
-                <div class="editor" data-name="isCntnt"></div>
-                <input
-                  type="text"
-                  id="is-content"
-                  name="isCntnt"
-                  style="visibility: hidden"
-                  value="${issueVO.isCntnt}"
-                />
+                <div 
+                  class="editor" 
+                  data-name="isCntnt"
+                  data-init-content="${issueVO.isCntnt}">
+                </div>
             </div>
           </div>
     </form>

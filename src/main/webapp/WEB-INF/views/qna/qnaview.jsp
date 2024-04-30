@@ -82,7 +82,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
       </div>
 
-      <div class="sub-info sub-item">
+      <div class="sub-info">
         <div class="grid info-border">
           <label class="sub-item" for="originFileName">첨부파일</label>
           <div class="sub-item">
