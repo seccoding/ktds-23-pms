@@ -15,8 +15,19 @@ $().ready(function () {
       $("#workSts").val(res.data.employee.workSts).prop("employee");
     }
   );
-
-  $(".change-dept-btn").on("click", function () {
+  
+  //버튼 하나만 있는 모달창 띄우기 
+  // $(".change-dept-btn").on("click", function () {
+  //   if ($(".grid").data("teamlist").length != 0) {
+  //     loadModal({
+  //       content: "팀이 존재하여 부서를 변경할 수 없습니다.",
+  //       fnPositiveBtnHandler : function() {
+  //         alertModal[0].close();
+  //       },
+  //       showNegativeBtn: false,
+  //     })
+        
+    $(".change-dept-btn").on("click", function () {
     if ($(".grid").data("teamlist").length != 0) {
       console.log("불가능");
       alert("팀이 존재하여 부서를 변경할 수 없습니다.");

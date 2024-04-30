@@ -28,10 +28,20 @@ uri="jakarta.tags.core" %>
       label {
         font-weight: bold;
       }
+      .origin-dept {
+        width: 30rem;
+      }
     </style>
   </head>
   <body>
     <h2>사원 정보수정</h2>
+    <div id="myModal" class="modal hidden">
+      <div id="modal-content" class="flex-col">
+        <h3 id="modal-title"></h3>
+        <div id="modal-message"></div>
+        <button id="modal-close-btn">닫기</button>
+      </div>
+    </div>
     <!-- <form
     action="/employee/modify/${employeeVO.empId}"
     method="post"
@@ -39,7 +49,7 @@ uri="jakarta.tags.core" %>
 
     <div class="grid" data-teamlist="${employeeVO.teamList}">
       <label for="empId">사원 ID</label>
-      <div type="text" id="empId" name="empId">${employeeVO.empId}</div>
+      <input type="text" id="empId" name="empId" value="${employeeVO.empId}" disabled/>
 
       <label for="empName">사원 이름</label>
       <input type="text" id="empName" name="empName" value="${employeeVO.empName}" />
@@ -57,10 +67,10 @@ uri="jakarta.tags.core" %>
       <input type="text" id="email" value="${employeeVO.email}" />
 
       <label for="newPwd">비밀번호</label>
-      <input type="password" id="newPwd" name="newPwd" value="${employeeVO.newPwd}" />
+      <input type="password" id="newPwd" name="newPwd" value="${employeeVO.newPwd}" style="width : 30rem" />
 
       <label for="confirmPwd">비밀번호 확인</label>
-      <input type="password" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}" />
+      <input type="password" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}" style="width: 30rem;" />
       <span id="password-match-status"></span>
 
       <!-- 개인 정보 수정 화면 -->
@@ -79,7 +89,7 @@ uri="jakarta.tags.core" %>
           <input type="text" id="hireYear" name="hireYear" value="${employeeVO.hireYear}" disabled />
 
           <label for="hireDt">입사일</label>
-          <input type="date" id="hireDt" name="hireDt" value="${employeeVO.hireDt}" />
+          <input type="date" id="hireDt" name="hireDt" value="${employeeVO.hireDt}" style="width: 30rem;" />
 
           <label for="posiHist">직급</label>
           <input type="text" id="posiHist" name="posiHist" value="${employeeVO.commonCodeVO.cmcdName}" />
@@ -114,8 +124,10 @@ uri="jakarta.tags.core" %>
           </dialog>
 
           <label for="dept-select">부서</label>
-          <input class="origin-dept" value="${employeeVO.departmentVO.deptName}" disabled />
-          <button class="change-dept-btn">부서변경</button>
+            <div style="margin-bottom: 0.2rem">
+              <input class="origin-dept" value="${employeeVO.departmentVO.deptName}" disabled />
+              <button class="change-dept-btn">부서변경</button>
+            </div>
           <div id="hidden-selectbox" class="hidden">
             <select id="dept-select" class="dept-select" data-origin="${employeeVO.deptId}">
               <c:forEach items="${departmentlist.departmentList}" var="department">
@@ -167,8 +179,7 @@ uri="jakarta.tags.core" %>
 
       
       <div class="btn-group">
-        <div class="right-align">
-         
+        <div class="right-align" style="padding-top: 1rem;">
           <button type="button" class="save-modify">저장</button>
         </div>
       </div>
