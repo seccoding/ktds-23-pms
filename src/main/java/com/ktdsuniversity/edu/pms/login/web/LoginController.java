@@ -101,10 +101,10 @@ public class LoginController {
 				logger.debug("오늘 출근 기록이 없습니다. 출근을 기록하겠습니다.");
 				boolean insertCommuteSuccess = this.loginLogService.insertCommuteIn(employee);
 				if (insertCommuteSuccess) {
-					logger.debug("출퇴근 기록에 성공했습니다.");
+					logger.debug("출근 기록에 성공했습니다.");
 					todayCommuteVO = this.loginLogService.getCommuteDt(employee.getEmpId());
 				} else {
-					logger.debug("출퇴근 기록에 실패했습니다.");
+					logger.debug("출근 기록에 실패했습니다.");
 				}
 
 
@@ -177,9 +177,12 @@ public class LoginController {
 	public String doCommuteFinish(@SessionAttribute("_LOGIN_USER_") EmployeeVO employee) {
 		CommuteVO fnshTime = this.loginLogService.getCommuteDt(employee.getEmpId());
 		if (fnshTime.getFnshTime() == null) {
-			boolean insertCommuteSuccess = this.loginLogService.updateCommuteFnsh(employee);
-			if (insertCommuteSuccess) {
+			boolean updateCommuteFnshSuccess = this.loginLogService.updateCommuteFnsh(employee);
+			if (updateCommuteFnshSuccess) {
 				fnshTime = this.loginLogService.getCommuteDt(employee.getEmpId());
+				logger.debug("퇴근 기록에 성공했습니다.");
+			} else {
+				logger.debug("퇴근 기록에 실패했습니다.");
 			}
 		}
 		employee.setCommuteVO(fnshTime);
