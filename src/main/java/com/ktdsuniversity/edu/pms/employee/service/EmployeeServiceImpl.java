@@ -152,12 +152,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
 
-		if(employeeVO.getHashedNewPwd() != null && !employeeVO.getHashedNewPwd().isEmpty()) {
-			if(!employeeVO.getHashedNewPwd().equals(employeeVO.getConfirmPwd())) {
+		if(employeeVO.getNewPwd() != null && !employeeVO.getNewPwd().isEmpty()) {
+			if(!employeeVO.getNewPwd().equals(employeeVO.getConfirmPwd())) {
 				return false;
 			}
 			String salt = this.sha.generateSalt();
-			String newPwd = this.sha.getEncrypt(employeeVO.getHashedNewPwd(), salt);
+			String newPwd = this.sha.getEncrypt(employeeVO.getNewPwd(), salt);
 			employeeVO.setPwd(newPwd);
 			employeeVO.setSalt(salt);
 		}

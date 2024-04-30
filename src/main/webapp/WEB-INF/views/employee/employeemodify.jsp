@@ -57,7 +57,7 @@ uri="jakarta.tags.core" %>
       <input type="text" id="email" value="${employeeVO.email}" />
 
       <label for="newPwd">비밀번호</label>
-      <input type="password" id="newPwd" name="hashedNewPwd" value="${employeeVO.hashedNewPwd}" />
+      <input type="password" id="newPwd" name="newPwd" value="${employeeVO.newPwd}" />
 
       <label for="confirmPwd">비밀번호 확인</label>
       <input type="password" id="confirmPwd" name="confirmPwd" value="${employeeVO.confirmPwd}" />
