@@ -237,6 +237,8 @@
 	     , Q.FILE_NAME
 	     , Q.ORIGIN_FILE_NAME
 	     , P.PRJ_NAME
+	     , R.RQM_ID 
+	     , R.RQM_TTL
 	  FROM QNA Q
 	 INNER JOIN REQUIREMENT R
 	    ON R.RQM_ID = Q.RQM_ID

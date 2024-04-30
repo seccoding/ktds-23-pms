@@ -240,6 +240,7 @@
 		 , K.CRTR_ID
 		 , K.MDFR_ID
 	     , R.RQM_ID 
+	     , R.RQM_TTL
 	     , P.PRJ_NAME
 	     , K.FILE_NAME
 	     , K.ORIGIN_FILE_NAME

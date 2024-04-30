@@ -12,29 +12,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/qna/qnalist.js"
     ></script>
     <style>
-      .btn-group {
-          float: right;
-      }
-
-      .submit-btn {
-          width: 7rem;
-      }
-
-      .search {
-        display: flex;
-        justify-content: space-between;
-      }
-
       .search-keyword {
           display: flex;
       }
-
-      .search-keyword > * {
-          padding-right: 0.825rem;
-      }
-
-      .search-category {
-          padding-bottom: 11px;
+      .create-btn {
+        text-align: right;
       }
   </style>
   </head>
@@ -44,14 +26,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <table class="table">
         <colgroup>
           <col width="40px" />
-          <col width="100px" />
+          <col width="120px" />
           <col width="180px" />
           <col width="100px" />
           <col width="*" />
           <col width="80px" />
           <col width="80px" />
-          <col width="150px" />
-          <col width="150px" />
+          <col width="130px" />
+          <!-- <col width="150px" /> -->
         </colgroup>
         <thead>
           <tr>
@@ -62,13 +44,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             </c:if>
             </th>
             <th>프로젝트</th>
-            <th>요구사항명</th>
-            <th>등록자</th>
+            <th>요구사항</th>
+            <th>작성자</th>
             <th>제목</th>
             <th>조회수</th>
             <th>추천수</th>
-            <th>작성일자</th>
-            <th>수정일자</th>
+            <th>작성일</th>
+            <!-- <th>수정일</th> -->
           </tr>
         </thead>
         <tbody>
@@ -96,7 +78,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <td>${qna.qaCnt}</td>
                   <td>${qna.qaRecCnt}</td>
                   <td>${qna.crtDt}</td>
-                  <td>${qna.mdfDt}</td>
+                  <!-- <td>${qna.mdfDt}</td> -->
                 </tr>
               </c:forEach>
             </c:when>
@@ -117,39 +99,43 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <!-- 검색 -->
     <nav aria-label="Page navigation">
       <form id="search-form">
-        <input type="hidden" id="page-no" name="pageNo" value="0">
-        <select name="listSize" id="list-size">
-          <option value="10" ${searchQnaVO.listSize eq 10 ? 'selected' : ''}>10개</option>
-          <option value="20" ${searchQnaVO.listSize eq 20 ? 'selected' : ''}>20개</option>
-          <option value="30" ${searchQnaVO.listSize eq 30 ? 'selected' : ''}>30개</option>
-          <option value="50" ${searchQnaVO.listSize eq 50 ? 'selected' : ''}>50개</option>
-          <option value="100" ${searchQnaVO.listSize eq 100 ? 'selected' : ''}>100개</option>
-        </select>
+        <div class="search-keyword">
+          <input type="hidden" id="page-no" name="pageNo" value="0" />
+            <select name="listSize" id="list-size">
+              <option value="10" ${searchQnaVO.listSize eq 10 ? 'selected' : ''}>10개</option>
+              <option value="20" ${searchQnaVO.listSize eq 20 ? 'selected' : ''}>20개</option>
+              <option value="30" ${searchQnaVO.listSize eq 30 ? 'selected' : ''}>30개</option>
+              <option value="50" ${searchQnaVO.listSize eq 50 ? 'selected' : ''}>50개</option>
+              <option value="100" ${searchQnaVO.listSize eq 100 ? 'selected' : ''}>100개</option>
+            </select>
 
-        <select name="searchType" id="search-type">
-          <option value="" selected disabled hidden>검색 옵션</option>
-          <option value="prjName" ${searchQnaVO.searchType eq 'prjName' ? 'selected' : ''}>프로젝트</option>
-          <option value="rqmTtl" ${searchQnaVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항명</option>
-          <option value="qaTtl" ${searchQnaVO.searchType eq 'qaTtl' ? 'selected' : ''}>제목</option>
-          <option value="qaCntnt" ${searchQnaVO.searchType eq 'qaCntnt' ? 'selected' : ''}>내용</option>
-          <option value="qaTtl_qaCntnt" ${searchQnaVO.searchType eq 'qaTtl_qaCntnt' ? 'selected' : ''}>제목 + 내용</option>
-          <option value="crtrId" ${searchQnaVO.searchType eq 'crtrId' ? 'selected' : ''}>등록자</option>
-        </select>
+            <select name="searchType" id="search-type">
+              <option value="" selected disabled hidden>검색 옵션</option>
+              <option value="prjName" ${searchQnaVO.searchType eq 'prjName' ? 'selected' : ''}>프로젝트</option>
+              <option value="rqmTtl" ${searchQnaVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항명</option>
+              <option value="qaTtl" ${searchQnaVO.searchType eq 'qaTtl' ? 'selected' : ''}>제목</option>
+              <option value="qaCntnt" ${searchQnaVO.searchType eq 'qaCntnt' ? 'selected' : ''}>내용</option>
+              <option value="qaTtl_qaCntnt" ${searchQnaVO.searchType eq 'qaTtl_qaCntnt' ? 'selected' : ''}>제목 + 내용</option>
+              <option value="crtrId" ${searchQnaVO.searchType eq 'crtrId' ? 'selected' : ''}>등록자</option>
+            </select>
 
-        <input type="text" name="searchKeyword" value="${searchQnaVO.searchKeyword}">
-        <button type="button" id="search-btn">검색</button>
-        <button type="button" id="search-btn-cancel">초기화</button>
+            <div>
+              <input type="text" name="searchKeyword" value="${searchQnaVO.searchKeyword}">
+              <button type="button" id="search-btn">검색</button>
+              <button type="button" id="search-btn-cancel">초기화</button>
+            </div>
+        </div>
 
-        <div class="btn-group">
+        <div class="create-btn">
+          <button>
+            <a href="/qna/write">신규 등록</a>
+          </button>
           <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
             <button>
               <a href="/qna/excel/download">엑셀 다운</a>
             </button>
             <button type="button" id="deleteMassiveQna" href="javascript:void(0);">일괄삭제</button>
           </c:if>
-            <button>
-              <a href="/qna/write">신규 등록</a>
-            </button>
         </div>
 
         <!-- pagination -->

@@ -7,33 +7,34 @@ $().ready(function () {
   });
 
   $("#deleteMassiveQna").on("click", function () {
-    loadModal({
-      content: "삭제할 게시글을 선택하세요.",
-      fnPositiveBtnHandler: function () {
-        location.reload();
-      },
-      showNegativeBtn: false,
-    });
     var checkedItems = $(".target-qna-id:checked");
     var itemsArray = [];
     checkedItems.each(function (index, data) {
       itemsArray.push($(data).val());
     });
-    $.post(
-      "/ajax/qna/delete/massive",
-      { deleteItems: itemsArray },
-      function (response) {
-        var result = response.data.result;
-        if (result) {
-          loadModal({
-            content: "게시글을 일괄삭제 하시겠습니까?",
-            fnPositiveBtnHandler: function () {
-              location.reload();
-            },
-          });
-        }
-      }
-    );
+
+    if (itemsArray.length === 0) {
+      loadModal({
+        content: "삭제할 게시글을 선택하세요.",
+        showNegativeBtn: false,
+      });
+    } else {
+      loadModal({
+        content: "게시글을 일괄 삭제 하시겠습니까?",
+        fnPositiveBtnHandler: function () {
+          $.post(
+            "/ajax/qna/delete/massive",
+            { deleteItems: itemsArray },
+            function (response) {
+              var result = response.data.result;
+              if (result) {
+                location.reload();
+              }
+            }
+          );
+        },
+      });
+    }
   });
 
   // checked-all
