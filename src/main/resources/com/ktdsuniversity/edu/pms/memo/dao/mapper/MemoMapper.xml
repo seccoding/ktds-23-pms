@@ -65,7 +65,6 @@
          M.MEMO_CNTNT,
          M.MEMO_TTL,
          M.RCV_SAVE,
-         M.CRTR_SAVE,
          R.EMAIL AS RCV_EMAIL,
          R.EMP_NAME AS RCV_NAME,
          C.EMAIL AS CRTR_EMAIL,
@@ -158,7 +157,6 @@
 		         M.MEMO_CNTNT,
 		         M.MEMO_TTL,
 		         M.RCV_SAVE,
-		         M.CRTR_SAVE,
 		         R.EMAIL AS RCV_EMAIL,
 		         R.EMP_NAME AS RCV_NAME,
 		         C.EMAIL AS CRTR_EMAIL,
@@ -250,7 +248,6 @@
          M.MEMO_CNTNT,
          M.MEMO_TTL,
          M.RCV_SAVE,
-         M.CRTR_SAVE,
          R.EMAIL AS RCV_EMAIL,
          R.EMP_NAME AS RCV_NAME,
          C.EMAIL AS CRTR_EMAIL,
@@ -304,8 +301,7 @@
 			 , SAVE_YN
 			 , MEMO_CNTNT
 			 , MEMO_TTL
-			 , RCV_SAVE
-			 , CRTR_SAVE)
+			 , RCV_SAVE)
 			 VALUES
 			  ('MM_' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '_' || LPAD(SEQ_MEMO_PK.NEXTVAL,6 ,'0')
 			 , #{rcvId} /* 받는 사람 */
@@ -316,7 +312,6 @@
 			 , 'N'
 			 , #{memoCntnt} /* 세션에 적은 내용 */
 			 , #{memoTtl} /* 세션에 적은 제목 */
-			 , NULL
 			 , NULL)
   	</insert>  
   	
@@ -331,7 +326,6 @@
          M.MEMO_CNTNT,
          M.MEMO_TTL,
          M.RCV_SAVE,
-         M.CRTR_SAVE,
          R.EMAIL AS RCV_EMAIL,
          R.EMP_NAME AS RCV_NAME,
          C.EMAIL AS CRTR_EMAIL,
@@ -388,4 +382,53 @@
 		   AND MEMO_ID = #{memoId}
   	</update>
   	
+  	
+  	
+  	
+  	
+  	<select id="getReceiveMemoReadYCount"
+  			resultType="_int">
+  		SELECT COUNT(1)
+  		  FROM MEMO M
+  		 INNER JOIN EMPLOYEE E
+  		    ON E.EMP_ID = M.CRTR_ID
+  		 WHERE M.DEL_YN = 'N'
+  		   AND M.RCV_SAVE IS NULL
+  		   AND M.RCV_ID = #{empId}
+  		   AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
+  		   AND M.READ_YN = 'N'
+  		 ORDER BY M.CRT_DT DESC
+  	</select>
+  
+  	<select id="getReadYReceiveMemo"
+		  parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO"
+		  resultMap="MemoVOMap">
+
+		  SELECT M.MEMO_ID,
+		         M.RCV_ID,
+		         M.CRTR_ID,
+		         TO_CHAR(M.CRT_DT, 'YYYY-MM-DD(HH24:MM:SS)') AS CRT_DT,
+		         M.READ_YN,
+		         M.DEL_YN,
+		         M.SAVE_YN,
+		         M.MEMO_CNTNT,
+		         M.MEMO_TTL,
+		         M.RCV_SAVE,
+		         R.EMAIL AS RCV_EMAIL,
+		         R.EMP_NAME AS RCV_NAME,
+		         C.EMAIL AS CRTR_EMAIL,
+		         C.EMP_NAME AS CRTR_NAME
+		    FROM MEMO M
+		    INNER JOIN EMPLOYEE R
+		      ON R.EMP_ID = M.RCV_ID
+		    INNER JOIN EMPLOYEE C
+		      ON C.EMP_ID = M.CRTR_ID
+		    WHERE M.RCV_ID = #{empId}
+		      AND M.DEL_YN = 'N'
+		      AND M.RCV_SAVE IS NULL
+		      AND M.CRT_DT >= TRUNC(ADD_MONTHS(SYSDATE, -3))
+			  AND M.READ_YN = 'N'
+		  ORDER BY M.CRT_DT DESC
+
+	</select>
 </mapper>
