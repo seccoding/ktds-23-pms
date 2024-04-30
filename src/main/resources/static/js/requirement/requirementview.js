@@ -2,7 +2,7 @@ $().ready(function () {
   $("#approve, #refuse").on("click", function () {
     var dalayApprove = $(this).data("approve");
     var url = window.location.href;
-    var rqmId = $("#rqmId").data("rqmId");
+    var rqmId = $(".grid").data("rqmId");
 
     $.post(
       "/project/requirement/delayaccess?rqmId=" + rqmId,
@@ -86,11 +86,13 @@ $().ready(function () {
                 fnPositiveBtnHandler: function () {
                   location.href = url;
                 },
+                showNegativeBtn: false,
               });
               location.href = url;
             } else {
               loadModal({
                 content: "삭제권한이 없습니다",
+                showNegativeBtn: false,
               });
             }
           }
@@ -106,14 +108,90 @@ $().ready(function () {
     var crtrId = $("#rqm-info").data("crtr-id");
     var adminCode = $("#rqm-info").data("admin-code");
 
-    if (adminCode == 302) {
-      if (crtrId != sessionId) {
-        alert("권한이 없습니다");
-        return;
-      }
+    if (adminCode == 301 || crtrId == sessionId) {
+      location.href =
+        "/project/requirement/modify?prjId=" + prjId + "&rqmId=" + rqmId;
+    } else {
+      loadModal({
+        content: "권한이 없습니다",
+        showNegativeBtn: false,
+      });
     }
+  });
 
-    location.href =
-      "/project/requirement/modify?prjId=" + prjId + "&rqmId=" + rqmId;
+  $("#test-result").on("click", function () {
+    var rqmId = $(".grid").data("rqmId");
+    var url = window.location.href;
+
+    loadModal({
+      content: "테스트 결과를 체크해주세요",
+      positiveBtnName: "성공",
+      fnPositiveBtnHandler: function () {
+        $.post(
+          "/ajax/project/requirement/testresult?rqmId=" + rqmId,
+          { testApprove: true },
+          function (response) {
+            var error = response.data.error;
+            var result = response.data.result;
+            var errorMassage = response.data.errorMassage;
+
+            if (error) {
+              loadModal({
+                content: errorMassage,
+                showNegativeBtn: false,
+              });
+            } else {
+              if (result) {
+                loadModal({
+                  content: "결과입력 성공",
+                  showNegativeBtn: false,
+                  fnPositiveBtnHandler: function () {
+                    location.href = url;
+                  },
+                });
+              } else {
+                loadModal({
+                  content: "결과입력에 문제가 있습니다, 관리자에 문의해주세요",
+                  showNegativeBtn: false,
+                });
+              }
+            }
+          }
+        );
+      },
+      negatgiveBtnName: "실패",
+      fnNegativeBtnHandler: function () {
+        $.post(
+          "/ajax/project/requirement/testresult?rqmId=" + rqmId,
+          { testApprove: false },
+          function (response) {
+            var error = response.data.error;
+            var result = response.data.result;
+
+            if (error) {
+              loadModal({
+                content: error,
+                showNegativeBtn: false,
+              });
+            } else {
+              if (result) {
+                loadModal({
+                  content: "결과입력 성공",
+                  showNegativeBtn: false,
+                  fnPositiveBtnHandler: function () {
+                    location.href = url;
+                  },
+                });
+              } else {
+                loadModal({
+                  content: "결과입력에 문제가 있습니다, 관리자에 문의해주세요",
+                  showNegativeBtn: false,
+                });
+              }
+            }
+          }
+        );
+      },
+    });
   });
 });

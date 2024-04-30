@@ -65,6 +65,8 @@ $().ready(function () {
     }
   });
 
+
+
   var dialog = $(".alert-dialog");
   if (dialog.length > 0) {
     dialog[0].showModal();
@@ -121,7 +123,7 @@ $().ready(function () {
 
     if(newPwd == confirmPwd) {
       var willAddList = {};
-      willAddList.hashedNewPwd = newPwd;
+      willAddList.newPwd = newPwd;
     
 
 
@@ -138,6 +140,8 @@ $().ready(function () {
     willAddList.hireDt = $("#hireDt").val();
     willAddList.cntct = $("#cntct").val();
     willAddList.addr = $("#addr").val();
+    willAddList.confirmPwd = $("#confirmPwd").val();
+    willAddList.newPwd = $("#newPwd").val();
     willAddList.brth = $("#brth").val();
     willAddList.email = $("#email").val();
     willAddList.deptId = $("#dept-select option:selected").val();

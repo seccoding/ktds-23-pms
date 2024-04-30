@@ -90,7 +90,7 @@
                     <a class="page-link" href="javascript:search(${searchEmployeeVO.nextGroupStartPageNo});"><img src="/images/chevron-right.svg"/></a>
                 </li>
                 <li class="page-item last">
-                    <a class="page-link" href="javascript:search(${searchEmployeeVO.groupCount - 1});"><img src="/images/chevron-double-right.svg"/></a>
+                    <a class="page-link" href="javascript:search(${searchEmployeeVO.pageCount-1});"><img src="/images/chevron-double-right.svg"/></a>
                 </li>
             </c:if>
         </ul>

@@ -14,7 +14,6 @@
 	
 	<resultMap type="com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO" id="jobHistMap" autoMapping="true">
 		<id column="JOB_HIST_ID" property="jobHistId"/>
-		<result column="PAST_JOB_ID" property="pastJobId" />
 		<association property="jobVO" javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
 			<id column="JOB_ID" property="jobId"/>
 			<result column="JOB_NAME" property="jobName"/>
@@ -93,19 +92,18 @@
 		, 'N'
 		, #{jobHistoryVO.pastJobId})
 	</insert>
-	
+
 	<select id="getRecentJobHist" parameterType="string" resultType="string">
 		SELECT TO_CHAR(JH.JOB_END_DT, 'YYYY-MM-DD') JOB_END_DT
-		  FROM (SELECT JOB_END_DT
-				  FROM JOB_HISTORY
-				 WHERE EMP_ID = #{_parameter}
-				   AND DEL_YN = 'N'
-				 ORDER BY JOB_HIST_ID DESC ) JH
-		 WHERE ROWNUM = 1
+		FROM (SELECT JOB_END_DT
+		FROM JOB_HISTORY
+		WHERE EMP_ID = #{_parameter}
+		AND DEL_YN = 'N'
+		ORDER BY JOB_HIST_ID DESC ) JH
+		WHERE ROWNUM = 1
 	</select>
-	
-	
-	
+
+
 	<select id="getAllJobHist" parameterType="string" resultMap="jobHistMap">
 		SELECT JH.JOB_HIST_ID
 			 , JH.EMP_ID

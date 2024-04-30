@@ -132,7 +132,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <div clsss>
           <select name="rqmSts" id="rqm-sts" value="${requirement.rqmSts}">
             <c:forEach items="${rqmSts}" var="rqmSts">
-              <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+              <c:if test="${ rqmSts.cmcdId != '605'}">
+                <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+              </c:if>
             </c:forEach>
           </select>
         </div>

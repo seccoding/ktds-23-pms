@@ -26,7 +26,7 @@ public interface BorrowService {
 	public BorrowListVO getUserRentalStateForAppr(EmployeeVO employeeVO);
 
 
-	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
+	public BorrowListVO searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
 
 
 

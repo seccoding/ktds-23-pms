@@ -36,5 +36,7 @@ public interface RequirementDao {
 	
 	public List<RequirementVO> getAllRequirementByTeammateId (String empId);
 
+	public int updateTestResult(RequirementVO requirementVO);
+
 
 }

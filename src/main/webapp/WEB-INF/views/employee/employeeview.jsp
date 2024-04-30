@@ -47,9 +47,26 @@
         .photo{
           width: 10rem;
           height: 10rem;
+          
         }
         label{
             font-weight: bold;
+        }
+        .change1{
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        }
+        .change1 > h5 {
+          margin-left: 5rem;
+          margin-bottom: 0.5rem;
+        }
+        .change-table{
+          width: 90%;
+          margin-left: 5%;
+        }
+        .overflow-table{
+          height: 8.735625rem;
+          overflow-y: auto;
         }
       </style>
 </head>
@@ -85,7 +102,7 @@
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
     <div class="grid-container" data-id="${employeeVO.empId}">
       <div class="info-container">
-    <div>
+    <div style="text-align: center;">
       <c:choose>
         <c:when test="${not empty employeeVO.prfl}">
           <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
@@ -160,7 +177,7 @@
     </div>  
     <c:choose>
 
-   
+    
         <c:when test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <div class="btn-group">
             <button class="backto-list">
@@ -175,8 +192,11 @@
               <button class="delete-employee">퇴사 처리</button>
             </c:if>
           </div>
-          <div>
+          <div class="change1">
             <h5>직무 변경 사항</h5>
+            <div class="overflow-table">
+
+            
             <table class="job-change change-table">
               <thead>
                 <tr>
@@ -197,20 +217,23 @@
                     </td>
                   </tr>
                 </c:if>
-                <c:forEach items="${jobHistList}" var="jHL" varStatus="item">
+                <c:forEach items="${jobHistList}" var="jH" varStatus="item">
                   <tr>
-                    <td>${item.count}</td>
-                    <td>${jHL.jobVO.jobName}</td>
-                    <td>${jHL.jobStrtDt}</td>
-                    <td>${jHL.jobEndDt}</td>
-                    <td>${jHL.cnNote}</td>
+                    <td>${item.index+1}</td>
+                    <td>${jH.jobVO.jobName}</td>
+                    <td>${jH.jobStrtDt}</td>
+                    <td>${jH.jobEndDt}</td>
+                    <td>${jH.cnNote}</td>
                   </tr>
                 </c:forEach>
               </tbody>
             </table>
           </div>
-          <div>
+          </div>
+          <div class="change1">
             <h5>직급 변경 사항</h5>
+            <div class="overflow-table">
+
             <table class="position-change change-table">
               <thead>
                 <tr>
@@ -242,9 +265,12 @@
                 </c:forEach>
               </tbody>
             </table>
+            </div>
           </div>
-          <div>
+          <div class="change1">
             <h5>부서 변경 사항</h5>
+            <div class="overflow-table">
+
             <table class="dept-change change-table">
               <thead>
                 <tr>
@@ -276,6 +302,7 @@
                 </c:forEach>
               </tbody>
             </table>
+            </div>
           </div>
         </c:when>
         <c:otherwise>

@@ -204,16 +204,18 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <label for="rqm-sts">진행상태</label>
         <select name="rqmSts" id="rqm-sts" value="${requirement.rqmSts}">
           <c:forEach items="${rqmSts}" var="rqmSts">
-            <c:choose>
-              <c:when test="${rqmSts.cmcdId eq requirement.rqmSts}">
-                <option value="${rqmSts.cmcdId}" selected>
-                  ${rqmSts.cmcdName}
-                </option>
-              </c:when>
-              <c:otherwise>
-                <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
-              </c:otherwise>
-            </c:choose>
+            <c:if test="${ rqmSts.cmcdId != '605'}">
+              <c:choose>
+                <c:when test="${rqmSts.cmcdId eq requirement.rqmSts}">
+                  <option value="${rqmSts.cmcdId}" selected>
+                    ${rqmSts.cmcdName}
+                  </option>
+                </c:when>
+                <c:otherwise>
+                  <option value="${rqmSts.cmcdId}">${rqmSts.cmcdName}</option>
+                </c:otherwise>
+              </c:choose>
+            </c:if>
           </c:forEach>
         </select>
 
