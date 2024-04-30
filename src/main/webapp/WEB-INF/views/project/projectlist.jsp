@@ -9,31 +9,7 @@
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/project/projectlist.js"></script>
     <script type="text/javascript" src="/js/modal.js"></script>
-    <style>
-        .btn-group {
-            float: right;
-        }
-
-        .submit-btn {
-            width: 7rem;
-        }
-
-        .search {
-            justify-content: center;
-        }
-
-        .search-keyword {
-            display: flex;
-        }
-
-        .search-keyword > * {
-            padding-right: 0.825rem;
-        }
-
-        .search-category {
-            padding-bottom: 11px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/project/projectlist.css"/>
 </head>
 <body>
 <div>

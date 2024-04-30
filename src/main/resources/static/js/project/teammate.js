@@ -30,6 +30,7 @@ $().ready(function () {
             alertModal.hide();
             alertModal.removeAttr('data-teammateId');
             alertModal.removeAttr('data-teammateIds');
+
             if ($("#select-teammate")) {
                 $("#select-teammate").remove();
             }
@@ -46,7 +47,6 @@ $().ready(function () {
                 var teammateId = alertModal.data('teammateId');
                 $.get("/ajax/teammate/delete/" + teammateId, function (response) {
                     var oneDeleteResult = response.data.result;
-                    console.log(oneDeleteResult);
                     if (oneDeleteResult) {
                         location.reload();
                     }
@@ -69,6 +69,7 @@ $().ready(function () {
                     return;
                 } else {
                     if (modalStatus === 'addTeammate') {
+                        alertModal.hide();
                         $.post("/ajax/teammate/add",
                             {
                                 prjId: projectId,
@@ -80,7 +81,11 @@ $().ready(function () {
                                 if (result === true) {
                                     location.reload();
                                 } else {
-                                    alert(message);
+                                    modalStatus = 'fail';
+
+                                    modalText.text(message);
+                                    modalButton.text("확인")
+                                    alertModal.show();
                                 }
                             });
                     }
