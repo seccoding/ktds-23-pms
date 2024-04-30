@@ -23,7 +23,8 @@ public class MainController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-	@Autowired MemoService memoService;
+	@Autowired 
+	private MemoService memoService;
 
 	@GetMapping("/")
 	public String viewMainLayoutPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
@@ -38,11 +39,12 @@ public class MainController {
 		String deptName = this.departmentService.getDepartmentNameById((employeeVO.getDeptId()));
 		model.addAttribute("deptname", deptName);
 		
-		searchMemoVO.setEmpId(employeeVO.getEmpId());
-		MemoListVO memoListVO =this.memoService.getReceiveMemoAllsearch(searchMemoVO);
-		
-		model.addAttribute("memoList", memoListVO );
-		model.addAttribute("searchMemoVO", searchMemoVO);
+//		// 쪽지 필요 데이터 가져오기 (받은 쪽지 중 안 읽은 쪽지 갯수 및 목록정보) 
+//		searchMemoVO.setEmpId(employeeVO.getEmpId());
+//		MemoListVO memoListVO =this.memoService.getReceiveMemoReadYsearch(searchMemoVO);
+//		
+//		model.addAttribute("memoList", memoListVO );
+//		model.addAttribute("searchMemoVO", searchMemoVO);
 		
 		return "main/dashboard";
 	}
