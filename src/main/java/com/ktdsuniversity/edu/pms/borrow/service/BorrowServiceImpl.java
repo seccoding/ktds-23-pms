@@ -93,9 +93,13 @@ public class BorrowServiceImpl implements BorrowService{
 
 
 	@Override
-	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO) {
+	public BorrowListVO searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO) {
 		List<BorrowVO> notReturnBorrowList = this.borrowDao.searchProductManageStateNotReturn(searchBorrowVO);
-		return notReturnBorrowList;
+		int borrowCount = this.borrowDao.searchProductManagementStateAllCount(searchBorrowVO);
+		BorrowListVO notReturnList = new BorrowListVO();
+		notReturnList.setBorrowList(notReturnBorrowList);
+		notReturnList.setBorrowCnt(borrowCount);
+		return notReturnList;
 	}
 
 }
