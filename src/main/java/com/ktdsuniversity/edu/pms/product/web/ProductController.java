@@ -38,9 +38,16 @@ public class ProductController {
 	public String viewProductListPage(Model model, ProductVO productVO, SearchProductVO searchProductVO) {
 //		ProductListVO productListVO = this.productService.getAllProduct();
 		
-		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
+		boolean isCheck = false;
+		if(searchProductVO.getIsCheck() != null) {
+			isCheck = searchProductVO.getIsCheck();
+		}
 		
-		model.addAttribute("productList", productListVO);
+		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
+		ProductListVO notReturnListVO = this.productService.searchAllProductNotReturn(searchProductVO);
+		
+		model.addAttribute("productList", isCheck ? notReturnListVO : productListVO);
+		model.addAttribute("isCheck", isCheck);
 		model.addAttribute("productVO", productVO);
 		return "product/list";
 	}
@@ -100,8 +107,17 @@ public class ProductController {
 		if (employeeVO.getAdmnCode().equals("302")) {
 			throw new AccessDeniedException();
 		}
+		
+		boolean isCheck = false;
+		if(searchProductVO.getIsCheck() != null) {
+			isCheck = searchProductVO.getIsCheck();
+		}
+		
 		ProductListVO productListVO = this.productService.searchAllProduct(searchProductVO);
-		model.addAttribute("productList", productListVO);
+		ProductListVO notReturnListVO = this.productService.searchAllProductNotReturn(searchProductVO);
+		
+		model.addAttribute("productList", isCheck ? notReturnListVO : productListVO);
+		model.addAttribute("isCheck", isCheck);
 		model.addAttribute("productVO", productVO);
 		return "product/managelist";
 	}

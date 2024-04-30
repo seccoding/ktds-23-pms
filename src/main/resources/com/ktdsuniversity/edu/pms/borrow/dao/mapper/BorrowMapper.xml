@@ -106,7 +106,6 @@
 			</choose>
 		</if>
 		 ORDER BY BH.BRRW_DT DESC
-		
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
@@ -334,7 +333,10 @@
 		  FROM BORROW_HISTORY BH
 		 INNER JOIN PRODUCT_MANAGEMENT PM
 		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID 
-		 INNER JOIN PRODUCT P
+		 INNER JOIN (SELECT P_I.*
+						  , REPLACE(P_I.PRDT_NAME, ' ', '') AS SEARCH_PRDT_NAME
+						  , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+					   FROM PRODUCT P_I) P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
 		   AND PM.LOST_YN = 'N'
@@ -346,7 +348,7 @@
 		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
 				</when>
 				<when test='searchType == "productName"'>
-		   AND REPLACE(P.PRDT_NAME, ' ', '') LIKE '%' || #{searchKeyword} || '%'
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 				<when test='searchType == "borrowId"'>
 		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'

@@ -7,7 +7,15 @@ public class SearchProductVO extends PaginateVO {
 	private String searchType; // option 선택
 	private String searchKeyword; // 검색어
 	
+	private Boolean isCheck;
 	
+	
+	public Boolean getIsCheck() {
+		return isCheck;
+	}
+	public void setIsCheck(Boolean isCheck) {
+		this.isCheck = isCheck;
+	}
 	public String getSearchType() {
 		return searchType;
 	}

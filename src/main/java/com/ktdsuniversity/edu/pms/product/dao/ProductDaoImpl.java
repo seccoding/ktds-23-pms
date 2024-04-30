@@ -130,4 +130,14 @@ public class ProductDaoImpl extends SqlSessionDaoSupport implements ProductDao{
 	public int getOneExistCount(String inputName) {
 		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".getOneExistCount", inputName);
 	}
+
+	@Override
+	public List<ProductVO> searchAllProductNotReturn(SearchProductVO searchProductVO) {
+		return getSqlSession().selectList(ProductDao.NAME_SPACE + ".searchAllProductNotReturn", searchProductVO);
+	}
+
+	@Override
+	public int searchProductAllNotReturnCount(SearchProductVO searchProductVO) {
+		return getSqlSession().selectOne(ProductDao.NAME_SPACE + ".searchProductAllNotReturnCount", searchProductVO);
+	}
 }
