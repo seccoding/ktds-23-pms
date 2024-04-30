@@ -269,6 +269,24 @@ public class RequirementController {
 		return ajax.append("result", isSuccess).append("dalayApprove", dalayApprove);
 
 	}
+	@ResponseBody
+	@PostMapping("/ajax/project/requirement/testresult")
+	public AjaxResponse testResult(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @RequestParam String rqmId,
+			boolean testApprove) {
+	
+	RequirementVO requirementVO= this.requirementService.getOneRequirement(rqmId);	
+	if(!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니고
+		if(!requirementVO.getTstr().equals(employeeVO.getEmpId())
+				&&  requirementVO.getRqmSts().equals("604")) {
+			return new AjaxResponse().append("error", true).
+					append("errorMassage", "테스트 결과 입력 권한이 없습니다");
+		}
+	}
+	
+	boolean isSuccess = this.requirementService.updateTestResult(requirementVO, testApprove);
+		
+		return new AjaxResponse().append("result", isSuccess);
+	}
 
 	private Map<String, List<String>> requirementValidator(RequirementVO requirementVO) {
 
