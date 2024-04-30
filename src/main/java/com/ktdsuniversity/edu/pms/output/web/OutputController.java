@@ -137,8 +137,14 @@ public class OutputController {
 			@PathVariable String outId, Model model) {
 		this.checkAccess(employeeVO);
 
-		List<ProjectVO> projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
-		projectList = projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
+		List<ProjectVO> projectList;
+		if(employeeVO.getAdmnCode().equals("301")) {
+			projectList=this.projectService.getAllProject().getProjectList();
+		}else {
+			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+
+		}
+		projectList =projectList.stream().filter(project -> project.getOutYn().equals("Y")).toList();
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		OutputVO output = this.outputService.getOneOutput(outId);

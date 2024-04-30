@@ -98,8 +98,11 @@ public class OutputServiceImpl implements OutputService {
 		OutputVO output = this.outputDao.getOneOutput(outId);
 		
 		OutputVO nextOutput =this.outputDao.getOneOutputByPoutId(outId);
+		if(nextOutput != null) {
+			
 		nextOutput.setOutVerNum(output.getOutVerNum());
 		this.outputDao.updateOneOutput(nextOutput);
+		}
 		
 		// 산출물은 파일이 필수요소라서 있는지 체크 x
 		this.fileHandler.deleteFileByFileName(output.getOutEncodeFile());
