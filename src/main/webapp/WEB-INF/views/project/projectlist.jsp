@@ -69,7 +69,7 @@
                             <td>${project.deptVO.deptName}</td>
                             <td>${project.prjStsCode.cmcdName}</td>
                             <td>${project.strtDt}</td>
-                            <td>${project.strtDt}</td>
+                            <td>${project.endDt}</td>
                         </tr>
                     </c:forEach>
                 </c:when>
