@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.borrow.dao.BorrowDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductDao;
 import com.ktdsuniversity.edu.pms.product.dao.ProductManagementDao;
 import com.ktdsuniversity.edu.pms.product.vo.ProductListVO;
@@ -22,6 +23,9 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 	
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private BorrowDao borrowDao;
 
 	@Override
 	public ProductManagementListVO getAllProductdetail() {
@@ -71,16 +75,24 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 	}
 
 	@Override
-	public ProductManagementVO getOneProductManagement(String productId) {
-		ProductManagementVO productManagementVO = this.productManagementDao.getOneProductManagement(productId);
+	public ProductManagementVO getOneProductManagement(String prdtMngId) {
+		ProductManagementVO productManagementVO = this.productManagementDao.getOneProductManagement(prdtMngId);
 		return productManagementVO;
 	}
 
 	@Transactional
 	@Override
 	public boolean modifyOneProductManagement(ProductManagementVO productManagementVO) {
+		int modifySuccessCnt = this.productManagementDao.modifyOneProductManagement(productManagementVO);
+		ProductManagementVO getProductMnItem = this.productManagementDao.getOneProductManagement(productManagementVO.getPrdtMngId());
+		int willChange = 0;
+		int changeCnt = 0;
 		
-		return productManagementDao.modifyOneProductManagement(productManagementVO) > 0;
+		if(getProductMnItem.getBrrwYn().equals("Y")) {
+			willChange++;
+			changeCnt = this.borrowDao.changeState(getProductMnItem.getPrdtMngId());			
+		}
+		return modifySuccessCnt > 0 && willChange==changeCnt;
 	}
 
 	@Transactional

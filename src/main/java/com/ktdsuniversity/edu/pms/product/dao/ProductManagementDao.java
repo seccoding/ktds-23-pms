@@ -26,7 +26,7 @@ public interface ProductManagementDao {
 
 	public int deleteOneProductManagement(String productId);
 
-	public ProductManagementVO getOneProductManagement(String productId);
+	public ProductManagementVO getOneProductManagement(String prdtMngId);
 
 	public int modifyOneProductManagement(ProductManagementVO productManagementVO);
 

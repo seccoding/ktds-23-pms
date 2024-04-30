@@ -119,4 +119,11 @@ public class BorrowServiceImpl implements BorrowService{
 		return this.borrowDao.getAllListCnt(searchBorrowVO);
 	}
 
+
+
+	@Override
+	public List<BorrowVO> getUserRentalState(String empId) {
+		return this.borrowDao.getUserRentalStateForMain(empId);
+	}
+
 }

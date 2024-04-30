@@ -36,5 +36,8 @@ public interface BorrowService {
 	public int getAllCnt(SearchBorrowVO searchBorrowVO);
 
 
+	public List<BorrowVO> getUserRentalState(String empId);
+
+
 
 }

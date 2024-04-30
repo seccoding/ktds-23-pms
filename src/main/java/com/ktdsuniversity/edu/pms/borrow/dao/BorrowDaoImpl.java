@@ -113,4 +113,14 @@ public class BorrowDaoImpl extends SqlSessionDaoSupport implements BorrowDao {
 		return getSqlSession().selectOne(BorrowDao.NAME_SPACE+".getAllListCnt", searchBorrowVO);
 	}
 
+	@Override
+	public int changeState(String prdtMngId) {
+		return getSqlSession().update(BorrowDao.NAME_SPACE+".changeState", prdtMngId);
+	}
+
+	@Override
+	public List<BorrowVO> getUserRentalStateForMain(String empId) {
+		return getSqlSession().selectList(BorrowDao.NAME_SPACE+".getUserRentalStateForMain", empId);
+	}
+
 }

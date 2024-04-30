@@ -408,4 +408,26 @@
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
+	<update id="changeState" parameterType="string">
+		UPDATE BORROW_HISTORY 
+		   SET RTN_DT = SYSDATE 
+		 WHERE PRDT_MNG_ID = #{_parameter}
+		   AND RTN_DT IS NULL
+	</update>
+	
+	<select id="getUserRentalStateForMain" parameterType="string" resultMap="borrowVOMap">
+		SELECT P.PRDT_NAME
+		     , BH.PRDT_MNG_ID 
+		     , P.PRDT_CTGR 
+		     , TO_CHAR(BH.BRRW_DT, 'YYYY-MM-DD') BRRW_DT
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON PM.PRDT_MNG_ID = BH.PRDT_MNG_ID 
+		 INNER JOIN PRODUCT P
+		    ON P.PRDT_ID = PM.PRDT_ID 
+		 WHERE P.ONCE_YN = 'N'
+		   AND BH.RTN_DT IS NULL
+		   AND BH.BRRW_ID = #{_parameter}
+	</select>
+	
 </mapper>
