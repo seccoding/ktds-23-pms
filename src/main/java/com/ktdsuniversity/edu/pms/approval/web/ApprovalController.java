@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.approval.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +25,10 @@ import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
 import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
-import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 
@@ -45,8 +46,6 @@ public class ApprovalController {
 	@Autowired
 	private EmployeeService employeeService;
 	@Autowired
-	private DepartmentService departmentService;
-	@Autowired
 	private BorrowService borrowService;
 
 	@GetMapping(value ={"/approval/home", "/approval/home/waiting", "/approval/home/delay", "/approval/home/oneMonth"})
@@ -55,7 +54,7 @@ public class ApprovalController {
 
 		String url = request.getRequestURI();
 		String uri = url.substring(url.lastIndexOf('/') + 1);
-		boolean searchAuth = compareDeptLeader(employeeVO.getEmpId());
+		boolean searchAuth = this.approvalService.getDeptLeader(employeeVO.getEmpId());
 		
 		// 완료되지 않은 결재
 		SearchApprovalVO searchWatingApprovalVO = new SearchApprovalVO("waiting", searchAuth, "", employeeVO);
@@ -105,7 +104,7 @@ public class ApprovalController {
 		model.addAttribute("approvalVO", approvalVO);
 		ApprovalDetailListVO approvalListVO = this.approvalDetailService.getPersonApprovalDetail(apprId);
 		model.addAttribute("approvalList", approvalListVO);
-		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
+		searchApprovalVO.setSearchAuth(this.approvalService.getDeptLeader(employeeVO.getEmpId()));
 		model.addAttribute("searchApproval", searchApprovalVO);
 
 		if (approvalVO == null || approvalVO.getApprovalDetailVOList() == null) {
@@ -119,7 +118,6 @@ public class ApprovalController {
 
 		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
 		BorrowListVO borrowListVO = this.borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
-		// 부서 정보 얻어와야함
 
 		if (borrowListVO.getBorrowCnt() == 0 && borrowListVO.getBorrowList().size() == 0) {
 			model.addAttribute("errorMessage", "대여중인 비품이 없으므로 비품변경신청을 할 수 없습니다.");
@@ -130,6 +128,24 @@ public class ApprovalController {
 		model.addAttribute("borrowList", borrowListVO);
 		return "approval/approvalwrite";
 	}
+	
+//	@GetMapping("/approval/rentalwrite")
+//	public String viewApprvalWriteFromRentalPage(@RequestParam String prdtMngId, Model model, 
+//													@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+//
+//		logger.info("1....................");
+//		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
+//		List<String> productList = new ArrayList<>();
+//		for(ProductVO productVO : borrowLists) {
+//			productList.add(productVO.getPrdtId());
+//		}
+//		List<BorrowVO> borrowList = this.approvalService.getAddProductApproval(productList);
+//		
+//		model.addAttribute("employee", dmdEmployeeVO);
+//		model.addAttribute("borrowList", borrowList);
+//
+//		return "approval/approvalwrite";
+//	}
 
 	@ResponseBody
 	@PostMapping("/ajax/approval/write")
@@ -225,7 +241,7 @@ public class ApprovalController {
 									, Model model, SearchApprovalVO searchApprovalVO) {
 
 		searchApprovalVO.setEmployeeVO(employeeVO);
-		searchApprovalVO.setSearchAuth(compareDeptLeader(employeeVO.getEmpId()));
+		searchApprovalVO.setSearchAuth(this.approvalService.getDeptLeader(employeeVO.getEmpId()));
 		EmployeeVO employee = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
 		ApprovalListVO apprListVO = this.approvalService.searchAllApproval(searchApprovalVO);
 		model.addAttribute("employee", employee);
@@ -233,12 +249,4 @@ public class ApprovalController {
 		model.addAttribute("searchApproval", searchApprovalVO);
 	}
 
-	// 경영지원부장 체크
-	private boolean compareDeptLeader(String empId) {
-		String authId = this.departmentService.selectOneDepartment("DEPT_230101_000010").getDeptLeadId();
-		if(empId.equals(authId)) {
-			return true;
-		}
-		return false;
-	}
 }

@@ -47,7 +47,8 @@
 		.grid-container-user > .grid-item:nth-child(odd) {
 			background-color: var(--body-bg);
 		}
-		.grid-container-user > .grid-item:nth-child(14) {
+		.grid-container-user > .grid-item:nth-child(14),
+		.grid-container-user > .grid-item:nth-child(16) {
 			grid-column: 2/-1;
 		}
 		.dmd-info-user,
@@ -106,18 +107,27 @@
 			overflow-y: auto;
 			max-height: 11rem;
 		}
-	/* .modal-text,
-	.modal-confirm-text {
-		text-align: center;
-		color: #b00;
-		font-size: 1.2rem;
-		font-weight: bold;
-	} */
-	.input-space,
-	.input-confirm-space {
-		text-align: right;
-		align-items: end;
-	}
+		.input-space,
+		.input-confirm-space {
+			text-align: right;
+			align-items: end;
+		}
+		.text-width {
+			width: -webkit-fill-available;
+			background-color: var(--body-bg);
+			border : 0px;
+			border-radius: 0.3rem;
+		}
+		.text-height1 {
+			height: -webkit-fill-available;
+		}
+		.text-height2 {
+			height: 10rem;
+		}
+		input[type="textarea"]:focus {
+			outline: none !important;
+			box-shadow: rgba(253, 54, 54, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+		}
 	</style>
 </head>
 <body>
@@ -144,6 +154,14 @@
 							<input id="empId" type="text" name="empId" value="${employee.empId}" hidden>
 						</div>
 						<div class="grid-item">
+							<label for="tmName"><h6>소속팀</h6></label>
+						</div>
+						<div class="grid-item">
+							<c:forEach items="${sessionScope._LOGIN_USER_.teamList}" var="team">
+								<span>${team.tmName}</span>
+							</c:forEach>
+						</div>
+						<div class="grid-item">
 							<label for="deptName"><h6>작성부서</h6></label>
 						</div>
 						<div class="grid-item">
@@ -154,14 +172,6 @@
 						</div>
 						<div class="grid-item">
 							<input id="apprCtgr" type="text" name="apprCtgr" value="비품변경" readonly>
-						</div>
-						<div class="grid-item">
-							<label for="brrwDt"><h6>신청일</h6></label>
-						</div>
-						<div class="grid-item">
-							<input type="date" id="dmdDt" name="dmdDt"/>
-							<!-- <input type="datetime-local" id="dmdDt" name="dmdDt"/> -->
-							<!-- <input id="brrwDt" type="text" name="brrwDt" value="날짜" readonly> -->
 						</div>
 						<div class="grid-item">
 							<label for="apprMngName"><h6>결재자</h6></label>
@@ -180,7 +190,13 @@
 							<label for="apprTtl"><h6>결재 문서 제목</h6></label>
 						</div>
 						<div class="grid-item">
-							<input id="apprTtl" type="text" name="apprTtl" value="">
+							<input id="apprTtl" type="textarea" name="apprTtl" class="text-width text-height1">
+						</div>
+						<div class="grid-item">
+							<label for="apprTtl"><h6>결재 내용</h6></label>
+						</div>
+						<div class="grid-item">
+							<input id="apprCntnt" type="textarea" name="apprCntnt" class="text-width text-height2">
 						</div>
 					</div>
 				</div>
