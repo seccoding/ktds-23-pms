@@ -8,8 +8,20 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/review/reviewresult.js"></script>
     <!-- <link rel="stylesheet" href="/css/common.css" /> -->
+      <jsp:include page="../commonmodal.jsp"/>
     <style type="text/css">
-
+	   .title {
+            margin-bottom: 3rem;
+       }
+		.modal-confirm-text {
+	    text-align: center;
+	    color: #000000;
+	    font-size: 0.8rem;
+	    overflow: auto;
+	    word-break: break-all;
+        word-wrap: break-word;
+	  	}
+       
       div.grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -21,27 +33,77 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        width: 150px;
+        width: 500px;
         display: inline-block;
       }
+      .modal-window,
+	  .modal-confirm-window {
+			position: absolute;
+			border-radius: 20px;
+			border: 0;
+			box-shadow: 0px 8px 15px 0px rgba(0, 0, 0, 0.1);
+			transition: box-shadow 0.3s ease;
 
+			justify-content: center;
+			top: 30%;
+			left: 30%;
+
+			width: 600px;
+			height: fit-content;
+			padding: 1rem;
+
+			background-color: rgba(F, F, F, 0.8);
+		}
+		.modal-close,
+		.modal-confirm-close {
+			text-align: right;
+			color: gray;
+		}
+		.modal-close:hover,
+		.modal-confirm-close:hover {
+			color: black;
+		}
+		.grid-modal,
+		.grid-confirm-modal {
+			display: grid;
+			grid-template-rows: 1fr 6fr 1fr;
+		}
+		.modal-content {
+			align-items: center;
+			display: flex;
+			justify-content: space-around;
+			vertical-align: middle;
+			overflow-y: auto;
+			max-height: 11rem;
+		}
+		.modal-confirm-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+			overflow-y: auto;
+			max-height: 11rem;
+			
+		}
+		.input-space,
+		.input-confirm-space {
+			text-align: right;
+			align-items: end;
+		}
     </style>
-        <script type="text/javascript" src="/js/review/reviewresult.js"></script>
-        <!-- <script type="text/javascript" src="/js/review/reviewlist.js"></script> -->
   </head>
   
   <body>
-  <jsp:include page="../commonmodal.jsp"/>
+
   <div>
-	총 ${reviewList.reviewCnt}건의 후기가 검색되었습니다.
 	후기 답변 현황 : ${reviewList.reviewCnt} / ${teammateCount}
   </div>
 	
     <table class="table">
       <colgroup>
          <col width="150px" />
+         <col width="200px" />
          <col width="*" />
-         <col width="150px" />
        </colgroup>
        <thead>
          <tr>
@@ -51,10 +113,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             </th>
            <th>리뷰 Id</th>
            <th>후기 내용</th>
-           <th>삭제</th>
+           <!-- <th>삭제</th> -->
          </tr>
        </thead>
        <tbody>
+       <c:choose>
+       <c:when test="${not empty reviewList.reviewList}">
          <c:forEach items="${reviewList.reviewList}" var="review" varStatus="loop">
            <tr id="${review.rvId}">
              <td>
@@ -67,14 +131,22 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
              </td>
              <td>${review.rvId}</td>
              <td class="center-align ellipsis">${review.rvCntnt}</td>
-             <td class="btn-group">
+             <!-- <td class="btn-group">
                <div class="right-align">
-<!--                  <a href="#" class="delete-button">삭제하기!</a> -->
 				<button href = "#" class="delete-button">삭제</button>
                </div>
-             </td>
+             </td> -->
            </tr>
          </c:forEach> 
+         </c:when>
+         	<c:otherwise>
+                <tr>
+                    <td colspan="2">
+                        <div>등록된 후기가 없습니다.</div>
+                    </td>
+                </tr>
+            </c:otherwise>
+         </c:choose>
        </tbody>
      </table>
     
@@ -101,6 +173,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 	    <input type="text" name="searchKeyword" value="${SearchReviewVO.searchKeyword}"/>
 	    <button type="button" id="search-btn">검색</button>
 	    <button id="deleteMassiveReview" href="javascript:void(0)">삭제</button>
+	    
     	<!--<a id="deleteMassiveMReview" href="javascript:void(0)">삭제</a>-->
 	    
             </div>
@@ -131,4 +204,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     </nav>
 <!----------------------------------------------------  Paginator 끝 -------------------------------------------------------->
 
+</body>
+</html>
 

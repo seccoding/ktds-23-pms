@@ -1,7 +1,41 @@
 $().ready(function () {
-	
+  /*$(".modal-close").on("click", function () {
+    location.reload();
+  });*/
+  
+ 
+
+
+
+$(".confirm-button").on("click", function () {
+      $.ajax({
+        url: "/ajax/review/viewresult/" + id + "/delete",
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+          console.log(data.data.result);
+          if (data.data.result === true) {
+            $("#" + id).remove();
+            /*alert("삭제를 성공했습니다!");*/
+            window.location.reload();
+          } else {
+            alert("삭제에 실패했습니다. 잠시후 재시도해주세요.");
+          }
+        },
+        error: function (request, status, error) {
+          console.log("error...");
+        },
+        complete: function () {
+          console.log("complete...");
+        },
+      });
+    });
+
+
+  
   $("#deleteMassiveReview").off("click");
-	
+
   $("#deleteMassiveReview").on("click", function (event) {
 	event.preventDefault();
 	
@@ -15,27 +49,72 @@ $().ready(function () {
     console.log(itemsArray);
     // 서버로 전송한다(ajax)
     
-    var alertModal = $(".modal-window");
+    /*var alertModal = $(".modal-window");
     var modalButton = $(".confirm-button");
     var modalText = $(".modal-text");
     modalText.text("쪽지를 삭제하시겠습니까?");
     modalButton.text("확인");
     alertModal[0].showModal();
-    
-    $(".confirm-button").on("click", function () {
-    $.post(
-      "/ajax/review/delete/massive",
-      { reviewIds: itemsArray },
-      function (response) {
-        var result = response.data.result;
-        if (result) {
-          // 삭제가 완료되면 현재페이지를 새로고침한다.
-          location.reload();
-        }
-      }
-    );
-  });
+    */
+   
+	loadModal({
+	   content: "선택한 후기를 삭제하시겠습니까?",
+	   fnPositiveBtnHandler: function () {
+		 $.post(
+		      "/ajax/review/delete/massive",
+		      { reviewIds: itemsArray },
+		      function (response) {
+		        var result = response.data.result;
+		        if (result) {
+		          // 삭제가 완료되면 현재페이지를 새로고침한다.
+		          location.reload();
+		        }
+		      }
+		    );		
+	   },
+	   
+	});
+	    
+   
+  
  });
+  
+	$(".mngr-yn").on("click", function() {
+	    loadModal({
+	        content: "후기 작성 대상이 아닙니다.",
+	        fnPositiveBtnHandler: function () {},
+	        showNegativeBtn: false
+	    });
+	});
+	
+	$(".review-yn").on("click", function() {
+	    loadModal({
+	        content: "이미 후기를 작성하셨습니다.",
+	        fnPositiveBtnHandler: function () {},
+	        showNegativeBtn: false
+	    });
+	});
+	
+	$(".ellipsis").on("click", function() {
+		var reviewContent = $(this).text();
+	    loadmyModal({
+	        content: reviewContent,
+	        fnPositiveBtnHandler: function () {},
+	        showNegativeBtn: false
+	    },
+	    /*$(".modal-confirm-text").css({
+			"paddig":"1rem", 
+
+			"color": "black",
+  			"font-size": "13px",
+    		"font-weight": "normal",
+ 			"overflow": "auto"}),*/
+	    );
+	});
+    
+        
+  
+  
   
   $(".modal-confirm-close").on("click", function () {
     location.reload();
@@ -62,32 +141,6 @@ $().ready(function () {
   $('.prjId').on('click', function() {
         $(location).attr('href', '/review/viewresult?prjId=' + $(this).attr('id'));
     });  
-    /*loadModal({
-		content: "선택된 후기를 삭제하시겠습니까?",
-		fnPositiveBtnHandler: function(){
-			$.post("review/delete/massive",
-			{rvId: rvId },
-			function (response){
-				var result = response.data.result;
-				var url = response.data.url;
-				if(result){
-					loadModal({
-						content: "삭제완료",
-						fnPositiveBtnHandler: function(){
-							location.href = url;
-						},
-					});
-					location.href = url;
-					} else{
-						loadModal({
-							content: "삭제권한이 없습니다.",
-						});
-					}
-				}
-			);
-		},
-	});*/
-    
     var alertModal = $(".modal-window");
     var modalButton = $(".confirm-button");
     var modalText = $(".modal-text");
@@ -106,34 +159,11 @@ $().ready(function () {
     search(0);
   });
 
-	$(".confirm-button").on("click", function () {
-      $.ajax({
-        url: "/ajax/review/viewresult/" + id + "/delete",
-        type: "GET",
-        dataType: "json",
-        contentType: "application/json",
-        success: function (data) {
-          console.log(data.data.result);
-          if (data.data.result === true) {
-            $("#" + id).remove();
-            /*alert("삭제를 성공했습니다!");*/
-            window.location.reload();
-          } else {
-            alert("삭제에 실패했습니다. 잠시후 재시도해주세요.");
-          }
-        },
-        error: function (request, status, error) {
-          console.log("error...");
-        },
-        complete: function () {
-          console.log("complete...");
-        },
-      });
-    });
+	
   });
 });
 
-function showModalWithReviewContent(reviewContent) {
+/*function showModalWithReviewContent(reviewContent) {
   $.get("/html/modal.html", function (modalHtml) {
     // 모달의 제목 설정
     var title = "Review Detail";
@@ -156,15 +186,53 @@ function showModalWithReviewContent(reviewContent) {
     // showModal() 메서드를 사용하여 모달을 표시
     reviewModal[0].showModal();
   });
+}*/
+
+
+function loadmyModal({
+  content = "",
+  positiveBtnName = "확인",
+  fnPositiveBtnHandler = () => {},
+  showNegativeBtn = true,
+  negatgiveBtnName = "취소",
+  fnNegativeBtnHandler = () => {},
+}) {
+  $.get("/html/newmodal.html", function (modalHtml) {
+    var modal = $(modalHtml);
+    $("body").prepend(modal);
+
+    var alertModal = $(".modal-confirm-window");
+    var modalButton = $(".confirm-confirm-button");
+    var modalButton1 = $(".cancel-confirm-button");
+    var modalText = $(".modal-confirm-text");
+    modalText.text(content);
+    modalButton.text(positiveBtnName);
+    modalButton.on("click", function () {
+      try {
+        fnPositiveBtnHandler();
+      } finally {
+        alertModal[0].close();
+        modal.remove();
+      }
+    });
+
+    modalButton1.text(negatgiveBtnName);
+    modalButton1.on("click", function () {
+      try {
+        fnNegativeBtnHandler();
+      } finally {
+        alertModal[0].close();
+        modal.remove();
+      }
+    });
+
+    if (!showNegativeBtn) {
+      modalButton1.css("display", "none");
+    }
+    alertModal[0].showModal();
+  });
 }
 
-$(document).ready(function () {
-  // ellipsis 클래스를 가진 요소가 클릭되었을 때 showModalWithReviewContent 함수 호출
-  $(".ellipsis").click(function () {
-    var reviewContent = $(this).text(); // 클릭된 ellipsis의 텍스트(후기 내용) 가져오기
-    showModalWithReviewContent(reviewContent); // 모달 창에 후기 내용 표시
-  });
-});
 
 function search(pageNo) {
   var searchForm = $("#search-form");

@@ -17,6 +17,7 @@ public class ReviewVO extends PaginateVO {
 	private String mdfrId;
 	private String delYn;
 	private String empId;
+	private String mngrYn;
 		
 	private ProjectVO projectVO;
 	private DepartmentVO departmentVO;
@@ -25,6 +26,12 @@ public class ReviewVO extends PaginateVO {
 	private EmployeeVO employeeVO;
 	private String rvYn;
 	
+	public String getMngrYn() {
+		return mngrYn;
+	}
+	public void setMngrYn(String mngrYn) {
+		this.mngrYn = mngrYn;
+	}
 	public String getEmpId() {
 		return empId;
 	}
