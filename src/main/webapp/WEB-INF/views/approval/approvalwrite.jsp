@@ -124,6 +124,9 @@
 		.text-height2 {
 			height: 10rem;
 		}
+		input[type="text"] {
+			width: -webkit-fill-available;
+		}
 		input[type="textarea"]:focus {
 			outline: none !important;
 			box-shadow: rgba(253, 54, 54, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;

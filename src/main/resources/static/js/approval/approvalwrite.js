@@ -19,15 +19,11 @@ $().ready(function(){
             loadModal({
                 content: "추가할 비품이 없습니다.",
                 fnPositiveBtnHandler: function () {
-                 alertModal[0].close();
+                    alertModal[0].close();
                 },
                 showNegativeBtn: false,
-              });
-
-
-
-            // alert("추가할 비품이 없습니다.");
-            // return;
+            });
+            return;
         }
 
         // 대여 목록 모달 열기
@@ -185,15 +181,12 @@ $().ready(function(){
             loadModal({
                 content: "변경신청할 비품을 체크해주세요.",
                 fnPositiveBtnHandler: function () {
-                 alertModal[0].close();
+                    alertModal[0].close();
+                    
                 },
                 showNegativeBtn: false,
-              });
-
-
-
-            // alert("변경신청할 비품을 체크해주세요.");
-            // return;
+            });
+            return;
         }
 
         loadModal({
@@ -208,18 +201,14 @@ $().ready(function(){
                         if(data.result && data.next) {
                             location.href = data.next;
                         } else {
-
                             loadModal({
-                                content: response.data.errors,
+                                content: response.data.errors[apprTtl],
                                 fnPositiveBtnHandler: function () {
-                                    location.href = "/approval/progresslist";
+                                    // location.href = "/approval/progresslist";
+                                    alertModal[0].close();
                                 },
                                 showNegativeBtn: false,
-                              });
-
-
-
-    
+                            });
                             // alert(response.data.errors);
                             // console.log(response.data.errors);
                         }
@@ -228,10 +217,9 @@ $().ready(function(){
             },
             showNegativeBtn: true,fnNegativeBtnHandler: function () {
                 alertModal[0].close();
-              },
-          });
-
-
+                return;
+            },
+        });
         // var chooseValue = confirm("작성한 기안서를 상신합니다.");
         // if(chooseValue) {
         // // $(modalButton).on("click", function() {
@@ -265,11 +253,9 @@ $().ready(function(){
             },
             showNegativeBtn: true,fnNegativeBtnHandler: function () {
                 alertModal[0].close();
-              },
-          });
-        
-
-
+            },
+        });
+    
         // var writeCancel = confirm("기안서 작성을 취소하시겠습니까?");
         // if(writeCancel) {
         //     location.href = "/approval/progresslist";
@@ -289,15 +275,10 @@ function productRemoveHandler() {
         loadModal({
             content: "하나 이상의 비품에 대해 변경 신청이 가능합니다.",
             fnPositiveBtnHandler: function () {
-             alertModal[0].close();
+                alertModal[0].close();
             },
             showNegativeBtn: false,
-          });
-
-
-
-
-
+        });
         // alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
         // return;
     }

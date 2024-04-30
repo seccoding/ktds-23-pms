@@ -75,7 +75,7 @@
 		     , DEL_YN)
 		VALUES
 		     ( #{apprId}
-		     , SYSDATE
+		     , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24 MI')
 		     , #{apprCtgr}
 		     , '801'
 		     , #{apprTtl}
@@ -281,7 +281,8 @@
 					AND A.DMD_DT <![CDATA[>=]]> ADD_MONTHS(SYSDATE, -1)
 				</when>
 				<otherwise>
-					AND A.DMD_DT = #{searchDate}
+					AND A.DMD_DT <![CDATA[>=]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')
+					AND A.DMD_DT <![CDATA[<]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')+1
 				</otherwise>
 			</choose>
 		</if>
@@ -352,7 +353,8 @@
 					AND A.DMD_DT <![CDATA[>=]]> ADD_MONTHS(SYSDATE, -1)
 				</when>
 				<otherwise>
-					AND A.DMD_DT = #{searchDate}
+					AND A.DMD_DT <![CDATA[>=]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')
+					AND A.DMD_DT <![CDATA[<]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')+1
 				</otherwise>
 			</choose>
 		</if>

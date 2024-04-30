@@ -114,7 +114,8 @@ public class ApprovalController {
 	}
 
 	@GetMapping("/approval/write")
-	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public String viewApprovalWritePage(Model model, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, 
+			 								HttpServletRequest request) {
 
 		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
 		BorrowListVO borrowListVO = this.borrowService.getUserRentalStateForAppr(dmdEmployeeVO);
@@ -128,24 +129,6 @@ public class ApprovalController {
 		model.addAttribute("borrowList", borrowListVO);
 		return "approval/approvalwrite";
 	}
-	
-//	@GetMapping("/approval/rentalwrite")
-//	public String viewApprvalWriteFromRentalPage(@RequestParam String prdtMngId, Model model, 
-//													@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
-//
-//		logger.info("1....................");
-//		EmployeeVO dmdEmployeeVO = this.employeeService.getOneEmployeeCheckNull(employeeVO.getEmpId());
-//		List<String> productList = new ArrayList<>();
-//		for(ProductVO productVO : borrowLists) {
-//			productList.add(productVO.getPrdtId());
-//		}
-//		List<BorrowVO> borrowList = this.approvalService.getAddProductApproval(productList);
-//		
-//		model.addAttribute("employee", dmdEmployeeVO);
-//		model.addAttribute("borrowList", borrowList);
-//
-//		return "approval/approvalwrite";
-//	}
 
 	@ResponseBody
 	@PostMapping("/ajax/approval/write")
@@ -158,7 +141,6 @@ public class ApprovalController {
 
 		Validator<ApprovalVO> validator = new Validator<>(newApprovalVO);
 		validator.add("apprTtl", Validator.Type.NOT_EMPTY, "기안서 제목을 입력해주세요.")
-				 .add("productListVO", Validator.Type.NOT_EMPTY, "변경신청할 비품을 선택해주세요")
 				 .start();
 		if(validator.hasErrors()) {
 			Map<String,List<String>> errors = validator.getErrors();

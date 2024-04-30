@@ -6,12 +6,10 @@ $().ready(function() {
         var isChecked = $(this).prop("checked");
         $("." + targetClass).prop("checked", isChecked);
     });
-
     // 기안서 작성
     $("#btn-appr-write").on("click", function() {
         location.href = "/approval/write";
     });
-
     // 검색
     $("#search-btn").on("click", function() {
         search(0);
