@@ -74,7 +74,7 @@ $().ready(function () {
         if (isAppendedReply && reply.delYn === "N") {
           appendedReply.find(".content").text(reply.rplCntnt);
           var modifyDate = appendedReply.find(".mdfDt");
-          if (modifyDate) {
+          if (modifyDate.length !== 0) {
             modifyDate.text("(수정: " + reply.mdfDt + ")");
           } else {
             var mdfyDtDom = $("<span></span>");
@@ -131,7 +131,7 @@ $().ready(function () {
           crtDtDom.text("등록: " + reply.crtDt);
           datetimeDom.append(crtDtDom);
 
-          if (reply.crtDt !== reply.mdfDt) {
+          if (reply.mdfDt != null) {
             // <span class="mdfydt">(수정: 수정날짜)</span>
             var mdfyDtDom = $("<span></span>");
             mdfyDtDom.addClass("mdfDt");
@@ -191,7 +191,7 @@ $().ready(function () {
         }
         // 대댓글은 원 댓글의 자식으로 추가한다.
         else {
-          appendedParentReply.append(replyDom);
+          appendedParentReply.after(replyDom);
         }
       }
     });
