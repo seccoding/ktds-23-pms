@@ -1,4 +1,7 @@
 $().ready(function () {
+
+  
+
   $(".select").on("change", function () {
     if ($(this).val() == "X") {
       $(".lost-day").val("");

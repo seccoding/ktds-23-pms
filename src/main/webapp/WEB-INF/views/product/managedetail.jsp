@@ -20,15 +20,30 @@
     .modal-grid{
         display: grid;
         grid-template-columns: 6rem 1fr;
-        grid-template-rows: repeat(6, 3rem);
-        gap: .3rem;
-        margin: 4rem 2rem;
+        grid-template-rows: repeat(6, 1fr);
+        gap: 1rem;
+        margin: 2rem 1rem;
     }
     table.table > tbody td[colspan] {
         text-align: center;
     }
     .modal-btn-group{
         text-align: right;
+    }
+    .sub-t{
+        margin-bottom: 2rem;
+    }
+    .center{
+        text-align: center;
+    }
+    .modal-window{
+        height: 450px;
+        width: 400px;
+        top: 10%;
+    }
+    .bold{
+        font-weight: bold;
+        margin: auto 0;
     }
 </style>
 
@@ -37,34 +52,32 @@
 <body>
     <div class="body" data-paramid="${productVO.prdtId}">
         <dialog class="modify-modal modal-window" >
-                <div class="modal-grid">
-                    <p>비품관리ID</p>
-                    <p class="manage-id"></p>
-                    <p>비품명</p>
-                    <p class="product-name"></p>
-                    <p>구매가격</p>
-                    <input type="number" class="price" min="0"/>
-                    <p>구매일</p>
-                    <input type="date" class="buy-day" />
-                    <p>분실상태</p>
-                    <select class="select">
-                        <option value="O">O</option>
-                        <option value="X">X</option>
-                    </select>
-                    <p>분실신고일</p>
-                    <input type="date" class="lost-day" />
-                </div>
-                <div class="modal-btn-group">
-                    <button type="button" value="수정" id="modify-btn">수정</button>
-                    <button type="button" value="취소" id="cancel-btn">취소</button>
-                </div>
+            <div class="modal-grid">
+                <p class="bold">비품관리ID</p>
+                <p style="margin: auto 0;" class="manage-id"></p>
+                <p class="bold">비품명</p>
+                <p style="margin: auto 0;" class="product-name"></p>
+                <p class="bold">구매가격</p>
+                <input type="number" class="price" min="0"/>
+                <p class="bold">구매일</p>
+                <input type="date" class="buy-day" />
+                <p class="bold">분실상태</p>
+                <select class="select">
+                    <option value="O">O</option>
+                    <option value="X">X</option>
+                </select>
+                <p class="bold">분실신고일</p>
+                <input type="date" class="lost-day" />
+            </div>
+            <div class="modal-btn-group">
+                <button type="button" value="수정" id="modify-btn">수정</button>
+                <button type="button" value="취소" id="cancel-btn">취소</button>
+            </div>
         </dialog>
         <h2>비품 상세 목록</h2>
-        <div class="flex">
+        <div class="flex sub-t">
             <div>총 ${productManagementList.productManagementCnt}건의 비품이 조회되었습니다.</div>
-            <div class="flex">
-
-            </div>
+            
         </div>
         <div class="grid">
 
@@ -73,12 +86,12 @@
                     <tr>
                         <th>비품관리 ID</th>
                         <th>비품명</th>
-                        <th>가격</th>
-                        <th>구매일</th>
-                        <th>대여여부</th>
-                        <th>분실상태</th>
-                        <th>분실신고일</th>
-                        <th>관리</th>
+                        <th class="center">가격</th>
+                        <th class="center">구매일</th>
+                        <th class="center">대여여부</th>
+                        <th class="center">분실상태</th>
+                        <th class="center">분실신고일</th>
+                        <th class="center">관리</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,27 +103,27 @@
                                 <tr>
                                     <td>${product.prdtMngId}</td>
                                     <td>${product.productVO.prdtName}</td>
-                                    <td>${product.prdtPrice}</td>
-                                    <td>${product.buyDt}</td>
+                                    <td style="text-align: end;">${product.prdtPrice}</td>
+                                    <td class="center">${product.buyDt}</td>
                                     <c:choose>
                                         <c:when test="${product.brrwYn eq 'Y'}">
-                                            <td>O</td>
+                                            <td class="center">O</td>
                                         </c:when>
                                         <c:otherwise>
-                                            <td>X</td>
+                                            <td class="center">X</td>
                                         </c:otherwise>
                                     </c:choose>
                                     <c:choose>
                                         <c:when test="${product.lostYn eq 'Y'}">
-                                            <td>O</td>
-                                            <td>${product.lostDt}</td>
+                                            <td class="center">O</td>
+                                            <td class="center">${product.lostDt}</td>
                                         </c:when>
                                         <c:otherwise>
-                                            <td>-</td>
-                                            <td>-</td>
+                                            <td class="center">-</td>
+                                            <td class="center">-</td>
                                         </c:otherwise>
                                     </c:choose>
-                                    <td class="flex">
+                                    <td class="center">
                                         <button class="modify" data-product="${product.prdtMngId}" data-name="${product.productVO.prdtName}">수정</button>
                                         <button class="remove" data-product="${product.prdtMngId}">삭제</button>
                                     </td>
@@ -120,7 +133,7 @@
                         <%-- productManagementList의 내용이 존재하지 않는다면 --%>
                         <c:otherwise>
                             <tr>
-                                <td colspan="6">
+                                <td colspan="6" class="center">
                                     등록된 비품이 존재하지 않습니다.
                                 </td>
                             </tr>

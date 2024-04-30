@@ -280,12 +280,12 @@ $().ready(function () {
   }
   $(".product-ctgr-modify").val($(".product-ctgr-origin").text());
 
-  $(".fi-rr-pencil").on("click", function () {
+  $(".fa-pen-to-square").on("click", function () {
     $(".main-grid").toggleClass("hidden");
-    $(".fi-rr-pencil").toggleClass("hidden");
-    $(".fi-rs-disk").toggleClass("hidden");
+    $(".fa-pen-to-square").toggleClass("hidden");
+    $(".fa-floppy-disk").toggleClass("hidden");
   });
-  $(".fi-rs-disk").on("click", function () {
+  $(".fa-floppy-disk").on("click", function () {
     $.post(
       "/ajax/product/manage/view/modifymain",
       {
