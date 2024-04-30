@@ -56,39 +56,42 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
       .commute-grid {
         display: grid;
-        grid-template-columns: 1fr 100px;
+        grid-template-columns: repeat(2, 1fr) 0.7fr;
         height: 100px;
         width: 100%;
       }
 
       .commute-grid-time {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 20px;
-        border: 1px solid #000;
-        border-radius: 10px;
-        min-width: 230px;
+        display: grid;
+        align-content: space-evenly;
+        justify-items: center;
+
       }
 
       .commute-grid-time-in,
       .commute-grid-time-out {
-        padding-left: 10px;
+
       }
 
       .commute-grid-time-in {
-        border-bottom: 0.1px solid #000;
-        padding-bottom: 5px;
-      }
 
+      }
       .commute-grid-time-out {
-        padding-top: 2px;
+        display: grid;
+        align-items: center;
+        justify-content: start;
       }
 
       .commute-grid-out {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+      }
+
+      .commute {
+        display: grid;
+        justify-content: center;
+        gap: 10px;
       }
     </style>
   </head>
@@ -104,27 +107,22 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                 <div class="commute-grid">
                   <div class="commute-grid-time">
                     <div class="commute-grid-time-in">
-                      <c:if
-                        test="${not empty sessionScope._LOGIN_USER_.commuteVO.cmmtTime}"
-                      >
-                        <div>
-                          출근시간:
-                          ${sessionScope._LOGIN_USER_.commuteVO.cmmtTime}
-                        </div>
+                      <c:if test="${not empty sessionScope._LOGIN_USER_.commuteVO.cmmtTime}">
+                        <div class="commute">출근시간</div>
+                        <div>${sessionScope._LOGIN_USER_.commuteVO.cmmtTime}</div>
                       </c:if>
                     </div>
-                    <div class="commute-grid-time-out">
+                  </div>
+                  <div class="commute-grid-time-out">
+                    <div>
                       <c:choose>
-                        <c:when
-                          test="${not empty sessionScope._LOGIN_USER_.commuteVO.fnshTime}"
-                        >
-                          <div>
-                            퇴근시간:
-                            ${sessionScope._LOGIN_USER_.commuteVO.fnshTime}
-                          </div>
+                        <c:when test="${not empty sessionScope._LOGIN_USER_.commuteVO.fnshTime}">
+                          <div class="commute">퇴근시간</div>
+                          <div>${sessionScope._LOGIN_USER_.commuteVO.fnshTime}</div>
                         </c:when>
                         <c:otherwise>
-                          <div>퇴근 처리되지 않았습니다</div>
+                          <div class="commute">퇴근시간</div>
+                          <div>퇴근 처리되지 않음.</div>
                         </c:otherwise>
                       </c:choose>
                     </div>

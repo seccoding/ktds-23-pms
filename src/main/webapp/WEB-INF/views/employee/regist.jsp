@@ -14,6 +14,8 @@
 	grid-template-columns: 100px 1fr;
 	column-gap: 0;
 	gap: 5px;
+	align-items: baseline;
+	width: 500px;
 }
 
 input[type="text"], input[type="email"], input[type="password"], input[type="date"],
@@ -29,30 +31,18 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 	background-color: var(--border-color);
 }
 
-input[type="checkbox"] {
-	width: 1.2rem;
-	height: 1.2rem;
-	border: 1px solid #000;
-	background-color: var(--border-color);
-	display: inline-block;
-	cursor: pointer;
-	vertical-align: middle;
-	border-radius: 0.3rem;
-	user-select: none;
-	margin: 0.3rem;
-}
-
-input[type="checkbox"]:checked {
-	background: var(--btn-color);
-}
-
-input[type="checkbox"]:disabled {
-	background: var(--secondary);
-}
-
 #prfl {
 	align-content: space-around;
 }
+
+.regist-btn {
+	display: grid;
+	justify-items: end;
+}
+
+.erro
+
+
 </style>
 
 <script type="text/javascript" src="/js/employee/regist.js"></script>
@@ -225,8 +215,12 @@ input[type="checkbox"]:disabled {
 				<div>
 					<input id="mngrYn" type="checkbox" name="mngrYn"
 						value="${employeeVO.mngrYn == 'N'}" />
+					<label for="mngrYn"></label>
+					<label for="mngrYn"></label>
 				</div>
 				<div>
+				</div>
+				<div class="regist-btn">
 					<button type="button" id="regist-btn">회원가입</button>
 				</div>
 
