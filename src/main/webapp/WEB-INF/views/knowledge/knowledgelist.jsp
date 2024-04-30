@@ -28,8 +28,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <col width="40px" />
           <col width="120px" />
           <col width="180px" />
-          <col width="100px" />
           <col width="*" />
+          <col width="120px" />
           <col width="80px" />
           <col width="80px" />
           <col width="130px" />
@@ -45,8 +45,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             </th>
             <th>프로젝트</th>
             <th>요구사항</th>
-            <th>작성자</th>
             <th>제목</th>
+            <th>작성자</th>
             <th>조회수</th>
             <th>추천수</th>
             <th>작성일</th>
@@ -66,15 +66,15 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 </td>
                   <td>${knowledge.projectVO.prjName}</td>
                   <td>${knowledge.requirementVO.rqmTtl}</td>
-                  <td>${knowledge.crtrId}</td>
                   <td>
                     <a
-                      class="ellipsis"
-                      href="/knowledge/view?knlId=${knowledge.knlId}"
+                    class="ellipsis"
+                    href="/knowledge/view?knlId=${knowledge.knlId}"
                     >
-                      ${knowledge.knlTtl}</a
+                    ${knowledge.knlTtl}</a
                     >
                   </td>
+                  <td>${knowledge.crtrId}</td>
                   <td>${knowledge.knlCnt}</td>
                   <td>${knowledge.knlRecCnt}</td>
                   <td>${knowledge.crtDt}</td>
@@ -106,17 +106,17 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <option value="20" ${searchKnowledgeVO.listSize eq 20 ? 'selected' : ''}>20개</option>
               <option value="30" ${searchKnowledgeVO.listSize eq 30 ? 'selected' : ''}>30개</option>
               <option value="50" ${searchKnowledgeVO.listSize eq 50 ? 'selected' : ''}>50개</option>
-              <option value="100" ${searchKnowledgeVO.listSize eq 100 ? 'selected' : ''}>100개</option>
             </select>
 
             <select name="searchType" id="search-type">
               <option value="" selected disabled hidden>검색 옵션</option>
               <option value="prjName" ${searchKnowledgeVO.searchType eq 'prjName' ? 'selected' : ''}>프로젝트</option>
-              <option value="rqmTtl" ${searchKnowledgeVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항명</option>
+              <option value="rqmTtl" ${searchKnowledgeVO.searchType eq 'rqmTtl' ? 'selected' : ''}>요구사항</option>
               <option value="knlTtl" ${searchKnowledgeVO.searchType eq 'knlTtl' ? 'selected' : ''}>제목</option>
               <option value="knlCntnt" ${searchKnowledgeVO.searchType eq 'knlCntnt' ? 'selected' : ''}>내용</option>
               <option value="knlTtl_knlCntnt" ${searchKnowledgeVO.searchType eq 'knlTtl_knlCntnt' ? 'selected' : ''}>제목 + 내용</option>
-              <option value="crtrId" ${searchKnowledgeVO.searchType eq 'crtrId' ? 'selected' : ''}>등록자</option>
+              <option value="crtrId" ${searchKnowledgeVO.searchType eq 'crtrId' ? 'selected' : ''}>작성자</option>
+              <option value="originFileName" ${searchQnaVO.searchType eq 'originFileName' ? 'selected' : ''}>첨부파일명</option>
             </select>
         
 
@@ -129,14 +129,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
         <div class="create-btn">
           <button>
-            <a href="/knowledge/write">신규 등록</a>
+            <a href="/knowledge/write">신규등록</a>
           </button>
           <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
             <button>
-              <a href="/knowledge/excel/download">엑셀 다운</a>
+              <a href="/knowledge/excel/download">엑셀다운</a>
             </button>
             <button>
-              <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
+              <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄삭제</a>
             </button>
           </c:if>
         </div>

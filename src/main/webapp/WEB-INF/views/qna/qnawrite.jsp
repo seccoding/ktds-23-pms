@@ -56,16 +56,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <!-- ckeditor -->
         <div class="hereCkEditor5">
           <%-- editor 생성부 --%>
-          <div class="editor" data-name="qaCntnt"></div>
-          <input
-            type="text"
-            id="qaCntnt"
-            name="qaCntnt"
-            style="visibility: hidden"
-          />
+          <div class="editor" data-name="qaCntnt" data-init-content=""></div>
         </div>
       </div>
     </form>
+
     <div class="right-align">
       <button id="submit-btn" type="button" data-type="write">등록</button>
       <button onclick="location.href='/qna'">취소</button>

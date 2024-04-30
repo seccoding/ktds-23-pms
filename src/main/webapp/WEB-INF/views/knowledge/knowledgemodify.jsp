@@ -40,23 +40,26 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         현재 업로드 된 파일: ${knowledgeVO.originFileName}
       </div>
 
-      <div>
-        <!-- ckeditor -->
-        <label for="knl-cntnt">내용</label>
-        <div class="hereCkEditor5">
-          <%-- editor 생성부 --%>
-          <div class="editor" data-name="knlCntnt"></div>
-          <input
-            type="text"
-            id="knlCntnt"
-            name="knlCntnt"
-            style="visibility: hidden"
-          />
-        </div>
+      <!-- ckeditor -->
+      <label for="knl-cntnt">내용</label>
+      <div class="hereCkEditor5">
+        <%-- editor 생성부 --%>
+        <div
+          class="editor"
+          data-name="knlCntnt"
+          data-init-content="${knowledgeVO.knlCntnt}"
+        ></div>
       </div>
     </form>
     <div id="modify-btn">
-      <button type="button" data-key="${knowledgeVO.knlId}">수정</button>
+      <button
+        id="submit-btn"
+        data-type="modify"
+        type="button"
+        data-key="${knowledgeVO.knlId}"
+      >
+        수정
+      </button>
     </div>
   </body>
 </html>

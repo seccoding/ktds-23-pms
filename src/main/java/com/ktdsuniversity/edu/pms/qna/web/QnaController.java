@@ -248,8 +248,8 @@ public class QnaController {
 
 	// 글 수정 작성 페이지
 	@ResponseBody
-	@PutMapping("/ajax/qna/modify/{qaId}")
-	public AjaxResponse doQnaModify(@PathVariable String qaId, Model model, MultipartFile file,
+	@PostMapping("/ajax/qna/modify")
+	public AjaxResponse doQnaModify( String qaId, Model model, MultipartFile file,
 			QnaVO qnaVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		QnaVO originqnaVO = this.qnaService.getOneQna(qaId, false);

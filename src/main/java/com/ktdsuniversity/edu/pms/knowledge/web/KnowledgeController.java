@@ -184,8 +184,8 @@ public class KnowledgeController {
 
 	// 글 수정 작성 페이지
 	@ResponseBody
-	@PutMapping("/ajax/knowledge/modify/{knlId}")
-	public AjaxResponse doKnowledgeModify(@PathVariable String knlId, Model model, MultipartFile file,
+	@PostMapping("/ajax/knowledge/modify")
+	public AjaxResponse doKnowledgeModify( String knlId, Model model, MultipartFile file,
 			KnowledgeVO knowledgeVO, @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
 
 		KnowledgeVO originKnowledgeVO = this.knowledgeService.getOneKnowledge(knlId, false);
