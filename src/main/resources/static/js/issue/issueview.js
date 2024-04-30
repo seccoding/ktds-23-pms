@@ -30,7 +30,21 @@ $().ready(function () {
       $("#txt-reply").removeData("mode");
       $("#txt-reply").removeData("target");
   
-      if (confirm("댓글을 삭제하시겠습니까?")) {
+      if (deleteReply) {
+        loadModal({
+          content: "댓글을 삭제하시겠습니까?",
+          fnPositiveBtnHandler: function() {
+            $.get("/ajax/issue/reply/delete/" + rplId, function(response) {
+              var result = response.data.result;
+              if (result) {
+                loadReplies(pPostId);
+                $("#txt-reply").val("");
+              }
+            })
+          }
+        })
+      }
+      /*if (confirm("댓글을 삭제하시겠습니까?")) {
         $.get("/ajax/issue/reply/delete/" + rplId, function (response) {
           var result = response.data.result;
           if (result) {
@@ -38,7 +52,7 @@ $().ready(function () {
             $("#txt-reply").val("");
           }
         });
-      }
+      }*/
     };
     var reReply = function (event) {
       var target = event.currentTarget;
@@ -96,11 +110,7 @@ $().ready(function () {
          
           replyDom.attr("data-reply-id", reply.rplId);
           replyDom.data("reply-id", reply.rplId);
-          replyDom.css({
-            "padding-left": (reply.level === 1 ? 0 : reply.level-1) * 40 + "px",
-            color: "#333",
-          });
-  
+
           if (reply.delYn === "Y") {
             replyDom.css({
               color: "#F33",
@@ -110,7 +120,8 @@ $().ready(function () {
             // <div class="author">사용자명 (사용자이메일)</div>
             var authorDom = $("<div></div>");
             authorDom.addClass("author");
-            authorDom.text(reply.employeeVO.empName + " (" + reply.crtrId + ")");
+            authorDom.text(reply.employeeVO.empName);
+            // authorDom.text(reply.employeeVO.empName + " (" + reply.crtrId + ")");
             replyDom.append(authorDom);
   
             // <div class="datetime">
@@ -120,7 +131,7 @@ $().ready(function () {
             // <span class="crtdt">등록: 등록날짜</span>
             var crtDtDom = $("<span></span>");
             crtDtDom.addClass("crtdt");
-            crtDtDom.text("등록: " + reply.crtDt);
+            crtDtDom.text(reply.crtDt);
             datetimeDom.append(crtDtDom);
 
             // reply.crtDt !== reply.mdfDt &&
@@ -134,7 +145,7 @@ $().ready(function () {
             replyDom.append(datetimeDom);
   
             // <pre class="content">댓글 내용</pre>
-            var contentDom = $("<pre></pre>");
+            var contentDom = $("<div></div>");
             contentDom.addClass("content");
             contentDom.text(reply.rplCntnt);
   
@@ -142,6 +153,7 @@ $().ready(function () {
   
             var loginEmail = $("#login-email").text();
             var controlDom = $("<div></div>");
+            controlDom.addClass("control");
         
             if (reply.crtrId === loginEmail) {
               // <span class="modify-reply">수정</span>
