@@ -7,39 +7,33 @@ $().ready(function () {
   });
 
   $("#deleteMassiveQna").on("click", function () {
-    var alertModal = $(".modal-confirm-window");
-    var modalButton = $(".confirm-confirm-button");
-    var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text("이 게시글들을 모두 삭제하시겠습니까?");
-    modalButton.text("확인");
-    modalButton1.text("취소");
-    alertModal[0].showModal();
-    $(".confirm-confirm-button").on("click", function () {
-      confirm = true;
-      if (confirm) {
-        var checkedItems = $(".target-qna-id:checked");
-
-        var itemsArray = [];
-        checkedItems.each(function (index, data) {
-          itemsArray.push($(data).val());
-        });
-
-        $.post(
-          "/ajax/qna/delete/massive",
-          { deleteItems: itemsArray },
-          function (response) {
-            var result = response.data.result;
-            if (result) {
+    loadModal({
+      content: "삭제할 게시글을 선택하세요.",
+      fnPositiveBtnHandler: function () {
+        location.reload();
+      },
+      showNegativeBtn: false,
+    });
+    var checkedItems = $(".target-qna-id:checked");
+    var itemsArray = [];
+    checkedItems.each(function (index, data) {
+      itemsArray.push($(data).val());
+    });
+    $.post(
+      "/ajax/qna/delete/massive",
+      { deleteItems: itemsArray },
+      function (response) {
+        var result = response.data.result;
+        if (result) {
+          loadModal({
+            content: "게시글을 일괄삭제 하시겠습니까?",
+            fnPositiveBtnHandler: function () {
               location.reload();
-            }
-          }
-        );
+            },
+          });
+        }
       }
-    });
-    $(".cancel-confirm-button").on("click", function () {
-      location.reload();
-    });
+    );
   });
 
   // checked-all
@@ -62,45 +56,7 @@ $().ready(function () {
     search(0);
   });
 
-  $("#search-btn-cancel").on("click", function () {
+  $("#cancel-search-btn").on("click", function () {
     location.href = "/qna";
-  });
-
-  $("#uploadExcelfile").on("click", function () {
-    $("#excelfile").click();
-  });
-
-  /** 파일이 선택되면 수행해라 */
-  $("#excelfile").on("change", function () {
-    // 선택된 파일의 정보를 출력.
-    var file = $(this)[0].files[0];
-    var filename = file.name;
-
-    if (!filename.endsWith(".xlsx")) {
-      alert("엑셀 파일을 선택해주세요!");
-      // 엑셀파일을 선택하지 않았으면
-      // 함수실행 종료
-      return;
-    }
-
-    // 파일을 서버로 전송시킨다.
-    var formData = new FormData();
-    // formData에 파일 정보를 첨부시킨다.
-    formData.append("excelFile", file);
-
-    // 파일 전송은 $.post로 x
-    $.ajax({
-      url: "/ajax/qna/excel/write", // 요청을 보낼 주소
-      method: "POST", // 요청을 보낼 HttpMethod
-      data: formData, // 요청을 보낼 데이터 (FormData)
-      processData: false,
-      contentType: false,
-      success: function (response) {
-        var data = response.data;
-        if (data.result && data.next) {
-          location.href = data.next;
-        }
-      },
-    });
   });
 });
