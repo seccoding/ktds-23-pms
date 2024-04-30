@@ -107,6 +107,40 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       .center{
         text-align: center;
       }
+      .col-3-4 {
+        width: 75%;
+      }
+      .meno-height {
+        height: 132px;
+      }
+      .memobox {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 8px;
+        margin-left: 8px;
+        height: 100px;
+      }
+      .memoboxmargin {
+        margin-top: 15px;
+        margin-right: 6px;
+      }
+      .memotable {
+        height: 100px;
+        width: 612px;
+        overflow-x: hidden;
+      }
+      .memoimg {
+        height: 55px;
+        margin-top: 8px;
+        margin-right: 2px;
+      }
+      .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 7rem;
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
@@ -157,8 +191,78 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
             <div class="card row-1-2">
               <h6>쪽지</h6>
               <div class="card-body">
+                <div class="row">
+                  <div class="card col-1-4 meno-height">
+                    <div class="card-body">
+                      <div class="card memobox">
+                        <span class="memobox"
+                          ><img
+                            src="/images/sidebar-memo.png"
+                            class="memoimg"
+                          />
+                          <h2 class="memoboxmargin">${memoList.memoCnt}</h2>
+                        </span>
+                      </div>
+                      <!-- <div class="memocnt card">${memoList.memoCnt}</div> -->
+                    </div>
+                  </div>
+                  <div class="card col-3-4">
+                    <div class="card-body overflow-scroll memotable">
+                      <table class="memotable">
+                        <thead>
+                          <tr>
+                            <th>보낸 사람</th>
+                            <th class="memoboxttl">제목</th>
+                            <th>보낸 날짜</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <c:choose>
+                            <c:when test="${not empty memoList.memoList}">
+                              <c:forEach
+                                items="${memoList.memoList}"
+                                var="memo"
+                                varStatus="loop"
+                              >
+                                <tr>
+                                  <td>
+                                    <span
+                                      >${memo.crtrName} :
+                                      (${memo.crtrEmail})</span
+                                    >
+                                  </td>
+                                  <td class="memoboxttl">
+                                    <a
+                                      class="ellipsis Receive-loadLink"
+                                      href="/memo/receive/view?id=${memo.memoId}"
+                                      data-url=""
+                                    >
+                                      <!-- <span>${memo.crtrId}</span> -->
+
+                                      <span>${memo.memoTtl}</span>
+                                    </a>
+                                  </td>
+                                  <td class="center-align">${memo.crtDt}</td>
+                                  <!-- </div> -->
+                                </tr>
+                              </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                              <tr>
+                                <td colspan="6">
+                                  <a href="/memo/receive"
+                                    >받은 쪽지가 없습니다.</a
+                                  >
+                                </td>
+                              </tr>
+                            </c:otherwise>
+                          </c:choose>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
                 <!-- 쪽지 content 영역 -->
-                <!-- <div class="memocnt">안 읽은 쪽지 : ${memoList.memoCnt}</div> -->
               </div>
             </div>
           </div>

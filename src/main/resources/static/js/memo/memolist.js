@@ -2,8 +2,33 @@ $().ready(function () {
   sessionStorage.removeItem("crtrId");
   $(".Receive-loadLink").click(function (event) {
     event.preventDefault(); // 기본 동작 방지
+    var targetElement = $(this);
+    var id = $(this).data("memo-id");
     var targetUrl = $(this).data("url");
-    $("#receive-memo-detail").load(targetUrl);
+    $("#receive-memo-detail").load(targetUrl, function () {
+      $.ajax({
+        url: "/ajax/memo/status/" + id, // 엔드포인트 URL
+        type: "GET",
+
+        dataType: "json",
+        contentType: "application/json",
+        success: function (response) {
+          console.log(">>>>>" + response.data.result.readYn);
+          if (response.data.result.readYn === "Y") {
+            // '읽음' 상태라면
+            var parentTd = targetElement.closest("tr").find("td.center-align"); // 정확한 부모 요소 찾기
+            parentTd
+              .find("span.badge")
+              .removeClass("bg-label-danger")
+              .addClass("bg-success")
+              .text("확인"); // '미확인'을 '확인'으로 변경
+          }
+        },
+        error: function () {
+          console.error("메모 상태 확인에 실패했습니다."); // 오류 로그 출력
+        },
+      });
+    });
   });
 
   $(".Sent-loadLink").click(function (event) {

@@ -80,7 +80,10 @@
                                   <label for="target-memo-id-${loop.index}"></label>
                         </td>
                         <td class="left-align">
-                            <a class="ellipsis Receive-loadLink" href="#" data-url="/memo/receive/view?id=${memo.memoId}">
+                            <a class="ellipsis Receive-loadLink" 
+                            href="#" 
+                            data-url="/memo/receive/view?id=${memo.memoId}" 
+                            data-memo-id="${memo.memoId}">
                                 ${memo.memoTtl}
                             </a>
                         </td>

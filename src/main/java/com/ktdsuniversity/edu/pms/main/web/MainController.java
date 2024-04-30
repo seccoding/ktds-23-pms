@@ -63,12 +63,13 @@ public class MainController {
         
         List<BorrowVO> borrowList = this.borrowService.getUserRentalState(employeeVO.getEmpId());
         model.addAttribute("borrowList", borrowList);
-//		// 쪽지 필요 데이터 가져오기 (받은 쪽지 중 안 읽은 쪽지 갯수 및 목록정보) 
-//		searchMemoVO.setEmpId(employeeVO.getEmpId());
-//		MemoListVO memoListVO =this.memoService.getReceiveMemoReadYsearch(searchMemoVO);
-//		
-//		model.addAttribute("memoList", memoListVO );
-//		model.addAttribute("searchMemoVO", searchMemoVO);
+        // 쪽지 필요 데이터 가져오기 (받은 쪽지 중 안 읽은 쪽지 갯수 및 목록정보) 
+ 		searchMemoVO.setEmpId(employeeVO.getEmpId());
+ 		MemoListVO memoListVO =this.memoService.getReceiveMemoReadYsearch(searchMemoVO);
+
+ 		model.addAttribute("memoList", memoListVO );
+ 		model.addAttribute("searchMemoVO", searchMemoVO);
+     		
 
         return "main/dashboard";
     }
