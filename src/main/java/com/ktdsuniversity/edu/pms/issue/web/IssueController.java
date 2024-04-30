@@ -70,9 +70,7 @@ public class IssueController {
 				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
-		//RQM-YN Y , IS-YN Y PRJID = PROJECT-LIST
-//		this.requirementService.getAllRequirementByPrjIdList(List<String> list);
-//		this.requirementService.getAllRequirementByTmIdList(String empId)
+		
 		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
 			requirementList=  this.requirementService.getAllRequirementByTeammateId(employeeVO.getEmpId());
 		}
