@@ -11,6 +11,32 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/qna/qnalist.js"
     ></script>
+    <style>
+      .btn-group {
+          float: right;
+      }
+
+      .submit-btn {
+          width: 7rem;
+      }
+
+      .search {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .search-keyword {
+          display: flex;
+      }
+
+      .search-keyword > * {
+          padding-right: 0.825rem;
+      }
+
+      .search-category {
+          padding-bottom: 11px;
+      }
+  </style>
   </head>
   <body>
     <div class="grid">
@@ -114,18 +140,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <button type="button" id="search-btn">검색</button>
         <button type="button" id="search-btn-cancel">초기화</button>
 
-        <div>
-          <button class="btn-group">
-            <a class="btn-group" href="/qna/write">신규 등록</a>
-          </button>
+        <div class="btn-group">
           <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-              <button>
-                <a href="/qna/excel/download">엑셀 다운</a>
-              </button>
-              <button>
-                <a id="deleteMassiveQna" href="javaScript:void(0)">일괄 삭제</a>
-              </button>
+            <button>
+              <a href="/qna/excel/download">엑셀 다운</a>
+            </button>
+            <button type="button" id="deleteMassiveQna" href="javascript:void(0);">일괄삭제</button>
           </c:if>
+            <button>
+              <a href="/qna/write">신규 등록</a>
+            </button>
         </div>
 
         <!-- pagination -->

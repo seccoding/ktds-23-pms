@@ -10,10 +10,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       type="text/javascript"
       src="/js/knowledge/knowledgeview.js"
     ></script>
+    <style>
+      .btn-wrapper {
+        text-align: right;
+      }
+    </style>
   </head>
   <body>
-    <h1>지식관리 게시글 조회</h1>
-
     <div class="grid" data-id="${knowledgeVO.knlId}">
       <span style="display: none" hidden id="login-email"
         >${sessionScope._LOGIN_USER_.empId}</span
@@ -49,20 +52,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <label for="knlRecCnt">추천수</label>
       <div id="knlRecCnt">${knowledgeVO.knlRecCnt}</div>
 
-      <div class="replies">
-        <div class="reply-items"></div>
-        <div class="write-reply">
-          <textarea
-            id="txt-reply"
-            name="rplCntnt"
-            data-issue-id="${knowledgeVO.knlId}"
-          ></textarea>
-          <button id="btn-save-reply" data-mode="">등록</button>
-          <button id="btn-cancel-reply">취소</button>
-        </div>
-      </div>
-
-      <div class="btn-group">
+      <div class="btn-wrapper">
         <button
           type="button"
           class="recommend-knowledge"
@@ -72,11 +62,30 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </button>
 
         <button>
-          <a href="/knowledge/modify/${knowledgeVO.knlId}">수정</a>
+          <a href="/knowledge">목록</a>
         </button>
-        <button>
-          <a class="delete-knowledge" href="javascript:void(0);">삭제</a>
-        </button>
+        <c:if
+          test="${sessionScope._LOGIN_USER_.empId eq knowledgeVO.crtrId || sessionScope._LOGIN_USER_.admnCode eq '301'}"
+        >
+          <button>
+            <a href="/knowledge/modify/${knowledgeVO.knlId}">수정</a>
+          </button>
+          <button>
+            <a class="delete-knowledge" href="javascript:void(0);">삭제</a>
+          </button>
+        </c:if>
+      </div>
+    </div>
+    <div class="replies">
+      <div class="reply-items"></div>
+      <div class="write-reply">
+        <textarea
+          id="txt-reply"
+          name="rplCntnt"
+          data-issue-id="${knowledgeVO.knlId}"
+        ></textarea>
+        <button id="btn-save-reply" data-mode="">등록</button>
+        <button id="btn-cancel-reply">취소</button>
       </div>
     </div>
   </body>

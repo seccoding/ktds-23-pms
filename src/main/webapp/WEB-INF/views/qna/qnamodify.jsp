@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib
-prefix="c" uri="jakarta.tags.core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,8 +10,11 @@ prefix="c" uri="jakarta.tags.core" %>
     <script type="text/javascript" src="/js/qna/qnawrite.js"></script>
   </head>
   <body>
-    <h1>Qna 수정</h1>
-    <form action="/ajax/qna/modify/${qnaVO.qaId}" method="put" enctype="multipart/form-data">
+    <form
+      action="/ajax/qna/modify/${qnaVO.qaId}"
+      method="put"
+      enctype="multipart/form-data"
+    >
       <div class="grid">
         <label for="title">제목</label>
         <input id="qaTtl" type="text" name="qaTtl" value="${qnaVO.qaTtl}" />
@@ -28,10 +31,17 @@ prefix="c" uri="jakarta.tags.core" %>
           <div class="hereCkEditor5">
             <%-- editor 생성부 --%>
             <div class="editor" data-name="qaCntnt"></div>
-            <input type="text" id="qaCntnt" name="qaCntnt" style="visibility: hidden" />
+            <input
+              type="text"
+              id="qaCntnt"
+              name="qaCntnt"
+              style="visibility: hidden"
+            />
           </div>
         </div>
-        <button id="submit-btn2" type="button" data-key="${qnaVO.qaId}">저장</button>
+        <button id="submit-btn2" type="button" data-key="${qnaVO.qaId}">
+          저장
+        </button>
       </div>
     </form>
   </body>
