@@ -70,7 +70,8 @@
 		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO"
 		resultMap="outputVOMap">
 		<include refid="Common.pagenate_header"></include>
-		SELECT O.OUT_ID
+		SELECT LEVEL
+		, O.OUT_ID
 		, O.OUT_TYPE
 		, O.OUT_TTL
 		, O.OUT_VER
@@ -96,6 +97,7 @@
 		ON O.OUT_VER = OUTVERSTS.CMCD_ID
 		JOIN EMPLOYEE EMP
 		ON O.CRTR_ID = EMP.EMP_ID
+	   
 		WHERE O.DEL_YN='N'
 		AND P.OUT_YN='Y'
 		<choose>
@@ -118,6 +120,8 @@
 		<if test='outVer != null and outVer != ""'>
 			AND O.OUT_VER = #{outVer}
 		</if>
+		START WITH O.OUT_VER_NUM IS NULL
+     CONNECT BY PRIOR O.OUT_ID = O.OUT_VER_NUM
 		ORDER BY O.OUT_ID DESC
 		<include refid="Common.pagenate_footer"></include>
 	</select>
@@ -189,6 +193,32 @@
 		WHERE O.DEL_YN='N'
 		AND O.OUT_ID = #{_parameter}
 	</select>
+	
+	<select id="getOneOutputByPoutId"
+	parameterType="String"
+	resultMap="outputVOMap">
+		SELECT O.OUT_ID
+		, O.OUT_TYPE
+		, O.OUT_TTL
+		, O.OUT_VER
+		, O.OUT_VER_NUM
+		, O.OUT_FILE
+		, O.OUT_ENCODE_FILE
+		, O.MDFR_ID
+		, O.CRTR_ID
+		, TO_CHAR(O.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+		, TO_CHAR(O.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+		, O.PRJ_ID
+		, CC.CMCD_NAME AS OUTPUT_TYPE_NAME
+		, P.PRJ_NAME
+		FROM PMS."OUTPUT" O
+		JOIN COMMON_CODE CC
+		ON O.OUT_TYPE = CC.CMCD_ID
+		JOIN PROJECT P
+		ON O.PRJ_ID = P.PRJ_ID
+		WHERE O.DEL_YN='N'
+		AND O.OUT_VER_NUM = #{_parameter}
+	</select>
 
 	<insert id="insertOneOutput"
 		parameterType="com.ktdsuniversity.edu.pms.output.vo.OutputVO">
@@ -196,8 +226,7 @@
 		( OUT_ID
 		, OUT_TYPE
 		, OUT_TTL
-		,
-		OUT_VER
+		, OUT_VER
 		, OUT_FILE
 		, OUT_ENCODE_FILE
 		, CRT_DT
@@ -238,6 +267,9 @@
 		, MDF_DT= SYSDATE
 		, MDFR_ID='00000'
 		, OUT_ENCODE_FILE=#{outEncodeFile}
+		<if test='outVerNum != null and outVerNum != ""'>
+		, OUT_VER_NUM =#{outVerNum}
+		</if>
 		WHERE OUT_ID=#{outId}
 
 	</update>

@@ -166,19 +166,19 @@ public class OutputController {
 		
 		return "redirect:/output";
 	}
-
+	@ResponseBody
 	@PostMapping("/output/delete/{outId}")
-	public String deleteOutputment(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String outId) {
+	public AjaxResponse deleteOutputment(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, @PathVariable String outId) {
 		this.checkAccess(employeeVO);
 		OutputVO output = this.outputService.getOneOutput(outId);
 		if(this.throwUnauthorizedUser(employeeVO,output.getCrtrId())) {
-			throw new AccessDeniedException();		
+			return new AjaxResponse().append("error", "권한이 없습니다");
+			
 			}
-
-		boolean isSuccess = this.outputService.deleteOneOutput(outId);
-
-		return "redirect:/output/search?prjId=";
-
+		boolean isSuccess = this.outputService.deleteOneOutput(outId);	
+		return new AjaxResponse()
+				.append("result", isSuccess)
+				.append("url", "/output/search?prjId=");
 	}
 
 	private void checkAccess(EmployeeVO employeeVO, String prjId) {

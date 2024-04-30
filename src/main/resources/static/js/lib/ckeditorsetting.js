@@ -243,25 +243,34 @@ function loadEditor(target, placeholder = "") {
   var editors = document.querySelectorAll(target);
   var editorDoms = {};
   editors.forEach((dom, _) => {
-    var options = { ...editorOptions, placeholder };
-    var tag = editors[_].dataset["tag"] || _;
 
-    CKEDITOR.ClassicEditor.create(dom, options).then(
-      (newEditor) => (editorDoms[tag] = newEditor)
-    );
+    async function initiateEditors() {
+      var options = { ...editorOptions, placeholder };
+      var submitName = dom.dataset["name"];
+      var initContent = dom.dataset["initContent"];
+
+      var hiddenInput = $("<textarea></textarea>");
+      hiddenInput.css({
+        visibility: "hidden",
+        width: "1px", height: "1px"
+      });
+      hiddenInput.attr("name", submitName);
+      $(dom).after(hiddenInput);
+
+      var editor = await CKEDITOR.ClassicEditor.create(dom, options);
+      editor.setData(initContent);
+      editorDoms[submitName] = editor;
+    }
+
+    initiateEditors();
   });
 
   return {
-    getData: function (tag = 0) {
-      return editorDoms[tag].getData();
+    getData: function (name) {
+      return editorDoms[name].getData();
     },
-    setData: function (tag = 0, data) {
-      editorDoms[tag].setData(data);
-    },
-    each: function (fnCallback) {
-      for (const key in editorDoms) {
-        fnCallback(key, editorDoms[key]);
-      }
+    setData: function (name, data) {
+      editorDoms[name].setData(data);
     },
   };
 }

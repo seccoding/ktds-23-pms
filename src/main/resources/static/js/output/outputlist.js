@@ -49,7 +49,26 @@ $().ready(function () {
     loadModal({
       content: "정말로 삭제하겠습니까",
       fnPositiveBtnHandler: function () {
-        $.post("/output/delete/" + outId);
+        $.post("/output/delete/" + outId, function (response) {
+          var error = response.data.error;
+          var result = response.data.result;
+          var url = response.data.url;
+          if (error) {
+            loadModal({
+              content: error,
+              showNegativeBtn: false,
+            });
+          } else {
+            if (result) {
+              location.href = url;
+            } else {
+              loadModal({
+                content: "오류가 발생했습니다, 관리자에게 문의바랍니다",
+                showNegativeBtn: false,
+              });
+            }
+          }
+        });
       },
     });
     // console.log("outId :" + outId);

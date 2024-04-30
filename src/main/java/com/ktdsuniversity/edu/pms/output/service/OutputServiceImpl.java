@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.output.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +49,16 @@ public class OutputServiceImpl implements OutputService {
 	public boolean insertOneOutput(OutputVO outputVO, MultipartFile file) {
 		OutputSearchVO outputSearchVO = new OutputSearchVO(outputVO.getPrjId(), outputVO.getOutType(),
 				outputVO.getOutVer());
-		int count = this.outputDao.searchOutputCnt(outputSearchVO) + 1;
-		outputVO.setOutVerNum(count + "");
-
+		List<OutputVO> outputList =this.outputDao.searchAllOutPutList(outputSearchVO);
+		int size =outputList.size();
+		if(size > 0) { //부모가 있을경우 부모를 지정
+		outputVO.setOutVerNum(
+				outputList.stream()
+				.filter(output -> output.getLevel() == size)
+				.toList()
+				.get(0).getOutId());
+		}
+				
 		if (file != null && !file.isEmpty()) {// 파일 존재
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if (storedFile != null) {
@@ -87,9 +96,15 @@ public class OutputServiceImpl implements OutputService {
 	public boolean deleteOneOutput(String outId) {
 
 		OutputVO output = this.outputDao.getOneOutput(outId);
+		
+		OutputVO nextOutput =this.outputDao.getOneOutputByPoutId(outId);
+		nextOutput.setOutVerNum(output.getOutVerNum());
+		this.outputDao.updateOneOutput(nextOutput);
+		
 		// 산출물은 파일이 필수요소라서 있는지 체크 x
 		this.fileHandler.deleteFileByFileName(output.getOutEncodeFile());
-
+		
+		
 		return this.outputDao.deleteOneOutput(outId) > 0;
 	}
 

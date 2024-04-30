@@ -13,11 +13,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <%--
     <script type="text/javascript">
       window.onload = function () {
-        var editors = loadEditor(
-          ".editor",
-          "내용을 입력하세요.",
-          "${requirement.rqmCntnt}"
-        );
+        var editors = loadEditor(".editor", "내용을 입력하세요.");
         var rqmCntnt = "";
 
         $("button").on("click", function (event) {
@@ -172,13 +168,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         <label for="rqm-cntnt">요구사항 내용</label>
         <div class="hereCkEditor5">
           <%-- 여기가 editor 생성부 --%>
-          <div class="editor" data-name="rqmCntnt"></div>
-          <input
-            type="text"
-            id="rqm-cntnt"
-            name="rqmCntnt"
-            style="visibility: hidden"
-          />
+          <div
+            class="editor"
+            data-name="rqmCntnt"
+            data-init-content="${requirement.rqmCntnt}"
+          ></div>
         </div>
 
         <!--체크박스 일정상태 선택창 todo 서버에서 정보 가져와서 for문 돌리기-->
