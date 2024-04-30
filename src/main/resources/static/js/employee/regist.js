@@ -1,6 +1,15 @@
 $().ready(function() {
+
+
 	$("#regist-btn").on("click", function() {
 		$(".error").remove();
+		errorsModalText.remove();
+
+		var errorsH2 = $("<h2>회원가입 오류</h2></br></hr></br>");
+		var errorsModal = $(".modal-confirm-window");
+		var errorsModalButton = $(".confirm-confirm-button");
+		var errorsModalCancelButton = $(".cancel-confirm-button");
+		var errorsModalText = $(".modal-confirm-text");
 
 		var file = $("#prfl")[0].files[0];
 		var formData = new FormData();
@@ -34,12 +43,35 @@ $().ready(function() {
 			processData: false,
 			contentType: false,
 			success: function(response) {
+
 				var errors = response.data.errors;
 				var next = response.data.next;
 				var errorMessage = response.data.errorMessage;
-				
+
 				console.log(errors);
-				
+
+				errorsModal.css({
+					"height": "300px",
+					"overflow": "hidden"
+				})
+
+				errorsModalCancelButton.css({
+					"display": "none"
+				});
+
+				errorsModalButton.css({
+					"position": "relative",
+					"right": "115px",
+					"bottom": "20px",
+					"width": "200px",
+				});
+
+				errorsModalText.css({
+					"position": "relative",
+					"bottom": "20px"
+
+				});
+
 				if (errors) {
 					for (var key in errors) {
 						var errorDiv = $("<div></div>");
@@ -60,9 +92,15 @@ $().ready(function() {
 					});
 				}
 
-
 				if (errorMessage) {
-					alert(errorMessage);
+					errorsModalText.prepend(errorMessage);
+					errorsModalText.prepend(errorsH2);
+					errorsModalButton.text("확인");
+					errorsModal[0].showModal();
+
+					$(".confirm-confirm-button").on("click", function() {
+						errorsModal[0].close();
+					});
 				}
 
 				if (next) {

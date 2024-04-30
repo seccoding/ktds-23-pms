@@ -7,6 +7,7 @@
 <meta charset="UTF-8" />
 <title>회원가입 페이지</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
+<jsp:include page="../commonmodal.jsp" />
 <style type="text/css">
 .grid {
 	display: grid;
@@ -87,8 +88,7 @@ input[type="checkbox"]:disabled {
 				</div>
 				<div>
 					<input id="confirmPwd" type="password" name="confirmPwd"
-						value="${employeeVO.confirmPwd}"
-						placeholder="비밀번호를 다시한번 입력해 주세요" />
+						value="${employeeVO.confirmPwd}" placeholder="비밀번호를 다시한번 입력해 주세요" />
 				</div>
 				<div class="empName">
 					<label for="empName">사원이름: </label>
