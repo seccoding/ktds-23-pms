@@ -233,7 +233,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                                   <td class="memoboxttl">
                                     <a
                                       class="ellipsis Receive-loadLink"
-                                      href="/memo/receive/view?id=${memo.memoId}"
+                                      href="/memo/receive"
                                       data-url=""
                                     >
                                       <!-- <span>${memo.crtrId}</span> -->
