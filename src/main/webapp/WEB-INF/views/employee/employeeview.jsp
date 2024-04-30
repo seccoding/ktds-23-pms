@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <title>사원 상세정보 </title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
+    <jsp:include page="../commonmodal.jsp"></jsp:include>
     <script type="text/javascript" src="/js/employee/employeeview.js"></script>
      <style type="text/css">
         
@@ -25,8 +26,8 @@
         .table-container {
           flex: 1 1 calc(50% - 1rem);
           margin: 0.1rem;
-          border: 1px solid #333;
           padding: 0.5rem;
+          background-color: var(--box-bg);
         }
         .table-container > * + * {
           border-left: none;
@@ -63,14 +64,28 @@
         .change-table{
           width: 90%;
           margin-left: 5%;
+          background-color: var(--box-bg);
         }
         .overflow-table{
           height: 8.735625rem;
           overflow-y: auto;
         }
+        .btn-group{
+          text-align: right;
+          padding-bottom: 1rem;
+          padding-right: 3.5rem;
+        }
+        .box-width {
+          width: 90%;
+        }
+        .box-align{
+          display: flex;
+          justify-content: center;  
+        }
       </style>
 </head>
 <body>
+  
   <dialog class="pstn-modal">
     <select class="pstn-select-box" data-origin="${employeeVO.pstnId}">
       <c:forEach items="${positionList}" var="posi" >
@@ -100,84 +115,9 @@
   </dialog>
 
     <h3 style="margin: 1rem auto; text-align: center;">${employeeVO.empName} ${employeeVO.commonCodeVO.cmcdName} 정보란</h3>
-    <div class="grid-container" data-id="${employeeVO.empId}">
-      <div class="info-container">
-    <div style="text-align: center;">
-      <c:choose>
-        <c:when test="${not empty employeeVO.prfl}">
-          <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
-        </c:when>
-        <c:otherwise>
-          <img src="/images/login.png" alt="프로필 사진" class="photo">
-        </c:otherwise>
-      </c:choose>
-    </div>
-    <div class="table-container">
-      <div class="grid">
-        <label for="empName">사원 이름</label>
-        <div>${employeeVO.empName}</div>
-
-        <label for="empId">사원 ID</label>
-        <div id="empId" data-id="${employeeVO.empId}">${employeeVO.empId}</div>
-
-        <label for="workSts">재직 상태</label>
-        <div> 
-          ${employeeVO.workSts eq '201' ? '재직' : 
-            employeeVO.workSts eq '202' ? '휴직' : 
-            employeeVO.workSts eq '203' ? '퇴직예정' : 
-            employeeVO.workSts eq '204' ? '퇴직' : ''}
-        </div>
-
-        <label for="hireYear">입사연차</label>
-        <div>${employeeVO.hireYear}</div>
-
-        <label for="hireDt">입사일</label>
-        <div>${employeeVO.hireDt}</div>
-      </div>  
-    </div>
-
-      <div class="table-container">
-        <div class="grid">
-          <label for="deptName">부서</label>
-        <div>${employeeVO.departmentVO.deptName}</div>
-
-        <c:if test="${empty employeeVO.teamList}">
-          <label for="noneTmName">팀</label>
-          <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
-        </c:if>
-        <c:forEach items="${employeeVO.teamList}" var="teamList">
-          <label for="tmName">팀</label>
-          <div id="tmName">${teamList.tmName}</div>
-        </c:forEach>
-
-        <label for="jobName">직무</label>
-        <div>${employeeVO.jobVO.jobName}</div>
-
-        </div>
-      </div>  
-     <div class="table-container">
-      <div class="grid">
-        <label for="pstn">직급</label>
-        <div>${employeeVO.commonCodeVO.cmcdName}</div>
-
-        <label for="cntct">연락처</label>
-        <div>${employeeVO.cntct}</div>
-
-        <label for="addr">주소</label>
-        <div>${employeeVO.addr}</div>
-
-        <label for="brth">생년월일</label>
-        <div>${employeeVO.brth}</div>
-
-        <label for="email">이메일</label>
-        <div>${employeeVO.email}</div>
-        </div>
-       </div> 
-      </div>
-    </div>  
-    <c:choose>
-
     
+    <div class="change1">
+    <c:choose>
         <c:when test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <div class="btn-group">
             <button class="backto-list">
@@ -192,9 +132,95 @@
               <button class="delete-employee">퇴사 처리</button>
             </c:if>
           </div>
+        </c:when>
+      </c:choose>
+    </div>
+
+    <!-- 그리드 시작 -->
+      <div class="change1 box-align">
+      <div class="info-container box-width">
+          <div class="grid-container" data-id="${employeeVO.empId}">
+            <div style="text-align: center;">
+              <c:choose>
+                <c:when test="${not empty employeeVO.prfl}">
+                  <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
+                </c:when>
+                <c:otherwise>
+                  <img src="/images/login.png" alt="프로필 사진" class="photo">
+                </c:otherwise>
+              </c:choose>
+            </div>
+            <div class="table-container">
+              <div class="grid">
+                <label for="deptName">부서</label>
+              <div>${employeeVO.departmentVO.deptName}</div>
+
+              <c:if test="${empty employeeVO.teamList}">
+                <label for="noneTmName">팀</label>
+                <div id="noneTmName">소속된 팀이 존재하지 않습니다.</div>
+              </c:if>
+              <c:forEach items="${employeeVO.teamList}" var="teamList">
+                <label for="tmName">팀</label>
+                <div id="tmName">${teamList.tmName}</div>
+              </c:forEach>
+
+              <label for="jobName">직무</label>
+              <div>${employeeVO.jobVO.jobName}</div>
+
+              </div>
+            </div>  
+          
+          </div>  
+
+          <div class="grid-container" data-id="${employeeVO.empId}">
+            <div class="table-container">
+              <div class="grid">
+                <label for="empName">사원 이름</label>
+                <div>${employeeVO.empName}</div>
+        
+                <label for="empId">사원 ID</label>
+                <div id="empId" data-id="${employeeVO.empId}">${employeeVO.empId}</div>
+        
+                <label for="workSts">재직 상태</label>
+                <div> 
+                  ${employeeVO.workSts eq '201' ? '재직' : 
+                    employeeVO.workSts eq '202' ? '휴직' : 
+                    employeeVO.workSts eq '203' ? '퇴직예정' : 
+                    employeeVO.workSts eq '204' ? '퇴직' : ''} 
+                </div>
+        
+                <label for="hireYear">입사연차</label>
+                <div>${employeeVO.hireYear}</div>
+        
+                <label for="hireDt">입사일</label>
+                <div>${employeeVO.hireDt}</div>
+
+                <label for="pstn">직급</label>
+                <div>${employeeVO.commonCodeVO.cmcdName}</div>
+        
+                <label for="cntct">연락처</label>
+                <div>${employeeVO.cntct}</div>
+        
+                <label for="addr">주소</label>
+                <div>${employeeVO.addr}</div>
+        
+                <label for="brth">생년월일</label>
+                <div>${employeeVO.brth}</div>
+        
+                <label for="email">이메일</label>
+                <div>${employeeVO.email}</div>
+              </div>  
+            </div> 
+
+          </div>
+
+        </div>
+      </div>
+    <c:choose>
+        <c:when test="${sessionScope._LOGIN_USER_.empId eq employeeVO.empId || sessionScope._LOGIN_USER_.admnCode eq '301'}">
           <div class="change1">
             <h5>직무 변경 사항</h5>
-            <div class="overflow-table">
+              <div class="overflow-table">
 
             
             <table class="job-change change-table">
