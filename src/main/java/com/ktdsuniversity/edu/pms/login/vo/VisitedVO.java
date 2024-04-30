@@ -14,6 +14,8 @@ public class VisitedVO {
 
     private String searchType;
     private String searchKeyword;
+    
+    private String visitedType;
 
     public String getSearchType() {
         return searchType;
@@ -78,4 +80,14 @@ public class VisitedVO {
     public void setDelYn(String delYn) {
         this.delYn = delYn;
     }
+
+	public String getVisitedType() {
+		return visitedType;
+	}
+
+	public void setVisitedType(String visitedType) {
+		this.visitedType = visitedType;
+	}
+    
+    
 }

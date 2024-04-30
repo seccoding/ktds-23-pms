@@ -22,9 +22,9 @@ public class CommuteServiceImpl implements CommuteService {
 	}
 
 	@Override
-	public CommuteListVO getAllCommuteDataByEmpId(String empId) {
+	public CommuteListVO getAllCommuteDataByEmpId(CommuteVO commuteVO) {
 		CommuteListVO commuteListVO = new CommuteListVO();
-		commuteListVO.setCommuteList(commuteDao.getAllCommuteDataByEmpId(empId));
+		commuteListVO.setCommuteList(commuteDao.getAllCommuteDataByEmpId(commuteVO));
 		return commuteListVO;
 	}
 

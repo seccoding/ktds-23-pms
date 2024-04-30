@@ -25,16 +25,30 @@
 			  FROM COMMUTE C
 			  JOIN EMPLOYEE E
 			    ON C.EMP_ID = E.EMP_ID
+			<where>
+				<if test='commuteType == "today" or commuteType == null'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+				</if>
+				<if test='commuteType == "oneMonth"'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
+				</if>
+				<if test='commuteType == "twoMonth"'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
+				</if>
+				<if test='commuteType == "thrMonth"'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
+				</if>
+			</where>
 			    <if test='searchKeyword != null and searchKeyword != ""'>
 				<choose>
 					<when test='searchType == "cmmtDate"'>
-			 WHERE TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
+			 AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
 					</when>
 					<when test='searchType == "empName"'>
-			 WHERE E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
+			 AND E.EMP_NAME LIKE '%' || #{searchKeyword} || '%'
 					</when>
 					<when test='searchType == "empId"'>
-			 WHERE C.EMP_ID LIKE '%' || #{searchKeyword} || '%'
+			 AND C.EMP_ID LIKE '%' || #{searchKeyword} || '%'
 					</when>
 				</choose>
 			</if>
@@ -42,7 +56,7 @@
 	</select>
 	
 	<select id="getAllCommuteDataByEmpId"
-			parameterType="string"
+			parameterType="com.ktdsuniversity.edu.pms.login.vo.CommuteVO"
 			resultMap="commuteVOMap">
 			SELECT C.CMMT_ID
 				 , TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') CMMT_DATE
@@ -54,7 +68,28 @@
 			  FROM COMMUTE C
 			  JOIN EMPLOYEE E
 				ON C.EMP_ID = E.EMP_ID
-			 WHERE E.EMP_ID = #{empId}
+			<where>
+				<if test='commuteType == "today" or commuteType == null'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+				</if>
+				<if test='commuteType == "oneMonth"'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 30, 'YYYY-MM-DD')
+				</if>
+				<if test='commuteType == "twoMonth"'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
+				</if>
+				<if test='commuteType == "thrMonth"'>
+					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
+				</if>
+			</where>
+			<if test='searchKeyword != null and searchKeyword != ""'>
+				<choose>
+					<when test='searchType == "cmmtDate"'>
+			 			AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') LIKE '%' || #{searchKeyword} || '%'
+					</when>
+				</choose>
+			</if>
+			   AND E.EMP_ID = #{empId}
 			 ORDER BY CMMT_DATE DESC
 	</select>
 	

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,20 +13,26 @@
 <body>
 	<h2>출퇴근 관리</h2>
 	<div class="grid">
-		<c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
-			<form id="search-form">
-				<input type="hidden" id="page-no" name="pageNo" value="0" />
-				<div>
-					<select id="search-type" name="searchType">
-						<option value="cmmtDate" ${commuteVO.searchType eq 'cmmtDate' ? 'selected' : ''}>날짜</option>
+		<form id="search-form">
+			<input type="hidden" id="page-no" name="pageNo" value="0" />
+			<div>
+				<select id="search-type" name="searchType">
+					<option value="cmmtDate" ${commuteVO.searchType eq 'cmmtDate' ? 'selected' : ''}>날짜</option>
+					<c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
 						<option value="empName" ${commuteVO.searchType eq 'empName' ? 'selected' : ''}>이름</option>
 						<option value="empId" ${commuteVO.searchType eq 'empId' ? 'selected' : ''}>사원번호</option>
-					</select> 
-					<input type="text" name="searchKeyword" value="${commuteVO.searchKeyword}" />
-					<button type="button" id="search-btn">검색</button>
-				</div>
-			</form>
-		</c:if>
+					</c:if>
+				</select>
+				<select id="log-type" name="commuteType">
+					<option value="today" ${commuteVO.commuteType eq 'today' ? 'selected' : ''}>오늘</option>
+					<option value="oneMonth" ${commuteVO.commuteType eq 'oneMonth' ? 'selected' : ''}>1개월</option>
+					<option value="twoMonth" ${commuteVO.commuteType eq 'twoMonth' ? 'selected' : ''}>2개월</option>
+					<option value="thrMonth" ${commuteVO.commuteType eq 'thrMonth' ? 'selected' : ''}>3개월</option>
+				</select>
+				<input type="text" name="searchKeyword" value="${commuteVO.searchKeyword}" />
+				<button type="button" id="search-btn">검색</button>
+			</div>
+		</form>
 		<table class="table">
 			<thead>
 				<tr>
