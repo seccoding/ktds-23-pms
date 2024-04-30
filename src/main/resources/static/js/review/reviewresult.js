@@ -59,6 +59,9 @@ $().ready(function () {
     // const id = $(".delete-button").closest("tr").attr("id");
     const id = $(this).closest("tr").attr("id");
     
+  $('.prjId').on('click', function() {
+        $(location).attr('href', '/review/viewresult?prjId=' + $(this).attr('id'));
+    });  
     /*loadModal({
 		content: "선택된 후기를 삭제하시겠습니까?",
 		fnPositiveBtnHandler: function(){
