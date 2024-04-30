@@ -197,6 +197,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO) {
+		
+		System.out.println("???????????????" + searchApprovalVO.getSearchDate());
+		
 		int approvalCount = this.approvalDao.searchAllApprovalCount(searchApprovalVO);
 		searchApprovalVO.setPageCount(approvalCount);
 

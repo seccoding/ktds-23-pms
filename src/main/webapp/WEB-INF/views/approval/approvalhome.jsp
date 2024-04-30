@@ -60,6 +60,9 @@
         flex-direction: column;
         align-items: center;
     }	
+    .card-list-status {
+      text-align: center;
+    }
     .card-empty {
       height: 30rem;
       justify-content: center;
@@ -74,6 +77,19 @@
     }
     .col-2-4 {
       width: 50%;
+    }
+    .margin-top {
+      margin-top: 0.25rem;
+    }
+    .margin-left {
+      margin-left: 0.5rem;
+    }
+    .btn-width {
+      width: 6rem;
+    }
+    .btn-padding {
+      padding-right: 0.8125rem;
+      margin-bottom: 1rem;
     }
 	</style>
   <script type="text/javascript" src=/js/approval/approvalhome.js></script>
@@ -93,7 +109,7 @@
             <h2>결재 현황</h2>
         </div>
         <div class="row right">
-          <div class="col-1-8">
+          <div class="btn-padding">
             <button type="button" id="btn-all-appr">전체목록</button>
           </div>
         </div>
@@ -103,7 +119,12 @@
                     <a href="/approval/home/waiting">
                       <span>완료되지 않은 결재</span>
                       <div class="count-appr">
-                        <h2>${apprWaitingList.getApprCnt()}</h2>
+                        <c:choose>
+                          <c:when test="${apprWaitingList.getApprCnt() ne 0}">
+                            <h2>${apprWaitingList.getApprCnt()}</h2>
+                          </c:when>
+                          <c:otherwise><h2>0</h2></c:otherwise>
+                        </c:choose>
                         <h6>건</h6>
                       </div>
                     </a>
@@ -117,7 +138,12 @@
                   <a href="/approval/home/delay">
                     <span>일주일 이상 지연된 결재</span>
                     <div class="count-appr">
-                      <h2>${approvalDelayList.getApprCnt()}</h2>
+                      <c:choose>
+                        <c:when test="${approvalDelayList.getApprCnt() ne 0}">
+                          <h2>${apprWaitingList.getApprCnt()}</h2>
+                        </c:when>
+                        <c:otherwise><h2>0</h2></c:otherwise>
+                      </c:choose>
                       <h6>건</h6>
                     </div>
                   </a>
@@ -131,7 +157,12 @@
                   <a href="/approval/home/oneMonth">
                     <span>한 달 이내 결재내역</span>
                     <div class="count-appr">
-                      <h2>${approvalOneMonthList.getApprCnt()}</h2>
+                      <c:choose>
+                        <c:when test="${approvalOneMonthList.getApprCnt() ne 0}">
+                          <h2>${apprWaitingList.getApprCnt()}</h2>
+                        </c:when>
+                        <c:otherwise><h2>0</h2></c:otherwise>
+                      </c:choose>
                       <h6>건</h6>
                     </div>
                   </a>
@@ -152,7 +183,7 @@
                           <div class="category">
                             <img src="/images/sidebar-approval.png" alt="img">
                             <c:if test="${approval.apprCtgr eq '902'}">
-                              <span>비품변경</span>
+                              <span class="margin-top">비품변경</span>
                             </c:if>
                           </div>
                         </div>
@@ -162,7 +193,7 @@
                         </div>
                         <div class="card-list-user col-1-4">
                           <img src="/images/login.png" alt="prfl">
-                          <div class="user">
+                          <div class="user margin-left">
                             <h6>${approval.employeeVO.empName} ${approval.commonCodeVO.cmcdName}</h6>
                             <c:choose>
                               <c:when test="${searchApproval.searchAuth}">
@@ -195,7 +226,7 @@
                   <div class="card-list card-body card-empty">
                     <span>결재 진행 중인 문서가 없습니다.</span>
                     <c:if test="${!searchApproval.searchAuth}">
-                      <button type="button" id="btn-appr-write">기안서 작성</button>
+                      <button type="button" id="btn-appr-write" class="btn-width">기안서 작성</button>
                     </c:if>
                   </div>
                 </c:otherwise>

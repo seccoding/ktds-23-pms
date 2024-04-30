@@ -10,9 +10,6 @@
         .title {
             margin-bottom: 3rem;
         }
-        input[type="checkbox"] {
-            display: flex;
-        }
         table {
             border-collapse: collapse;
             width: 100%;
@@ -21,6 +18,9 @@
             border-bottom: 1px solid #dddddd;
             text-align: center;
             padding: 8px;
+        }
+        tr > td:nth-child(5) {
+            text-align: left;
         }
         .search-area {
             display: flex;
@@ -38,6 +38,18 @@
             justify-content: space-between;
             padding-bottom: 1rem;
         }
+        input[type="date"] {
+            height: 2.2rem;
+            border-radius: 0.5rem;
+            width: 10rem;
+            border: 1px solid var(--secondary);
+        }
+        input[type="date"]:focus {
+            outline: none;
+        }
+        .btn-width {
+            width: 6rem;
+        }
     </style>
 <script type="text/javascript" src=/js/approval/approvallist.js></script>
 </head>
@@ -50,10 +62,10 @@
             <div>
                 총 ${apprList.apprCnt} 건
             </div>
-            <c:if test="${!searchApproval.searchAuth 
+            <c:if test="${!searchApproval.searchAuth && apprList.apprCnt ne 0
                             && searchApproval.searchStatus eq 'progresslist'}">
                 <div style="text-align: end;">
-                    <button type="button" id="btn-appr-write">기안서 작성</button>
+                    <button type="button" id="btn-appr-write" class="btn-width">기안서 작성</button>
                 </div>
             </c:if>
         </div>
@@ -64,8 +76,7 @@
                         <th>
                             <input type="checkbox" id="prdt-check-all" 
                                     data-target-class="target-appr-id"/>
-                            <!-- <label for="prdt-check-all"></label>
-                            <label for="prdt-check-all"></label> -->
+                            <label for="prdt-check-all"></label>
                         </th>
                         <th>작성일자</th>
                         <th>종류</th>
@@ -84,9 +95,8 @@
                             <c:forEach items="${apprList.apprList}" var="approval">
                             <tr>
                                 <td>
-                                    <input type="checkbox" class="target-appr-id" name="targetApprId" value="${approval.apprId}">
-                                    <!-- <label for="prdt-check"></label>
-									<label for="prdt-check"></label> -->
+                                    <input type="checkbox" id="${approval.apprId}" class="target-appr-id" name="targetApprId" value="${approval.apprId}">
+                                    <label for="${approval.apprId}"></label>
                                 </td>
                                 <td>${approval.dmdDt}</td>
                                 <td>
