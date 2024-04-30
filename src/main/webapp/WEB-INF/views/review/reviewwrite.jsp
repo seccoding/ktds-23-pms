@@ -25,9 +25,38 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 	    label[for="rvCntnt"] {
         display: none;
     	}
+    	
+    	.input-form {
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .form-row {
+            margin-bottom: 10px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .error-red{
+        	color: #f00;
+        }
+        
+        textarea {
+        	resize:none;
+        }
+        
       </style>
     </head>
     <body>
+  	  <div class="input-form overflow-scroll">
       <h1>후기 작성</h1>
       <form action="/review/write" method="post">
         <div class="grid">
@@ -52,7 +81,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <label for="rvCntnt">
           </label>
           <c:forEach items="${errorMessage.rvCntnt}" var="error">
-          <div>${error}</div>
+          <div class="error-red">${error}</div>
           </c:forEach>
           
           <textarea id="content" name="rvCntnt" style="height: 300px">${reviewVO.rvCntnt}</textarea>
@@ -61,6 +90,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <div class="right-align">
             <input type="submit" value="저장" />
           </div>
+      </div>    
       </form>
     </body>
   </html>
