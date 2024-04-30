@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>설문 목록</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
+<jsp:include page="../commonmodal.jsp"></jsp:include>
 <script type="text/javascript" src="/js/survey/surveylist.js"></script>
 <style>
 .search {
@@ -42,6 +43,12 @@ th, td {
     text-overflow: ellipsis; /* 너무 긴 문자열은 ...로 표시 */
     white-space: nowrap; /* 내용을 한 줄로 표시 */
 }
+.survey-view, .prj-list {
+    cursor: pointer;
+}
+.prj-list.no-click {
+    cursor: default;
+}
 </style>
 </head>
 <body>
@@ -57,10 +64,10 @@ th, td {
                     <th>시작일</th>
                     <th>종료일</th>
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                        <th>설문지 생성 여부</th>
+                        <th>설문지 생성</th>
                     </c:if>
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">
-                        <th>설문 작성 여부</th>
+                        <th>설문 작성</th>
                     </c:if>
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
                         <th></th>
@@ -78,7 +85,7 @@ th, td {
                                 <td>${project.strtDt}</td>
                                 <td>${project.endDt}</td>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                                    <td class="survey-status"><c:out value="${empty project.srvSts ? 'N' : project.srvSts}" /></td>
+                                    <td class="survey-status survey-view"><c:out value="${empty project.srvSts ? 'N' : project.srvSts}" /></td>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">
                                     <c:forEach items="${surveyYn}" var="surveyYn">
@@ -88,15 +95,15 @@ th, td {
                                     </c:forEach>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
-                                    <th><a href="result?prjId=${project.prjId}">설문 결과</a></th>
+                                    <td><a href="result?prjId=${project.prjId}">설문 결과</a></th>
                                 </c:if>
                             </tr>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="8">
-                                <div>참여 중인 프로젝트가 없거나 프로젝트의 설문 관리가 불가능한 상태인 것 같습니다.</div>
+                            <td colspan="7">
+                                <div>참여 중인 프로젝트가 없거나 프로젝트의 설문 관리가 불가능한 상태입니다.</div>
                             </td>
                         </tr>
                     </c:otherwise>

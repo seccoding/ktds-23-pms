@@ -7,12 +7,19 @@
 <meta charset="UTF-8">
 <title>설문 생성</title>
 <jsp:include page="../commonheader.jsp"></jsp:include>
+<jsp:include page="../commonmodal.jsp"></jsp:include>
 <script type="text/javascript" src="/js/survey/surveycreate.js"></script>
 <style type="text/css">
     div {
         border: 1px solid #000;
         margin: 0;
         padding: 10px;       
+    }
+    .modal-confirm-window div {
+        border: 0px solid #000;
+        margin: 0;
+        padding: 0;       
+
     }
     .survey-body {
         border: 1px solid #ccc; /* 연한 회색 테두리 */
@@ -107,6 +114,11 @@
 	#btn-compl-srv {
 	    margin-right: 20px;
 	}
+    .modal {
+        border: none;  /* 모달 창에는 테두리 없음 */
+        padding: 0;    /* 모달 창 패딩 없음 */
+        margin: 0;     /* 모달 창 마진 없음 */
+    }
 </style>
 </head>
 <body>
