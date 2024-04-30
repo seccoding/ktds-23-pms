@@ -165,8 +165,47 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         <div class="col-1-1">
           <div class="card row-1-1">
             <h6>프로젝트</h6>
-            <div class="card-body">
+            <div class="card-body overflow-scroll">
               <!-- 프로젝트 content 영역 -->
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>프로젝트</th>
+                  <th>고객사</th>
+                  <th>수행부서</th>
+                  <th>프로젝트 상태</th>
+                  <th>시작일</th>
+                  <th>종료일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- jstl > choose when otherwise / if ~ elif ~ else-->
+                <c:choose>
+                  <%-- projectList 내용이 존재한다면 --%>
+                  <c:when test="${not empty projects}">
+                    <%-- 내용을 반복해서 보여줌 --%>
+                    <c:forEach items="${projects}" var="project">
+                      <tr class="project-row" data-project-id="${project.prjId}">
+                        <td>${project.prjName}</td>
+                        <td>${project.clntInfo}</td>
+                        <td>${project.deptVO.deptName}</td>
+                        <td>${project.prjStsCode.cmcdName}</td>
+                        <td>${project.strtDt}</td>
+                        <td>${project.endDt}</td>
+                      </tr>
+                    </c:forEach>
+                  </c:when>
+                  <%-- projectList의 내용이 존재하지 않는다면 --%>
+                  <c:otherwise>
+                    <tr>
+                      <td colspan="6">
+                          진행 중인 프로젝트가 없습니다.
+                      </td>
+                    </tr>
+                  </c:otherwise>
+                </c:choose>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
