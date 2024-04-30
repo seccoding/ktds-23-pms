@@ -56,6 +56,14 @@ public class BorrowController {
 		if(searchBorrowVO.getIsCheck() != null) {
 			isCheck = searchBorrowVO.getIsCheck();
 		}
+		int totalNum = 0;
+		if (isCheck) {
+			totalNum = this.borrowService.getNotNullCnt(searchBorrowVO);
+		}else {
+			totalNum = this.borrowService.getAllCnt(searchBorrowVO);
+		}
+		
+		searchBorrowVO.setPageCount(totalNum);
 		
 		BorrowListVO borrowListVO = this.borrowService.searchProductManageState(searchBorrowVO);
 		

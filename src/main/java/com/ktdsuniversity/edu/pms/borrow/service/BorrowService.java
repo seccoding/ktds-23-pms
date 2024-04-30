@@ -29,5 +29,12 @@ public interface BorrowService {
 	public BorrowListVO searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
 
 
+	public int getNotNullCnt(SearchBorrowVO searchBorrowVO);
+
+
+
+	public int getAllCnt(SearchBorrowVO searchBorrowVO);
+
+
 
 }
