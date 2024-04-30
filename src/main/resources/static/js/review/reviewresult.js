@@ -95,6 +95,9 @@ $().ready(function () {
 /*    if (confirm("후기를 삭제하시겠습니까?")) {
 */ 
 
+ 	
+
+
     $("#search-btn").on("click", function () {
     removeSpaces(); // 공백 제거
     search(0);
