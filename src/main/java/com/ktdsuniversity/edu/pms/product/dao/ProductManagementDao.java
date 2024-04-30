@@ -46,7 +46,6 @@ public interface ProductManagementDao {
 	public int changeItemBrrwStateY(String prdtMngId);
 	
 	public ProductManagementVO selectPrdtForNewAppr(String prdtMngId);
-
 	
 
 }

@@ -232,7 +232,7 @@
 								WHERE APPR_ID = #{_parameter})
 	</update>
 
-	<update id="changeManyItemBrrwState" parameterType="string">
+	<update id="changeItemBrrwStateY" parameterType="string">
 		UPDATE PRODUCT_MANAGEMENT
 		   SET BRRW_YN = 'Y'
 		 WHERE PRDT_MNG_ID = #{_parameter}

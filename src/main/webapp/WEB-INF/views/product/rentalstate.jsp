@@ -163,7 +163,7 @@
                         <a href="javascript:search(0);"><img src="/images/chevron-double-left.svg"/></a></li>
                     <li class="page-item prev">
                         <a
-                                href="javascript:search(${searchProjectVO.prevGroupStartPageNo});"
+                                href="javascript:search(${searchBorrowVO.prevGroupStartPageNo});"
                         ><img src="/images/chevron-left.svg"/></a
                         >
                     </li>
@@ -184,12 +184,12 @@
                 <c:if test="${searchBorrowVO.hasNextGroup}">
                     <li class="page-item next">
                         <a
-                                href="javascript:search(${searchProductVO.nextGroupStartPageNo});"
+                                href="javascript:search(${searchBorrowVO.nextGroupStartPageNo});"
                         ><img src="/images/chevron-right.svg"/></a
                         >
                     </li>
                     <li class="page-item last">
-                        <a href="javascript:search(${searchProductVO.pageCount - 1});"
+                        <a href="javascript:search(${searchBorrowVO.pageCount - 1});"
                         ><img src="/images/chevron-double-right.svg"/></a
                         >
                     </li>
