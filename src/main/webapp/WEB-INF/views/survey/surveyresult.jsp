@@ -56,16 +56,26 @@
         text-decoration: underline; /* 마우스 오버 시 밑줄 */
     }
 
-    div {
+    div:not(.completed-survey-count) {
         background-color: #fff;
         padding: 10px;
         border-radius: 8px;
         text-align: center;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
+    .completed-survey-count {
+        padding: 10px 20px; /* 상하 10px, 좌우 20px 패딩 */
+        margin: 10px 0; /* 위아래로 10px 여백 */
+        border-radius: 5px; /* 둥근 모서리 */
+        font-weight: bold; /* 글자 굵게 */
+        font-size: 16px; /* 글자 크기 */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 효과 */
+    }
 </style>
 </head>
 <body>
+    <div class="completed-survey-count">작성자 수 : ${srvYn} / ${teammateCount} 명</div>
     <c:choose>
         <c:when test="${not empty questionList.questionList}">
             <c:forEach items="${questionList.questionList}" var="question">

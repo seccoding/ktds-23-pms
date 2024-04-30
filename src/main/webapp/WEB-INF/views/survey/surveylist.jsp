@@ -54,7 +54,6 @@ th, td {
                     <th>프로젝트 명</th>
                     <th>고객사</th>
                     <th>수행부서</th>
-                    <th>상태</th>
                     <th>시작일</th>
                     <th>종료일</th>
                     <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
@@ -76,7 +75,6 @@ th, td {
                                 <td>${project.prjName}</td>
                                 <td>${project.clntInfo}</td>
                                 <td>${project.deptVO.deptName}</td>
-                                <td>${project.prjSts}</td>
                                 <td>${project.strtDt}</td>
                                 <td>${project.endDt}</td>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
@@ -97,7 +95,7 @@ th, td {
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="9">
+                            <td colspan="8">
                                 <div>참여 중인 프로젝트가 없거나 프로젝트의 설문 관리가 불가능한 상태인 것 같습니다.</div>
                             </td>
                         </tr>

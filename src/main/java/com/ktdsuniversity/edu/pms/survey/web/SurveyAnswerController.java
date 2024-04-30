@@ -63,6 +63,11 @@ public class SurveyAnswerController {
 		SurveyQuestionVO surveyQuestionVO = new SurveyQuestionVO();
 	    surveyQuestionVO.setPrjId(prjId);
 		
+	    int projectTeammateCount = this.projectService.getProjectTeammateCount(prjId);
+	    long completedSurveyTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
+	    .filter(tm->"Y".equals(tm.getSrvYn()))
+	    .count();
+	    
 	    SurveyListVO questionList = this.surveyQuestionService.searchAllQuestions(surveyQuestionVO);
 	    List<SurveyReplyVO> allReplies = new ArrayList<>();
 	    
@@ -73,6 +78,8 @@ public class SurveyAnswerController {
 	        allReplies.addAll(replyList.getReplyList());
 	    }
 		
+	    model.addAttribute("srvYn", completedSurveyTeammateList);
+	    model.addAttribute("teammateCount", projectTeammateCount);
 		model.addAttribute("questionList", questionList);
 		model.addAttribute("replyList", allReplies);
 		
