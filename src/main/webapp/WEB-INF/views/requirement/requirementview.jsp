@@ -91,33 +91,38 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <div class="sub-item">일정상태</div>
           <div class="flex-row">
             <div class="sub-item">${requirement.scdStsVO.cmcdName}</div>
-            <c:choose>
-              <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
-                <button class="sub-item">
-                  <a id="delay-request" href="javascript:void(0)">연기</a>
-                </button>
-              </c:when>
-              <c:otherwise>
-                <c:if test='${employeeVO.getAdmnCode() == "301" or isPmAndPl }'>
+
+            <c:if test="${requirement.rqmSts != '605'}">
+              <c:choose>
+                <c:when test="${requirement.scdStsVO.cmcdName != '연기필요'}">
                   <button class="sub-item">
-                    <a
-                      id="approve"
-                      href="javascript:void(0)"
-                      data-approve="true"
-                      >승인</a
-                    >
+                    <a id="delay-request" href="javascript:void(0)">연기</a>
                   </button>
-                  <button class="sub-item">
-                    <a
-                      id="refuse"
-                      href="javascript:void(0)"
-                      data-approve="false"
-                      >거절</a
-                    >
-                  </button>
-                </c:if>
-              </c:otherwise>
-            </c:choose>
+                </c:when>
+                <c:otherwise>
+                  <c:if
+                    test='${employeeVO.getAdmnCode() == "301" or isPmAndPl }'
+                  >
+                    <button class="sub-item">
+                      <a
+                        id="approve"
+                        href="javascript:void(0)"
+                        data-approve="true"
+                        >승인</a
+                      >
+                    </button>
+                    <button class="sub-item">
+                      <a
+                        id="refuse"
+                        href="javascript:void(0)"
+                        data-approve="false"
+                        >거절</a
+                      >
+                    </button>
+                  </c:if>
+                </c:otherwise>
+              </c:choose>
+            </c:if>
           </div>
 
           <div class="sub-item">담당개발자</div>
@@ -137,7 +142,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </div>
 
           <div class="sub-item">테스터</div>
-          <div class="sub-item">${requirement.tstrVO.empName}</div>
+          <div class="flex-row">
+            <div class="sub-item">${requirement.tstrVO.empName}</div>
+            <c:if test='${requirement.rqmSts eq "604"}'>
+              <button class="sub-item">
+                <a id="test-result" href="javascript:void(0)">결과제출</a>
+              </button>
+            </c:if>
+          </div>
         </div>
       </div>
       <div class="content-info info-border">

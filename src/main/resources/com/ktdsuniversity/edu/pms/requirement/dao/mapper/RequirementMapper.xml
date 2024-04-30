@@ -435,6 +435,23 @@ SELECT  R.RQM_ID
 			     AND P.IS_YN ='Y')			
 	</select>
 	
+	<update id="updateTestResult"
+	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
+
+	
+	UPDATE PMS.REQUIREMENT SET 
+	TEST_RSLT=#{testRslt}
+	<choose>
+		<when test='testRslt eq "true"'>
+	,RQM_STS='605'
+		</when>
+		<otherwise>
+	,RQM_STS='603'
+		</otherwise>
+	</choose>
+	 WHERE RQM_ID=#{rqmId}
+	</update>
+	
 	<!-- 참고용 사용X -->
 	<sql id="join">
 	  JOIN	COMMON_CODE STS 
