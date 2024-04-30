@@ -25,6 +25,8 @@ public interface OutputDao {
 
 	public int deleteOneOutput(String outId);
 
-	public int updateOneOutput(OutputVO outputVO); 
+	public int updateOneOutput(OutputVO outputVO);
+
+	public OutputVO getOneOutputByPoutId(String outPId); 
 	
 }

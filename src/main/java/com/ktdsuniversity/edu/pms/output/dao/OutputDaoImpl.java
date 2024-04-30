@@ -69,6 +69,13 @@ public class OutputDaoImpl extends SqlSessionDaoSupport implements OutputDao{
 	}
 
 
+	@Override
+	public OutputVO getOneOutputByPoutId(String outPId) {
+		
+		return getSqlSession().selectOne(NAME_SPACE+".getOneOutputByPoutId", outPId);
+	}
+
+
 
 
 

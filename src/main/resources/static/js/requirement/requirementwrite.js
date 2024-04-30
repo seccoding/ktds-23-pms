@@ -1,10 +1,5 @@
 $().ready(function () {
-  var editors = loadEditor(
-    ".editor",
-    "내용을 입력하세요.",
-    "${requirement.rqmCntnt}"
-  );
-
+  var editors = loadEditor(".editor", "내용을 입력하세요.");
   // var dom = $("<p>데이터가 들어가지나요?<P>");
   // editors.setData(dom);
   // var dataq = editors.getData();
@@ -53,7 +48,8 @@ $().ready(function () {
     var rqmCntnt = "";
     event.preventDefault();
 
-    rqmCntnt = editors.getData();
+    rqmCntnt = editors.getData("rqmCntnt");
+
     var fileArr = $("#file").prop("files");
     var file = fileArr[0];
 

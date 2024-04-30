@@ -444,6 +444,7 @@ SELECT  R.RQM_ID
 	<choose>
 		<when test='testRslt eq "true"'>
 	,RQM_STS='605'
+	,SCD_STS='504'
 		</when>
 		<otherwise>
 	,RQM_STS='603'

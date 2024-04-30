@@ -5,6 +5,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 
 public class OutputVO {
+	private int level;
 	
 	private String outId; 	//산출물 아이디
 	private String outType; //산출물 종류
@@ -28,6 +29,14 @@ public class OutputVO {
 	
 	private EmployeeVO crtrIdVO;
 	
+	
+	
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
 	public String getOutId() {
 		return outId;
 	}
