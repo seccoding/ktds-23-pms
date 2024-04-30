@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ktdsuniversity.edu.pms.borrow.service.BorrowService;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowListVO;
+import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
@@ -32,6 +35,9 @@ public class MainController {
 
     @Autowired
     private ProjectService projectService;
+    
+    @Autowired
+    private BorrowService borrowService;
 
     @GetMapping("/")
     public String viewMainLayoutPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
@@ -54,7 +60,9 @@ public class MainController {
             projectList = allProjectByProjectTeammateId.stream().filter(project -> !project.getPrjSts().equals("409")).toList();
         }
         model.addAttribute("projects", projectList);
-
+        
+        List<BorrowVO> borrowList = this.borrowService.getUserRentalState(employeeVO.getEmpId());
+        model.addAttribute("borrowList", borrowList);
 //		// 쪽지 필요 데이터 가져오기 (받은 쪽지 중 안 읽은 쪽지 갯수 및 목록정보) 
 //		searchMemoVO.setEmpId(employeeVO.getEmpId());
 //		MemoListVO memoListVO =this.memoService.getReceiveMemoReadYsearch(searchMemoVO);

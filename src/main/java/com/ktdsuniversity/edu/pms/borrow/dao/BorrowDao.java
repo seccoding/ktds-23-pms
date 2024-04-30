@@ -65,7 +65,10 @@ public interface BorrowDao {
 
 	public int getAllListCnt(SearchBorrowVO searchBorrowVO);
 
-	
+	public int changeState(String prdtMngId);
+
+	public List<BorrowVO> getUserRentalStateForMain(String empId);
+
 
 	
 

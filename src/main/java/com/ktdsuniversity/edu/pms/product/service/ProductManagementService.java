@@ -16,7 +16,7 @@ public interface ProductManagementService {
 
 	public boolean deleteOneDeteilProduct(String productId);
 
-	public ProductManagementVO getOneProductManagement(String productId);
+	public ProductManagementVO getOneProductManagement(String prdtMngId);
 
 	public boolean modifyOneProductManagement(ProductManagementVO productManagementVO);
 

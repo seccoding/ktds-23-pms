@@ -24,8 +24,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       }
 
       .prfl-photo {
-        width: 150px;
-        height: 150px;
+        width: 90px;
+        height: 90px;
         border-radius: 50%;
         margin-bottom: 15px;
         background-position: center;
@@ -40,7 +40,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       }
 
       .prfl-photo-font {
-        font-size: 20px;
+        font-size: 15px;
         font-weight: 700;
         text-align: center;
       }
@@ -50,15 +50,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       }
 
       .dept-id-data {
-        font-size: 20px;
-        font-weight: 700;
+        font-size: 18px;
+        font-weight: bold;
+        margin: 1rem;
       }
 
       .commute-grid {
         display: grid;
-        grid-template-columns: 1fr 100px;
+        grid-template-columns: 1fr 130px;
         height: 100px;
         width: 100%;
+      }
+      tr{
+        border-bottom: 1px solid lightgrey;
       }
 
       .commute-grid-time {
@@ -66,7 +70,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         flex-direction: column;
         justify-content: center;
         margin: 20px;
-        border: 1px solid #000;
+        /* border: 1px solid #000; */
         border-radius: 10px;
         min-width: 230px;
       }
@@ -77,8 +81,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
       }
 
       .commute-grid-time-in {
-        border-bottom: 0.1px solid #000;
-        padding-bottom: 5px;
+        /* border-bottom: 0.1px solid #000; */
+        padding-bottom: 10px;
       }
 
       .commute-grid-time-out {
@@ -89,6 +93,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 0 20px;
+      }
+      .table th{
+        position: sticky;
+        top: 0px;
+        background-color: var(--body-bg);
+      }
+      .f-space-between{
+        display: flex;
+        justify-content: space-between;
+      }
+      .center{
+        text-align: center;
       }
     </style>
   </head>
@@ -148,7 +165,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         </div>
         <div class="col-1-2">
           <div class="card row-1-1">
-            <h6>부서 내 사원 로그인현황</h6>
+            <div class="f-space-between">
+              <h6>부서 내 사원 로그인현황</h6>
+              <!-- <h5 style="margin: 0 0.5rem; font-weight: bold;">${deptname}</h5> -->
+
+            </div>
             <div class="card-body">
               <!-- 팀 content 영역 -->
               <p
@@ -156,7 +177,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                 data-dept-id="${sessionScope._LOGIN_USER_.deptId}"
               >
                 <!--$(this).data("dept-id")-->
-                부서 : ${deptname}
+                ${deptname}
               </p>
               <div class="person-log-in"></div>
             </div>
@@ -174,8 +195,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                   <th>고객사</th>
                   <th>수행부서</th>
                   <th>프로젝트 상태</th>
-                  <th>시작일</th>
-                  <th>종료일</th>
+                  <th class="center">시작일</th>
+                  <th class="center">종료일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -190,8 +211,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
                         <td>${project.clntInfo}</td>
                         <td>${project.deptVO.deptName}</td>
                         <td>${project.prjStsCode.cmcdName}</td>
-                        <td>${project.strtDt}</td>
-                        <td>${project.endDt}</td>
+                        <td class="center">${project.strtDt}</td>
+                        <td class="center">${project.endDt}</td>
                       </tr>
                     </c:forEach>
                   </c:when>
@@ -212,8 +233,37 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
         <div class="col-1-1">
           <div class="card row-1-1">
             <h6>비품대여</h6>
-            <div class="card-body">
+            <div class="card-body overflow-scroll product-t">
               <!-- 비품대여 content 영역 -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>비품관리 ID</th>
+                    <th>비품명</th>
+                    <th>카테고리</th>
+                    <th class="center">대여일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <c:choose>
+                    <c:when test="${not empty borrowList}">
+                      <c:forEach items="${borrowList}" var="item">
+                        <tr>
+                          <td>${item.prdtMngId}</td>
+                          <td>${item.productVO.prdtName}</td>
+                          <td>${item.productVO.prdtCtgr}</td>
+                          <td class="center">${item.brrwDt}</td>
+                        </tr>
+                      </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                      <tr>
+                        <td colspan="4">대여중인 비품이 없습니다.</td>
+                      </tr>
+                    </c:otherwise>
+                  </c:choose>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

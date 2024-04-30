@@ -232,19 +232,8 @@ $().ready(function () {
         },
         showNegativeBtn: false,
       });
-
-      // var alertModal = $(".modal-window");
-      // var modalButton = $(".confirm-button");
-      // var modalText = $(".modal-text");
-      // modalText.text("분실일을 지정해주세요");
-      // modalButton.text("확인");
-
-      // alertModal[0].showModal();
-      // $(".confirm-button").on("click", function () {
-      //   alertModal[0].close();
-      // });
     } else {
-      // console.log($(".buy-day").val());
+     
       $.post(
         "/ajax/product/manage/view/modify",
         {
