@@ -1,4 +1,16 @@
 $().ready(function () {
+
+  $("#product-exist-search").data("checkstatus") ? $("#product-exist-search").prop("checked", true) : $("#product-exist-search").prop("checked", false);
+
+  function search(pageNo) {
+    var searchForm = $("#search-form");
+    $("#page-no").val(pageNo);
+    $("#is-check").val($("#product-exist-search").is(":checked"));
+
+    searchForm.attr("method", "get").attr("action", "/product/manage/list").submit();
+  }
+
+
   $("#search-btn").on("click", function () {
     search(0);
   });
@@ -22,6 +34,29 @@ $().ready(function () {
         });
     
      */
+
+
+  $("#product-exist-search").on("click", function(){
+    // var checked = $(this).is(":checked");
+    // if (checked) {
+    //     $("table.table tbody tr").each(function(){
+    //         var stockQuantity = parseInt($(this).find("td:eq(4)").text());
+    //         if (stockQuantity < 1) {
+    //             $(this).hide();
+    //         } else {
+    //             $(this).show();
+    //         }
+    //     });
+    // } else {
+    //     $("table.table tbody tr").show();
+    // }
+
+
+    search($(".active").find("a").text()-1);
+
+  });
+
+
   $("form")
     .find("input")
     .on("keydown", function (event) {

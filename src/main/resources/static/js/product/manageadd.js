@@ -64,8 +64,6 @@ $().ready(function () {
 
         var inputname = $("#prdtName").val();
 
-        console.log("~~~~~~~~~~~~~~~~" + inputname + "~~~~~~~~~~~~~~~");
-
         var getUrl = "/ajax/product/manage/add/" + inputname;
 
         var existResult;
@@ -117,17 +115,6 @@ $().ready(function () {
                 });
             }
         });
-
-
-        // if( !existResult ){
-
-            
-
-        // }
-        
-        
-
-
         
     }
 

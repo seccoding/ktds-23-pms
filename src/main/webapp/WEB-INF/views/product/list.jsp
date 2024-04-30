@@ -26,23 +26,15 @@
 
 <script type="text/javascript" src="/js/product/list.js"></script>
 <script>
-    $().ready( function () {
-        $("#product-exist-search").change(function(){
-            var checked = $(this).is(":checked");
-            if (checked) {
-                $("table.table tbody tr").each(function(){
-                    var stockQuantity = parseInt($(this).find("td:eq(4)").text());
-                    if (stockQuantity < 1) {
-                        $(this).hide();
-                    } else {
-                        $(this).show();
-                    }
-                });
-            } else {
-                $("table.table tbody tr").show();
-            }
-        });
-    });
+
+    function search(pageNo) {
+        console.log($("#product-exist").is(":checked")+"!!!")
+        var searchForm = $("#search-form");
+        $("#page-no").val(pageNo);
+        $("#is-check").val($("#product-exist").is(":checked"));
+        console.log($("#is-check").val()+"????")
+        searchForm.attr("method", "get").attr("action", "/product/list").submit();
+    }
 </script>
 </head>
 <body>
@@ -57,10 +49,11 @@
             <button type="button" class="apply-product">신청</button>
         </div>
         <div class="check-option">
-            <input type="checkbox" id="product-exist-search" 
-                   name="existed-product" value="existed-product-checked"/>
-            <label for="product-exist-search"></label>
-            <label for="product-exist-search">재고가 있는 비품만 조회</label>
+            <input type="checkbox" id="product-exist" 
+                   name="existed-product" value="existed-product-checked"
+                   data-checkstatus="${isCheck}" />
+            <label for="product-exist"></label>
+            <label for="product-exist">재고가 있는 비품만 조회</label>
         </div>
 
         <table class="table">
@@ -107,6 +100,7 @@
     <!-- Paginator 시작 -->
     <div>
         <form id="search-form">
+            <input type="hidden" id="is-check" name="isCheck" value="false" />
             <input type="hidden" id="page-no" name="pageNo" value="0"/>
             <select id="list-size" name="listSize">
                 <option value="10" ${searchProductVO.listSize eq 10 ? 'selected' : ''}>10개</option>

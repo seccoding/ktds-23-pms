@@ -227,6 +227,20 @@ public class ProductServiceImpl implements ProductService{
 		
 		return isExist;
 	}
+
+	@Override
+	public ProductListVO searchAllProductNotReturn(SearchProductVO searchProductVO) {
+		int productCount = this.productDao.searchProductAllNotReturnCount(searchProductVO);
+		searchProductVO.setPageCount(productCount);
+		
+		List<ProductVO> notReturnproductList = this.productDao.searchAllProductNotReturn(searchProductVO);
+		
+		ProductListVO notReturnList = new ProductListVO();
+		notReturnList.setProductCnt(productCount);
+		notReturnList.setProductList(notReturnproductList);
+		
+		return notReturnList;
+	}
 	
 
 }

@@ -105,6 +105,10 @@ public interface ProductDao {
 	 */
 	public int getOneExistCount(String inputName);
 
+	public List<ProductVO> searchAllProductNotReturn(SearchProductVO searchProductVO);
+
+	public int searchProductAllNotReturnCount(SearchProductVO searchProductVO);
+
 	
 
 }

@@ -81,6 +81,8 @@ public interface ProductService {
 	 */
 	public boolean getOneExistProduct(String inputName);
 
+	public ProductListVO searchAllProductNotReturn(SearchProductVO searchProductVO);
+
 	
 
 }
