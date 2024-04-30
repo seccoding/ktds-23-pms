@@ -267,9 +267,7 @@
 		, MDF_DT= SYSDATE
 		, MDFR_ID='00000'
 		, OUT_ENCODE_FILE=#{outEncodeFile}
-		<if test='outVerNum != null and outVerNum != ""'>
 		, OUT_VER_NUM =#{outVerNum}
-		</if>
 		WHERE OUT_ID=#{outId}
 
 	</update>
