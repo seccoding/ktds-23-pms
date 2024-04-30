@@ -5,13 +5,19 @@
     <title>로그기록 확인 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/login/loginlogview.js"></script>
+    <style>
+        #search-type {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
 
 <div>
 
 </div>
-<h2>로그 기록 관리</h2>
+<h2>로그 기록 관리</h2><span>(3개월 내 기록만 검색이 가능합니다.)</span>
 <div class="grid">
     <form id="search-form">
         <input type="hidden" id="page-no" name="pageNo" value="0" />
@@ -24,6 +30,13 @@
                 <option value="lgnSccDt" ${loginLogVO.searchType eq 'lgnSccDt' ? 'selected' : ''}>로그인 시간</option>
                 <option value="lgtDt" ${loginLogVO.searchType eq 'lgtDt' ? 'selected' : ''}>로그아웃 시간</option>
             </select>
+            <select id="log-type" name="loginType" >
+                <option value="today" ${loginLogVO.loginType eq 'today' ? 'selected' : ''}>오늘</option>
+                <option value="oneMonth" ${loginLogVO.loginType eq 'oneMonth' ? 'selected' : ''}>1개월</option>
+                <option value="twoMonth" ${loginLogVO.loginType eq 'twoMonth' ? 'selected' : ''}>2개월</option>
+                <option value="thrMonth" ${loginLogVO.loginType eq 'thrMonth' ? 'selected' : ''}>3개월</option>
+            </select>
+            <br/>
             <input type="text" name="searchKeyword" value="${loginLogVO.searchKeyword}" />
             <button type="button" id="search-btn">검색</button>
         </div>
@@ -39,7 +52,7 @@
             <th>삭제 여부</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="table">
         <c:choose>
             <c:when test="${not empty loginLogList.loginLogList}">
                 <c:forEach items="${loginLogList.loginLogList}" var="loginLog">

@@ -3,6 +3,12 @@ $().ready(function () {
 	if (window.browser) {
 		window.browser.history.deleteAll();
 	}
+
+  $("#empId, #pwd").on("keydown", function (enter) {
+    if (enter.code === 'Enter') {
+      $("#login-btn").click();
+    }
+  });
 	
   $("#login-btn").on("click", function () {
     $(".errorEndDt").remove();
