@@ -41,6 +41,31 @@
 		   AND P.ONCE_YN = 'N'
 		   AND PM.LOST_YN = 'N'
 	</select>
+	<select id="getUserListCnt" parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		 INNER JOIN (SELECT P_I.*
+						  , REPLACE(P_I.PRDT_NAME, ' ', '') AS SEARCH_PRDT_NAME
+						  , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+					   FROM PRODUCT P_I) P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE BH.DEL_YN = 'N'
+		   AND BH.BRRW_ID = #{employeeVO.empId}
+		   AND P.ONCE_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productName"'>
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "productManagementId"'>
+		   AND BH.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
 
 	
 	<select id="searchBorrowAllCount" 
@@ -58,7 +83,6 @@
 		 WHERE BH.DEL_YN = 'N'
 		   AND BH.BRRW_ID = #{employeeVO.empId}
 		   AND BH.RTN_DT IS NULL
-		   AND PM.LOST_YN = 'N'
 		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
@@ -71,6 +95,8 @@
 			</choose>
 		</if>
 	</select>
+	
+	
 
 	<select id="searchAllUserRentalState" 
 			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
@@ -110,6 +136,34 @@
 		<include refid="Common.pagenate_footer" />
 	</select>
 	
+	<select id="getAllListCnt" 
+			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM BORROW_HISTORY BH
+		 INNER JOIN PRODUCT_MANAGEMENT PM
+		    ON BH.PRDT_MNG_ID = PM.PRDT_MNG_ID
+		 INNER JOIN (SELECT P_I.*
+						  , REPLACE(P_I.PRDT_NAME, ' ', '') AS SEARCH_PRDT_NAME
+						  , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+					   FROM PRODUCT P_I) P
+		    ON P.PRDT_ID = PM.PRDT_ID
+		 WHERE BH.DEL_YN ='N'
+		   AND P.ONCE_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "productManagementId"'>
+		   AND PM.PRDT_MNG_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+				<when test='searchType == "productName"'>
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "borrowId"'>
+		   AND BH.BRRW_ID LIKE '%' || #{searchKeyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
 	
 	<select id="searchProductManagementStateAllCount" 
 			parameterType="com.ktdsuniversity.edu.pms.borrow.vo.SearchBorrowVO"
@@ -126,7 +180,6 @@
 		 WHERE BH.DEL_YN ='N'
 		   AND BH.RTN_DT IS NULL
 		   AND P.ONCE_YN = 'N'
-		   AND PM.LOST_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productManagementId"'>
@@ -164,7 +217,6 @@
 					   FROM PRODUCT P_I) P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
-		   AND PM.LOST_YN = 'N'
 		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
@@ -337,7 +389,6 @@
 		 INNER JOIN PRODUCT P
 		    ON P.PRDT_ID = PM.PRDT_ID 
 		 WHERE BH.DEL_YN = 'N'
-		   AND PM.LOST_YN = 'N'
 		   AND P.ONCE_YN = 'N'
 		   AND BH.RTN_DT IS NULL
 		<if test='searchKeyword != null and searchKeyword != ""'>

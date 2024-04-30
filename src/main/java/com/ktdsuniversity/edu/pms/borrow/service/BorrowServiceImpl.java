@@ -33,7 +33,8 @@ public class BorrowServiceImpl implements BorrowService{
 	@Override
 	public BorrowListVO searchUserRentalState(SearchBorrowVO searchBorrowVO) {
 		int borrowCount = this.borrowDao.searchBorrowAllCount(searchBorrowVO);
-		searchBorrowVO.setPageCount(borrowCount);
+		int totalCnt = this.borrowDao.getUserListCnt(searchBorrowVO);
+		searchBorrowVO.setPageCount(totalCnt);
 		
 		List<BorrowVO> borrowList = this.borrowDao.searchAllUserRentalState(searchBorrowVO);
 		
@@ -49,7 +50,7 @@ public class BorrowServiceImpl implements BorrowService{
 	@Override
 	public BorrowListVO searchProductManageState(SearchBorrowVO searchBorrowVO) {
 		int borrowCount = this.borrowDao.searchProductManagementStateAllCount(searchBorrowVO);
-		searchBorrowVO.setPageCount(borrowCount);
+		
 		
 		List<BorrowVO> borrowList = this.borrowDao.searchAllProductManagementState(searchBorrowVO);
 		
@@ -94,12 +95,28 @@ public class BorrowServiceImpl implements BorrowService{
 
 	@Override
 	public BorrowListVO searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO) {
-		List<BorrowVO> notReturnBorrowList = this.borrowDao.searchProductManageStateNotReturn(searchBorrowVO);
 		int borrowCount = this.borrowDao.searchProductManagementStateAllCount(searchBorrowVO);
+		
+		List<BorrowVO> notReturnBorrowList = this.borrowDao.searchProductManageStateNotReturn(searchBorrowVO);
+		
 		BorrowListVO notReturnList = new BorrowListVO();
 		notReturnList.setBorrowList(notReturnBorrowList);
 		notReturnList.setBorrowCnt(borrowCount);
 		return notReturnList;
+	}
+
+
+
+	@Override
+	public int getNotNullCnt(SearchBorrowVO searchBorrowVO) {
+		return this.borrowDao.searchProductManagementStateAllCount(searchBorrowVO);
+	}
+
+
+
+	@Override
+	public int getAllCnt(SearchBorrowVO searchBorrowVO) {
+		return this.borrowDao.getAllListCnt(searchBorrowVO);
 	}
 
 }

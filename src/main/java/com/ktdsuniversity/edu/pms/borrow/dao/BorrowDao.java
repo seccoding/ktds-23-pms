@@ -61,6 +61,10 @@ public interface BorrowDao {
 
 	public List<BorrowVO> searchProductManageStateNotReturn(SearchBorrowVO searchBorrowVO);
 
+	public int getUserListCnt(SearchBorrowVO searchBorrowVO);
+
+	public int getAllListCnt(SearchBorrowVO searchBorrowVO);
+
 	
 
 	
