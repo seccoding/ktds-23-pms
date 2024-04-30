@@ -127,6 +127,12 @@ public class MemoServiceImpl implements MemoService{
 		
 		return memoListVO;
 	}
+
+	@Override
+	public MemoVO findMemoById(String memoId) {
+		MemoVO memoVO = this.memoDao.findMemo(memoId);
+		return memoVO;
+	}
 	
 	
 }

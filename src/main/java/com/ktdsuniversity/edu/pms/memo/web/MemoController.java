@@ -6,6 +6,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -167,9 +169,19 @@ public class MemoController {
 		memoVO.setEmpId(employeeVO.getEmpId());
 		memoVO.setMemoId(id);
 		
-		 logger.info("MemoVO Content: {}", memoVO.getEmpId()); 
-		 logger.info("MemoVO Content: {}", memoVO.getMemoId()); 
+		logger.info("MemoVO Content: {}", memoVO.getEmpId()); 
+		logger.info("MemoVO Content: {}", memoVO.getMemoId()); 
 		return new AjaxResponse().append("result", memoService.saveOneMemo(memoVO));
 	}
+	
+	@ResponseBody
+	@GetMapping("/ajax/memo/status/{id}")
+    public AjaxResponse getMemoStatus(@PathVariable String id) {
+		
+		MemoVO memoVO = memoService.findMemoById(id);
+		logger.info(memoVO.getReadYn());
+		return new AjaxResponse().append("result", memoVO);
+            
+    }
 	
 }

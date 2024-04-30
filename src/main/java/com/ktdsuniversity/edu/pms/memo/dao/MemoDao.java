@@ -39,5 +39,7 @@ public interface MemoDao {
 
 	public List<MemoVO> getReadYReceiveMemo(SearchMemoVO searchMemoVO);
 
+	public MemoVO findMemo(String memoId);
+
 	
 }

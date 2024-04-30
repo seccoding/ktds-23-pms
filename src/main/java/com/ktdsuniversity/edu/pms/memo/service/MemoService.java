@@ -26,4 +26,6 @@ public interface MemoService {
 
 	public MemoListVO getReceiveMemoReadYsearch(SearchMemoVO searchMemoVO);
 
+	public MemoVO findMemoById(String memoId);
+
 }
