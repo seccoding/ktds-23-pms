@@ -12,29 +12,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       src="/js/knowledge/knowledgelist.js"
     ></script>
     <style>
-      .btn-group {
-          float: right;
-      }
-
-      .submit-btn {
-          width: 7rem;
-      }
-
-      .search {
-        display: flex;
-        justify-content: space-between;
-      }
-
       .search-keyword {
           display: flex;
       }
-
-      .search-keyword > * {
-          padding-right: 0.825rem;
-      }
-
-      .search-category {
-          padding-bottom: 11px;
+      .create-btn {
+        text-align: right;
       }
   </style>
   </head>
@@ -44,14 +26,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
       <table class="table">
         <colgroup>
           <col width="40px" />
-          <col width="100px" />
-          <col width="150px" />
+          <col width="120px" />
+          <col width="180px" />
           <col width="100px" />
           <col width="*" />
           <col width="80px" />
           <col width="80px" />
-          <col width="150px" />
-          <col width="150px" />
+          <col width="130px" />
+          <!-- <col width="150px" /> -->
         </colgroup>
         <thead>
           <tr>
@@ -62,13 +44,13 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             </c:if>
             </th>
             <th>프로젝트</th>
-            <th>요구사항명</th>
-            <th>등록자</th>
+            <th>요구사항</th>
+            <th>작성자</th>
             <th>제목</th>
             <th>조회수</th>
             <th>추천수</th>
-            <th>작성일자</th>
-            <th>수정일자</th>
+            <th>작성일</th>
+            <!-- <th>수정일자</th> -->
           </tr>
         </thead>
         <tbody>
@@ -96,7 +78,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                   <td>${knowledge.knlCnt}</td>
                   <td>${knowledge.knlRecCnt}</td>
                   <td>${knowledge.crtDt}</td>
-                  <td>${knowledge.mdfDt}</td>
+                  <!-- <td>${knowledge.mdfDt}</td> -->
                 </tr>
               </c:forEach>
             </c:when>
@@ -118,7 +100,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <nav aria-label="Page navigation">
       <form id="search-form">
         <div class="search-keyword">
-          <div class="search-category">
             <input type="hidden" id="page-no" name="pageNo" value="0">
             <select name="listSize" id="list-size">
               <option value="10" ${searchKnowledgeVO.listSize eq 10 ? 'selected' : ''}>10개</option>
@@ -137,16 +118,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <option value="knlTtl_knlCntnt" ${searchKnowledgeVO.searchType eq 'knlTtl_knlCntnt' ? 'selected' : ''}>제목 + 내용</option>
               <option value="crtrId" ${searchKnowledgeVO.searchType eq 'crtrId' ? 'selected' : ''}>등록자</option>
             </select>
+        
+
+            <div class="search-text">
+              <input type="text" name="searchKeyword" value="${searchKnowledgeVO.searchKeyword}">
+              <button type="button" id="search-btn">검색</button>
+              <button type="button" id="search-btn-cancel">초기화</button>
+            </div>
         </div>
 
-          <div class="search-text">
-            <input type="text" name="searchKeyword" value="${searchKnowledgeVO.searchKeyword}">
-            <button type="button" id="search-btn">검색</button>
-            <button type="button" id="search-btn-cancel">초기화</button>
-          </div>
-      </div>
-
-        <div class="btn-group">
+        <div class="create-btn">
+          <button>
+            <a href="/knowledge/write">신규 등록</a>
+          </button>
           <c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
             <button>
               <a href="/knowledge/excel/download">엑셀 다운</a>
@@ -155,9 +139,6 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
               <a id="deleteMassiveKnowledge" href="javaScript:void(0)">일괄 삭제</a>
             </button>
           </c:if>
-            <button>
-              <a href="/knowledge/write">신규 등록</a>
-            </button>
         </div>
         
 

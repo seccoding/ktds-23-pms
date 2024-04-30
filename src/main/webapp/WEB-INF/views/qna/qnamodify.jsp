@@ -9,6 +9,11 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../ckeditor.jsp" />
     <script type="text/javascript" src="/js/qna/qnawrite.js"></script>
   </head>
+  <style>
+    #modify-btn {
+      text-align: right;
+    }
+  </style>
   <body>
     <form
       action="/ajax/qna/modify/${qnaVO.qaId}"
@@ -39,10 +44,10 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
             />
           </div>
         </div>
-        <button id="submit-btn2" type="button" data-key="${qnaVO.qaId}">
-          저장
-        </button>
       </div>
     </form>
+    <div id="modify-btn">
+      <button type="button" data-key="${qnaVO.qaId}">수정</button>
+    </div>
   </body>
 </html>

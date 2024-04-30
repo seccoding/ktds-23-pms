@@ -94,6 +94,7 @@
         </select>
   
         <select id="search-type" name="searchType">
+          <option value="" selected disabled hidden>검색 옵션</option>
           <option value="project" ${searchIssueVO.searchType eq 'project' ? 'selected' : ''}>프로젝트명</option>
           <option value="requirement" ${searchIssueVO.searchType eq 'requirement' ? 'selected' : ''}>요구사항명</option>  
           <option value="title" ${searchIssueVO.searchType eq 'title' ? 'selected' : ''}>이슈제목</option>

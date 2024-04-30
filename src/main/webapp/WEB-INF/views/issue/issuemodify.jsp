@@ -9,7 +9,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../ckeditor.jsp" />
     <script type="text/javascript" src="/js/issue/issuewrite.js"></script>
     <style>
-
+      #modify-btn {
+        text-align: right;
+      }
     </style>
   </head>
   <body>
@@ -43,10 +45,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
                 />
             </div>
           </div>
-          <div>
-            <button type="button" data-type="modify">수정</button>
-          </div>
-      </div>
     </form>
+      <div id="modify-btn">
+        <button type="button" data-type="modify">수정</button>
+      </div>  
   </body>
 </html>
