@@ -141,7 +141,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
               <h6>쪽지</h6>
               <div class="card-body">
                 <!-- 쪽지 content 영역 -->
-                <div class="memocnt">받은쪽지함 개수 : ${memoList.memoCnt}</div>
+                <!-- <div class="memocnt">안 읽은 쪽지 : ${memoList.memoCnt}</div> -->
               </div>
             </div>
           </div>

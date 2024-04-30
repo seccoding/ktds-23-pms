@@ -24,4 +24,6 @@ public interface MemoService {
 
 	public boolean saveOneMemo(MemoVO memoVO);
 
+	public MemoListVO getReceiveMemoReadYsearch(SearchMemoVO searchMemoVO);
+
 }
