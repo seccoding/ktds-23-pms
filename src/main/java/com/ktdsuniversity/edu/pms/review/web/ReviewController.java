@@ -69,17 +69,6 @@ public class ReviewController {
 		return "review/reviewlist"; // reviewList.jsp 파일 이름
 	}
 	
-	
-	
-	
-	@GetMapping("/review/viewresult")
-	public String viewReviewCntnt(SearchReviewVO searchReviewVO, Model model) {
-		ReviewListVO reviewListVO = this.reviewService.getAllReviewResult(searchReviewVO);
-		model.addAttribute("reviewList", reviewListVO);
-		model.addAttribute("SearchReviewVO", searchReviewVO);
-		return "review/reviewresult"; // reviewList.jsp 파일 이름
-	}
-	
 	/*
 	 * 후기작성을 사용자에게 보여주는 페이지
 	 * - id값으로 해당 후기의 흐로젝트명을 가져와서 후기작성페이지에 바로 노출되도록 하기위함
@@ -162,6 +151,26 @@ public class ReviewController {
 		return "redirect:/review"; 
 	}
 		
+	 @GetMapping("/review/viewresult")
+	   public String viewReviewCntnt(@RequestParam("prjId") String id, SearchReviewVO searchReviewVO, Model model) {
+		ReviewListVO reviewListVO = this.reviewService.getAllReviewResult(searchReviewVO);
+	
+			/*
+			 * @GetMapping("/review/viewresult/prjId/{id}") public String
+			 * viewReviewCntnt(@RequestParam("id") String id, SearchReviewVO searchReviewVO,
+			 * Model model) {
+			 */
+		
+		int projectVO = projectService.getProjectTeammateCount(id);
+		
+		model.addAttribute("teammateCount", projectVO);
+		
+		model.addAttribute("reviewList", reviewListVO);
+		model.addAttribute("SearchReviewVO", searchReviewVO);
+		return "review/reviewresult"; // reviewList.jsp 파일 이름
+	
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("/ajax/review/delete/massive")

@@ -27,18 +27,16 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
     </style>
         <script type="text/javascript" src="/js/review/reviewresult.js"></script>
-        <script type="text/javascript" src="/js/review/reviewlist.js"></script>
+        <!-- <script type="text/javascript" src="/js/review/reviewlist.js"></script> -->
   </head>
   
   <body>
   <jsp:include page="../commonmodal.jsp"/>
   <div>
 	총 ${reviewList.reviewCnt}건의 후기가 검색되었습니다.
-	후기 답변 현황 : ${reviewList.reviewCnt} / ${reviewList.reviewCnt}
+	후기 답변 현황 : ${reviewList.reviewCnt} / ${teammateCount}
   </div>
-	<button id="deleteMassiveReview" href="javascript:void(0)">삭제</button>
-    <!--<a id="deleteMassiveMReview" href="javascript:void(0)">삭제</a>-->
-
+	
     <table class="table">
       <colgroup>
          <col width="150px" />
@@ -59,14 +57,14 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
        <tbody>
          <c:forEach items="${reviewList.reviewList}" var="review" varStatus="loop">
            <tr id="${review.rvId}">
-             	<td>
-                 <input type="checkbox" 
-                 		class = "target-review-id" 
-                 		id="target-review-id-${loop.index}" 
-                 		name="targetReviewId" 
-                 		value="${review.rvId}" />
-     	 		       <label for="target-review-id-${loop.index}"></label>
-               </td>
+             <td>
+             <input type="checkbox" 
+             		class = "target-review-id" 
+             		id="target-review-id-${loop.index}" 
+             		name="targetReviewId" 
+             		value="${review.rvId}" />
+ 	 		       <label for="target-review-id-${loop.index}"></label>
+             </td>
              <td>${review.rvId}</td>
              <td class="center-align ellipsis">${review.rvCntnt}</td>
              <td class="btn-group">
@@ -102,6 +100,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 	
 	    <input type="text" name="searchKeyword" value="${SearchReviewVO.searchKeyword}"/>
 	    <button type="button" id="search-btn">검색</button>
+	    <button id="deleteMassiveReview" href="javascript:void(0)">삭제</button>
+    	<!--<a id="deleteMassiveMReview" href="javascript:void(0)">삭제</a>-->
+	    
             </div>
             <ul class="pagination">
                 <c:if test="${SearchReviewVO.hasPrevGroup}">
