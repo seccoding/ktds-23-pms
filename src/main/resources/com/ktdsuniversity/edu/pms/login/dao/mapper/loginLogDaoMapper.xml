@@ -44,9 +44,9 @@
         , E.SALT
         , E.ADMN_CODE
         , E.LGN_YN
-        , E.END_DT
-        , E.REST_ST_DT
-        , E.REST_END_DT
+        , TO_CHAR(E.END_DT, 'YYYY-DD-MM') END_DT
+        , TO_CHAR(E.REST_ST_DT, 'YYYY-DD-MM') REST_ST_DT
+        , TO_CHAR(E.REST_END_DT, 'YYYY-DD-MM') REST_END_DT
         , E.MNGR_YN
         , E.DEPT_ID
         , E.HIRE_DT
