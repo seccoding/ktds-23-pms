@@ -20,6 +20,14 @@
 
     <div>
         <table class="table">
+            <colgroup>
+                <col width="30%"/>
+                <col width="14%"/>
+                <col width="14%"/>
+                <col width="14%"/>
+                <col width="14%"/>
+                <col width="14%"/>
+            </colgroup>
             <thead>
             <tr>
                 <th>프로젝트</th>
