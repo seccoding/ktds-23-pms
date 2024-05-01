@@ -306,7 +306,7 @@
 		, PWD
 		, SALT)
 		VALUES
-		 (#{empId}
+		 (TO_CHAR(SYSDATE, 'MMDD') || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0')
 		, #{empName}
 		, #{prfl}
 		, #{originPrflFileName}

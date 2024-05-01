@@ -67,9 +67,11 @@ public class Validator<T> {
 					result = !StringUtil.isEmpty(value);
 				} else if (type == Type.EMAIL) {
 					result = StringUtil.isEmailFormat(value);
-				} else if (type == Type.EMPID) {
-					result = StringUtil.isEmpIdFormat(value);
-				} else if (type == Type.SIZE) {
+				}
+//				else if (type == Type.EMPID) {
+//					result = StringUtil.isEmpIdFormat(value);
+//				}
+				else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {
 						Object otherObjectValue = this.getRefValue(key, type);
 						int minSize = this.toInt(otherObjectValue);

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 
@@ -58,12 +59,12 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 		<form id="registForm" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="next" id="next" value="${nextUrl}" />
 			<div class="grid">
-				<div class="empId">
-					<label for="empId">사원번호: </label>
+				<div class="empName">
+					<label for="empName">사원이름: </label>
 				</div>
 				<div>
-					<input id="empId" type="text" name="empId"
-						value="${employeeVO.empId}" placeholder="0000000 숫자 7자리" />
+					<input id="empName" type="text" name="empName"
+						value="${employeeVO.empName}" />
 				</div>
 				<div class="pwd">
 					<label for="pwd">비밀번호: </label>
@@ -79,13 +80,6 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 				<div>
 					<input id="confirmPwd" type="password" name="confirmPwd"
 						value="${employeeVO.confirmPwd}" placeholder="비밀번호를 다시한번 입력해 주세요" />
-				</div>
-				<div class="empName">
-					<label for="empName">사원이름: </label>
-				</div>
-				<div>
-					<input id="empName" type="text" name="empName"
-						value="${employeeVO.empName}" />
 				</div>
 				<div class="hireDt">
 					<label for="hireDt">입사일: </label>
@@ -152,32 +146,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 					<%-- <input id="deptId" type="text" name="deptId" value="${employeeVO.deptId}"
                         placeholder="DEPT_000000_000000" /> --%>
 					<select id="deptId" name="deptId">
-						<option value="DEPT_230101_000001"
-							${employeeVO.deptId eq DEPT_230101_000001 ? 'select' : ''}>사업기획</option>
-						<option value="DEPT_230101_000002"
-							${employeeVO.deptId eq DEPT_230101_000002 ? 'select' : ''}>디자인</option>
-						<option value="DEPT_230101_000003"
-							${employeeVO.deptId eq DEPT_230101_000003 ? 'select' : ''}>사업관리</option>
-						<option value="DEPT_230101_000004"
-							${employeeVO.deptId eq DEPT_230101_000004 ? 'select' : ''}>SW아키텍처</option>
-						<option value="DEPT_230101_000005"
-							${employeeVO.deptId eq DEPT_230101_000005 ? 'select' : ''}>데이터아키텍처</option>
-						<option value="DEPT_230101_000006"
-							${employeeVO.deptId eq DEPT_230101_000006 ? 'select' : ''}>어플리케이션운영</option>
-						<option value="DEPT_230101_000007"
-							${employeeVO.deptId eq DEPT_230101_000007 ? 'select' : ''}>SW개발</option>
-						<option value="DEPT_230101_000008"
-							${employeeVO.deptId eq DEPT_230101_000008 ? 'select' : ''}>HW개발</option>
-						<option value="DEPT_230101_000009"
-							${employeeVO.deptId eq DEPT_230101_000009 ? 'select' : ''}>보안</option>
-						<option value="DEPT_230101_000010"
-							${employeeVO.deptId eq DEPT_230101_000010 ? 'select' : ''}>경영지원</option>
-						<option value="DEPT_230101_000011"
-							${employeeVO.deptId eq DEPT_230101_000011 ? 'select' : ''}>재무</option>
-						<option value="DEPT_230101_000012"
-							${employeeVO.deptId eq DEPT_230101_000012 ? 'select' : ''}>인사</option>
-						<option value="DEPT_230101_000013"
-							${employeeVO.deptId eq DEPT_230101_000013 ? 'select' : ''}>구매</option>
+						<c:forEach items="${departmentList.departmentList}" var="dept">
+							<option value="${dept.deptId}" ${employeeVO.deptId eq dept.deptId ? 'select' : ''}>${dept.deptName}</option>
+						</c:forEach>
 					</select>
 				</div>
 				<div class="jobId">
@@ -186,27 +157,10 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 				<div>
 					<%-- <input id="jobId" type="text" name="jobId" value="${employeeVO.jobId}"
                         placeholder="JOB_000000_000000" /> --%>
-					<select id="jobId" name="jobId">
-						<option value="JOB_240412_000001"
-							${employeeVO.jobId eq JOB_240412_000001 ? 'select' : ''}>사업개발</option>
-						<option value="JOB_240412_000002"
-							${employeeVO.jobId eq JOB_240412_000002 ? 'select' : ''}>R&D</option>
-						<option value="JOB_240412_000003"
-							${employeeVO.jobId eq JOB_240412_000003 ? 'select' : ''}>컨설팅</option>
-						<option value="JOB_240412_000004"
-							${employeeVO.jobId eq JOB_240412_000004 ? 'select' : ''}>PJT관리</option>
-						<option value="JOB_240412_000005"
-							${employeeVO.jobId eq JOB_240412_000005 ? 'select' : ''}>아키텍처설계</option>
-						<option value="JOB_240412_000006"
-							${employeeVO.jobId eq JOB_240412_000006 ? 'select' : ''}>개발운영</option>
-						<option value="JOB_240412_000007"
-							${employeeVO.jobId eq JOB_240412_000007 ? 'select' : ''}>품질</option>
-						<option value="JOB_240412_000008"
-							${employeeVO.jobId eq JOB_240412_000008 ? 'select' : ''}>경영지원</option>
-						<option value="JOB_240412_000009"
-							${employeeVO.jobId eq JOB_240412_000009 ? 'select' : ''}>영업</option>
-						<option value="JOB_240412_000010"
-							${employeeVO.jobId eq JOB_240412_000010 ? 'select' : ''}>CS</option>
+                    <select id="jobId" name="jobId">
+						<c:forEach items="${jobList.jobList}" var="job">
+							<option value="${job.jobId}" ${employeeVO.jobId eq job.jobId ? 'select' : ''}>${job.jobName}</option>
+						</c:forEach>
 					</select>
 				</div>
 				<div>
@@ -223,7 +177,12 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 				<div class="regist-btn">
 					<button type="button" id="regist-btn">회원가입</button>
 				</div>
-
+				<div>
+					<label>테스트: </label>
+				</div>
+				<div>
+					입니다
+				</div>
 			</div>
 		</form>
 	</div>

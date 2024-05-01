@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
+import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
@@ -42,7 +44,7 @@ public class LoginController {
 
 	@Autowired
 	private CommuteService commuteService;
-
+	
 	@GetMapping("/employee/login")
 	public String viewLoginPage() {
 		return "login/login";

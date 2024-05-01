@@ -46,7 +46,6 @@ $().ready(function() {
 		var formData = new FormData();
 
 		formData.append("file", file);
-		formData.append("empId", $("#empId").val());
 		formData.append("pwd", $("#pwd").val());
 		formData.append("confirmPwd", $("#confirmPwd").val());
 		formData.append("empName", $("#empName").val());
