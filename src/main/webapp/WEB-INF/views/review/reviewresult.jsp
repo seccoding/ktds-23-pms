@@ -8,12 +8,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/review/reviewresult.js"></script>
     <!-- <link rel="stylesheet" href="/css/common.css" /> -->
-      <jsp:include page="../commonmodal.jsp"/>
+    <jsp:include page="../commonmodal.jsp"/>
     <style type="text/css">
 	   .title {
             margin-bottom: 3rem;
        }
-		.modal-confirm-text {
+		.modal-confirm-text1 {
 	    text-align: center;
 	    color: #000000;
 	    font-size: 0.8rem;

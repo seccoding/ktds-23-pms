@@ -95,27 +95,7 @@ $(".confirm-button").on("click", function () {
 	    });
 	});
 	
-	$(".ellipsis").on("click", function() {
-		var reviewContent = $(this).text();
-	    loadmyModal({
-	        content: reviewContent,
-	        fnPositiveBtnHandler: function () {},
-	        showNegativeBtn: false
-	    },
-	    /*$(".modal-confirm-text").css({
-			"paddig":"1rem", 
-
-			"color": "black",
-  			"font-size": "13px",
-    		"font-weight": "normal",
- 			"overflow": "auto"}),*/
-	    );
-	});
-    
-        
-  
-  
-  
+	
   $(".modal-confirm-close").on("click", function () {
     location.reload();
   });
@@ -138,7 +118,7 @@ $(".confirm-button").on("click", function () {
     // const id = $(".delete-button").closest("tr").attr("id");
     const id = $(this).closest("tr").attr("id");
     
-  $('.prjId').on('click', function() {
+ /* $('.prjId').on('click', function() {
         $(location).attr('href', '/review/viewresult?prjId=' + $(this).attr('id'));
     });  
     var alertModal = $(".modal-window");
@@ -146,51 +126,39 @@ $(".confirm-button").on("click", function () {
     var modalText = $(".modal-text");
     modalText.text("후기를 삭제하시겠습니까?");
     modalButton.text("확인");
-    alertModal[0].showModal();
+    alertModal[0].showModal();*/
     // console.log("id: " + id);
 /*    if (confirm("후기를 삭제하시겠습니까?")) {
 */ 
-
- 	
-
 
     $("#search-btn").on("click", function () {
     removeSpaces(); // 공백 제거
     search(0);
   });
+  
+  
+	$(".ellipsis").on("click", function() {
+		var reviewContent1 = $(this).text();
+	    loadmyModal({
+	        content1: reviewContent1,
+	        fnPositiveBtnHandler: function () {},
+	        showNegativeBtn: false
+	    },
+	    /*$(".modal-confirm-text").css({
+			"paddig":"1rem", 
 
-	
+			"color": "black",
+  			"font-size": "13px",
+    		"font-weight": "normal",
+ 			"overflow": "auto"}),*/
+	    );
+	});
   });
 });
 
-/*function showModalWithReviewContent(reviewContent) {
-  $.get("/html/modal.html", function (modalHtml) {
-    // 모달의 제목 설정
-    var title = "Review Detail";
-
-    // 모달 HTML에 제목과 후기 내용 삽입
-    modalHtml = modalHtml.replaceAll("#title#", title);
-    modalHtml = modalHtml.replaceAll("#html#", reviewContent);
-
-    // 모달 요소 생성
-    var reviewModal = $(modalHtml);
-
-    // 닫기 버튼에 이벤트 리스너 추가
-    reviewModal.find("button").on("click", function (event) {
-      reviewModal[0].close();
-    });
-
-    // 모달을 body의 맨 앞에 삽입하여 보이도록 함
-    $("body").prepend(reviewModal);
-
-    // showModal() 메서드를 사용하여 모달을 표시
-    reviewModal[0].showModal();
-  });
-}*/
-
 
 function loadmyModal({
-  content = "",
+  content1 = "",
   positiveBtnName = "확인",
   fnPositiveBtnHandler = () => {},
   showNegativeBtn = true,
@@ -204,8 +172,8 @@ function loadmyModal({
     var alertModal = $(".modal-confirm-window");
     var modalButton = $(".confirm-confirm-button");
     var modalButton1 = $(".cancel-confirm-button");
-    var modalText = $(".modal-confirm-text");
-    modalText.text(content);
+    var modalText1 = $(".modal-confirm-text1");
+    modalText1.text(content1);
     modalButton.text(positiveBtnName);
     modalButton.on("click", function () {
       try {
