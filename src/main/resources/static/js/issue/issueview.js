@@ -81,13 +81,13 @@ $().ready(function () {
             appendedReply.find(".contents").text(reply.rplCntnt);
             var modifyDate = appendedReply.find(".mdfDt");
             if (modifyDate.length !== 0) {
-              modifyDate.text("(수정: " + reply.mdfDt + ")");
+                modifyDate.text("(수정: " + (reply.mdfDt !== null ? reply.mdfDt : "") + ")");
             } else {
-              var mdfyDtDom = $("<span></span>");
-              mdfyDtDom.addClass("mdfDt");
-              mdfyDtDom.text("(수정: " + reply.mdfDt + ")");
-              appendedReply.find(".datetime").append(mdfyDtDom);
-            }
+                var mdfyDtDom = $("<span></span>");
+                mdfyDtDom.addClass("mdfDt");
+                mdfyDtDom.text(reply.mdfDt !== null ? "(수정: " + reply.mdfDt + ")" : "");
+                appendedReply.find(".datetime").append(mdfyDtDom);
+            } 
             continue;
           }
           // 이미 불러온 댓글인데, 삭제가 된 댓글일 경우
@@ -135,7 +135,7 @@ $().ready(function () {
             // <span class="crtdt">등록: 등록날짜</span>
             var crtDtDom = $("<span></span>");
             crtDtDom.addClass("crtdt");
-            crtDtDom.text(reply.crtDt);
+            crtDtDom.text("등록: " + reply.crtDt);
             datetimeDom.append(crtDtDom);
 
             // reply.crtDt !== reply.mdfDt &&

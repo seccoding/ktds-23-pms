@@ -80,11 +80,11 @@ $().ready(function () {
           appendedReply.find(".contents").text(reply.rplCntnt);
           var modifyDate = appendedReply.find(".mdfDt");
           if (modifyDate.length !== 0) {
-            modifyDate.text("(수정: " + reply.mdfDt + ")");
+              modifyDate.text("(수정: " + (reply.mdfDt !== null ? reply.mdfDt : "") + ")");
           } else {
             var mdfyDtDom = $("<span></span>");
             mdfyDtDom.addClass("mdfDt");
-            mdfyDtDom.text("(수정: " + reply.mdfDt + ")");
+            mdfyDtDom.text(reply.mdfDt !== null ? "(수정: " + reply.mdfDt + ")" : "");
             appendedReply.find(".datetime").append(mdfyDtDom);
           }
           continue;
@@ -123,7 +123,7 @@ $().ready(function () {
           // <div class="author">사용자명 (사용자이메일)</div>
           var authorDom = $("<div></div>");
           authorDom.addClass("author");
-          authorDom.text(reply.employeeVO.empName + " (" + reply.crtrId + ")");
+          authorDom.text(reply.employeeVO.empName);
           replyDom.append(authorDom);
 
           // <div class="datetime">

@@ -54,11 +54,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
   </head>
   <body>
     <div class="grid" data-id="${qnaVO.qaId}" data-crtr-id="${qnaVO.crtrId}">
+      <span style="display: none" hidden id="login-email">${sessionScope._LOGIN_USER_.empId}</span>
       <div class="main-info">
         <div class="grid info-border">
-          <span style="display: none" hidden id="login-email"
-            >${sessionScope._LOGIN_USER_.empId}</span
-          >
           <!-- <label for="qaTtl">제목</label> -->
           <div class="sub-item">${qnaVO.qaTtl}</div>
 
