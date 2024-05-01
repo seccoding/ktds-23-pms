@@ -30,6 +30,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
 import com.ktdsuniversity.edu.pms.job.service.JobService;
+import com.ktdsuniversity.edu.pms.job.vo.JobListVO;
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
@@ -53,10 +54,11 @@ public class EmployeeController {
 	private TeamService teamService;
 
 	@Autowired
-	private ChangeHistoryService changeHistoryService;
-	
-	
+	private ChangeHistoryService changeHistoryService;	
 
+	@Autowired
+	private JobService jobService;
+	
 	@Autowired
 	private FileHandler fileHandler;
 
@@ -208,7 +210,11 @@ public class EmployeeController {
 	 * 회원가입 페이지
 	 */
 	@GetMapping("/employee/regist")
-	public String viewRegistPage() {
+	public String viewRegistPage(Model model) {
+		DepartmentListVO departmentListVO = departmentService.getAllDepartment();
+		JobListVO jobListVO = jobService.getAllJob();
+		model.addAttribute("departmentList", departmentListVO);
+		model.addAttribute("jobList", jobListVO);
 		return "employee/regist";
 	}
 
@@ -224,6 +230,9 @@ public class EmployeeController {
 	public AjaxResponse doRegist(EmployeeVO employeeVO,
 			@RequestParam(defaultValue = "/employee/search") String nextUrl, @RequestParam String empId,
 			@RequestParam(required = false) MultipartFile file) {
+		
+		
+		
 		/**
 		 * 사원번호가 있는지 확인하고 1: 존재하는 사원번호, 0: 없는 사원번호 1이라면 "이미 사용중인 사원번호입니다."오류 발생
 		 */
@@ -235,9 +244,7 @@ public class EmployeeController {
 
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 
-		validator.add("empId", Type.NOT_EMPTY, "사원번호를 입력해 주세요.")
-				.add("empId", Type.EMPID, "사원번호 형식으로 입력해 주세요.")
-				.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해 주세요.")
+		validator.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해 주세요.")
 				.add("pwd", Type.PASSWORD, "비밀번호 형식으로 입력해 주세요.")
 				.add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해 주세요.")
 				.add("confirmPwd", Type.EQUALS, employeeVO.getPwd(), "동일한 비밀번호를 입력해 주세요.")
@@ -266,8 +273,7 @@ public class EmployeeController {
 		if (createEmpSuccess) {
 			return new AjaxResponse().append("next", nextUrl);
 		}
-		// 수정사항
-		return new AjaxResponse().append("errorMessage", "실패사유");
+		return new AjaxResponse().append("errorMessage", "회원가입에 실패했습니다");
 	}
 
 }
