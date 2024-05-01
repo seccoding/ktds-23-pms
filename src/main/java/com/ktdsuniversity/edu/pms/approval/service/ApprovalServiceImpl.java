@@ -90,6 +90,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Transactional
 	@Override
 	public boolean createApproval(ApprovalVO approvalVO) {
+		String apprMngId = this.departmentDao.getOneDepartment("DEPT_230101_000010").getDeptLeadId();
+		approvalVO.setApprMngId(apprMngId);
+		
 		// Approval 등록
 		int insertCount = this.approvalDao.insertApproval(approvalVO);
 		if(! (insertCount > 0)) {

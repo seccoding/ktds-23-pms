@@ -184,15 +184,15 @@ $().ready(function(){
         }); 
 
         formData.dmdId = $("#empId").val();
-        formData.apprMngId = $("#apprMngId").val();
+        // formData.apprMngId = $("#apprMngId").val();
         formData.apprTtl = $("#apprTtl").val();
         formData.apprCntnt = $("#apprCntnt").val();
         if($("#apprCtgr").val() === '비품변경') {
             formData.apprCtgr = '902';
         }
 
-        if(Object.keys(formData).length < 6) {
-
+        if(Object.keys(formData).length < 5) {
+            
             loadModal({
                 content: "변경신청할 비품을 체크해주세요.",
                 fnPositiveBtnHandler: function () {

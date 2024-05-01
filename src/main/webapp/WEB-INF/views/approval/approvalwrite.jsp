@@ -185,7 +185,7 @@
 						</div>
 						<div class="grid-item">
 							<input id="apprMngName" type="text" name="apprMngName" value="경영지원부장" readonly>
-							<input id="apprMngId" type="text" name="apprMngId" value="0005023" hidden>
+							<!-- <input id="apprMngId" type="text" name="apprMngId" value="0005023" hidden> -->
 						</div>
 						<div class="grid-item">
 							<label for="apprMngdeptName"><h6>결재부서</h6></label>
@@ -231,8 +231,8 @@
 							<c:forEach items="${borrowList.borrowList}" var="borrow">
 								<tr>
 									<td>
-										<input type="checkbox" id="x+${borrow.prdtMngId}" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"/>
-										<label for="x+${borrow.prdtMngId}"></label>
+										<input type="checkbox" id="x${borrow.prdtMngId}" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"/>
+										<label for="x${borrow.prdtMngId}"></label>
 									</td>
 									<td><input type="text" value="${borrow.prdtMngId}" readonly></td>
 									<td><input type="text" value="${borrow.productVO.prdtCtgr}" readonly></td>
