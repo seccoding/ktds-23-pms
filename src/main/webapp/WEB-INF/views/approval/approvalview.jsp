@@ -33,7 +33,7 @@
         }
         .grid-item {
             border: 0.0825rem solid rgba(171, 171, 171, 0.8);
-            padding: 20px;
+            padding: 0.825rem;
         }
         .grid-item:nth-child(even) {
             display: flex;
@@ -45,6 +45,12 @@
         .grid-appr-item {
             display: flex;
             flex-direction: column;
+        }
+        .btn-width {
+            width: 6rem;
+        }
+        .bg-color {
+            background-color: var(--box-bg);
         }
 	</style>
 	<jsp:include page="../commonheader.jsp"></jsp:include>
@@ -64,7 +70,7 @@
                 </c:if>
                 <c:if test="${searchApproval.searchAuth
                                 && approvalVO.rntlSts eq '1102' }">
-                    <button id="btn-brrw-prdt" data-rntl-sts="1103">신규비품대여</button>
+                    <button class="btn-width" id="btn-brrw-prdt" data-rntl-sts="1103">신규비품대여</button>
                 </c:if>
             </div>
             <div class="btn-change">
@@ -159,61 +165,63 @@
         </div>
         <div class="card col-1-1">
             <h5 class="dmd-info-title">비품 목록</h5>
-            <div class="table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>비품코드</th>
-                            <th>비품종류</th>
-                            <th>비품명</th>
-                            <th>변경신청수량</th>
-                            <c:if test="${searchApprovalVO.searchAuth
-                                            && (approvalVO.apprSts eq '801' || approvalVO.rntlSts eq '1102')}">
-                                <th>재고수량</th>
-                                <th>변경가능여부</th>
-                            </c:if>
-                            <c:if test="${searchApprovalVO.searchAuth && approvalVO.apprSts ne '801'}">
-                                <th>반납여부</th>
-                            </c:if>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:choose>
-                            <c:when test="${not empty approvalVO.approvalDetailVOList}">
-                                <c:forEach items="${approvalVO.approvalDetailVOList}" var="approvalDetail">
-                                    <tr>
-                                        <td>${approvalDetail.productManagementVO.prdtMngId}</td>
-                                        <td>${approvalDetail.productVO.prdtCtgr}</td>
-                                        <td>${approvalDetail.productVO.prdtName}</td>
-                                        <td>${approvalDetail.curStr}</td>
-                                        <c:if test="${searchApprovalVO.searchAuth
-                                                        && (approvalVO.apprSts eq '801' || approvalVO.rntlSts eq '1102')}">
-                                            <td>${approvalDetail.productVO.curStr}</td>
-                                            <td>
-                                                <c:set var="apprStr" value="${approvalDetail.curStr}"/>
-                                                <c:set var="prdtStr" value="${approvalDetail.productVO.curStr}"/>
-                                                <c:choose>
-                                                    <c:when test="${apprStr le prdtStr}">
-                                                        <span class="badge bg-success"><c:out value="비품변경가능"/></span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="badge bg-label-danger"><c:out value="비품변경불가"/></span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                        </c:if>
-                                        <c:if test="${searchApprovalVO.searchAuth && approvalVO.apprSts ne '801'}">
-                                            <td>
-                                                <c:set var="returnYn" value="${approvalDetail.productManagementVO.brrwYn eq 'Y' ? '미반납' : '반납'}"/>
-                                                <c:out value="${returnYn}"/>
-                                            </td>
-                                        </c:if>
-                                    </tr>
-                                </c:forEach>
-                            </c:when>
-                        </c:choose>	
-                    </tbody>
-                </table>
+            <div class="bg-color">
+                <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>비품코드</th>
+                                <th>비품종류</th>
+                                <th>비품명</th>
+                                <th>변경신청수량</th>
+                                <c:if test="${searchApprovalVO.searchAuth
+                                                && (approvalVO.apprSts eq '801' || approvalVO.rntlSts eq '1102')}">
+                                    <th>재고수량</th>
+                                    <th>변경가능여부</th>
+                                </c:if>
+                                <c:if test="${searchApprovalVO.searchAuth && approvalVO.apprSts ne '801'}">
+                                    <th>반납여부</th>
+                                </c:if>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:choose>
+                                <c:when test="${not empty approvalVO.approvalDetailVOList}">
+                                    <c:forEach items="${approvalVO.approvalDetailVOList}" var="approvalDetail">
+                                        <tr>
+                                            <td>${approvalDetail.productManagementVO.prdtMngId}</td>
+                                            <td>${approvalDetail.productVO.prdtCtgr}</td>
+                                            <td>${approvalDetail.productVO.prdtName}</td>
+                                            <td>${approvalDetail.curStr}</td>
+                                            <c:if test="${searchApprovalVO.searchAuth
+                                                            && (approvalVO.apprSts eq '801' || approvalVO.rntlSts eq '1102')}">
+                                                <td>${approvalDetail.productVO.curStr}</td>
+                                                <td>
+                                                    <c:set var="apprStr" value="${approvalDetail.curStr}"/>
+                                                    <c:set var="prdtStr" value="${approvalDetail.productVO.curStr}"/>
+                                                    <c:choose>
+                                                        <c:when test="${apprStr le prdtStr}">
+                                                            <span class="badge bg-success appr-rntl" data-appr-rntl="Y"><c:out value="비품변경가능"/></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="badge bg-label-danger appr-rntl" data-appr-rntl="N"><c:out value="비품변경불가"/></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </c:if>
+                                            <c:if test="${searchApprovalVO.searchAuth && approvalVO.apprSts ne '801'}">
+                                                <td>
+                                                    <c:set var="returnYn" value="${approvalDetail.productManagementVO.brrwYn eq 'Y' ? '미반납' : '반납'}"/>
+                                                    <span class="badge bg-label-info"><c:out value="${returnYn}"/></span>
+                                                </td>
+                                            </c:if>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                            </c:choose>	
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

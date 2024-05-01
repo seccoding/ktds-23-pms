@@ -75,7 +75,7 @@
 		     , DEL_YN)
 		VALUES
 		     ( #{apprId}
-		     , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24 MI')
+		     , SYSDATE
 		     , #{apprCtgr}
 		     , '801'
 		     , #{apprTtl}
