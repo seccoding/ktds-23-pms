@@ -320,6 +320,8 @@
 		 WHERE BRRW_ID = #{_parameter}
 		   AND BH.DEL_YN = 'N'
 		   AND P.ONCE_YN = 'N'
+		   AND PM.BRRW_YN = 'Y'
+		   AND BH.RTN_DT IS NULL
 		   AND PM.PRDT_MNG_ID NOT IN (SELECT AD.PRDT_ID
 		                                FROM APPROVAL A
 		                               INNER JOIN APPROVAL_DETAIL AD
