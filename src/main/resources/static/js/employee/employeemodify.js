@@ -16,28 +16,25 @@ $().ready(function () {
     }
   );
   
-  //버튼 하나만 있는 모달창 띄우기 
-  // $(".change-dept-btn").on("click", function () {
-  //   if ($(".grid").data("teamlist").length != 0) {
-  //     loadModal({
-  //       content: "팀이 존재하여 부서를 변경할 수 없습니다.",
-  //       fnPositiveBtnHandler : function() {
-  //         alertModal[0].close();
-  //       },
-  //       showNegativeBtn: false,
-  //     })
-        
-    $(".change-dept-btn").on("click", function () {
+  // 버튼 하나만 있는 모달창 띄우기 
+  $(".change-dept-btn").on("click", function () {
     if ($(".grid").data("teamlist").length != 0) {
-      console.log("불가능");
-      alert("팀이 존재하여 부서를 변경할 수 없습니다.");
-      location.reload();
+      loadModal({
+        content : "팀이 존재하여 부서를 변경할 수 없습니다.",
+        fnPositiveBtnHandler : function() {
+          closeModal();
+        },
+        showNegativeBtn: false,
+      });
     } else {
-      console.log("가능");
       $("#add-team-select option").remove();
       $("#dept-change-cmt").removeClass("hidden");
       $("#hidden-selectbox").removeClass("hidden");
     }
+  });
+  
+  $("#add-team-cancel").on("click", function () {
+    closeModal();
   });
 
   $("#dept-select").on("change", function () {
@@ -51,7 +48,7 @@ $().ready(function () {
         "/ajax/employee/delete/team",
         {
           empId: empId,
-          "teamVO.tmId": $(this).data("tmid"),
+          "teamV.tmId": $(this).data("tmid"),
         },
         function (res) {
           if (res.data.result) {
@@ -75,8 +72,6 @@ $().ready(function () {
       $("#password-match-status").text("비밀번호가 일치하지 않습니다.").css("color", "red");
     }
   });
-
-
 
   var dialog = $(".alert-dialog");
   if (dialog.length > 0) {
@@ -161,14 +156,22 @@ $().ready(function () {
 
     $.post("/ajax/employee/modify", willAddList, function (res) {
       if (res.data.isSuccess) {
-        alert("수정이 성공했습니다.");
-        location.href = res.data.next;
+        loadModal({
+          content: "수정이 성공했습니다.",
+          fnPositiveBtnHandler: function () {
+            location.href = res.data.next;
+          },
+        });
       } else {
-        alert("수정 중 오류가 발생했습니다.");
+        loadModal({
+          content: "수정 중 오류가 발생했습니다.",
+        });
       }
     });
   } else {
-    alert("비밀번호가 서로 일치하지 않습니다.");
-   }
-  });
+    loadModal({
+      content: "비밀번호가 서로 일치하지 않습니다.",
+    });
+  }
+});
 });
