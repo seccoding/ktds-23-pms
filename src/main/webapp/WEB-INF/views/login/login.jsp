@@ -241,7 +241,7 @@
 <body>
 <div class="container">
     <div class="item header">
-        <img class="logo" src="/images/logo.png" alt=""/>
+<%--        <img class="logo" src="/images/logo.png" alt=""/>--%>
     </div>
     <div class="item"></div>
     <div class="item">

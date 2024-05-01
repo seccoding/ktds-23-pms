@@ -5,6 +5,17 @@
     <title>화면접근기록 확인 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/login/visitedlogview.js"></script>
+    <style>
+        .ellipsis {
+            overflow: hidden;
+            white-space: normal;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break: keep-all;
+        }
+    </style>
 </head>
 <body>
 
@@ -54,7 +65,7 @@
                         <td>${visited.accsId}</td>
                         <td>${visited.empId}</td>
                         <td>${visited.employeeVO.empName}</td>
-                        <td>${visited.accsUrl}</td>
+                        <td class="ellipsis">${visited.accsUrl}</td>
                         <td>${visited.accsDt}</td>
                         <td>${visited.delYn}</td>
                     </tr>
