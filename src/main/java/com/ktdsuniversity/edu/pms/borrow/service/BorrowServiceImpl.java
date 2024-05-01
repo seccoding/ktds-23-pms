@@ -34,6 +34,9 @@ public class BorrowServiceImpl implements BorrowService{
 	public BorrowListVO searchUserRentalState(SearchBorrowVO searchBorrowVO) {
 		int borrowCount = this.borrowDao.searchBorrowAllCount(searchBorrowVO);
 		int totalCnt = this.borrowDao.getUserListCnt(searchBorrowVO);
+		
+		System.out.println("@@@@@@@@@@@@@@@@@@" + borrowCount + "@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println("$$$$$$$$$$$$$$$$$$" + totalCnt + "$$$$$$$$$$$$$$$$$$$$$");
 		searchBorrowVO.setPageCount(totalCnt);
 		
 		List<BorrowVO> borrowList = this.borrowDao.searchAllUserRentalState(searchBorrowVO);

@@ -93,17 +93,18 @@ public class ProductManagementServiceImpl implements ProductManagementService{
 			changeCnt = this.borrowDao.changeState(getProductMnItem.getPrdtMngId());			
 		}
 		
-		// 수정했을 시, 분실여부가 o 일시에 재고수를 감소
+		// 수정했을 시, 분실여부가 o 일시에 재고수를 감소, 분실여부를 o -> x 로 수정했을 경우 재고수를 증
 		String isLostYn = productManagementVO.getLostYn();
 		System.out.println("@@@@@@@@@@@@@@@@@@@@" + isLostYn + "@@@@@@@@@@@@@@@@@@@@@@@@@");
+		String prdtManageId = productManagementVO.getPrdtMngId();
+		
+		
+		System.out.println("#######################" + prdtManageId + "#######################3");
+		// 비품관리 ID를 통해 비품 ID를 찾는다.
+		String productId = this.productManagementDao.getProductId(prdtManageId);
+		
+		
 		if(isLostYn.equals("Y")) {
-			String prdtManageId = productManagementVO.getPrdtMngId();
-			
-			System.out.println("#######################" + prdtManageId + "#######################3");
-			
-			// 비품관리 ID를 통해 비품 ID를 찾는다.
-			String productId = this.productManagementDao.getProductId(prdtManageId);
-			
 			// 받아온 비품 ID를 통해 해당 비품의 재고수를 감소시킨다. 
 			this.productDao.changeOnePrdtStoredByPrdtId(productId);
 		}

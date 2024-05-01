@@ -57,7 +57,7 @@
     <div class="flex f-space">
         <div>대여중인 비품은 ${userRentalState.borrowCnt}건입니다.</div>
         <div class="flex" style="margin-right: 0.5rem;">
-            <button class="selected-change-apply">선택항목 변경신청</button>
+            <!-- <button class="selected-change-apply">선택항목 변경신청</button> -->
             <button class="selected-return">선택항목 반납</button>
         </div>
 

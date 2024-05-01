@@ -115,16 +115,19 @@
                                     </c:choose>
                                     <c:choose>
                                         <c:when test="${product.lostYn eq 'Y'}">
-                                            <td class="center">O</td>
+                                            <td class="center lostdata">O</td>
                                             <td class="center">${product.lostDt}</td>
                                         </c:when>
                                         <c:otherwise>
-                                            <td class="center">-</td>
+                                            <td class="center lostdata">-</td>
                                             <td class="center">-</td>
                                         </c:otherwise>
                                     </c:choose>
                                     <td class="center">
-                                        <button class="modify" data-product="${product.prdtMngId}" data-name="${product.productVO.prdtName}">수정</button>
+                                        <button class="modify" 
+                                                data-product="${product.prdtMngId}" 
+                                                data-name="${product.productVO.prdtName}" 
+                                                data-lost-status="${product.lostYn}">수정</button>
                                         <button class="remove" data-product="${product.prdtMngId}">삭제</button>
                                     </td>
                                 </tr>
@@ -133,7 +136,7 @@
                         <%-- productManagementList의 내용이 존재하지 않는다면 --%>
                         <c:otherwise>
                             <tr>
-                                <td colspan="6" class="center">
+                                <td colspan="8" class="center">
                                     등록된 비품이 존재하지 않습니다.
                                 </td>
                             </tr>

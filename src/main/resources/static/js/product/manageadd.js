@@ -11,6 +11,10 @@ $().ready(function () {
     formDom.append(formData);
 
     $(".form-group").append(formDom);
+
+    // 오늘 날짜로 기본설정
+    var today = new Date().toISOString().substring(0, 10);
+    formDom.find("#buyDt").val(today);
   });
 
   $(".minus-btn").on("click", function () {
@@ -32,10 +36,32 @@ $().ready(function () {
     }
   });
 
+
+  // 오늘 날짜로 기본설정
+  var today = new Date().toISOString().substring(0, 10);
+  $("#buyDt").val(today);
+
+
+  $("#buyDt").on("change", function () {
+    if ($(this).val() > today) {
+        loadModal({
+          content: "구매일은 오늘 날짜 이후로 설정할 수 없습니다.",
+          fnPositiveBtnHandler: function () {
+            $(".lost-day").val("");
+            alertModal[0].close();
+          },
+          showNegativeBtn: false,
+        });
+    }
+  });
+
+
   $(".product-add").on("click", function () {
     var url = "/ajax/product/manage/add";
 
     var formData = {};
+
+    
 
 
     if( $("#prdtName").val() == "" || $("#prdtCtgr").val() == "" || $("#curStr").val() == "" ||

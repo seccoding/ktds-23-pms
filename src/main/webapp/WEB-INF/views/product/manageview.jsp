@@ -166,19 +166,20 @@ uri="jakarta.tags.core" %>
                   </c:choose>
                   <c:choose>
                     <c:when test="${product.lostYn eq 'Y'}">
-                      <td class="center">O</td>
+                      <td class="center lostdata">O</td>
                       <td class="center">${product.lostDt}</td>
                     </c:when>
                     <c:otherwise>
-                      <td class="center">-</td>
+                      <td class="center lostdata">-</td>
                       <td class="center">-</td>
                     </c:otherwise>
                   </c:choose>
                   <td class="center">
                     <button
-                      class="modify"
+                      class="modify lostData"
                       data-product="${product.prdtMngId}"
                       data-name="${product.productVO.prdtName}"
+                      data-lost-status="${product.lostYn}"
                     >
                       수정
                     </button>
