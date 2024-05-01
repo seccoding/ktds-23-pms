@@ -111,10 +111,24 @@ $().ready(function() {
         if(arrpRjct !== "" && arrpRjct !== null) {
           $.post(url, params, function(response) {
             if(response.data.result) {
-              alert("결재가 반려되었습니다.");
-              location.reload();
+              // alert("결재가 반려되었습니다.");
+              loadModal({
+                content: "결재가 반려되었습니다.",
+                fnPositiveBtnHandler: function () {
+                  location.reload();
+                },
+                showNegativeBtn: false,
+              });
+              // location.reload();
             } else {
-              alert(response.data.errorMessage);
+              // alert(response.data.errorMessage);
+              loadModal({
+                content: response.data.errorMessage,
+                fnPositiveBtnHandler: function () {
+                  location.reload();
+                },
+                showNegativeBtn: false,
+              });
             }
           });
           rjctModal[0].close();
