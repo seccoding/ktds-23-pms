@@ -24,7 +24,7 @@ $().ready(function () {
     var target = event.currentTarget;
     var reply = $(target).closest(".reply");
     var rplId = reply.data("reply-id");
-    var content = reply.find(".content").text();
+    var content = reply.find(".contents").text();
     $("#txt-reply").val(content);
     $("#txt-reply").focus();
 
@@ -77,7 +77,7 @@ $().ready(function () {
         var isAppendedReply = appendedReply.length > 0;
         // 이미 불러온 댓글이며, 삭제가 안된 댓글일 경우
         if (isAppendedReply && reply.delYn === "N") {
-          appendedReply.find(".content").text(reply.rplCntnt);
+          appendedReply.find(".contents").text(reply.rplCntnt);
           var modifyDate = appendedReply.find(".mdfDt");
           if (modifyDate.length !== 0) {
             modifyDate.text("(수정: " + reply.mdfDt + ")");
@@ -147,7 +147,7 @@ $().ready(function () {
 
           // <pre class="content">댓글 내용</pre>
           var contentDom = $("<div></div>");
-          contentDom.addClass("content");
+          contentDom.addClass("contents");
           contentDom.text(reply.rplCntnt);
 
           replyDom.append(contentDom);
