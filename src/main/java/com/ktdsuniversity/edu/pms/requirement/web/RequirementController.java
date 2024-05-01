@@ -120,11 +120,12 @@ public class RequirementController {
 
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
-		List<ProjectTeammateVO> prjTeammateList = this.projectService
-				.getAllProjectTeammateByProjectId("PRJ_240409_000012");
+//		List<ProjectTeammateVO> prjTeammateList = this.projectService
+//				.getAllProjectTeammateByProjectId("PRJ_240409_000012");
 
 		model.addAttribute("projectList", projectList).addAttribute("scdSts", scdStsList)
-				.addAttribute("rqmSts", rqmStsList).addAttribute("prjTeammateList", prjTeammateList);
+				.addAttribute("rqmSts", rqmStsList)
+				;
 
 		return "requirement/requirementwrite";
 
