@@ -177,12 +177,6 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 				<div class="regist-btn">
 					<button type="button" id="regist-btn">회원가입</button>
 				</div>
-				<div>
-					<label>테스트: </label>
-				</div>
-				<div>
-					입니다
-				</div>
 			</div>
 		</form>
 	</div>

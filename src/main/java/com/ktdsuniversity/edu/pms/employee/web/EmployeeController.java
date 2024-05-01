@@ -229,19 +229,19 @@ public class EmployeeController {
 	@ResponseBody
 	@PostMapping("/ajax/employee/regist")
 	public AjaxResponse doRegist(EmployeeVO employeeVO,
-			@RequestParam(defaultValue = "/employee/search") String nextUrl, @RequestParam String empId,
+			@RequestParam(defaultValue = "/employee/search") String nextUrl,
 			@RequestParam(required = false) MultipartFile file) {
 		
 		
 		
-		/**
-		 * 사원번호가 있는지 확인하고 1: 존재하는 사원번호, 0: 없는 사원번호 1이라면 "이미 사용중인 사원번호입니다."오류 발생
-		 */
-		int isEmpIdUseCount = this.employeeService.getOneEmpIdIsExist(empId);
-		if (isEmpIdUseCount == 1) {
-			// 수정사항
-			return new AjaxResponse().append("errorMessage", "이미 사용중인 사원번호 입니다.");
-		}
+//		/**
+//		 * 사원번호가 있는지 확인하고 1: 존재하는 사원번호, 0: 없는 사원번호 1이라면 "이미 사용중인 사원번호입니다."오류 발생
+//		 */
+//		int isEmpIdUseCount = this.employeeService.getOneEmpIdIsExist(empId);
+//		if (isEmpIdUseCount == 1) {
+//			// 수정사항
+//			return new AjaxResponse().append("errorMessage", "이미 사용중인 사원번호 입니다.");
+//		}
 
 		Validator<EmployeeVO> validator = new Validator<>(employeeVO);
 
