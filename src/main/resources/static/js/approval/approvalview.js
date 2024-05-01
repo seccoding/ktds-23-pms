@@ -3,6 +3,23 @@ $().ready(function() {
   var apprId = $("#grid-container").data("appr-id");
   var url = "/ajax/approval/statuschange/" + apprId; 
 
+  // 승인,신규대여 버튼 비활성화
+  var apprRntlArray = []; 
+  // var apprRntl = $(".appr-rntl").data("appr-rntl");
+  $(".appr-rntl").each(function() {
+    apprRntlArray.push($(this).data("appr-rntl"));
+  })
+  for(var checkedRntl of apprRntlArray) {
+    if(checkedRntl === 'N') {
+      $("#btn-appr-sts-ok").attr({
+        "disabled" : true
+      });
+      $("#btn-brrw-prdt").attr({
+        "disabled" : true
+      });
+    }
+  }
+
   // 결재승인
   $("#btn-appr-sts-ok").on("click", function() {
     var apprSts = $(this).data("appr-sts");
@@ -13,8 +30,6 @@ $().ready(function() {
       rntlSts : rntlSts, 
     };
     // var chooseValue = confirm("결재를 승인합니다.");
-
-
     loadModal({
       content: "결재를 승인합니다.",
       fnPositiveBtnHandler: function () {
@@ -29,7 +44,6 @@ $().ready(function() {
               },showNegativeBtn: false,
             });
           } else {
-
             loadModal({
               content: response.data.errorMessage,
               fnPositiveBtnHandler: function () {
@@ -38,30 +52,14 @@ $().ready(function() {
             });
 
           }
-      });
-
-
-
+        });
 
       }, fnNegativeBtnHandler: function () {
         alertModal[0].close();
       },
+
   });
 
-
-
-
-
-    // if(chooseValue) {
-    //   $.post(url, params, function(response) {
-    //       if(response.data.result) {
-    //         alert("결재가 승인되었습니다.");
-    //         location.reload();
-    //       } else {
-    //         alert(response.data.errorMessage);
-    //       }
-    //   });
-    // }
   });
 
   // 결재반려
@@ -159,10 +157,6 @@ $().ready(function() {
               showNegativeBtn: false,
             });
             
-
-
-            // alert("기대여 비품이 반납되었습니다.");
-            // location.reload();
           } else {
 
             loadModal({
@@ -172,10 +166,6 @@ $().ready(function() {
               },
               showNegativeBtn: false,
             });
-
-
-
-            // alert(response.date.errorMessage);
           }
       });
       returnPrdtModal[0].close();
@@ -204,8 +194,6 @@ $().ready(function() {
         rntlSts : rntlSts }, 
       function(response) {
         if(response.data.result) {
-
-
           loadModal({
             content: "신규 비품이 대여되었습니다.",
             fnPositiveBtnHandler: function () {
@@ -213,12 +201,7 @@ $().ready(function() {
             },
             showNegativeBtn: false,
           });
-
-
-          // alert("신규 비품이 대여되었습니다.");
-          // location.reload();
         } else {
-
           loadModal({
             content: response.date.errorMessage,
             fnPositiveBtnHandler: function () {
@@ -226,12 +209,6 @@ $().ready(function() {
             },
             showNegativeBtn: false,
           });
-          
-
-
-
-
-          // alert(response.date.errorMessage);
         }
       });
       brrwPrdtModal[0].close();
@@ -258,8 +235,6 @@ $().ready(function() {
           if(response.data.result && response.data.next) {
             location.href = response.data.next;
           }
-
-
           loadModal({
             content: response.data.errorMessage,
             fnPositiveBtnHandler: function () {
@@ -272,30 +247,9 @@ $().ready(function() {
       },
       showNegativeBtn: true,fnNegativeBtnHandler: function () {
         alertModal[0].close();
-      },});
+      },
+    });
 
-
-
-
-    
-    // var chooseValue = confirm("결재 내역을 삭제합니다.");
-    // if(chooseValue) {
-    //   $.get("/ajax/approval/delete/" + apprId, function(response) {
-    //       if(response.data.result && response.data.next) {
-    //         location.href = response.data.next;
-    //       }
-
-
-    //       loadModal({
-    //         content: response.data.errorMessage,
-    //         fnPositiveBtnHandler: function () {
-    //           alertModal[0].close();
-    //         },
-    //         showNegativeBtn: false,
-    //       });
-    //       // alert(response.data.errorMessage);
-    //   });
-    // }
   });
 
 });

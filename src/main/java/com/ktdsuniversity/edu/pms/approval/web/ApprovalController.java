@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.approval.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,6 @@ import com.ktdsuniversity.edu.pms.borrow.vo.BorrowVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
-import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 
@@ -141,6 +139,8 @@ public class ApprovalController {
 
 		Validator<ApprovalVO> validator = new Validator<>(newApprovalVO);
 		validator.add("apprTtl", Validator.Type.NOT_EMPTY, "기안서 제목을 입력해주세요.")
+				 .add("apprCntnt", Validator.Type.NOT_EMPTY, "기안서 내용을 입력해주세요.")
+				 .add("productListVO", Validator.Type.NOT_EMPTY, "변경할 비품을 선택해주세요.")
 				 .start();
 		if(validator.hasErrors()) {
 			Map<String,List<String>> errors = validator.getErrors();
@@ -157,8 +157,7 @@ public class ApprovalController {
 
 	@ResponseBody
 	@PostMapping("/ajax/approval/addProduct")
-	public AjaxResponse addProductForNewApproval(@RequestParam("addProducts[]") List<String> addProducts,
-												 @SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public AjaxResponse addProductForNewApproval(@RequestParam("addProducts[]") List<String> addProducts) {
 
 		List<BorrowVO> borrowList = this.approvalService.getAddProductApproval(addProducts);
 		return new AjaxResponse().append("borrowList", borrowList);
@@ -167,8 +166,7 @@ public class ApprovalController {
 	// 결재승인,반려
 	@ResponseBody
 	@PostMapping("/ajax/approval/statuschange/{apprId}")
-	public AjaxResponse doApprovalStatusChange(@PathVariable String apprId, ApprovalVO approvalVO,
-												@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+	public AjaxResponse doApprovalStatusChange(@PathVariable String apprId, ApprovalVO approvalVO) {
 
 		approvalVO.setApprId(apprId);
 		boolean isSuccessChanged = this.approvalService.approvalStatusChange(approvalVO);
@@ -179,8 +177,7 @@ public class ApprovalController {
     // 기대여비품 반납, 사용불가
     @ResponseBody
     @PostMapping("/ajax/approval/unusablePrdt")
-    public AjaxResponse doUnusableProduct(String apprId, ApprovalVO approvalVO, 
-    										@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO) {
+    public AjaxResponse doUnusableProduct(String apprId, ApprovalVO approvalVO) {
     	approvalVO.setApprId(apprId);
         boolean isSuccessChanged = this.approvalService.updateUnusablePrdt(approvalVO);
         return new AjaxResponse().append("result", isSuccessChanged)

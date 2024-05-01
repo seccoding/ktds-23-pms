@@ -17,9 +17,6 @@
 		td:first-child {
 			width: 5rem;
 		}
-		input[type="checkbox"] {
-            display: flex;
-        }
 		.appr-prdt-info {
             width: 100%;
         }
@@ -124,12 +121,19 @@
 		.text-height2 {
 			height: 10rem;
 		}
-		input[type="text"] {
+		input[type="text"], 
+		input[type="textarea"] {
 			width: -webkit-fill-available;
+			padding-left : 1rem;
 		}
 		input[type="textarea"]:focus {
+			padding-left : 1rem;
 			outline: none !important;
 			box-shadow: rgba(253, 54, 54, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+		}
+		input::placeholder {
+			color: var(--main-color);
+			font-size: 0.825rem;
 		}
 	</style>
 </head>
@@ -196,7 +200,7 @@
 							<input id="apprTtl" type="textarea" name="apprTtl" class="text-width text-height1">
 						</div>
 						<div class="grid-item">
-							<label for="apprTtl"><h6>결재 내용</h6></label>
+							<label for="apprCntnt"><h6>결재 내용</h6></label>
 						</div>
 						<div class="grid-item">
 							<input id="apprCntnt" type="textarea" name="apprCntnt" class="text-width text-height2">
@@ -214,8 +218,7 @@
 							<tr>
 								<th>
 									<input type="checkbox" id="appr-item-checked-all"  data-target-class="target-prdt-dtl-id">
-									<!-- <label for="appr-item-checked-all"></label>
-									<label for="appr-item-checked-all"></label> -->
+									<label for="appr-item-checked-all"></label>
 								</th>
 								<th>비품번호</th>
 								<th>종류</th>
@@ -228,10 +231,8 @@
 							<c:forEach items="${borrowList.borrowList}" var="borrow">
 								<tr>
 									<td>
-										<!-- <td><input type="checkbox" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"></td> -->
-										<input type="checkbox" id="prdt-check" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"/>
-										<!-- <label for="prdt-check"></label>
-										<label for="prdt-check"></label> -->
+										<input type="checkbox" id="x+${borrow.prdtMngId}" class="target-prdt-dtl-id" name="prdtId" value="${borrow.prdtMngId}"/>
+										<label for="x+${borrow.prdtMngId}"></label>
 									</td>
 									<td><input type="text" value="${borrow.prdtMngId}" readonly></td>
 									<td><input type="text" value="${borrow.productVO.prdtCtgr}" readonly></td>
@@ -260,6 +261,8 @@
 						<tr>
 							<th>
 								<input type="checkbox" id="m-appr-item-checked-all"  data-target-class="modal-item modal">
+								<label for="m-appr-item-checked-all"></label>
+								<!-- <input type="checkbox" id="m-appr-item-checked-all"  data-target-class="modal-item modal"> -->
 							</th>
 							<th>비품코드</th>
 							<th>종류</th>
@@ -270,7 +273,9 @@
 						<c:forEach items="${borrowList.borrowList}" var="borrow">
 							<tr>
 								<th id="modal-prdt-th">
-									<input type="checkbox" id="${borrow.prdtMngId}" class="modal-item modal" name="mPrdtId" value="${borrow.prdtMngId}"/>
+									<input type="checkbox" id="${borrow.prdtMngId}" class="modal-item modal" name="mPrdtId" value="${borrow.prdtMngId}">
+									<label for="${borrow.prdtMngId}"></label>
+									<!-- <input type="checkbox" id="${borrow.prdtMngId}" class="modal-item modal" name="mPrdtId" value="${borrow.prdtMngId}"/> -->
 								</th>
 								<th>${borrow.prdtMngId}</th>
 								<th>${borrow.productVO.prdtCtgr}</th>

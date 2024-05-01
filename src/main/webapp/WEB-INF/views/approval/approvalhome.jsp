@@ -96,13 +96,6 @@
   <jsp:include page="../commonmodal.jsp"></jsp:include>
 </head>
 <body>
-  <c:if test="${not empty errorMessage}">
-    <!-- css 변경 -->
-    <!-- <dialog class="alert-dialog">
-      <h1>${errorMessage}</h1>
-      <button type="button" class="alert-button">확인</button>
-    </dialog> -->
-  </c:if>
   <div class="hidden hidden-data">${errorMessage}</div>
 	<div class="container">
         <div class="title">
@@ -140,7 +133,7 @@
                     <div class="count-appr">
                       <c:choose>
                         <c:when test="${approvalDelayList.getApprCnt() ne 0}">
-                          <h2>${apprWaitingList.getApprCnt()}</h2>
+                          <h2>${approvalDelayList.getApprCnt()}</h2>
                         </c:when>
                         <c:otherwise><h2>0</h2></c:otherwise>
                       </c:choose>
@@ -159,7 +152,7 @@
                     <div class="count-appr">
                       <c:choose>
                         <c:when test="${approvalOneMonthList.getApprCnt() ne 0}">
-                          <h2>${apprWaitingList.getApprCnt()}</h2>
+                          <h2>${approvalOneMonthList.getApprCnt()}</h2>
                         </c:when>
                         <c:otherwise><h2>0</h2></c:otherwise>
                       </c:choose>

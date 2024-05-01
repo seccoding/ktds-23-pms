@@ -6,6 +6,11 @@ $().ready(function(){
         var isChecked = $(this).prop("checked");
         $("." + targetClass).prop("checked", isChecked);
     });
+    $("#m-appr-item-checked-all").on("click", function() {
+        var targetClass = $(this).data("target-class");
+        var isChecked = $(this).prop("checked");
+        $("." + targetClass).prop("checked", isChecked);
+    });
 
     // 추가버튼
     var addPrdtModal = $(".modal-confirm-window");
@@ -87,11 +92,15 @@ $().ready(function(){
                         var borrowCheckDom = $("<input type='checkbox'>");
                         borrowCheckDom.addClass("target-prdt-dtl-id");
                         borrowCheckDom.attr({
-                            'id' : "prdt-check", 
+                            'id' : "x"+borrow.prdtMngId, 
                             'name' : "prdtId", 
                             'value' : borrow.prdtMngId, 
                         });
-                        var borrowCheckTdDom = $("<td></td>").append(borrowCheckDom);
+                        var borrowCheckLabelDom = $("<label>");
+                        borrowCheckLabelDom.attr({
+                            'for' : "x"+borrow.prdtMngId,
+                        });
+                        var borrowCheckTdDom = $("<td></td>").append(borrowCheckDom, borrowCheckLabelDom);
                         borrowListDom.append(borrowCheckTdDom);
 
                         // 비품번호 추가
@@ -144,6 +153,12 @@ $().ready(function(){
 
             // 비품 추가 모달 닫기
             deleteItem = [];
+
+            // $('input[type="checkbox"][name="mPrdtId"]').each(function () {
+            //     $(this).prop('checked', true);
+            
+            // });
+
             console.log(deleteItem);
             addPrdtModal[0].close(); 
         });
@@ -198,19 +213,37 @@ $().ready(function(){
                     data: formData,
                     success: function(response) {
                         var data = response.data;
+                        var errors = data.errors;
+
                         if(data.result && data.next) {
                             location.href = data.next;
-                        } else {
-                            loadModal({
-                                content: response.data.errors[apprTtl],
-                                fnPositiveBtnHandler: function () {
-                                    // location.href = "/approval/progresslist";
-                                    alertModal[0].close();
-                                },
-                                showNegativeBtn: false,
-                            });
-                            // alert(response.data.errors);
-                            // console.log(response.data.errors);
+
+                        } else if(errors) {
+                            console.log(errors, "errors");
+                            for (var key in errors) {
+                                var errorMessage = errors[key];
+
+                                for (var i in errorMessage) {
+                                    var message = errorMessage[i];
+                                    
+                                    if(key === 'apprTtl') {
+                                        $("#apprTtl").attr({
+                                            "placeholder" : message,
+                                        });
+                                        $("#apprTtl").css({
+                                            "box-shadow" : "rgba(253, 54, 54, 0.5) 0px 0px 0.25em",
+                                        });
+                                    }
+                                    if(key === 'apprCntnt') {
+                                        $("#apprCntnt").attr({
+                                            "placeholder" : message,
+                                        });
+                                        $("#apprCntnt").css({
+                                            "box-shadow" : "rgba(253, 54, 54, 0.5) 0px 0px 0.25em",
+                                        });
+                                    }
+                                }
+                            } 
                         }
                     },
                 });
@@ -220,27 +253,17 @@ $().ready(function(){
                 return;
             },
         });
-        // var chooseValue = confirm("작성한 기안서를 상신합니다.");
-        // if(chooseValue) {
-        // // $(modalButton).on("click", function() {
-        //     // 상신 req
-        //     $.ajax({
-        //         url: "/ajax/approval/write", 
-        //         type: "POST",
-        //         data: formData,
-        //         success: function(response) {
-        //             var data = response.data;
-        //             if(data.result && data.next) {
-        //                 location.href = data.next;
-        //             } else {
 
-        //                 alert(response.data.errors);
-        //                 console.log(response.data.errors);
-        //             }
-        //         },
-        //     });
-        // // });
-        // }
+    });
+
+    // 에러 css 초기화
+    $("#apprTtl").on( "keyup", function() {
+        $("#apprTtl").removeAttr("placeholder");
+        $("#apprTtl").removeAttr("style");
+    });
+    $("#apprCntnt").on( "keyup", function() {
+        $("#apprCntnt").removeAttr("placeholder");
+        $("#apprCntnt").removeAttr("style");
     });
 
     // 기안서 작성 취소 버튼
@@ -255,11 +278,6 @@ $().ready(function(){
                 alertModal[0].close();
             },
         });
-    
-        // var writeCancel = confirm("기안서 작성을 취소하시겠습니까?");
-        // if(writeCancel) {
-        //     location.href = "/approval/progresslist";
-        // }
     });
     
     // 삭제버튼 누르면 제거
@@ -271,16 +289,14 @@ function productRemoveHandler() {
     // deleteItem = [];
     var length = $("#prdt-list").find("tr").length;
     if (length === 1) {
-
         loadModal({
             content: "하나 이상의 비품에 대해 변경 신청이 가능합니다.",
             fnPositiveBtnHandler: function () {
                 alertModal[0].close();
+                return;
             },
             showNegativeBtn: false,
         });
-        // alert("하나 이상의 비품에 대해 변경 신청이 가능합니다.");
-        // return;
     }
     deleteItem.push($("input[id=" + $(this).data("delete-item") + "]").val());
     console.log("Product Delete Handler: ", deleteItem)
