@@ -27,7 +27,7 @@
 }
 table {
     width: 100%; /* 테이블이 페이지 전체 너비를 차지하도록 설정 */
-    table-layout: fixed; /* 테이블 레이아웃을 고정 */
+    table-layout: auto; /* 테이블 레이아웃을 고정 */
 }
 
 colgroup > col:first-child {
@@ -49,13 +49,25 @@ th, td {
 .prj-list.no-click {
     cursor: default;
 }
+.table {
+    margin-bottom: 1rem;
+}
 </style>
 </head>
 <body>
     <input type="hidden" id="is-manager" value="${sessionScope._LOGIN_USER_.mngrYn}">
     <input type="hidden" id="is-pm" value="${isPM}">
     <div>
-        <table>
+        <table class="table">
+            <colgroup>
+                <col style="width: 34%;"> 
+                <col style="width: 12%;"> 
+                <col style="width: 12%;">
+                <col style="width: 12%;">
+                <col style="width: 12%;">
+                <col style="width: 12%;">
+                <col style="width: 6%;">
+            </colgroup>
             <thead>
                 <tr>
                     <th>프로젝트 명</th>
@@ -84,7 +96,7 @@ th, td {
                                 <td>${project.deptVO.deptName}</td>
                                 <td>${project.strtDt}</td>
                                 <td>${project.endDt}</td>
-                                <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">
+                                <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'Y' || isPM}">    
                                     <td class="survey-status survey-view"><c:out value="${empty project.srvSts ? 'N' : project.srvSts}" /></td>
                                 </c:if>
                                 <c:if test="${sessionScope._LOGIN_USER_.mngrYn eq 'N'}">

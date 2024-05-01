@@ -43,6 +43,8 @@ $().ready(function() {
                     fnPositiveBtnHandler: function () {},
                     showNegativeBtn: false
                 });
+                event.preventDefault();  // 링크의 기본 동작 중지
+                return false;  // 이벤트 전파 중지
             }
         }
 
