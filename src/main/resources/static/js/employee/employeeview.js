@@ -1,20 +1,26 @@
 $().ready(function (){
     var empId = $("#empId").data("id")
     $(".delete-employee").on("click", function () {
-       
         if(confirm("해당 사원을 퇴사 처리 하시겠습니까?")) {
             $.get("/ajax/employee/delete?empId="+empId , function(res){
                 if(res.data.isSuccess){
-                    showModal("퇴사 처리가 완료됐습니다.")
-                    location.href = res.data.next
+                    loadModal({
+                        content: "퇴사 처리가 완료됐습니다.",
+                        fnPositiveBtnHandler: function () {
+                            location.href = res.data.next;
+                        },
+                    });
                 }else{
-                    showModal("퇴사 처리 중 오류가 발생했습니다.")
-                    location.reload()
+                    loadModal({
+                        content: "퇴사 처리 중 오류가 발생했습니다.",
+                        fnPositiveBtnHandler: function () {
+                            location.reload();
+                        },
+                    });
                 }
-            })
-
+            });
         }
-    })
+    });
 
    
     $(".change-pstn").on("click", function(){
@@ -67,7 +73,9 @@ $().ready(function (){
         console.log(pastjobId)
         console.log(selectjobId)
         if(selectjobId==pastjobId){
-            alert("동일한 직무로 변경할 수 없습니다.")
+            loadModal({
+                content: "동일한 직무로 변경할 수 없습니다.",
+            });
             return
         }
         var reason = $("#job-change-note").val()
@@ -78,13 +86,23 @@ $().ready(function (){
             "jobHistoryVO.cnNote":reason,
         }, function(res){
             if(res.data.isSuccess){
-                alert("직무를 변경했습니다.")
+                loadModal({
+                    content: "직무를 변경했습니다.",
+                    fnPositiveBtnHandler: function () {
+                        location.href = res.data.next;
+                    },
+                });
             }else{
-                alert("직무 변경 중 오류가 발생했습니다.")
+                loadModal({
+                    content: "직무 변경 중 오류가 발생했습니다.",
+                    fnPositiveBtnHandler: function () {
+                        location.reload();
+                    },
+                });
             }
-            location.href = res.data.next
-        })
+        });
     })
+    
 
  
 });
