@@ -314,7 +314,7 @@
 		, #{cntct}
 		, #{addr}
 		, #{brth}
-		, #{email}
+		, TO_CHAR(SYSDATE, 'MMDD') || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0') || '@pms.com'
 		, #{mngrYn}
 		, #{deptId}
 		, #{jobId}

@@ -53,7 +53,6 @@ $().ready(function() {
 		formData.append("cntct", $("#cntct").val());
 		formData.append("addr", $("#addr").val());
 		formData.append("brth", $("#brth").val());
-		formData.append("email", $("#email").val());
 		formData.append("pstnId", $("#pstnId").val());
 		formData.append("deptId", $("#deptId").val());
 		formData.append("jobId", $("#jobId").val());

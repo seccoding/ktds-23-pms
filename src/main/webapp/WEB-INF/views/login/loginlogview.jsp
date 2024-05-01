@@ -17,7 +17,7 @@
 <div>
 
 </div>
-<h2>로그 기록 관리</h2><span>(3개월 내 기록만 검색이 가능합니다.)</span>
+<h2>로그 기록 관리</h2>
 <div class="grid">
     <form id="search-form">
         <input type="hidden" id="page-no" name="pageNo" value="0" />
@@ -36,7 +36,6 @@
                 <option value="twoMonth" ${loginLogVO.loginType eq 'twoMonth' ? 'selected' : ''}>2개월</option>
                 <option value="thrMonth" ${loginLogVO.loginType eq 'thrMonth' ? 'selected' : ''}>3개월</option>
             </select>
-            <br/>
             <input type="text" name="searchKeyword" value="${loginLogVO.searchKeyword}" />
             <button type="button" id="search-btn">검색</button>
         </div>

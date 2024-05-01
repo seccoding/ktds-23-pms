@@ -113,13 +113,6 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 				<div>
 					<input id="brth" type="date" name="brth" value="${employeeVO.brth}" />
 				</div>
-				<div class="email">
-					<label for="email">이메일: </label>
-				</div>
-				<div>
-					<input id="email" type="email" name="email"
-						value="${employeeVO.email}" placeholder="test@test.com" />
-				</div>
 				<div class="pstnId">
 					<label for="pstnId">직급번호: </label>
 				</div>

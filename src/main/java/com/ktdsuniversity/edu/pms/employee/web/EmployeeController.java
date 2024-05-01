@@ -254,9 +254,7 @@ public class EmployeeController {
 				.add("hireDt", Type.NOW_DATE, "입사일은 현재 날짜보다 이전이어야 합니다.")
 				.add("addr", Type.NOT_EMPTY, "주소를 입력해 주세요.")
 				.add("brth", Type.NOT_EMPTY, "생일을 지정해 주세요.")
-				.add("brth", Type.NOW_DATE, "생일은 현재 날짜보다 이전이어야 합니다.")
-				.add("email", Type.NOT_EMPTY, "이메일을 입력해 주세요.")
-				.add("email", Type.EMAIL, "이메일 형식으로 입력해 주세요.");
+				.add("brth", Type.NOW_DATE, "생일은 현재 날짜보다 이전이어야 합니다.");
 		if (file != null) {
 			employeeVO.setFileName(file.getContentType());
 			validator.add("fileName", Type.IMAGE_FILE, "이미지 형식의 파일을 업로드 해주세요.");
