@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -208,7 +209,14 @@ public class EmployeeController {
 	 * 회원가입 페이지
 	 */
 	@GetMapping("/employee/regist")
-	public String viewRegistPage() {
+	public String viewRegistPage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO, Model model) {
+
+		DepartmentListVO departmentList = this.departmentService.getAllDepartment();
+		TeamListVO teamListVO = this.teamService.getAllTeamList(employeeVO.getDeptId());
+
+		model.addAttribute("departmentlist", departmentList);
+		model.addAttribute("teamList", teamListVO);
+
 		return "employee/regist";
 	}
 

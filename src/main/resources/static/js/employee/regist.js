@@ -39,8 +39,7 @@ $().ready(function() {
 
 		errorsModalText.css({
 			"position": "relative",
-			"bottom": "20px"
-
+			"bottom": "10px"
 		});
 
 		var file = $("#prfl")[0].files[0];
@@ -134,13 +133,13 @@ $().ready(function() {
 					registSuccessModalButton.css({
 						"position": "relative",
 						"right": "115px",
-						"bottom": "20px",
+						"bottom": "10px",
 						"width": "200px",
 					});
 
 					registSuccessModalText.css({
 						"position": "relative",
-						"bottom": "20px"
+						"bottom": "10px"
 					});
 
 					registSuccessModalText.prepend($("<div>사원정보 조회 페이지로 이동합니다.</div>"));
