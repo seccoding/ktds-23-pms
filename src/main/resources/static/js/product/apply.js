@@ -24,8 +24,19 @@ $().ready(function () {
   // 신청 form 삭제
   $(".minus-btn").on("click", function () {
     var formCount = $("form").length;
+
+    // form의 index번호를 통해 배열의 index 값 변경
+    var formIndex = $("form:last").index();
+
+    console.log(selectedProductNames);
+    
+
     if (formCount > 1) {
-      $("form:last").remove();
+        selectedProductNames[formIndex] = "";
+        $("form:last").remove();
+        console.log(selectedProductNames);
+
+      
     } else {
       loadModal({
         content: "비품 신청을 취소하시겠습니까?",

@@ -54,7 +54,6 @@
 		    ON P.PRDT_ID = PM.PRDT_ID
 		 WHERE BH.DEL_YN = 'N'
 		   AND BH.BRRW_ID = #{employeeVO.empId}
-		   AND P.ONCE_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "productName"'>

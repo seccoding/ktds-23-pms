@@ -1,4 +1,27 @@
 $().ready(function () {
+
+  // 모든 수정버튼에 적용
+  $(".modify").each(function () {
+    var lostValue = $(this).data('lost-status');
+
+    if (lostValue === 'Y') {
+        $(this).prop('disabled', true); // 수정 버튼 비활성화
+        // 버튼 스타일을 변경하여 비활성화된 상태를 시각적으로 나타냅니다.
+        $(this).css('background-color', '#ccc'); // 배경색 변경
+        $(this).css('cursor', 'not-allowed'); // 커서 스타일 변경
+    }
+  });
+
+
+  $("#search-btn").on("click", function () {
+    search(0);
+  });
+
+  $("#list-size").on("change", function () {
+    search(0);
+  });
+
+
   $(".select").on("change", function () {
     if ($(this).val() == "X") {
       $(".lost-day").val("");
@@ -193,6 +216,9 @@ $().ready(function () {
   $("#cancel-btn").on("click", function () {
     location.reload();
   });
+
+
+  
 
   $("#modify-btn").on("click", function () {
     if ($(".select").val() === "O" && $(".lost-day").val() == "") {

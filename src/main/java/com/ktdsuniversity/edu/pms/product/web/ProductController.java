@@ -232,6 +232,7 @@ public class ProductController {
 		
 		System.out.println("~~~~~~~~~~~~~~~~~" + productManagementVO.getLostYn() + "~~~~~~~~~~~~~~~~~~~~~~");
 		
+		
 		boolean isModifySuccess = this.productManagementService.modifyOneProductManagement(productManagementVO);
 		return new AjaxResponse().append("result", isModifySuccess).append("next", "/product/manage/view?prdtId="+productManagementVO.getPrdtId()).append("detailUrl", "/product/manage/detail");
 	}
