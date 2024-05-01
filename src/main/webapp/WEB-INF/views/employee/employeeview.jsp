@@ -142,8 +142,8 @@
           <div class="grid-container" data-id="${employeeVO.empId}">
             <div style="text-align: center;">
               <c:choose>
-                <c:when test="${not empty employeeVO.prfl}">
-                  <img src="/employee/file/download/${employeeVO.prfl}" alt="프로필 사진" class="photo">
+                <c:when test="${not empty employeeVO.originPrflFileName}">
+                  <img src="/employee/file/download/${employeeVO.originPrflFileName}" alt="프로필 사진" class="photo">
                 </c:when>
                 <c:otherwise>
                   <img src="/images/login.png" alt="프로필 사진" class="photo">
