@@ -39,14 +39,19 @@ $().ready(function () {
     $("#txt-reply").removeData("mode");
     $("#txt-reply").removeData("target");
 
-    if (confirm("댓글을 삭제하시겠습니까?")) {
-      $.get("/ajax/qna/reply/delete/" + rplId, function (response) {
-        var result = response.data.result;
-        if (result) {
-          loadReplies(pPostId);
-          $("#txt-reply").val("");
+    if (deleteReply) {
+      loadModal({
+        content: "댓글을 삭제하시겠습니까?",
+        fnPositiveBtnHandler: function() {
+          $.get("/ajax/qna/reply/delete/" + rplId, function(response) {
+            var result = response.data.result;
+            if (result) {
+              loadReplies(pPostId);
+              $("#txt-reply").val("");
+            }
+          })
         }
-      });
+      })
     }
   };
   var reReply = function (event) {
@@ -141,7 +146,7 @@ $().ready(function () {
           replyDom.append(datetimeDom);
 
           // <pre class="content">댓글 내용</pre>
-          var contentDom = $("<pre></pre>");
+          var contentDom = $("<div></div>");
           contentDom.addClass("content");
           contentDom.text(reply.rplCntnt);
 
@@ -149,6 +154,7 @@ $().ready(function () {
 
           var loginEmail = $("#login-email").text();
           var controlDom = $("<div></div>");
+          controlDom.addClass("control");
 
           if (reply.crtrId === loginEmail) {
             // <span class="modify-reply">수정</span>

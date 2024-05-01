@@ -7,6 +7,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <title>Qna 상세 페이지</title>
     <jsp:include page="../commonheader.jsp"></jsp:include>
     <script type="text/javascript" src="/js/qna/qnaview.js"></script>
+    <link rel="stylesheet" href="/css/reply/reply.css"/>
     <style>
       .grid {
         display: grid;
@@ -55,9 +56,9 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <div class="grid" data-id="${qnaVO.qaId}" data-crtr-id="${qnaVO.crtrId}">
       <div class="main-info">
         <div class="grid info-border">
-          <!-- <span style="display: none" hidden id="login-email"
+          <span style="display: none" hidden id="login-email"
             >${sessionScope._LOGIN_USER_.empId}</span
-          > -->
+          >
           <!-- <label for="qaTtl">제목</label> -->
           <div class="sub-item">${qnaVO.qaTtl}</div>
 
@@ -133,9 +134,12 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           id="txt-reply"
           name="rplCntnt"
           data-issue-id="${qnaVO.qaId}"
+          placeholder="댓글을 작성해보세요!"
         ></textarea>
-        <button id="btn-save-reply" data-mode="">등록</button>
-        <button id="btn-cancel-reply">취소</button>
+        <div class="btn-wrapper">
+          <button id="btn-save-reply" data-mode="">등록</button>
+          <button id="btn-cancel-reply">취소</button>
+        </div>
       </div>
     </div>
   </body>

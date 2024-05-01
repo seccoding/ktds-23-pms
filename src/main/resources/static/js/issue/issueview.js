@@ -110,6 +110,10 @@ $().ready(function () {
          
           replyDom.attr("data-reply-id", reply.rplId);
           replyDom.data("reply-id", reply.rplId);
+          replyDom.css({
+            "padding-left": (reply.level === 1 ? 0 : reply.level - 1) * 40 + "px",
+            color: "#333",
+          });
 
           if (reply.delYn === "Y") {
             replyDom.css({
