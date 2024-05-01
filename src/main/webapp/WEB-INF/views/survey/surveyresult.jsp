@@ -82,11 +82,20 @@
                 <div class="question">
                     <p>${question.srvQst}</p>
                     <ul>
-                        <c:forEach items="${replyList}" var="reply">
-                            <c:if test="${reply.srvId == question.srvId}">
-                                <li>${reply.srvRplCntnt}</li>
-                            </c:if>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${question.typeYn == 'N'}">
+                                <c:forEach items="${responseCounts[question.srvId]}" var="entry">
+                                    <li>${entry.key} : ${entry.value} 명</li>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${replyList}" var="reply">
+                                    <c:if test="${reply.srvId == question.srvId}">
+                                        <li>${reply.srvRplCntnt}</li>
+                                    </c:if>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </ul>
                 </div>
             </c:forEach>
