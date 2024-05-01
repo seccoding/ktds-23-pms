@@ -156,8 +156,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if(!employeeVO.getNewPwd().equals(employeeVO.getConfirmPwd())) {
 				return false;
 			}
+			
+			String newPwd = employeeVO.getNewPwd();
 			String salt = this.sha.generateSalt();
-			String newPwd = this.sha.getEncrypt(employeeVO.getNewPwd(), salt);
+			newPwd = this.sha.getEncrypt(newPwd, salt);
+			
 			employeeVO.setPwd(newPwd);
 			employeeVO.setSalt(salt);
 		}

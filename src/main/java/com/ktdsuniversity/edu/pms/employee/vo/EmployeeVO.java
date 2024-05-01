@@ -50,6 +50,7 @@ public class EmployeeVO {
 	private PositionHistoryVO positionHistoryVO;
 	private String confirmPwd;
 	private String newPwd;
+	private String decryptedPrflFileName;
 
 	public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
@@ -371,5 +372,13 @@ public class EmployeeVO {
 
 	public void setNewPwd(String newPwd) {
 		this.newPwd = newPwd;
+	}
+
+	public String getDecryptedPrflFileName() {
+		return decryptedPrflFileName;
+	}
+
+	public void setDecryptedPrflFileName(String decryptedPrflFileName) {
+		this.decryptedPrflFileName = decryptedPrflFileName;
 	}
 }
