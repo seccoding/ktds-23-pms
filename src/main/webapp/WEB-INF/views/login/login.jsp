@@ -225,6 +225,10 @@
             gap: 9px;
         }
 
+        .footer > div {
+            font-size: 15px;
+        }
+
         .login-btn {
             margin-top: 10px;
         }
@@ -279,7 +283,7 @@
     </div>
     <br/>
     <br/>
-    <div>COPYRIGHT KTDS UNIVERSITY 2008 ALL RIGHTS RESERVED.</div>
+    <div>@COPYRIGHT KTDS UNIVERSITY 2008 ALL RIGHTS RESERVED.</div>
 </div>
 </body>
 </html>

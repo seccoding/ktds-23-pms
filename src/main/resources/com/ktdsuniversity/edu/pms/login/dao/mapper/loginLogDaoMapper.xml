@@ -277,7 +277,6 @@
 				</when>
 			</choose>
 		</if>
-		 AND E.EMP_ID = '2000208'
 		ORDER BY ACCS_DT
 	</select>
 

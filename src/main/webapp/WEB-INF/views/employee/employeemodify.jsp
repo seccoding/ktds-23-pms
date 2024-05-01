@@ -31,6 +31,16 @@ uri="jakarta.tags.core" %>
       .origin-dept {
         width: 30rem;
       }
+
+      input[type="password"], input[type="date"] {
+        width: 16rem;
+        height: 2rem;
+        border: 0;
+        border-radius: var(--box-border-radius);
+        padding-left: 10px;
+        outline: none;
+        background-color: var(--border-color);
+      }
     </style>
   </head>
   <body>
