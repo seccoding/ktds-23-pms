@@ -46,3 +46,7 @@
   .reply .reply {
     margin-left: 40px; /* 대댓글이 부모 댓글보다 오른쪽에 생성되도록 왼쪽 여백 추가 */
   }
+
+  .contents {
+    padding-left: 0;
+  }
