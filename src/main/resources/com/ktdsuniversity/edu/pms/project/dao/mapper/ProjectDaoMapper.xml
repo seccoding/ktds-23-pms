@@ -571,7 +571,7 @@
 
     <select id="findAllProjectByEmployeeId"
             parameterType="String"
-            resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+            resultMap="projectVOMap">
         SELECT P.PRJ_ID,
         P.PRJ_NAME,
         P.CLNT_INFO,
@@ -583,8 +583,14 @@
         P.REQ_YN,
         P.IS_YN,
         P.KNL_YN,
-        P.QA_YN
+        P.QA_YN,
+        D.DEPT_NAME,
+        C.CMCD_NAME
         FROM PROJECT P
+        INNER JOIN DEPARTMENT D
+        ON P.DEPT_ID = D.DEPT_ID
+        INNER JOIN COMMON_CODE C
+        ON P.PRJ_STS = C.CMCD_ID
         WHERE P.DEL_YN = 'N'
         AND PRJ_ID IN (SELECT PRJ_ID
         FROM PROJECT_TEAMMATE PT
