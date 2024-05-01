@@ -10,18 +10,21 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core"%>
     <script type="text/javascript" src="/js/commute/fnsh.js"></script>
     <style>
       .person-log-in {
-        justify-content: space-between;
+        /* justify-content: space-between; */
         display: flex;
         overflow: scroll;
+        gap: 3rem;
+        margin: 2rem;
       }
      
 
       .flex {
-        margin: 20px;
+        /* margin: 20px; */
       }
 
       .flex-col {
         flex-direction: column;
+        /* margin: 0 1.2rem; */
       }
 
       .prfl-photo {
