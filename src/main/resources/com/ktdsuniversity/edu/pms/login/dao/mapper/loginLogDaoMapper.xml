@@ -277,7 +277,7 @@
 				</when>
 			</choose>
 		</if>
-		ORDER BY ACCS_DT
+		ORDER BY ACCS_DT DESC
 	</select>
 
 	<select id="getOneVisitedLog"
@@ -317,7 +317,7 @@
 			</choose>
 		</if>
 		AND V.EMP_ID = #{empId}
-		ORDER BY V.ACCS_DT
+		ORDER BY V.ACCS_DT DESC
 	</select>
 
 	<update id="updatePwdDtThirtyDay" parameterType="string">

@@ -52,7 +52,7 @@
 					</when>
 				</choose>
 			</if>
-			 ORDER BY CMMT_DATE DESC
+			 ORDER BY C.CMMT_TIME DESC
 	</select>
 	
 	<select id="getAllCommuteDataByEmpId"
@@ -90,7 +90,7 @@
 				</choose>
 			</if>
 			   AND E.EMP_ID = #{empId}
-			 ORDER BY CMMT_DATE DESC
+			 ORDER BY C.CMMT_TIME DESC
 	</select>
 	
 </mapper>
