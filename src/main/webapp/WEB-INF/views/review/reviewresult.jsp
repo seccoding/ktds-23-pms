@@ -13,7 +13,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 	   .title {
             margin-bottom: 3rem;
        }
-		.modal-confirm-text {
+		.modal-confirm-text1 {
 	    text-align: center;
 	    color: #000000;
 	    font-size: 0.8rem;
@@ -36,8 +36,8 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         width: 500px;
         display: inline-block;
       }
-      .modal-window,
-	  .modal-confirm-window {
+      .modal-window1,
+	  .modal-confirm-window1 {
 			position: absolute;
 			border-radius: 20px;
 			border: 0;
@@ -51,24 +51,24 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 			width: 600px;
 			height: fit-content;
 			padding: 1rem;
-
+ 
 			background-color: rgba(F, F, F, 0.8);
 		}
-		.modal-close,
-		.modal-confirm-close {
+		.modal-close1,
+		.modal-confirm-close1 {
 			text-align: right;
 			color: gray;
 		}
-		.modal-close:hover,
-		.modal-confirm-close:hover {
+		.modal-close1:hover,
+		.modal-confirm-close1:hover {
 			color: black;
 		}
-		.grid-modal,
-		.grid-confirm-modal {
+		.grid-modal1,
+		.grid-confirm-modal1 {
 			display: grid;
 			grid-template-rows: 1fr 6fr 1fr;
 		}
-		.modal-content {
+		.modal-content1 {
 			align-items: center;
 			display: flex;
 			justify-content: space-around;
@@ -76,7 +76,7 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 			overflow-y: auto;
 			max-height: 11rem;
 		}
-		.modal-confirm-content {
+		.modal-confirm-content1 {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
