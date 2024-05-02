@@ -116,7 +116,7 @@
 		 INNER JOIN JOB J
 		    ON J.JOB_ID = JH.PAST_JOB_ID 
 		 WHERE JH.EMP_ID = #{_parameter}
-		   AND JH.DEL_YN = 'Y'
+		   AND JH.DEL_YN = 'N'
 		 ORDER BY JOB_STRT_DT DESC
 	</select>
 	

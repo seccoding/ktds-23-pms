@@ -101,13 +101,17 @@ public class EmployeeController {
 		List<PositionHistoryVO> positionHistList = this.changeHistoryService.getUserPositionHistory(empId);
 		List<CommonCodeVO> positionList = this.changeHistoryService.getAllPosition();
 		List<JobVO> jobList = this.changeHistoryService.getAllJob();
-		
+		System.out.println(jobHistList);
+		for(JobHistoryVO job:jobHistList) {
+			System.out.println(job.getJobHistId()+"??????????????");
+		}
 		model.addAttribute("employeeVO", employeeVO);
 		model.addAttribute("departmentHistList", departmentHistList);
 		model.addAttribute("jobHistList", jobHistList);
 		model.addAttribute("positionHistList", positionHistList);
 		model.addAttribute("positionList", positionList);
 		model.addAttribute("jobList", jobList);
+		model.addAttribute("jobHistList", jobHistList);
 		return "employee/employeeview";
 	}
 
