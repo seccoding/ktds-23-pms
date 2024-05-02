@@ -1,5 +1,5 @@
 $().ready(function () {
-  var empId = $("#empId").text();
+  var empId = $("#empId").val();
   var canAdd = true;
 
   $("#hireDt").prop("max", new Date().toISOString().substring(0, 10));
@@ -134,8 +134,6 @@ $().ready(function () {
 
 
     $(".will-add-team-list")?.each((idx, item) => {
-      console.log($(item));
-      console.log($(item).attr("id") + "!!!!");
       willAddList["teamList[" + idx + "].tmId"] = $(item).attr("id");
     });
 
