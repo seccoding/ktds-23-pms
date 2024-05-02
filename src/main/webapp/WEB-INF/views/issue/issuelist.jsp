@@ -37,8 +37,10 @@
     <thead>
         <tr>
             <th>
+            	<c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
                 <input type="checkbox" id="checked-all" data-target-class="target-issue-id"/>
                 <label for="checked-all"></label>
+                </c:if>
             </th>
             <th>프로젝트</th>
             <th>요구사항</th>
@@ -56,8 +58,10 @@
                 <c:forEach items="${issueList.issueList}" var="issue" varStatus="loop">
                     <tr>
                         <td>
+                        	<c:if test="${sessionScope._LOGIN_USER_.admnCode eq '301'}">
                             <input type="checkbox" class="target-issue-id" id="target-issue-id-${loop.index}" value="${issue.isId}"/>
                             <label for="target-issue-id-${loop.index}"></label>
+                            </c:if>
                         </td>
                         <td>${issue.projectVO.prjName}</td>
                         <td>${issue.requirementVO.rqmTtl}</td>
