@@ -139,6 +139,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 					<%-- <input id="deptId" type="text" name="deptId" value="${employeeVO.deptId}"
                         placeholder="DEPT_000000_000000" /> --%>
 					<select id="deptId" name="deptId">
+						<option value="" ${employeeVO.deptId eq '' ? 'select' : ''}>없음</option>
 						<c:forEach items="${departmentList.departmentList}" var="dept">
 							<option value="${dept.deptId}" ${employeeVO.deptId eq dept.deptId ? 'select' : ''}>${dept.deptName}</option>
 						</c:forEach>
@@ -151,6 +152,7 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 					<%-- <input id="jobId" type="text" name="jobId" value="${employeeVO.jobId}"
                         placeholder="JOB_000000_000000" /> --%>
                     <select id="jobId" name="jobId">
+                    	<option value="" ${employeeVO.jobId eq '' ? 'select' : ''}>없음</option>
 						<c:forEach items="${jobList.jobList}" var="job">
 							<option value="${job.jobId}" ${employeeVO.jobId eq job.jobId ? 'select' : ''}>${job.jobName}</option>
 						</c:forEach>

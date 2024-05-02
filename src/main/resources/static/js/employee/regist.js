@@ -1,5 +1,8 @@
 $().ready(function() {
 
+	
+
+	
 
 	$(".confirm-confirm-button").on("keydown", function (enter) {
 		if (enter.code === 'Enter') {
@@ -60,8 +63,14 @@ $().ready(function() {
 		if ($("#mngrYn").is(":checked")) {
 			formData.append("mngrYn", "Y");
 		} else {
-			formData.append("mngrYn", "N");
+			
 		}
+
+		/*if($("#pstnId option:selected").val("110").eq()){
+			formData.append("mngrYn", "Y");
+		} else{
+			formData.append("mngrYn", "N");
+		}*/
 
 		formData.append("next", $("#nextUrl").val());
 
