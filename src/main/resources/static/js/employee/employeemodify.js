@@ -48,7 +48,7 @@ $().ready(function () {
         "/ajax/employee/delete/team",
         {
           empId: empId,
-          "teamV.tmId": $(this).data("tmid"),
+          "teamVO.tmId": $(this).data("tmid"),
         },
         function (res) {
           if (res.data.result) {
