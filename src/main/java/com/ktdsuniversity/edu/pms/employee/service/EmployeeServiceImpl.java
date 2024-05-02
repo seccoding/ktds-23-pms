@@ -79,6 +79,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeVO getOneEmployee(String empId) {
 		
+		System.out.println(">?>>>" + empId);
+		
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
 	
@@ -90,7 +92,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	@Override
 	public EmployeeVO getOneEmployeenullCheck(String empId) {
-		
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
 
@@ -152,6 +153,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean modifyOneEmployee(EmployeeVO employeeVO) {
 		EmployeeVO originEmployee = this.employeeDao.getOneEmployee(employeeVO.getEmpId());
 
+		
 		if(employeeVO.getNewPwd() != null && !employeeVO.getNewPwd().isEmpty()) {
 			if(!employeeVO.getNewPwd().equals(employeeVO.getConfirmPwd())) {
 				return false;

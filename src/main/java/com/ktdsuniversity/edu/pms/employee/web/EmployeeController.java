@@ -135,6 +135,7 @@ public class EmployeeController {
 	// 수정페이지
 	@GetMapping("/employee/modify/{empId}")
 	public String viewEmpModifyPage(@PathVariable String empId, Model model, EmployeeVO employeeVO) {
+		System.out.println("?????????" + empId);
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		model.addAttribute("employeeVO", employee);
 
@@ -149,7 +150,7 @@ public class EmployeeController {
 
 	@ResponseBody
 	@GetMapping("/ajax/employee/modify")
-	public AjaxResponse getEmployeeInput(@RequestParam String empId, String deptId) {
+	public AjaxResponse getEmployeeInput(@PathVariable String empId, String deptId) {
 		EmployeeVO employee = this.employeeService.getOneEmployee(empId);
 		TeamListVO teamList = this.teamService.getAllTeamList(deptId);
 
