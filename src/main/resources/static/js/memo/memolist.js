@@ -1,4 +1,8 @@
 $().ready(function () {
+  $(".modal-close").on("click", function () {
+    location.reload();
+  });
+
   sessionStorage.removeItem("crtrId");
   $(".Receive-loadLink").click(function (event) {
     event.preventDefault(); // 기본 동작 방지

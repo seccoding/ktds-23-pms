@@ -189,10 +189,10 @@ function loadmyModal({
       "modal-confirm-window1"
     );
     var modalButton = $(".confirm-confirm-button").addClass(
-      "confirm-confirm-button"
+      "confirm-confirm-button1"
     );
     var modalButton1 = $(".cancel-confirm-button").addClass(
-      "cancel-confirm-button"
+      "cancel-confirm-button1"
     );
     var modalText = $(".modal-confirm-text").addClass("modal-confirm-text1");
     modalText.text(content);
