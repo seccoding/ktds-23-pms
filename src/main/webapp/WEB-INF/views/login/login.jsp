@@ -248,7 +248,7 @@
         <input type="hidden" name="next" id="next" value="${nextUrl}"/>
         <form id="loginForm">
             <div class="leftForm">
-                <img class="logo2" src="/images/logo2.png">
+                <!-- <img class="logo2" src="/images/logo2.png"> PMS 로고 삽입 자리-->
             </div>
             <div class="formBackground">
                 <div class="inputText">
