@@ -11,8 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.ktdsuniversity.edu.pms.beans.security.handler.LoginSuccessHandler;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 @Configuration
 @EnableWebSecurity
@@ -51,17 +51,20 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
 		
 		http.authorizeHttpRequests(httpRequest ->
-				httpRequest.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
-							.anyRequest().authenticated());
+				httpRequest
+				.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
+				.requestMatchers(AntPathRequestMatcher.antMatcher("/ajax/employee/login")).permitAll()
+				.anyRequest().permitAll());
 		
 		http.formLogin( formLogin -> 
 						formLogin.loginPage("/employee/login")
 								 .usernameParameter("empId")
 								 .passwordParameter("pwd")
-								 .successForwardUrl("/")
+								 .successHandler(new LoginSuccessHandler())
 				);
 		
-		http.csrf(csrf-> csrf.disable());
+		http.csrf(csrf-> csrf.disable()) 
+			.cors(cors ->cors.disable());
 		return http.build();
 	}
 	
