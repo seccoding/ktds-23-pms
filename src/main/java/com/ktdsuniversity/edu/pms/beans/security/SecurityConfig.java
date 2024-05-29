@@ -38,8 +38,7 @@ public class SecurityConfig {
 		return (web) -> web.ignoring()
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/WEB-INF/views/**"))
 //				CSRF적용을 위해 Spring Security 설정 필요
-//				.requestMatchers(AntPathRequestMatcher.antMatcher("/member/login"))
-//				.requestMatchers(AntPathRequestMatcher.antMatcher("/member/regist/**"))
+ 
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/error/**"))
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/favicon.ico"))
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/member/**-delete-me"))
@@ -53,18 +52,22 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(httpRequest ->
 				httpRequest
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
-				.requestMatchers(AntPathRequestMatcher.antMatcher("/ajax/employee/login")).permitAll()
-				.anyRequest().permitAll());
+				.anyRequest().authenticated());
 		
 		http.formLogin( formLogin -> 
 						formLogin.loginPage("/employee/login")
+								 .loginProcessingUrl("/member/login-proc")
 								 .usernameParameter("empId")
 								 .passwordParameter("pwd")
 								 .successHandler(new LoginSuccessHandler())
 				);
 		
-		http.csrf(csrf-> csrf.disable()) 
-			.cors(cors ->cors.disable());
+		http.csrf(csrf-> csrf
+				.ignoringRequestMatchers(
+				AntPathRequestMatcher.antMatcher("/auth/token"),
+				AntPathRequestMatcher.antMatcher("/api/**"))); 
+		
+		http.cors(cors ->cors.disable());
 		return http.build();
 	}
 	

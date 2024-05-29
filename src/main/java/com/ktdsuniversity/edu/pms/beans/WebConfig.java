@@ -57,16 +57,16 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 
-
-		if (this.enableTempSession) {
-			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
-			tempSessionInterceptor.setEnableTempSession(enableTempSession);
-			tempSessionInterceptor.setTempEmpId(empId);
-			tempSessionInterceptor.setTempEmpName(empName);
-
-			registry.addInterceptor(tempSessionInterceptor)
-					.addPathPatterns("/**");
-		}
+//		tempSession 으로 관리자 권한을 부여하던 코드, 해당 interceptor가 삭제되어 주석처리
+//		if (this.enableTempSession) {
+//			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
+//			tempSessionInterceptor.setEnableTempSession(enableTempSession);
+//			tempSessionInterceptor.setTempEmpId(empId);
+//			tempSessionInterceptor.setTempEmpName(empName);
+//
+//			registry.addInterceptor(tempSessionInterceptor)
+//					.addPathPatterns("/**");
+//		}
 
 		RecordScreenAccessAfterLoginInterceptor rsaalException = new RecordScreenAccessAfterLoginInterceptor();
 		rsaalException.setVisitedService(visitedService);
@@ -77,9 +77,9 @@ public class WebConfig implements WebMvcConfigurer {
 				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
 		
 		//세션에 값이 없으면 url로 접근을 막는 interceptor
-		registry.addInterceptor(new LoginInterceptor())
-				.addPathPatterns(this.authCheckUrlPattern)
-				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
+//		registry.addInterceptor(new LoginInterceptor())
+//				.addPathPatterns(this.authCheckUrlPattern)
+//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
 		
 		//세션에 값이 있으면 아래 url의 접근을 막는 interceptor
 		registry.addInterceptor(new RestrictAccessAfterLoginInterceptor())
