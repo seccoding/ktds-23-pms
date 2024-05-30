@@ -23,7 +23,7 @@ $().ready(function () {
     $(".restDt").remove();
 
     $.post(
-      "/ajax/employee/login",
+      "/member/login-proc",
       {
         empId: $("#empId").val(),
         pwd: $("#pwd").val(),

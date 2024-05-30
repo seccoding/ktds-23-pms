@@ -19,10 +19,14 @@ mybatis:
 
 # 사용자 설정
 app:
-  tempsession:
-    empId: system01
-    empName: 관리자
-    enable: false
+#jwt 설정
+  jwt:
+    issuer: vvhhty@gmail.com
+    secret-key: spring-security-key-random-token-key
+#  tempsession:
+#    empId: system01
+#    empName: 관리자
+#    enable: false
   authentication:
     check-url-pattern: /**
     ignore-url-patterns: /js/**,
