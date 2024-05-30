@@ -56,8 +56,8 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests(httpRequest ->
 				httpRequest
-//				.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
-				.anyRequest().permitAll());
+				.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/token")).permitAll()
+				.anyRequest().authenticated());
 		
 		http.formLogin( formLogin -> 
 						formLogin.loginPage("/employee/login")

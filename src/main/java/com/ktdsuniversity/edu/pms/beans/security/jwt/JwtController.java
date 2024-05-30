@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
 
 @RestController
 public class JwtController {
@@ -22,6 +23,9 @@ public class JwtController {
 	
 	@Autowired
 	private EmployeeDao employeeDao;
+	
+	@Autowired
+	private LoginLogDao loginLogDao;
 	
 	@PostMapping("/auth/token")
 	public ResponseEntity<Map<String, Object>> createNewJWTToken(@RequestBody EmployeeVO employee){
@@ -44,11 +48,16 @@ public class JwtController {
 		String encondingPassword = sha.getEncrypt(password, salt);
 		if(encondingPassword.equals(dbEmployee.getPwd())) {/*일치할경우 토큰생성 후 반환 */
 			String jwt =jsonWebTokenProvider.generateToken(Duration.ofHours(12), dbEmployee);
-		
+//		로그인 시도횟수 초기화(update 라 트렌젝션 필요)
+			this.loginLogDao.updateOneEmpLgnTryZero(empId);
+			
 			return ResponseEntity
 					.status(HttpStatus.CREATED)
 					.body(Map.of("token",jwt));
 		}else {
+//			로그인 시도횟수 1 증가(update 라 트렌젝션 필요)
+			this.loginLogDao.updateOneEmpLgnTryPlusOne(empId);
+			
 			return ResponseEntity
 					.status(HttpStatus.FORBIDDEN)/*403 error*/
 					.body(Map.of("message","아이디 또는 비밀번호가 존재하지 않습니다."));
