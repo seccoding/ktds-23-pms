@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.supply.dao.SupplyDao">
+
+	<select id="searchSupplyAllCount"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM (SELECT *
+					 , REPLACE(SPL_NAME, ' ', '') SEARCH_SPL_NAME
+					 , REPLACE(SPL_CTGR, ' ', '') SEARCH_SPL_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+				  FROM SUPPLY)
+		 WHERE DEL_YN = 'N';
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "splName"'>
+		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "splCtgr"'>
+		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<select id="searchAllSupply"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO"
+			resultType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		<include refid="Common.pagenate_header" />
+		SELECT *
+		  FROM (SELECT SPL_ID
+					 , SPL_NAME
+					 , SPL_CTGR
+					 , SPL_PRICE
+					 , INV_QTY
+					 , DEL_YN
+					 , REPLACE(SPL_NAME, ' ', '') AS SEARCH_SPL_NAME
+					 , REPLACE(SPL_CTGR, ' ', '') AS SEARCH_SPL_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+		  		  FROM SUPPLY)
+		 WHERE DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "splName"'>
+		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "splCtgr"'>
+		   AND SEARCH_PRDT_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+			</choose>
+		</if>		
+		<include refid="Common.pagenate_footer" />
+	</select>
+
+</mapper>
