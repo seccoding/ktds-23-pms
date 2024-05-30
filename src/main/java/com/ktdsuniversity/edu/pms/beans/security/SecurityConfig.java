@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.beans.security;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +12,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.ktdsuniversity.edu.pms.beans.security.handler.LoginFailureHandler;
 import com.ktdsuniversity.edu.pms.beans.security.handler.LoginSuccessHandler;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 
@@ -51,8 +56,8 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests(httpRequest ->
 				httpRequest
-				.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
-				.anyRequest().authenticated());
+//				.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
+				.anyRequest().permitAll());
 		
 		http.formLogin( formLogin -> 
 						formLogin.loginPage("/employee/login")
@@ -60,14 +65,28 @@ public class SecurityConfig {
 								 .usernameParameter("empId")
 								 .passwordParameter("pwd")
 								 .successHandler(new LoginSuccessHandler())
-				);
+								 .failureHandler(new LoginFailureHandler())	
+				);	
 		
+//		
 		http.csrf(csrf-> csrf
 				.ignoringRequestMatchers(
 				AntPathRequestMatcher.antMatcher("/auth/token"),
 				AntPathRequestMatcher.antMatcher("/api/**"))); 
 		
-		http.cors(cors ->cors.disable());
+		http.cors(cors ->{
+			CorsConfigurationSource sourse =request->{
+				CorsConfiguration config = new CorsConfiguration();
+				
+				config.setAllowedOrigins(List.of("http://localhost:3000"));
+				config.setAllowedHeaders(List.of("*"));
+				config.setAllowedMethods(List.of("GET","PUT","POST","DELETE"));
+				return config;
+			};
+			cors.configurationSource(sourse);
+		});
+		
+		
 		return http.build();
 	}
 	

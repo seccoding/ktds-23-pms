@@ -28,6 +28,8 @@ public class JwtController {
 		String empId = employee.getEmpId() ;
 		EmployeeVO dbEmployee = this.employeeDao.getOneEmployee(empId);
 		
+//		TODO empId, password validation 구현 필요
+		
 //		들어온 body의 정보로 아이디가 검색이 안될경우 에러메세지 반환
 		if(dbEmployee ==null) { 
 			return ResponseEntity
