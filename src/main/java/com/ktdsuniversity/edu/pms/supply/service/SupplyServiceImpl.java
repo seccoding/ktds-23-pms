@@ -30,4 +30,11 @@ public class SupplyServiceImpl implements SupplyService {
 		return supplyListVO;
 	}
 
+	@Override
+	public SupplyVO getOneSupply(String splId) {
+		SupplyVO supplyVO = this.supplyDao.selectOneSupply(splId);
+		
+		return supplyVO;
+	}
+
 }
