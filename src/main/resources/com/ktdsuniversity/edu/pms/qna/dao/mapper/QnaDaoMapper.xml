@@ -8,18 +8,10 @@
     <resultMap type="com.ktdsuniversity.edu.pms.qna.vo.QnaVO" 
 	id="qnaVOMap" autoMapping="true">
 	<id column="QA_ID" property="qaId" /><!-- pk -->
-	<result column="RQM_ID" property="rqmId" /><!-- join value -->
 	<result column="PRJ_ID" property="prjId" /><!-- join value -->
 	<result column="EMP_ID" property="empId" /><!-- join value -->
 	<result column="REC_ID" property="recId" /><!-- join value -->
 	 
-	<!-- join table -->
-	
-	<association property="requirementVO" 
-		javaType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
-			<id column="RQM_ID" property="rqmId" />
-			<result column="RQM_TTL" property="rqmTtl" />
-	</association> 
 	<!-- join table -->
 	
 	<association property="projectVO" 
@@ -59,7 +51,6 @@
   
   	<select id="getAllQna" resultMap="qnaVOMap">
 	    SELECT Q.QA_ID
-			 , Q.RQM_ID
 			 , Q.QA_TTL
 			 , Q.QA_CNTNT
 			 , Q.QA_CNT
@@ -71,13 +62,11 @@
 			 , Q.MDFR_ID
 		     , Q.FILE_NAME
 		     , Q.ORIGIN_FILE_NAME
+		     , Q.PRJ_ID
 		     , P.PRJ_NAME
-		     , R.RQM_TTL
 		  FROM QNA Q
-		 INNER JOIN REQUIREMENT R
-		    ON R.RQM_ID = Q.RQM_ID
 		 INNER JOIN PROJECT P
-		    ON P.PRJ_ID = R.PRJ_ID
+		    ON P.PRJ_ID = Q.PRJ_ID
 		  WHERE Q.DEL_YN = 'N'
 		  ORDER BY Q.CRT_DT DESC
   </select>
@@ -88,19 +77,14 @@
     resultType="_int">
   	SELECT COUNT(1) 
 	  FROM QNA Q
-	 INNER JOIN REQUIREMENT R
-	    ON R.RQM_ID = Q.RQM_ID
 	 INNER JOIN PROJECT P
-	    ON P.PRJ_ID = R.PRJ_ID
+	    ON P.PRJ_ID = Q.PRJ_ID
 	 WHERE Q.DEL_YN = 'N'
-	   AND R.DEL_YN = 'N'
+	   AND P.DEL_YN = 'N'
 	 <if test='searchKeyword != null and searchKeyword != ""'>
 	 <choose>
 	 	<when test='searchType == "prjName"'>
 	   AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
-	 	</when>
-	 	<when test='searchType == "rqmTtl"'>
-	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
 	 	</when>
 	 	<when test='searchType == "qaTtl"'>
 	   AND Q.QA_TTL LIKE '%' || #{searchKeyword} || '%'
@@ -118,13 +102,10 @@
 	 </choose>
 	 </if>
 	 <if test='empId != null and  empId !=""'>
-		 AND Q.RQM_ID IN( SELECT RQM_ID 
-	       					FROM REQUIREMENT R
-	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
-	       				      					 FROM PROJECT_TEAMMATE PT 
-	       				      					WHERE PT.TM_ID =#{empId}
-	       				   					)
-	     				)
+		 AND Q.PRJ_ID IN (SELECT PRJ_ID
+	       	  				FROM PROJECT_TEAMMATE PT 
+ 			  			   WHERE PT.TM_ID =#{empId}
+						  )
 		</if>
   </select>
   
@@ -132,7 +113,6 @@
   <select id="searchAllQna" parameterType="com.ktdsuniversity.edu.pms.qna.vo.SearchQnaVO" resultMap="qnaVOMap">
   <include refid="Common.pagenate_header" />
 	    SELECT Q.QA_ID
-			 , Q.RQM_ID
 			 , Q.QA_TTL
 			 , Q.QA_CNTNT
 			 , Q.QA_CNT
@@ -144,22 +124,16 @@
 			 , Q.MDFR_ID
 		     , Q.FILE_NAME
 		     , Q.ORIGIN_FILE_NAME
+		     , Q.PRJ_ID
 		     , P.PRJ_NAME
-		     , R.RQM_TTL
 		  FROM QNA Q
-		 INNER JOIN REQUIREMENT R
-		    ON R.RQM_ID = Q.RQM_ID
 		 INNER JOIN PROJECT P
-		    ON P.PRJ_ID = R.PRJ_ID
+		    ON P.PRJ_ID = Q.PRJ_ID
 		  WHERE Q.DEL_YN = 'N'
-		    AND R.DEL_YN = 'N'
-		  <if test='searchKeyword != null and searchKeyword != ""'>
+    <if test='searchKeyword != null and searchKeyword != ""'>
 	 <choose>
 	 	<when test='searchType == "prjName"'>
 	   AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
-	 	</when>
-	 	<when test='searchType == "rqmTtl"'>
-	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
 	 	</when>
 	 	<when test='searchType == "qaTtl"'>
 	   AND Q.QA_TTL LIKE '%' || #{searchKeyword} || '%'
@@ -177,12 +151,9 @@
 	 </choose>
 	 </if>
 	  <if test='empId != null and  empId !=""'>
-		 AND Q.RQM_ID IN( SELECT RQM_ID 
-	       					FROM REQUIREMENT R
-	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
-	       				      					 FROM PROJECT_TEAMMATE PT 
-	       				      					WHERE PT.TM_ID =#{empId}
-	       				   					)
+		 AND Q.PRJ_ID IN( SELECT PRJ_ID
+	       				    FROM PROJECT_TEAMMATE PT 
+	       				   WHERE PT.TM_ID =#{empId}   
 	     				)
 		</if>
 		ORDER BY Q.CRT_DT DESC
@@ -193,7 +164,6 @@
     <insert id="insertNewQna" parameterType="com.ktdsuniversity.edu.pms.qna.vo.QnaVO"> 
 		INSERT INTO QNA
 			 ( QA_ID
-			 , RQM_ID
 			 , QA_TTL
 			 , QA_CNTNT
 			 , QA_CNT
@@ -204,10 +174,10 @@
 			 , CRTR_ID
 			 , MDFR_ID
 			 , FILE_NAME
-			 , ORIGIN_FILE_NAME)
+			 , ORIGIN_FILE_NAME
+			 , PRJ_ID)
 		VALUES
 		     (('QA' || '_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD (SEQ_QNA_PK.NEXTVAL, 6, '0'))
-		     , #{rqmId}
 		     , #{qaTtl}
 		     , #{qaCntnt}
 		     , 0
@@ -219,6 +189,7 @@
 		     , NULL
 		     , #{fileName}
 		     , #{originFileName})
+		     , #{prjId}
    </insert>
   
   
@@ -236,14 +207,12 @@
 		 , Q.MDFR_ID
 	     , Q.FILE_NAME
 	     , Q.ORIGIN_FILE_NAME
+	     , Q.PRJ_ID
 	     , P.PRJ_NAME
-	     , R.RQM_ID 
-	     , R.RQM_TTL
+	     , P.PRJ_ID
 	  FROM QNA Q
-	 INNER JOIN REQUIREMENT R
-	    ON R.RQM_ID = Q.RQM_ID
 	 INNER JOIN PROJECT P
-	    ON P.PRJ_ID = R.PRJ_ID
+	    ON P.PRJ_ID = Q.PRJ_ID
 	 INNER JOIN EMPLOYEE E
         ON E.EMP_ID = Q.CRTR_ID 
 	 WHERE Q.DEL_YN = 'N'

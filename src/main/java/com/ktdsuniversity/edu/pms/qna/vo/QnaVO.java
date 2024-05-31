@@ -3,12 +3,11 @@ package com.ktdsuniversity.edu.pms.qna.vo;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
-import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 
 public class QnaVO {
 	
 	private String qaId;
-	private String rqmId;
+	private String prjId;
 	private String qaTtl;
 	private String qaCntnt;
 	private int qaCnt;
@@ -23,17 +22,11 @@ public class QnaVO {
 	private String fileName;
 	// file - 난독화X
 	private String originFileName;
-	
-	private RequirementVO requirementVO;
-	
-	private ProjectVO  projectVO;
-	
+	private ProjectVO projectVO;
 	private EmployeeVO employeeVO;
 	private String empId;
 	private String empName;
-	
 	private CommonCodeVO commonCodeVO;
-	
 	private QnaRecommendVO qnaRecommendVO;
 
 	
@@ -43,12 +36,8 @@ public class QnaVO {
 	public void setQaId(String qaId) {
 		this.qaId = qaId;
 	}
-	public String getRqmId() {
-		return rqmId;
-	}
-	public void setRqmId(String rqmId) {
-		this.rqmId = rqmId;
-	}
+
+	
 	public String getQaTtl() {
 		return qaTtl;
 	}
@@ -115,12 +104,7 @@ public class QnaVO {
 	public void setOriginFileName(String originFileName) {
 		this.originFileName = originFileName;
 	}
-	public RequirementVO getRequirementVO() {
-		return requirementVO;
-	}
-	public void setRequirementVO(RequirementVO requirementVO) {
-		this.requirementVO = requirementVO;
-	}
+
 	public ProjectVO getProjectVO() {
 		return projectVO;
 	}
@@ -157,6 +141,12 @@ public class QnaVO {
 	}
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
+	}
+	public String getPrjId() {
+		return prjId;
+	}
+	public void setPrjId(String prjId) {
+		this.prjId = prjId;
 	}
 	
 	
