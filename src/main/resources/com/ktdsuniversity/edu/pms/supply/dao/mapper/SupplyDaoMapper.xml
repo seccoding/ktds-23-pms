@@ -8,12 +8,12 @@
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO"
 			resultType="_int">
 		SELECT COUNT(1)
-		  FROM (SELECT *
-					 , REPLACE(SPL_NAME, ' ', '') SEARCH_SPL_NAME
-					 , REPLACE(SPL_CTGR, ' ', '') SEARCH_SPL_CTGR
+		  FROM (SELECT s.*
+					 , REPLACE(s.SPL_NAME, ' ', '') SEARCH_SPL_NAME
+					 , REPLACE(s.SPL_CTGR, ' ', '') SEARCH_SPL_CTGR
 					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
-				  FROM SUPPLY)
-		 WHERE DEL_YN = 'N';
+				  FROM SUPPLY s)
+		 WHERE DEL_YN = 'N'
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "splName"'>
@@ -37,6 +37,9 @@
 					 , SPL_PRICE
 					 , INV_QTY
 					 , DEL_YN
+					 , SPL_IMG
+					 , SPL_DTL
+					 , SPL_REGT_ID
 					 , REPLACE(SPL_NAME, ' ', '') AS SEARCH_SPL_NAME
 					 , REPLACE(SPL_CTGR, ' ', '') AS SEARCH_SPL_CTGR
 					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
@@ -45,14 +48,31 @@
 		<if test='searchKeyword != null and searchKeyword != ""'>
 			<choose>
 				<when test='searchType == "splName"'>
-		   AND SEARCH_PRDT_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 				<when test='searchType == "splCtgr"'>
-		   AND SEARCH_PRDT_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
 				</when>
 			</choose>
 		</if>		
 		<include refid="Common.pagenate_footer" />
+	</select>
+	
+	<select id="selectOneSupply" 
+			parameterType="String" 
+			resultType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		SELECT SPL_ID
+			 , SPL_NAME
+			 , SPL_CTGR
+			 , SPL_PRICE
+			 , INV_QTY
+			 , DEL_YN
+			 , SPL_IMG
+			 , SPL_DTL
+			 , SPL_REGT_ID
+		  FROM SUPPLY s 
+		 WHERE DEL_YN = 'N'
+		   AND SPL_ID = #{_parameter}
 	</select>
 
 </mapper>

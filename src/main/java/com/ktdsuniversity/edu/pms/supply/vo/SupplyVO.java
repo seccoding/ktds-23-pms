@@ -8,6 +8,8 @@ public class SupplyVO {
 	private int splPrice;
 	private int invQty;
 	private String delYn;
+	private String splImg;
+	private String splDtl;
 	
 	public String getSplId() {
 		return splId;
@@ -44,5 +46,17 @@ public class SupplyVO {
 	}
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
+	}
+	public String getSplImg() {
+		return splImg;
+	}
+	public void setSplImg(String splImg) {
+		this.splImg = splImg;
+	}
+	public String getSplDtl() {
+		return splDtl;
+	}
+	public void setSplDtl(String splDtl) {
+		this.splDtl = splDtl;
 	}
 }
