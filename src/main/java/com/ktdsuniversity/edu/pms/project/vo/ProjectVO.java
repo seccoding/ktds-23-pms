@@ -25,8 +25,44 @@ public class ProjectVO {
     private String crtDt;
     private String mdfId;
     private String mdfDt;
+    private String srvSts;
+    private String srvCrDate;
+    private String srvEndDate;
+    private String prjMemo;
 
-    private CommonCodeVO prjStsCode;
+    public String getPrjMemo() {
+		return prjMemo;
+	}
+
+	public void setPrjMemo(String prjMemo) {
+		this.prjMemo = prjMemo;
+	}
+
+	public String getSrvSts() {
+		return srvSts;
+	}
+
+	public void setSrvSts(String srvSts) {
+		this.srvSts = srvSts;
+	}
+
+	public String getSrvCrDate() {
+		return srvCrDate;
+	}
+
+	public void setSrvCrDate(String srvCrDate) {
+		this.srvCrDate = srvCrDate;
+	}
+
+	public String getSrvEndDate() {
+		return srvEndDate;
+	}
+
+	public void setSrvEndDate(String srvEndDate) {
+		this.srvEndDate = srvEndDate;
+	}
+
+	private CommonCodeVO prjStsCode;
     private DepartmentVO deptVO;
 
     private List<ProjectTeammateVO> projectTeammateList;
