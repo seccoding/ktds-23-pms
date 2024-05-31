@@ -16,20 +16,20 @@ public class EmployeeVO {
 
 
 
-	private String empId;
-	private String empName;
-	private String workSts;
-	private int salYear;
+	private String empId;		//아이디
+	private String empName;		//사원명
+	private String workSts;		
+	private int salYear;		
 	private String prfl;
 	private String hireDt;
 	private String hireYear;
 	private String endDt;
-	private String restStDt;
-	private String restEndDt;
-	private String cntct;
-	private String addr;
-	private String brth;
-	private String email;
+	private String restStDt;	//휴가 시작일
+	private String restEndDt;	//휴가 종료일 
+	private String cntct;		//생성일
+	private String addr;		
+	private String brth;		//생년월일
+	private String email;		//이메일
 	private String mngrYn;
 	private String admnCode;
 	private String deptId;
@@ -37,9 +37,9 @@ public class EmployeeVO {
 	private String pstnId;
 	private String pwd;
 	private String salt;
-	private int lgnTry;
+	private int lgnTry;			//로그인 시도횟수
 	private String pwdCnDt;
-	private String lgnTryDt;
+	private String lgnTryDt;	//로그인 시도 시간
 	private String lgnYn;
 	private String fileName;
 	private DepartmentVO departmentVO;

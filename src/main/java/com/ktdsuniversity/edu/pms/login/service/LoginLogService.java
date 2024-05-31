@@ -50,4 +50,11 @@ public interface LoginLogService {
     public boolean updatePwdDtThirtyDay(String empId);
 
     public int getCommutFnshCount(String empId);
+    /**
+	 * 사용자의 계정이 잠김처리 되었는지 확인후 반환 <br>
+	 * 로그인 시도 실패횟수 5회이상, 마지막 실패후 1시간이내시 잠금처리
+	 * @param employeeVO 확인할 계정 정보
+	 * @return
+	 */
+    public boolean isAccountLocked(EmployeeVO employeeVO);
 }

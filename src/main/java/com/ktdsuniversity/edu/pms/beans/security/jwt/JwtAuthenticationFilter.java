@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
@@ -15,7 +17,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	private JsonWebTokenProvider jsonWebTokenProvider;
@@ -29,7 +31,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		
 		String servletPath = request.getServletPath();
 		
-		if(servletPath.startsWith("/api")) {
+		if (CorsUtils.isPreFlightRequest(request)) {
+			filterChain.doFilter(request, response);
+		}
+		else if(servletPath.startsWith("/api")) {
 			String jwt = request.getHeader("Authorization");
 		
 			EmployeeVO employeeVO = this.jsonWebTokenProvider.getUserFormToken(jwt);
@@ -39,9 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 					new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
-			filterChain.doFilter(request, response);
 		}
 		
+		filterChain.doFilter(request, response);
 	}
 
 }
+
