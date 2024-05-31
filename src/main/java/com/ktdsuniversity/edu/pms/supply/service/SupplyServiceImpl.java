@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyDao;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
@@ -35,6 +36,14 @@ public class SupplyServiceImpl implements SupplyService {
 		SupplyVO supplyVO = this.supplyDao.selectOneSupply(splId);
 		
 		return supplyVO;
+	}
+
+	@Transactional
+	@Override
+	public boolean registerNewSupply(SupplyVO supplyVO) {
+		int registeredCount = this.supplyDao.registerNewSupply(supplyVO);
+		
+		return registeredCount > 0;
 	}
 
 }

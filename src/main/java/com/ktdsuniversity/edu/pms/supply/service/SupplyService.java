@@ -6,8 +6,10 @@ import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 
 public interface SupplyService {
 
-	SupplyListVO searchAllSupply(SearchSupplyVO searchSupplyVO);
+	public SupplyListVO searchAllSupply(SearchSupplyVO searchSupplyVO);
 
-	SupplyVO getOneSupply(String splId);
+	public SupplyVO getOneSupply(String splId);
+
+	public boolean registerNewSupply(SupplyVO supplyVO);
 
 }
