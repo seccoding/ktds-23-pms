@@ -248,6 +248,7 @@
         , PT."ROLE"
         , PT.TM_ID
         , E.EMP_NAME
+        , P.PRJ_MEMO
         FROM (SELECT PRJ_ID
         , PRJ_NAME
         , CLNT_INFO
@@ -265,6 +266,7 @@
         , CRT_DT
         , MDFR_ID
         , MDF_DT
+        , PRJ_MEMO
         FROM PROJECT
         WHERE PRJ_ID = #{_parameter}
         ) P

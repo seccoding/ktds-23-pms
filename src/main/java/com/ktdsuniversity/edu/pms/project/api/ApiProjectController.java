@@ -70,7 +70,6 @@ public class ApiProjectController {
 	    
 	    @GetMapping("/view/{prjId}")
 	    public ApiResponse viewProjectDetailPage(@PathVariable String prjId, Authentication authentication) {
-	    	
 	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 			List<String> errorMessages = null;
