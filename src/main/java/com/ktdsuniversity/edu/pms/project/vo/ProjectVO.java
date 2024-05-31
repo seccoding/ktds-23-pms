@@ -2,6 +2,7 @@ package com.ktdsuniversity.edu.pms.project.vo;
 
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 
 import java.util.List;
 
@@ -29,8 +30,17 @@ public class ProjectVO {
     private DepartmentVO deptVO;
 
     private List<ProjectTeammateVO> projectTeammateList;
+    private List<RequirementVO> projectRequirementsList;
 
-    public String getPrjId() {
+    public List<RequirementVO> getProjectRequirementsList() {
+		return projectRequirementsList;
+	}
+
+	public void setProjectRequirementsList(List<RequirementVO> projectRequirementsList) {
+		this.projectRequirementsList = projectRequirementsList;
+	}
+
+	public String getPrjId() {
         return prjId;
     }
 
