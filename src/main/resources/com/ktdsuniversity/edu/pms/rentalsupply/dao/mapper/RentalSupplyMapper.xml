@@ -1,0 +1,57 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.rentalsupply.dao.RentalSupplyDao">
+
+	<select id="searchRentalSupplyAllCount"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM (SELECT R.*
+					 , REPLACE(R.RSPL_NAME, ' ', '') SEARCH_RSPL_NAME
+					 , REPLACE(R.RSPL_CTGR, ' ', '') SEARCH_RSPL_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+				  FROM RSUPPLIES R)
+		 WHERE DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "rsplName"'>
+		   AND SEARCH_RSPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "rsplCtgr"'>
+		   AND SEARCH_RSPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+			</choose>
+		</if> 
+	</select>
+
+	<select id="searchAllRentalSupply"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO"
+			resultType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		<include refid="Common.pagenate_header" />
+		SELECT *
+		  FROM (SELECT R.RSPL_ID
+					 , R.RSPL_NAME
+					 , R.RSPL_CTGR
+					 , R.RSPL_PRICE
+					 , R.INV_QTY
+					 , R.DEL_YN
+					 , REPLACE(R.RSPL_NAME, ' ', '') AS SEARCH_RSPL_NAME
+					 , REPLACE(R.RSPL_CTGR, ' ', '') AS SEARCH_RSPL_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+		  		  FROM RSUPPLIES R)
+		 WHERE DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "rsplName"'>
+		   AND SEARCH_RSPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "rsplCtgr"'>
+		   AND SEARCH_RSPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+			</choose>
+		</if>		
+		<include refid="Common.pagenate_footer" />
+	</select>
+
+</mapper>
