@@ -11,12 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.ktdsuniversity.edu.pms.beans.security.handler.LoginFailureHandler;
 import com.ktdsuniversity.edu.pms.beans.security.handler.LoginSuccessHandler;
+import com.ktdsuniversity.edu.pms.beans.security.jwt.JwtAuthenticationFilter;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 
 @Configuration
@@ -36,17 +38,16 @@ public class SecurityConfig {
 		return new SecuritySHA() ;
 	}
 	
-	
+	@Autowired
+	private JwtAuthenticationFilter authenticationFilter;
 	
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring()
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/WEB-INF/views/**"))
 //				CSRF적용을 위해 Spring Security 설정 필요
- 
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/error/**"))
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/favicon.ico"))
-				.requestMatchers(AntPathRequestMatcher.antMatcher("/member/**-delete-me"))
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/js/**"))
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/css/**"));
 	}
@@ -56,36 +57,38 @@ public class SecurityConfig {
 		
 		http.authorizeHttpRequests(httpRequest ->
 				httpRequest
-//				.requestMatchers(AntPathRequestMatcher.antMatcher("/employee/login")).permitAll()
-				.anyRequest().permitAll());
+				.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/token")).permitAll()
+				.anyRequest().authenticated());
 		
-		http.formLogin( formLogin -> 
-						formLogin.loginPage("/employee/login")
-								 .loginProcessingUrl("/member/login-proc")
-								 .usernameParameter("empId")
-								 .passwordParameter("pwd")
-								 .successHandler(new LoginSuccessHandler())
-								 .failureHandler(new LoginFailureHandler())	
+		http.formLogin( 
+				formLogin -> 
+				formLogin.loginPage("/employee/login")
+						.loginProcessingUrl("/member/login-proc")
+						.usernameParameter("empId")
+						.passwordParameter("pwd")
+						.successHandler(new LoginSuccessHandler())
+						.failureHandler(new LoginFailureHandler())	
 				);	
-		
-//		
+			
 		http.csrf(csrf-> csrf
 				.ignoringRequestMatchers(
 				AntPathRequestMatcher.antMatcher("/auth/token"),
 				AntPathRequestMatcher.antMatcher("/api/**"))); 
+		
 		
 		http.cors(cors ->{
 			CorsConfigurationSource sourse =request->{
 				CorsConfiguration config = new CorsConfiguration();
 				
 				config.setAllowedOrigins(List.of("http://localhost:3000"));
-				config.setAllowedHeaders(List.of("*"));
 				config.setAllowedMethods(List.of("GET","PUT","POST","DELETE"));
+				config.setAllowedHeaders(List.of("*"));
 				return config;
 			};
 			cors.configurationSource(sourse);
 		});
 		
+		http.addFilterAfter(this.authenticationFilter, BasicAuthenticationFilter.class);
 		
 		return http.build();
 	}

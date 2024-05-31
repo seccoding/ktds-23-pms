@@ -1,12 +1,15 @@
 package com.ktdsuniversity.edu.pms.beans.security;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
 
 public class SecurityUser implements UserDetails {
 	
@@ -31,9 +34,8 @@ public class SecurityUser implements UserDetails {
 
 
 
-	/**
-	 * 인가에 대한 설정
-	 */
+	
+//	인가에 대한 설정
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
@@ -50,28 +52,35 @@ public class SecurityUser implements UserDetails {
 		return this.employeeVO.getEmpName();
 	}
 
+//	계정만료 여부
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
-
+	
+//	로그인 사용자 계정의 잠금처리 여부
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		if(!this.employeeVO.getWorkSts().equals("201")) {
+			return false;
+		}
+		return true;
 	}
-
+	
+//	비밀번호 유효기간 만료여부
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		LocalDate pwdCnDt = LocalDate.parse(this.employeeVO.getPwdCnDt());
+		pwdCnDt.plusDays(90);
+		LocalDate date = LocalDate.now();
+		
+		return date.isBefore(pwdCnDt) ;
 	}
-
+	
+//	  해당계정 사용여부
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

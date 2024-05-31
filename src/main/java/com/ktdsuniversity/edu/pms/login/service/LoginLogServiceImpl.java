@@ -221,5 +221,17 @@ public class LoginLogServiceImpl implements LoginLogService {
 		return this.loginLogDao.getCommutFnshCount(empId);
 	}
 
+	@Override
+	public boolean isAccountLocked(EmployeeVO employeeVO) {
+		boolean isBanedTime = 
+				this.loginLogDao.getCountPossibleLogin(employeeVO.getEmpId())>0? false:true;
+
+		if(employeeVO.getLgnTry()>=5 && isBanedTime) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 
 }

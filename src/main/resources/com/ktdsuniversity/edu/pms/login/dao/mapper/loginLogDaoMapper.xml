@@ -154,13 +154,16 @@
 		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		UPDATE EMPLOYEE
 		SET LGN_TRY = LGN_TRY + 1
+		  , LGN_TRY_DT = SYSDATE
 		WHERE EMP_ID = #{empId}
+		  AND LGN_TRY <![CDATA[ < ]]> 5
 	</update>
 
 	<update id="updateOneEmpLgnTryZero"
 		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		UPDATE EMPLOYEE
 		SET LGN_TRY = 0
+		  , LGN_TRY_DT = SYSDATE	
 		WHERE EMP_ID = #{empId}
 	</update>
 
@@ -177,11 +180,10 @@
 		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
 		resultType="_int">
 		SELECT COUNT(1)
-		FROM EMPLOYEE
-		WHERE SYSDATE > (SELECT LGN_TRY_DT + 1 / 24
-		FROM EMPLOYEE
-		WHERE EMP_ID = 'system01'
-		AND LGN_TRY = 5)
+		  FROM EMPLOYEE
+		 WHERE SYSDATE > (SELECT LGN_TRY_DT + 1 / 24
+						    FROM EMPLOYEE
+						   WHERE EMP_ID = #{empId})
 	</select>
 
 	<insert id="insertCommuteIn"
