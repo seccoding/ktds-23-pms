@@ -18,6 +18,8 @@ public interface EmployeeService {
 
 	public boolean modifyEmployee(EmployeeVO employeeVO);
 
+	public boolean modifyOneEmployee(EmployeeVO employeeVO);
+	
 	public EmployeeVO getOneEmployee(String empId);
 
 	public boolean createEmployee(EmployeeVO employeeVO, MultipartFile file);
@@ -27,8 +29,6 @@ public interface EmployeeService {
 	public List<EmployeeVO> findEmployeesByTeamId(String teamId);
 
 	public int getOneEmpIdIsExist(String empId);
-
-	public boolean modifyOneEmployee(EmployeeVO employeeVO);
 
 	public boolean deleteTeam(EmployeeVO employeeVO);
 

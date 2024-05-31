@@ -51,6 +51,9 @@ public class EmployeeVO {
 	private String confirmPwd;
 	private String newPwd;
 	private String decryptedPrflFileName;
+	
+	// 새로운 컬럼 추가
+	private String tmId;
 
 	public PositionHistoryVO getPositionHistoryVO() {
 		return positionHistoryVO;
@@ -381,4 +384,14 @@ public class EmployeeVO {
 	public void setDecryptedPrflFileName(String decryptedPrflFileName) {
 		this.decryptedPrflFileName = decryptedPrflFileName;
 	}
+
+	public String getTmId() {
+		return tmId;
+	}
+
+	public void setTmId(String tmId) {
+		this.tmId = tmId;
+	}
+	
+	
 }
