@@ -15,4 +15,6 @@ public interface SupplyDao {
 
 	public SupplyVO selectOneSupply(String splId);
 
+	public int registerNewSupply(SupplyVO supplyVO);
+
 }

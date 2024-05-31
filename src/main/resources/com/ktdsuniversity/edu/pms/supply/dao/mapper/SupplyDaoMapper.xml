@@ -74,5 +74,29 @@
 		 WHERE DEL_YN = 'N'
 		   AND SPL_ID = #{_parameter}
 	</select>
+	
+	<insert id="registerNewSupply" 
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		INSERT INTO SUPPLY
+		 (SPL_ID
+		, SPL_NAME
+		, SPL_CTGR
+		, SPL_PRICE
+		, INV_QTY
+		, DEL_YN
+		, SPL_IMG
+		, SPL_DTL
+		, SPL_REGT_ID)
+		VALUES
+		 ('SPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_PK.NEXTVAL, 6, '0')
+		, #{splName}
+		, #{splCtgr}
+		, #{splPrice}
+		, #{invQty}
+		, 'N'
+		, #{splImg}
+		, #{splDtl}
+		, #{splRegtId})
+	</insert>
 
 </mapper>

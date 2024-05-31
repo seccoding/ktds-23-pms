@@ -10,6 +10,7 @@ public class SupplyVO {
 	private String delYn;
 	private String splImg;
 	private String splDtl;
+	private String splRegtId;
 	
 	public String getSplId() {
 		return splId;
@@ -58,5 +59,11 @@ public class SupplyVO {
 	}
 	public void setSplDtl(String splDtl) {
 		this.splDtl = splDtl;
+	}
+	public String getSplRegtId() {
+		return splRegtId;
+	}
+	public void setSplRegtId(String splRegtId) {
+		this.splRegtId = splRegtId;
 	}
 }
