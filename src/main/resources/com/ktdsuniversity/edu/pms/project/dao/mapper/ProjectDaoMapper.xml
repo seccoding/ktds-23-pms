@@ -76,12 +76,6 @@
         , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
         , TO_CHAR(P.END_DT, 'YYYY-MM-DD') AS END_DT
         , P.DEL_YN
-        , P.REQ_YN
-        , P.IS_YN
-        , P.KNL_YN
-        , P.QA_YN
-        , P.OUT_YN
-        , P.CRTR_ID
         , P.CRT_DT
         , P.MDFR_ID
         , P.MDF_DT
@@ -114,11 +108,6 @@
         , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') AS STRT_DT
         , TO_CHAR(P.END_DT, 'YYYY-MM-DD') AS END_DT
         , P.DEL_YN
-        , P.REQ_YN
-        , P.IS_YN
-        , P.KNL_YN
-        , P.QA_YN
-        , P.OUT_YN
         , P.CRTR_ID
         , P.CRT_DT
         , P.MDFR_ID
@@ -234,11 +223,6 @@
         , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') STRT_DT
         , TO_CHAR(P.END_DT, 'YYYY-MM-DD') END_DT
         , P.DEL_YN
-        , P.REQ_YN
-        , P.IS_YN
-        , P.KNL_YN
-        , P.QA_YN
-        , P.OUT_YN
         , P.CRTR_ID
         , P.CRT_DT
         , P.MDFR_ID
@@ -257,11 +241,6 @@
         , STRT_DT
         , END_DT
         , DEL_YN
-        , REQ_YN
-        , IS_YN
-        , KNL_YN
-        , QA_YN
-        , OUT_YN
         , CRTR_ID
         , CRT_DT
         , MDFR_ID
@@ -294,13 +273,6 @@
         STRT_DT,
         END_DT,
         DEL_YN,
-        <if test='reqYn != null and reqYn != ""'>
-            REQ_YN,
-            IS_YN,
-            KNL_YN,
-            QA_YN,
-        </if>
-        OUT_YN,
         CRTR_ID)
         VALUES
         (('PRJ_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_PK.NEXTVAL, 6, '0')),
@@ -311,27 +283,6 @@
         TO_DATE(#{strtDt}, 'YYYY-MM-DD'),
         TO_DATE(#{endDt}, 'YYYY-MM-DD'),
         'N',
-        <if test='reqYn != null and reqYn != ""'>
-            #{reqYn},
-            <choose>
-                <when test='isYn == null and isYn != ""'>'N',
-                </when>
-                <otherwise>#{isYn},
-                </otherwise>
-            </choose>
-            <choose>
-                <when test='knlYn == null and knlYn != ""'>'N',
-                </when>
-                <otherwise>#{knlYn},
-                </otherwise>
-            </choose>
-            <choose>
-                <when test='qaYn == null and qaYn != ""'>'N',
-                </when>
-                <otherwise>#{qaYn},
-                </otherwise>
-            </choose>
-        </if>
         #{outYn},
         #{crtrId})
     </insert>
@@ -444,11 +395,6 @@
         PRJ_STS=#{prjSts},
         STRT_DT=#{strtDt},
         END_DT=#{endDt},
-        REQ_YN=#{reqYn},
-        IS_YN=#{isYn},
-        KNL_YN=#{knlYn},
-        QA_YN=#{qaYn},
-        OUT_YN=#{outYn},
         /** 수정자 작성해야함 **/
         MDF_DT=SYSDATE
         WHERE PRJ_ID=#{prjId}
@@ -581,11 +527,6 @@
         P.PRJ_STS,
         P.STRT_DT,
         P.END_DT,
-        P.OUT_YN,
-        P.REQ_YN,
-        P.IS_YN,
-        P.KNL_YN,
-        P.QA_YN,
         D.DEPT_NAME,
         C.CMCD_NAME
         FROM PROJECT P

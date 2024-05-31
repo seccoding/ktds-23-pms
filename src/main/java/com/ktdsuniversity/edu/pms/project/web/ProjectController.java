@@ -210,13 +210,13 @@ public class ProjectController {
             return new AjaxResponse().append("errors", errors);
         }
 
-        if (createProjectVO.getReqYn() == null) {
-            if (createProjectVO.getIsYn() != null
-                    || createProjectVO.getKnlYn() != null
-                    || createProjectVO.getQaYn() != null) {
-                throw new CreationException();
-            }
-        }
+//        if (createProjectVO.getReqYn() == null) {
+//            if (createProjectVO.getIsYn() != null
+//                    || createProjectVO.getKnlYn() != null
+//                    || createProjectVO.getQaYn() != null) {
+//                throw new CreationException();
+//            }
+//        }
 
         // 2. 검증 로직에 잘 맞춰서 작성한 경우, 데이터 저장
         // -> 세션에서 작성자 id 추출
@@ -305,13 +305,13 @@ public class ProjectController {
             return new AjaxResponse().append("errors", errors);
         }
 
-        if (modifyProjectVO.getReqYn() == null) {
-            if (modifyProjectVO.getIsYn() != null
-                    || modifyProjectVO.getKnlYn() != null
-                    || modifyProjectVO.getQaYn() != null) {
-                throw new CreationException();
-            }
-        }
+//        if (modifyProjectVO.getReqYn() == null) {
+//            if (modifyProjectVO.getIsYn() != null
+//                    || modifyProjectVO.getKnlYn() != null
+//                    || modifyProjectVO.getQaYn() != null) {
+//                throw new CreationException();
+//            }
+//        }
 
         // 4. 수정시작
         boolean isUpdateSuccess = projectService.updateOneProject(modifyProjectVO);

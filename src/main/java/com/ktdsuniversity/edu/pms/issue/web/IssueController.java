@@ -66,8 +66,10 @@ public class IssueController {
 			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
 		} else {} 
 		
+//		projectList.setProjectList(
+//				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
 		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
+				projectList.getProjectList().stream().toList());
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
 		//RQM-YN Y , IS-YN Y PRJID = PROJECT-LIST
@@ -101,7 +103,8 @@ public class IssueController {
 	public String viewIssueWritePage(Model model) {
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
-		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+//		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+		requirementList.stream().toList();
 		
 		model.addAttribute("requirement", requirementList);
 		return "/issue/issuewrite";
