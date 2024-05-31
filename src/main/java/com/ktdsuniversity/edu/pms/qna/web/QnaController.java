@@ -74,8 +74,10 @@ public class QnaController {
 			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
 		} else {} 
 		
+//		projectList.setProjectList(
+//				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
 		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getIsYn().equals("Y")).toList());
+				projectList.getProjectList().stream().toList());
 		
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
 		if (!employeeVO.getAdmnCode().equals("301")) {//관리자가 아니면
@@ -114,7 +116,8 @@ public class QnaController {
 	public String viewQnaWrite(Model model) {
 
 		List<RequirementVO> requirementList = this.requirementService.getAllRequirement();
-		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+//		requirementList.stream().filter( rqm-> rqm.getProjectVO().getIsYn().equals("Y")).toList();
+		requirementList.stream().toList();
 
 		model.addAttribute("requirement", requirementList);
 

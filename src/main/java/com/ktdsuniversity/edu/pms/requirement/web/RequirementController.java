@@ -62,8 +62,10 @@ public class RequirementController {
 		} else {
 		} // 관리자라면
 
+//		projectList.setProjectList(
+//				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+				projectList.getProjectList().stream().toList());
 
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
 		requirementSearchVO.setPageCount(requirementList.getCount());
@@ -115,8 +117,10 @@ public class RequirementController {
 
 		}
 
+//		projectList.setProjectList(
+//				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+				projectList.getProjectList().stream().toList());
 
 		List<CommonCodeVO> scdStsList = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmStsList = this.commonCodeService.getAllCommonCodeListByPId("600");
@@ -179,8 +183,10 @@ public class RequirementController {
 			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
 		} else {// 관리자라면
 		}
+//		projectList.setProjectList(
+//				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
 		projectList.setProjectList(
-				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+				projectList.getProjectList().stream().toList());
 		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");

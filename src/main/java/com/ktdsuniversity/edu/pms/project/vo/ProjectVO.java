@@ -16,11 +16,11 @@ public class ProjectVO {
     private String strtDt;
     private String endDt;
     private String delYn;
-    private String reqYn;
-    private String isYn;
-    private String knlYn;
-    private String qaYn;
-    private String outYn;
+//    private String reqYn;
+//    private String isYn;
+//    private String knlYn;
+//    private String qaYn;
+//    private String outYn;
     private String crtrId;
     private String crtDt;
     private String mdfId;
@@ -140,45 +140,45 @@ public class ProjectVO {
         this.delYn = delYn;
     }
 
-    public String getReqYn() {
-        return reqYn;
-    }
-
-    public void setReqYn(String reqYn) {
-        this.reqYn = reqYn;
-    }
-
-    public String getIsYn() {
-        return isYn;
-    }
-
-    public void setIsYn(String isYn) {
-        this.isYn = isYn;
-    }
-
-    public String getKnlYn() {
-        return knlYn;
-    }
-
-    public void setKnlYn(String knlYn) {
-        this.knlYn = knlYn;
-    }
-
-    public String getQaYn() {
-        return qaYn;
-    }
-
-    public void setQaYn(String qaYn) {
-        this.qaYn = qaYn;
-    }
-
-    public String getOutYn() {
-        return outYn;
-    }
-
-    public void setOutYn(String outYn) {
-        this.outYn = outYn;
-    }
+//    public String getReqYn() {
+//        return reqYn;
+//    }
+//
+//    public void setReqYn(String reqYn) {
+//        this.reqYn = reqYn;
+//    }
+//
+//    public String getIsYn() {
+//        return isYn;
+//    }
+//
+//    public void setIsYn(String isYn) {
+//        this.isYn = isYn;
+//    }
+//
+//    public String getKnlYn() {
+//        return knlYn;
+//    }
+//
+//    public void setKnlYn(String knlYn) {
+//        this.knlYn = knlYn;
+//    }
+//
+//    public String getQaYn() {
+//        return qaYn;
+//    }
+//
+//    public void setQaYn(String qaYn) {
+//        this.qaYn = qaYn;
+//    }
+//
+//    public String getOutYn() {
+//        return outYn;
+//    }
+//
+//    public void setOutYn(String outYn) {
+//        this.outYn = outYn;
+//    }
 
     public String getCrtrId() {
         return crtrId;
