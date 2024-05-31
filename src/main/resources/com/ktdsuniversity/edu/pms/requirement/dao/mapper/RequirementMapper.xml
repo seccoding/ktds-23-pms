@@ -27,7 +27,6 @@
 		javaType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
 			<id column="PRJ_ID" property="prjId" />
 			<result column="PRJ_NAME" property="prjName" />
-			<result column="REQ_YN" property="reqYn" />
 			<result column="IS_YN" property="isYn" />
 			<result column="KNL_YN" property="knlYn" />
 			<result column="QA_YN" property="qaYn" />
@@ -91,8 +90,7 @@
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID 
-	 WHERE	R.DEL_YN = 'N'	
-	   AND	P.REQ_YN= 'Y'
+	 WHERE	R.DEL_YN = 'N'
 	 <choose>
 		  <when test='prjId != null and prjId!= ""'>
 		   AND R.PRJ_ID = #{prjId}
@@ -153,8 +151,7 @@
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID  	
-	 WHERE	R.DEL_YN = 'N'	
-	   AND	P.REQ_YN= 'Y'
+	 WHERE	R.DEL_YN = 'N'
 	 ORDER	BY  R.RQM_ID DESC
 	</select>
 	
@@ -194,8 +191,7 @@
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID   	
-	 WHERE	R.DEL_YN = 'N'	
-	   AND	P.REQ_YN= 'Y'
+	 WHERE	R.DEL_YN = 'N'
 	   AND 	P.PRJ_ID = #{_parameter}
 	 ORDER	BY  R.RQM_ID DESC
 	</select>
@@ -247,8 +243,7 @@
 	    ON  R.CRTR_ID	= CRTR.EMP_ID
 	  LEFT  JOIN	EMPLOYEE MDFR
 	    ON  R.MDFR_ID	= MDFR.EMP_ID 
-	 WHERE	R.DEL_YN = 'N'	
-	   AND	P.REQ_YN= 'Y'
+	 WHERE	R.DEL_YN = 'N'
 	 <choose>
 		  <when test='prjId != null and prjId!= ""'>
 		   AND R.PRJ_ID = #{prjId}
@@ -318,7 +313,6 @@ SELECT  R.RQM_ID
   LEFT  JOIN	EMPLOYEE MDFR
     ON  R.MDFR_ID	= MDFR.EMP_ID   
  WHERE	R.RQM_ID = #{_PARAMETER}
-   AND	P.REQ_YN= 'Y'
    AND  R.DEL_YN = 'N'
 	</select>
 	
