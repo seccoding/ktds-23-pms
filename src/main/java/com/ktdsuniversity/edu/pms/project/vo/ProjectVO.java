@@ -32,6 +32,7 @@ public class ProjectVO {
 
     private CommonCodeVO prjStsCode;
     private DepartmentVO deptVO;
+    private ClientVO clientVO;
 
     private ProjectTeammateVO pm;
     private int totalRequireCnt;
@@ -40,7 +41,15 @@ public class ProjectVO {
 	private List<ProjectTeammateVO> projectTeammateList;
     private List<RequirementVO> projectRequirementsList;
     
-    public int getTotalRequireCnt() {
+    public ClientVO getClientVO() {
+		return clientVO;
+	}
+
+	public void setClientVO(ClientVO clientVO) {
+		this.clientVO = clientVO;
+	}
+
+	public int getTotalRequireCnt() {
 		return totalRequireCnt;
 	}
 
