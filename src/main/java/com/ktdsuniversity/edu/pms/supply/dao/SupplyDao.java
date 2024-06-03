@@ -17,4 +17,6 @@ public interface SupplyDao {
 
 	public int registerNewSupply(SupplyVO supplyVO);
 
+	public int updateOneSupply(SupplyVO supplyVO);
+
 }
