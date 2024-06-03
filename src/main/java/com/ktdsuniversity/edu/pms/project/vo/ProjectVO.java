@@ -30,6 +30,39 @@ public class ProjectVO {
     private String srvEndDate;
     private String prjMemo;
 
+    private CommonCodeVO prjStsCode;
+    private DepartmentVO deptVO;
+
+    private ProjectTeammateVO pm;
+    private int totalRequireCnt;
+    private int requireCnt;
+
+	private List<ProjectTeammateVO> projectTeammateList;
+    private List<RequirementVO> projectRequirementsList;
+    
+    public int getTotalRequireCnt() {
+		return totalRequireCnt;
+	}
+
+	public void setTotalRequireCnt(int totalRequireCnt) {
+		this.totalRequireCnt = totalRequireCnt;
+	}
+
+	public int getRequireCnt() {
+		return requireCnt;
+	}
+
+	public void setRequireCnt(int requireCnt) {
+		this.requireCnt = requireCnt;
+	}
+    
+    public ProjectTeammateVO getPm() {
+    	return pm;
+    }
+    
+    public void setPm(ProjectTeammateVO pm) {
+    	this.pm = pm;
+    }
     public String getPrjMemo() {
 		return prjMemo;
 	}
@@ -62,11 +95,7 @@ public class ProjectVO {
 		this.srvEndDate = srvEndDate;
 	}
 
-	private CommonCodeVO prjStsCode;
-    private DepartmentVO deptVO;
-
-    private List<ProjectTeammateVO> projectTeammateList;
-    private List<RequirementVO> projectRequirementsList;
+	
 
     public List<RequirementVO> getProjectRequirementsList() {
 		return projectRequirementsList;
