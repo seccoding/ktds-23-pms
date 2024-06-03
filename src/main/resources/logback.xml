@@ -11,11 +11,11 @@
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>C:/logs/pms.log</file>
+		<file>/usr/local/src/tomcat10/logs/pms.log</file>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>C:/logs/pms.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>/usr/local/src/tomcat10/logs/pms.%d{yyyy-MM-dd}.log</fileNamePattern>
 		</rollingPolicy>
 
 		<encoder>
