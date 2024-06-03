@@ -216,49 +216,48 @@
             parameterType="String"
             resultMap="projectTeamListMap">
         SELECT P.PRJ_ID
-        , P.PRJ_NAME
-        , P.CLNT_INFO
-        , P.DEPT_ID
-        , P.PRJ_STS
-        , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') STRT_DT
-        , TO_CHAR(P.END_DT, 'YYYY-MM-DD') END_DT
-        , P.DEL_YN
-        , P.CRTR_ID
-        , P.CRT_DT
-        , P.MDFR_ID
-        , P.MDF_DT
-        , C.CMCD_NAME
-        , D.DEPT_NAME
-        , PT."ROLE"
-        , PT.TM_ID
-        , E.EMP_NAME
-        , P.PRJ_MEMO
-        FROM (SELECT PRJ_ID
-        , PRJ_NAME
-        , CLNT_INFO
-        , DEPT_ID
-        , PRJ_STS
-        , STRT_DT
-        , END_DT
-        , DEL_YN
-        , CRTR_ID
-        , CRT_DT
-        , MDFR_ID
-        , MDF_DT
-        , PRJ_MEMO
-        FROM PROJECT
-        WHERE PRJ_ID = #{_parameter}
-        ) P
-        INNER JOIN DEPARTMENT D
-        ON P.DEPT_ID = D.DEPT_ID
-        INNER JOIN COMMON_CODE C
-        ON P.PRJ_STS = C.CMCD_ID
-        INNER JOIN PROJECT_TEAMMATE PT
-        ON P.PRJ_ID = PT.PRJ_ID
-        INNER JOIN EMPLOYEE E
-        ON PT.TM_ID = E.EMP_ID
-        WHERE P.DEL_YN = 'N'
-        AND PT.DEL_YN = 'N'
+             , P.PRJ_NAME
+             , P.CLNT_INFO
+             , P.DEPT_ID
+             , P.PRJ_STS
+             , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') STRT_DT
+             , TO_CHAR(P.END_DT, 'YYYY-MM-DD') END_DT
+             , P.DEL_YN
+             , P.CRTR_ID
+             , P.CRT_DT
+             , P.MDFR_ID
+             , P.MDF_DT
+             , C.CMCD_NAME
+             , D.DEPT_NAME
+             , PT."ROLE"
+             , PT.TM_ID
+             , E.EMP_NAME
+             , P.PRJ_MEMO
+          FROM (SELECT PRJ_ID
+             , PRJ_NAME
+             , CLNT_INFO
+             , DEPT_ID
+             , PRJ_STS
+             , STRT_DT
+             , END_DT
+             , DEL_YN
+             , CRTR_ID
+             , CRT_DT
+             , MDFR_ID
+             , MDF_DT
+             , PRJ_MEMO
+          FROM PROJECT
+         WHERE PRJ_ID = #{_parameter}) P
+         INNER JOIN DEPARTMENT D
+            ON P.DEPT_ID = D.DEPT_ID
+         INNER JOIN COMMON_CODE C
+            ON P.PRJ_STS = C.CMCD_ID
+         INNER JOIN PROJECT_TEAMMATE PT
+            ON P.PRJ_ID = PT.PRJ_ID
+         INNER JOIN EMPLOYEE E
+            ON PT.TM_ID = E.EMP_ID
+         WHERE P.DEL_YN = 'N'
+           AND PT.DEL_YN = 'N'
     </select>
 
     <insert id="insertNewProject"
@@ -283,7 +282,6 @@
         TO_DATE(#{strtDt}, 'YYYY-MM-DD'),
         TO_DATE(#{endDt}, 'YYYY-MM-DD'),
         'N',
-        #{outYn},
         #{crtrId})
     </insert>
 
