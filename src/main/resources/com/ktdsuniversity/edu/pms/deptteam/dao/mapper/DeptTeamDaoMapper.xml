@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.deptteam.dao.DeptTeamDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.deptteam.vo.DepartmentVO" id="deptTeamVOMap" autoMapping="true">
+		<id column="DEPT_ID" property="deptId"/>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="DEPT_ID" property="deptId" />
+			<result column="E_EMP_NAME"	property="empName" />		 
+		</association>
+		<association property="teamVO"
+					 javaType="com.ktdsuniversity.edu.pms.deptteam.vo.TeamVO">
+			<id column="DEPT_ID" property="deptId" />
+			<result column="T_TM_NAME"	property="tmName" />		 
+		</association>
+		<association property="jobVO"
+					 javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
+			<id column="JOB_ID" property="jobId" />
+			<result column="J_JOB_NAME"	property="jobName" />		 
+		</association>
+		<association property="commonCodeVO"
+					 javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
+			<id column="CMCD_ID" property="cmcdId" />
+			<result column="C_CMCD_NAME"	property="cmcdName" />		 
+		</association>
+	</resultMap>
+
+	<select id="getDepartmentCount" resultType="_int">
+		SELECT COUNT(1)
+		  FROM DEPARTMENT
+	</select>
+
+	<select id="getAllDepartment" resultMap="deptTeamVOMap">
+		 SELECT DEPT_ID
+		 	  , DEPT_NAME 
+		 	  , TO_CHAR(DEPT_CR_DT, 'YYYY-MM-DD') DEPT_CR_DT
+		 	  , DEPT_LEAD_ID 
+		   FROM DEPARTMENT
+		  WHERE DEL_YN = 'N'
+	</select>
+	
+	<insert id="createNewDepartment"
+			parameterType="com.ktdsuniversity.edu.pms.deptteam.vo.DepartmentVO">
+		INSERT INTO DEPARTMENT (
+			   DEPT_ID
+			 , DEPT_NAME
+			 , DEPT_CR_DT
+			 , DEL_YN
+			 , DEPT_LEAD_ID)
+			VALUES (
+			   'DEPT_' || TO_CHAR(SYSDATE, 'YYMMDD')|| '_' ||LPAD(SEQ_DEPT_PK.NEXTVAL,6,0)
+			 , #{deptName}
+			 , SYSDATE
+			 , 'N'
+			 , #{deptLeadId})
+	</insert>
+	
+	<update id="deleteOneDepartment"
+			parameterType="string">
+		UPDATE DEPARTMENT
+		   SET DEL_YN = 'Y'
+		 WHERE DEPT_ID = #{_parameter}
+	</update>
+	
+	<update id="updateOneDepartment"
+			parameterType="com.ktdsuniversity.edu.pms.deptteam.vo.DepartmentVO">
+		UPDATE DEPARTMENT
+		   SET DEPT_NAME = #{deptName}
+		     , DEPT_LEAD_ID	= #{deptLeadId}
+		 WHERE DEPT_ID = #{deptId}
+	</update>
+	
+	<select id="getOnlyDepartment"
+	        resultType="com.ktdsuniversity.edu.pms.deptteam.vo.DepartmentVO">
+		SELECT DEPT_ID
+			 , DEPT_NAME
+		  FROM DEPARTMENT
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="getOneDepartment"
+			parameterType="string"
+	        resultType="com.ktdsuniversity.edu.pms.deptteam.vo.DepartmentVO">
+		SELECT DEPT_ID
+			 , DEPT_NAME
+			 , DEPT_CR_DT 
+			 , DEPT_LEAD_ID
+		  FROM DEPARTMENT
+		 WHERE DEPT_ID = #{_parameter}
+	</select>
+	<select id="getDepartmentNameById"
+			parameterType="string"
+			resultType="string">
+		SELECT DEPT_NAME
+		  FROM DEPARTMENT
+		 WHERE DEPT_ID = #{_parameter}		
+	</select>
+	
+	<select id="getDepartment" parameterType="string" resultType="int">
+		SELECT COUNT(*) AS dept_lead_count
+			FROM (
+			    SELECT DISTINCT DEPT_LEAD_ID
+			    FROM PMS.DEPARTMENT
+			    WHERE DEPT_LEAD_ID =#{_parameter}
+			) dept_lead,
+			(
+			    SELECT COUNT(*) AS tm_lead_count
+			    FROM (
+			        SELECT DISTINCT TM_LEAD_ID
+			        FROM PMS.TEAM
+			        WHERE TM_LEAD_ID =#{_parameter}
+			    ) tm_lead
+			)
+	</select>
+	
+	<select id="getOnlypstnid" parameterType="string" resultType="string">
+		SELECT PSTN_ID 
+			FROM EMPLOYEE 
+			WHERE EMP_ID  =#{_parameter}
+	</select>
+	
+
+	<select id="getEmpByDeptId" parameterType="string" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT EMP_ID
+			 , EMP_NAME
+		  FROM EMPLOYEE
+		 WHERE DEPT_ID = #{_parameter}
+		   AND WORK_STS != '204'
+	</select>
+	
+	<select id="getDeptIdByName" parameterType="string">
+		SELECT DEPT_ID 
+		  FROM DEPARTMENT
+		 WHERE DEPT_NAME = #{_parameter}
+		   AND DEL_YN = 'N'
+	</select>
+
+
+</mapper>

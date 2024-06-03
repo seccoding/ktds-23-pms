@@ -51,6 +51,7 @@ public class DepartmentController {
 		model.addAttribute("empList", empList);
 		return "department/departmentlist";
 	}
+	
 	@GetMapping("/department/create")
 	public String viewCreateNewDepartmentPage() {
 		return "department/departmentcreate";
