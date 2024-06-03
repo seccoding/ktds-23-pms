@@ -99,7 +99,6 @@
 		ON O.CRTR_ID = EMP.EMP_ID
 	   
 		WHERE O.DEL_YN='N'
-		AND P.OUT_YN='Y'
 		<choose>
 			<when test='prjId != null and prjId!= ""'>
 				AND O.PRJ_ID = #{prjId}
@@ -146,7 +145,6 @@
 		JOIN EMPLOYEE EMP
 		ON O.CRTR_ID = EMP.EMP_ID
 		WHERE O.DEL_YN='N'
-		AND P.OUT_YN='Y'
 		<choose>
 			<when test='prjId != null and prjId!= ""'>
 				AND O.PRJ_ID = #{prjId}
