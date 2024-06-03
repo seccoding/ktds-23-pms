@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.beans.security;
 import java.time.LocalDate;
 import java.util.Collection;
 
+import org.apache.ibatis.annotations.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,6 +66,13 @@ public class SecurityUser implements UserDetails {
 			return false;
 		}
 		return true;
+	}
+	
+	public String isAccountNonLockedCode(){
+		if(!this.isAccountNonLocked()) {// 휴직 or 퇴직 사원인경우
+			return this.employeeVO.getWorkSts();
+		}
+		return null;
 	}
 	
 //	비밀번호 유효기간 만료여부

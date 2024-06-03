@@ -14,6 +14,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdAndPwdIsNotMatchException;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
 import com.ktdsuniversity.edu.pms.exceptions.LimitLoginException;
+import com.ktdsuniversity.edu.pms.login.dao.CommuteDao;
 import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.login.vo.LoginLogListVO;
@@ -31,6 +32,9 @@ public class LoginLogServiceImpl implements LoginLogService {
 	 */
 	@Autowired
 	private LoginLogDao loginLogDao;
+	
+	@Autowired
+	private CommuteDao commuteDao;
 
 	@Autowired
 	private SHA sha;
@@ -230,6 +234,29 @@ public class LoginLogServiceImpl implements LoginLogService {
 			return true;
 		}else {
 			return false;
+		}
+	}
+
+	@Override
+	@Transactional
+	public boolean insertLoginProcess(String empId, boolean isLoginTrtReset)  {
+		if(! isLoginTrtReset) { //비밀번호가 틀려서 로그인 시도횟수를 증가시킬때 
+			this.loginLogDao.updateOneEmpLgnTryPlusOne(empId);
+			return true;
+		}else {//로그인 성공시 로그인 시도횟수 초기화
+			this.loginLogDao.updateOneEmpLgnTryZero(empId);
+			
+//			로그인 기록 db에 저장
+			LoginLogVO loginLogVO = new LoginLogVO();
+			loginLogVO.setEmpId(empId);
+			this.loginLogDao.insertLoginLog(loginLogVO);
+			
+			boolean isCommute = this.commuteDao.getOneCommuteDataByEmpIdToday(empId)== null? false:true;
+			if(!isCommute) /*출근기록이 없다면 출근기록 넣기*/{
+				this.commuteDao.insertCommuteIn(empId);
+			}
+			
+			return true;
 		}
 	}
 
