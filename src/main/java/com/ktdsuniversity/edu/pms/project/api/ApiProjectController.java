@@ -83,10 +83,12 @@ public class ApiProjectController {
 	        ProjectVO projectVO = projectService.getOneProject(prjId);
 	        int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
 	         // 요구사항 리스트 가져오기
+	        List<RequirementVO> totalRequirementsList = requirementService.getAllRequirement(prjId).stream().toList();
 	        List<RequirementVO> projectRequirementsList = requirementService.getAllRequirement(prjId).stream().
-	                filter(requirement -> !requirement.getRqmSts().equals("605"))
-	                .toList();
-	        projectVO.setProjectRequirementsList(projectRequirementsList);
+	        		filter(requirement -> !requirement.getRqmSts().equals("605"))
+	        		.toList();
+	        projectVO.setTotalRequireCnt(totalRequirementsList.size());
+	        projectVO.setRequireCnt(projectRequirementsList.size());
 	        
 	        // 사원 검증 로직, 관리자인지, 프로젝트의 팀에 해당되는 사람인지 확인해야한다. 권한 없으므로 예외
 	        boolean isTeammate = projectVO.getProjectTeammateList().stream()
@@ -102,6 +104,8 @@ public class ApiProjectController {
 	                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
 	                .findFirst();
 	        if (pmOptional.isPresent()) {
+	        	ProjectTeammateVO pm = pmOptional.get();
+	        	projectVO.setPm(pm);
 	        	return ApiResponse.Ok(projectVO, projectTeammateCount);
 	        } else {
 	        	errorMessages.add("존재하지 않는 프로젝트입니다.");
