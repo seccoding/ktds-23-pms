@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.approval.dao.SendMemoDao">
+
+    <resultMap id="sendMemoVOMap" type="com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO" autoMapping="true">
+        <id column="SEND_MEMO_ID" property="sendMemoId" />
+        <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="EMP_ID" property="empId" />
+            <result column="EMP_NAME" property="empName" />
+            <result column="EMAIL" property="email" />
+        </association>
+        <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+            <id column="DEPT_ID" property="deptId" />
+            <result column="DEPT_NAME" property="deptName" />
+        </association>
+<!--        <association property="TeamVO" javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">-->
+<!--            <id column="TM_ID" property="tmId" />-->
+<!--            <result column="TM_NAME" property="tmName" />-->
+<!--        </association>-->
+    </resultMap>
+
+    <resultMap id="sendMemoDetailVOMap" type="com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO" autoMapping="true">
+        <id column="SEND_MEMO_ID" property="sendMemoId" />
+        <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="EMP_ID" property="empId" />
+            <result column="EMP_NAME" property="empName" />
+            <result column="EMAIL" property="email" />
+        </association>
+        <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+            <id column="DEPT_ID" property="deptId" />
+            <result column="DEPT_NAME" property="deptName" />
+        </association>
+<!--        <association property="TeamVO" javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">-->
+<!--            <id column="TM_ID" property="tmId" />-->
+<!--            <result column="TM_NAME" property="tmName" />-->
+<!--        </association>-->
+        <collection property="ReceiveMemoVOList" ofType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO" javaType="ArrayList">
+            <id column="RCV_MEMO_ID" property="rcvMemoId" />
+            <result column="RCV_ID" property="rcvId" />
+            <result column="RCV_CODE" property="rcvCode"/>
+            <result column="RCV_DATE" property="rcvDate"/>
+            <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+                <id column="EMP_ID" property="empId" />
+                <result column="EMP_NAME" property="empName" />
+                <result column="EMAIL" property="email" />
+            </association>
+            <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+                <id column="DEPT_ID" property="deptId" />
+                <result column="DEPT_NAME" property="deptName" />
+            </association>
+<!--            <association property="TeamVO" javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">-->
+<!--                <id column="TM_ID" property="tmId" />-->
+<!--                <result column="TM_NAME" property="tmName" />-->
+<!--            </association>-->
+        </collection>
+    </resultMap>
+
+    <insert id="insertNewSendMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO">
+        INSERT INTO SEND_MEMO
+             ( SEND_MEMO_ID
+             , SEND_ID
+             , MEMO_TTL
+             , MEMO_CNTNT
+             , FILE_NAME
+             , ORIGIN_FILE_NAME
+             , SEND_DATE
+             , SEND_SAVE_YN
+             , SEND_DEL_YN
+             , SEND_STS_CODE)
+        VALUES
+             ( #{sendMemoId}
+             , #{sendId}
+             , #{memoTtl}
+             , #{memoCntnt}
+             , #{fileName}
+             , #{originFileName}
+             , SYSDATE
+             , 'N'
+             , 'N'
+             , '1501')
+    </insert>
+
+    <select id="selectSendMemoId" resultType="string">
+        SELECT 'SEND_MM_' || TO_CHAR(SYSDATE, 'YYMMDD')
+               || '_' || LPAD(SEQ_SEND_MEMO_PK.NEXTVAL, 6, '0')
+          FROM DUAL
+    </select>
+
+    <select id="searchAllSendMemoCount" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultType="_int" >
+        SELECT COUNT(1)
+          FROM SEND_MEMO SM
+         INNER JOIN EMPLOYEE E
+            ON SM.SEND_ID = E.EMP_ID
+         INNER JOIN DEPARTMENT D
+            ON D.DEPT_ID = E.DEPT_ID
+        <!--         INNER JOIN TEAM T-->
+        <!--            ON T.TM_ID = E.TM_ID-->
+    <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+         WHERE SM.SEND_ID = #{employeeVO.empId}
+    </if>
+           AND SM.SEND_DEL_YN = 'N'
+    </select>
+
+    <select id="searchAllSendMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultMap="sendMemoVOMap" >
+    <include refid="Common.pagenate_header"/>
+        SELECT E.EMP_ID
+             , E.EMP_NAME
+             , E.EMAIL
+             , D.DEPT_NAME
+<!--             , T.TM_NAME-->
+             , SM.SEND_ID
+             , SM.MEMO_TTL
+             , SM.MEMO_CNTNT
+             , SM.FILE_NAME
+             , SM.ORIGIN_FILE_NAME
+             , SM.SEND_DATE
+             , SM.SEND_SAVE_YN
+             , SM.SEND_DEL_YN
+             , SM.SEND_STS_CODE
+          FROM SEND_MEMO SM
+         INNER JOIN EMPLOYEE E
+            ON SM.SEND_ID = E.EMP_ID
+         INNER JOIN DEPARTMENT D
+            ON D.DEPT_ID = E.DEPT_ID
+<!--         INNER JOIN TEAM T-->
+<!--            ON T.TM_ID = E.TM_ID-->
+    <if test='employeeVO.empId != null and employeeVO.empId != ""'>
+            WHERE SM.SEND_ID = #{employeeVO.empId}
+    </if>
+           AND SM.SEND_DEL_YN = 'N'
+         ORDER BY SM.SEND_DATE DESC
+    <include refid="Common.pagenate_footer"/>
+    </select>
+
+    <select id="selectOneSendMemo" parameterType="string" resultMap="sendMemoDetailVOMap">
+        SELECT SM.SEND_ID
+             , SM.MEMO_TTL
+             , SM.MEMO_CNTNT
+             , SM.ORIGIN_FILE_NAME
+             , SM.SEND_DATE
+             , SM.SEND_SAVE_YN
+             , SM.SEND_DEL_YN
+             , SM.SEND_STS_CODE
+             , E.EMP_NAME
+             , E.EMAIL
+             , D.DEPT_NAME
+             , RM.RCV_CODE
+             , RM.RCV_DATE
+             , RM.RCV_ID
+             , RCVE.EMP_NAME
+         , RCVE.EMAIL
+             , RCVD.DEPT_NAME
+          FROM SEND_MEMO SM
+         INNER JOIN EMPLOYEE E
+            ON SM.SEND_ID = E.EMP_ID
+         INNER JOIN DEPARTMENT D
+            ON D.DEPT_ID = E.DEPT_ID
+         INNER JOIN RECEIVE_MEMO RM
+            ON RM.SEND_MEMO_ID = SM.SEND_MEMO_ID
+         INNER JOIN EMPLOYEE RCVE
+            ON RCVE.EMP_ID = RM.RCV_ID
+         INNER JOIN DEPARTMENT RCVD
+            ON RCVE.DEPT_ID = RCVD.DEPT_ID
+         WHERE SM.SEND_MEMO_ID = #{_parameter}
+           AND SM.SEND_DEL_YN = 'N'
+    </select>
+
+    <update id="updateSaveOneSendMemo" parameterType="string">
+        UPDATE SEND_MEMO
+        SET SEND_SAVE_YN = 'Y'
+        WHERE SEND_MEMO_ID = #{_parameter}
+    </update>
+
+    <update id="updateSendStatus" parameterType="string">
+        UPDATE SEND_MEMO
+           SET SEND_STS_CODE = '1502'
+         WHERE SEND_MEMO_ID = #{_parameter}
+    </update>
+
+    <update id="deleteOneSendMemo" parameterType="string">
+        UPDATE SEND_MEMO
+           SET SEND_DEL_YN = 'Y'
+         WHERE SEND_MEMO_ID = #{_parameter}
+    </update>
+</mapper>
