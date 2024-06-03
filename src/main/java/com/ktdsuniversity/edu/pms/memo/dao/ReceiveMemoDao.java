@@ -17,7 +17,7 @@ public interface ReceiveMemoDao {
     /**
      * 수신 메모 목록(정보) 조회
      */
-    public List<ReceiveMemoVO> searchAllReciveMemo(SearchMemoVO searchMemoVO);
+    public List<ReceiveMemoVO> searchAllReceiveMemo(SearchMemoVO searchMemoVO);
 
     /**
      * 쪽지 수신

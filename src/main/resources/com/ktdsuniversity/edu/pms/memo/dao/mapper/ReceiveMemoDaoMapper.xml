@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ktdsuniversity.edu.pms.approval.dao.ReceiveMemoDao">
+<mapper namespace="com.ktdsuniversity.edu.pms.memo.dao.ReceiveMemoDao">
 
     <resultMap id="receiveMemoVOMap" type="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO" autoMapping="true">
         <id column="RCV_MEMO_ID" property="rcvMemoId" />
@@ -19,7 +19,7 @@
             <result column="EMP_NAME" property="empName" />
             <result column="EMAIL" property="email" />
         </association>
-        <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+        <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
             <id column="DEPT_ID" property="deptId" />
             <result column="DEPT_NAME" property="deptName" />
         </association>
@@ -53,7 +53,7 @@
         ) RCV
     </insert>
 
-    <select id="searchAllReceiveMemoCount" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultType="_int">
+    <select id="searchMemoAllCount" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultType="_int">
         SELECT COUNT(1)
           FROM RECEIVE_MEMO RM
          INNER JOIN EMPLOYEE E
@@ -64,19 +64,15 @@
             ON D.DEPT_ID = E.DEPT_ID
         <!--         INNER JOIN TEAM T-->
         <!--            ON T.TM_ID = E.TM_ID-->
-    <if test='employeeVO.empId != null and employeeVO.empId != ""'>
-         WHERE RM.RCV_ID = #{employeeVO.empId}
-    </if>
+         WHERE RM.RCV_ID = #{empId}
            AND RM.RCV_DEL_YN = 'N'
     </select>
 
     <select id="searchAllReceiveMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultMap="receiveMemoVOMap">
-    <include refid="Common.pagenate_header"/>
         SELECT E.EMP_ID
              , E.EMP_NAME
              , E.EMAIL
              , D.DEPT_NAME
-<!--        	 , T.TM_NAME-->
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.FILE_NAME
@@ -97,18 +93,14 @@
             ON SM.SEND_MEMO_ID = RM.SEND_MEMO_ID
          INNER JOIN DEPARTMENT D
             ON D.DEPT_ID = E.DEPT_ID
-<!--         INNER JOIN TEAM T-->
-<!--            ON T.TM_ID = E.TM_ID-->
-    <if test='employeeVO.empId != null and employeeVO.empId != ""'>
-         WHERE RM.RCV_ID = #{employeeVO.empId}
-    </if>
+         WHERE RM.RCV_ID = #{empId}
            AND RM.RCV_DEL_YN = 'N'
          ORDER BY SM.SEND_DATE DESC
-    <include refid="Common.pagenate_footer"/>
     </select>
 
     <select id="selectOneReceiveMemo" parameterType="string" resultMap="receiveMemoVOMap">
         SELECT RM.RCV_MEMO_ID
+        	 , RM.SEND_MEMO_ID
              , RM.RCV_ID
              , RM.RCV_CODE
              , RM.RCV_DATE
@@ -121,6 +113,7 @@
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.ORIGIN_FILE_NAME
+             , SM.SEND_DATE
              , SEND_E.EMP_NAME
              , SEND_E.EMAIL
              , SEND_D.DEPT_NAME

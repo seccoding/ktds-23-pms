@@ -24,8 +24,8 @@ public class ReceiveMemoDaoImpl extends SqlSessionDaoSupport implements ReceiveM
     }
 
     @Override
-    public List<ReceiveMemoVO> searchAllReciveMemo(SearchMemoVO searchMemoVO) {
-        return getSqlSession().selectList(ReceiveMemoDao.NAME_SPACE + ".searchAllReciveMemo", searchMemoVO);
+    public List<ReceiveMemoVO> searchAllReceiveMemo(SearchMemoVO searchMemoVO) {
+        return getSqlSession().selectList(ReceiveMemoDao.NAME_SPACE + ".searchAllReceiveMemo", searchMemoVO);
     }
 
     @Override
