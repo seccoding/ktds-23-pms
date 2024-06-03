@@ -34,6 +34,13 @@
             <id column="DEPT_ID" property="deptId"/>
             <result column="DEPT_NAME" property="deptName"/>
         </association>
+        <association property="clientVO"
+                     javaType="com.ktdsuniversity.edu.pms.project.vo.ClientVO">
+            <id column="CLNT_ID" property="clntId"/>
+            <result column="CLNT_NAME" property="clntName"/>
+            <result column="CNTCN" property="cntct"/>
+            <result column="INFO" property="info"/>
+        </association>
         <collection property="projectTeammateList"
                     ofType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO"
                     column="PRJ_ID">
@@ -233,6 +240,9 @@
              , PT.TM_ID
              , E.EMP_NAME
              , P.PRJ_MEMO
+             , CL.CLNT_NAME
+             , CL.CNTCT
+             , CL.INFO
           FROM (SELECT PRJ_ID
              , PRJ_NAME
              , CLNT_INFO
@@ -256,6 +266,8 @@
             ON P.PRJ_ID = PT.PRJ_ID
          INNER JOIN EMPLOYEE E
             ON PT.TM_ID = E.EMP_ID
+         INNER JOIN CLIENT CL
+            ON CL.CLNT_ID = P.CLNT_INFO
          WHERE P.DEL_YN = 'N'
            AND PT.DEL_YN = 'N'
     </select>
