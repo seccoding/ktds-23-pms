@@ -132,4 +132,6 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
         return getSqlSession().selectOne(LoginLogDao.LOGIN_SPACE + ".getCommutFnshCount", empId);
     }
 
+	
+
 }

@@ -39,7 +39,11 @@ public interface LoginLogDao {
 	public int updateOneEmpLgnTryZero(String empId);
 
 	public int getOneEmpLgnTryCount(String empId);
-
+	/**
+	 * LoginLogVO 값을 받아와서 로그인 로그를 DB에 저장한다
+	 * @param loginLogVO
+	 * @return LoginLog가 성공한 갯수
+	 */
 	public int insertLoginLog(LoginLogVO loginLogVO);
 
 	public EmployeeVO updateEmpLog(EmployeeVO employee);
@@ -81,4 +85,6 @@ public interface LoginLogDao {
 	public int updatePwdDtThirtyDay(String empId);
 
 	public int getCommutFnshCount(String empId);
+
+	
 }

@@ -93,4 +93,34 @@
 			 ORDER BY C.CMMT_TIME DESC
 	</select>
 	
+	<select id="getOneCommuteDataByEmpIdToday">
+	SELECT C.CMMT_ID
+		 , TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') CMMT_DATE
+		 , TO_CHAR(C.CMMT_TIME, 'HH24:MI:SS') CMMT_TIME
+		 , TO_CHAR(C.FNSH_TIME, 'HH24:MI:SS') FNSH_TIME
+		 , C.EMP_ID
+		 , C.DEL_YN
+	  FROM COMMUTE C
+	 WHERE C.EMP_ID =#{_parameter}
+	   AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<insert id="insertCommuteIn"
+		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		INSERT INTO COMMUTE
+		(CMMT_ID
+		, CMMT_DATE
+		, CMMT_TIME
+		, FNSH_TIME
+		, EMP_ID
+		, DEL_YN)
+		VALUES
+		(SEQ_CMMT_PK.NEXTVAL
+		, SYSDATE
+		, SYSDATE
+		, NULL
+		, #{_parameter}
+		, 'N')
+	</insert>
+	
 </mapper>
