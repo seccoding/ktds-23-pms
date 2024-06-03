@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/memo")
+@RequestMapping("/api/memo")
 public class ApiMemoController {
 
     @Autowired
@@ -150,8 +150,15 @@ public class ApiMemoController {
      * 로그인한 사원의 수신 쪽지 전체 조회
      */
     @GetMapping("/receive")
-    public ApiResponse searchReceiveMemoList(SearchMemoVO searchMemoVO) {
+    public ApiResponse searchReceiveMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
+    	System.out.println("hello >>>>>>>>>");
+    	 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+         searchMemoVO.setEmpId(employeeVO.getEmpId());
         ReceiveMemoListVO receiveMemoListVO = this.receiveMemoService.searchAllReceiveMemo(searchMemoVO);
+        
+        System.out.println(receiveMemoListVO.getReceiveMemoList());
+        
         return ApiResponse.Ok(receiveMemoListVO.getReceiveMemoList(), receiveMemoListVO.getRcvMemoCnt(),
                 searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
     }
@@ -168,7 +175,7 @@ public class ApiMemoController {
     /**
      * 발신 쪽지 ID로 수신 쪽지 전체 조회
      */
-    @GetMapping("/receive/{sendMemoId}")
+    @GetMapping("/receive/sendMemo/{sendMemoId}")
     public ApiResponse searchReceiveMemoListBySendMemoId(@PathVariable String sendMemoId) {
         List<String> receiveMemoList = this.receiveMemoService.searchReceiveMemoListBySendMemoId(sendMemoId);
         return ApiResponse.Ok(receiveMemoList, receiveMemoList == null ? 0 : 1);

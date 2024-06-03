@@ -20,7 +20,7 @@ public class ReceiveMemoServiceImpl implements ReceiveMemoService{
     public ReceiveMemoListVO searchAllReceiveMemo(SearchMemoVO searchMemoVO) {
 
         int receiveMemoCount = this.receiveMemoDao.searchMemoAllCount(searchMemoVO);
-        List<ReceiveMemoVO> receiveMemoList = this.receiveMemoDao.searchAllReciveMemo(searchMemoVO);
+        List<ReceiveMemoVO> receiveMemoList = this.receiveMemoDao.searchAllReceiveMemo(searchMemoVO);
 
         ReceiveMemoListVO receiveMemoListVO = new ReceiveMemoListVO();
         receiveMemoListVO.setRcvMemoCnt(receiveMemoCount);

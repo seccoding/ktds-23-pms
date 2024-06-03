@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.memo.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public class ReceiveMemoVO {
@@ -13,6 +14,8 @@ public class ReceiveMemoVO {
     private String rcvDelYn;
 
     private EmployeeVO employeeVO;
+    private DepartmentVO departmentVO;
+    private SendMemoVO sendMemoVO;
 
     public String getRcvMemoId() {
         return rcvMemoId;
@@ -77,4 +80,21 @@ public class ReceiveMemoVO {
     public void setEmployeeVO(EmployeeVO employeeVO) {
         this.employeeVO = employeeVO;
     }
+
+	public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+
+	public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
+
+	public SendMemoVO getSendMemoVO() {
+		return sendMemoVO;
+	}
+
+	public void setSendMemoVO(SendMemoVO sendMemoVO) {
+		this.sendMemoVO = sendMemoVO;
+	}
+    
 }
