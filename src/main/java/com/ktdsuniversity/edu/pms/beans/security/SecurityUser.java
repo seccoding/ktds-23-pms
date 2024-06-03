@@ -71,7 +71,7 @@ public class SecurityUser implements UserDetails {
 	@Override
 	public boolean isCredentialsNonExpired() {
 		LocalDate pwdCnDt = LocalDate.parse(this.employeeVO.getPwdCnDt());
-		pwdCnDt.plusDays(90);
+		pwdCnDt =pwdCnDt.plusDays(90);
 		LocalDate date = LocalDate.now();
 		
 		return date.isBefore(pwdCnDt) ;
