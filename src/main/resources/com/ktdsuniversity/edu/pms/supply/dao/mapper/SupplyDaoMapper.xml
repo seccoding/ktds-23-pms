@@ -40,6 +40,9 @@
 					 , SPL_IMG
 					 , SPL_DTL
 					 , SPL_REGT_ID
+					 , SPL_MDFR_ID
+					 , SPL_REGT_DT
+					 , SPL_MDF_DT
 					 , REPLACE(SPL_NAME, ' ', '') AS SEARCH_SPL_NAME
 					 , REPLACE(SPL_CTGR, ' ', '') AS SEARCH_SPL_CTGR
 					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
@@ -70,7 +73,10 @@
 			 , SPL_IMG
 			 , SPL_DTL
 			 , SPL_REGT_ID
-		  FROM SUPPLY s 
+			 , SPL_MDFR_ID
+			 , SPL_REGT_DT
+			 , SPL_MDF_DT
+		  FROM SUPPLY
 		 WHERE DEL_YN = 'N'
 		   AND SPL_ID = #{_parameter}
 	</select>
@@ -86,7 +92,10 @@
 		, DEL_YN
 		, SPL_IMG
 		, SPL_DTL
-		, SPL_REGT_ID)
+		, SPL_REGT_ID
+		, SPL_MDFR_ID
+		, SPL_REGT_DT
+		, SPL_MDF_DT)
 		VALUES
 		 ('SPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_PK.NEXTVAL, 6, '0')
 		, #{splName}
@@ -96,7 +105,24 @@
 		, 'N'
 		, #{splImg}
 		, #{splDtl}
-		, #{splRegtId})
+		, #{splRegtId}
+		, NULL
+		, SYSDATE
+		, NULL)
 	</insert>
+
+	<update id="updateOneSupply"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		UPDATE SUPPLY 
+		   SET SPL_NAME = #{splName}
+		     , SPL_CTGR = #{splCtgr}
+		     , SPL_PRICE = #{splPrice}
+		     , INV_QTY = #{invQty}
+		     , SPL_IMG = #{splImg}
+		     , SPL_DTL = #{splDtl}
+		     , SPL_MDFR_ID = #{splMdfrId}
+		     , SPL_MDF_DT = SYSDATE
+		 WHERE SPL_ID = #{_parameter}
+	</update>
 
 </mapper>

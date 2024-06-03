@@ -11,6 +11,9 @@ public class SupplyVO {
 	private String splImg;
 	private String splDtl;
 	private String splRegtId;
+	private String splMdfrId;
+	private String splRegtDt;
+	private String splMdfDt;
 	
 	public String getSplId() {
 		return splId;
@@ -65,5 +68,23 @@ public class SupplyVO {
 	}
 	public void setSplRegtId(String splRegtId) {
 		this.splRegtId = splRegtId;
+	}
+	public String getSplMdfrId() {
+		return splMdfrId;
+	}
+	public void setSplMdfrId(String splMdfrId) {
+		this.splMdfrId = splMdfrId;
+	}
+	public String getSplRegtDt() {
+		return splRegtDt;
+	}
+	public void setSplRegtDt(String splRegtDt) {
+		this.splRegtDt = splRegtDt;
+	}
+	public String getSplMdfDt() {
+		return splMdfDt;
+	}
+	public void setSplMdfDt(String splMdfDt) {
+		this.splMdfDt = splMdfDt;
 	}
 }
