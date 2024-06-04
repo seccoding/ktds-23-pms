@@ -43,6 +43,13 @@ public class SupplyServiceImpl implements SupplyService {
 		
 		return supplyVO;
 	}
+	
+//	@Override
+//	public File getSupplyImage(String splImg) {
+//		File file = fileHandler.getStoredFile(splImg);
+//		
+//		return file;
+//	}
 
 	@Transactional
 	@Override
@@ -51,7 +58,7 @@ public class SupplyServiceImpl implements SupplyService {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			
 			if (storedFile != null) {
-				supplyVO.setSplImg(storedFile.getRealFilePath());
+				supplyVO.setSplImg(storedFile.getRealFileName());
 			}
 		}
 		
@@ -65,6 +72,24 @@ public class SupplyServiceImpl implements SupplyService {
 	public boolean updateOneSupply(SupplyVO supplyVO) {
 		int updatedCount = this.supplyDao.updateOneSupply(supplyVO);
 		return updatedCount > 0;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteOneSupply(SupplyVO supplyVO) {
+		SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyVO.getSplId());
+		
+		if (originalSupplyVO != null) {
+			String storedImage = originalSupplyVO.getSplImg();
+			
+			if (storedImage != null && storedImage.length() > 0) {
+				this.fileHandler.deleteFileByFileName(storedImage);
+			}
+		}
+		
+		int deletedCount = this.supplyDao.deleteOneSupply(supplyVO);
+		
+		return deletedCount > 0;
 	}
 
 }

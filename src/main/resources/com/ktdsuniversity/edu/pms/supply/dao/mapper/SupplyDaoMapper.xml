@@ -122,7 +122,16 @@
 		     , SPL_DTL = #{splDtl}
 		     , SPL_MDFR_ID = #{splMdfrId}
 		     , SPL_MDF_DT = SYSDATE
-		 WHERE SPL_ID = #{_parameter}
+		 WHERE SPL_ID = #{splId}
+	</update>
+	
+	<update id="deleteOneSupply" 
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		UPDATE SUPPLY
+		   SET DEL_YN = 'Y'
+		     , SPL_MDFR_ID = #{splMdfrId}
+		     , SPL_MDF_DT = SYSDATE
+		 WHERE SPL_ID = #{splId}
 	</update>
 
 </mapper>
