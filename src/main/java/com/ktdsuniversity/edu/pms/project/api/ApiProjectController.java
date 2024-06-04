@@ -73,7 +73,8 @@ public class ApiProjectController {
 
 	        ProjectListVO projectListVO = projectService.searchProject(searchProjectVO);
 	        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
-			
+		
+	        
 	        List<Object> dataList = new ArrayList<>();
 			dataList.add(projectCommonCodeList);
 			dataList.add(projectListVO);
@@ -254,5 +255,11 @@ public class ApiProjectController {
 	    	boolean isSuccess = this.clientService.createClient(clientVO);
 	    	return ApiResponse.Ok(isSuccess);
 	    }
+	    
+	    @GetMapping("/employee/findbydeptid/{deptId}")
+		public ApiResponse findEmployeesByDeptId(@PathVariable String deptId, Authentication authentication) {
+			List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
+			return ApiResponse.Ok(employeeListVO);
+		}
 
 }
