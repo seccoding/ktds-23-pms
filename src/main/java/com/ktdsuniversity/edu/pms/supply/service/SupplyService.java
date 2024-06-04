@@ -11,9 +11,13 @@ public interface SupplyService {
 	public SupplyListVO searchAllSupply(SearchSupplyVO searchSupplyVO);
 
 	public SupplyVO getOneSupply(String splId);
+	
+//	public File getSupplyImage(String splImg);
 
 	public boolean registerNewSupply(SupplyVO supplyVO, MultipartFile file);
 
 	public boolean updateOneSupply(SupplyVO supplyVO);
+
+	public boolean deleteOneSupply(SupplyVO supplyVO);
 
 }

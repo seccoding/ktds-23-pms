@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,8 @@ import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -48,12 +51,19 @@ public class ApiSupplyController {
 		return ApiResponse.Ok(supplyVO);
 	}
 	
+//	@GetMapping("/supply/image/{splImg}")
+//	public ApiResponse getSupplyImage(@PathVariable String splImg) {
+//		File file = this.supplyService.getSupplyImage(splImg);
+//		
+//		return ApiResponse.Ok(file);
+//	}
+	
 	@PostMapping("/supply")
 	public ApiResponse doSupplyRegistration(SupplyVO supplyVO, @RequestParam(required = false) MultipartFile file, Authentication authentication) {
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
-		boolean isNotEmptyImage = ValidationUtils.notEmpty(supplyVO.getSplImg());
+		boolean isNotEmptyImage = file != null && !file.isEmpty();
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
 		
 		List<String> errorMessage = null;
@@ -118,6 +128,15 @@ public class ApiSupplyController {
 		boolean isNotEmptyImage = ValidationUtils.notEmpty(supplyVO.getSplImg());
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
 		
+//		Validator<SupplyVO> validator = new Validator<>(supplyVO);
+//		validator
+//		.add("splName", Type.NOT_EMPTY, "제품명을 입력해 주세요.")
+//		.start();
+//		
+//		if(validator.hasErrors()) {
+//			return ApiResponse.BAD_REQUEST(Map.of("error",validator.getErrors()));
+//		}
+		
 		List<String> errorMessage = null;
 		
 		if (!isNotEmptyName) {
@@ -165,6 +184,23 @@ public class ApiSupplyController {
 		boolean isUpdatedSuccess = this.supplyService.updateOneSupply(supplyVO);
 		
 		return ApiResponse.Ok(isUpdatedSuccess);
+	}
+	
+	@DeleteMapping("/supply/{splId}")
+	public ApiResponse deleteSupply(@PathVariable String splId,
+									Authentication authentication) {
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
+		SupplyVO supplyVO = this.supplyService.getOneSupply(splId);
+		
+		// TODO 권한 체크
+		
+		supplyVO.setSplMdfrId(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.supplyService.deleteOneSupply(supplyVO);
+		
+		return ApiResponse.Ok(isSuccess);
 	}
 
 }
