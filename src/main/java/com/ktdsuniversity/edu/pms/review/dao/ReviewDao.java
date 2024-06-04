@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
@@ -79,5 +80,12 @@ public interface ReviewDao {
 	public int searchAdminReviewAllCount(SearchReviewVO searchReviewVO);
 
 	public List<ReviewVO> searchAdminReview(SearchReviewVO searchReviewVO);
+
+	/**
+	 * 리뷰 삭제시 실행되는 수정 메서드
+	 * @param reviewId 수정될 후기의 PK
+	 * @return 성공 여부 int 반환
+	 */
+	public int reviewResultModify(Map<String, Object> modifyParam);
 	
 }

@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,5 +69,13 @@ public interface ReviewService {
 	public boolean reviewViewResultDelete(String id);
 
 	boolean deleteManyReview(List<String> reviewIds);
+
+	/**
+	 * 후기 삭제시 삭제일, 삭제한 관리자 ID 업데이트 메서드
+	 * 
+	 * @param reviewId 수정할 후기의 PK
+	 * @return 후기 수정 성공 여부
+	 */
+	boolean reviewResultModify(Map<String, Object> modifyParam);
 
 }

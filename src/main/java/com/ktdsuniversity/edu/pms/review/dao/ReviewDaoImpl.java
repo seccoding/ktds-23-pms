@@ -1,13 +1,13 @@
 package com.ktdsuniversity.edu.pms.review.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.review.vo.SearchReviewVO;
 
@@ -121,6 +121,15 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	public List<ReviewVO> searchAdminReview(SearchReviewVO searchReviewVO) {
 		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".searchAdminReview", searchReviewVO);
 
+	}
+
+	/**
+	 * 후기 삭제시 실행될 메서드 (삭제일, 삭제한 관리자 ID 업데이트)
+	 */
+	@Override
+	public int reviewResultModify(Map<String, Object> modifyParam) {
+	
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".modifyReview", modifyParam);
 	}
 
 	

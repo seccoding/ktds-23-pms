@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.review.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,6 +156,15 @@ public class ReviewServiceImpl implements ReviewService {
 		int deletedCount = this.reviewDao.deleteManyReview(reviewIds);
 		
 		return deletedCount > 0;
+	}
+
+	// 리뷰 삭제시 실행되는 메서드 (삭제일, 삭제한 관리자 ID 업데이트)
+	@Transactional
+	@Override
+	public boolean reviewResultModify(Map<String, Object> modifyParam) {
+		int modifySuccess = this.reviewDao.reviewResultModify(modifyParam);
+		
+		return modifySuccess > 0;
 	}
 
 	
