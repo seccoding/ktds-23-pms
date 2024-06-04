@@ -17,4 +17,22 @@
 		, #{info}
 		, 'N')
 	</insert>
+	
+	<select id="getAllClient" resultType="com.ktdsuniversity.edu.pms.project.vo.ClientVO">
+		SELECT CLNT_ID
+		     , CLNT_NAME
+		     , CNTCT
+		     , INFO
+		  FROM CLIENT
+		 WHERE DEL_YN = 'N'
+	</select>
+	<select id="getClientOfProject" parameterType="String" resultType="com.ktdsuniversity.edu.pms.project.vo.ClientVO">
+		SELECT CLNT_ID
+		     , CLNT_NAME
+		     , CNTCT
+		     , INFO
+		  FROM CLIENT
+		 WHERE DEL_YN = 'N'
+		   AND CLNT_ID = #{_parameter}
+	</select>
 </mapper>
