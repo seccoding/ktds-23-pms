@@ -10,10 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
@@ -28,6 +30,8 @@ import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
+import com.ktdsuniversity.edu.pms.utils.Validator;
+import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -45,6 +49,8 @@ public class ApiRequirementController {
 	@GetMapping("/requirement/search")
 	public ApiResponse getRequirementList( 
 			RequirementSearchVO requirementSearchVO, Authentication authentication) {
+		
+		// 요구사항 리스트를 불러오는 API
 		
 		System.out.println("@@@@@@@@@@@@@@" + authentication + "@@@@@@@@@@@@@");
 		
@@ -78,6 +84,8 @@ public class ApiRequirementController {
 	public ApiResponse getOneRequirement(Authentication authentication, 
 			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId) {
 		
+		// 1개의 요구사항에 대한 상세정보를 불러오는 API
+		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
@@ -106,6 +114,8 @@ public class ApiRequirementController {
 	
 	@GetMapping("/requirement/write")
 	public ApiResponse getRequirementWritePage(Authentication authentication) {
+		
+		// 요구사항 작성 페이지를 불러오는 API
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
@@ -140,9 +150,57 @@ public class ApiRequirementController {
 	
 	@GetMapping("/requirement/write/{prjId}")
 	public ApiResponse getProjectTeammate(@PathVariable String prjId, Authentication authentication) {
+		
+		// 프로젝트를 선택할 시에 Teammate 정보를 불러오는 API
+		
 		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
 		System.out.println("@@@@@@@@@@@prjTeammateList: " + prjTeammateList);
 //		return new AjaxResponse().append("prjTeammateList", prjTeammateList);
 		return ApiResponse.Ok(prjTeammateList);
+	}
+	
+	
+	@PostMapping("/requirement/write")
+	public ApiResponse createRequirement(Authentication authentication, MultipartFile file, 
+			RequirementVO requirementVO) throws Exception {
+
+		// 입력한 값들을 전송하는 API
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		Map<String, List<String>> error = this.requirementValidator(requirementVO);
+		if (error != null) {
+			return ApiResponse.Ok(error);
+		}
+
+		requirementVO.setCrtrId(employeeVO.getEmpId());
+		boolean isSuccess = this.requirementService.insertOneRequirement(requirementVO, file);
+
+		return ApiResponse.Ok(isSuccess);
+	}
+	
+	
+	private Map<String, List<String>> requirementValidator(RequirementVO requirementVO) {
+
+		// 입력값 검사
+		
+		Validator<RequirementVO> validator = new Validator<>(requirementVO);
+		validator.add("rqmTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다").add("prjId", Type.NOT_EMPTY, "프로젝트는 필수 입력값입니다")
+				 .add("dvlrp", Type.NOT_EMPTY, "담당개발자는 필수 입력값입니다").add("cfrmr", Type.NOT_EMPTY, "확인자는 필수 입력값입니다")
+				 .add("tstr", Type.NOT_EMPTY, "테스터는 필수 입력값입니다").add("strtDt", Type.NOT_EMPTY, "시작일은 필수 입력값입니다")
+				 .add("endDt", Type.NOT_EMPTY, "종료일은 필수 입력값입니다").add("rqmCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
+				 .add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다").add("rqmSts", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+				.start();
+		if (!requirementVO.getStrtDt().isEmpty() && !requirementVO.getEndDt().isEmpty()) {
+			validator.add("endDt", Type.DATE, requirementVO.getStrtDt(), "종료일은 시작일보다 커야합니다").start();
+		}
+
+		if (validator.hasErrors()) {
+			return validator.getErrors();
+
+		} else {
+			return null;
+		}
 	}
 }
