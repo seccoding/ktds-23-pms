@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,5 +19,16 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public boolean createClient(ClientVO clientVO) {
 		return this.clientDao.createClient(clientVO) > 0;
+	}
+
+	@Override
+	public List<ClientVO> getAllClient() {
+		List<ClientVO> clientList = this.clientDao.getAllClient();
+		return clientList;
+	}
+
+	@Override
+	public ClientVO getClientOfProject(String clntInfo) {
+		return this.clientDao.getClientOfProject(clntInfo);
 	}
 }
