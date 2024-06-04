@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.project.dao.ClientDao">
+	<insert id="createClient" parameterType="com.ktdsuniversity.edu.pms.project.vo.ClientVO">
+		INSERT INTO CLIENT
+		 (CLNT_ID
+		, CLNT_NAME
+		, CNTCT
+		, INFO
+		, DEL_YN)
+		VALUES 
+		  (('CLNT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_CLNT_PK.NEXTVAL, 6, '0'))
+		, #{clntName}
+		, #{cntct}
+		, #{info}
+		, 'N')
+	</insert>
+</mapper>

@@ -22,7 +22,9 @@ import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.CreationException;
+import com.ktdsuniversity.edu.pms.project.service.ClientService;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ClientVO;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
@@ -53,6 +55,9 @@ public class ApiProjectController {
 
 	    @Autowired
 	    private RequirementService requirementService;
+	    
+	    @Autowired
+	    private ClientService clientService;
 	    
 	    // getAllProject + getAllProjectByProjectTeammateRole
 	    @GetMapping("/search")
@@ -171,6 +176,12 @@ public class ApiProjectController {
 	        }
 
 	        return ApiResponse.Ok(isCreateSuccess);
+	    }
+	    
+	    @PostMapping("/client")
+	    public ApiResponse doWriteClient(ClientVO clientVO) {
+	    	boolean isSuccess = this.clientService.createClient(clientVO);
+	    	return ApiResponse.Ok(isSuccess);
 	    }
 
 }
