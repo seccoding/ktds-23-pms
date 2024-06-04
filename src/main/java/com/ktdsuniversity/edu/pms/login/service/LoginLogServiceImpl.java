@@ -260,5 +260,16 @@ public class LoginLogServiceImpl implements LoginLogService {
 		}
 	}
 
+	@Override
+	public int insertLogoutProcess(String empId, boolean isLeaveWork) {
+		
+//		TODO 로그아웃시 기록  
+		System.out.println("Logout: ");
+		if(isLeaveWork) {/*isLeaveWork 가 true 일 경우 퇴근 기록*/
+			System.out.println("isLeaveWork: "+isLeaveWork);
+		}
+		return 0;
+	}
+
 
 }
