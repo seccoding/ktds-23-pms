@@ -16,7 +16,7 @@ public abstract class StringUtil {
 	}
 	
 	/**
-	 * 사원번호가 숫자 10자리이거나,  "system"이 포함된 문자열인지 검사
+	 * 사원번호가 숫자 7자리이거나,  "system"이 포함된 문자열인지 검사
 	 * @param str 입력받은 사원번호
 	 * @return 사원번호 형식이 맞다면 true, 틀리다면 false
 	 */

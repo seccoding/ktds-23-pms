@@ -58,12 +58,20 @@ public interface LoginLogService {
 	 */
     public boolean isAccountLocked(EmployeeVO employeeVO);
     /**
-     * 로그인 시도시 DB에 insert 되야 하는 DAO를 모아서 실행
+     * 로그인 시도시 DB에 insert, update 되야 하는 DAO를 모아서 실행
      * @param empId 사원번호
      * @param isLoginAtempReset 로그인시도횟수 리셋 여부
      * @return
      */
     public boolean insertLoginProcess(String empId , boolean isLoginTrtReset) ;
+    /**
+     * 로그아웃 시도시 DB에 insert, update 되야 하는 DAO 를 모아서 실행
+     * @param empId 사원번호
+     * @param isLeaveWork 퇴근인지 단순 로그아웃인지 여부
+     * @return
+     */
+    
+    public int insertLogoutProcess (String empId , boolean isLeaveWork);
     	
     
 }

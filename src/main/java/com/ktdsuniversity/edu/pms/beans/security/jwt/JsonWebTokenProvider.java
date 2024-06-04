@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.EmployeeNotLoggedInException;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -60,13 +62,13 @@ public class JsonWebTokenProvider {
 	public EmployeeVO getUserFormToken(String token) throws JsonProcessingException {
 		SecretKey key = Keys.hmacShaKeyFor(//hmacSha 알고리즘으로 구현된 인코드 키
 				secretKey.getBytes(StandardCharsets.UTF_8));
-		
-		Jws<Claims> jws = Jwts.parser()
+		 Jws<Claims> jws = Jwts.parser()
 //					.requireIssuer(this.issuer)
 					.verifyWith(key)
 					.build()
 					.parseSignedClaims(token);
-		Claims claims = jws.getPayload();
+		 Claims claims = jws.getPayload();
+	
 		
 		ObjectMapper om = new ObjectMapper();
 		
