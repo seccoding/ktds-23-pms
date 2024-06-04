@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -34,33 +37,46 @@ public class ApiReviewController {
 	@Autowired
 	private ReviewService reviewService;
 	
+	@Autowired
+	private ProjectService projectService;
 	
-	@GetMapping("writes")
-	public ApiResponse viewWriteReviewPage(Authentication authentication) {
+	
+	@GetMapping("writes/{prjId}")
+	public ApiResponse viewWriteReviewPage(@PathVariable String prjId ,Authentication authentication) {
 		
 		
 		return new ApiResponse().Ok(true);
 	}
 	
 	// 리뷰 작성
-	@PostMapping("writes/{id}")
-	public ApiResponse doWriteReview(@PathVariable String id   ,ReviewVO reviewVO, Authentication authentication) {
+	@PostMapping("writes")
+	public ApiResponse doWriteReview(ReviewVO reviewVO, Authentication authentication, ProjectTeammateVO projectTeammateVO) {
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-		reviewVO.setEmpId(employeeVO.getEmpId());
+		reviewVO.setCrtrId(employeeVO.getEmpId());
+		projectTeammateVO.setTmId(employeeVO.getEmpId());
+		projectTeammateVO.setPrjId(reviewVO.getPrjId());
+		
+		System.out.println("==============" + reviewVO.getEmpId() + " :: " + reviewVO.getRvCntnt()
+		+ " :: " + projectTeammateVO.getTmId() + " :: " + projectTeammateVO.getPrjId()
+				);
 		
 		Validator<ReviewVO> validator = new Validator<>(reviewVO);
-		List<String> errorMessgae = null;
+		
 		
 		validator.add("rvCntnt", Type.NOT_EMPTY, "후기 내용을 작성해주세요.")
 				 .start();
 		
 		if (validator.hasErrors()) {
-			
+			Map<String, List<String>> errors = validator.getErrors();
+			String errorMessage = errors.values().toString();
+			return ApiResponse.Ok(errorMessage);
 		}
 		
-		boolean isCreateSuccess = reviewService.updateOneReview(reviewVO);
+		
+		
+		boolean isCreateSuccess = this.reviewService.insertNewReviewAndUpdateStatus(reviewVO, projectTeammateVO);
 		
 		if (!isCreateSuccess) {
 			logger.debug("후기 작성 저장에 실패했습니다.");
@@ -73,29 +89,43 @@ public class ApiReviewController {
 	
 	
 	// 관리자 리뷰 삭제
-	@PutMapping("writes")
-	public ApiResponse deleteReview(@PathVariable int prjId, Authentication authentication) {
+	@PutMapping("writes/{prjId}")
+	public ApiResponse deleteReview(@PathVariable String prjId, Authentication authentication, ReviewVO reviewVO) {
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
 		
+		if (employeeVO.getAdmnCode().equals("N")) {
+			return ApiResponse.FORBIDDEN("권한이 없습니다.");
+		} 
+		
+		// 후기 삭제 메서드
+		boolean isDeleteSuccess = this.reviewService.reviewViewResultDelete(reviewVO.getRvId());
+		if (isDeleteSuccess) {
+			logger.debug("후기 삭제에 성공했습니다.");
+		} else {
+			logger.debug("후기 삭제에 실패했습니다.");
+		}
+		
+		// 후기 수정 메서드 (삭제시 삭제일, 삭제한 관리자 ID 저장
+		Map<String, Object> modifyParam = new HashMap<>();
+		modifyParam.put("empId", employeeVO.getEmpId());
+		modifyParam.put("reviewId", reviewVO.getRvId());
+		boolean isModifySuccess = this.reviewService.reviewResultModify(modifyParam);
+		
+		if (isModifySuccess) {
+			logger.debug("후기 수정에 성공했습니다.");
+		} else {
+			logger.debug("후기 삭제에 실패했습니다.");
+		}
 		
 		
 		return ApiResponse.Ok(true);
 	}
 	
 	
-	@GetMapping("test")
-	public Map<String, Object> test(){
-		Map<String, Object> map = new HashMap<>();
-		map.put("TEST1", "TEST1");
-		System.out.println("TEST1111......");
-		return map;
-	}
 	
 	
-	@GetMapping("/ajax/review/viewresult/{id}/delete")
-	public AjaxResponse reviewViewResultDelete(@PathVariable String id) {
-		logger.debug("ID={}", id);
-		return new AjaxResponse().append("result", reviewService.reviewViewResultDelete(id));
-	}
 
 }

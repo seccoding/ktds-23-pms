@@ -285,6 +285,12 @@
 		</foreach> 
 	</update>
 	
-	
+	<update id="reviewResultModify"
+    			parameterType="String">
+    	UPDATE PROJECT_REVIEW
+    	   SET MDF_DT = SYSDATE
+    	       MDFR_ID = #{empId}
+    	 WHERE RV_ID = #{reviewId}
+   	</update>	
 	
 </mapper>
