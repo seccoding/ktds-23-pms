@@ -51,7 +51,18 @@ public class EmployeeVO {
 	private String confirmPwd;
 	private String newPwd;
 	private String decryptedPrflFileName;
+	private String cmcdName;
 	
+	
+	
+	public String getCmcdName() {
+		return cmcdName;
+	}
+
+	public void setCmcdName(String cmcdName) {
+		this.cmcdName = cmcdName;
+	}
+
 	// 새로운 컬럼 추가
 	private String tmId;
 

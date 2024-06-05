@@ -33,11 +33,15 @@
 	</select>
 
 	<select id="getAllDepartment" resultMap="departmentVOMap">
-		 SELECT DEPT_ID
-		 	  , DEPT_NAME 
-		 	  , TO_CHAR(DEPT_CR_DT, 'YYYY-MM-DD') DEPT_CR_DT
-		 	  , DEPT_LEAD_ID 
-		   FROM DEPARTMENT
+		 SELECT D.DEPT_ID
+		 	  , D.DEPT_NAME 
+		 	  , TO_CHAR(D.DEPT_CR_DT, 'YYYY-MM-DD') DEPT_CR_DT
+		 	  , D.DEPT_LEAD_ID 
+		 	  , E.EMP_NAME
+		 	  , E.EMAIL
+		   FROM DEPARTMENT D
+		  INNER JOIN EMPLOYEE E
+		     ON D.DEPT_LEAD_ID = E.EMP_ID
 		  WHERE DEL_YN = 'N'
 	</select>
 	

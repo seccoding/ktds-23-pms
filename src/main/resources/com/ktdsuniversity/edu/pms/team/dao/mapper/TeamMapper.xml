@@ -56,14 +56,18 @@
 	<select id="getAllTeamList"
 			parameterType="string"
 			resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
-		SELECT TM_ID
-          	 , TO_CHAR(TM_CR_DT, 'YYYY-MM-DD') TM_CR_DT
-          	 , TM_NAME
-          	 , DEPT_ID
-          	 , TM_LEAD_ID
-       	  FROM TEAM
-      	 WHERE DEPT_ID = #{_parameter}
-           AND DEL_YN ='N'
+		SELECT T.TM_ID
+          	 , TO_CHAR(T.TM_CR_DT, 'YYYY-MM-DD') TM_CR_DT
+          	 , T.TM_NAME
+          	 , T.DEPT_ID
+          	 , T.TM_LEAD_ID
+          	 , E.EMP_NAME
+          	 , E.EMAIL
+       	  FROM TEAM T
+       	 INNER JOIN EMPLOYEE E
+       	    ON E.EMP_ID  = T.TM_LEAD_ID 
+      	 WHERE T.DEPT_ID = #{_parameter}
+           AND T.DEL_YN ='N'
 	</select>
 	<select id="countTeamInDepartement"
 			parameterType="string"
@@ -97,10 +101,15 @@
 	
 	<select id="getAllEmployeeInTeam" parameterType="string" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		SELECT E.EMP_ID
-		     , E.EMP_NAME 
+		     , E.EMP_NAME
+		     , E.PSTN_ID
+		     , C.CMCD_NAME
+		     , E.EMAIL
 		  FROM ASSIGNMENT A
 		 INNER JOIN EMPLOYEE E
 		    ON E.EMP_ID = A.EMP_ID
+		 INNER JOIN COMMON_CODE C
+		    ON E.PSTN_ID = C.CMCD_ID
 		 WHERE A.TM_ID = #{_parameter}
 		   AND A.DEL_YN = 'N'
 		   AND E.WORK_STS != '204'
