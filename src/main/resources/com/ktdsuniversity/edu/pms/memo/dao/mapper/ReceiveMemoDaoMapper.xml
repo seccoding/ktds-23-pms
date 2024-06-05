@@ -6,13 +6,24 @@
 
     <resultMap id="receiveMemoVOMap" type="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO" autoMapping="true">
         <id column="RCV_MEMO_ID" property="rcvMemoId" />
+        <result column="SEND_MEMO_ID" property="sendMemoId" />
         <association property="sendMemoVO" javaType="com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO">
             <id column="SEND_MEMO_ID" property="sendMemoId" />
+            <result column="SEND_ID" property="sendId" />
             <result column="MEMO_TTL" property="memoTtl" />
             <result column="MEMO_CNTNT" property="memoCntnt" />
             <result column="FILE_NAME" property="fileName" />
             <result column="ORIGIN_FILE_NAME" property="originFileName" />
             <result column="SEND_DATE" property="sendDate" />
+            <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="SEND_EMP_ID" property="empId" />
+            <result column="SEND_EMP_NAME" property="empName" />
+            <result column="SEND_EMAIL" property="email" />
+	        </association>
+	        <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+	            <id column="SEND_DEPT_ID" property="deptId" />
+	            <result column="SEND_DEPT_NAME" property="deptName" />
+	        </association>
         </association>
         <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
             <id column="EMP_ID" property="empId" />
@@ -73,6 +84,7 @@
              , E.EMP_NAME
              , E.EMAIL
              , D.DEPT_NAME
+             ,SM.SEND_ID
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.FILE_NAME
@@ -109,14 +121,15 @@
              , E.EMP_NAME
              , E.EMAIL
              , D.DEPT_NAME
+             , SM.SEND_MEMO_ID
              , SM.SEND_ID
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.ORIGIN_FILE_NAME
              , SM.SEND_DATE
-             , SEND_E.EMP_NAME
-             , SEND_E.EMAIL
-             , SEND_D.DEPT_NAME
+             , SEND_E.EMP_NAME SEND_EMP_NAME
+             , SEND_E.EMAIL SEND_EMAIL
+             , SEND_D.DEPT_NAME SEND_DEPT_NAME
           FROM RECEIVE_MEMO RM
          INNER JOIN EMPLOYEE E
             ON RM.RCV_ID = E.EMP_ID
