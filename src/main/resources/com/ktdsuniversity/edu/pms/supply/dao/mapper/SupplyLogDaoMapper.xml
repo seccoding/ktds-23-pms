@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.supply.dao.SupplyLogDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.supply.vo.SupplyLogVO"
+			   id="SupplyLogVOMap"
+			   autoMapping="true">
+		<id column="SPL_LOG_ID" property="splLogId" />
+		<association property="supplyVO"
+					 javaType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+			<id column="SPL_ID" property="splId" />
+			<result column="SPL_NAME" property="splName" />
+			<result column="SPL_CTGR" property="splCtgr" />
+			<result column="SPL_PRICE" property="splPrice" />
+		</association>
+	</resultMap>
+	
+	<select id="searchSupplyLogAllCount"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM (SELECT sl.*
+					 , REPLACE(s.SPL_NAME, ' ', '') SEARCH_SPL_NAME
+					 , REPLACE(s.SPL_CTGR, ' ', '') SEARCH_SPL_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+				  FROM SUPPLY_LOG sl
+				  JOIN SUPPLY s 
+				    ON s.SPL_ID = sl.SPL_ID) sl
+		 WHERE sl.DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "splName"'>
+		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "splCtgr"'>
+		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="searchAllSupplyLog"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
+			resultMap="SupplyLogVOMap">
+		<include refid="Common.pagenate_header" />
+		SELECT *
+		  FROM (SELECT sl.SPL_LOG_ID 
+					 , sl.SPL_ID 
+					 , sl.REQR_ID 
+					 , sl.REQ_CNT 
+					 , sl.REQ_DT 
+					 , sl.REQ_RSN 
+					 , sl.DEL_YN 
+					 , s.SPL_NAME 
+					 , s.SPL_CTGR 
+					 , s.SPL_PRICE
+					 , REPLACE(s.SPL_NAME, ' ', '') AS SEARCH_SPL_NAME
+					 , REPLACE(s.SPL_CTGR, ' ', '') AS SEARCH_SPL_CTGR
+					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+				  FROM SUPPLY_LOG sl 
+				  JOIN SUPPLY s 
+				    ON s.SPL_ID = sl.SPL_ID) sl
+		 WHERE sl.DEL_YN = 'N'
+		<if test='searchKeyword != null and searchKeyword != ""'>
+			<choose>
+				<when test='searchType == "splName"'>
+		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+				<when test='searchType == "splCtgr"'>
+		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
+				</when>
+			</choose>
+		</if>
+		<include refid="Common.pagenate_footer" />
+	</select>
+	
+</mapper>

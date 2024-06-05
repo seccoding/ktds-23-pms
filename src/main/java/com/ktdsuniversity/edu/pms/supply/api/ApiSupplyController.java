@@ -21,6 +21,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.supply.service.SupplyService;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
@@ -201,6 +202,16 @@ public class ApiSupplyController {
 		boolean isSuccess = this.supplyService.deleteOneSupply(supplyVO);
 		
 		return ApiResponse.Ok(isSuccess);
+	}
+	
+	@GetMapping("/supply/log")
+	public ApiResponse getSupplyLogList(SearchSupplyVO searchSupplyVO) {
+		SupplyLogListVO supplyLogListVO = this.supplyService.searchAllSupplyLog(searchSupplyVO);
+		
+		return ApiResponse.Ok(supplyLogListVO.getSupplyLogList(), 
+							  supplyLogListVO.getSupplyLogCnt(), 
+							  searchSupplyVO.getPageCount(), 
+							  searchSupplyVO.getPageNo() < searchSupplyVO.getPageCount() - 1);
 	}
 
 }
