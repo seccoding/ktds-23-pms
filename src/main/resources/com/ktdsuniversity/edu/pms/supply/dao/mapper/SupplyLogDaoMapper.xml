@@ -15,37 +15,18 @@
 			<result column="SPL_CTGR" property="splCtgr" />
 			<result column="SPL_PRICE" property="splPrice" />
 		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+			<result column="EMAIL" property="email" />
+		</association>
 	</resultMap>
 	
 	<select id="searchSupplyLogAllCount"
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
 			resultType="_int">
 		SELECT COUNT(1)
-		  FROM (SELECT sl.*
-					 , REPLACE(s.SPL_NAME, ' ', '') SEARCH_SPL_NAME
-					 , REPLACE(s.SPL_CTGR, ' ', '') SEARCH_SPL_CTGR
-					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
-				  FROM SUPPLY_LOG sl
-				  JOIN SUPPLY s 
-				    ON s.SPL_ID = sl.SPL_ID) sl
-		 WHERE sl.DEL_YN = 'N'
-		<if test='searchKeyword != null and searchKeyword != ""'>
-			<choose>
-				<when test='searchType == "splName"'>
-		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-				<when test='searchType == "splCtgr"'>
-		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-			</choose>
-		</if>
-	</select>
-	
-	<select id="searchAllSupplyLog"
-			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
-			resultMap="SupplyLogVOMap">
-		<include refid="Common.pagenate_header" />
-		SELECT *
 		  FROM (SELECT sl.SPL_LOG_ID 
 					 , sl.SPL_ID 
 					 , sl.REQR_ID 
@@ -56,24 +37,52 @@
 					 , s.SPL_NAME 
 					 , s.SPL_CTGR 
 					 , s.SPL_PRICE
-					 , REPLACE(s.SPL_NAME, ' ', '') AS SEARCH_SPL_NAME
-					 , REPLACE(s.SPL_CTGR, ' ', '') AS SEARCH_SPL_CTGR
-					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
+					 , e.EMP_ID
+					 , e.EMP_NAME
+					 , e.EMAIL
 				  FROM SUPPLY_LOG sl 
 				  JOIN SUPPLY s 
-				    ON s.SPL_ID = sl.SPL_ID) sl
-		 WHERE sl.DEL_YN = 'N'
-		<if test='searchKeyword != null and searchKeyword != ""'>
-			<choose>
-				<when test='searchType == "splName"'>
-		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-				<when test='searchType == "splCtgr"'>
-		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-			</choose>
-		</if>
-		<include refid="Common.pagenate_footer" />
+				    ON s.SPL_ID = sl.SPL_ID
+				  JOIN EMPLOYEE e
+				    ON e.EMP_ID = sl.REQR_ID)
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="searchAllSupplyLog"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
+			resultMap="SupplyLogVOMap">
+		SELECT SPL_LOG_ID 
+			 , SPL_ID 
+			 , REQR_ID 
+			 , REQ_CNT 
+			 , REQ_DT 
+			 , REQ_RSN 
+			 , DEL_YN 
+			 , SPL_NAME 
+			 , SPL_CTGR 
+			 , SPL_PRICE
+			 , EMP_ID
+			 , EMP_NAME
+			 , EMAIL
+		  FROM (SELECT sl.SPL_LOG_ID 
+					 , sl.SPL_ID 
+					 , sl.REQR_ID 
+					 , sl.REQ_CNT 
+					 , sl.REQ_DT 
+					 , sl.REQ_RSN 
+					 , sl.DEL_YN 
+					 , s.SPL_NAME 
+					 , s.SPL_CTGR 
+					 , s.SPL_PRICE
+					 , e.EMP_ID
+					 , e.EMP_NAME
+					 , e.EMAIL
+				  FROM SUPPLY_LOG sl 
+				  JOIN SUPPLY s 
+				    ON s.SPL_ID = sl.SPL_ID
+				  JOIN EMPLOYEE e
+				    ON e.EMP_ID = sl.REQR_ID)
+		 WHERE DEL_YN = 'N'
 	</select>
 	
 </mapper>

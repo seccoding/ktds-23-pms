@@ -77,6 +77,15 @@ public class SupplyServiceImpl implements SupplyService {
 	@Override
 	public boolean updateOneSupply(SupplyVO supplyVO) {
 		int updatedCount = this.supplyDao.updateOneSupply(supplyVO);
+		
+		return updatedCount > 0;
+	}
+	
+	@Transactional
+	@Override
+	public boolean updateOneSupplyStock(SupplyVO supplyVO) {
+		int updatedCount = this.supplyDao.updateOneSupplyStock(supplyVO);
+		
 		return updatedCount > 0;
 	}
 

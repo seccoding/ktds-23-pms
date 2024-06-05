@@ -187,6 +187,23 @@ public class ApiSupplyController {
 		return ApiResponse.Ok(isUpdatedSuccess);
 	}
 	
+	@PutMapping("/supply/stock/{splId}")
+	public ApiResponse modifySupplyStock(@PathVariable String splId,
+										 SupplyVO supplyVO,
+										 Authentication authentication) {
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
+		// TODO 에러 체크?
+		
+		supplyVO.setSplId(splId);
+		supplyVO.setSplMdfrId(employeeVO.getEmpId());
+		
+		boolean isUpdatedSuccess = this.supplyService.updateOneSupplyStock(supplyVO);
+		
+		return ApiResponse.Ok(isUpdatedSuccess);
+	}
+	
 	@DeleteMapping("/supply/{splId}")
 	public ApiResponse deleteSupply(@PathVariable String splId,
 									Authentication authentication) {

@@ -8,29 +8,37 @@
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
 			resultType="_int">
 		SELECT COUNT(1)
-		  FROM (SELECT s.*
-					 , REPLACE(s.SPL_NAME, ' ', '') SEARCH_SPL_NAME
-					 , REPLACE(s.SPL_CTGR, ' ', '') SEARCH_SPL_CTGR
-					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
-				  FROM SUPPLY s)
+		  FROM (SELECT SPL_ID
+		  			 , SPL_NAME
+		  			 , SPL_CTGR
+		  			 , SPL_PRICE
+		  			 , INV_QTY
+		  			 , DEL_YN
+		  			 , SPL_IMG
+		  			 , SPL_DTL
+		  			 , SPL_REGT_ID
+		  			 , SPL_MDFR_ID
+		  			 , SPL_REGT_DT
+		  			 , SPL_MDF_DT
+				  FROM SUPPLY)
 		 WHERE DEL_YN = 'N'
-		<if test='searchKeyword != null and searchKeyword != ""'>
-			<choose>
-				<when test='searchType == "splName"'>
-		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-				<when test='searchType == "splCtgr"'>
-		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-			</choose>
-		</if>
 	</select>
 
 	<select id="searchAllSupply"
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
 			resultType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
-		<include refid="Common.pagenate_header" />
-		SELECT *
+		SELECT SPL_ID
+			 , SPL_NAME
+			 , SPL_CTGR
+			 , SPL_PRICE
+			 , INV_QTY
+			 , DEL_YN
+			 , SPL_IMG
+			 , SPL_DTL
+			 , SPL_REGT_ID
+			 , SPL_MDFR_ID
+			 , SPL_REGT_DT
+			 , SPL_MDF_DT
 		  FROM (SELECT SPL_ID
 					 , SPL_NAME
 					 , SPL_CTGR
@@ -43,22 +51,8 @@
 					 , SPL_MDFR_ID
 					 , SPL_REGT_DT
 					 , SPL_MDF_DT
-					 , REPLACE(SPL_NAME, ' ', '') AS SEARCH_SPL_NAME
-					 , REPLACE(SPL_CTGR, ' ', '') AS SEARCH_SPL_CTGR
-					 , REPLACE(#{searchKeyword}, ' ', '') AS SEARCH_KEYWORD
 		  		  FROM SUPPLY)
 		 WHERE DEL_YN = 'N'
-		<if test='searchKeyword != null and searchKeyword != ""'>
-			<choose>
-				<when test='searchType == "splName"'>
-		   AND SEARCH_SPL_NAME LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-				<when test='searchType == "splCtgr"'>
-		   AND SEARCH_SPL_CTGR LIKE '%' || SEARCH_KEYWORD || '%'
-				</when>
-			</choose>
-		</if>		
-		<include refid="Common.pagenate_footer" />
 	</select>
 	
 	<select id="selectOneSupply" 
@@ -120,6 +114,15 @@
 		     , INV_QTY = #{invQty}
 		     , SPL_IMG = #{splImg}
 		     , SPL_DTL = #{splDtl}
+		     , SPL_MDFR_ID = #{splMdfrId}
+		     , SPL_MDF_DT = SYSDATE
+		 WHERE SPL_ID = #{splId}
+	</update>
+	
+	<update id="updateOneSupplyStock"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		UPDATE SUPPLY 
+		   SET INV_QTY = #{invQty}
 		     , SPL_MDFR_ID = #{splMdfrId}
 		     , SPL_MDF_DT = SYSDATE
 		 WHERE SPL_ID = #{splId}
