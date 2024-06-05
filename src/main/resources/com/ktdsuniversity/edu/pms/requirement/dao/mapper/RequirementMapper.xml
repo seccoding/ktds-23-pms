@@ -346,9 +346,9 @@ SELECT  R.RQM_ID
 	, #{strtDt}
 	, #{endDt}
 	, #{rqmFile}
+	, #{dvlrp}
 	, #{cfrmr}
 	, #{tstr}
-	, #{dvlrp}
 	, ''
 	, #{scdSts}
 	, #{rqmSts}

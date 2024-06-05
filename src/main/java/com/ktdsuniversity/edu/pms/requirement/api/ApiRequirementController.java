@@ -21,6 +21,7 @@ import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
@@ -82,7 +83,7 @@ public class ApiRequirementController {
 	
 	@GetMapping("/requirement/view")
 	public ApiResponse getOneRequirement(Authentication authentication, 
-			@RequestParam("prjId") String prjId, @RequestParam("rqmId") String rqmId) {
+			@RequestParam String prjId, @RequestParam String rqmId) {
 		
 		// 1개의 요구사항에 대한 상세정보를 불러오는 API
 		
@@ -115,7 +116,7 @@ public class ApiRequirementController {
 	@GetMapping("/requirement/write")
 	public ApiResponse getRequirementWritePage(Authentication authentication) {
 		
-		// 요구사항 작성 페이지를 불러오는 API
+		// 요구사항 작성과 수정에 필요한 데이터들을 불러오는 API
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
@@ -138,10 +139,6 @@ public class ApiRequirementController {
 		responseData.put("projectList", projectList.getProjectList());
 		responseData.put("scdSts", scdStsList);
 		responseData.put("rqmSts", rqmStsList);
-		
-//		System.out.println("@@@@@@@@@@@@@@" + responseData.get("projectList"));
-//		System.out.println("##############" + responseData.get("scdSts"));
-//		System.out.println("$$$$$$$$$$$$$$" + responseData.get("rqmSts"));
 
 		return ApiResponse.Ok(responseData, responseData == null ? 0 : 1);
 
@@ -154,14 +151,12 @@ public class ApiRequirementController {
 		// 프로젝트를 선택할 시에 Teammate 정보를 불러오는 API
 		
 		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
-		System.out.println("@@@@@@@@@@@prjTeammateList: " + prjTeammateList);
-//		return new AjaxResponse().append("prjTeammateList", prjTeammateList);
 		return ApiResponse.Ok(prjTeammateList);
 	}
 	
 	
 	@PostMapping("/requirement/write")
-	public ApiResponse createRequirement(Authentication authentication, MultipartFile file, 
+	public ApiResponse createRequirement(Authentication authentication, @RequestParam(required = false) MultipartFile file, 
 			RequirementVO requirementVO) throws Exception {
 
 		// 입력한 값들을 전송하는 API
@@ -181,6 +176,87 @@ public class ApiRequirementController {
 	}
 	
 	
+	@GetMapping("/requirement/modify")
+	public ApiResponse getRequirementModifyPage(Authentication authentication, 
+			@RequestParam String prjId, @RequestParam String rqmId) {
+		
+		// 수정 페이지에서 필요한 값들을 가져오는 API
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		if (employeeVO.getAdmnCode() != "301") {
+			List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjId).stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
+		}
+
+		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {// 관리자라면
+		}
+//		projectList.setProjectList(
+//				projectList.getProjectList().stream().filter((project) -> project.getReqYn().equals("Y")).toList());
+		projectList.setProjectList(
+				projectList.getProjectList().stream().toList());
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
+		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
+		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
+		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
+
+		if (throwUnauthorizedUser(employeeVO, requirement.getCrtrId())) {
+			throw new AccessDeniedException();
+		}
+
+		// 모든 데이터를 하나의 응답으로 합치기
+		Map <String, Object> responseData = new HashMap<>();
+		responseData.put("requirement", requirement);
+		responseData.put("projectList", projectList.getProjectList());
+		responseData.put("scdSts", scdSts);
+		responseData.put("rqmSts", rqmSts);
+		responseData.put("prjTeammateList", prjTeammateList);
+
+		return ApiResponse.Ok(responseData, responseData == null ? 0 : 1);
+	}
+	
+	
+	@PostMapping("/requirement/modify/{rqmId}")
+	public ApiResponse modifyRequirement(Authentication authentication, @PathVariable String rqmId,
+			RequirementVO requirementVO, @RequestParam(required = false) MultipartFile file) {
+		
+		// 수정한 값들을 전송하는 API
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		if (!employeeVO.getAdmnCode().equals("301")) {
+			List<ProjectTeammateVO> tmList = this.projectService
+					.getAllProjectTeammateByProjectId(requirementVO.getPrjId()).stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).toList();
+
+			if (tmList.size() == 0) {
+				throw new AccessDeniedException();
+			}
+		}
+		if (throwUnauthorizedUser(employeeVO, this.requirementService.getOneRequirement(rqmId).getCrtrId())) {
+			throw new AccessDeniedException();
+		}
+
+		Map<String, List<String>> error = this.requirementValidator(requirementVO);
+		if (error != null) {
+			return ApiResponse.Ok(error);
+		}
+
+		requirementVO.setMdfrId(employeeVO.getEmpId());
+
+//		isSuccess 의 결과에 따라 값을 다르게 반환
+		boolean isSuccess = this.requirementService.updateRequirement(requirementVO, file);
+
+		return ApiResponse.Ok(isSuccess);
+
+	}
+	
+	
 	private Map<String, List<String>> requirementValidator(RequirementVO requirementVO) {
 
 		// 입력값 검사
@@ -190,7 +266,7 @@ public class ApiRequirementController {
 				 .add("dvlrp", Type.NOT_EMPTY, "담당개발자는 필수 입력값입니다").add("cfrmr", Type.NOT_EMPTY, "확인자는 필수 입력값입니다")
 				 .add("tstr", Type.NOT_EMPTY, "테스터는 필수 입력값입니다").add("strtDt", Type.NOT_EMPTY, "시작일은 필수 입력값입니다")
 				 .add("endDt", Type.NOT_EMPTY, "종료일은 필수 입력값입니다").add("rqmCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
-				 .add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다").add("rqmSts", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+				 .add("scdSts", Type.NOT_EMPTY, "일정상태는 필수 입력값입니다").add("rqmSts", Type.NOT_EMPTY, "진행상태 필수 입력값입니다")
 				.start();
 		if (!requirementVO.getStrtDt().isEmpty() && !requirementVO.getEndDt().isEmpty()) {
 			validator.add("endDt", Type.DATE, requirementVO.getStrtDt(), "종료일은 시작일보다 커야합니다").start();
@@ -202,5 +278,15 @@ public class ApiRequirementController {
 		} else {
 			return null;
 		}
+	}
+	
+	
+	private boolean throwUnauthorizedUser(EmployeeVO employeeVO, String empId) {
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아닌경우
+			if (!employeeVO.getEmpId().equals(empId)) {// 본인이 작성한글이 아니면
+				return true;
+			}
+		}
+		return false;
 	}
 }
