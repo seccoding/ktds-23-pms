@@ -7,7 +7,7 @@ import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogVO;
 
 public interface SupplyLogDao {
 	
-	public String NAME_SPACE ="com.ktdsuniversity.edu.pms.supplies.dao.SupplyLogDao";
+	public String NAME_SPACE ="com.ktdsuniversity.edu.pms.supply.dao.SupplyLogDao";
 
 	public int searchSupplyLogAllCount(SearchSupplyVO searchSupplyVO);
 

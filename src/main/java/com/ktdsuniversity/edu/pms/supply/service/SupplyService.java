@@ -19,8 +19,11 @@ public interface SupplyService {
 
 	public boolean updateOneSupply(SupplyVO supplyVO);
 
+	public boolean updateOneSupplyStock(SupplyVO supplyVO);
+	
 	public boolean deleteOneSupply(SupplyVO supplyVO);
 
 	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO);
+
 
 }

@@ -43,11 +43,14 @@ public class SupplyDaoImpl extends SqlSessionDaoSupport implements SupplyDao {
 	public int updateOneSupply(SupplyVO supplyVO) {
 		return getSqlSession().update(SupplyDao.NAME_SPACE + ".updateOneSupply", supplyVO);
 	}
+	
+	@Override
+	public int updateOneSupplyStock(SupplyVO supplyVO) {
+		return getSqlSession().update(SupplyDao.NAME_SPACE + ".updateOneSupplyStock", supplyVO);
+	}
 
 	@Override
-	public int deleteOneSupply(SupplyVO supplyVO) {
-
-		
+	public int deleteOneSupply(SupplyVO supplyVO) {		
 		return getSqlSession().update(SupplyDao.NAME_SPACE + ".deleteOneSupply", supplyVO);
 	}
 
