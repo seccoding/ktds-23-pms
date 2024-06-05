@@ -168,6 +168,7 @@ public class ApiMemoController {
      */
     @GetMapping("/receive/{rcvMemoId}")
     public ApiResponse viewReceiveMemo(@PathVariable String rcvMemoId) {
+    	System.out.println("???");
         ReceiveMemoVO receiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
         return ApiResponse.Ok(receiveMemoVO, receiveMemoVO == null ? 0 : 1);
     }
@@ -185,7 +186,7 @@ public class ApiMemoController {
      * 수신 쪽지 읽음
      */
     @PutMapping("/receive/read/{rcvMemoId}")
-    public ApiResponse doReceiveDateModify(@PathVariable String rcvMemoId, ReceiveMemoVO receiveMemoVO,
+    public ApiResponse doReceiveDateModify(@PathVariable String rcvMemoId, @RequestBody ReceiveMemoVO receiveMemoVO,
                                            Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
@@ -203,15 +204,18 @@ public class ApiMemoController {
      * 수신 쪽지 보관
      */
     @PutMapping("/receive/save/{rcvMemoId}")
-    public ApiResponse saveOneReceiveMemo(@PathVariable String rcvMemoId, Authentication authentication) {
+    public ApiResponse saveOneReceiveMemo(@PathVariable String rcvMemoId, @RequestBody ReceiveMemoVO receiveMemoVO, Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-        ReceiveMemoVO receiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
-        if(!employeeVO.getEmpId().equals(receiveMemoVO.getRcvId())) {
+        ReceiveMemoVO originReceiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
+        if(!employeeVO.getEmpId().equals(originReceiveMemoVO.getRcvId())) {
             return ApiResponse.FORBIDDEN("삭제할 권한이 없습니다.");
         }
+        
+        System.out.println(receiveMemoVO.getRcvSaveYn());
+        
         boolean isSaveSuccess = this.receiveMemoService.saveOneReceiveMemo(rcvMemoId);
         return ApiResponse.Ok(isSaveSuccess);
     }

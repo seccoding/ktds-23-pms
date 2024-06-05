@@ -11,7 +11,7 @@
             <result column="EMP_NAME" property="empName" />
             <result column="EMAIL" property="email" />
         </association>
-        <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+        <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
             <id column="DEPT_ID" property="deptId" />
             <result column="DEPT_NAME" property="deptName" />
         </association>
@@ -28,7 +28,7 @@
             <result column="EMP_NAME" property="empName" />
             <result column="EMAIL" property="email" />
         </association>
-        <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+        <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
             <id column="DEPT_ID" property="deptId" />
             <result column="DEPT_NAME" property="deptName" />
         </association>
@@ -36,7 +36,7 @@
 <!--            <id column="TM_ID" property="tmId" />-->
 <!--            <result column="TM_NAME" property="tmName" />-->
 <!--        </association>-->
-        <collection property="ReceiveMemoVOList" ofType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO" javaType="ArrayList">
+        <collection property="receiveMemoVOList" ofType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO" javaType="ArrayList">
             <id column="RCV_MEMO_ID" property="rcvMemoId" />
             <result column="RCV_ID" property="rcvId" />
             <result column="RCV_CODE" property="rcvCode"/>
@@ -46,7 +46,7 @@
                 <result column="EMP_NAME" property="empName" />
                 <result column="EMAIL" property="email" />
             </association>
-            <association property="DepartmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+            <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
                 <id column="DEPT_ID" property="deptId" />
                 <result column="DEPT_NAME" property="deptName" />
             </association>

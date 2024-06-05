@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.memo.vo;
 
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class SendMemoVO {
     private String sendStsCode;
 
     private EmployeeVO employeeVO;
+    private DepartmentVO departmentVO;
     private List<ReceiveMemoVO> receiveMemoVOList;
 
     public String getSendMemoId() {
@@ -107,6 +109,14 @@ public class SendMemoVO {
     public void setEmployeeVO(EmployeeVO employeeVO) {
         this.employeeVO = employeeVO;
     }
+    
+    public DepartmentVO getDepartmentVO() {
+		return departmentVO;
+	}
+    
+    public void setDepartmentVO(DepartmentVO departmentVO) {
+		this.departmentVO = departmentVO;
+	}
 
     public List<ReceiveMemoVO> getReceiveMemoVOList() {
         return receiveMemoVOList;
