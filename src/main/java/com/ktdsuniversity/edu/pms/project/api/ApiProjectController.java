@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -132,31 +133,33 @@ public class ApiProjectController {
 	     * 프로젝트 새로 생성하는 api
 	     */
 	    @PostMapping("/write")
-	    public ApiResponse doWriteProject(CreateProjectVO createProjectVO, Authentication authentication) {
+	    public ApiResponse doWriteProject(@RequestBody CreateProjectVO createProjectVO, Authentication authentication) {
 	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-			
 	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
 	        if (!employeeVO.getAdmnCode().equals("301")) {
 	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
 	        }
+	        System.out.println("!!!!!!!!!!!!!"+createProjectVO);
+	        System.out.println("!!!!!!!!!!!!!"+createProjectVO.getDeptId());
+	        System.out.println("!!!!!!!!!!!!!"+createProjectVO.getPrjMemo());
 
-	        Validator<CreateProjectVO> validator = new Validator<>(createProjectVO);
+//	        Validator<CreateProjectVO> validator = new Validator<>(createProjectVO);
+//
+//	        validator.add("prjName", Type.NOT_EMPTY, "프로젝트명을 입력해주세요.")
+//	                .add("clntInfo", Type.NOT_EMPTY, "고객사를 입력해주세요.")
+//	                .add("deptId", Type.NOT_EMPTY, "담당부서를 선택해주세요.")
+//	                .add("strtDt", Type.NOT_EMPTY, "시작일을 입력해주세요.")
+//	                .add("pmId", Type.NOT_EMPTY, "담당자를 입력해주세요.")
+//	                .add("endDt", Type.NOT_EMPTY, "종료일을 입력해주세요.")
+//	                .add("strtDt", Type.DATE, createProjectVO.getEndDt(), "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요")
+//	                .start();
 
-	        validator.add("prjName", Type.NOT_EMPTY, "프로젝트명을 입력해주세요.")
-	                .add("clntInfo", Type.NOT_EMPTY, "고객사를 입력해주세요.")
-	                .add("deptId", Type.NOT_EMPTY, "담당부서를 선택해주세요.")
-	                .add("strtDt", Type.NOT_EMPTY, "시작일을 입력해주세요.")
-	                .add("pmId", Type.NOT_EMPTY, "담당자를 입력해주세요.")
-	                .add("endDt", Type.NOT_EMPTY, "종료일을 입력해주세요.")
-	                .add("strtDt", Type.DATE, createProjectVO.getEndDt(), "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요")
-	                .start();
-
-	        if (validator.hasErrors()) {
-	            Map<String, List<String>> errors = validator.getErrors();
-//	            return ApiResponse.BAD_REQUEST(errorList);
-	            return null;
-	        }
+//	        if (validator.hasErrors()) {
+//	            Map<String, List<String>> errors = validator.getErrors();
+////	            return ApiResponse.BAD_REQUEST(errorList);
+//	            return null;
+//	        }
 
 	        // 2. 검증 로직에 잘 맞춰서 작성한 경우, 데이터 저장
 	        // -> 세션에서 작성자 id 추출
@@ -167,7 +170,7 @@ public class ApiProjectController {
 	        if (!isCreateSuccess) {
 	            return ApiResponse.FORBIDDEN("프로젝트 생성 중 문제가 발생하였습니다.");
 	        }
-
+	        System.out.println("!!!!!!!!!!!!!"+isCreateSuccess);
 	        return ApiResponse.Ok(isCreateSuccess);
 	    }
 	    

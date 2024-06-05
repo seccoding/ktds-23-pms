@@ -292,17 +292,21 @@
         STRT_DT,
         END_DT,
         DEL_YN,
-        CRTR_ID)
+        CRTR_ID,
+        SRV_STS,
+        PRJ_MEMO)
         VALUES
         (('PRJ_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_PK.NEXTVAL, 6, '0')),
         #{prjName},
         #{clntInfo},
         #{deptId},
         '401',
-        TO_DATE(#{strtDt}, 'YYYY-MM-DD'),
-        TO_DATE(#{endDt}, 'YYYY-MM-DD'),
+        TO_DATE(#{strtDt}, 'YYYYMMDD'),
+        TO_DATE(#{endDt}, 'YYYYMMDD'),
         'N',
-        #{crtrId})
+        #{crtrId},
+        'N',
+        #{prjMemo})
     </insert>
 
     <insert id="insertNewPm"
