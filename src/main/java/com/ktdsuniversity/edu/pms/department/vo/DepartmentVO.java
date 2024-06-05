@@ -11,13 +11,30 @@ public class DepartmentVO {
 	private String deptCrDt;
 	private String delYn;
 	private String deptLeadId;
+	private String empName;
+	private String email;
 	private EmployeeVO employeeVO;
 	private TeamVO teamVO;
 	private JobVO jobVO;
 	private CommonCodeVO commonCodeVO;
-	
+
 	
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
 
 	public String getDeptId() {
 		return deptId;
@@ -90,6 +107,5 @@ public class DepartmentVO {
 	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
 		this.commonCodeVO = commonCodeVO;
 	}
-
 
 }
