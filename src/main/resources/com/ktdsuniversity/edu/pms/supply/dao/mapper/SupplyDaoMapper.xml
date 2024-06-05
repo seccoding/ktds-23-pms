@@ -5,7 +5,7 @@
 <mapper namespace="com.ktdsuniversity.edu.pms.supply.dao.SupplyDao">
 
 	<select id="searchSupplyAllCount"
-			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
 			resultType="_int">
 		SELECT COUNT(1)
 		  FROM (SELECT s.*
@@ -27,7 +27,7 @@
 	</select>
 
 	<select id="searchAllSupply"
-			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
 			resultType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
 		<include refid="Common.pagenate_header" />
 		SELECT *

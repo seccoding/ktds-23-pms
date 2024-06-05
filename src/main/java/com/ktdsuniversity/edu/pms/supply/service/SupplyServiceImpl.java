@@ -10,8 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyDao;
+import com.ktdsuniversity.edu.pms.supply.dao.SupplyLogDao;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 
 @Service
@@ -19,6 +22,9 @@ public class SupplyServiceImpl implements SupplyService {
 	
 	@Autowired
 	private SupplyDao supplyDao;
+	
+	@Autowired
+	private SupplyLogDao supplyLogDao;
 	
 	@Autowired
 	private FileHandler fileHandler;
@@ -90,6 +96,20 @@ public class SupplyServiceImpl implements SupplyService {
 		int deletedCount = this.supplyDao.deleteOneSupply(supplyVO);
 		
 		return deletedCount > 0;
+	}
+
+	@Override
+	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO) {
+		int supplyLogCount = this.supplyLogDao.searchSupplyLogAllCount(searchSupplyVO);
+		searchSupplyVO.setPageCount(supplyLogCount);
+		
+		List<SupplyLogVO> supplyLogList = this.supplyLogDao.searchAllSupplyLog(searchSupplyVO);
+		
+		SupplyLogListVO supplyLogListVO = new SupplyLogListVO();
+		supplyLogListVO.setSupplyLogCnt(supplyLogCount);
+		supplyLogListVO.setSupplyLogList(supplyLogList);
+		
+		return supplyLogListVO;
 	}
 
 }
