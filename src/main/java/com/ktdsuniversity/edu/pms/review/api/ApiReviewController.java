@@ -3,8 +3,8 @@ package com.ktdsuniversity.edu.pms.review.api;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,6 @@ import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
-import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -124,7 +124,29 @@ public class ApiReviewController {
 		return ApiResponse.Ok(true);
 	}
 	
-	
+	/**
+	 * 후기 작성 가능 여부를 반환하는 메서드
+	 * @param prjIdList 회원이 속해 있는 프로젝트의 PK (1~N)              
+	 * @param authentication
+	 * @return
+	 */
+	@PostMapping("writes/reviewyn")
+	public ApiResponse getReviewYN(@RequestBody List<String> prjIdList, Authentication authentication) {
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		Map<String, Boolean> result = new HashMap<>();
+		
+		IntStream.range(0, prjIdList.size())
+				 .forEach(i -> {
+					 Map<String, String> param = new HashMap<>();
+					 param.put("empId", employeeVO.getEmpId());
+					 param.put("prjId", prjIdList.get(i));
+					 result.put("result" + i, this.reviewService.getReviewYnByEmpIdAndPrjId(param));
+				 });
+
+		return ApiResponse.Ok(result);
+	}
 	
 	
 

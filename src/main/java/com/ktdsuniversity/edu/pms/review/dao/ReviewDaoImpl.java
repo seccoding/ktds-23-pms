@@ -132,6 +132,15 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().update(ReviewDao.NAME_SPACE + ".modifyReview", modifyParam);
 	}
 
+	/**
+	 * 후기 작성 여부 확인 메서드
+	 */
+	@Override
+	public String getReviewYnByEmpIdAndPrjId(Map<String, String> param) {
+		
+		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".getReviewYnByEmpIdAndPrjId", param);
+	}
+
 	
 
 

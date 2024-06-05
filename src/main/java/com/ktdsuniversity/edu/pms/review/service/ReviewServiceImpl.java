@@ -167,6 +167,19 @@ public class ReviewServiceImpl implements ReviewService {
 		return modifySuccess > 0;
 	}
 
+	// 리뷰 작성 가능 여부를 가져오는 메서드
+	@Transactional
+	@Override
+	public boolean getReviewYnByEmpIdAndPrjId(Map<String, String> param) {
+		String isSuccess = this.reviewDao.getReviewYnByEmpIdAndPrjId(param);
+		if (isSuccess.equals("N")) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+
 	
 	
 }
