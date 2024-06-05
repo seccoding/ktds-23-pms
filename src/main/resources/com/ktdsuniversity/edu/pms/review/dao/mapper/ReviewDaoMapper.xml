@@ -293,4 +293,12 @@
     	 WHERE RV_ID = #{reviewId}
    	</update>	
 	
+	<select id="getReviewYnByEmpIdAndPrjId"
+			parameterType="String"
+			resultType="String">
+		SELECT RV_YN
+		  FROM PROJECT_TEAMMATE
+		 WHERE TM_ID = #{empId}
+		   AND PRJ_ID = #{prjId}
+	</select>
 </mapper>

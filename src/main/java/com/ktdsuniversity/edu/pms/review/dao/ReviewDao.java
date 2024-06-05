@@ -87,5 +87,13 @@ public interface ReviewDao {
 	 * @return 성공 여부 int 반환
 	 */
 	public int reviewResultModify(Map<String, Object> modifyParam);
+
+	/**
+	 * 리뷰 작성 가능 여부를 반환하는 메서드
+	 * @param empId 로그인 되어 있는 사원의 ID
+	 * @param prjId 로그인 한 사원이 참여하는 프로젝트 
+	 * @return 작성 여부에 따라 int 를 반환
+	 */
+	public String getReviewYnByEmpIdAndPrjId(Map<String, String> param);
 	
 }
