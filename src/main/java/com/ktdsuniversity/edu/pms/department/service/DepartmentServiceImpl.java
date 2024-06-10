@@ -52,43 +52,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 		// 새로운 부서 생성
 		int insertedCount = this.departmentDao.createNewDepartment(departmentVO);
 		
-		EmployeeVO changeDeptEmpl = this.employeeDao.getOneEmployee(departmentVO.getDeptLeadId());
+//		EmployeeVO changeDeptEmpl = this.employeeDao.getOneEmployee(departmentVO.getDeptLeadId());
 		
-		List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(changeDeptEmpl.getEmpId());
-
-		// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
-		if(deptHistList.size() > 0) {
-			String prevDate = this.changeHistoryDao.getRecentDeptHist(changeDeptEmpl.getEmpId());
-			
-			changeDeptEmpl.setHireDt(prevDate);		
-		}
-		DepartmentHistoryVO deptHist = new DepartmentHistoryVO();
-		deptHist.setCnNote("신규 부서 생성");
-		changeDeptEmpl.setDepartmentHistoryVO(deptHist);
-		int changeDept = this.changeHistoryDao.insertOneChangeDeptHistory(changeDeptEmpl);
-		String deptId = this.departmentDao.getDeptIdByName(departmentVO.getDeptName());
-		departmentVO.setDeptId(deptId);
-		boolean updateEmp = false;
-		
-		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(departmentVO.getDeptLeadId());
-		TeamVO teamVO = new TeamVO();
-		changeDeptEmpl.setTeamVO(teamVO);
-		int deleteTeamCnt = 0;
-		if (teamList.size() > 0 ) {
-			for (TeamVO team:teamList) {
-				changeDeptEmpl.getTeamVO().setTmId(team.getTmId());
-				this.employeeDao.deleteTeam(changeDeptEmpl);
-				deleteTeamCnt++;
-			}
-			
-		}
-		
-		changeDeptEmpl.setDeptId(deptId);
-		if (this.employeeDao.modifyEmployeeDept(changeDeptEmpl) > 0 && deleteTeamCnt==teamList.size()){
-			updateEmp = true;
-		}
-		
-		return insertedCount > 0 && changeDept > 0 && updateEmp;
+		return insertedCount > 0 ;
 	}
 
 	@Override

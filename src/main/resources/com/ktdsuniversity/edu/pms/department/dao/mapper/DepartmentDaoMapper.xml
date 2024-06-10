@@ -43,6 +43,7 @@
 		  INNER JOIN EMPLOYEE E
 		     ON D.DEPT_LEAD_ID = E.EMP_ID
 		  WHERE DEL_YN = 'N'
+		  ORDER BY DEPT_CR_DT DESC
 	</select>
 	
 	<insert id="createNewDepartment"
@@ -78,9 +79,16 @@
 	
 	<select id="getOnlyDepartment"
 	        resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
-		SELECT DEPT_ID
-			 , DEPT_NAME
-		  FROM DEPARTMENT
+		SELECT D.DEPT_ID
+			 , D.DEPT_NAME
+			 , D.DEPT_CR_DT
+			 , D.DEL_YN
+			 , D.DEPT_LEAD_ID
+			 , E.EMP_NAME
+			 , E.EMAIL
+		  FROM DEPARTMENT D
+		 INNER JOIN EMPLOYEE E
+		    ON D.DEPT_LEAD_ID = E.EMP_ID
 		 WHERE DEL_YN = 'N'
 	</select>
 	
