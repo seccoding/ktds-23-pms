@@ -31,7 +31,7 @@ public interface ReceiveMemoService {
     /**
      * 수신 쪽지 보관
      */
-    public boolean saveOneReceiveMemo(String rcvMemoId);
+    public boolean saveOneReceiveMemo(ReceiveMemoVO receiveMemoVO);
 
     /**
      * 수신 쪽지 삭제

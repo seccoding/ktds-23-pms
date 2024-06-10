@@ -36,19 +36,19 @@
 <!--            <id column="TM_ID" property="tmId" />-->
 <!--            <result column="TM_NAME" property="tmName" />-->
 <!--        </association>-->
-        <collection property="receiveMemoVOList" ofType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO" javaType="ArrayList">
+        <collection property="receiveMemoVOList" ofType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO">
             <id column="RCV_MEMO_ID" property="rcvMemoId" />
             <result column="RCV_ID" property="rcvId" />
             <result column="RCV_CODE" property="rcvCode"/>
             <result column="RCV_DATE" property="rcvDate"/>
             <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
                 <id column="EMP_ID" property="empId" />
-                <result column="EMP_NAME" property="empName" />
-                <result column="EMAIL" property="email" />
+                <result column="RCV_EMP_NAME" property="empName" />
+                <result column="RCV_EMAIL" property="email" />
             </association>
             <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
-                <id column="DEPT_ID" property="deptId" />
-                <result column="DEPT_NAME" property="deptName" />
+                <id column="RCV_DEPT_ID" property="deptId" />
+                <result column="RCV_DEPT_NAME" property="deptName" />
             </association>
 <!--            <association property="TeamVO" javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">-->
 <!--                <id column="TM_ID" property="tmId" />-->
@@ -97,9 +97,7 @@
             ON D.DEPT_ID = E.DEPT_ID
         <!--         INNER JOIN TEAM T-->
         <!--            ON T.TM_ID = E.TM_ID-->
-    <if test='employeeVO.empId != null and employeeVO.empId != ""'>
          WHERE SM.SEND_ID = #{employeeVO.empId}
-    </if>
            AND SM.SEND_DEL_YN = 'N'
     </select>
 
@@ -111,6 +109,7 @@
              , D.DEPT_NAME
 <!--             , T.TM_NAME-->
              , SM.SEND_ID
+             , SM.SEND_MEMO_ID
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.FILE_NAME
@@ -126,9 +125,7 @@
             ON D.DEPT_ID = E.DEPT_ID
 <!--         INNER JOIN TEAM T-->
 <!--            ON T.TM_ID = E.TM_ID-->
-    <if test='employeeVO.empId != null and employeeVO.empId != ""'>
             WHERE SM.SEND_ID = #{employeeVO.empId}
-    </if>
            AND SM.SEND_DEL_YN = 'N'
          ORDER BY SM.SEND_DATE DESC
     <include refid="Common.pagenate_footer"/>
@@ -150,7 +147,7 @@
              , RM.RCV_DATE
              , RM.RCV_ID
              , RCVE.EMP_NAME
-         , RCVE.EMAIL
+         	 , RCVE.EMAIL
              , RCVD.DEPT_NAME
           FROM SEND_MEMO SM
          INNER JOIN EMPLOYEE E

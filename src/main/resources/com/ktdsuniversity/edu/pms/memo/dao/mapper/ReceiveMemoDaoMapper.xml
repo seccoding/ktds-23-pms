@@ -157,10 +157,10 @@
          WHERE RCV_MEMO_ID = #{_parameter}
     </update>
 
-    <update id="updateSaveOneReceiveMemo" parameterType="string">
+    <update id="updateSaveOneReceiveMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO">
         UPDATE RECEIVE_MEMO
-           SET RCV_SAVE_YN = 'Y'
-         WHERE RCV_MEMO_ID = #{_parameter}
+           SET RCV_SAVE_YN = #{rcvSaveYn}
+         WHERE RCV_MEMO_ID = #{rcvMemoId}
     </update>
 
     <update id="deleteOneReceiveMemo" parameterType="string">

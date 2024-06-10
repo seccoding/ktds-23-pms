@@ -56,8 +56,8 @@ public class ReceiveMemoServiceImpl implements ReceiveMemoService{
     }
 
     @Override
-    public boolean saveOneReceiveMemo(String rcvMemoId) {
-        int saveCount = this.receiveMemoDao.updateSaveOneReceiveMemo(rcvMemoId);
+    public boolean saveOneReceiveMemo(ReceiveMemoVO receiveMemoVO) {
+        int saveCount = this.receiveMemoDao.updateSaveOneReceiveMemo(receiveMemoVO);
         return saveCount > 0;
     }
 

@@ -42,7 +42,7 @@ public interface ReceiveMemoDao {
     /**
      * 수신 쪽지 보관
      */
-    public int updateSaveOneReceiveMemo(String rcvMemoId);
+    public int updateSaveOneReceiveMemo(ReceiveMemoVO receiveMemoVO);
 
     /**
      * 수신 쪽지 삭제

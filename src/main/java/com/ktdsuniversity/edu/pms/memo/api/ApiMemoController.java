@@ -32,7 +32,11 @@ public class ApiMemoController {
      * @Todo Authentication으로 사원아이디 넘겨주기(searchMemoVO에 empId 추가)
      */
     @GetMapping("/send")
-    public ApiResponse searchSendMemoList(SearchMemoVO searchMemoVO) {
+    public ApiResponse searchSendMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
+    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+        searchMemoVO.setEmpId(employeeVO.getEmpId());
+        
         SendMemoListVO sendMemoListVO = this.sendMemoService.searchAllSendMemo(searchMemoVO);
         return ApiResponse.Ok(sendMemoListVO.getSendMemoList(), sendMemoListVO.getSendMenoCnt(),
                                 searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
@@ -151,13 +155,11 @@ public class ApiMemoController {
      */
     @GetMapping("/receive")
     public ApiResponse searchReceiveMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
-    	System.out.println("hello >>>>>>>>>");
-    	 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-         searchMemoVO.setEmpId(employeeVO.getEmpId());
+    	
+    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+        searchMemoVO.setEmpId(employeeVO.getEmpId());
         ReceiveMemoListVO receiveMemoListVO = this.receiveMemoService.searchAllReceiveMemo(searchMemoVO);
-        
-        System.out.println(receiveMemoListVO.getReceiveMemoList());
         
         return ApiResponse.Ok(receiveMemoListVO.getReceiveMemoList(), receiveMemoListVO.getRcvMemoCnt(),
                 searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
@@ -168,7 +170,6 @@ public class ApiMemoController {
      */
     @GetMapping("/receive/{rcvMemoId}")
     public ApiResponse viewReceiveMemo(@PathVariable String rcvMemoId) {
-    	System.out.println("???");
         ReceiveMemoVO receiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
         return ApiResponse.Ok(receiveMemoVO, receiveMemoVO == null ? 0 : 1);
     }
@@ -211,12 +212,11 @@ public class ApiMemoController {
 
         ReceiveMemoVO originReceiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
         if(!employeeVO.getEmpId().equals(originReceiveMemoVO.getRcvId())) {
-            return ApiResponse.FORBIDDEN("삭제할 권한이 없습니다.");
+            return ApiResponse.FORBIDDEN("권한이 없습니다.");
         }
         
-        System.out.println(receiveMemoVO.getRcvSaveYn());
-        
-        boolean isSaveSuccess = this.receiveMemoService.saveOneReceiveMemo(rcvMemoId);
+        originReceiveMemoVO.setRcvSaveYn(receiveMemoVO.getRcvSaveYn());
+        boolean isSaveSuccess = this.receiveMemoService.saveOneReceiveMemo(originReceiveMemoVO);
         return ApiResponse.Ok(isSaveSuccess);
     }
 

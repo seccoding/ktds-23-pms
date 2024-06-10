@@ -49,8 +49,8 @@ public class ReceiveMemoDaoImpl extends SqlSessionDaoSupport implements ReceiveM
     }
 
     @Override
-    public int updateSaveOneReceiveMemo(String rcvMemoId) {
-        return getSqlSession().update(ReceiveMemoDao.NAME_SPACE + ".updateSaveOneReceiveMemo", rcvMemoId);
+    public int updateSaveOneReceiveMemo(ReceiveMemoVO receiveMemoVO) {
+        return getSqlSession().update(ReceiveMemoDao.NAME_SPACE + ".updateSaveOneReceiveMemo", receiveMemoVO);
     }
 
     @Override
