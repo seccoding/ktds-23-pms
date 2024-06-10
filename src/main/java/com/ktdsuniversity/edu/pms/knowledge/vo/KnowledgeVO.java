@@ -8,7 +8,6 @@ import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
 public class KnowledgeVO {
 	
 	private String knlId;
-	private String rqmId;
 	private String knlTtl;
 	private String knlCntnt;
 	private int knlCnt;
@@ -39,12 +38,6 @@ public class KnowledgeVO {
 	}
 	public void setKnlId(String knlId) {
 		this.knlId = knlId;
-	}
-	public String getRqmId() {
-		return rqmId;
-	}
-	public void setRqmId(String rqmId) {
-		this.rqmId = rqmId;
 	}
 	public String getKnlTtl() {
 		return knlTtl;

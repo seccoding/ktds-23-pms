@@ -23,7 +23,6 @@
 		     , R.RPL_PID
 		     , R.RPL_CNTNT
 		     , R.P_POST_ID
-		     , R.PICK_YN
 		     , TO_CHAR(R.CRT_DT, 'YYYY-MM-DD') CRT_DT
 		     , R.CRTR_ID
 		     , TO_CHAR(R.MDF_DT, 'YYYY-MM-DD') MDF_DT
@@ -36,6 +35,7 @@
 		    ON R.CRTR_ID = E.EMP_ID
 		 START WITH R.P_POST_ID = #{pPostId}
 		   AND R.RPL_PID IS NULL
+		   AND R.DEL_YN='N'
 		CONNECT BY PRIOR R.RPL_ID = R.RPL_PID
 	</select>
 	
@@ -46,7 +46,6 @@
 		     , R.RPL_PID
 		     , R.RPL_CNTNT
 		     , R.P_POST_ID
-		     , R.PICK_YN
 		     , TO_CHAR(R.CRT_DT, 'YYYY-MM-DD') CRT_DT
 		     , R.CRTR_ID
 		     , TO_CHAR(R.MDF_DT, 'YYYY-MM-DD') MDF_DT

@@ -55,51 +55,32 @@
   	 WHERE DEL_YN = 'N'
   </select>
   
-  <select id="getAllKnowledge" resultMap="knowledgeVOMap">
-    SELECT K.KNL_ID
-		 , K.RQM_ID
-		 , K.KNL_TTL
-		 , K.KNL_CNTNT
-		 , K.KNL_CNT
-		 , K.KNL_REC_CNT
-		 , K.CRT_DT
-		 , K.MDF_DT
-		 , K.DEL_YN
-		 , K.CRTR_ID
-		 , K.MDFR_ID
-	     , K.FILE_NAME
-	     , ORIGIN_FILE_NAME
-	     , P.PRJ_NAME
-	     , R.RQM_TTL
-	  FROM KNOWLEDGE K
-	 INNER JOIN REQUIREMENT R
-	    ON R.RQM_ID = K.RQM_ID
-	 INNER JOIN PROJECT P
-	    ON P.PRJ_ID = R.PRJ_ID
-	  WHERE K.DEL_YN = 'N'
-	  ORDER BY K.CRT_DT DESC
+  <select id="getAllKnowledge" resultType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO">
+   SELECT KNL_ID
+			 , KNL_TTL
+			 , KNL_CNTNT
+			 , KNL_CNT
+			 , KNL_REC_CNT
+			 , CRT_DT
+			 , MDF_DT
+			 , DEL_YN
+			 , CRTR_ID
+			 , MDFR_ID
+		     , FILE_NAME
+		FROM KNOWLEDGE
+		WHERE DEL_YN = 'N'
+		ORDER BY CRT_DT DESC
   </select>
   
   
   <select id="searchAllKnowledgeCount" 
   parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO"
   resultType="_int">
-  	SELECT COUNT(1) 
+  	SELECT COUNT(1)
 	  FROM KNOWLEDGE K
-	 INNER JOIN REQUIREMENT R
-	    ON R.RQM_ID = K.RQM_ID
-	 INNER JOIN PROJECT P
-	    ON P.PRJ_ID = R.PRJ_ID
 	 WHERE K.DEL_YN = 'N'
-	   AND R.DEL_YN = 'N'
 	 <if test='searchKeyword != null and searchKeyword != ""'>
 	 <choose>
-	 	<when test='searchType == "prjName"'>
-	   AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
-	 	</when>
-	 	<when test='searchType == "rqmTtl"'>
-	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
-	 	</when>
 	 	<when test='searchType == "knlTtl"'>
 	   AND K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
 	 	</when>
@@ -108,63 +89,38 @@
 	 	</when>
 	 	<when test='searchType == "knlTtl_knlCntnt"'>
 	   AND (K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
-    	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+   	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
 	 	</when>
 	 	<when test='searchType == "crtrId"'>
 	   AND K.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
 	 	</when>
 	 </choose>
 	 </if>
-	 <if test='empId != null and  empId !=""'>
-		 AND K.RQM_ID IN( SELECT RQM_ID 
-	       					FROM REQUIREMENT R
-	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
-	       				      					 FROM PROJECT_TEAMMATE PT 
-	       				      					WHERE PT.TM_ID =#{empId}
-	       				   					)
-	     				)
-		</if>
   </select>
   
   
     <select id="searchAllKnowledge" 
     parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.SearchKnowledgeVO" 
     resultMap="knowledgeVOMap">
-    <include refid="Common.pagenate_header" />
-  	SELECT K.KNL_ID
-         , K.RQM_ID
-         , K.KNL_TTL
-         , K.KNL_CNTNT
-         , K.KNL_CNT
-         , K.KNL_REC_CNT
-         , TO_CHAR(K.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
-         , TO_CHAR(K.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
-         , K.DEL_YN
-         , K.CRTR_ID
-         , K.MDFR_ID
-         , K.FILE_NAME 
-         , K.ORIGIN_FILE_NAME
-         , P.PRJ_NAME 
-         , R.RQM_TTL
-         , E.EMP_ID
-		 , E.EMP_NAME
-     FROM KNOWLEDGE K
-    INNER JOIN REQUIREMENT R
-       ON R.RQM_ID = K.RQM_ID
-    INNER JOIN PROJECT P
-       ON P.PRJ_ID = R.PRJ_ID
-    INNER JOIN EMPLOYEE E
-       ON E.EMP_ID = K.CRTR_ID 
-    WHERE K.DEL_YN = 'N' 
-      AND R.DEL_YN = 'N'
- <if test='searchKeyword != null and searchKeyword != ""'>
- <choose>
-	<when test='searchType == "prjName"'>
- 		AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
- 	</when>
-	 	<when test='searchType == "rqmTtl"'>
-	   AND R.RQM_TTL LIKE '%' || #{searchKeyword} || '%'
-	 	</when>
+     <include refid="Common.pagenate_header" />
+ 	SELECT K.KNL_ID
+	     , K.KNL_TTL
+	     , K.KNL_CNTNT
+	     , K.KNL_CNT
+	     , K.KNL_REC_CNT
+	     , TO_CHAR(K.CRT_DT, 'YYYY-MM-DD') AS CRT_DT
+	     , TO_CHAR(K.MDF_DT, 'YYYY-MM-DD') AS MDF_DT
+	     , K.DEL_YN
+	     , K.CRTR_ID
+	     , K.MDFR_ID
+	     , K.FILE_NAME
+	     , K.ORIGIN_FILE_NAME
+	FROM KNOWLEDGE K
+	INNER JOIN EMPLOYEE E
+	   ON E.EMP_ID = K.CRTR_ID
+	WHERE K.DEL_YN = 'N'
+<if test='searchKeyword != null and searchKeyword != ""'>
+<choose>
 	 	<when test='searchType == "knlTtl"'>
 	   AND K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
 	 	</when>
@@ -173,24 +129,15 @@
 	 </when>
 	 <when test='searchType == "knlTtl_knlCntnt"'>
 	   AND (K.KNL_TTL LIKE '%' || #{searchKeyword} || '%'
-    	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
+   	OR  K.KNL_CNTNT LIKE '%' || #{searchKeyword} || '%')	
 	 </when>
 	 <when test='searchType == "crtrId"'>
 	   AND K.CRTR_ID  LIKE '%' || #{searchKeyword} || '%'	
 	 </when>
 	 </choose>
 	 </if>
-	 <if test='empId != null and  empId !=""'>
-		 AND K.RQM_ID IN( SELECT RQM_ID 
-	       					FROM REQUIREMENT R
-	       				   WHERE R.PRJ_ID IN ( SELECT PRJ_ID
-	       				      					 FROM PROJECT_TEAMMATE PT 
-	       				      					WHERE PT.TM_ID =#{empId}
-	       				   					)
-	     				)
-		</if>
-		 ORDER BY K.CRT_DT DESC 
- 		<include refid="Common.pagenate_footer" />
+	  ORDER BY K.CRT_DT DESC
+	 <include refid="Common.pagenate_footer" />
   </select>
 	
 	
@@ -198,7 +145,6 @@
   <insert id="insertNewKnowledge" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeVO"> 
 	INSERT INTO KNOWLEDGE
 		 ( KNL_ID
-		 , RQM_ID
 		 , KNL_TTL
 		 , KNL_CNTNT
 		 , KNL_CNT
@@ -212,7 +158,6 @@
 		 , ORIGIN_FILE_NAME)
 	VALUES
 	     (('KNL' || '_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD (SEQ_KNOWLEDGE_PK.NEXTVAL, 6, '0'))
-	     , #{rqmId}
 	     , #{knlTtl}
 	     , #{knlCntnt}
 	     , 0
@@ -224,35 +169,28 @@
 	     , NULL
 	     , #{fileName}
 	     , #{originFileName})
+
    </insert>
 	
   
-  <select id="selectOneKnowledge"  resultMap="knowledgeVOMap">
-	  	SELECT K.KNL_ID
-		 , K.RQM_ID
-		 , K.KNL_TTL
-		 , K.KNL_CNTNT
-		 , K.KNL_CNT
-		 , K.KNL_REC_CNT
-		 , TO_CHAR(K.CRT_DT, 'YYYY-MM-DD') CRT_DT
-		 , TO_CHAR(K.MDF_DT  , 'YYYY-MM-DD') MDF_DT
-		 , K.DEL_YN
-		 , K.CRTR_ID
-		 , K.MDFR_ID
-	     , R.RQM_ID 
-	     , R.RQM_TTL
-	     , P.PRJ_NAME
-	     , K.FILE_NAME
-	     , K.ORIGIN_FILE_NAME
-	  FROM KNOWLEDGE K
-	 INNER JOIN REQUIREMENT R
-	    ON R.RQM_ID = K.RQM_ID
-	 INNER JOIN PROJECT P
-	    ON P.PRJ_ID = R.PRJ_ID
-	 INNER JOIN EMPLOYEE E
-        ON E.EMP_ID = K.CRTR_ID 
-	 WHERE K.DEL_YN = 'N'
-	   AND K.KNL_ID = #{_parameter}
+  <select id="selectOneKnowledge" parameterType="string">
+	  	SELECT k.KNL_ID
+		 , k.KNL_TTL
+		 , k.KNL_CNTNT
+		 , k.KNL_CNT
+		 , k.KNL_REC_CNT
+		 ,TO_CHAR(k.CRT_DT, 'YYYY-MM-DD')   CRT_DT
+		 ,TO_CHAR(k.MDF_DT, 'YYYY-MM-DD')   MDF_DT
+		 , k.DEL_YN
+		 , k.CRTR_ID
+		 , k.MDFR_ID
+	     , k.FILE_NAME
+	     , e.EMP_ID
+		FROM KNOWLEDGE k
+		INNER JOIN EMPLOYEE e
+		ON e.EMP_ID =k.CRTR_ID
+		WHERE DEL_YN = 'N'
+		AND K.KNL_ID =#{_parameter}
   </select>
 	
 	<!-- 조회수 -->
@@ -352,7 +290,7 @@
 		 </foreach>
 	</update>
 	
-	
+
 	
 	
 	
