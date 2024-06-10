@@ -26,8 +26,10 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.project.service.CalendarService;
 import com.ktdsuniversity.edu.pms.project.service.ClientService;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.CalendarVO;
 import com.ktdsuniversity.edu.pms.project.vo.ClientVO;
 import com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
@@ -62,6 +64,9 @@ public class ApiProjectController {
 	    
 	    @Autowired
 	    private ClientService clientService;
+	    
+	    @Autowired
+	    private CalendarService calendarService;
 	    
 	    // getAllProject + getAllProjectByProjectTeammateRole
 	    @GetMapping("/search")
@@ -264,5 +269,27 @@ public class ApiProjectController {
 			List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
 			return ApiResponse.Ok(employeeListVO);
 		}
+	    
+	    @GetMapping("/calendar/{prjId}")
+	    public ApiResponse getCalendar(@PathVariable String prjId,Authentication authentication) {
+	    	List<CalendarVO> calendarList = this.calendarService.getCalendarByPrjId(prjId);
+	    	return ApiResponse.Ok(calendarList);
+	    }
+	    
+	    @PostMapping("/calendar")
+	    public ApiResponse addCalendar(@RequestBody CalendarVO calendarVO, Authentication authentication) {
+	    	
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+	        if (!employeeVO.getAdmnCode().equals("301")) {
+	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+	        }
+	    	boolean isSuccess = this.calendarService.addCalendar(calendarVO);
+	    	if(!isSuccess) {
+	    		return ApiResponse.FORBIDDEN("캘린더에 추가하지 못했습니다.");
+	    	}
+	    	return ApiResponse.Ok(isSuccess);
+	    }
 
 }

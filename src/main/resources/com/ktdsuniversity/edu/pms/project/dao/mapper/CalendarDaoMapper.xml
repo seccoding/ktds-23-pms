@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.project.dao.CalendarDao">
+	<select id="getCalendarByPrjId" resultType="com.ktdsuniversity.edu.pms.project.vo.CalendarVO" parameterType="String">
+		SELECT CLND_ID
+			 , CLND_DATE
+			 , CLND_CONTENT
+			 , PRJ_ID
+			 , DEL_YN
+		  FROM CALENDAR
+		 WHERE PRJ_ID = #{_parameter}
+		   AND DEL_YN = 'N'
+	</select>
+	<insert id="addCalendar" parameterType="com.ktdsuniversity.edu.pms.project.vo.CalendarVO">
+		INSERT INTO CALENDAR
+			 (CLND_ID
+			, CLND_DATE
+			, CLND_CONTENT
+			, PRJ_ID
+			, DEL_YN)
+			 VALUES 
+			 ('CLND_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_CLND_PK.NEXTVAL, 6, '0')
+			, #{clndDate}
+			, #{clndContent}
+			, #{prjId}
+			, 'N')
+	</insert>
+</mapper>
