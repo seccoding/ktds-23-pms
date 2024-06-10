@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -47,6 +48,14 @@ public interface EmployeeService {
 	public EmployeeVO getOneEmployeeCheckNull(String empId);
 
 	public EmployeeVO getOneEmployeenullCheck(String empId);
+
+	public List<EmployeeDataVO> getDepartList();
+
+	public List<EmployeeDataVO> getTeamList();
+
+	public List<EmployeeDataVO> getJobList();
+
+	public List<EmployeeDataVO> getEmployeeGradeList();
 
 
 

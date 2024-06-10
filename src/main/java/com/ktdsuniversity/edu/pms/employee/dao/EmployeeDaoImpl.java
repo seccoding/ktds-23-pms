@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -161,6 +162,26 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().update(EmployeeDao.NAME_SPACE+".modifyEmployeeDept", employeeVO);
 	}
 
-	
+	@Override
+	public List<EmployeeDataVO> getDepartList() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getDepartList");
+	}
+
+	@Override
+	public List<EmployeeDataVO> getTeamList() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getTeamList");
+	}
+
+	@Override
+	public List<EmployeeDataVO> getJobList() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getJobList");
+	}
+
+	@Override
+	public List<EmployeeDataVO> getEmployeeGradeList() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getEmployeeGradeList");
+	}
+
+
 
 }

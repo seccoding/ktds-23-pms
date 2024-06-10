@@ -29,10 +29,7 @@
 			<id column="TM_ID" property="tmId"/>
 			<result column="TM_NAME" property="tmName"/>
 		</association>
-<!--		<association property="assignmentVO"-->
-<!--					 javaType="com.ktdsuniversity.edu.pms.team.vo.AssignmentVO">-->
-<!--			-->
-<!--		</association>-->
+
 	</resultMap>
 	<resultMap type="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO"
 			   id="employeeVOMapByCommonCode"
@@ -125,9 +122,12 @@
 		 , TO_CHAR(E.LGN_TRY_DT,'YYYY-MM-DD HH:MM:SS' ) LGN_TRY_DT
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
+		 , T.TM_NAME
 	  FROM EMPLOYEE E 
-	  JOIN DEPARTMENT D 
+	  LEFT JOIN DEPARTMENT D 
 	    ON D.DEPT_ID = E.DEPT_ID 
+	  LEFT JOIN TEAM T
+	    ON E.TM_ID = T.TM_ID
 	 WHERE E.WORK_STS != '204'	
 	  
 	</select>
@@ -162,11 +162,14 @@
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
 		 , J.JOB_NAME
+		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D 
 	    ON D.DEPT_ID = E.DEPT_ID
 	  JOIN JOB J
-	    ON J.JOB_ID = E.JOB_ID 
+	    ON J.JOB_ID = E.JOB_ID
+	  LEFT JOIN TEAM T
+	    ON E.TM_ID = T.TM_ID
 	 WHERE E.WORK_STS != '204'	
 	 <if test='searchKeyWord != null and searchKeyWord !="" '>
 		  	<choose>
@@ -178,6 +181,9 @@
 		  		</when>
 		  		<when test='searchType == "job_name"'>
 		  		AND J.JOB_NAME LIKE '%' || #{searchKeyWord} || '%'
+		  		</when>
+		  		<when test='searchType == "team_name"'>
+		  		AND T.TM_NAME LIKE '%' || #{searchKeyWord} || '%'
 		  		</when>
 		  	</choose>
 		  </if>
@@ -224,6 +230,7 @@
 		 , D.DEPT_NAME 
 		 , J.JOB_NAME
 		 , C.CMCD_NAME
+		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D
 	    ON D.DEPT_ID = E.DEPT_ID
@@ -231,6 +238,8 @@
 	    ON J.JOB_ID = E.JOB_ID
 	  JOIN COMMON_CODE C
 	    ON C.CMCD_ID = E.PSTN_ID
+	  LEFT JOIN TEAM T
+	    ON E.TM_ID = T.TM_ID
 	 WHERE E.EMP_ID = #{_parameter}
 	   AND E.WORK_STS != '204'	  
 	</select>
@@ -275,7 +284,6 @@
 			 , BRTH = #{brth}
 			 , EMAIL = #{email}
 			 , HIRE_YEAR = #{hireYear}
-			 , HIRE_DT = #{hireDt}
 			 , DEPT_ID = #{deptId}
 		 WHERE EMP_ID = #{empId}
 	</update>
@@ -357,29 +365,33 @@
 			 , T.DEPT_ID
 			 , T.TM_LEAD_ID
 		  FROM TEAM T
-		 INNER JOIN ASSIGNMENT A
-		    ON T.TM_ID = A.TM_ID
-		 WHERE A.EMP_ID = #{_parameter}
-		   AND A.DEL_YN = 'N'
+		 INNER JOIN EMPLOYEE E
+		    ON T.TM_ID = E.TM_ID
+		 WHERE E.EMP_ID = #{_parameter}
 		   AND T.DEL_YN = 'N'
 	</select>
+	
 	<update id="deleteTeam" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-		UPDATE ASSIGNMENT
+		UPDATE TEAM
 		   SET DEL_YN = 'Y'
 		 WHERE EMP_ID = #{empId}
 		   AND TM_ID = #{teamVO.tmId}
 	</update>
 	
 	<insert id="addTeam" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-		INSERT INTO ASSIGNMENT
-		 (ASST_ID
-		, EMP_ID
-		, TM_ID
+		INSERT INTO TEAM
+		 (TM_ID
+		, TM_NAME
+		, TM_CR_DT
+		, TM_LEAD_ID
+		, DEPT_ID
 		, DEL_YN)
 		VALUES 
-		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ASGN_PK.NEXTVAL, 6, '0')
-		, #{empId}
-		, #{teamVO.tmId}
+		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_TEAM_PK.NEXTVAL, 6, '0')
+		, #{teamVO.tmName}
+		, SYSDATE
+		, #{teamVO.tmLeadId}
+		, #{deptId}
 		, 'N')
 	</insert>
 	<select id="findEmployeesByDeptID"
@@ -443,5 +455,31 @@
 		   SET JOB_ID = #{jobId}
 		 WHERE EMP_ID = #{empId}
 	</update>
+	
+	<select id="getDepartList" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO">
+		SELECT DEPT_ID AS DATA_ID
+			 , DEPT_NAME AS DATA_NAME
+		FROM   DEPARTMENT
+	</select>
+	
+	<select id="getTeamList" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO">
+		SELECT TM_ID AS DATA_ID
+			 , TM_NAME AS DATA_NAME
+		FROM   TEAM
+	</select>
+	
+	<select id="getJobList" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO">
+		SELECT JOB_ID AS DATA_ID
+			 , JOB_NAME AS DATA_NAME
+		FROM   JOB
+	</select>
+	
+	<select id="getEmployeeGradeList" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO">
+	    SELECT CMCD_ID AS DATA_ID,
+	           CMCD_NAME AS DATA_NAME
+	    FROM   COMMON_CODE
+	    WHERE  TO_NUMBER(CMCD_ID) > 100
+	</select>
+
 
 </mapper>
