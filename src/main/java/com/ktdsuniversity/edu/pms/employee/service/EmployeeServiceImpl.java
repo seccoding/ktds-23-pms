@@ -14,6 +14,7 @@ import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -49,7 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public EmployeeListVO searchAllEmployee(SearchEmployeeVO searchEmployeeVO) {
-		
+		searchEmployeeVO.setListSize(1000);
 		int employeeCount = this.employeeDao.searchEmployeeAllCount(searchEmployeeVO);
 		searchEmployeeVO.setPageCount(employeeCount);
 		List<EmployeeVO> employeeList = this.employeeDao.searchAllEmployee(searchEmployeeVO);
@@ -79,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeVO getOneEmployee(String empId) {
 		
-		System.out.println(">?>>>" + empId);
+//		System.out.println(">?>>>" + empId);
 		
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(empId);
 		List<TeamVO> teamList = this.employeeDao.getEmployeeAllTeam(empId);
@@ -274,6 +275,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 			
 		return employeeVO;
+	}
+
+	@Override
+	public List<EmployeeDataVO> getDepartList() {
+		
+		List<EmployeeDataVO> departList = this.employeeDao.getDepartList();
+		return departList;
+	}
+
+	@Override
+	public List<EmployeeDataVO> getTeamList() {
+
+		List<EmployeeDataVO> teamList = this.employeeDao.getTeamList();
+		return teamList;
+	}
+
+	@Override
+	public List<EmployeeDataVO> getJobList() {
+
+		List<EmployeeDataVO> jobList = this.employeeDao.getJobList();
+		return jobList;
+	}
+
+	@Override
+	public List<EmployeeDataVO> getEmployeeGradeList() {
+
+		List<EmployeeDataVO> gradeList = this.employeeDao.getEmployeeGradeList();
+		return gradeList;
 	}
 
 }

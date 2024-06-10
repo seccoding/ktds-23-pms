@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.employee.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -59,6 +60,14 @@ public interface EmployeeDao {
 	public int modifyEmployeePosition(EmployeeVO employeeVO);
 
 	public int modifyEmployeeDept(EmployeeVO employeeVO);
+
+	public List<EmployeeDataVO> getDepartList();
+
+	public List<EmployeeDataVO> getTeamList();
+
+	public List<EmployeeDataVO> getJobList();
+
+	public List<EmployeeDataVO> getEmployeeGradeList();
 
 	
 

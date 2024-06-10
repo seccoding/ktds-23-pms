@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.employee.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,9 +22,12 @@ import com.ktdsuniversity.edu.pms.changehistory.service.ChangeHistoryService;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
 import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
+import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -30,6 +35,7 @@ import com.ktdsuniversity.edu.pms.employee.web.EmployeeController;
 import com.ktdsuniversity.edu.pms.job.service.JobService;
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
+import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
 
@@ -58,6 +64,8 @@ public class ApiEmployeeController {
 	@Autowired
 	private FileHandler fileHandler;
 	
+	private CommonCodeService commonCodeService;
+	
 	
 	// 사원 리스트
 	@GetMapping("/employee")
@@ -70,8 +78,8 @@ public class ApiEmployeeController {
 	}
 	
 	// 사원 상세 조회
-	@GetMapping("/employee/{empId}")
-	public ApiResponse getOneEmployee(@PathVariable String empId) {
+	@GetMapping("/employee/view/{empId}")
+	public ApiResponse getOneEmployee(@PathVariable String empId, Authentication authentication) {
 		
 		EmployeeVO employeeVO = this.employeeService.getOneEmployee(empId);
 		
@@ -80,13 +88,37 @@ public class ApiEmployeeController {
 //		List<JobVO> jobList = this.changeHistoryService.getAllJob();
 //		List<CommonCodeVO> positionList = this.changeHistoryService.getAllPosition();
 		
-		return ApiResponse.Ok(employeeVO, employeeVO == null ? 0 : 1);
+		return ApiResponse.Ok(employeeVO);
+	}
+	
+	// 부서, 팀, 직무, 직급 리스트 조회
+	@GetMapping("/employee/data")
+	public ApiResponse getDataList() {
+		var result = new HashMap<String, List<EmployeeDataVO>>();
+		List<EmployeeDataVO> deptList = this.employeeService.getDepartList();
+		List<EmployeeDataVO> teamList = this.employeeService.getTeamList();
+		List<EmployeeDataVO> jobList = this.employeeService.getJobList();
+		List<EmployeeDataVO> gradeList = this.employeeService.getEmployeeGradeList();
+		
+		result.put("depart", deptList);
+		result.put("team", teamList);
+		result.put("job", jobList);
+		result.put("grade", gradeList.stream().filter(grade -> {
+            return Integer.parseInt(grade.getDataId()) <= 110;
+    }).toList());
+		
+		return ApiResponse.Ok(result);
 	}
 	
 	
 	// 수정
-	@PutMapping("employee/{empId}")
-	public ApiResponse domodifyEmployee(EmployeeVO employeeVO, MultipartFile file, Authentication authentication) {
+	@PutMapping("/employee/modify/{empId}")
+	public ApiResponse domodifyEmployee(@RequestBody EmployeeVO employeeVO,
+										@PathVariable("empId") String empId,
+										MultipartFile file,
+										Authentication authentication) {
+		
+		
 		
 		boolean isNotEmptyJobId = ValidationUtils.notEmpty( employeeVO.getJobId());
 		boolean isNotEmptyDeptId = ValidationUtils.notEmpty( employeeVO.getDeptId());
@@ -102,7 +134,7 @@ public class ApiEmployeeController {
 		
 		
 		List<String> errorMessage = null;
-		
+		 
 		if (! isNotEmptyJobId) {
 			
 			if(errorMessage == null) {
@@ -167,12 +199,12 @@ public class ApiEmployeeController {
 			errorMessage.add("비밀번호를 입력해주세요.");
 		}
 		
-		if (! isNotEmptyConfirmPwd) {
-			if(errorMessage == null) {
-				errorMessage = new ArrayList<>();
-			}
-			errorMessage.add("비밀번호 확인을 입력해주세요.");
-		}
+//		if (! isNotEmptyConfirmPwd) {
+//			if(errorMessage == null) {
+//				errorMessage = new ArrayList<>();
+//			}
+//			errorMessage.add("비밀번호 확인을 입력해주세요.");
+//		}
 		
 		if (! isNotEmptyMngrYn) {
 			if(errorMessage == null) {
