@@ -80,10 +80,16 @@ public class ApiProjectController {
 	        ProjectListVO projectListVO = projectService.searchProject(searchProjectVO);
 	        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 		
+	        List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammate().stream()
+					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).filter(tm -> tm.getRole().equals("PM"))
+					.toList();
+			boolean isPM = !tmList.isEmpty();
 	        
 	        List<Object> dataList = new ArrayList<>();
 			dataList.add(projectCommonCodeList);
 			dataList.add(projectListVO);
+			dataList.add(employeeVO);
+			dataList.add(isPM);
 
 	        return ApiResponse.Ok(dataList);
 	    }

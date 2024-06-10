@@ -27,10 +27,6 @@
 		, SRV_ID
 		, SQP_CNTNT
 		, NEXT_ID
-		, CRTR_ID
-		, CRT_DT
-		, MDFR_ID
-		, MDF_DT
 		, DEL_YN
 		, SEQ)
 		VALUES
@@ -38,10 +34,6 @@
 		, #{srvId}
 		, #{sqpCntnt}
 		, #{nextId}
-		, #{crtrId}
-		, SYSDATE
-		, NULL
-		, NULL
 		, 'N'
 		, #{seq})
 	</insert>
@@ -51,10 +43,6 @@
 			 , SRV_ID
 			 , SQP_CNTNT
 			 , NEXT_ID
-			 , CRTR_ID
-			 , CRT_DT
-			 , MDFR_ID
-			 , MDF_DT
 			 , DEL_YN
 			 , SEQ
 		  FROM SURVEY_QUESTION_PICK
@@ -67,8 +55,6 @@
 		UPDATE SURVEY_QUESTION_PICK
 		   SET SQP_CNTNT = #{sqpCntnt}
 		     , NEXT_ID = #{nextId}
-		     , MDFR_ID = #{mdfrId}
-		     , MDF_DT = SYSDATE
 		 WHERE SQP_ID = #{sqpId}
 	</update>
 	
@@ -92,10 +78,6 @@
 			 , SRV_ID
 			 , SQP_CNTNT
 			 , NEXT_ID
-			 , CRTR_ID
-			 , CRT_DT
-			 , MDFR_ID
-			 , MDF_DT
 			 , DEL_YN
 			 , SEQ
 		  FROM SURVEY_QUESTION_PICK
@@ -106,8 +88,6 @@
 	
 	<update id="deleteOneAnswer" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO">
 		UPDATE SURVEY_QUESTION_PICK
-		   SET MDFR_ID = #{mdfrId}
-		     , MDF_DT = SYSDATE
 		     , DEL_YN = 'Y'
 		 WHERE SQP_ID = #{sqpId}
 	</update>

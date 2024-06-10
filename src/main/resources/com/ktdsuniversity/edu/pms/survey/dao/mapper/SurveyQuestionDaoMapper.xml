@@ -63,7 +63,9 @@
         </association>
     </resultMap>
     
-    <select id="searchTeammate" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO" resultMap="projectVOMap">
+    <select id="searchTeammate"
+    		parameterType="com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO"
+    		resultMap="projectVOMap">
     	SELECT PT.TM_ID,
 			   PT.SRV_YN 
 		  FROM PROJECT P
@@ -79,7 +81,6 @@
 
 	<select id="getAllSurvey" resultMap="SurveyQuestionVOMap">
 		SELECT DISTINCT p.PRJ_ID
-			 , sq.SRV_STS
 			 , p.PRJ_NAME
 			 , p.CLNT_INFO
 			 , p.DEPT_ID
@@ -101,13 +102,11 @@
 			 , sq.PRJ_ID
 			 , sq.SRV_QST
 			 , sq.CRTR_ID
-			 , sq.CRT_DT
 			 , sq.MDFR_ID
 			 , sq.MDF_DT
 			 , sq.DEL_YN
 			 , sq.SEQ
 			 , sq.TYPE_YN
-			 , sq.SRV_STS
 			 , p.PRJ_ID
 			 , p.PRJ_NAME
 			 , d.DEPT_NAME
@@ -118,13 +117,11 @@
 		  			 , PRJ_ID
 		  			 , SRV_QST
 		  			 , CRTR_ID
-		  			 , CRT_DT
 		  			 , MDFR_ID
 		  			 , MDF_DT
 		  			 , DEL_YN
 		  			 , SEQ
 		  			 , TYPE_YN
-		  			 , SRV_STS
 		  		  FROM SURVEY_QUESTION) sq
 		  JOIN PROJECT p
 		    ON p.PRJ_ID = sq.PRJ_ID
@@ -136,7 +133,7 @@
 		    ON e.EMP_ID = pt.TM_ID
 		 WHERE sq.PRJ_ID = #{_parameter}
 		   AND pt.ROLE = 'PM'
-		   AND ROWNUM = 1
+		   <!-- AND ROWNUM = 1 -->
 		   AND sq.DEL_YN = 'N'
 		 ORDER BY sq.SEQ ASC
 	</select>
@@ -153,25 +150,21 @@
 		, PRJ_ID
 		, SRV_QST
 		, CRTR_ID
-		, CRT_DT
 		, MDFR_ID
 		, MDF_DT
 		, DEL_YN
 		, SEQ
-		, TYPE_YN
-		, SRV_STS)
+		, TYPE_YN)
 		VALUES
 		 (#{srvId}
 		, #{prjId}
-		, ' '
+		, #{srvQst}
 		, #{crtrId}
-		, SYSDATE
 		, NULL
 		, NULL
 		, 'N'
 		, #{seq}
-		, #{typeYn}
-		, 'W')
+		, #{typeYn})
 	</insert>
 	
 	<select id="getOneSurvey" parameterType="String" resultMap="SurveyQuestionVOMap">
@@ -179,13 +172,11 @@
 			 , PRJ_ID
 			 , SRV_QST
 			 , CRTR_ID
-			 , TO_CHAR(CRT_DT, 'YYYY/MM/DD') CRT_DT
 			 , MDFR_ID
 			 , TO_CHAR(MDF_DT, 'YYYY/MM/DD') MDF_DT
 			 , DEL_YN
 			 , SEQ
 			 , TYPE_YN
-			 , SRV_STS
 		  FROM SURVEY_QUESTION
 		 WHERE DEL_YN = 'N'
 		   AND SRV_ID = #{_parameter}
@@ -196,7 +187,6 @@
 		UPDATE SURVEY_QUESTION
 		   SET SRV_QST = #{srvQst}
 		     , TYPE_YN = #{typeYn}
-		     , SRV_STS = #{srvSts}
 		 WHERE SRV_ID = #{srvId}
 	</update>
 	
@@ -223,70 +213,64 @@
 			 , PRJ_ID
 			 , SRV_QST
 			 , CRTR_ID
-			 , CRT_DT
 			 , MDFR_ID
 			 , MDF_DT
 			 , DEL_YN
 			 , SEQ
 			 , TYPE_YN
-			 , SRV_STS
 		  FROM SURVEY_QUESTION
 		 WHERE PRJ_ID = #{prjId}
 		   AND DEL_YN = 'N'
 		 ORDER BY SEQ ASC
 	</select>
 	
- 	<select id="getOneSurveyForWrite" parameterType="String" resultMap="SurveyQuestionVOMap">
+ 	<select id="getOneSurveyForWrite" 
+ 			parameterType="String" 
+ 			resultMap="SurveyQuestionVOMap">
 		SELECT sq.SRV_ID
 			 , sq.PRJ_ID
 			 , sq.SRV_QST
 			 , sq.CRTR_ID
-			 , sq.CRT_DT
 			 , sq.MDFR_ID
 			 , sq.MDF_DT
 			 , sq.DEL_YN
 			 , sq.SEQ
 			 , sq.TYPE_YN
-			 , sq.SRV_STS
 			 , sqp.SQP_ID
 			 , sqp.SQP_CNTNT
 			 , sqp.NEXT_ID
 			 , sqp.DEL_YN
 			 , sqp.SEQ
 		  FROM (SELECT SRV_ID
-			  			  , PRJ_ID
-			  			  , SRV_QST
-			  			  , CRTR_ID
-			  			  , CRT_DT
-			  			  , MDFR_ID
-			  			  , MDF_DT
-			  			  , DEL_YN
-			  			  , SEQ
-			  			  , TYPE_YN
-			  			  , SRV_STS
-			  		   FROM SURVEY_QUESTION) sq
+		  			 , PRJ_ID
+		  			 , SRV_QST
+		  			 , CRTR_ID
+		  			 , MDFR_ID
+		  			 , MDF_DT
+		  			 , DEL_YN
+		  			 , SEQ
+		  			 , TYPE_YN
+		  		  FROM SURVEY_QUESTION) sq
 		  JOIN SURVEY_QUESTION_PICK sqp
 		    ON sqp.SRV_ID = sq.SRV_ID
 		 WHERE sq.PRJ_ID = #{_parameter}
 		   AND ROWNUM = 1
 		   AND sq.DEL_YN = 'N'
 		   AND sqp.DEL_YN = 'N'
-		 ORDER BY sq.SEQ ASC
 	</select>
 	
-	<select id="getAllQuestions" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO"
+	<select id="getAllQuestions" 
+			parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO"
 			resultMap="SurveyQuestionVOMap">
 		SELECT SRV_ID
 			 , PRJ_ID
 			 , SRV_QST
 			 , CRTR_ID
-			 , CRT_DT
 			 , MDFR_ID
 			 , MDF_DT
 			 , DEL_YN
 			 , SEQ
 			 , TYPE_YN
-			 , SRV_STS
 		  FROM SURVEY_QUESTION
 		 WHERE PRJ_ID = #{prjId}
 		   AND DEL_YN = 'N'
@@ -298,13 +282,11 @@
 			 , PRJ_ID
 			 , SRV_QST
 			 , CRTR_ID
-			 , CRT_DT
 			 , MDFR_ID
 			 , MDF_DT
 			 , DEL_YN
 			 , SEQ
 			 , TYPE_YN
-			 , SRV_STS
 		  FROM SURVEY_QUESTION
 		 WHERE PRJ_ID = #{_parameter}
 		   AND DEL_YN = 'N'
@@ -379,8 +361,9 @@
 		     , P.CRT_DT
 		     , D.DEPT_NAME
 		     , PT.SRV_YN
-		     , C.CMCD_NAME     
-		     , SQ.SRV_STS
+		     , C.CMCD_NAME
+		     , P.SRV_CR_DATE
+			 , P.SRV_END_DATE
 		  FROM PROJECT P
 		  LEFT JOIN DEPARTMENT D
 		    ON P.DEPT_ID = D.DEPT_ID
@@ -393,8 +376,7 @@
 		 WHERE P.DEL_YN = 'N'
 		   AND D.DEL_YN = 'N'
 		   AND C.DEL_YN = 'N'
-		   AND P.PRJ_STS = '409'
-		   <if test='searchKeyword != null and searchKeyword != ""'>
+<!-- 		   <if test='searchKeyword != null and searchKeyword != ""'>
             <choose>
                 <when test='searchType == "project"'>
            AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
@@ -406,7 +388,7 @@
            AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
                 </when>
             </choose>
-	        </if>
+	        </if> -->
 	        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
 	            <choose>
 	                <when test='employeeVO.admnCode == "301"'>
@@ -423,7 +405,8 @@
         	<include refid="Common.pagenate_footer"/>
 	</select>
 
-	<update id="deleteOneSurvey" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
+	<update id="deleteOneSurvey" 
+			parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
 		UPDATE SURVEY_QUESTION
 		   SET MDFR_ID = #{mdfrId}
 		     , MDF_DT = SYSDATE

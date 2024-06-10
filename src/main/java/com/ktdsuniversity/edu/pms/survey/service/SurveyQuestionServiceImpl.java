@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectSurveyQuestionVO;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyVO;
@@ -19,7 +20,10 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 	
 	@Autowired
 	private SurveyQuestionDao surveyQuestionDao;
+	@Autowired
+	private ProjectDao projectDao;
 
+	
 	@Override
 	public SurveyListVO getAllSurvey() {
 		List<SurveyQuestionVO> surveyList = this.surveyQuestionDao.getAllSurvey();
@@ -44,6 +48,8 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 	public boolean createNewSurveyQuestion(SurveyQuestionVO surveyQuestionVO) {
 		int insertedCount = this.surveyQuestionDao.insertNewSurveyQuestion(surveyQuestionVO);
 		
+		System.out.println("아아아아ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ" + surveyQuestionVO.getPrjId());
+		insertedCount = this.projectDao.updateOneProjectSurveySts(surveyQuestionVO.getPrjId());
 		return insertedCount > 0;
 	}
 

@@ -155,4 +155,9 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     public int selectTeammateRolePLCountByProjectId(String prjId) {
         return getSqlSession().selectOne(ProjectDao.NAME_SPACE + ".selectTeammateRolePLCountByProjectId", prjId);
     }
+
+    @Override
+	public int updateOneProjectSurveySts(String prjId) {
+		return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneProjectSurveySts", prjId);
+	}
 }

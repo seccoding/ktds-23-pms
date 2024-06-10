@@ -15,7 +15,7 @@ import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO;
 
 @Service
 public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService {
-	
+
 	@Autowired
 	private SurveyQuestionPickDao surveyQuestionPickDao;
 
@@ -28,24 +28,24 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 	@Transactional
 	@Override
 	public boolean modifyOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO) {
-		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
-								.getOneAnswer(surveyQuestionPickVO.getSqpId());
-		
-		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
-			throw new PageNotFoundException();
-		}
+//		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
+//				.getOneAnswer(surveyQuestionPickVO.getSqpId());
+
+//		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
+//			throw new PageNotFoundException();
+//		}
 		return this.surveyQuestionPickDao.modifyOneAnswer(surveyQuestionPickVO) > 0;
 	}
 
 	@Transactional
 	@Override
 	public boolean modifyOneAnswerSequence(SurveyQuestionPickVO surveyQuestionPickVO) {
-		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
-								.getOneAnswerSequence(surveyQuestionPickVO.getSqpId());
-		
-		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
-			throw new PageNotFoundException();
-		}
+//		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
+//				.getOneAnswerSequence(surveyQuestionPickVO.getSqpId());
+//
+//		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
+//			throw new PageNotFoundException();
+//		}
 		return this.surveyQuestionPickDao.modifyOneAnswerSequence(surveyQuestionPickVO) > 0;
 	}
 
@@ -57,10 +57,10 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 	@Override
 	public SurveyListVO getAllPicks() {
 		List<SurveyQuestionPickVO> pickList = this.surveyQuestionPickDao.getAllPicks();
-		
+
 		SurveyListVO surveyListVO = new SurveyListVO();
 		surveyListVO.setPickList(pickList);
-		
+
 		return surveyListVO;
 	}
 
@@ -72,21 +72,22 @@ public class SurveyQuestionPickServiceImpl implements SurveyQuestionPickService 
 	@Transactional
 	@Override
 	public boolean deleteOneSurveyPick(SurveyQuestionPickVO surveyQuestionPickVO) {
-		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao.getOneAnswer(surveyQuestionPickVO.getSqpId());
-		
-		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
-			throw new PageNotFoundException();
-		}
+//		SurveyQuestionPickVO originalSurveyQuestionPickVO = this.surveyQuestionPickDao
+//				.getOneAnswer(surveyQuestionPickVO.getSqpId());
+
+//		if (!originalSurveyQuestionPickVO.getSqpId().equals(surveyQuestionPickVO.getSqpId())) {
+//			throw new PageNotFoundException();
+//		}
 		return this.surveyQuestionPickDao.deleteOneAnswer(surveyQuestionPickVO) > 0;
 	}
 
 	@Override
 	public SurveyListVO searchAllPicks(SurveyQuestionPickVO surveyQuestionPickVO) {
 		List<SurveyQuestionPickVO> pickList = this.surveyQuestionPickDao.getAllPicks(surveyQuestionPickVO);
-		
+
 		SurveyListVO surveyListVO = new SurveyListVO();
 		surveyListVO.setPickList(pickList);
-		
+
 		return surveyListVO;
 	}
 

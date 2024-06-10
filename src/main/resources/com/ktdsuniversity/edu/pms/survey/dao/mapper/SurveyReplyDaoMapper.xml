@@ -23,8 +23,6 @@
 		, SRV_RPL_CNTNT
 		, CRTR_ID
 		, CRT_DT
-		, MDFR_ID
-		, MDF_DT
 		, DEL_YN)
 		VALUES
 		 ('SRV_RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_REPLY_PK.NEXTVAL, 6, '0')
@@ -32,8 +30,6 @@
 		, #{srvRplCntnt}
 		, ${crtrId}
 		, SYSDATE
-		, NULL
-		, NULL
 		, 'N')
 	</insert>
 	
@@ -44,7 +40,6 @@
 			 , CRTR_ID
 			 , CRT_DT
 			 , MDFR_ID
-			 , MDF_DT
 			 , DEL_YN
 		  FROM SURVEY_REPLY
 		 WHERE SRV_ID = #{srvId}

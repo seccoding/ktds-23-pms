@@ -127,6 +127,9 @@
         , C.CMCD_NAME
         , D.DEPT_NAME
         , CL.CLNT_NAME
+        , P.SRV_STS
+        , P.SRV_CR_DATE
+        , P.SRV_END_DATE
         FROM PROJECT P
         INNER JOIN DEPARTMENT D
         ON P.DEPT_ID = D.DEPT_ID
@@ -586,4 +589,12 @@
         FROM PROJECT_TEAMMATE PT
         WHERE PRJ_ID = #{_parameter} AND DEL_YN = 'N' AND PT."ROLE" = 'PL'
     </select>
+    
+    <update id="updateOneProjectSurveySts"
+    		parameterType="String">
+    	UPDATE PROJECT 
+		   SET SRV_STS = 'Y'
+		 WHERE PRJ_ID = #{prjId}
+		   AND DEL_YN = 'N' 
+    </update>
 </mapper>
