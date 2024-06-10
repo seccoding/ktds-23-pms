@@ -5,16 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
@@ -29,7 +31,6 @@ import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
-import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -220,7 +221,7 @@ public class ApiRequirementController {
 	}
 	
 	
-	@PostMapping("/requirement/modify/{rqmId}")
+	@PutMapping("/requirement/modify/{rqmId}")
 	public ApiResponse modifyRequirement(Authentication authentication, @PathVariable String rqmId,
 			RequirementVO requirementVO, @RequestParam(required = false) MultipartFile file) {
 		
@@ -254,6 +255,36 @@ public class ApiRequirementController {
 
 		return ApiResponse.Ok(isSuccess);
 
+	}
+	
+	
+	@DeleteMapping("/requirement/delete/{rqmId}")
+	public ApiResponse deleteRequirement(Authentication authentication, @PathVariable String rqmId) {
+		// 사용자 체크: 삭제는 본인과 관리자만 가능함
+		
+		// 요구사항 게시물을 삭제하는 API
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+
+		RequirementVO requirementVO = this.requirementService.getOneRequirement(rqmId);
+		if (throwUnauthorizedUser(employeeVO, requirementVO.getCrtrId())) {
+			return ApiResponse.Ok(false);
+		}
+//		TODO isSuccess 의 결과에 따라 값을 다르게 반환
+		boolean isSuccess = this.requirementService.deleteOneRequirement(requirementVO);
+		
+		return ApiResponse.Ok(isSuccess);
+		
+	}
+	
+	
+	@GetMapping("/requirement/downloadFile/{rqmId}")
+	public ResponseEntity<Resource> fileDownload(@PathVariable String rqmId) {
+
+		RequirementVO Requirement = this.requirementService.getOneRequirement(rqmId);
+
+		return this.requirementService.getDownloadFile(Requirement);
 	}
 	
 	
