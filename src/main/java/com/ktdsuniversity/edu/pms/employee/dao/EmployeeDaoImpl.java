@@ -158,6 +158,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	}
 
 	@Override
+	public int modifyEmployeeTeam(EmployeeVO employeeVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE+".modifyEmployeeTeam", employeeVO);
+	}
+	
+	@Override
 	public int modifyEmployeeDept(EmployeeVO employeeVO) {
 		return getSqlSession().update(EmployeeDao.NAME_SPACE+".modifyEmployeeDept", employeeVO);
 	}
@@ -180,6 +185,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public List<EmployeeDataVO> getEmployeeGradeList() {
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getEmployeeGradeList");
+	}
+
+	@Override
+	public List<EmployeeDataVO> getEmployeeWorkStsList() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getEmployeeWorkStsList");
 	}
 
 

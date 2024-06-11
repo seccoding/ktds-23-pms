@@ -64,6 +64,16 @@ public class ApiResponse {
 		response.errors = errorMessage;
 		return response;
 	}
+	
+	public static ApiResponse BAD_REQUEST(Object errorMessage) {
+		ApiResponse response = new ApiResponse();
+		response.status = HttpStatus.BAD_REQUEST.value();
+		response.statusMessage = HttpStatus.BAD_REQUEST.getReasonPhrase();
+		response.errors = errorMessage;
+		return response;
+	}
+	
+	
 
 	public ApiResponse() {
 

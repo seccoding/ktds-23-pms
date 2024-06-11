@@ -171,53 +171,53 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		
 		// 부서가 변경된 경우 부서 변경 이력 추가
-		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
-			
-			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
-
-			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
-			if(deptHistList.size() > 0) {
-				String prevDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
-				
-				employeeVO.setHireDt(prevDate);		
-			}
-			
-			employeeVO.setDeptId(originEmployee.getDeptId());
-			int insertCnt = 0; 
-			insertCnt =	this.changeHistoryDao.insertOneChangeDeptHistory(employeeVO);
-			
-			if(insertCnt == 0) {
-				return false;
-			}
-			
-		}
+//		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
+//			
+//			List<DepartmentHistoryVO> deptHistList = this.changeHistoryDao.getAllDeptHist(employeeVO.getEmpId());
+//
+//			// 기존 이력 존재할 경우 최근 이력의 end날짜를 시작 날짜로 설정
+//			if(deptHistList.size() > 0) {
+//				String prevDate = this.changeHistoryDao.getRecentDeptHist(employeeVO.getEmpId());
+//				
+//				employeeVO.setHireDt(prevDate);		
+//			}
+//			
+//			employeeVO.setDeptId(originEmployee.getDeptId());
+//			int insertCnt = 0; 
+//			insertCnt =	this.changeHistoryDao.insertOneChangeDeptHistory(employeeVO);
+//			
+//			if(insertCnt == 0) {
+//				return false;
+//			}
+//			
+//		}
 		
 		// 팀리스트가 추가되었을 경우
-		if(employeeVO.getTeamList()!=null) {
-			// 기존의 팀 리스트를 originEmployee에 할당
-			originEmployee.setTeamList(this.employeeDao.getEmployeeAllTeam(employeeVO.getEmpId()));
-			int willAddTeam = 0;
-			int addTeamCount = 0;
-			for (TeamVO changeTeam : employeeVO.getTeamList()) {
-				// 기존리스트 없으면 다 추가
-				if (originEmployee.getTeamList() == null) {
-					employeeVO.setTeamVO(changeTeam);
-					willAddTeam++;
-					addTeamCount = this.employeeDao.addTeam(employeeVO);
-				}
-				// 기존 리스트 있으면 기존 팀에 없는 팀만 추가
-				else if (!originEmployee.getTeamList().contains(changeTeam)) {
-					employeeVO.setTeamVO(changeTeam);
-					willAddTeam++;
-					addTeamCount = this.employeeDao.addTeam(employeeVO);
-				}
-
-			}
-			if (willAddTeam != addTeamCount) {
-				return false;
-			}
-
-		}
+//		if(employeeVO.getTeamList()!=null) {
+//			// 기존의 팀 리스트를 originEmployee에 할당
+//			originEmployee.setTeamList(this.employeeDao.getEmployeeAllTeam(employeeVO.getEmpId()));
+//			int willAddTeam = 0;
+//			int addTeamCount = 0;
+//			for (TeamVO changeTeam : employeeVO.getTeamList()) {
+//				// 기존리스트 없으면 다 추가
+//				if (originEmployee.getTeamList() == null) {
+//					employeeVO.setTeamVO(changeTeam);
+//					willAddTeam++;
+//					addTeamCount = this.employeeDao.addTeam(employeeVO);
+//				}
+//				// 기존 리스트 있으면 기존 팀에 없는 팀만 추가
+//				else if (!originEmployee.getTeamList().contains(changeTeam)) {
+//					employeeVO.setTeamVO(changeTeam);
+//					willAddTeam++;
+//					addTeamCount = this.employeeDao.addTeam(employeeVO);
+//				}
+//
+//			}
+//			if (willAddTeam != addTeamCount) {
+//				return false;
+//			}
+//
+//		}
 
 		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
 		return updatedCount > 0;
@@ -303,6 +303,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		List<EmployeeDataVO> gradeList = this.employeeDao.getEmployeeGradeList();
 		return gradeList;
+	}
+
+	@Override
+	public List<EmployeeDataVO> getEmployeeWorkStsList() {
+		
+		List<EmployeeDataVO> workStsList = this.employeeDao.getEmployeeWorkStsList();
+		return workStsList;
 	}
 
 }
