@@ -25,7 +25,7 @@ import com.ktdsuniversity.edu.pms.login.vo.VisitedVO;
 @Service
 public class LoginLogServiceImpl implements LoginLogService {
 
-	private Logger logger = LoggerFactory.getLogger(ApprovalServiceImpl.class);
+	private Logger logger = LoggerFactory.getLogger(LoginLogServiceImpl.class);
 
 	/**
 	 * 맴버변수 loginLogDao 에 Bean Container 에 적재된 Dao 의존성 주입(할당)
@@ -252,7 +252,7 @@ public class LoginLogServiceImpl implements LoginLogService {
 			this.loginLogDao.insertLoginLog(loginLogVO);
 			
 			boolean isCommute = this.commuteDao.getOneCommuteDataByEmpIdToday(empId)== null? false:true;
-			if(!isCommute) /*출근기록이 없다면 출근기록 넣기*/{
+			if(!isCommute) {/*출근기록이 없다면 출근기록 넣기*/
 				this.commuteDao.insertCommuteIn(empId);
 			}
 			
@@ -261,12 +261,11 @@ public class LoginLogServiceImpl implements LoginLogService {
 	}
 
 	@Override
+	@Transactional
 	public int insertLogoutProcess(String empId, boolean isLeaveWork) {
-		
-//		TODO 로그아웃시 기록  
-		System.out.println("Logout: ");
+		this.loginLogDao.updateEmpLogout(empId);
 		if(isLeaveWork) {/*isLeaveWork 가 true 일 경우 퇴근 기록*/
-			System.out.println("isLeaveWork: "+isLeaveWork);
+			this.commuteDao.updateCommuteLeaveWork(empId);
 		}
 		return 0;
 	}
