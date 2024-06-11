@@ -70,7 +70,6 @@ public interface LoginLogService {
      * @param isLeaveWork 퇴근인지 단순 로그아웃인지 여부
      * @return
      */
-    
     public int insertLogoutProcess (String empId , boolean isLeaveWork);
     	
     

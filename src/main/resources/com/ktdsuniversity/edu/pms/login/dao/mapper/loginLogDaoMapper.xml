@@ -136,10 +136,11 @@
 	</select>
 
 	<update id="updateEmpLogout" parameterType="string">
-		UPDATE LOGIN_LOG
-		SET LGT_DT = SYSDATE
-		WHERE LOG_ID = #{_parameter}
-		AND LGT_DT IS NULL
+	UPDATE LOGIN_LOG
+       SET LGT_DT = SYSDATE
+     WHERE EMP_ID = #{_parameter}
+       AND TO_CHAR(LGN_SCC_DT ,'YYYY-MM-DD') =  TO_CHAR(SYSDATE,'YYYY-MM-DD')
+	   AND LGT_DT IS NULL
 	</update>
 
 	<select id="getOneEmpLgnTryCount"

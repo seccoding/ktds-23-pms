@@ -9,6 +9,7 @@ public interface ApprovalDao {
 
 	public String NAME_SPACE = "com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao";
 
+
 	/**
 	 * 전체 결재 건수를 조회한다.(ADMIN)
 	 * 
@@ -22,47 +23,19 @@ public interface ApprovalDao {
 	 * @return 결재 정보 목록
 	 */
 	public List<ApprovalVO> getAllApproval();
-
 	/**
-	 * 사원이 신청한 결재 건수를 조회한다.
-	 * 
-	 * @param empId 사원ID
-	 * @return 사원이 신청한 결재 건수
+	 * 승인요청 정보를 받아서 승인요청 정보를 업데이트 한다
+	 * @param approvalList 승인이 필요한 승인자들의 리스트
+	 * @param approvalVO  insert Info(필수 정보: apprType, apprInfo, apprReqtr)
+	 * @return approvalList.size == insertCnt
 	 */
-	public int getAllCountByEmpId(String empId);
+	public boolean insertApproval(List<String> approverList, ApprovalVO approvalVO );
 
 	/**
-	 * 사원이 신청한 결재 목록
-	 * 
-	 * @param empId 사원ID
-	 * @return 사원이 신청한 결재 목록
-	 */
-	public List<ApprovalVO> getAllApprovalByEmpId(String empId);
-
-	public ApprovalVO selectOneApproval(String apprId);
-
-	/**
-	 * 파라미터로 전달받은 게시글 ID의 게시글 정보를 조회한다.
-	 * 
-	 * @param apprId 게시글 ID (번호)
+	 * 승인 혹은 반려를 할 경우 해당내용을 업데이트 한다
+	 * @param approvalVO
 	 * @return
 	 */
-	public ApprovalVO selectOneApprovalAll(String apprId);
-
-	public int updateApprovalStatus(ApprovalVO approvalVO);
-	
-	public int updateRentalStatus(ApprovalVO approvalVO);
-
-	// PSH - 0422
-	public String selectOneApprId();
-
-	public int insertApproval(ApprovalVO approvalVO);
-
-	public int deleteApproval(String apprId);
-	
-	// PSH - search
-	public int searchAllApprovalCount(SearchApprovalVO searchApprovalVO);
-
-	public List<ApprovalVO> searchAllApproval(SearchApprovalVO searchApprovalVO);													
+	public int updateOneApproveal(ApprovalVO approvalVO);
 
 }

@@ -57,7 +57,7 @@ public interface LoginLogDao {
 	 */
 	public int getCountPossibleLogin(String empId);
 
-    public int updateEmpLogout(String logId);
+    public int updateEmpLogout(String empId);
 
     public int insertCommuteIn(EmployeeVO employee);
 

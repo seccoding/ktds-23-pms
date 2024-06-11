@@ -19,7 +19,7 @@ public class CommuteDaoImpl extends SqlSessionDaoSupport implements CommuteDao {
 	}
 
 	@Override
-	public List<CommuteVO> getAllCommuteData(CommuteVO commuteVO) {
+	public List<CommuteVO> getAllCommuteData( CommuteVO commuteVO) {
 		return getSqlSession().selectList(CommuteDao.COMMUTE_SPACE + ".getAllCommuteData", commuteVO);
 	}
 
@@ -36,6 +36,11 @@ public class CommuteDaoImpl extends SqlSessionDaoSupport implements CommuteDao {
 	@Override
 	public int insertCommuteIn(String empId) {
 		return getSqlSession().insert(CommuteDao.COMMUTE_SPACE +".insertCommuteIn", empId);
+	}
+
+	@Override
+	public int updateCommuteLeaveWork(String empId) {
+		return getSqlSession().update(CommuteDao.COMMUTE_SPACE+".updateCommuteLeaveWork", empId);
 	}
 
 }

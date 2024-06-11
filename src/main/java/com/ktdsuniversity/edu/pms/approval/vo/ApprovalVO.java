@@ -1,84 +1,100 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
-import java.util.List;
-
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
-import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
-import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.product.vo.ProductVO;
-import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public class ApprovalVO extends PaginateVO {
 
-	private String apprId;
-	private String dmdDt;
-	private String apprCtgr;
-	private String apprSts;
-	private String arrpRjct;
-	private String lastCnDt;
-	private String delYn;
-	private String dmdId;
-	private String apprMngId;
-	private String apprFnshDt;
-	private String apprTtl;
-	private String apprCntnt;
-	private String rntlSts;
-
-	private EmployeeVO employeeVO;
-	private EmployeeVO employeeManagerVO;
-	private CommonCodeVO commonCodeVO;
-	private DepartmentVO departmentVO;
-	private List<TeamVO> teamList;
-	private List<ApprovalDetailVO> approvalDetailVOList;
-	private List<ProductVO> productListVO;
+	private String apprId; // 결재 요청에 대한 고유번호
+	private String pApprId; // 부모 결제요청 ID
+	private String apprType; // 결제 승인 타입(소모품, 비품, 부서, 직원)
+	private String apprInfo; // 결제시 업데이트 해야하는 정보를 담은 FK ID
+	private String apprReqtr; // 결제 요청자
+	private String apprDate; // 결제 요청일
+	private String apprEndDate; // 결제 종료일
+	private String approver; // 결제 승인자
+	private String apprYn; // 결제승인여부
+	private String apprRsn; // 결제에 대한 사유(거절시 작성)
+	private String delYn; // 삭제여부
+	private String searchYn; // 검색가능여부(승인페이지 노출)
 
 	public String getApprId() {
 		return apprId;
 	}
 
-	public void setApprId(String apprId) {
-		this.apprId = apprId;
+	public void setApprId(String apprid) {
+		this.apprId = apprid;
 	}
 
-	public String getDmdDt() {
-		return dmdDt;
+	public String getpApprId() {
+		return pApprId;
 	}
 
-	public void setDmdDt(String dmdDt) {
-		this.dmdDt = dmdDt;
+	public void setpApprId(String pApprId) {
+		this.pApprId = pApprId;
 	}
 
-	public String getApprCtgr() {
-		return apprCtgr;
+	public String getApprType() {
+		return apprType;
 	}
 
-	public void setApprCtgr(String apprCtgr) {
-		this.apprCtgr = apprCtgr;
+	public void setApprType(String apprType) {
+		this.apprType = apprType;
 	}
 
-	public String getApprSts() {
-		return apprSts;
+	public String getApprInfo() {
+		return apprInfo;
 	}
 
-	public void setApprSts(String apprSts) {
-		this.apprSts = apprSts;
+	public void setApprInfo(String apprInfo) {
+		this.apprInfo = apprInfo;
 	}
 
-	public String getArrpRjct() {
-		return arrpRjct;
+	public String getApprReqtr() {
+		return apprReqtr;
 	}
 
-	public void setArrpRjct(String arrpRjct) {
-		this.arrpRjct = arrpRjct;
+	public void setApprReqtr(String apprReqtr) {
+		this.apprReqtr = apprReqtr;
 	}
 
-	public String getLastCnDt() {
-		return lastCnDt;
+	public String getApprDate() {
+		return apprDate;
 	}
 
-	public void setLastCnDt(String lastCnDt) {
-		this.lastCnDt = lastCnDt;
+	public void setApprDate(String apprDate) {
+		this.apprDate = apprDate;
+	}
+
+	public String getApprEndDate() {
+		return apprEndDate;
+	}
+
+	public void setApprEndDate(String apprEndDate) {
+		this.apprEndDate = apprEndDate;
+	}
+
+	public String getApprover() {
+		return approver;
+	}
+
+	public void setApprover(String approver) {
+		this.approver = approver;
+	}
+
+	public String getApprYn() {
+		return apprYn;
+	}
+
+	public void setApprYn(String apprYn) {
+		this.apprYn = apprYn;
+	}
+
+	public String getApprRsn() {
+		return apprRsn;
+	}
+
+	public void setApprRsn(String apprRsn) {
+		this.apprRsn = apprRsn;
 	}
 
 	public String getDelYn() {
@@ -89,109 +105,12 @@ public class ApprovalVO extends PaginateVO {
 		this.delYn = delYn;
 	}
 
-	public String getDmdId() {
-		return dmdId;
+	public String getSearchYn() {
+		return searchYn;
 	}
 
-	public void setDmdId(String dmdId) {
-		this.dmdId = dmdId;
+	public void setSearchYn(String searchYn) {
+		this.searchYn = searchYn;
 	}
 
-	public String getApprMngId() {
-		return apprMngId;
-	}
-
-	public void setApprMngId(String apprMngId) {
-		this.apprMngId = apprMngId;
-	}
-
-	public void setApprFnshDt(String apprFnshDt) {
-		this.apprFnshDt = apprFnshDt;
-	}
-
-	public String getApprFnshDt() {
-		return apprFnshDt;
-	}
-
-	public void setApprTtl(String apprTtl) {
-		this.apprTtl = apprTtl;
-	}
-
-	public String getApprTtl() {
-		return apprTtl;
-	}
-
-	public void setApprCntnt(String apprCntnt) {
-		this.apprCntnt = apprCntnt;
-	}
-
-	public String getApprCntnt() {
-		return apprCntnt;
-	}
-	
-	public String getRntlSts() {
-		return rntlSts;
-	}
-
-	public void setRntlSts(String rntlSts) {
-		this.rntlSts = rntlSts;
-	}
-
-	public void setEmployeeVO(EmployeeVO employeeVO) {
-		this.employeeVO = employeeVO;
-	}
-
-	public EmployeeVO getEmployeeVO() {
-		return employeeVO;
-	}
-
-	public CommonCodeVO getCommonCodeVO() {
-		return commonCodeVO;
-	}
-
-	public void setCommonCodeVO(CommonCodeVO commonCodeVO) {
-		this.commonCodeVO = commonCodeVO;
-	}
-	
-
-	public DepartmentVO getDepartmentVO() {
-		return departmentVO;
-	}
-
-	public void setDepartmentVO(DepartmentVO departmentVO) {
-		this.departmentVO = departmentVO;
-	}
-
-	public EmployeeVO getEmployeeManagerVO() {
-		return employeeManagerVO;
-	}
-
-	public void setEmployeeManagerVO(EmployeeVO employeeManagerVO) {
-		this.employeeManagerVO = employeeManagerVO;
-	}
-
-	public List<ApprovalDetailVO> getApprovalDetailVOList() {
-		return approvalDetailVOList;
-	}
-
-	public void setApprovalDetailVOList(List<ApprovalDetailVO> approvalDetailVOList) {
-		this.approvalDetailVOList = approvalDetailVOList;
-	}
-
-	public List<ProductVO> getProductListVO() {
-		return productListVO;
-	}
-
-	public void setProductListVO(List<ProductVO> productListVO) {
-		this.productListVO = productListVO;
-	}
-
-	public List<TeamVO> getTeamList() {
-		return teamList;
-	}
-
-	public void setTeamList(List<TeamVO> teamList) {
-		this.teamList = teamList;
-	}
-	
 }

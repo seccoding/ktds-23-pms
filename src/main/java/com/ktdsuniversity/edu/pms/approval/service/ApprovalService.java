@@ -21,30 +21,41 @@ public interface ApprovalService {
 	 * 
 	 * @return
 	 */
-	public ApprovalListVO getAllApprovalByEmpId(String empId);
-
-	public ApprovalVO selectOneApproval(String apprId);
-
-	public String selectNewApprId();
-
-	public boolean createApproval(ApprovalVO approvalVO);
 	
-	public boolean getNewPrdtBorrowForAppr(ApprovalVO approvalVO);
+	/**
+	 * 승인 혹은 반려를 할 경우 해당내용을 업데이트 한다
+	 * @param approvalVO
+	 * @return
+	 */
+	public boolean updateOneApproveal(ApprovalVO approvalVO);
 	
-	public boolean updateUnusablePrdt(ApprovalVO approvalVO);
+	public void test();
+//	public ApprovalListVO getAllApprovalByEmpId(String empId);
+//
+//	public ApprovalVO selectOneApproval(String apprId);
+//
+//	public String selectNewApprId();
+//
+//	public boolean createApproval(ApprovalVO approvalVO);
+//	
+//	public boolean getNewPrdtBorrowForAppr(ApprovalVO approvalVO);
+//	
+//	public boolean updateUnusablePrdt(ApprovalVO approvalVO);
+//
+//	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO);
+//
+//	public ApprovalVO selectOneApprovalAll(String apprId);
+//
+//	public boolean approvalStatusChange(ApprovalVO approvalVO);
+//
+//	public boolean approvalRntlStatusChange(ApprovalVO approvalVO);
+//
+//	public boolean deleteOneApproval(String apprId);
+//
+//	public List<BorrowVO> getAddProductApproval(List<String> addProducts);
+//	
+//	public boolean getDeptLeader(String empId);
 
-	public ApprovalListVO searchAllApproval(SearchApprovalVO searchApprovalVO);
 
-	public ApprovalVO selectOneApprovalAll(String apprId);
-
-	public boolean approvalStatusChange(ApprovalVO approvalVO);
-
-	public boolean approvalRntlStatusChange(ApprovalVO approvalVO);
-
-	public boolean deleteOneApproval(String apprId);
-
-	public List<BorrowVO> getAddProductApproval(List<String> addProducts);
-	
-	public boolean getDeptLeader(String empId);
 
 }
