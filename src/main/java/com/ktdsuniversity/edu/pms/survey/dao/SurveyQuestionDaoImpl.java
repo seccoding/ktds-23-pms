@@ -107,4 +107,9 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 		return getSqlSession().selectList(SurveyQuestionDao.NAME_SPACE + ".searchTeammate", searchSurveyVO);
 	}
 
+	@Override
+	public SurveyQuestionVO getOneSrvQuestionVOBySrvId(String srvId) {
+		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".getOneSrvQuestionVOBySrvId", srvId);
+	}
+
 }

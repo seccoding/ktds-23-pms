@@ -42,4 +42,6 @@ public interface ProjectService {
     boolean updateReviewStatus(ProjectTeammateVO projectTeammateVO);
 
     boolean updateSurveyStatus(ProjectTeammateVO projectTeammateVO);
+
+	List<ProjectTeammateVO> getAllProjectTeammateByTmId(String empId);
 }

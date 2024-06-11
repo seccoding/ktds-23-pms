@@ -5,6 +5,8 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +161,15 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
     @Override
 	public int updateOneProjectSurveySts(String prjId) {
 		return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneProjectSurveySts", prjId);
+	}
+
+	@Override
+	public int updateOneTeammateSurveySts(SurveyReplyVO surveyReplyVO) {
+		return getSqlSession().update(ProjectDao.NAME_SPACE + ".updateOneTeammateSurveySts", surveyReplyVO);
+	}
+
+	@Override
+	public List<ProjectTeammateVO> getAllProjectTeammateByTmId(String empId) {
+		return getSqlSession().selectList(ProjectDao.NAME_SPACE + ".getAllProjectTeammateByTmId", empId);
 	}
 }

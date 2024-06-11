@@ -48,4 +48,8 @@ public interface SurveyQuestionDao {
 
 	public List<ProjectSurveyQuestionVO> searchTeammate(SearchSurveyVO searchSurveyVO);
 
+	public SurveyQuestionVO getOneSrvQuestionVOBySrvId(String srvId);
+
+	
+
 }

@@ -190,22 +190,25 @@ public class ApiSurveyController {
 
 	@PostMapping("/reply/{srvId}")
 	public ApiResponse ResponseSurvey(@PathVariable String srvId, Authentication authentication,
-	                                  @RequestBody SurveyReplyVO surveyReplyVO) {
+			@RequestBody SurveyReplyVO surveyReplyVO) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-	    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-	    EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-
-	    surveyReplyVO.setSrvId(srvId);
-	    surveyReplyVO.setCrtrId(employeeVO.getEmpId());
-
-	    boolean isSuccess = this.surveyReplyService.responseSurvey(surveyReplyVO);
-	    List<Object> dataList = new ArrayList<>();
-	    dataList.add(isSuccess);
-	    dataList.add(surveyReplyVO.getSrvId());
-	    dataList.add(employeeVO.getEmpId());
-
-	    // 응답 반환
-	    return ApiResponse.Ok(dataList);
+		surveyReplyVO.setSrvId(srvId);
+		surveyReplyVO.setCrtrId(employeeVO.getEmpId());
+		
+		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionService.getOneProjectIdBySrvId(srvId);
+		
+		surveyReplyVO.setSurveyQuestionVO(surveyQuestionVO);
+		
+		boolean isSuccess = this.surveyReplyService.responseSurvey(surveyReplyVO);
+		List<Object> dataList = new ArrayList<>();
+		dataList.add(isSuccess);
+		dataList.add(surveyReplyVO.getSrvId());
+		dataList.add(employeeVO.getEmpId());
+		//dataList.add(surveyReplyVO.getSrvId());
+		// 응답 반환
+		return ApiResponse.Ok(dataList);
 	}
 
 }

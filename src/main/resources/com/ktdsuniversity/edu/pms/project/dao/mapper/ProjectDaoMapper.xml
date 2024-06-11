@@ -319,12 +319,16 @@
         PRJ_ID,
         TM_ID,
         ROLE,
-        DEL_YN)
+        DEL_YN,
+        RV_YN,
+		SRV_YN)
         VALUES
         (('PRJ_TM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0')),
         #{prjId},
         #{tmId},
         #{role},
+        'N',
+        'N',
         'N')
     </insert>
 
@@ -597,4 +601,27 @@
 		 WHERE PRJ_ID = #{prjId}
 		   AND DEL_YN = 'N' 
     </update>
+    
+    <update id="updateOneTeammateSurveySts"
+    		parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO">
+    	UPDATE PROJECT_TEAMMATE
+		   SET SRV_YN = 'Y'
+		 WHERE PRJ_ID = #{surveyQuestionVO.prjId}
+		   AND TM_ID = #{crtrId}
+		   AND DEL_YN = 'N'
+    </update>
+    
+    <select id="getAllProjectTeammateByTmId"
+    		parameterType="String">
+    		SELECT PRJ_TM_ID
+				 , PRJ_ID
+				 , TM_ID
+				 , ROLE
+				 , DEL_YN
+				 , RV_YN
+				 , SRV_YN
+			  FROM PROJECT_TEAMMATE
+			 WHERE TM_ID = #{empId}
+			   AND DEL_YN = 'N'
+    </select>
 </mapper>
