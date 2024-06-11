@@ -48,8 +48,8 @@ public class LoginLogDaoImpl extends SqlSessionDaoSupport implements LoginLogDao
     }
 
     @Override
-    public int updateEmpLogout(String logId) {
-        return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", logId);
+    public int updateEmpLogout(String empId) {
+        return getSqlSession().update(LoginLogDao.LOGIN_SPACE + ".updateEmpLogout", empId);
     }
 
     @Override

@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao">
 
+		<!-- 
 	<resultMap id="approvalVOMap" type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" autoMapping="true">
 		<id column="APPR_ID" property="apprId"/>
 		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
@@ -20,356 +21,69 @@
 			<result column="DEPT_NAME" property="deptName"/>
 		</association>
 	</resultMap>
-
-	<resultMap id="approvalDetailVOMap" type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" autoMapping="true">
-		<id column="APPR_ID" property="apprId"/>
-		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-			<id column="EMP_ID" property="empId"/>
-			<result column="EMP_NAME" property="empName"/>
-			<result column="PRFL" property="prfl"/>
-			<result column="E_DEL_YN" property="delYn"/>
-		</association>
-		<association property="employeeManagerVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-			<id column="MNG_EMP_ID" property="empId"/>
-			<result column="MNG_EMP_NAME" property="empName"/>
-			<result column="MNG_EMP_PRFL" property="prfl"/>
-			<result column="MNG_EMP_DEL_YN" property="delYn"/>
-		</association>
-		<association property="commonCodeVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-			<id column="CMCD_ID" property="cmcdId"/>
-			<result column="CMCD_NAME" property="cmcdName"/>
-			<result column="CMCD_DEL_YN" property="delYn"/>
-		</association>
-		<collection property="approvalDetailVOList" ofType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalDetailVO">
-			<id column="APPR_DTL_ID" property="apprDtlId"/>
-			<result column="APPR_DTL_CUR_STR" property="curStr"/>
-			<result column="APPR_DTL_DEL_YN" property="delYn"/>
-			<association property="productVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductVO">
-				<id column="PRDT_ID" property="prdtId"/>
-				<result column="PRDT_NAME" property="prdtName"/>
-				<result column="PRDT_CTGR" property="prdtCtgr"/>
-				<result column="P_CUR_STR" property="curStr"/>
-				<result column="P_DEL_YN" property="delYn"/>
-			</association>
-			<association property="productManagementVO" javaType="com.ktdsuniversity.edu.pms.product.vo.ProductManagementVO">
-				<id column="PRDT_MNG_ID" property="prdtMngId"/>
-				<result column="BRRW_YN" property="brrwYn"/>
-			</association>
-		</collection>
-	</resultMap>
+		 -->
 	
-	<insert id="insertApproval" parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
-		INSERT INTO APPROVAL
-		     ( APPR_ID
-		     , DMD_DT
-		     , APPR_CTGR
-		     , APPR_STS
-		     , APPR_TTL
-		     , APPR_CNTNT
-		     , DMD_ID
-		     , APPR_MNG_ID
-		     , ARRP_RJCT
-		     , LAST_CN_DT
-		     , APPR_FNSH_DT
-		     , RNTL_STS
-		     , DEL_YN)
-		VALUES
-		     ( #{apprId}
-		     , SYSDATE
-		     , #{apprCtgr}
-		     , '801'
-		     , #{apprTtl}
-		     , #{apprCntnt}
-		     , #{dmdId}
-		     , #{apprMngId}
-		     , NULL
-		     , NULL
-		     , NULL
-		     , NULL
-		     ,'N')
-	</insert>
-	
-	<select id="selectOneApprId" resultType="string">
-		SELECT 'APPR_' || TO_CHAR(SYSDATE, 'YYMMDD')
-				|| '_' || LPAD(SEQ_APPR_PK.NEXTVAL, 6, '0')
-		FROM DUAL
-	</select>
 
 	<select id="getAllCount" resultType="_int">	
-		SELECT COUNT(*)
-		  FROM APPROVAL A
-		 INNER JOIN EMPLOYEE E
-			ON A.DMD_ID = E.EMP_ID
-		 WHERE A.DEL_YN = 'N'
+	   SELECT COUNT(1)
+		 FROM PMS.APPROVAL
+		WHERE DEL_YN='N'
+		  AND SEARCH_YN='Y'
 	</select>
 	
-	<select id="getAllApproval" resultMap="approvalVOMap">
-		SELECT A.APPR_ID
-			  , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
-			  , A.APPR_CTGR
-			  , A.APPR_STS
-			  , A.APPR_TTL
-			  , A.APPR_CNTNT
-			  , A.DMD_ID
-			  , A.APPR_MNG_ID
-			  , A.ARRP_RJCT
-			  , A.LAST_CN_DT
-			  , A.APPR_FNSH_DT
-			  , E.EMP_NAME
-			  , E.PRFL
-			  , CC.CMCD_NAME
-			  , D.DEPT_NAME
-		   FROM APPROVAL A
-		  INNER JOIN EMPLOYEE E
-			 ON A.DMD_ID = E.EMP_ID
-		  INNER JOIN COMMON_CODE CC
-			 ON E.PSTN_ID = CC.CMCD_ID
-		  INNER JOIN DEPARTMENT D
-			 ON D.DEPT_ID = E.DEPT_ID
-		  WHERE A.DEL_YN = 'N'
-		  ORDER BY DMD_DT DESC
+	<select id="getAllApproval" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+	   SELECT APPR_ID
+			, P_APPR_ID
+			, APPR_TYPE
+			, APPR_INFO
+			, APPR_REQTR
+			, APPR_DATE
+			, APPR_END_DATE
+			, APPROVER
+			, APPR_YN
+			, APPR_RSN
+		 FROM PMS.APPROVAL
+		WHERE DEL_YN='N'
+		  AND SEARCH_YN='Y'
 	</select>
 	
-	<select id="getAllCountByEmpId" parameterType="string" resultType="_int">
-		SELECT COUNT(1)
-	      FROM APPROVAL A
-	     INNER JOIN EMPLOYEE E
-	        ON A.DMD_ID = E.EMP_ID 
-	     WHERE A.DMD_ID = #{_parameter}
-	       AND A.DEL_YN = 'N'
-	</select>
+	<insert id="insertApproval" parameterType="java.util.List">
+	<selectKey keyProperty="apprSeq" resultType="string" order="BEFORE">
+		SELECT SEQ_APPR_PK.NEXTVAL AS APPR_SEQ FROM DUAL 
+	</selectKey>
+			INSERT INTO PMS.APPROVAL
+			( APPR_ID
+			, APPR_TYPE
+			, APPR_INFO
+			, APPR_REQTR
+			, APPR_DATE
+			, APPR_END_DATE
+			, APPROVER
+			, DEL_YN
+			, SEARCH_YN)
+			SELECT ('APPR' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_APPR_PK.NEXTVAL, 6, '0')) AS APPR_ID
+				 , T.*
+			  FROM(
+		<foreach item="approvalVO" index="index" collection="list" separator="UNION ALL">
+			  	 	SELECT  #{approvalVO.apprType} AS APPR_TYPE
+					     ,  #{approvalVO.apprInfo} AS APPR_INFO
+					     ,  #{approvalVO.apprReqtr} AS APPR_REQTR
+					     ,  SYSDATE AS APPR_DATE
+					     ,  TO_CHAR(SYSDATE+8,'YYYY-MM-DD') AS APPR_END_DATE
+					     ,  #{approvalVO.approver} AS APPROVER
+					     ,  'N'  AS DEL_YN
+					     ,  'N' AS SEARCH_YN 
+					  FROM  DUAL 
+		</foreach>
+		) T
+	</insert>
+	<update id="updateOneApproveal" 
+	parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+		UPDATE PMS.APPROVAL
+		SET   APPR_YN=#{apprYn}
+			, APPR_RSN=#{apprRsn}
+		WHERE APPR_ID=#{apprId}
 	
-	<select id="getAllApprovalByEmpId" parameterType="string" resultMap="approvalVOMap">
-		SELECT A.APPR_ID
-	         , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT 
-	         , A.APPR_CTGR
-	         , A.APPR_STS
-	         , A.APPR_TTL
-	         , A.APPR_CNTNT
-	         , A.DMD_ID
-	         , A.APPR_MNG_ID
-	         , A.ARRP_RJCT
-	         , A.LAST_CN_DT
-	         , A.APPR_FNSH_DT
-	         , E.EMP_NAME 
-	         , CC.CMCD_NAME 
-	      FROM APPROVAL A
-	     INNER JOIN EMPLOYEE E
-	        ON A.DMD_ID = E.EMP_ID 
-	     INNER JOIN COMMON_CODE CC
-	        ON E.PSTN_ID = CC.CMCD_ID 
-	     WHERE A.DMD_ID = #{_parameter}
-	       AND A.DEL_YN = 'N'
-	     ORDER BY DMD_DT DESC
-	</select>
-
-	<select id="selectOneApproval" parameterType="string" resultMap="approvalVOMap">
-		SELECT A.APPR_ID
-		     , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
-		     , A.APPR_CTGR
-		     , A.APPR_STS
-		     , A.APPR_TTL
-		     , A.APPR_CNTNT
-		     , A.DMD_ID
-		     , A.APPR_MNG_ID
-		     , A.ARRP_RJCT
-		     , A.LAST_CN_DT
-		     , A.APPR_FNSH_DT
-		     , E.EMP_NAME
-		     , CC.CMCD_NAME
-		  FROM APPROVAL A
-		 INNER JOIN EMPLOYEE E
-		    ON A.DMD_ID = E.EMP_ID
-		 INNER JOIN COMMON_CODE CC
-		    ON E.PSTN_ID = CC.CMCD_ID
-		 WHERE A.APPR_ID = #{_parameter}
-		   AND A.DEL_YN = 'N'
-	</select>
-
-	<select id="selectOneApprovalAll" parameterType="string" resultMap="approvalDetailVOMap">
-		SELECT A.APPR_ID
-			 , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
-			 , A.APPR_CTGR
-			 , A.APPR_STS
-			 , A.APPR_TTL
-			 , A.APPR_CNTNT
-			 , A.RNTL_STS
-			 , A.ARRP_RJCT
-			 , E.EMP_NAME
-			 , E_MNG.EMP_NAME MNG_EMP_NAME
-			 , CC.CMCD_NAME
-			 , PM.PRDT_MNG_ID
-			 , PM.BRRW_YN
-			 , P.PRDT_NAME
-			 , P.PRDT_CTGR
-			 , AD.CUR_STR APPR_DTL_CUR_STR
-			 , P.CUR_STR P_CUR_STR
-		  FROM APPROVAL A
-		 INNER JOIN EMPLOYEE E
-		    ON E.EMP_ID = A.DMD_ID
-		 INNER JOIN EMPLOYEE E_MNG
-		    ON E_MNG.EMP_ID = A.APPR_MNG_ID
-		 INNER JOIN COMMON_CODE CC
-		    ON CC.CMCD_ID = E.PSTN_ID
-		 INNER JOIN APPROVAL_DETAIL AD
-		    ON A.APPR_ID = AD.APPR_ID
-		 INNER JOIN PRODUCT_MANAGEMENT PM
-		    ON PM.PRDT_MNG_ID = AD.PRDT_ID
-		 INNER JOIN PRODUCT P
-		    ON P.PRDT_ID = PM.PRDT_ID
-		 WHERE A.APPR_ID = #{_parameter}
-		   AND A.DEL_YN = 'N'
-	</select>
-
-	<update id="updateApprovalStatus" parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
-		UPDATE APPROVAL
-		   SET APPR_STS = #{apprSts}
-			 , APPR_FNSH_DT = SYSDATE
-			 , RNTL_STS = '1101'
-		<if test = 'apprSts == "803"'>
-			 , ARRP_RJCT = #{arrpRjct}
-		</if>
-		 WHERE APPR_ID = #{apprId}
 	</update>
-	
-	<update id="updateRentalStatus" parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
-		UPDATE APPROVAL 
-		   SET RNTL_STS = #{rntlSts}
-		 WHERE APPR_ID = #{apprId}
-	</update>
-	
-	<update id="deleteApproval" parameterType="string">
-  		UPDATE APPROVAL
-		   SET DEL_YN='Y'
-		 WHERE APPR_ID= #{_parameter}
-  	</update>
-  	
-  	<!-- PSH - search -->
-  	<select id="searchAllApprovalCount" resultType="_int"
-			parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO">
-		SELECT COUNT(1)
-		  FROM APPROVAL A
-		 INNER JOIN EMPLOYEE E
-		    ON A.DMD_ID = E.EMP_ID
-		 WHERE A.DEL_YN = 'N'
-		<if test='searchStatus != null and searchStatus != ""'>
-			<choose>
-				<when test='searchStatus == "progresslist" or searchStatus == "waiting"'>
-					AND A.APPR_STS = '801'
-				</when>
-				<otherwise>
-					AND A.APPR_STS != '801'
-				</otherwise>
-			</choose>
-		</if>
-		<if test='searchKeyword != null and searchKeyword != ""'>
-			<choose>
-				<when test='searchType == "title"'>
-					AND A.APPR_TTL LIKE '%' || #{searchKeyword} || '%'
-				</when>
-				<when test='searchType == "dmdId"'>
-					AND A.DMD_ID LIKE '%' || #{searchKeyword} || '%'
-				</when>
-			</choose>
-		</if>
-		<if test='searchDate != null and searchDate != ""'>
-			<choose>
-				<when test='searchDate == "delay"'>
-					AND A.DMD_DT <![CDATA[<=]]> SYSDATE - 7
-				</when>
-				<when test='searchDate == "oneMonth"'>
-					AND A.DMD_DT <![CDATA[>=]]> ADD_MONTHS(SYSDATE, -1)
-				</when>
-				<otherwise>
-					AND A.DMD_DT <![CDATA[>=]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')
-					AND A.DMD_DT <![CDATA[<]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')+1
-				</otherwise>
-			</choose>
-		</if>
-		<if test='employeeVO.empId != null and employeeVO.empId != ""'>
-			<choose>
-				<when test='searchAuth'>
-				</when>
-				<otherwise>
-					AND A.DMD_ID = #{employeeVO.empId}
-				</otherwise>
-			</choose>
-		</if>
-	</select>
 
-	<select id="searchAllApproval" resultMap="approvalVOMap" 
-			parameterType="com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO">
-		<include refid="Common.pagenate_header"/>
-		SELECT A.APPR_ID
-		     , TO_CHAR(A.DMD_DT, 'YYYY-MM-DD HH24:MI') DMD_DT
-		     , A.APPR_CTGR
-		     , A.APPR_STS
-		     , A.APPR_TTL
-		     , A.APPR_CNTNT
-		     , A.DMD_ID
-		     , A.APPR_MNG_ID
-		     , A.ARRP_RJCT
-		     , A.LAST_CN_DT
-		     , A.APPR_FNSH_DT
-		     , A.RNTL_STS
-		     , E.EMP_NAME
-		     , E.PRFL
-		     , CC.CMCD_NAME
-		     , D.DEPT_NAME
-		  FROM APPROVAL A
-		 INNER JOIN EMPLOYEE E
-		    ON A.DMD_ID = E.EMP_ID
-		 INNER JOIN COMMON_CODE CC
-		    ON E.PSTN_ID = CC.CMCD_ID
-		 INNER JOIN DEPARTMENT D
-		    ON D.DEPT_ID = E.DEPT_ID
-		 WHERE A.DEL_YN = 'N'
-		<if test='searchStatus != null and searchStatus != ""'>
-			<choose>
-				<when test='searchStatus == "progresslist" or searchStatus == "waiting"'>
-					AND A.APPR_STS = '801'
-				</when>
-				<otherwise>
-					AND A.APPR_STS != '801'
-				</otherwise>
-			</choose>
-		</if>
-		<if test='searchKeyword != null and searchKeyword != ""'>
-			<choose>
-				<when test='searchType == "title"'>
-					AND A.APPR_TTL LIKE '%' || #{searchKeyword} || '%'
-				</when>
-				<when test='searchType == "dmdId"'>
-					AND A.DMD_ID LIKE '%' || #{searchKeyword} || '%'
-				</when>
-			</choose>
-		</if>
-		<if test='searchDate != null and searchDate != ""'>
-			<choose>
-				<when test='searchDate == "delay"'>
-					AND A.DMD_DT <![CDATA[<=]]> SYSDATE - 7
-				</when>
-				<when test='searchDate == "oneMonth"'>
-					AND A.DMD_DT <![CDATA[>=]]> ADD_MONTHS(SYSDATE, -1)
-				</when>
-				<otherwise>
-					AND A.DMD_DT <![CDATA[>=]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')
-					AND A.DMD_DT <![CDATA[<]]> TO_DATE(#{searchDate}, 'YYYY-MM-DD HH24:MI:SS')+1
-				</otherwise>
-			</choose>
-		</if>
-		<if test='employeeVO.empId != null and employeeVO.empId != ""'>
-			<choose>
-				<when test='searchAuth'>
-				</when>
-				<otherwise>
-					AND A.DMD_ID = #{employeeVO.empId}
-				</otherwise>
-			</choose>
-		</if>
-		 ORDER BY DMD_DT DESC
-		<include refid="Common.pagenate_footer"/>
-	</select>
-	<!-- PSH - searchEnd -->
-  	
 </mapper> 

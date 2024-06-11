@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.approval.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
-import com.ktdsuniversity.edu.pms.approval.vo.SearchApprovalVO;
 
 @Repository
 public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao {
@@ -30,62 +30,28 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	}
 
 	@Override
-	public int getAllCountByEmpId(String empId) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getAllCountByEmpId", empId);
+	public boolean insertApproval(List<String> approverList, ApprovalVO approvalVO) {
+		List<ApprovalVO> apprList = new ArrayList<>();
+		for (String  approver: approverList) {
+			approvalVO.setApprover(approver);
+			apprList.add(approvalVO);
+		}
+		int insertCnt = getSqlSession().update(ApprovalDao.NAME_SPACE+".insertApproval", apprList);
+		
+//		TODO P ID UPDATE 혹은 쿼리 변환
+		return insertCnt == approverList.size();
 	}
 
 	@Override
-	public List<ApprovalVO> getAllApprovalByEmpId(String empId) {
-		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".getAllApprovalByEmpId", empId);
+	public int updateOneApproveal(ApprovalVO approvalVO) {
+		
+//		TODO approvalVO.apprId 값의 pid 가 있을경우 해당 내용을 보이게 설정 
+		return getSqlSession().update(ApprovalDao.NAME_SPACE+".updateOneApproveal", approvalVO);
 	}
 
-	@Override
-	public ApprovalVO selectOneApproval(String apprId) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectOneApproval", apprId);
-	}
 
-	@Override
-	public ApprovalVO selectOneApprovalAll(String apprId) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectOneApprovalAll", apprId);
-	}
 
-	// PSH0422
-	@Override
-	public String selectOneApprId() {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".selectOneApprId");
-	}
-
-	@Override
-	public int insertApproval(ApprovalVO approvalVO) {
-		return getSqlSession().insert(ApprovalDao.NAME_SPACE + ".insertApproval", approvalVO);
-	}
-
-	@Override
-	public int updateApprovalStatus(ApprovalVO approvalVO) {
-		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateApprovalStatus", approvalVO);
-
-	}
 	
-	@Override
-	public int updateRentalStatus(ApprovalVO approvalVO) {
-		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".updateRentalStatus", approvalVO);
-	}
-
-	@Override
-	public int deleteApproval(String apprId) {
-		return getSqlSession().update(ApprovalDao.NAME_SPACE + ".deleteApproval", apprId);
-	}
-	
-	// PSH - search
-	@Override
-	public int searchAllApprovalCount(SearchApprovalVO searchApprovalVO) {
-		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".searchAllApprovalCount", searchApprovalVO);
-	}
-	
-	@Override
-	public List<ApprovalVO> searchAllApproval(SearchApprovalVO searchApprovalVO) {
-		return getSqlSession().selectList(ApprovalDao.NAME_SPACE + ".searchAllApproval", searchApprovalVO);
-	}
 
 
 }
