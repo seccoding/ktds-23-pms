@@ -187,6 +187,12 @@
 		  		<when test='searchType == "team_name"'>
 		  		AND T.TM_NAME LIKE '%' || #{searchKeyWord} || '%'
 		  		</when>
+		  		<when test='searchType == "department_id"'>
+		  		AND D.DEPT_NAME LIKE '%' || #{searchKeyWord} || '%'
+		  		</when>
+		  		<when test='searchType == "team_id"'>
+		  		AND T.TM_ID LIKE '%' || #{searchKeyWord} || '%'
+		  		</when>
 		  	</choose>
 		  </if>
 		  ORDER BY E.HIRE_DT DESC
@@ -496,6 +502,25 @@
 	           CMCD_NAME AS DATA_NAME
 	    FROM   COMMON_CODE
 	    WHERE  TO_NUMBER(CMCD_ID) > 200
+	    </select>
+	<!-- SH -->
+	<select id="getEmployeeByDeptId" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT E.EMP_ID 
+			 , E.EMP_NAME 
+			 , E.WORK_STS 
+			 , E.EMAIL 
+			 , E.JOB_ID 
+			 , E.TM_ID 
+			 , D.DEPT_ID 
+			 , D.DEPT_NAME
+			 , T.TM_ID 
+			 , T.TM_NAME 
+		FROM EMPLOYEE E
+		INNER JOIN DEPARTMENT D
+		   ON E.DEPT_ID = D.DEPT_ID 
+		INNER JOIN TEAM T
+		   ON E.TM_ID = T.TM_ID 
+		 WHERE D.DEPT_ID = #{_parameter}
 	</select>
 
 

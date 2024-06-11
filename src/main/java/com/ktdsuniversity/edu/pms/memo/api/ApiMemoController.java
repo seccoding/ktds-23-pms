@@ -1,6 +1,8 @@
 package com.ktdsuniversity.edu.pms.memo.api;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
+import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.memo.service.ReceiveMemoService;
@@ -25,6 +27,18 @@ public class ApiMemoController {
     private SendMemoService sendMemoService;
     @Autowired
     private ReceiveMemoService receiveMemoService;
+    @Autowired
+    private EmployeeService employeeService;
+    
+    
+    
+    @GetMapping("/member/{deptId}")
+    public ApiResponse getEmployeeByDeptId(@PathVariable String deptId, Authentication authentication) {
+    	
+    	List<EmployeeVO> employeeListVO = this.employeeService.getEmployeeByDeptId(deptId);
+    	return ApiResponse.Ok(employeeListVO);
+    	
+    }
 
     // ---------- 발신 ----------
     /**
@@ -236,5 +250,6 @@ public class ApiMemoController {
         boolean isDeleteSuccess = this.receiveMemoService.deleteOneReceiveMemo(rcvMemoId);
         return ApiResponse.Ok(isDeleteSuccess);
     }
+
 }
 

@@ -311,5 +311,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<EmployeeDataVO> workStsList = this.employeeDao.getEmployeeWorkStsList();
 		return workStsList;
 	}
+	// SH
+	@Override
+	public List<EmployeeVO> getEmployeeByDeptId(String deptId) {
+		
+		List<EmployeeVO> employeeListVO = this.employeeDao.getEmployeeByDeptId(deptId);
+		return employeeListVO;
+	}
 
 }

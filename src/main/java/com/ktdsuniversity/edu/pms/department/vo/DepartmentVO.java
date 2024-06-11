@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.department.vo;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.job.vo.JobVO;
@@ -17,7 +19,14 @@ public class DepartmentVO {
 	private TeamVO teamVO;
 	private JobVO jobVO;
 	private CommonCodeVO commonCodeVO;
-
+//	private List<TeamVO> teamListVO;
+//	
+//	public List<TeamVO> getTeamListVO() {
+//		return teamListVO;
+//	}
+//	public void setTeamListVO(List<TeamVO> teamListVO) {
+//		this.teamListVO = teamListVO;
+//	}
 	
 
 	public String getEmail() {
