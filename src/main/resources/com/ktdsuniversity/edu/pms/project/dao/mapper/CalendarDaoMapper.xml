@@ -27,4 +27,11 @@
 			, #{prjId}
 			, 'N')
 	</insert>
+	
+	<update id="modifyCalendar" parameterType="com.ktdsuniversity.edu.pms.project.vo.CalendarVO">
+		UPDATE CALENDAR 
+		   SET CLND_CONTENT = #{clndContent}
+		 WHERE CLND_DATE = #{clndDate}
+		   AND PRJ_ID = #{prjId}
+	</update>
 </mapper>

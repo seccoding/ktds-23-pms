@@ -145,9 +145,7 @@ public class ApiProjectController {
 	        if (!employeeVO.getAdmnCode().equals("301")) {
 	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
 	        }
-	        System.out.println("!!!!!!!!!!!!!"+createProjectVO);
-	        System.out.println("!!!!!!!!!!!!!"+createProjectVO.getDeptId());
-	        System.out.println("!!!!!!!!!!!!!"+createProjectVO.getPrjMemo());
+	        
 
 //	        Validator<CreateProjectVO> validator = new Validator<>(createProjectVO);
 //
@@ -267,6 +265,9 @@ public class ApiProjectController {
 	    @GetMapping("/employee/findbydeptid/{deptId}")
 		public ApiResponse findEmployeesByDeptId(@PathVariable String deptId, Authentication authentication) {
 			List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
+			for(EmployeeVO emp:employeeListVO) {
+				emp = this.employeeService.getOneEmployee(emp.getEmpId());
+			}
 			return ApiResponse.Ok(employeeListVO);
 		}
 	    
@@ -275,6 +276,7 @@ public class ApiProjectController {
 	    	List<CalendarVO> calendarList = this.calendarService.getCalendarByPrjId(prjId);
 	    	return ApiResponse.Ok(calendarList);
 	    }
+	    
 	    
 	    @PostMapping("/calendar")
 	    public ApiResponse addCalendar(@RequestBody CalendarVO calendarVO, Authentication authentication) {
@@ -288,6 +290,21 @@ public class ApiProjectController {
 	    	boolean isSuccess = this.calendarService.addCalendar(calendarVO);
 	    	if(!isSuccess) {
 	    		return ApiResponse.FORBIDDEN("캘린더에 추가하지 못했습니다.");
+	    	}
+	    	return ApiResponse.Ok(isSuccess);
+	    }
+	    
+	    @PutMapping("/calendar")
+	    public ApiResponse modifyCalendar(@RequestBody CalendarVO calendarVO, Authentication authentication) {
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+	        if (!employeeVO.getAdmnCode().equals("301")) {
+	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+	        }
+	    	boolean isSuccess = this.calendarService.modifyCalendar(calendarVO);
+	    	if(!isSuccess) {
+	    		return ApiResponse.FORBIDDEN("수정 중 오류가 발생했습니다.");
 	    	}
 	    	return ApiResponse.Ok(isSuccess);
 	    }

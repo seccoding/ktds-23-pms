@@ -24,4 +24,9 @@ public class CalendarServiceImpl implements CalendarService{
 		return this.calendarDao.addCalendar(calendarVO) > 0;
 	}
 
+	@Override
+	public boolean modifyCalendar(CalendarVO calendarVO) {
+		return this.calendarDao.modifyCalendar(calendarVO) > 0;
+	}
+
 }

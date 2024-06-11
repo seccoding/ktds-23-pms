@@ -28,4 +28,9 @@ public class CalendarDaoImpl extends SqlSessionDaoSupport  implements CalendarDa
 		return getSqlSession().insert(CalendarDao.NAME_SPACE+".addCalendar", calendarVO);
 	}
 
+	@Override
+	public int modifyCalendar(CalendarVO calendarVO) {
+		return getSqlSession().update(CalendarDao.NAME_SPACE+".modifyCalendar", calendarVO);
+	}
+
 }
