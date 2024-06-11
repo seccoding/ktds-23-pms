@@ -22,7 +22,7 @@ public class ApiIssueReplyController {
 	@Autowired
 	public IssueReplyService issueReplyService;
 	
-	@GetMapping("/issue/reply/{pPostId")
+	@GetMapping("/issue/reply/{pPostId}")
 	public ApiResponse getAllReplies(@PathVariable String pPostId, IssueReplyVO issueReplyVO) {
 		List<IssueReplyVO> issueReplyList = this.issueReplyService.getAllReplies(issueReplyVO);
 		
