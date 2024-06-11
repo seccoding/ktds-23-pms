@@ -1,0 +1,139 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.rentalsupply.dao.RentalSupplyDao">
+
+	<select id="searchRentalSupplyAllCount"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO"
+			resultType="_int">
+		SELECT COUNT(1)
+		  FROM (SELECT RSPL_ID
+					 , RSPL_NAME
+					 , RSPL_CTGR
+					 , RSPL_PRICE
+					 , INV_QTY
+					 , DEL_YN
+					 , RSPL_IMG
+					 , RSPL_DTL
+					 , RSPL_REGT_ID
+					 , RSPL_MDFR_ID
+					 , RSPL_REGT_DT
+					 , RSPL_MDF_DT
+				  FROM RSUPPLY)
+		 WHERE DEL_YN = 'N'
+	</select>
+
+	<select id="searchAllRentalSupply"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO"
+			resultType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		SELECT RSPL_ID
+			 , RSPL_NAME
+			 , RSPL_CTGR
+			 , RSPL_PRICE
+			 , INV_QTY
+			 , DEL_YN
+			 , RSPL_IMG
+			 , RSPL_DTL
+			 , RSPL_REGT_ID
+			 , RSPL_MDFR_ID
+			 , RSPL_REGT_DT
+			 , RSPL_MDF_DT
+		  FROM (SELECT RSPL_ID
+					 , RSPL_NAME
+					 , RSPL_CTGR
+					 , RSPL_PRICE
+					 , INV_QTY
+					 , DEL_YN
+					 , RSPL_IMG
+					 , RSPL_DTL
+					 , RSPL_REGT_ID
+					 , RSPL_MDFR_ID
+					 , RSPL_REGT_DT
+					 , RSPL_MDF_DT
+				  FROM RSUPPLY)
+		 WHERE DEL_YN = 'N'
+	</select>
+	
+	<select id="selectOneRentalSupply"
+			parameterType="String"
+			resultType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		SELECT RSPL_ID
+			 , RSPL_NAME
+			 , RSPL_CTGR
+			 , RSPL_PRICE
+			 , INV_QTY
+			 , DEL_YN
+			 , RSPL_IMG
+			 , RSPL_DTL
+			 , RSPL_REGT_ID
+			 , RSPL_MDFR_ID
+			 , RSPL_REGT_DT
+			 , RSPL_MDF_DT
+		  FROM RSUPPLY
+		 WHERE DEL_YN = 'N'
+		   AND RSPL_ID = #{_parameter}
+	</select>
+	
+	<insert id="registerNewRentalSupply"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		INSERT INTO RSUPPLY
+		 (RSPL_ID
+		, RSPL_NAME
+		, RSPL_CTGR
+		, RSPL_PRICE
+		, INV_QTY
+		, DEL_YN
+		, RSPL_IMG
+		, RSPL_DTL
+		, RSPL_REGT_ID
+		, RSPL_MDFR_ID
+		, RSPL_REGT_DT
+		, RSPL_MDF_DT)
+		VALUES
+		 ('RSPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RSUPPLY_PK.NEXTVAL, 6, '0')
+		, #{rsplName}
+		, #{rsplCtgr}
+		, #{rsplPrice}
+		, #{invQty}
+		, 'N'
+		, #{rsplImg}
+		, #{rsplDtl}
+		, #{rsplRegtId}
+		, NULL
+		, SYSDATE
+		, NULL)
+	</insert>
+	
+	<update id="updateOneRentalSupply"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		UPDATE RSUPPLY 
+		   SET RSPL_NAME = #{rsplName}
+		     , RSPL_CTGR = #{rsplCtgr}
+		     , RSPL_PRICE = #{rsplPrice}
+		     , INV_QTY = #{invQty}
+		     , RSPL_IMG = #{rsplImg}
+		     , RSPL_DTL = #{rsplDtl}
+		     , RSPL_MDFR_ID = #{rsplMdfrId}
+		     , RSPL_MDF_DT = SYSDATE
+		 WHERE RSPL_ID = #{rsplId}
+	</update>
+	
+	<update id="updateOneRentalSupplyStock"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		UPDATE RSUPPLY 
+		   SET INV_QTY = #{invQty}
+		     , RSPL_MDFR_ID = #{rsplMdfrId}
+		     , RSPL_MDF_DT = SYSDATE
+		 WHERE RSPL_ID = #{rsplId}
+	</update>
+	
+	<update id="deleteOneRentalSupply"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		UPDATE RSUPPLY
+		   SET DEL_YN = 'Y'
+		     , RSPL_MDFR_ID = #{rsplMdfrId}
+		     , RSPL_MDF_DT = SYSDATE
+		 WHERE RSPL_ID = #{rsplId}
+	</update>
+
+</mapper>

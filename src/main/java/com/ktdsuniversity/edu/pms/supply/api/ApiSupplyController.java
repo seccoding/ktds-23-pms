@@ -60,7 +60,9 @@ public class ApiSupplyController {
 //	}
 	
 	@PostMapping("/supply")
-	public ApiResponse doSupplyRegistration(SupplyVO supplyVO, @RequestParam(required = false) MultipartFile file, Authentication authentication) {
+	public ApiResponse doSupplyRegistration(SupplyVO supplyVO, 
+											@RequestParam(required = false) MultipartFile file, 
+											Authentication authentication) {
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
@@ -119,6 +121,7 @@ public class ApiSupplyController {
 	@PutMapping("/supply/{splId}")
 	public ApiResponse doSupplyModify(@PathVariable String splId, 
 									  SupplyVO supplyVO, 
+									  @RequestParam(required = false) MultipartFile file,
 									  Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
@@ -126,7 +129,7 @@ public class ApiSupplyController {
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
-		boolean isNotEmptyImage = ValidationUtils.notEmpty(supplyVO.getSplImg());
+		boolean isNotEmptyImage = file != null && !file.isEmpty();
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
 		
 //		Validator<SupplyVO> validator = new Validator<>(supplyVO);

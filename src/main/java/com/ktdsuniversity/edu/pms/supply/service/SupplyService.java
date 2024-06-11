@@ -25,5 +25,4 @@ public interface SupplyService {
 
 	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO);
 
-
 }

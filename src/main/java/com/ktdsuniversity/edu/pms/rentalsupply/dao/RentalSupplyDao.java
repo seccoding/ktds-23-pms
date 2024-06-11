@@ -13,5 +13,14 @@ public interface RentalSupplyDao {
 
 	public List<RentalSupplyVO> searchAllRentalSupply(SearchRentalSupplyVO searchRentalSupplyVO);
 	
+	public RentalSupplyVO selectOneRentalSupply(String rsplId);
+	
+	public int registerNewRentalSupply(RentalSupplyVO rentalSupplyVO);
+	
+	public int updateOneRentalSupply(RentalSupplyVO rentalSupplyVO);
+	
+	public int updateOneRentalSupplyStock(RentalSupplyVO rentalSupplyVO);
+	
+	public int deleteOneRentalSupply(RentalSupplyVO rentalSupplyVO);
 	
 }
