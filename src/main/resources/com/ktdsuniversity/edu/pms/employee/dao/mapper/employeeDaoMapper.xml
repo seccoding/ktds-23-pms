@@ -102,7 +102,7 @@
 		 , E.SAL_YEAR
 		 , E.PRFL
 		 , TO_CHAR(E.HIRE_DT, 'YYYY-MM-DD')HIRE_DT 
-		 , E.HIRE_YEAR
+		 , E.HIRE_DT
 		 , TO_CHAR(E.END_DT, 'YYYY-MM-DD')END_DT
 		 , TO_CHAR(E.REST_ST_DT,'YYYY-MM-DD' ) END_DT
 		 , TO_CHAR(E.REST_END_DT,'YYYY-MM-DD' ) END_DT 
@@ -121,14 +121,16 @@
 		 , TO_CHAR(E.PWD_CN_DT,'YYYY-MM-DD' ) PWD_CN_DT
 		 , TO_CHAR(E.LGN_TRY_DT,'YYYY-MM-DD HH:MM:SS' ) LGN_TRY_DT
 		 , E.LGN_YN
-		 , D.DEPT_NAME 
+		 , D.DEPT_NAME
+		 , T.TM_ID
 		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  LEFT JOIN DEPARTMENT D 
 	    ON D.DEPT_ID = E.DEPT_ID 
 	  LEFT JOIN TEAM T
 	    ON E.TM_ID = T.TM_ID
-	 WHERE E.WORK_STS != '204'	
+	 WHERE E.WORK_STS != '204'
+	 ORDER BY E.HIRE_DT DESC
 	  
 	</select>
 	<select id="searchAllEmployee" 
@@ -187,6 +189,7 @@
 		  		</when>
 		  	</choose>
 		  </if>
+		  ORDER BY E.HIRE_DT DESC
 	<include refid="Common.pagenate_footer" />
 	</select>
 	
@@ -230,6 +233,7 @@
 		 , D.DEPT_NAME 
 		 , J.JOB_NAME
 		 , C.CMCD_NAME
+		 , T.TM_ID
 		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D
@@ -450,6 +454,12 @@
 		 WHERE EMP_ID = #{empId}
 	</update>
 	
+	<update id="modifyEmployeeTeam" parameterType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
+		UPDATE EMPLOYEE 
+		   SET TM_ID = #{tmId}
+		 WHERE EMP_ID = #{empId}
+	</update>
+	
 	<update id="modifyEmployeeJob" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		UPDATE EMPLOYEE
 		   SET JOB_ID = #{jobId}
@@ -479,6 +489,13 @@
 	           CMCD_NAME AS DATA_NAME
 	    FROM   COMMON_CODE
 	    WHERE  TO_NUMBER(CMCD_ID) > 100
+	</select>
+	
+	<select id="getEmployeeWorkStsList" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO">
+	    SELECT CMCD_ID AS DATA_ID,
+	           CMCD_NAME AS DATA_NAME
+	    FROM   COMMON_CODE
+	    WHERE  TO_NUMBER(CMCD_ID) > 200
 	</select>
 
 

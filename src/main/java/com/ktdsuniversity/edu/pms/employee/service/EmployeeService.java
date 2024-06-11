@@ -57,6 +57,8 @@ public interface EmployeeService {
 
 	public List<EmployeeDataVO> getEmployeeGradeList();
 
+	public List<EmployeeDataVO> getEmployeeWorkStsList();
+
 
 
 }

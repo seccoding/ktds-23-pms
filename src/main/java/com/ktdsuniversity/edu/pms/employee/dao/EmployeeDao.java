@@ -60,6 +60,8 @@ public interface EmployeeDao {
 	public int modifyEmployeePosition(EmployeeVO employeeVO);
 
 	public int modifyEmployeeDept(EmployeeVO employeeVO);
+	
+	public int modifyEmployeeTeam(EmployeeVO employeeVO);
 
 	public List<EmployeeDataVO> getDepartList();
 
@@ -68,6 +70,8 @@ public interface EmployeeDao {
 	public List<EmployeeDataVO> getJobList();
 
 	public List<EmployeeDataVO> getEmployeeGradeList();
+
+	public List<EmployeeDataVO> getEmployeeWorkStsList();
 
 	
 
