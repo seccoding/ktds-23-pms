@@ -448,7 +448,7 @@ public class QnaController {
 	private Map<String, List<String>> qnaValidator(QnaVO qnaVO) {
 
 		Validator<QnaVO> validator = new Validator<>(qnaVO);
-		validator.add("rqmId", Type.NOT_EMPTY, "요구사항은 필수 입력값입니다")
+		validator.add("prjId", Type.NOT_EMPTY, "프로젝트는 필수 입력값입니다")
 				.add("qaTtl", Type.NOT_EMPTY, "제목은 필수 입력값입니다")
 				.add("qaCntnt", Type.NOT_EMPTY, "내용은 필수 입력값입니다")
 				.start();
