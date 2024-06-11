@@ -252,4 +252,9 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.updateOneTeammateSurveyStatusByProjectIdAndEmployeeId(projectTeammateVO) > 0;
     }
 
+	@Override
+	public List<ProjectTeammateVO> getAllProjectTeammateByTmId(String empId) {
+		return projectDao.getAllProjectTeammateByTmId(empId);
+	}
+
 }

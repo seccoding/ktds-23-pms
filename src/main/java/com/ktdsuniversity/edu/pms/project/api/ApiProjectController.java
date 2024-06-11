@@ -76,7 +76,7 @@ public class ApiProjectController {
 			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 	        // 접속 유저에 따라 내려주는 데이터를 다르게 설정
 	        searchProjectVO.setEmployeeVO(employeeVO);
-
+	        System.out.println("ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ"+ employeeVO.getEmpId());
 	        ProjectListVO projectListVO = projectService.searchProject(searchProjectVO);
 	        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 		
@@ -84,12 +84,15 @@ public class ApiProjectController {
 					.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId())).filter(tm -> tm.getRole().equals("PM"))
 					.toList();
 			boolean isPM = !tmList.isEmpty();
-	        
+			
+			List<ProjectTeammateVO> projectTeammateVO = this.projectService.getAllProjectTeammateByTmId(employeeVO.getEmpId());
+			
 	        List<Object> dataList = new ArrayList<>();
 			dataList.add(projectCommonCodeList);
 			dataList.add(projectListVO);
 			dataList.add(employeeVO);
 			dataList.add(isPM);
+			dataList.add(projectTeammateVO);
 
 	        return ApiResponse.Ok(dataList);
 	    }

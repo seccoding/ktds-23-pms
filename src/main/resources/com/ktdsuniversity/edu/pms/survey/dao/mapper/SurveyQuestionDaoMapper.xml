@@ -413,5 +413,20 @@
 		     , DEL_YN = 'Y'
 		 WHERE SRV_ID = #{srvId}
 	</update>
+	
+	<select id="getOneSrvQuestionVOBySrvId"
+			parameterType="String">
+		SELECT SRV_ID
+			 , PRJ_ID
+			 , SRV_QST
+			 , CRTR_ID
+			 , MDFR_ID
+			 , MDF_DT
+			 , DEL_YN
+			 , SEQ
+			 , TYPE_YN
+		  FROM SURVEY_QUESTION
+		 WHERE SRV_ID = #{srvId}
+	</select>
 
 </mapper>

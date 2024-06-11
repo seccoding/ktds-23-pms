@@ -5,6 +5,7 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 import java.util.List;
 
@@ -67,4 +68,8 @@ public interface ProjectDao {
     int selectTeammateRolePLCountByProjectId(String prjId);
 
 	int updateOneProjectSurveySts(String prjId);
+
+	int updateOneTeammateSurveySts(SurveyReplyVO surveyReplyVO);
+
+	List<ProjectTeammateVO> getAllProjectTeammateByTmId(String empId);
 }

@@ -121,4 +121,6 @@ public interface SurveyQuestionService {
 	 */
 	public SurveyListVO searchTeammate(SearchSurveyVO searchSurveyVO);
 
+	public SurveyQuestionVO getOneProjectIdBySrvId(String srvId);
+
 }
