@@ -182,6 +182,12 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".getEmployeeGradeList");
 	}
 
+	// SH
+	@Override
+	public List<EmployeeVO> getEmployeeByDeptId(String deptId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".getEmployeeByDeptId", deptId);
+	}
+
 
 
 }

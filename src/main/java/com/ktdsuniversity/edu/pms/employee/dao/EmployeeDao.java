@@ -69,6 +69,9 @@ public interface EmployeeDao {
 
 	public List<EmployeeDataVO> getEmployeeGradeList();
 
+	// SH
+	public List<EmployeeVO> getEmployeeByDeptId(String deptId);
+
 	
 
 

@@ -57,6 +57,9 @@ public interface EmployeeService {
 
 	public List<EmployeeDataVO> getEmployeeGradeList();
 
+	//SH
+	public List<EmployeeVO> getEmployeeByDeptId(String deptId);
+
 
 
 }
