@@ -271,10 +271,11 @@ public class ApiProjectController {
 	    @GetMapping("/employee/findbydeptid/{deptId}")
 		public ApiResponse findEmployeesByDeptId(@PathVariable String deptId, Authentication authentication) {
 			List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
+			List<EmployeeVO> returnEmpList = new ArrayList<>();
 			for(EmployeeVO emp:employeeListVO) {
-				emp = this.employeeService.getOneEmployee(emp.getEmpId());
+				returnEmpList.add(this.employeeService.getOneEmployee(emp.getEmpId()));
 			}
-			return ApiResponse.Ok(employeeListVO);
+			return ApiResponse.Ok(returnEmpList);
 		}
 	    
 	    @GetMapping("/calendar/{prjId}")
