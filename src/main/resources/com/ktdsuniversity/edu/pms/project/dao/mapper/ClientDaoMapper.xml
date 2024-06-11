@@ -35,4 +35,12 @@
 		 WHERE DEL_YN = 'N'
 		   AND CLNT_ID = #{_parameter}
 	</select>
+	
+	<update id="modifyClient" parameterType="com.ktdsuniversity.edu.pms.project.vo.ClientVO">
+		UPDATE CLIENT 
+		   SET CLNT_NAME = #{clntName}
+		     , CNTCT = #{cntct}
+		     , INFO = #{info}
+		 WHERE CLNT_ID = #{clntId}
+	</update>
 </mapper>

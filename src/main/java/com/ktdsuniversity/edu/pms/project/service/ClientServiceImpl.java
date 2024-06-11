@@ -31,4 +31,9 @@ public class ClientServiceImpl implements ClientService {
 	public ClientVO getClientOfProject(String clntInfo) {
 		return this.clientDao.getClientOfProject(clntInfo);
 	}
+
+	@Override
+	public boolean modifyClient(ClientVO clientVO) {
+		return this.clientDao.modifyClient(clientVO) > 0;
+	}
 }

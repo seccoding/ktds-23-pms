@@ -33,4 +33,9 @@ public class ClientDaoImpl extends SqlSessionDaoSupport  implements ClientDao {
 			return getSqlSession().selectOne(ClientDao.NAME_SPACE+".getClientOfProject", clntInfo);
 		}
 
+		@Override
+		public int modifyClient(ClientVO clientVO) {
+			return getSqlSession().update(ClientDao.NAME_SPACE+".modifyClient", clientVO);
+		}
+
 }

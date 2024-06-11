@@ -12,4 +12,6 @@ public interface ClientService {
 
 	ClientVO getClientOfProject(String clntInfo);
 
+	boolean modifyClient(ClientVO clientVO);
+
 }

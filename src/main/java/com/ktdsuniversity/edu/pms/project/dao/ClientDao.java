@@ -14,4 +14,6 @@ public interface ClientDao {
 
 	public ClientVO getClientOfProject(String clntInfo);
 
+	public int modifyClient(ClientVO clientVO);
+
 }

@@ -263,8 +263,20 @@ public class ApiProjectController {
 	    }
 	    
 	    @PostMapping("/client")
-	    public ApiResponse doCreateClient(ClientVO clientVO) {
+	    public ApiResponse doCreateClient(@RequestBody ClientVO clientVO) {
 	    	boolean isSuccess = this.clientService.createClient(clientVO);
+	    	return ApiResponse.Ok(isSuccess);
+	    }
+	    @PutMapping("/client")
+	    public ApiResponse modifyClient(@RequestBody ClientVO clientVO, Authentication authentication) {
+	    	
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+	        if (!employeeVO.getAdmnCode().equals("301")) {
+	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+	        }
+	    	boolean isSuccess = this.clientService.modifyClient(clientVO);
 	    	return ApiResponse.Ok(isSuccess);
 	    }
 	    
