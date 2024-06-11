@@ -23,5 +23,11 @@ public interface CommuteDao {
 	 * @return 
 	 */
     public int insertCommuteIn(String empId);
+    /**
+     * 파라미터로 받아온 직원의 퇴근기록을 현재시간으로 update 한다
+     * @param empId
+     * @return
+     */
+    public int updateCommuteLeaveWork(String empId);
 
 }
