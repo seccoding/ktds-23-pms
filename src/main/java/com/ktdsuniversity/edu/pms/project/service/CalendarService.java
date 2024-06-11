@@ -10,4 +10,6 @@ public interface CalendarService {
 
 	boolean addCalendar(CalendarVO calendarVO);
 
+	boolean modifyCalendar(CalendarVO calendarVO);
+
 }

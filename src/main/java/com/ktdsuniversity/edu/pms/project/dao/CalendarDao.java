@@ -12,4 +12,6 @@ public interface CalendarDao {
 
 	public int addCalendar(CalendarVO calendarVO);
 
+	public int modifyCalendar(CalendarVO calendarVO);
+
 }
