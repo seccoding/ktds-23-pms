@@ -1,6 +1,11 @@
 package com.ktdsuniversity.edu.pms.supply.api;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +30,6 @@ import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
-import com.ktdsuniversity.edu.pms.utils.Validator;
-import com.ktdsuniversity.edu.pms.utils.Validator.Type;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -52,17 +55,29 @@ public class ApiSupplyController {
 		return ApiResponse.Ok(supplyVO);
 	}
 	
-//	@GetMapping("/supply/image/{splImg}")
-//	public ApiResponse getSupplyImage(@PathVariable String splImg) {
-//		File file = this.supplyService.getSupplyImage(splImg);
-//		
-//		return ApiResponse.Ok(file);
-//	}
+    @GetMapping("/supply/image/{splImg}")
+    public ApiResponse getSupplyImage(@PathVariable String splImg) {
+        try {
+            Path filePath = Paths.get("C:/uploadfile/" + splImg);
+            if (Files.exists(filePath)) {
+                byte[] imageBytes = Files.readAllBytes(filePath);
+                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                return ApiResponse.Ok(base64Image);
+            } else {
+                return ApiResponse.BAD_REQUEST(List.of("Image not found"));
+            }
+        } catch (IOException e) {
+            return ApiResponse.BAD_REQUEST(List.of("Failed to load image"));
+        }
+    }
 	
 	@PostMapping("/supply")
 	public ApiResponse doSupplyRegistration(SupplyVO supplyVO, 
 											@RequestParam(required = false) MultipartFile file, 
 											Authentication authentication) {
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
@@ -110,8 +125,7 @@ public class ApiSupplyController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 		
-//		supplyVO.setSplRegtId(authentication.getName());
-		supplyVO.setSplRegtId("system01");
+		supplyVO.setSplRegtId(employeeVO.getEmpId());
 		
 		boolean isCreateSuccess = this.supplyService.registerNewSupply(supplyVO, file);
 		
