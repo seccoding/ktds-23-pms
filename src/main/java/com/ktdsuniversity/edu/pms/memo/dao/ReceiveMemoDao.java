@@ -53,4 +53,8 @@ public interface ReceiveMemoDao {
      * 수신 쪽지 여러개 삭제
      */
     public int deleteManyReceiveMemo(List<String> receiveMemoList);
+    
+    public int getRcvCountBySendMemoId(String sendMemoId);
+
+    public int deleteReceiveMemoBySendMemoId(String sendMemoId);
 }

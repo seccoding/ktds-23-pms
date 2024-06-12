@@ -44,17 +44,22 @@ public class SendMemoDaoImpl extends SqlSessionDaoSupport implements SendMemoDao
     }
 
     @Override
-    public int updateSaveOneSendMemo(String sendMemoId) {
-        return getSqlSession().update(SendMemoDao.NAME_SPACE + ".updateSaveOneSendMemo", sendMemoId);
+    public int updateSaveOneSendMemo(SendMemoVO sendMemoVO) {
+        return getSqlSession().update(SendMemoDao.NAME_SPACE + ".updateSaveOneSendMemo", sendMemoVO);
     }
 
     @Override
     public int updateSendStatus(String sendMemoId) {
-        return getSqlSession().update(SendMemoDao.NAME_SPACE + ". ", sendMemoId);
+        return getSqlSession().update(SendMemoDao.NAME_SPACE + ".updateSendStatus", sendMemoId);
     }
 
     @Override
     public int deleteOneSendMemo(String sendMemoId) {
         return getSqlSession().update(SendMemoDao.NAME_SPACE + ".deleteOneSendMemo", sendMemoId);
+    }
+    
+    @Override
+    public int getSendCountBySendMemoId(String sendMemoId) {
+        return getSqlSession().selectOne(SendMemoDao.NAME_SPACE + ".getSendCountBySendMemoId", sendMemoId);
     }
 }

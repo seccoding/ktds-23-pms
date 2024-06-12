@@ -16,7 +16,7 @@ public interface SendMemoService {
     /**
      * 한 개의 발신 쪽지 조회
      */
-    public SendMemoVO getOneSendMomo(String sendMemoId);
+    public SendMemoVO getOneSendMemo(String sendMemoId);
 
     /**
      * 쪽지 발신
@@ -26,15 +26,17 @@ public interface SendMemoService {
     /**
      * 쪽지 발신 취소
      */
-    public boolean cancelOneSendMemo(String sendMemoId, List<String> receiveMemoIdList);
+    public boolean cancelOneSendMemo(String sendMemoId, int rcvMemoCount);
 
     /**
      * 발신 쪽지 저장
      */
-    public boolean saveOneSendMemo(String sendMemoId);
+    public boolean saveOneSendMemo(SendMemoVO sendMemoVO);
 
     /**
      * 발신 쪽지 삭제
      */
     public boolean deleteOneSendMemo(String sendMemoId);
+    
+    public int getSendCountBySendMemoId(String sendMemoId);
 }

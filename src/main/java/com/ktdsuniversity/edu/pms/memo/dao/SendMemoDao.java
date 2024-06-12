@@ -37,7 +37,7 @@ public interface SendMemoDao {
     /**
      * 쪽지 저장
      */
-    public int updateSaveOneSendMemo(String sendMemoId);
+    public int updateSaveOneSendMemo(SendMemoVO sendMemoVO);
 
     /**
      * 쪽지 발신 취소
@@ -48,4 +48,6 @@ public interface SendMemoDao {
      * 쪽지 삭제
      */
     public int deleteOneSendMemo(String sendMemoId);
+    
+    public int getSendCountBySendMemoId(String sendMemoId);
 }

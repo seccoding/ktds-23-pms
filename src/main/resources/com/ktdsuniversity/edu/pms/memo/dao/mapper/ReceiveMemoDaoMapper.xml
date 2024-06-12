@@ -176,5 +176,18 @@
             #{rcvMemoId}
         </foreach>
     </update>
+    
+    <select id="getRcvCountBySendMemoId" parameterType="string" resultType="_int">
+        SELECT COUNT(1)
+          FROM RECEIVE_MEMO
+         WHERE SEND_MEMO_ID = #{_parameter}
+           AND RCV_DATE IS NULL
+    </select>
+
+    <update id="deleteReceiveMemoBySendMemoId" parameterType="string">
+        UPDATE RECEIVE_MEMO
+           SET RCV_DEL_YN = 'Y'
+         WHERE SEND_MEMO_ID = #{_parameter}
+    </update>
 
 </mapper>

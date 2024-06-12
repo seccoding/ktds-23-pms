@@ -61,7 +61,7 @@ public class ApiMemoController {
      */
     @GetMapping("/send/{sendMemoId}")
     public ApiResponse viewSendMemo(@PathVariable String sendMemoId) {
-        SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMomo(sendMemoId);
+    	SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMemo(sendMemoId);
         return ApiResponse.Ok(sendMemoVO, sendMemoVO == null ? 0 : 1);
     }
 
@@ -112,19 +112,25 @@ public class ApiMemoController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-        SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMomo(sendMemoId);
-        if(!employeeVO.getEmpId().equals(sendMemoVO.getSendId())) {
+        SendMemoVO originSendMemoVO = this.sendMemoService.getOneSendMemo(sendMemoId);
+        if(!employeeVO.getEmpId().equals(originSendMemoVO.getSendId())) {
             return ApiResponse.FORBIDDEN("취소할 권한이 없습니다.");
         }
 
-        List<String> receiveMemoIdList = this.receiveMemoService.searchReceiveMemoListBySendMemoId(sendMemoId);
-        for(String rcvMemoId : receiveMemoIdList) {
-            String rcvData = this.receiveMemoService.getOneReceiveMemo(rcvMemoId).getRcvDate();
-            if(rcvData == null) {
-                return ApiResponse.FORBIDDEN("확인한 쪽지가 있어 취소할 수 없습니다.");
-            }
+        // 발신 쪽지 개수
+        int sendMemoCount = this.sendMemoService.getSendCountBySendMemoId(sendMemoId);
+        System.out.println("ApiMemoController.cancelOneSendMemo: sendMemoCount > " + sendMemoCount);
+
+        // 확인하지 않은 수신 쪽지 개수
+        int rcvMemoCount = this.receiveMemoService.getRcvCountBySendMemoId(sendMemoId);
+        System.out.println("ApiMemoController.cancelOneSendMemo: rcvMemoCount > " + rcvMemoCount);
+
+        if(sendMemoCount != rcvMemoCount) {
+            return ApiResponse.FORBIDDEN("수신 확인한 쪽지가 있어 취소할 수 없습니다.");
+			 
         }
-        boolean isCancelSuccess = this.sendMemoService.cancelOneSendMemo(sendMemoId, receiveMemoIdList);
+
+        boolean isCancelSuccess = this.sendMemoService.cancelOneSendMemo(sendMemoId, rcvMemoCount);
         return ApiResponse.Ok(isCancelSuccess);
     }
 
@@ -132,16 +138,18 @@ public class ApiMemoController {
      * 발신 쪽지 보관
      */
     @PutMapping("/send/save/{sendMemoId}")
-    public ApiResponse saveOneSendMemo(@PathVariable String sendMemoId, Authentication authentication) {
+    public ApiResponse saveOneSendMemo(@PathVariable String sendMemoId, @RequestBody SendMemoVO sendMemoVO, Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-        SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMomo(sendMemoId);
-        if(!employeeVO.getEmpId().equals(sendMemoVO.getSendId())) {
-            return ApiResponse.FORBIDDEN("삭제할 권한이 없습니다.");
+        SendMemoVO originalSendMemoVO = this.sendMemoService.getOneSendMemo(sendMemoId);
+        if(!employeeVO.getEmpId().equals(originalSendMemoVO.getSendId())) {
+            return ApiResponse.FORBIDDEN("권한이 없습니다.");
         }
-        boolean isSaveSuccess = this.sendMemoService.saveOneSendMemo(sendMemoId);
+
+        originalSendMemoVO.setSendSaveYn(sendMemoVO.getSendSaveYn());
+        boolean isSaveSuccess = this.sendMemoService.saveOneSendMemo(originalSendMemoVO);
         return ApiResponse.Ok(isSaveSuccess);
     }
 
@@ -154,7 +162,7 @@ public class ApiMemoController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-        SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMomo(sendMemoId);
+        SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMemo(sendMemoId);
         if(!employeeVO.getEmpId().equals(sendMemoVO.getSendId())) {
             return ApiResponse.FORBIDDEN("삭제할 권한이 없습니다.");
         }

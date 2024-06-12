@@ -66,4 +66,9 @@ public class ReceiveMemoServiceImpl implements ReceiveMemoService{
         int deleteCount = this.receiveMemoDao.deleteOneReceiveMemo(rcvMemoId);
         return deleteCount > 0;
     }
+    
+    @Override
+    public int getRcvCountBySendMemoId(String sendMemoId) {
+        return this.receiveMemoDao.getRcvCountBySendMemoId(sendMemoId);
+    }
 }

@@ -37,5 +37,10 @@ public interface ReceiveMemoService {
      * 수신 쪽지 삭제
      */
     public boolean deleteOneReceiveMemo(String rcvMemoId);
+    
+    /**
+     * 수신 쪽지 개수 확인
+     */
+    public int getRcvCountBySendMemoId(String sendMemoId);
 
 }

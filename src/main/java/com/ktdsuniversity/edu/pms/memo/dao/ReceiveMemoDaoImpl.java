@@ -62,4 +62,14 @@ public class ReceiveMemoDaoImpl extends SqlSessionDaoSupport implements ReceiveM
     public int deleteManyReceiveMemo(List<String> receiveMemoList) {
         return getSqlSession().update(ReceiveMemoDao.NAME_SPACE + ".deleteManyReceiveMemo", receiveMemoList);
     }
+    
+    @Override
+    public int getRcvCountBySendMemoId(String sendMemoId) {
+        return getSqlSession().selectOne(ReceiveMemoDao.NAME_SPACE + ".getRcvCountBySendMemoId", sendMemoId);
+    }
+
+    @Override
+    public int deleteReceiveMemoBySendMemoId(String sendMemoId) {
+        return getSqlSession().update(ReceiveMemoDao.NAME_SPACE + ".deleteReceiveMemoBySendMemoId", sendMemoId);
+    }
 }

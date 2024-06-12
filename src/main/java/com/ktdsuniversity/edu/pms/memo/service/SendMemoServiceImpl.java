@@ -37,7 +37,7 @@ public class SendMemoServiceImpl implements SendMemoService{
     }
 
     @Override
-    public SendMemoVO getOneSendMomo(String sendMemoId) {
+    public SendMemoVO getOneSendMemo(String sendMemoId) {
 
         SendMemoVO sendMemoVO = this.sendMemoDao.selectOneSendMemo(sendMemoId);
         if(sendMemoVO == null) {
@@ -78,23 +78,21 @@ public class SendMemoServiceImpl implements SendMemoService{
 
     @Transactional
     @Override
-    public boolean cancelOneSendMemo(String sendMemoId, List<String> receiveMemoIdList) {
-        // 1.수신 쪽지 조회
-        // List<String> receiveMemoList = this.receiveMemoDao.searchReceiveMemoListBySendMemoId(sendMemoId);
-        // 2.수신 쪽지 삭제
-        int deleteReceiveMemoCount = this.receiveMemoDao.deleteManyReceiveMemo(receiveMemoIdList);
-        if(receiveMemoIdList.size() != deleteReceiveMemoCount) {
+    public boolean cancelOneSendMemo(String sendMemoId, int rcvMemoCount) {
+        // 1.수신 쪽지 삭제					 
+        int deleteReceiveMemoCount = this.receiveMemoDao.deleteReceiveMemoBySendMemoId(sendMemoId);
+        if(deleteReceiveMemoCount != rcvMemoCount) {
             throw new PageNotFoundException();
         }
-        // 3.발신 취소 처리
+        // 2.발신 취소 처리
         int cancelCount = this.sendMemoDao.updateSendStatus(sendMemoId);
         return cancelCount > 0;
     }
 
     @Transactional
     @Override
-    public boolean saveOneSendMemo(String sendMemoId) {
-        int saveSendMemoCount = this.sendMemoDao.updateSaveOneSendMemo(sendMemoId);
+    public boolean saveOneSendMemo(SendMemoVO sendMemoVO) {
+        int saveSendMemoCount = this.sendMemoDao.updateSaveOneSendMemo(sendMemoVO);
         return saveSendMemoCount > 0;
     }
 
@@ -113,5 +111,10 @@ public class SendMemoServiceImpl implements SendMemoService{
         // 2.delete memo
         int deleteSendMemoCount = this.sendMemoDao.deleteOneSendMemo(sendMemoId);
         return deleteSendMemoCount > 0;
+    }
+    
+    @Override
+    public int getSendCountBySendMemoId(String sendMemoId) {
+        return this.sendMemoDao.getSendCountBySendMemoId(sendMemoId);
     }
 }

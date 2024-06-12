@@ -97,7 +97,7 @@
             ON D.DEPT_ID = E.DEPT_ID
         <!--         INNER JOIN TEAM T-->
         <!--            ON T.TM_ID = E.TM_ID-->
-         WHERE SM.SEND_ID = #{employeeVO.empId}
+         WHERE SM.SEND_ID = #{empId}
            AND SM.SEND_DEL_YN = 'N'
     </select>
 
@@ -125,7 +125,7 @@
             ON D.DEPT_ID = E.DEPT_ID
 <!--         INNER JOIN TEAM T-->
 <!--            ON T.TM_ID = E.TM_ID-->
-            WHERE SM.SEND_ID = #{employeeVO.empId}
+            WHERE SM.SEND_ID = #{empId}
            AND SM.SEND_DEL_YN = 'N'
          ORDER BY SM.SEND_DATE DESC
     <include refid="Common.pagenate_footer"/>
@@ -133,6 +133,7 @@
 
     <select id="selectOneSendMemo" parameterType="string" resultMap="sendMemoDetailVOMap">
         SELECT SM.SEND_ID
+        	 , SM.SEND_MEMO_ID
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.ORIGIN_FILE_NAME
@@ -164,10 +165,10 @@
            AND SM.SEND_DEL_YN = 'N'
     </select>
 
-    <update id="updateSaveOneSendMemo" parameterType="string">
+    <update id="updateSaveOneSendMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO">
         UPDATE SEND_MEMO
-        SET SEND_SAVE_YN = 'Y'
-        WHERE SEND_MEMO_ID = #{_parameter}
+        SET SEND_SAVE_YN = #{sendSaveYn}
+        WHERE SEND_MEMO_ID = #{sendMemoId}
     </update>
 
     <update id="updateSendStatus" parameterType="string">
@@ -181,4 +182,12 @@
            SET SEND_DEL_YN = 'Y'
          WHERE SEND_MEMO_ID = #{_parameter}
     </update>
+    
+    <select id="getSendCountBySendMemoId" parameterType="string" resultType="_int">
+        SELECT COUNT(1)
+          FROM SEND_MEMO SM
+         INNER JOIN RECEIVE_MEMO RM
+            ON SM.SEND_MEMO_ID  = RM.SEND_MEMO_ID
+         WHERE SM.SEND_MEMO_ID = #{_parameter}
+    </select>
 </mapper>
