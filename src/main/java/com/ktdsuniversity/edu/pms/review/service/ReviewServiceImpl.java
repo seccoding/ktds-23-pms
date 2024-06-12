@@ -180,6 +180,14 @@ public class ReviewServiceImpl implements ReviewService {
 		
 	}
 
+	// 사원이 속한 프로젝트 리스트 가져오기
+	@Transactional
+	@Override
+	public List<ProjectTeammateVO> getEmpPrjList(String empId) {
+		List<ProjectTeammateVO> projectTeammateVOList = this.projectDao.getAllProjectTeammateByTmId(empId);
+		return projectTeammateVOList;
+	}
+
 	
 	
 }
