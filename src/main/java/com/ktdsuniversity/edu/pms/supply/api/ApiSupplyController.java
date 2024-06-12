@@ -25,6 +25,7 @@ import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.supply.service.SupplyService;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
@@ -79,16 +80,16 @@ public class ApiSupplyController {
     }
 	
 	@PostMapping("/supply")
-	public ApiResponse doSupplyRegistration(SupplyVO supplyVO, 
-											@RequestParam(required = false) MultipartFile file, 
-											Authentication authentication) {
+	public ApiResponse doSupplyRegistrationApprovalRequest(SupplyApprovalVO supplyApprovalVO, 
+														   @RequestParam(required = false) MultipartFile file, 
+														   Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
 		
-		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
-		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
-		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
-		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
+		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyApprovalVO.getSplName());
+		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyApprovalVO.getSplCtgr());
+		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyApprovalVO.getSplPrice()));
+		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyApprovalVO.getSplDtl());
 		
 		List<String> errorMessage = null;
 		
@@ -124,11 +125,11 @@ public class ApiSupplyController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 		
-		supplyVO.setSplRegtId(employeeVO.getEmpId());
+		supplyApprovalVO.setSplRegtId(employeeVO.getEmpId());
 		
-		boolean isCreateSuccess = this.supplyService.registerNewSupply(supplyVO, file);
+		boolean isRequestSuccess = this.supplyService.requestRegistrationNewSupply(supplyApprovalVO, file);
 		
-		return ApiResponse.Ok(isCreateSuccess);
+		return ApiResponse.Ok(isRequestSuccess);
 	}
 	
 	@PutMapping("/supply/{splId}")

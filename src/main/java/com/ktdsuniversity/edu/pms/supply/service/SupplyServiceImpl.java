@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.supply.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
+import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyDao;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyLogDao;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogVO;
@@ -26,6 +34,15 @@ public class SupplyServiceImpl implements SupplyService {
 	
 	@Autowired
 	private SupplyApprovalDao supplyApprovalDao;
+	
+	@Autowired
+	private ApprovalDao approvalDao;
+	
+	@Autowired
+	private EmployeeDao employeeDao;
+	
+	@Autowired
+	private DepartmentDao departmentDao;
 	
 	@Autowired
 	private SupplyLogDao supplyLogDao;
@@ -64,20 +81,67 @@ public class SupplyServiceImpl implements SupplyService {
 		return supplyListVO;
 	}
 
+//	@Transactional
+//	@Override
+//	public boolean registerNewSupply(SupplyVO supplyVO, MultipartFile file) {
+//		if (file != null && !file.isEmpty()) {
+//			StoredFile storedFile = fileHandler.storeFile(file);
+//			
+//			if (storedFile != null) {
+//				supplyVO.setSplImg(storedFile.getRealFileName());
+//			}
+//		}
+//		
+//		int registeredCount = this.supplyDao.registerNewSupply(supplyVO);
+//		
+//		return registeredCount > 0;
+//	}
+	
 	@Transactional
 	@Override
-	public boolean registerNewSupply(SupplyVO supplyVO, MultipartFile file) {
+	public boolean requestRegistrationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file) {
 		if (file != null && !file.isEmpty()) {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			
 			if (storedFile != null) {
-				supplyVO.setSplImg(storedFile.getRealFileName());
-			}
+				supplyApprovalVO.setSplImg(storedFile.getRealFileName());
+			}			
 		}
 		
-		int registeredCount = this.supplyDao.registerNewSupply(supplyVO);
+		int requestedCount = this.supplyApprovalDao.insertSupplyRegistrationRequest(supplyApprovalVO);
 		
-		return registeredCount > 0;
+		List<String> approvalList = new ArrayList<>();
+		
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplRegtId());
+		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
+		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
+		
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		
+		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110")).toString();
+		
+		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();
+		
+		approvalList.add(tmLeadId);
+		
+		if (price > 1000000) {
+			approvalList.add(deptLeadId);
+		}
+		if (price > 5000000) {
+			approvalList.add(mgmtSprtDeptLeadId);
+		}
+		if (price > 10000000) {
+			approvalList.add(ceoId);
+		}
+		
+		ApprovalVO approvalVO = new ApprovalVO();
+		approvalVO.setApprType("INSERT");
+		approvalVO.setApprReqtr(supplyApprovalVO.getSplRegtId());
+		
+		this.approvalDao.insertApproval(approvalList, approvalVO);
+		
+		return requestedCount > 0;
 	}
 
 	@Transactional

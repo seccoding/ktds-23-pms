@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao">
+
+	<insert id="insertSupplyRegistrationRequest"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO">
+		INSERT INTO SUPPLY_APPROVAL
+		 (SPL_APPR_ID
+		, SPL_APPR_TYPE
+		, SPL_ID
+		, SPL_NAME
+		, SPL_CTGR
+		, SPL_PRICE
+		, INV_QTY
+		, SPL_IMG
+		, SPL_DTL
+		, SPL_APPR_REQTR
+		, DEL_YN
+		, SPL_APPR_YN)
+		VALUES
+		 ('SPL_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
+		, 'INSERT'
+		, NULL
+		, #{splName}
+		, #{splCtgr}
+		, #{splPrice}
+		, #{invQty}
+		, #{splImg}
+		, #{splDtl}
+		, #{splRegtId}
+		, 'N'
+		, 'N')
+	</insert>
+
+</mapper>
