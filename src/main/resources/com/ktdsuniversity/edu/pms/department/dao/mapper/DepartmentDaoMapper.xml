@@ -78,7 +78,8 @@
 	</update>
 	
 	<select id="getOnlyDepartment"
-	        resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
+			parameterType="string"
+	        resultMap="departmentVOMap">
 		SELECT D.DEPT_ID
 			 , D.DEPT_NAME
 			 , D.DEPT_CR_DT
@@ -90,6 +91,7 @@
 		 INNER JOIN EMPLOYEE E
 		    ON D.DEPT_LEAD_ID = E.EMP_ID
 		 WHERE DEL_YN = 'N'
+		   AND D.DEPT_ID=#{_parameter}
 	</select>
 	
 	<select id="getOneDepartment"

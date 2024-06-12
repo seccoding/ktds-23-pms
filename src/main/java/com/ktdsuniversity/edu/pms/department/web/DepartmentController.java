@@ -38,7 +38,7 @@ public class DepartmentController {
 	@GetMapping("/department/search")
 	public String viewDepartmentListPage(Model model) {
 		DepartmentListVO departmentListVO = this.departmentService.getAllDepartment();
-		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
+//		DepartmentListVO getOnlyDepartmentListVO = this.departmentService.getOnlyDepartment();
 		TeamListVO getOnlyTeamListVO = this.teamService.getOnlyTeam();
 		List<EmployeeVO> empList = this.employeeService.getCanBeDeptLead();
 
@@ -46,7 +46,7 @@ public class DepartmentController {
 		
 		
 		model.addAttribute("departmentList", departmentListVO.getDepartmentList());
-		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
+//		model.addAttribute("onlyDepartmentList", getOnlyDepartmentListVO);
 		model.addAttribute("onlyTeamList", getOnlyTeamListVO);
 		model.addAttribute("empList", empList);
 		return "department/departmentlist";

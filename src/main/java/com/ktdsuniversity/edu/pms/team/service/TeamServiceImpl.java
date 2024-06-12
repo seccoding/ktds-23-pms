@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.dao.TeamDao;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
@@ -16,6 +17,9 @@ public class TeamServiceImpl implements TeamService{
 
 	@Autowired
 	private TeamDao teamDao;
+	
+	@Autowired
+	private EmployeeDao employeeDao;
 	
 	@Transactional
 	@Override
@@ -68,6 +72,16 @@ public class TeamServiceImpl implements TeamService{
 	public List<EmployeeVO> getAllEmployeeInTeam(String teamId) {
 		List<EmployeeVO> empListInTeam = this.teamDao.getAllEmployeeInTeam(teamId);
 		return empListInTeam;
+	}
+
+	/**
+	 * 팀에 멤버 추가 ==> employee 테이블 수정을 통해 사원의 소속된 팀을 변경하는 걸로 추가
+	 */
+	@Transactional
+	@Override
+	public boolean createNewTeamMember(EmployeeVO employeeVO) {
+		int issuccess =this.employeeDao.modifyEmployeeTeam(employeeVO);
+		return issuccess > 0;
 	}
 
 }

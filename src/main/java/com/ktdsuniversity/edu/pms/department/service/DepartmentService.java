@@ -15,7 +15,7 @@ public interface DepartmentService {
 	
 	public boolean isPossibleDelete(String id);
 
-	public DepartmentListVO getOnlyDepartment();
+	public DepartmentListVO getOnlyDepartment(String deptId);
 
 	public DepartmentVO selectOneDepartment(String departmentId);
 
