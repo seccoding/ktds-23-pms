@@ -45,6 +45,7 @@
 		 FROM PMS.APPROVAL
 		WHERE DEL_YN='N'
 		  AND SEARCH_YN='Y'
+
 	</select>
 	
 	<insert id="insertApproval" parameterType="java.util.List">
@@ -59,7 +60,6 @@
 			, APPR_DATE
 			, APPR_END_DATE
 			, APPROVER
-			, DEL_YN
 			, SEARCH_YN)
 			SELECT ('APPR' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_APPR_PK.NEXTVAL, 6, '0')) AS APPR_ID
 				 , T.*
@@ -71,8 +71,14 @@
 					     ,  SYSDATE AS APPR_DATE
 					     ,  TO_CHAR(SYSDATE+8,'YYYY-MM-DD') AS APPR_END_DATE
 					     ,  #{approvalVO.approver} AS APPROVER
-					     ,  'N'  AS DEL_YN
-					     ,  'N' AS SEARCH_YN 
+					     <choose>
+					     <when test="index == 0">
+					     ,  'Y'
+					     </when>
+					     <otherwise>
+					     ,  'N'
+					     </otherwise>
+					     </choose>
 					  FROM  DUAL 
 		</foreach>
 		) T
@@ -83,7 +89,30 @@
 		SET   APPR_YN=#{apprYn}
 			, APPR_RSN=#{apprRsn}
 		WHERE APPR_ID=#{apprId}
+	</update>
 	
+	<select id="getAllInsertedApproval" 
+	parameterType="string" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+		SELECT APPR_ID
+			 , P_APPR_ID
+			 , APPR_TYPE
+			 , APPR_INFO
+			 , APPR_REQTR
+			 , APPR_DATE
+			 , APPR_END_DATE
+			 , APPROVER
+			 , APPR_YN
+			 , APPR_RSN
+		  FROM APPROVAL a
+		 WHERE APPR_INFO = #{_parameter}
+	</select>
+	
+	<update id="updateInsertedApproval" parameterType="list">
+		<foreach item="approvalVO" index="index" collection="list" separator=";" open="DECLARE BEGIN" close="; END;" >
+		UPDATE PMS.APPROVAL
+		   SET P_APPR_ID=  #{approvalVO.pApprId}
+		 WHERE APPR_ID= #{approvalVO.apprId}
+		</foreach>
 	</update>
 
 </mapper> 

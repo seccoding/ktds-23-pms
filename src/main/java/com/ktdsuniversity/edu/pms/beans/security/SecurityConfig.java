@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.ktdsuniversity.edu.pms.beans.security.handler.LoginFailureHandler;
 import com.ktdsuniversity.edu.pms.beans.security.handler.LoginSuccessHandler;
+import com.ktdsuniversity.edu.pms.beans.security.jwt.JwtAuthenticationEntryPoint;
 import com.ktdsuniversity.edu.pms.beans.security.jwt.JwtAuthenticationFilter;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 
@@ -40,6 +41,8 @@ public class SecurityConfig {
 	
 	@Autowired
 	private JwtAuthenticationFilter authenticationFilter;
+	
+	private JwtAuthenticationEntryPoint entryPoint;
 	
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
@@ -89,7 +92,9 @@ public class SecurityConfig {
 			cors.configurationSource(sourse);
 		});
 		
-		http.addFilterAfter(this.authenticationFilter, BasicAuthenticationFilter.class);
+		http.addFilterAfter(this.authenticationFilter, BasicAuthenticationFilter.class)
+		.exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));
+	
 		
 		return http.build();
 	}

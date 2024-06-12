@@ -7,6 +7,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,6 +18,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,13 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		
 		String servletPath = request.getServletPath();
 		
-		if (CorsUtils.isPreFlightRequest(request)) {
-			filterChain.doFilter(request, response);
-		}
-		else if(servletPath.startsWith("/api")) {
+		if(servletPath.startsWith("/api")) {
 			String jwt = request.getHeader("Authorization");
-			EmployeeVO employeeVO;
-			employeeVO = this.jsonWebTokenProvider.getUserFormToken(jwt);
+			EmployeeVO employeeVO = null;
+			employeeVO = this.jsonWebTokenProvider.getUserFormToken(jwt);				
+			
 			
 			
 			SecurityUser user = new SecurityUser(employeeVO);
