@@ -39,9 +39,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public void test() {
 		ApprovalVO approvalVO = new ApprovalVO();
 		approvalVO.setApprType("type");
-		approvalVO.setApprInfo("info");
+		approvalVO.setApprInfo("info2");
 		approvalVO.setApprReqtr("세영");
 		this.approvalDao.insertApproval(List.of("aaa","bbb","ccc","ddd"), approvalVO);
+
 	}
 
 	@Override

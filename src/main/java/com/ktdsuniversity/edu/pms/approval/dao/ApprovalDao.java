@@ -23,6 +23,7 @@ public interface ApprovalDao {
 	 * @return 결재 정보 목록
 	 */
 	public List<ApprovalVO> getAllApproval();
+	
 	/**
 	 * 승인요청 정보를 받아서 승인요청 정보를 업데이트 한다
 	 * @param approvalList 승인이 필요한 승인자들의 리스트
@@ -37,5 +38,7 @@ public interface ApprovalDao {
 	 * @return
 	 */
 	public int updateOneApproveal(ApprovalVO approvalVO);
+
+
 
 }
