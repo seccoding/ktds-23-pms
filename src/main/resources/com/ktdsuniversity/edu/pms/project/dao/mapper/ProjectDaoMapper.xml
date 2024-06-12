@@ -111,7 +111,6 @@
     <select id="searchBoard"
             parameterType="com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO"
             resultMap="projectVOMap">
-        <include refid="Common.pagenate_header"/>
         SELECT P.PRJ_ID
         , P.PRJ_NAME
         , P.CLNT_INFO
@@ -140,44 +139,7 @@
         WHERE P.DEL_YN = 'N'
         AND D.DEL_YN = 'N'
         AND C.DEL_YN = 'N'
-        <if test='searchStatus != null and searchStatus != ""'>
-            <choose>
-                <when test='searchStatus == "all"'>
-                </when>
-                <otherwise>
-                    AND P.PRJ_STS = #{searchStatus}
-                </otherwise>
-            </choose>
-        </if>
-        <if test='searchKeyword != null and searchKeyword != ""'>
-            <choose>
-                <when test='searchType == "project"'>
-                    AND P.PRJ_NAME LIKE '%' || #{searchKeyword} || '%'
-                </when>
-                <when test='searchType == "client"'>
-                    AND P.CLNT_INFO LIKE '%' || #{searchKeyword} || '%'
-                </when>
-                <when test='searchType == "department"'>
-                    AND D.DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
-                </when>
-            </choose>
-        </if>
-        <if test='employeeVO.empId != null and employeeVO.empId != ""'>
-            <choose>
-                <when test='employeeVO.admnCode == "301"'>
-                </when>
-                <otherwise>
-                    AND P.PRJ_ID IN (
-                    SELECT PRJ_ID
-                    FROM PROJECT_TEAMMATE PT
-                    WHERE PT.TM_ID = #{employeeVO.empId}
-                    AND PT.DEL_YN = 'N'
-                    )
-                </otherwise>
-            </choose>
-        </if>
-        ORDER BY P.CRT_DT DESC
-        <include refid="Common.pagenate_footer"/>
+  
     </select>
 
     <select id="searchProjectCount"
