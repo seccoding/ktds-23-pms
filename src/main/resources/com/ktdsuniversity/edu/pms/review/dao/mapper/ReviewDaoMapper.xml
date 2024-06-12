@@ -300,5 +300,6 @@
 		  FROM PROJECT_TEAMMATE
 		 WHERE TM_ID = #{empId}
 		   AND PRJ_ID = #{prjId}
+		   AND DEL_YN = 'N'
 	</select>
 </mapper>

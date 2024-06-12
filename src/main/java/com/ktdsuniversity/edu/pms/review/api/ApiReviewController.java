@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.review.api;
 
+import java.security.Security;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +137,10 @@ public class ApiReviewController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		Map<String, Boolean> result = new HashMap<>();
+		IntStream.range(0, prjIdList.size()).forEach(i -> {
+			System.out.println("프로젝트 리스트 : " + prjIdList.get(i));
+		});
+		
 		
 		IntStream.range(0, prjIdList.size())
 				 .forEach(i -> {
@@ -148,6 +153,20 @@ public class ApiReviewController {
 		return ApiResponse.Ok(result);
 	}
 	
+	// 사원이 속한 프로젝트 리스트 가져오기
+	@GetMapping("writes/prjList")
+	public ApiResponse getEmpPrjList(Authentication authentication) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		List<ProjectTeammateVO> projectTeammateVOList = this.reviewService.getEmpPrjList(employeeVO.getEmpId());
+		
+//		projectTeammateVOList.stream().forEach(i -> {
+//			System.out.println(projectTeammateVOList.);
+//		});
+
+		return ApiResponse.Ok(projectTeammateVOList);
+		
+	}
 	
 
 }

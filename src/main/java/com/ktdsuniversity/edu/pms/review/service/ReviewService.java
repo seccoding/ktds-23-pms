@@ -80,4 +80,6 @@ public interface ReviewService {
 
 	public boolean getReviewYnByEmpIdAndPrjId(Map<String, String> param);
 
+	public List<ProjectTeammateVO> getEmpPrjList(String empId);
+
 }
