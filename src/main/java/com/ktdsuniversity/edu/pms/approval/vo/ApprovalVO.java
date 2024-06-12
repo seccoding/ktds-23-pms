@@ -4,9 +4,12 @@ import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
 
 public class ApprovalVO extends PaginateVO {
 
-	private String apprId; // 결재 요청에 대한 고유번호
-	private String pApprId; // 부모 결제요청 ID
-	private String apprType; // 결제 승인 타입(소모품, 비품, 부서, 직원)
+	/**
+	 * 결재 요청에 대한 고유번호
+	 */
+	private String apprId; 		
+	private String pApprId; 		// 부모 결제요청 ID
+	private String apprType; 		// 결제 승인 타입(소모품, 비품, 부서, 직원)
 	private String apprInfo; // 결제시 업데이트 해야하는 정보를 담은 FK ID
 	private String apprReqtr; // 결제 요청자
 	private String apprDate; // 결제 요청일
@@ -16,6 +19,22 @@ public class ApprovalVO extends PaginateVO {
 	private String apprRsn; // 결제에 대한 사유(거절시 작성)
 	private String delYn; // 삭제여부
 	private String searchYn; // 검색가능여부(승인페이지 노출)
+
+	public ApprovalVO() {}
+	public ApprovalVO(ApprovalVO approvalVO) {
+		this.apprId = approvalVO.apprId;
+		this.pApprId = approvalVO.pApprId;
+		this.apprType = approvalVO.apprType;
+		this.apprInfo = approvalVO.apprInfo;
+		this.apprReqtr = approvalVO.apprReqtr;
+		this.apprDate = approvalVO.apprDate;
+		this.apprEndDate = approvalVO.apprEndDate;
+		this.approver = approvalVO.approver;
+		this.apprYn = approvalVO.apprYn;
+		this.apprRsn = approvalVO.apprRsn;
+		this.delYn = approvalVO.delYn;
+		this.searchYn = approvalVO.searchYn;
+	}
 
 	public String getApprId() {
 		return apprId;
@@ -113,4 +132,8 @@ public class ApprovalVO extends PaginateVO {
 		this.searchYn = searchYn;
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 }
