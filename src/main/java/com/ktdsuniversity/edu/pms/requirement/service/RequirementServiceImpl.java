@@ -71,15 +71,18 @@ public class RequirementServiceImpl implements RequirementService {
 	@Transactional
 	@Override
 	public boolean updateRequirement(RequirementVO requirementVO, MultipartFile file) {
-		// TODO Auto-generated method stub
-//		파일이 잇다면
-		if (file != null && !file.isEmpty()) {
+		if (file != null && !file.isEmpty()) {// 기존에 첨부된 파일이 있다면
 			StoredFile storedFile = fileHandler.storeFile(file);
 			if (storedFile != null) {
 				requirementVO.setRqmFile(storedFile.getFileName());
 				requirementVO.setRqmEncodeFile(storedFile.getRealFileName());
 			}
+		} else {// 기존에 첨부된 파일이 없다면
+			RequirementVO thisRequirement = this.requirementDao.getOneRequirement(requirementVO.getRqmId());
+			requirementVO.setRqmFile(thisRequirement.getRqmFile());
+			requirementVO.setRqmEncodeFile(thisRequirement.getRqmEncodeFile());
 		}
+		
 		return this.requirementDao.updateOneRequirement(requirementVO) > 0;
 
 	}

@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.output.api;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,7 +181,7 @@ public class ApiOutputController {
 
 	@PutMapping("/output/modify/{outId}")
 	public ApiResponse modifyOutput(Authentication authentication, @PathVariable String outId,
-			@RequestParam MultipartFile file, OutputVO outputVO) {
+			@RequestParam(required = false) MultipartFile file, OutputVO outputVO) {
 		
 		// 수정한 값들을 전송하는 API
 		
@@ -220,13 +221,18 @@ public class ApiOutputController {
 	}
 	
 	
-	@GetMapping("output/downloadFile/{outId}")
-	public ResponseEntity<Resource> fileDownload(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-			@PathVariable String outId) {
+	@GetMapping("/output/downloadFile/{outId}")
+	public ResponseEntity<Resource> fileDownload(Authentication authentication, @PathVariable String outId) {
+		
+		// 파일을 다운로드하는 API
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
 		this.checkAccess(employeeVO);
 
 		OutputVO Output = this.outputService.getOneOutput(outId);
-
+		
 		return this.outputService.getDownloadFile(Output);
 
 	}
