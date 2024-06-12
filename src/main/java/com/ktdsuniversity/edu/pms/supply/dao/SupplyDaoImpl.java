@@ -33,6 +33,11 @@ public class SupplyDaoImpl extends SqlSessionDaoSupport implements SupplyDao {
 	public SupplyVO selectOneSupply(String splId) {
 		return getSqlSession().selectOne(SupplyDao.NAME_SPACE + ".selectOneSupply", splId);
 	}
+	
+	@Override
+	public List<SupplyVO> selectAllSupplyCategory() {
+		return getSqlSession().selectList(SupplyDao.NAME_SPACE + ".selectAllSupplyCategory");
+	}
 
 	@Override
 	public int registerNewSupply(SupplyVO supplyVO) {

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.FileHandler;
 import com.ktdsuniversity.edu.pms.beans.FileHandler.StoredFile;
+import com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyDao;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyLogDao;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
@@ -22,6 +23,9 @@ public class SupplyServiceImpl implements SupplyService {
 	
 	@Autowired
 	private SupplyDao supplyDao;
+	
+	@Autowired
+	private SupplyApprovalDao supplyApprovalDao;
 	
 	@Autowired
 	private SupplyLogDao supplyLogDao;
@@ -50,12 +54,15 @@ public class SupplyServiceImpl implements SupplyService {
 		return supplyVO;
 	}
 	
-//	@Override
-//	public File getSupplyImage(String splImg) {
-//		File file = fileHandler.getStoredFile(splImg);
-//		
-//		return file;
-//	}
+	@Override
+	public SupplyListVO getAllSupplyCategory() {
+		List<SupplyVO> supplyCategoryList = this.supplyDao.selectAllSupplyCategory();
+		
+		SupplyListVO supplyListVO = new SupplyListVO();
+		supplyListVO.setSupplyList(supplyCategoryList);
+		
+		return supplyListVO;
+	}
 
 	@Transactional
 	@Override

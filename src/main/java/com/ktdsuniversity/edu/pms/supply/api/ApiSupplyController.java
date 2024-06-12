@@ -55,6 +55,13 @@ public class ApiSupplyController {
 		return ApiResponse.Ok(supplyVO);
 	}
 	
+	@GetMapping("/supply/category")
+	public ApiResponse getSupplyCategoryList() {
+		SupplyListVO supplyListVO = this.supplyService.getAllSupplyCategory();
+		
+		return ApiResponse.Ok(supplyListVO);
+	}
+	
     @GetMapping("/supply/image/{splImg}")
     public ApiResponse getSupplyImage(@PathVariable String splImg) {
         try {
@@ -81,7 +88,6 @@ public class ApiSupplyController {
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
-		boolean isNotEmptyImage = file != null && !file.isEmpty();
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
 		
 		List<String> errorMessage = null;
@@ -105,13 +111,6 @@ public class ApiSupplyController {
 				errorMessage = new ArrayList<>();
 			}
 			errorMessage.add("제품 가격을 입력해 주세요.");
-		}
-		
-		if (!isNotEmptyImage) {
-			if (errorMessage == null) {
-				errorMessage = new ArrayList<>();
-			}
-			errorMessage.add("제품 이미지를 삽입해 주세요.");
 		}
 		
 		if (!isNotEmptyDetail) {
@@ -143,7 +142,7 @@ public class ApiSupplyController {
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
-		boolean isNotEmptyImage = file != null && !file.isEmpty();
+//		boolean isNotEmptyImage = file != null && !file.isEmpty();
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
 		
 //		Validator<SupplyVO> validator = new Validator<>(supplyVO);
@@ -178,12 +177,12 @@ public class ApiSupplyController {
 			errorMessage.add("제품 가격을 입력해 주세요.");
 		}
 		
-		if (!isNotEmptyImage) {
-			if (errorMessage == null) {
-				errorMessage = new ArrayList<>();
-			}
-			errorMessage.add("제품 이미지를 삽입해 주세요.");
-		}
+//		if (!isNotEmptyImage) {
+//			if (errorMessage == null) {
+//				errorMessage = new ArrayList<>();
+//			}
+//			errorMessage.add("제품 이미지를 삽입해 주세요.");
+//		}
 		
 		if (!isNotEmptyDetail) {
 			if (errorMessage == null) {

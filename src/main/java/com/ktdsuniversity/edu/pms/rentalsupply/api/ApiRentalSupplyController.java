@@ -58,10 +58,13 @@ public class ApiRentalSupplyController {
 	public ApiResponse doRentalSupplyRegistration(RentalSupplyVO rentalSupplyVO, 
 												  @RequestParam(required = false) MultipartFile file, 
 												  Authentication authentication) {
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
 		boolean isNotEmptyName = ValidationUtils.notEmpty(rentalSupplyVO.getRsplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(rentalSupplyVO.getRsplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(rentalSupplyVO.getRsplPrice()));
-		boolean isNotEmptyImage= file != null && !file.isEmpty();
+//		boolean isNotEmptyImage= file != null && !file.isEmpty();
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(rentalSupplyVO.getRsplDtl());
 		
 		List<String> errorMessage = null;
@@ -87,12 +90,12 @@ public class ApiRentalSupplyController {
 			errorMessage.add("제품 가격을 입력해 주세요.");
 		}
 		
-		if (!isNotEmptyImage) {
-			if (errorMessage == null) {
-				errorMessage = new ArrayList<>();
-			}
-			errorMessage.add("제품 이미지를 삽입해 주세요.");
-		}
+//		if (!isNotEmptyImage) {
+//			if (errorMessage == null) {
+//				errorMessage = new ArrayList<>();
+//			}
+//			errorMessage.add("제품 이미지를 삽입해 주세요.");
+//		}
 		
 		if (!isNotEmptyDetail) {
 			if (errorMessage == null) {
@@ -105,7 +108,7 @@ public class ApiRentalSupplyController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 		
-		rentalSupplyVO.setRsplRegtId("system01");
+		rentalSupplyVO.setRsplRegtId(employeeVO.getEmpId());
 		
 		boolean isCreateSuccess = this.rentalSupplyService.registerNewRentalSupply(rentalSupplyVO, file);
 		
@@ -123,10 +126,10 @@ public class ApiRentalSupplyController {
 		boolean isNotEmptyName = ValidationUtils.notEmpty(rentalSupplyVO.getRsplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(rentalSupplyVO.getRsplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(rentalSupplyVO.getRsplPrice()));
-		boolean isNotEmptyImage= file != null && !file.isEmpty();
+//		boolean isNotEmptyImage= file != null && !file.isEmpty();
 		boolean isNotEmptyDetail = ValidationUtils.notEmpty(rentalSupplyVO.getRsplDtl());
 		
-List<String> errorMessage = null;
+		List<String> errorMessage = null;
 		
 		if (!isNotEmptyName) {
 			if (errorMessage == null) {
@@ -149,12 +152,12 @@ List<String> errorMessage = null;
 			errorMessage.add("제품 가격을 입력해 주세요.");
 		}
 		
-		if (!isNotEmptyImage) {
-			if (errorMessage == null) {
-				errorMessage = new ArrayList<>();
-			}
-			errorMessage.add("제품 이미지를 삽입해 주세요.");
-		}
+//		if (!isNotEmptyImage) {
+//			if (errorMessage == null) {
+//				errorMessage = new ArrayList<>();
+//			}
+//			errorMessage.add("제품 이미지를 삽입해 주세요.");
+//		}
 		
 		if (!isNotEmptyDetail) {
 			if (errorMessage == null) {
