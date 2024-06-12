@@ -110,21 +110,24 @@ public class SupplyServiceImpl implements SupplyService {
 		
 		int requestedCount = this.supplyApprovalDao.insertSupplyRegistrationRequest(supplyApprovalVO);
 		
+		// 결재 승인자 리스트
 		List<String> approvalList = new ArrayList<>();
-		
+		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplRegtId());
+		// 결재 요청자가 속한 팀의 장
 		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
+		// 결재 요청자가 속한 부서의 장
 		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
-		
+		// 경영지원부 정보
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		// 경영지원부서장
 		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
-		
+		// 대표이사 **(현재 DB에 대표이사가 2명 이상 존재함으로 수정 필요)
 		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110")).toString();
 		
-		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();
-		
-		approvalList.add(tmLeadId);
-		
+		// 결재라인 순서(팀장 -> 부서장 -> 경영지원부장 -> 대표이사)
+		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();		
+		approvalList.add(tmLeadId);		
 		if (price > 1000000) {
 			approvalList.add(deptLeadId);
 		}
@@ -134,11 +137,12 @@ public class SupplyServiceImpl implements SupplyService {
 		if (price > 10000000) {
 			approvalList.add(ceoId);
 		}
-		
+
 		ApprovalVO approvalVO = new ApprovalVO();
-		approvalVO.setApprType("INSERT");
+		// apprType: 결재 승인 타입(소모품, 비품, 부서, 직원)
+		approvalVO.setApprType("SUPPLY");
+		// apprReqtr: 결재 요청자
 		approvalVO.setApprReqtr(supplyApprovalVO.getSplRegtId());
-		
 		this.approvalDao.insertApproval(approvalList, approvalVO);
 		
 		return requestedCount > 0;

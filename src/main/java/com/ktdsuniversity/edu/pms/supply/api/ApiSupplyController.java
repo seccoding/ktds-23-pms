@@ -72,10 +72,10 @@ public class ApiSupplyController {
                 String base64Image = Base64.getEncoder().encodeToString(imageBytes);
                 return ApiResponse.Ok(base64Image);
             } else {
-                return ApiResponse.BAD_REQUEST(List.of("Image not found"));
+                return ApiResponse.BAD_REQUEST(List.of("이미지를 찾을 수 없습니다."));
             }
         } catch (IOException e) {
-            return ApiResponse.BAD_REQUEST(List.of("Failed to load image"));
+            return ApiResponse.BAD_REQUEST(List.of("이미지를 불러오는 데에 실패했습니다."));
         }
     }
 	
