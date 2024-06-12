@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
@@ -31,6 +32,7 @@ import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementListVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementSearchVO;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
 import com.ktdsuniversity.edu.pms.utils.Validator.Type;
@@ -280,11 +282,33 @@ public class ApiRequirementController {
 	
 	
 	@GetMapping("/requirement/downloadFile/{rqmId}")
-	public ResponseEntity<Resource> fileDownload(@PathVariable String rqmId) {
+	public ResponseEntity<Resource> fileDownload(Authentication authentication, @PathVariable String rqmId) {
 
+		// 파일을 다운로드하는 API
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
 		RequirementVO Requirement = this.requirementService.getOneRequirement(rqmId);
 
 		return this.requirementService.getDownloadFile(Requirement);
+	}
+	
+	
+	@PutMapping("/requirement/delaycall/{rqmId}")
+	public ApiResponse delayRequirement(Authentication authentication,
+			@PathVariable String rqmId) {
+		
+		// 일정상태를 '연기신청'으로 변경하는 API
+
+		RequirementVO thisRequirement = this.requirementService.getOneRequirement(rqmId);
+		
+		// '연기필요' 상태로 수정
+		boolean isSuccess = this.requirementService.delayRequirement(thisRequirement);
+
+		AjaxResponse ajax = new AjaxResponse();
+		return ApiResponse.Ok(isSuccess);
+
 	}
 	
 	
