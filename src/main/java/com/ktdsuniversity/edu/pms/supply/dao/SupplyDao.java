@@ -29,6 +29,13 @@ public interface SupplyDao {
 	 * @return 조회한 소모품의 상세 정보
 	 */
 	public SupplyVO selectOneSupply(String splId);
+	
+	/**
+	 * 소모품의 전체 카테고리
+	 * @param supplyVO
+	 * @return 소모품 카테고리 리스트
+	 */
+	public List<SupplyVO> selectAllSupplyCategory();
 
 	/**
 	 * 새 소모품 등록

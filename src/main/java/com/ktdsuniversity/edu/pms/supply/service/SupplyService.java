@@ -22,6 +22,8 @@ public interface SupplyService {
 	 * @return
 	 */
 	public SupplyVO getOneSupply(String splId);
+	
+	public SupplyListVO getAllSupplyCategory();
 
 	/**
 	 * 새 소모품 등록

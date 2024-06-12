@@ -74,6 +74,15 @@
 		 WHERE DEL_YN = 'N'
 		   AND SPL_ID = #{_parameter}
 	</select>
+
+	<select id="selectAllSupplyCategory"
+			resultType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
+		SELECT SPL_CTGR 
+		  FROM (SELECT SPL_CTGR
+		  		  FROM SUPPLY
+		  		 WHERE DEL_YN = 'N')
+		 GROUP BY SPL_CTGR
+	</select>
 	
 	<insert id="registerNewSupply" 
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyVO">
