@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
@@ -32,6 +34,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 	@Autowired
 	private EmployeeDao employeeDao;
 	
+	@Autowired
+	private ApprovalDao approvalDao;
+	
 	@Override
 	public DepartmentListVO getAllDepartment() {
 		
@@ -51,6 +56,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 		
 		// 새로운 부서 생성
 		int insertedCount = this.departmentDao.createNewDepartment(departmentVO);
+//		this.approvalDao.insertApproval(결제승인라인, ApprovalVO)
 		
 //		EmployeeVO changeDeptEmpl = this.employeeDao.getOneEmployee(departmentVO.getDeptLeadId());
 		
@@ -65,9 +71,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 	@Override
-	public DepartmentListVO getOnlyDepartment() {
+	public DepartmentListVO getOnlyDepartment(String deptId) {
 		
-		List<DepartmentVO> onlyDepartmentListVO = this.departmentDao.getOnlyDepartment();
+		List<DepartmentVO> onlyDepartmentListVO = this.departmentDao.getOnlyDepartment(deptId);
 		DepartmentListVO departmentListVO = new DepartmentListVO();
 		departmentListVO.setDepartmentList(onlyDepartmentListVO);
 		return departmentListVO;

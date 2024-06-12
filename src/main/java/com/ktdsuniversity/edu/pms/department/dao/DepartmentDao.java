@@ -19,7 +19,7 @@ public interface DepartmentDao {
 	
 	public int updateOneDepartment(DepartmentVO departmentVO);
 
-	public List<DepartmentVO> getOnlyDepartment();
+	public List<DepartmentVO> getOnlyDepartment(String deptId);
 
 	public DepartmentVO getOneDepartment(String departmentId);
 

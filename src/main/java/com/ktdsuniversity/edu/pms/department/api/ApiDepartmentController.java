@@ -45,10 +45,10 @@ public class ApiDepartmentController {
 				searchDepartmentVO.getPageCount(), searchDepartmentVO.getPageNo() < searchDepartmentVO.getPageCount() -1);
 	}
 
-	// 부서 리스트 가져오기
+	// 부서 상세정보 가져오기
 	@GetMapping("/department/detail/{deptId}")
 	public ApiResponse viewDepartmentDetail(@PathVariable String deptId) {
-		DepartmentListVO departmentListVO = this.departmentService.getOnlyDepartment();
+		DepartmentListVO departmentListVO = this.departmentService.getOnlyDepartment(deptId);
 		
 		return ApiResponse.Ok(departmentListVO.getDepartmentList());
 	}
@@ -109,12 +109,28 @@ public class ApiDepartmentController {
 		return  ApiResponse.Ok(isSuccess);
 	}
 	
+	// 팀등록
 	@PostMapping("/team")
 	public ApiResponse doCreateNewTeam(TeamVO teamVO) {
 				
 		boolean isSuccess = this.teamService.createNewTeam(teamVO);
 		return  ApiResponse.Ok(isSuccess);
 		
+	}
+
+	// 팀 상세정보 조회
+	@GetMapping("/team/detail/{tmId}")
+	public ApiResponse viewTeamDetail(@PathVariable String tmId) {
+		TeamVO TeamVO = this.teamService.selectOneTeam(tmId);
+		
+		return ApiResponse.Ok(TeamVO);
+	}
+	
+	// 팀원 등록
+	@PostMapping("/team/member")
+	public ApiResponse doCreateNewTeamMember(EmployeeVO employeeVO) {
+		boolean isSuccess = this.teamService.createNewTeamMember(employeeVO);
+		return ApiResponse.Ok(isSuccess);
 	}
 	
 }

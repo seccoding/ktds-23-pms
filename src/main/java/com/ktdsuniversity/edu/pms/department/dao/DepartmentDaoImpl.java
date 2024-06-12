@@ -47,8 +47,8 @@ public class DepartmentDaoImpl extends SqlSessionDaoSupport implements Departmen
 	}
 
 	@Override
-	public List<DepartmentVO> getOnlyDepartment() {
-		return getSqlSession().selectList(DepartmentDao.NAME_SPACE + ".getOnlyDepartment");
+	public List<DepartmentVO> getOnlyDepartment(String deptId) {
+		return getSqlSession().selectList(DepartmentDao.NAME_SPACE + ".getOnlyDepartment", deptId);
 	}
 
 	@Override

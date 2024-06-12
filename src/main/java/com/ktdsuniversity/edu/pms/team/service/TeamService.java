@@ -24,4 +24,6 @@ public interface TeamService {
 	
 	public List<EmployeeVO> getAllEmployeeInTeam(String teamId);
 
+	public boolean createNewTeamMember(EmployeeVO employeeVO);
+
 }
