@@ -179,7 +179,7 @@ public class ApiEmployeeController {
 //				.add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해 주세요.")
 //				.add("confirmPwd", Type.EQUALS, employeeInfoVO.getPwd(), "동일한 비밀번호를 입력해 주세요.")
 				.add("hireDt", Type.NOT_EMPTY, "입사일을 지정해 주세요.")
-				.add("hireDt", Type.NOW_DATE, "입사일은 현재 날짜보다 이전이어야 합니다.")
+//				.add("hireDt", Type.NOW_DATE, "입사일은 현재 날짜보다 이전이어야 합니다.")
 				.add("addr", Type.NOT_EMPTY, "주소를 입력해 주세요.")
 				.add("brth", Type.NOT_EMPTY, "생일을 지정해 주세요.")
 				.add("brth", Type.NOW_DATE, "생일은 현재 날짜보다 이전이어야 합니다.")
@@ -203,18 +203,33 @@ public class ApiEmployeeController {
 	}
 	
 	
+	// 프로필 사진 등록
+    @PostMapping("/employee/profile/{empId}")
+    public ApiResponse registProfileOneEmployee(@PathVariable String empId,
+                                                @RequestParam(required = false) MultipartFile file,
+                                                Authentication authentication) throws Exception {
+        // VO 객체 생성 및 empId 설정
+        EmployeeInfoVO employeeInfoVO = new EmployeeInfoVO();
+        employeeInfoVO.setEmpId(empId);
+
+        // 파일 존재 확인 및 설정
+        if (file != null && !file.isEmpty()) {
+            employeeInfoVO.setOriginFileName(file.getOriginalFilename());
+            employeeInfoVO.setPrfl(file.getOriginalFilename());
+        }
+
+        // 프로필 생성 서비스 호출
+        boolean isCreateSuccess = this.employeeService.createEmployeeProfile(employeeInfoVO, file);
+
+        if (!isCreateSuccess) {
+            throw new Exception("등록 실패");
+        }
+
+        return ApiResponse.Ok(isCreateSuccess);
+    }
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 }

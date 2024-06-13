@@ -64,6 +64,10 @@ public interface EmployeeService {
 
 	public EmployeeInfoVO getEmployeeInfo(String empId);
 
+	public boolean createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file);
+
+
+
 
 
 }
