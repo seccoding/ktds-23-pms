@@ -81,25 +81,12 @@ public class SupplyServiceImpl implements SupplyService {
 		return supplyListVO;
 	}
 
-//	@Transactional
-//	@Override
-//	public boolean registerNewSupply(SupplyVO supplyVO, MultipartFile file) {
-//		if (file != null && !file.isEmpty()) {
-//			StoredFile storedFile = fileHandler.storeFile(file);
-//			
-//			if (storedFile != null) {
-//				supplyVO.setSplImg(storedFile.getRealFileName());
-//			}
-//		}
-//		
-//		int registeredCount = this.supplyDao.registerNewSupply(supplyVO);
-//		
-//		return registeredCount > 0;
-//	}
-	
 	@Transactional
 	@Override
 	public boolean requestRegistrationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file) {
+		// 결재 요청 타입(INSERT, UPDATE, DELETE?)
+		supplyApprovalVO.setSplApprType("INSERT");
+		
 		if (file != null && !file.isEmpty()) {
 			StoredFile storedFile = fileHandler.storeFile(file);
 			
@@ -108,7 +95,7 @@ public class SupplyServiceImpl implements SupplyService {
 			}			
 		}
 		
-		int requestedCount = this.supplyApprovalDao.insertSupplyRegistrationRequest(supplyApprovalVO);
+		int requestedCount = this.supplyApprovalDao.insertSupplyApprovalRequest(supplyApprovalVO);
 		
 		// 결재 승인자 리스트
 		List<String> approvalList = new ArrayList<>();
@@ -150,7 +137,7 @@ public class SupplyServiceImpl implements SupplyService {
 		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
 		approvalVO.setApprInfo(supplyApprovalVO.getSplApprId());
 		// apprReqtr: 결재 요청자
-		approvalVO.setApprReqtr(supplyApprovalVO.getSplRegtId());
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
 		this.approvalDao.insertApproval(approvalList, approvalVO);
 		
 		return requestedCount > 0;
@@ -158,11 +145,87 @@ public class SupplyServiceImpl implements SupplyService {
 
 	@Transactional
 	@Override
-	public boolean updateOneSupply(SupplyVO supplyVO) {
-		int updatedCount = this.supplyDao.updateOneSupply(supplyVO);
+	public boolean requestModificationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file) {
+		// 결재 요청 타입(INSERT, UPDATE, DELETE?)
+		supplyApprovalVO.setSplApprType("UPDATE");
+		SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyApprovalVO.getSplId());
+		if (file != null && !file.isEmpty()) {
+			
+			if (originalSupplyVO != null) {
+				String storedImage = originalSupplyVO.getSplImg();
+				
+				if (storedImage != null && storedImage.length() > 0) {
+					this.fileHandler.deleteFileByFileName(storedImage);
+				}
+			}
+			StoredFile storedFile = fileHandler.storeFile(file);
+			supplyApprovalVO.setSplImg(storedFile.getRealFileName());
+		}
+		int updatedCount = this.supplyApprovalDao.insertSupplyApprovalRequest(supplyApprovalVO);
+		
+		// 결재 승인자 리스트
+		List<String> approvalList = new ArrayList<>();
+		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplMdfrId());
+		// 결재 요청자가 속한 팀의 장
+		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
+		// 결재 요청자가 속한 부서의 장
+		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
+		// 경영지원부 정보
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		// 경영지원부서장
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		// 대표이사
+		String ceoId = this.employeeDao.getAllEmployee().stream()
+														.filter(emp -> emp.getPstnId().equals("110"))
+														.map(emp -> emp.getEmpId())
+														.findFirst().orElse(mgmtSprtDeptLeadId);
+		
+		// 결재라인 순서(팀장 -> 부서장 -> 경영지원부장 -> 대표이사)
+		// 결재라인 조건		
+		/*
+		 * 공금에 영향을 줄 수 있는 경우
+		 * 1. 제품가격 변경 -> 가격 변경만으로는 영향을 주지 않음
+		 * 2. 재고 변경
+		 */
+		int price;
+		
+//		approvalList.add(tmLeadId);		**(현재 팀, 부서가 없는 사원이 존재함으로 주석 처리)
+		approvalList.add("1111111");
+		
+		if (supplyApprovalVO.getInvQty() != originalSupplyVO.getInvQty()) {
+			price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();		
+			if (price > 1000000) {
+//				approvalList.add(deptLeadId);
+				approvalList.add("2222222");
+			}
+			if (price > 5000000) {
+				approvalList.add(mgmtSprtDeptLeadId);
+			}
+			if (price > 10000000) {
+				approvalList.add(ceoId);
+			}
+		}
+		
+		ApprovalVO approvalVO = new ApprovalVO();
+		// apprType: 결재 승인 타입(소모품, 비품, 부서, 직원)
+		approvalVO.setApprType("SUPPLY");
+		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
+		approvalVO.setApprInfo(supplyApprovalVO.getSplApprId());
+		// apprReqtr: 결재 요청자
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
+		this.approvalDao.insertApproval(approvalList, approvalVO);
 		
 		return updatedCount > 0;
 	}
+	
+//	@Transactional
+//	@Override
+//	public boolean updateOneSupply(SupplyVO supplyVO) {
+//		int updatedCount = this.supplyDao.updateOneSupply(supplyVO);
+//		
+//		return updatedCount > 0;
+//	}
 	
 	@Transactional
 	@Override

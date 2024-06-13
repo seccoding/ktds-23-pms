@@ -25,14 +25,6 @@ public interface SupplyService {
 	public SupplyVO getOneSupply(String splId);
 	
 	public SupplyListVO getAllSupplyCategory();
-
-//	/**
-//	 * 새 소모품 등록
-//	 * @param supplyVO
-//	 * @param file 소모품에 대한 이미지 파일
-//	 * @return
-//	 */
-//	public boolean registerNewSupply(SupplyVO supplyVO, MultipartFile file);
 	
 	/**
 	 * 새 소모품 등록 결재 요청
@@ -43,11 +35,12 @@ public interface SupplyService {
 	public boolean requestRegistrationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file);
 
 	/**
-	 * 소모품 정보 수정
-	 * @param supplyVO 수정 할 소모품 VO
+	 * 소모품 정보 수정 요청
+	 * @param supplyApprovalVO
+	 * @param file
 	 * @return
 	 */
-	public boolean updateOneSupply(SupplyVO supplyVO);
+	public boolean requestModificationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file);
 
 	/**
 	 * 소모품 재고 수정(현재 사용하지 않으며, 앞으로도 사용하지 않을 가능성이 높음)
@@ -69,6 +62,5 @@ public interface SupplyService {
 	 * @return
 	 */
 	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO);
-
 
 }

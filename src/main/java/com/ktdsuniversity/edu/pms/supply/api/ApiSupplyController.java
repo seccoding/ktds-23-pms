@@ -133,18 +133,17 @@ public class ApiSupplyController {
 	}
 	
 	@PutMapping("/supply/{splId}")
-	public ApiResponse doSupplyModify(@PathVariable String splId, 
-									  SupplyVO supplyVO, 
-									  @RequestParam(required = false) MultipartFile file,
-									  Authentication authentication) {
+	public ApiResponse doSupplyModificationApprovalRequest(@PathVariable String splId, 
+														   SupplyApprovalVO supplyApprovalVO, 
+														   @RequestParam(required = false) MultipartFile file,
+														   Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
 		
-		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyVO.getSplName());
-		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyVO.getSplCtgr());
-		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyVO.getSplPrice()));
-//		boolean isNotEmptyImage = file != null && !file.isEmpty();
-		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyVO.getSplDtl());
+		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyApprovalVO.getSplName());
+		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyApprovalVO.getSplCtgr());
+		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(supplyApprovalVO.getSplPrice()));
+		boolean isNotEmptyDetail = ValidationUtils.notEmpty(supplyApprovalVO.getSplDtl());
 		
 //		Validator<SupplyVO> validator = new Validator<>(supplyVO);
 //		validator
@@ -178,13 +177,6 @@ public class ApiSupplyController {
 			errorMessage.add("제품 가격을 입력해 주세요.");
 		}
 		
-//		if (!isNotEmptyImage) {
-//			if (errorMessage == null) {
-//				errorMessage = new ArrayList<>();
-//			}
-//			errorMessage.add("제품 이미지를 삽입해 주세요.");
-//		}
-		
 		if (!isNotEmptyDetail) {
 			if (errorMessage == null) {
 				errorMessage = new ArrayList<>();
@@ -196,10 +188,10 @@ public class ApiSupplyController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 		
-		supplyVO.setSplId(splId);
-		supplyVO.setSplMdfrId(employeeVO.getEmpId());
+		supplyApprovalVO.setSplId(splId);
+		supplyApprovalVO.setSplMdfrId(employeeVO.getEmpId());
 		
-		boolean isUpdatedSuccess = this.supplyService.updateOneSupply(supplyVO);
+		boolean isUpdatedSuccess = this.supplyService.requestModificationNewSupply(supplyApprovalVO, file);
 		
 		return ApiResponse.Ok(isUpdatedSuccess);
 	}

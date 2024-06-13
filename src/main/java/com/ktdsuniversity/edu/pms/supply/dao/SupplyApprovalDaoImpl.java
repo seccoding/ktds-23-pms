@@ -17,8 +17,8 @@ public class SupplyApprovalDaoImpl extends SqlSessionDaoSupport implements Suppl
 	}
 
 	@Override
-	public int insertSupplyRegistrationRequest(SupplyApprovalVO supplyApprovalVO) {
-		return getSqlSession().insert(SupplyApprovalDao.NAME_SPACE + ".insertSupplyRegistrationRequest", supplyApprovalVO);
+	public int insertSupplyApprovalRequest(SupplyApprovalVO supplyApprovalVO) {
+		return getSqlSession().insert(SupplyApprovalDao.NAME_SPACE + ".insertSupplyApprovalRequest", supplyApprovalVO);
 	}
 
 }

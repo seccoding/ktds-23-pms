@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao">
 
-	<insert id="insertSupplyRegistrationRequest"
+	<insert id="insertSupplyApprovalRequest"
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO">
 		
 		<selectKey keyProperty="splApprId" resultType="string" order="BEFORE">
@@ -27,7 +27,7 @@
 		, SPL_APPR_YN)
 		VALUES
 		 (#{splApprId}
-		, 'INSERT'
+		, #{splApprType}
 		, NULL
 		, #{splName}
 		, #{splCtgr}
