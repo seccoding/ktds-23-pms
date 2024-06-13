@@ -82,7 +82,7 @@
 	        resultMap="departmentVOMap">
 		SELECT D.DEPT_ID
 			 , D.DEPT_NAME
-			 , D.DEPT_CR_DT
+			 , TO_CHAR(D.DEPT_CR_DT, 'YYYY-MM-DD') DEPT_CR_DT
 			 , D.DEL_YN
 			 , D.DEPT_LEAD_ID
 			 , E.EMP_NAME

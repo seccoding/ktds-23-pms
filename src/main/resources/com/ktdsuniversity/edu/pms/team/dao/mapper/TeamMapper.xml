@@ -27,7 +27,7 @@
 	        parameterType="string"
 	        resultType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
 		SELECT T.TM_ID
-			 , T.TM_CR_DT
+			 , TO_CHAR(T.TM_CR_DT, 'YYYY-MM-DD') TM_CR_DT
 			 , T.TM_NAME
 			 , T.DEPT_ID
 			 , T.DEL_YN
