@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.knowledge.dao;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO;
 
 public interface KnowledgeReplyDao {
 
@@ -17,4 +18,13 @@ public interface KnowledgeReplyDao {
 	public int deleteOneKnowledgeReply(String replyId);
 	
 	public int modifyOneKnowledgeReply(KnowledgeReplyVO knowledegeReplyVO);
+	
+	//	댓글 추천
+	public ReplyRecommandVO  selectOneReplyRecommend(ReplyRecommandVO replyRecommandvo);
+	
+	public int insertOneReplyRecommend(ReplyRecommandVO replyRecommandvo);
+	
+	public int recommendOneKnowledgeReply(String reprplid);
+
+	
 }

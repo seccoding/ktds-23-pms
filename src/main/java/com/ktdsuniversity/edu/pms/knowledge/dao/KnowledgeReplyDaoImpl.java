@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO;
 
 @Repository
 public class KnowledgeReplyDaoImpl extends SqlSessionDaoSupport implements KnowledgeReplyDao {
@@ -41,5 +42,22 @@ public class KnowledgeReplyDaoImpl extends SqlSessionDaoSupport implements Knowl
 	@Override
 	public int modifyOneKnowledgeReply(KnowledgeReplyVO knowledegeReplyVO) {
 		return getSqlSession().update(KnowledgeReplyDao.NAME_SPACE + ".modifyOneKnowledgeReply", knowledegeReplyVO);
+	}
+
+	@Override
+	public ReplyRecommandVO selectOneReplyRecommend(ReplyRecommandVO replyRecommandvo) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(KnowledgeReplyDao.NAME_SPACE+".selectOneReplyRecommend", replyRecommandvo);
+	}
+
+	@Override
+	public int insertOneReplyRecommend(ReplyRecommandVO replyRecommandvo) {
+		return getSqlSession().insert(KnowledgeReplyDao.NAME_SPACE+".insertOneReplyRecommend", replyRecommandvo);
+	}
+
+	@Override
+	public int recommendOneKnowledgeReply(String reprplid) {
+		// TODO Auto-generated method stub
+		return getSqlSession().update(KnowledgeReplyDao.NAME_SPACE+".recommendOneKnowledgeReply", reprplid);
 	}
 }
