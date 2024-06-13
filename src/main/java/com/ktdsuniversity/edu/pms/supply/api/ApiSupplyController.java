@@ -125,7 +125,7 @@ public class ApiSupplyController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 		
-		supplyApprovalVO.setSplRegtId(employeeVO.getEmpId());
+		supplyApprovalVO.setSplApprReqtr(employeeVO.getEmpId());
 		
 		boolean isRequestSuccess = this.supplyService.requestRegistrationNewSupply(supplyApprovalVO, file);
 		
@@ -189,7 +189,7 @@ public class ApiSupplyController {
 		}
 		
 		supplyApprovalVO.setSplId(splId);
-		supplyApprovalVO.setSplMdfrId(employeeVO.getEmpId());
+		supplyApprovalVO.setSplApprReqtr(employeeVO.getEmpId());
 		
 		boolean isUpdatedSuccess = this.supplyService.requestModificationNewSupply(supplyApprovalVO, file);
 		

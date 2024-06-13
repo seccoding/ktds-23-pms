@@ -100,7 +100,7 @@ public class SupplyServiceImpl implements SupplyService {
 		// 결재 승인자 리스트
 		List<String> approvalList = new ArrayList<>();
 		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
-		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplRegtId());
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
 		// 결재 요청자가 속한 팀의 장
 		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
 		// 결재 요청자가 속한 부서의 장
@@ -166,7 +166,7 @@ public class SupplyServiceImpl implements SupplyService {
 		// 결재 승인자 리스트
 		List<String> approvalList = new ArrayList<>();
 		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
-		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplMdfrId());
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
 		// 결재 요청자가 속한 팀의 장
 		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
 		// 결재 요청자가 속한 부서의 장

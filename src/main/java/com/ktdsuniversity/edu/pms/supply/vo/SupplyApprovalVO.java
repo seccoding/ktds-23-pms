@@ -4,6 +4,7 @@ public class SupplyApprovalVO extends SupplyVO {
 	
 	private String splApprId;
 	private String splApprType;
+	private String splApprReqtr;
 	private String splApprYn;
 	
 	public String getSplApprId() {
@@ -17,6 +18,12 @@ public class SupplyApprovalVO extends SupplyVO {
 	}
 	public void setSplApprType(String splApprType) {
 		this.splApprType = splApprType;
+	}
+	public String getSplApprReqtr() {
+		return splApprReqtr;
+	}
+	public void setSplApprReqtr(String splApprReqtr) {
+		this.splApprReqtr = splApprReqtr;
 	}
 	public String getSplApprYn() {
 		return splApprYn;

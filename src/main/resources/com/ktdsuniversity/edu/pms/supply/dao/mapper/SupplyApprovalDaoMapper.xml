@@ -35,7 +35,7 @@
 		, #{invQty}
 		, #{splImg}
 		, #{splDtl}
-		, #{splRegtId}
+		, #{splApprReqtr}
 		, 'N'
 		, 'N')
 	</insert>
