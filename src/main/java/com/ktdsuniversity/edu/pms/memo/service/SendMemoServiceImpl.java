@@ -64,15 +64,29 @@ public class SendMemoServiceImpl implements SendMemoService{
         int insertSendCount = this.sendMemoDao.insertNewSendMemo(sendMemoVO);
 
         // 3.receive memo(n)
+        String rcvId = null;
+        String rcvCode = null;
         List<ReceiveMemoVO> newReceiveMemoVOList = new ArrayList<>();
-        for(ReceiveMemoVO receiveMemoVO : sendMemoVO.getReceiveMemoVOList()) {
+
+        for(int i = 0; i < sendMemoVO.getReceiveInfoList().size(); i++) {
+        	ReceiveMemoVO receiveMemoVO = new ReceiveMemoVO();
+        	// rcvId, rcvCode parsing
+            String[] parsedData = sendMemoVO.getReceiveInfoList().get(i).split(",");
+            rcvId = parsedData[0].trim();
+            rcvCode = parsedData[1].trim();
+            
+            // set
+            receiveMemoVO.setRcvId(rcvId);
+            receiveMemoVO.setRcvCode(rcvCode);
             receiveMemoVO.setSendMemoId(newSendMemoId);
+            
+            // add
             newReceiveMemoVOList.add(receiveMemoVO);
         }
         int insertReceiveCount = this.receiveMemoDao.insertNewReceiveMemo(newReceiveMemoVOList);
 
         boolean isInsertSuccess = (insertSendCount > 0) &&
-                (sendMemoVO.getReceiveMemoVOList().size() == insertReceiveCount);
+                (sendMemoVO.getReceiveInfoList().size() == insertReceiveCount);
         return isInsertSuccess;
     }
 

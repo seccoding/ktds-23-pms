@@ -21,6 +21,7 @@ public class SendMemoVO {
     private EmployeeVO employeeVO;
     private DepartmentVO departmentVO;
     private List<ReceiveMemoVO> receiveMemoVOList;
+    private List<String> receiveInfoList;
 
     public String getSendMemoId() {
         return sendMemoId;
@@ -125,4 +126,13 @@ public class SendMemoVO {
     public void setReceiveMemoVOList(List<ReceiveMemoVO> receiveMemoVOList) {
         this.receiveMemoVOList = receiveMemoVOList;
     }
+    
+    public List<String> getReceiveInfoList() {
+		return receiveInfoList;
+	}
+    
+    public void setReceiveInfoList(List<String> receiveInfoList) {
+		this.receiveInfoList = receiveInfoList;
+	}
+
 }
