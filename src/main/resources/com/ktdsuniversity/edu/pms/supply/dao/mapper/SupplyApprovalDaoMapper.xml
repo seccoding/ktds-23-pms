@@ -6,6 +6,12 @@
 
 	<insert id="insertSupplyRegistrationRequest"
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO">
+		
+		<selectKey keyProperty="splApprId" resultType="string" order="BEFORE">
+			SELECT 'SPL_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
+			  FROM DUAL
+		</selectKey>
+		
 		INSERT INTO SUPPLY_APPROVAL
 		 (SPL_APPR_ID
 		, SPL_APPR_TYPE
@@ -20,7 +26,7 @@
 		, DEL_YN
 		, SPL_APPR_YN)
 		VALUES
-		 ('SPL_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
+		 (#{splApprId}
 		, 'INSERT'
 		, NULL
 		, #{splName}
