@@ -598,15 +598,18 @@
     
     <select id="getAllProjectTeammateByTmId"
     		parameterType="String">
-    		SELECT PRJ_TM_ID
-				 , PRJ_ID
-				 , TM_ID
-				 , ROLE
-				 , DEL_YN
-				 , RV_YN
-				 , SRV_YN
-			  FROM PROJECT_TEAMMATE
-			 WHERE TM_ID = #{empId}
-			   AND DEL_YN = 'N'
+    		SELECT PT.PRJ_TM_ID
+				 , PT.PRJ_ID
+				 , PT.TM_ID
+				 , PT.ROLE
+				 , PT.DEL_YN
+				 , PT.RV_YN
+				 , PT.SRV_YN
+			  FROM PROJECT_TEAMMATE PT
+			  JOIN PROJECT P
+			  	ON PT.PRJ_ID = P.PRJ_ID 
+			 WHERE TM_ID = #{crtrId}
+			   AND PT.DEL_YN = 'N'
+			 ORDER BY P.CRT_DT DESC
     </select>
 </mapper>
