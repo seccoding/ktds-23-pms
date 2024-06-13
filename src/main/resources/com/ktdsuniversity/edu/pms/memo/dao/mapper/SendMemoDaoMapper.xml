@@ -114,7 +114,7 @@
              , SM.MEMO_CNTNT
              , SM.FILE_NAME
              , SM.ORIGIN_FILE_NAME
-             , SM.SEND_DATE
+             , TO_CHAR(SM.SEND_DATE, 'YYYY.MM.DD HH24:MI') SEND_DATE
              , SM.SEND_SAVE_YN
              , SM.SEND_DEL_YN
              , SM.SEND_STS_CODE
@@ -137,7 +137,7 @@
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.ORIGIN_FILE_NAME
-             , SM.SEND_DATE
+             , TO_CHAR(SM.SEND_DATE, 'YYYY.MM.DD HH24:MI') SEND_DATE
              , SM.SEND_SAVE_YN
              , SM.SEND_DEL_YN
              , SM.SEND_STS_CODE

@@ -53,8 +53,7 @@
           FROM (
         <foreach collection="list" item="receiveMemoVO" separator="UNION ALL">
             SELECT
-                #{receiveMemoVO.rcvMemoId} AS RCV_MEMO_ID
-              , #{receiveMemoVO.sendMemoId} AS SEND_MEMO_ID
+                #{receiveMemoVO.sendMemoId} AS SEND_MEMO_ID
               , #{receiveMemoVO.rcvId} AS RCV_ID
               , #{receiveMemoVO.rcvCode} AS RCV_CODE
               , 'N' AS RCV_SAVE_YN
@@ -84,18 +83,18 @@
              , E.EMP_NAME
              , E.EMAIL
              , D.DEPT_NAME
-             ,SM.SEND_ID
+             , SM.SEND_ID
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.FILE_NAME
              , SM.ORIGIN_FILE_NAME
-             , SM.SEND_DATE
+             , TO_CHAR(SM.SEND_DATE, 'YYYY.MM.DD HH24:MI') SEND_DATE
              , RM.RCV_MEMO_ID
              , RM.SEND_MEMO_ID
              , RM.RCV_ID
              , RM.RCV_CODE
              , RM.RCV_CODE
-             , RM.RCV_DATE
+             , TO_CHAR(RM.RCV_DATE, 'YYYY.MM.DD HH24:MI') RCV_DATE
              , RM.RCV_SAVE_YN
              , RM.RCV_DEL_YN
           FROM RECEIVE_MEMO RM
@@ -115,7 +114,7 @@
         	 , RM.SEND_MEMO_ID
              , RM.RCV_ID
              , RM.RCV_CODE
-             , RM.RCV_DATE
+             , TO_CHAR(RM.RCV_DATE, 'YYYY.MM.DD HH24:MI') RCV_DATE
              , RM.RCV_SAVE_YN
              , RM.RCV_DEL_YN
              , E.EMP_NAME

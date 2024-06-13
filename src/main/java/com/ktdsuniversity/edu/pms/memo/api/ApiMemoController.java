@@ -67,16 +67,20 @@ public class ApiMemoController {
 
     /**
      * 쪽지 발신
+     * @TODO 수신자 유효성체크 확인 / id 확인
      */
     @PostMapping("/send")
-    public ApiResponse doSendMemo(SendMemoVO sendMemoVO,
+    public ApiResponse doSendMemo( SendMemoVO sendMemoVO,
                                   @RequestParam(required = false) MultipartFile file,
                                   Authentication authentication) {
+    	
+    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
         // 1.validation check
         boolean isNotEmptyTitle = ValidationUtils.notEmpty(sendMemoVO.getMemoTtl());
         boolean isNotEmptyContent = ValidationUtils.notEmpty(sendMemoVO.getMemoCntnt());
-
+        
         List<String> errorMessage = null;
 
         if(!isNotEmptyTitle) {
@@ -95,8 +99,9 @@ public class ApiMemoController {
             return ApiResponse.BAD_REQUEST(errorMessage);
         }
 
+
         // 2.insert
-        sendMemoVO.setSendId(authentication.getName());
+        sendMemoVO.setSendId(employeeVO.getEmpId());
         boolean isCreateSuccess = this.sendMemoService.createSendMemo(sendMemoVO, file);
 
         return ApiResponse.Ok(isCreateSuccess);
