@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -29,7 +30,7 @@ public interface EmployeeDao {
 
 	public EmployeeVO selectOneBoard(int id);
 
-	public int createEmployee(EmployeeVO employeeVO);
+	public int createEmployee(EmployeeInfoVO employeeInfoVO);
 	
 	public List<EmployeeVO> searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
@@ -72,6 +73,8 @@ public interface EmployeeDao {
 	public List<EmployeeDataVO> getEmployeeGradeList();
 
 	public List<EmployeeDataVO> getEmployeeWorkStsList();
+
+	public EmployeeInfoVO getEmployeeInfo(String empId);
 
 	
 

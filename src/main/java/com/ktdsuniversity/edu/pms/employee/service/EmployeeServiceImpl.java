@@ -15,6 +15,7 @@ import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -107,23 +108,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Transactional
 	@Override
-	public boolean createEmployee(EmployeeVO employeeVO, MultipartFile file) {
-		String pwd = employeeVO.getPwd();
+	public boolean createEmployee(EmployeeInfoVO employeeInfoVO) {
+		String pwd = "ABCDE12345!";
 		String salt = this.sha.generateSalt();
 		pwd = this.sha.getEncrypt(pwd, salt);
-
-		employeeVO.setPwd(pwd);
-		employeeVO.setSalt(salt);
+		employeeInfoVO.setPwd(pwd);
+		employeeInfoVO.setSalt(salt);
+			
+//		if (file != null && ! file.isEmpty()) {
+//			StoredFile storedFile = fileHandler.storeFile(file);
+//			if (storedFile != null) {
+//				employeeVO.setPrfl(storedFile.getRealFileName());
+//				employeeVO.setOriginPrflFileName(storedFile.getFileName());
+//			}
+//		}
 		
-		if (file != null && ! file.isEmpty()) {
-			StoredFile storedFile = fileHandler.storeFile(file);
-			if (storedFile != null) {
-				employeeVO.setPrfl(storedFile.getRealFileName());
-				employeeVO.setOriginPrflFileName(storedFile.getFileName());
-			}
-		}
-		
-		int createSuccessCount = employeeDao.createEmployee(employeeVO);
+		int createSuccessCount = employeeDao.createEmployee(employeeInfoVO);
 		
 		return createSuccessCount > 0;
 	}
@@ -310,6 +310,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		List<EmployeeDataVO> workStsList = this.employeeDao.getEmployeeWorkStsList();
 		return workStsList;
+	}
+
+	@Override
+	public EmployeeInfoVO getEmployeeInfo(String empId) {
+		
+		EmployeeInfoVO employeeInfo = this.employeeDao.getEmployeeInfo(empId);
+		return employeeInfo;
 	}
 
 }

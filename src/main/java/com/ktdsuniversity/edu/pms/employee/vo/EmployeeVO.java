@@ -19,6 +19,7 @@ public class EmployeeVO {
 	private String empId;		//아이디
 	private String empName;		//사원명
 	private String workSts;		
+	private String workStsName;		
 	private int salYear;		
 	private String prfl;
 	private String hireDt;

@@ -271,12 +271,12 @@ public class EmployeeController {
 			return new AjaxResponse().append("errors", errors);
 		}
 
-		boolean createEmpSuccess = this.employeeService.createEmployee(employeeVO, file);
+//		boolean createEmpSuccess = this.employeeService.createEmployee(employeeVO, file);
 
 		// 사원 회원가입에 성공했다면
-		if (createEmpSuccess) {
-			return new AjaxResponse().append("next", nextUrl);
-		}
+//		if (createEmpSuccess) {
+//			return new AjaxResponse().append("next", nextUrl);
+//		}
 		return new AjaxResponse().append("errorMessage", "회원가입에 실패했습니다");
 	}
 
