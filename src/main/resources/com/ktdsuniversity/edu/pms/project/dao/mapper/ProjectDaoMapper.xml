@@ -380,15 +380,15 @@
     <update id="updateOneProject"
             parameterType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO">
         UPDATE PROJECT
-        SET PRJ_NAME=#{prjName},
-        CLNT_INFO=#{clntInfo},
-        DEPT_ID=#{deptId},
-        PRJ_STS=#{prjSts},
-        STRT_DT=#{strtDt},
-        END_DT=#{endDt},
-        /** 수정자 작성해야함 **/
-        MDF_DT=SYSDATE
-        WHERE PRJ_ID=#{prjId}
+           SET PRJ_NAME = #{prjName}
+             , CLNT_INFO = #{clntInfo}
+             , DEPT_ID = #{deptId}
+             , STRT_DT = #{strtDt}
+             , END_DT = #{endDt}
+             , MDFR_ID = #{mdfId}  
+             , MDF_DT = SYSDATE
+             , PRJ_MEMO = #{prjMemo}
+         WHERE PRJ_ID = #{prjId}
     </update>
 
     <update id="deletePm"
