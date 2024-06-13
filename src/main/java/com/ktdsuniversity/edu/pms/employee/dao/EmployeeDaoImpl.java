@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -73,8 +74,8 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyEmployee", employeeVO);
 	}
 
-	public int createEmployee(EmployeeVO employeeVO) {
-		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createEmployee", employeeVO);
+	public int createEmployee(EmployeeInfoVO employeeInfoVO) {
+		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createEmployee", employeeInfoVO);
 	}
 
 	@Override
@@ -195,6 +196,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public List<EmployeeVO> getEmployeeByDeptId(String deptId) {
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".getEmployeeByDeptId", deptId);
+	}
+
+	@Override
+	public EmployeeInfoVO getEmployeeInfo(String empId) {
+		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE+".getEmployeeInfo", empId);
 	}
 
 

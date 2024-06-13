@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO;
@@ -29,8 +30,8 @@ public interface EmployeeDao {
 
 	public EmployeeVO selectOneBoard(int id);
 
-	public int createEmployee(EmployeeVO employeeVO);
-	
+	public int createEmployee(EmployeeInfoVO employeeInfoVO);
+
 	public List<EmployeeVO> searchEmpDeptId(SearchEmployeeVO searchEmployeeVO);
 
 	public String saltByEmp(String empId);
@@ -46,7 +47,7 @@ public interface EmployeeDao {
 	public int deleteTeam(EmployeeVO employeeVO);
 
 	public int addTeam(EmployeeVO employeeVO);
-	
+
 	public String getDeptIdByEmployeeId(String empId);
 
 	public List<EmployeeVO> findEmployeesByDeptID(String deptId);
@@ -60,7 +61,7 @@ public interface EmployeeDao {
 	public int modifyEmployeePosition(EmployeeVO employeeVO);
 
 	public int modifyEmployeeDept(EmployeeVO employeeVO);
-	
+
 	public int modifyEmployeeTeam(EmployeeVO employeeVO);
 
 	public List<EmployeeDataVO> getDepartList();
@@ -71,13 +72,10 @@ public interface EmployeeDao {
 
 	public List<EmployeeDataVO> getEmployeeGradeList();
 
-
 	public List<EmployeeDataVO> getEmployeeWorkStsList();
 
-	// SH
 	public List<EmployeeVO> getEmployeeByDeptId(String deptId);
 
-	
-
+	public EmployeeInfoVO getEmployeeInfo(String empId);
 
 }
