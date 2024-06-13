@@ -122,14 +122,20 @@ public class SupplyServiceImpl implements SupplyService {
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		// 경영지원부서장
 		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
-		// 대표이사 **(현재 DB에 대표이사가 2명 이상 존재함으로 수정 필요)
-		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110")).toString();
+		// 대표이사
+		String ceoId = this.employeeDao.getAllEmployee().stream()
+														.filter(emp -> emp.getPstnId().equals("110"))
+														.map(emp -> emp.getEmpId())
+														.findFirst().orElse(mgmtSprtDeptLeadId);
 		
 		// 결재라인 순서(팀장 -> 부서장 -> 경영지원부장 -> 대표이사)
+		// 결재라인 조건
 		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();		
-		approvalList.add(tmLeadId);		
+//		approvalList.add(tmLeadId);		**(현재 팀, 부서가 없는 사원이 존재함으로 주석 처리)
+		approvalList.add("1111111");
 		if (price > 1000000) {
-			approvalList.add(deptLeadId);
+//			approvalList.add(deptLeadId);
+			approvalList.add("2222222");
 		}
 		if (price > 5000000) {
 			approvalList.add(mgmtSprtDeptLeadId);
@@ -141,6 +147,8 @@ public class SupplyServiceImpl implements SupplyService {
 		ApprovalVO approvalVO = new ApprovalVO();
 		// apprType: 결재 승인 타입(소모품, 비품, 부서, 직원)
 		approvalVO.setApprType("SUPPLY");
+		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
+		approvalVO.setApprInfo(supplyApprovalVO.getSplApprId());
 		// apprReqtr: 결재 요청자
 		approvalVO.setApprReqtr(supplyApprovalVO.getSplRegtId());
 		this.approvalDao.insertApproval(approvalList, approvalVO);
