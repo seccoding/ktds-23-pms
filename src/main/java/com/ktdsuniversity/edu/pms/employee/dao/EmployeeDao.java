@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.employee.dao;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
@@ -77,5 +79,7 @@ public interface EmployeeDao {
 	public List<EmployeeVO> getEmployeeByDeptId(String deptId);
 
 	public EmployeeInfoVO getEmployeeInfo(String empId);
+
+	public int createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file);
 
 }

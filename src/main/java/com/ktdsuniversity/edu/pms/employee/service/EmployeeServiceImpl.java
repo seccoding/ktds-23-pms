@@ -109,21 +109,33 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Transactional
 	@Override
 	public boolean createEmployee(EmployeeInfoVO employeeInfoVO) {
+		// 초기 비밀번호 값 공통 지정
 		String pwd = "ABCDE12345!";
 		String salt = this.sha.generateSalt();
 		pwd = this.sha.getEncrypt(pwd, salt);
 		employeeInfoVO.setPwd(pwd);
 		employeeInfoVO.setSalt(salt);
-			
-//		if (file != null && ! file.isEmpty()) {
-//			StoredFile storedFile = fileHandler.storeFile(file);
-//			if (storedFile != null) {
-//				employeeVO.setPrfl(storedFile.getRealFileName());
-//				employeeVO.setOriginPrflFileName(storedFile.getFileName());
-//			}
-//		}
 		
 		int createSuccessCount = employeeDao.createEmployee(employeeInfoVO);
+		
+		return createSuccessCount > 0;
+	}
+	
+	
+	@Override
+	public boolean createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file) {
+		
+		if (file != null && ! file.isEmpty()) {
+			StoredFile storedFile = fileHandler.storeFile(file);
+			if (storedFile != null) {
+				employeeInfoVO.setPrfl(storedFile.getRealFileName());
+				employeeInfoVO.setOriginFileName(storedFile.getFileName());
+			}
+		}
+		
+		employeeInfoVO.setOriginFileName(null);
+		
+		int createSuccessCount = employeeDao.createEmployeeProfile(employeeInfoVO, file);
 		
 		return createSuccessCount > 0;
 	}
@@ -325,5 +337,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeInfoVO employeeInfo = this.employeeDao.getEmployeeInfo(empId);
 		return employeeInfo;
 	}
+
+
 
 }

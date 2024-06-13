@@ -22,7 +22,7 @@ public class EmployeeInfoVO {
 	private String mngrYn;
 	private String admnCode;
 	private String prfl;
-	private String fileName;
+	private String originFileName;
 	private String deptId;
 	private String deptName;
 	private String jobId;
@@ -118,11 +118,12 @@ public class EmployeeInfoVO {
 	public void setPrfl(String prfl) {
 		this.prfl = prfl;
 	}
-	public String getFileName() {
-		return fileName;
+
+	public String getOriginFileName() {
+		return originFileName;
 	}
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setOriginFileName(String originFileName) {
+		this.originFileName = originFileName;
 	}
 	public String getDeptId() {
 		return deptId;

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
@@ -201,6 +202,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public EmployeeInfoVO getEmployeeInfo(String empId) {
 		return getSqlSession().selectOne(EmployeeDao.NAME_SPACE+".getEmployeeInfo", empId);
+	}
+
+	@Override
+	public int createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE+".createEmployeeProfile", employeeInfoVO);
 	}
 
 

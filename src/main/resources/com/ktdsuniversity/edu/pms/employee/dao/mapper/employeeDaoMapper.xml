@@ -187,12 +187,6 @@
 		  		<when test='searchType == "team_name"'>
 		  		AND T.TM_NAME LIKE '%' || #{searchKeyWord} || '%'
 		  		</when>
-		  		<when test='searchType == "department_id"'>
-		  		AND D.DEPT_NAME LIKE '%' || #{searchKeyWord} || '%'
-		  		</when>
-		  		<when test='searchType == "team_id"'>
-		  		AND T.TM_ID LIKE '%' || #{searchKeyWord} || '%'
-		  		</when>
 		  	</choose>
 		  </if>
 		  ORDER BY E.HIRE_DT DESC
@@ -214,6 +208,7 @@
 	SELECT E.EMP_ID
 		 , E.EMP_NAME
 		 , E.WORK_STS
+		 , C2.CMCD_NAME AS WORK_STS_NAME
 		 , E.SAL_YEAR
 		 , E.PRFL
 		 , TO_CHAR(E.HIRE_DT, 'YYYY-MM-DD')HIRE_DT 
@@ -230,6 +225,7 @@
 		 , E.DEPT_ID
 		 , E.JOB_ID
 		 , E.PSTN_ID
+		 , C.CMCD_NAME AS PSTN_NAME
 		 , E.PWD
 		 , E.LGN_TRY
 		 , E.SALT
@@ -238,7 +234,6 @@
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
 		 , J.JOB_NAME
-		 , C.CMCD_NAME
 		 , T.TM_ID
 		 , T.TM_NAME
 	  FROM EMPLOYEE E 
@@ -248,10 +243,52 @@
 	    ON J.JOB_ID = E.JOB_ID
 	  JOIN COMMON_CODE C
 	    ON C.CMCD_ID = E.PSTN_ID
+	  JOIN COMMON_CODE C2
+	  	ON C2.CMCD_ID = E.WORK_STS
 	  LEFT JOIN TEAM T
 	    ON E.TM_ID = T.TM_ID
 	 WHERE E.EMP_ID = #{_parameter}
 	   AND E.WORK_STS != '204'	  
+	</select>
+	
+	<select id="getEmployeeInfo" parameterType="String"  resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO">
+		SELECT
+			E.EMP_ID
+		 , E.EMP_NAME
+		 , E.WORK_STS
+		 , C2.CMCD_NAME AS WORK_STS_NAME
+		 , E.SAL_YEAR
+		 , TO_CHAR(E.HIRE_DT, 'YYYY-MM-DD')HIRE_DT 
+		 , EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM E.HIRE_DT) AS HIRE_YEAR
+		 , E.CNTCT
+		 , E.ADDR
+		 , TO_CHAR(E.BRTH,'YYYY-MM-DD' )BRTH  
+		 , E.EMAIL
+		 , E.MNGR_YN
+		 , E.ADMN_CODE
+		 , E.PRFL
+		 , E.ORIGIN_PRFL_FILE_NAME
+		 , E.DEPT_ID
+		 , D.DEPT_NAME 
+		 , E.JOB_ID
+		 , J.JOB_NAME
+		 , E.PSTN_ID
+		 , C.CMCD_NAME AS PSTN_NAME
+		 , T.TM_ID
+		 , T.TM_NAME
+		FROM 	EMPLOYEE E
+	    JOIN DEPARTMENT D
+	    ON D.DEPT_ID = E.DEPT_ID
+	    JOIN JOB J
+	    ON J.JOB_ID = E.JOB_ID
+	    JOIN COMMON_CODE C
+	    ON C.CMCD_ID = E.PSTN_ID
+	    JOIN COMMON_CODE C2
+	  	ON C2.CMCD_ID = E.WORK_STS
+	    LEFT JOIN TEAM T
+	    ON E.TM_ID = T.TM_ID
+	    WHERE E.EMP_ID = #{_parameter}
+	    AND E.WORK_STS != '204'	  
 	</select>
 
 	<update id="modifyEmployee" 
@@ -297,6 +334,7 @@
 			 , HIRE_YEAR = #{hireYear}
 			 , DEPT_ID = #{deptId}
 			 , PSTN_ID = #{pstnId}
+			 , MNGR_YN = 'Y'
 		 WHERE EMP_ID = #{empId}
 	</update>
 	
@@ -310,12 +348,10 @@
 	</update>
 
 	<insert id="createEmployee"
-			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO">
 		INSERT INTO EMPLOYEE
 		 (EMP_ID
 		, EMP_NAME
-		, PRFL
-		, ORIGIN_PRFL_FILE_NAME
 		, HIRE_DT
 		, CNTCT
 		, ADDR
@@ -330,8 +366,6 @@
 		VALUES
 		 (TO_CHAR(SYSDATE, 'YYMM') || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0')
 		, #{empName}
-		, #{prfl}
-		, #{originPrflFileName}
 		, #{hireDt}
 		, #{cntct}
 		, #{addr}
@@ -343,6 +377,16 @@
 		, #{pstnId}
 		, #{pwd}
 		, #{salt})
+	</insert>
+		
+	
+	<insert id="createEmployeeProfile" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO">
+		INSERT INTO EMPLOYEE
+		(PRFL
+	   , ORIGIN_PRFL_NAME)
+	   VALUES
+	   (#{prfl}
+	  , #{origin_prfl_name})
 	</insert>
 	
 	<select id="searchEmpDeptId"
@@ -506,25 +550,6 @@
 	           CMCD_NAME AS DATA_NAME
 	    FROM   COMMON_CODE
 	    WHERE  TO_NUMBER(CMCD_ID) > 200
-	    </select>
-	<!-- SH -->
-	<select id="getEmployeeByDeptId" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-		SELECT E.EMP_ID 
-			 , E.EMP_NAME 
-			 , E.WORK_STS 
-			 , E.EMAIL 
-			 , E.JOB_ID 
-			 , E.TM_ID 
-			 , D.DEPT_ID 
-			 , D.DEPT_NAME
-			 , T.TM_ID 
-			 , T.TM_NAME 
-		FROM EMPLOYEE E
-		INNER JOIN DEPARTMENT D
-		   ON E.DEPT_ID = D.DEPT_ID 
-		INNER JOIN TEAM T
-		   ON E.TM_ID = T.TM_ID 
-		 WHERE D.DEPT_ID = #{_parameter}
 	</select>
 
 
