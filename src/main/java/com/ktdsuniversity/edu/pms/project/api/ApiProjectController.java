@@ -191,28 +191,28 @@ public class ApiProjectController {
 	    /**
 	     * 프로젝트 수정 시 기존 데이터 보여주는 api
 	     */
-	    @GetMapping("/write/{prjId}")
-	    public ApiResponse getProjectWritePage(@PathVariable String prjId, Authentication authentication) {
-	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
-	        if (!employeeVO.getAdmnCode().equals("301")) {
-	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
-	        }
-	        ProjectVO project = projectService.getOneProject(prjId);
-	        Optional<ProjectTeammateVO> pmOptional = project.getProjectTeammateList().stream()
-	                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
-	                .findFirst();
-	        ProjectTeammateVO pm = pmOptional.get();
-	        List<Object> dataList = new ArrayList<>();
-	        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
-	        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
-
-	        dataList.add(employeeList);
-	        dataList.add(departmentList);
-	        dataList.add(pm);
-	        return ApiResponse.Ok(dataList);
-	    }
+//	    @GetMapping("/write/{prjId}")
+//	    public ApiResponse getProjectWritePage(@PathVariable String prjId, Authentication authentication) {
+//	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+//	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+//	        if (!employeeVO.getAdmnCode().equals("301")) {
+//	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+//	        }
+//	        ProjectVO project = projectService.getOneProject(prjId);
+//	        Optional<ProjectTeammateVO> pmOptional = project.getProjectTeammateList().stream()
+//	                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
+//	                .findFirst();
+//	        ProjectTeammateVO pm = pmOptional.get();
+//	        List<Object> dataList = new ArrayList<>();
+//	        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
+//	        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
+//
+//	        dataList.add(employeeList);
+//	        dataList.add(departmentList);
+//	        dataList.add(pm);
+//	        return ApiResponse.Ok(dataList);
+//	    }
 	    /**
 	     * 프로젝트 수정 api
 	     */
