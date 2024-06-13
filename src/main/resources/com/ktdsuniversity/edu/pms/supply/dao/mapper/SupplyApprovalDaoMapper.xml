@@ -4,6 +4,82 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao">
 
+	<resultMap type="com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO"
+			   id="SupplyApprovalVOMap"
+			   autoMapping="true">
+		<id column="SPL_APPR_ID" property="splApprId" />
+		<association property="approvalVO"
+					 javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+			<id column="APPR_ID" property="apprId" />
+			<result column="APPR_DATE" property="apprDate" />
+		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+			<result column="EMAIL" property="email" />
+		</association>
+	</resultMap>
+	
+	<select id="searchSupplyAllApprovalLogCount"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
+			resultType="_int">
+SELECT COUNT(1)
+  FROM (SELECT sa.SPL_APPR_ID
+			 , sa.SPL_APPR_TYPE
+			 , sa.SPL_ID
+			 , sa.SPL_NAME
+			 , sa.SPL_CTGR
+			 , sa.INV_QTY
+			 , sa.SPL_APPR_REQTR
+			 , sa.DEL_YN
+			 , sa.SPL_APPR_YN
+			 , a.APPR_DATE
+			 , e.EMP_NAME
+			 , e.EMAIL
+		  FROM SUPPLY_APPROVAL sa 
+		  JOIN APPROVAL a 
+		    ON a.APPR_INFO = sa.SPL_APPR_ID
+		  JOIN EMPLOYEE e
+		    ON e.EMP_ID = sa.SPL_APPR_REQTR)
+ WHERE DEL_YN = 'N'
+	</select>
+
+	<select id="searchAllApprovalLog"
+			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO"
+			resultMap="SupplyApprovalVOMap">
+		SELECT SPL_APPR_ID
+			 , SPL_APPR_TYPE
+			 , SPL_ID
+			 , SPL_NAME
+			 , SPL_CTGR
+			 , INV_QTY
+			 , SPL_APPR_REQTR
+			 , DEL_YN
+			 , SPL_APPR_YN
+			 , TO_CHAR(APPR_DATE, 'YYYY-MM-DD') APPR_DATE
+			 , EMP_NAME
+			 , EMAIL
+		  FROM (SELECT sa.SPL_APPR_ID
+					 , sa.SPL_APPR_TYPE
+					 , sa.SPL_ID
+					 , sa.SPL_NAME
+					 , sa.SPL_CTGR
+					 , sa.INV_QTY
+					 , sa.SPL_APPR_REQTR
+					 , sa.DEL_YN
+					 , sa.SPL_APPR_YN
+					 , a.APPR_DATE
+					 , e.EMP_NAME
+					 , e.EMAIL
+				  FROM SUPPLY_APPROVAL sa 
+				  JOIN APPROVAL a 
+				    ON a.APPR_INFO = sa.SPL_APPR_ID
+				  JOIN EMPLOYEE e
+				    ON e.EMP_ID = sa.SPL_APPR_REQTR)
+		 WHERE DEL_YN = 'N'
+	</select>
+
 	<insert id="insertSupplyApprovalRequest"
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO">
 		
@@ -28,7 +104,7 @@
 		VALUES
 		 (#{splApprId}
 		, #{splApprType}
-		, NULL
+		, #{splId}
 		, #{splName}
 		, #{splCtgr}
 		, #{splPrice}
@@ -36,7 +112,7 @@
 		, #{splImg}
 		, #{splDtl}
 		, #{splApprReqtr}
-		, 'N'
+		, #{delYn}
 		, 'N')
 	</insert>
 

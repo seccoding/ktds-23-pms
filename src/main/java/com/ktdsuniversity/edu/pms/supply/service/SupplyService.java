@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.supply.service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
@@ -40,7 +41,7 @@ public interface SupplyService {
 	 * @param file
 	 * @return
 	 */
-	public boolean requestModificationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file);
+	public boolean requestModificationSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file);
 
 	/**
 	 * 소모품 재고 수정(현재 사용하지 않으며, 앞으로도 사용하지 않을 가능성이 높음)
@@ -50,17 +51,19 @@ public interface SupplyService {
 	public boolean updateOneSupplyStock(SupplyVO supplyVO);
 	
 	/**
-	 * 소모품 삭제(논리적 삭제)
-	 * @param supplyVO 삭제 할 소모품 VO
+	 * 소모품 삭제 요청
+	 * @param supplyVO
 	 * @return
 	 */
-	public boolean deleteOneSupply(SupplyVO supplyVO);
+	public boolean requestDeleteSupply(SupplyApprovalVO supplyApprovalVO);
 
 	/**
 	 * 소모품 신청 기록 조회
 	 * @param searchSupplyVO
 	 * @return
 	 */
-	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO);
+//	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO);
+
+	public SupplyApprovalListVO searchAllSupplyApprovalLog(SearchSupplyVO searchSupplyVO);
 
 }

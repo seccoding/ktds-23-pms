@@ -1,11 +1,17 @@
 package com.ktdsuniversity.edu.pms.supply.vo;
 
+import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+
 public class SupplyApprovalVO extends SupplyVO {
 	
 	private String splApprId;
 	private String splApprType;
 	private String splApprReqtr;
 	private String splApprYn;
+	
+	private ApprovalVO approvalVO;
+	private EmployeeVO employeeVO;
 	
 	public String getSplApprId() {
 		return splApprId;
@@ -30,6 +36,18 @@ public class SupplyApprovalVO extends SupplyVO {
 	}
 	public void setSplApprYn(String splApprYn) {
 		this.splApprYn = splApprYn;
+	}
+	public ApprovalVO getApprovalVO() {
+		return approvalVO;
+	}
+	public void setApprovalVO(ApprovalVO approvalVO) {
+		this.approvalVO = approvalVO;
+	}
+	public EmployeeVO getEmployeeVO() {
+		return employeeVO;
+	}
+	public void setEmployeeVO(EmployeeVO employeeVO) {
+		this.employeeVO = employeeVO;
 	}
 
 }

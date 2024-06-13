@@ -20,6 +20,7 @@ import com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyDao;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyLogDao;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
@@ -86,6 +87,7 @@ public class SupplyServiceImpl implements SupplyService {
 	public boolean requestRegistrationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file) {
 		// 결재 요청 타입(INSERT, UPDATE, DELETE?)
 		supplyApprovalVO.setSplApprType("INSERT");
+		supplyApprovalVO.setDelYn("N");
 		
 		if (file != null && !file.isEmpty()) {
 			StoredFile storedFile = fileHandler.storeFile(file);
@@ -145,9 +147,11 @@ public class SupplyServiceImpl implements SupplyService {
 
 	@Transactional
 	@Override
-	public boolean requestModificationNewSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file) {
+	public boolean requestModificationSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file) {
 		// 결재 요청 타입(INSERT, UPDATE, DELETE?)
 		supplyApprovalVO.setSplApprType("UPDATE");
+		supplyApprovalVO.setDelYn("N");
+		
 		SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyApprovalVO.getSplId());
 		if (file != null && !file.isEmpty()) {
 			
@@ -194,7 +198,8 @@ public class SupplyServiceImpl implements SupplyService {
 		approvalList.add("1111111");
 		
 		if (supplyApprovalVO.getInvQty() != originalSupplyVO.getInvQty()) {
-			price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();		
+			price = Math.abs(supplyApprovalVO.getSplPrice() * (supplyApprovalVO.getInvQty() - originalSupplyVO.getInvQty()));
+			
 			if (price > 1000000) {
 //				approvalList.add(deptLeadId);
 				approvalList.add("2222222");
@@ -237,8 +242,11 @@ public class SupplyServiceImpl implements SupplyService {
 
 	@Transactional
 	@Override
-	public boolean deleteOneSupply(SupplyVO supplyVO) {
-		SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyVO.getSplId());
+	public boolean requestDeleteSupply(SupplyApprovalVO supplyApprovalVO) {
+		supplyApprovalVO.setSplApprType("UPDATE");
+		supplyApprovalVO.setDelYn("Y");
+		
+		SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyApprovalVO.getSplId());
 		
 		if (originalSupplyVO != null) {
 			String storedImage = originalSupplyVO.getSplImg();
@@ -248,23 +256,71 @@ public class SupplyServiceImpl implements SupplyService {
 			}
 		}
 		
-		int deletedCount = this.supplyDao.deleteOneSupply(supplyVO);
+		int deletedCount = this.supplyApprovalDao.insertSupplyApprovalRequest(supplyApprovalVO);
+		
+		List<String> approvalList = new ArrayList<>();
+		
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
+		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
+		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		String ceoId = this.employeeDao.getAllEmployee().stream()
+														.filter(emp -> emp.getPstnId().equals("110"))
+														.map(emp -> emp.getEmpId())
+														.findFirst().orElse(mgmtSprtDeptLeadId);
+		
+		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();		
+//		approvalList.add(tmLeadId);
+		approvalList.add("1111111");
+		if (price > 1000000) {
+//			approvalList.add(deptLeadId);
+			approvalList.add("2222222");
+		}
+		if (price > 5000000) {
+			approvalList.add(mgmtSprtDeptLeadId);
+		}
+		if (price > 10000000) {
+			approvalList.add(ceoId);
+		}
+		
+		ApprovalVO approvalVO = new ApprovalVO();
+		approvalVO.setApprType("SUPPLY");
+		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
+		approvalVO.setApprInfo(supplyApprovalVO.getSplApprId());
+		// apprReqtr: 결재 요청자
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
+		this.approvalDao.insertApproval(approvalList, approvalVO);
 		
 		return deletedCount > 0;
 	}
 
+//	@Override
+//	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO) {
+//		int supplyLogCount = this.supplyLogDao.searchSupplyLogAllCount(searchSupplyVO);
+//		searchSupplyVO.setPageCount(supplyLogCount);
+//		
+//		List<SupplyLogVO> supplyLogList = this.supplyLogDao.searchAllSupplyLog(searchSupplyVO);
+//		
+//		SupplyLogListVO supplyLogListVO = new SupplyLogListVO();
+//		supplyLogListVO.setSupplyLogCnt(supplyLogCount);
+//		supplyLogListVO.setSupplyLogList(supplyLogList);
+//		
+//		return supplyLogListVO;
+//	}
+
 	@Override
-	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO) {
-		int supplyLogCount = this.supplyLogDao.searchSupplyLogAllCount(searchSupplyVO);
-		searchSupplyVO.setPageCount(supplyLogCount);
+	public SupplyApprovalListVO searchAllSupplyApprovalLog(SearchSupplyVO searchSupplyVO) {
+		int supplyApprovalListCount = this.supplyApprovalDao.searchSupplyAllApprovalLogCount(searchSupplyVO);
+		searchSupplyVO.setPageCount(supplyApprovalListCount);
 		
-		List<SupplyLogVO> supplyLogList = this.supplyLogDao.searchAllSupplyLog(searchSupplyVO);
+		List<SupplyApprovalVO> supplyApprovalList = this.supplyApprovalDao.searchAllApprovalLog(searchSupplyVO);
 		
-		SupplyLogListVO supplyLogListVO = new SupplyLogListVO();
-		supplyLogListVO.setSupplyLogCnt(supplyLogCount);
-		supplyLogListVO.setSupplyLogList(supplyLogList);
+		SupplyApprovalListVO supplyApprovalListVO = new SupplyApprovalListVO();
+		supplyApprovalListVO.setSupplyApprovalCnt(supplyApprovalListCount);
+		supplyApprovalListVO.setSupplyApprovalList(supplyApprovalList);
 		
-		return supplyLogListVO;
+		return supplyApprovalListVO;
 	}
 
 }

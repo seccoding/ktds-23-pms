@@ -25,6 +25,7 @@ import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.supply.service.SupplyService;
 import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
@@ -121,6 +122,13 @@ public class ApiSupplyController {
 			errorMessage.add("제품 설명을 입력해 주세요.");
 		}
 		
+		if (supplyApprovalVO.getSplPrice() < 0 || supplyApprovalVO.getInvQty() < 0) {
+			if (errorMessage == null) {
+				errorMessage = new ArrayList<>();
+			}
+			errorMessage.add("음수는 입력할 수 없습니다.");
+		}
+		
 		if (errorMessage != null) {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
@@ -191,7 +199,7 @@ public class ApiSupplyController {
 		supplyApprovalVO.setSplId(splId);
 		supplyApprovalVO.setSplApprReqtr(employeeVO.getEmpId());
 		
-		boolean isUpdatedSuccess = this.supplyService.requestModificationNewSupply(supplyApprovalVO, file);
+		boolean isUpdatedSuccess = this.supplyService.requestModificationSupply(supplyApprovalVO, file);
 		
 		return ApiResponse.Ok(isUpdatedSuccess);
 	}
@@ -214,28 +222,38 @@ public class ApiSupplyController {
 	}
 	
 	@DeleteMapping("/supply/{splId}")
-	public ApiResponse deleteSupply(@PathVariable String splId,
-									Authentication authentication) {
+	public ApiResponse doSupplyDeleteApprovalRequest(@PathVariable String splId,
+													 Authentication authentication) {
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
 		
-		SupplyVO supplyVO = this.supplyService.getOneSupply(splId);
-		
 		// TODO 권한 체크
 		
-		supplyVO.setSplMdfrId(employeeVO.getEmpId());
+		SupplyApprovalVO supplyApprovalVO = new SupplyApprovalVO();
+		supplyApprovalVO.setSplId(splId);
+		supplyApprovalVO.setSplApprReqtr(employeeVO.getEmpId());
 		
-		boolean isSuccess = this.supplyService.deleteOneSupply(supplyVO);
+		boolean isSuccess = this.supplyService.requestDeleteSupply(supplyApprovalVO);
 		
 		return ApiResponse.Ok(isSuccess);
 	}
 	
+//	@GetMapping("/supply/log")
+//	public ApiResponse getSupplyLogList(SearchSupplyVO searchSupplyVO) {
+//		SupplyLogListVO supplyLogListVO = this.supplyService.searchAllSupplyLog(searchSupplyVO);
+//		
+//		return ApiResponse.Ok(supplyLogListVO.getSupplyLogList(), 
+//							  supplyLogListVO.getSupplyLogCnt(), 
+//							  searchSupplyVO.getPageCount(), 
+//							  searchSupplyVO.getPageNo() < searchSupplyVO.getPageCount() - 1);
+//	}
+	
 	@GetMapping("/supply/log")
-	public ApiResponse getSupplyLogList(SearchSupplyVO searchSupplyVO) {
-		SupplyLogListVO supplyLogListVO = this.supplyService.searchAllSupplyLog(searchSupplyVO);
+	public ApiResponse getSupplyApprovalLogList(SearchSupplyVO searchSupplyVO) {
+		SupplyApprovalListVO supplyApprovalListVO = this.supplyService.searchAllSupplyApprovalLog(searchSupplyVO);
 		
-		return ApiResponse.Ok(supplyLogListVO.getSupplyLogList(), 
-							  supplyLogListVO.getSupplyLogCnt(), 
+		return ApiResponse.Ok(supplyApprovalListVO.getSupplyApprovalList(), 
+							  supplyApprovalListVO.getSupplyApprovalCnt(), 
 							  searchSupplyVO.getPageCount(), 
 							  searchSupplyVO.getPageNo() < searchSupplyVO.getPageCount() - 1);
 	}
