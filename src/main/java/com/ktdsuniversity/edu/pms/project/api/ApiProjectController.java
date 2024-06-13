@@ -76,7 +76,7 @@ public class ApiProjectController {
 			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 	        // 접속 유저에 따라 내려주는 데이터를 다르게 설정
 	        searchProjectVO.setEmployeeVO(employeeVO);
-	        System.out.println("ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ"+ employeeVO.getEmpId());
+	   
 	        ProjectListVO projectListVO = projectService.searchProject(searchProjectVO);
 	        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 		
@@ -105,6 +105,13 @@ public class ApiProjectController {
 			List<String> errorMessages = new ArrayList<>();
 
 	        ProjectVO projectVO = projectService.getOneProject(prjId);
+	        for (ProjectTeammateVO prjTeamEmp:projectVO.getProjectTeammateList()) {
+	        	EmployeeVO empDetail = this.employeeService.getOneEmployee(prjTeamEmp.getTmId());
+	        	
+	        	prjTeamEmp.setEmployeeVO(empDetail);
+	        	
+	        }
+	        
 	        int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
 	         // 요구사항 리스트 가져오기
 	        List<RequirementVO> totalRequirementsList = requirementService.getAllRequirement(prjId).stream().toList();
@@ -188,65 +195,25 @@ public class ApiProjectController {
 	    
 	    
 	    
-	    /**
-	     * 프로젝트 수정 시 기존 데이터 보여주는 api
-	     */
-//	    @GetMapping("/write/{prjId}")
-//	    public ApiResponse getProjectWritePage(@PathVariable String prjId, Authentication authentication) {
-//	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-//	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
-//	        if (!employeeVO.getAdmnCode().equals("301")) {
-//	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
-//	        }
-//	        ProjectVO project = projectService.getOneProject(prjId);
-//	        Optional<ProjectTeammateVO> pmOptional = project.getProjectTeammateList().stream()
-//	                .filter(projectTeammateVO -> projectTeammateVO.getRole().equals("PM"))
-//	                .findFirst();
-//	        ProjectTeammateVO pm = pmOptional.get();
-//	        List<Object> dataList = new ArrayList<>();
-//	        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
-//	        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
-//
-//	        dataList.add(employeeList);
-//	        dataList.add(departmentList);
-//	        dataList.add(pm);
-//	        return ApiResponse.Ok(dataList);
-//	    }
+	    
 	    /**
 	     * 프로젝트 수정 api
 	     */
 	    @PutMapping("/write/{prjId}")
-	    public ApiResponse modifyProjectWritePage(@PathVariable String prjId, Authentication authentication,CreateProjectVO modifyProjectVO ) {
+	    public ApiResponse modifyProjectWritePage(@PathVariable String prjId, Authentication authentication, @RequestBody CreateProjectVO modifyProjectVO ) {
 	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 	    	EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-	    	 ProjectVO originalProjectVO = projectService.getOneProject(prjId);
+	    	modifyProjectVO.setMdfId(employeeVO.getEmpId());
+	    	 
+//	    	ProjectVO originalProjectVO = projectService.getOneProject(prjId);
 
-	         if (originalProjectVO == null) {
-	             return ApiResponse.FORBIDDEN("해당 프로젝트가 존재하지 않습니다.");
-	         }
+//	         if (originalProjectVO == null) {
+//	             return ApiResponse.FORBIDDEN("해당 프로젝트가 존재하지 않습니다.");
+//	         }
 
 	         // 검증로직, 프로젝트 수정은 관리자만 가능하다.
 	         if (!employeeVO.getAdmnCode().equals("301")) {
 	        	 return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
-	         }
-
-	         // 3. 데이터 검증
-	         Validator<CreateProjectVO> validator = new Validator<>(modifyProjectVO);
-
-	         validator.add("prjName", Type.NOT_EMPTY, "프로젝트명을 입력해주세요.")
-	                 .add("clntInfo", Type.NOT_EMPTY, "고객사를 입력해주세요.")
-	                 .add("deptId", Type.NOT_EMPTY, "담당부서를 선택해주세요.")
-	                 .add("strtDt", Type.NOT_EMPTY, "시작일을 선택해주세요.")
-	                 .add("prjSts", Type.NOT_EMPTY, "상태코드를 선택해주세요.")
-	                 .add("pmId", Type.NOT_EMPTY, "담당자를 선택해주세요.")
-	                 .add("endDt", Type.NOT_EMPTY, "종료일을 선택해주세요.")
-	                 .add("strtDt", Type.DATE, modifyProjectVO.getEndDt(), "종료일은 시작일보다 이후여야 합니다. 날짜를 다시 설정해주세요")
-	                 .start();
-
-	         if (validator.hasErrors()) {
-	             Map<String, List<String>> errors = validator.getErrors();
-	             return null;
 	         }
 
 	         // 4. 수정시작
