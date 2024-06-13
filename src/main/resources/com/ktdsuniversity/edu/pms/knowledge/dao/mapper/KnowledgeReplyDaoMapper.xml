@@ -13,8 +13,22 @@
   			<id column="EMP_ID" property="empId" />
   			<result column="EMP_NAME" property="empName" />
   		</association>
+  		
   	</resultMap>
-  
+  	
+  	<resultMap type="com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO" 
+  		id="ReplyRecomamndVo">
+  		<id column="REP_CRTR_ID" property="repcrtrid" />
+  		<result column="REP_RPL_ID" property="reprplid" />
+  		
+  		<association property="employeeVO" 
+		javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_ID" property="empId" />
+		</association>
+		
+  	</resultMap>
+
 	<select id="getAllReplies" 
 			parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO" 
 			resultMap="knowledgeReplyVOMap">
@@ -97,4 +111,32 @@
 		     , MDF_DT = SYSDATE
 		 WHERE RPL_ID = #{rplId}
 	</update>
+	
+	<!--   댓글 추천 파트 -->
+	<select id="selectOneReplyRecommend"
+	 parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO" 
+		resultMap="ReplyRecomamndVo">
+		SELECT 
+			* FROM REPLY_RECCOMMEND r
+			INNER JOIN EMPLOYEE e 
+			ON e.EMP_ID = #{repcrtrid}
+			WHERE r.REP_RPL_ID =#{reprplid}
+	</select>
+	
+	
+	<insert id="insertOneReplyRecommend"  parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO" >
+		INSERT INTO PMS.REPLY_RECCOMMEND
+		(REP_REC_ID, 
+		REP_REC_YN, 
+		REP_RPL_ID, 
+		REP_CRTR_ID)
+		VALUES(('RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REPLYRECOMMEND_PK.NEXTVAL, 6, '0')) 
+		,'Y'  
+		,#{reprplid}
+		,#{repcrtrid})
+	</insert>
+	
+	
+	
+	
 </mapper>

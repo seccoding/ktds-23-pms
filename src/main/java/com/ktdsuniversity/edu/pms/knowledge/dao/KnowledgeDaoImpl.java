@@ -111,6 +111,12 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 
 		return getSqlSession().update(KnowledgeDao.NAME_SPACE + ".deleteManyKnowledge", deleteItems);
 	}
+
+
+	@Override
+	public String findbyId(KnowledgeVO knowledgeVO) {
+		return getSqlSession().selectOne(KnowledgeReplyDao.NAME_SPACE+".findbyId", knowledgeVO);
+	}
 	
 	
 }

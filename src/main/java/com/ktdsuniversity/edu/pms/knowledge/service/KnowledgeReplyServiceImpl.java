@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeReplyDao;
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO;
 
 @Service
 public class KnowledgeReplyServiceImpl implements KnowledgeReplyService{
@@ -45,5 +47,26 @@ public class KnowledgeReplyServiceImpl implements KnowledgeReplyService{
 			throw new PageNotFoundException();
 		}
 		return this.knowledgeReplyDao.modifyOneKnowledgeReply(knowledgeReplyVO) > 0;
+	}
+	
+	// 댓글 추천	
+	@Override
+	public boolean updateReplyRecommend(ReplyRecommandVO replyRecommandvo) {
+
+		ReplyRecommandVO  originKnowledgeReplyRecommendVO=knowledgeReplyDao.selectOneReplyRecommend(replyRecommandvo);
+	
+		if(originKnowledgeReplyRecommendVO==null) {
+			boolean isInsert=knowledgeReplyDao.insertOneReplyRecommend(replyRecommandvo)>0;
+			return true;
+			
+		}
+		else {
+			return false;
+		}
+		
+
+		
+		
+
 	}
 }

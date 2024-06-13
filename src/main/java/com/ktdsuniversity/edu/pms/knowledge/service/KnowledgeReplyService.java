@@ -3,6 +3,7 @@ package com.ktdsuniversity.edu.pms.knowledge.service;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO;
+import com.ktdsuniversity.edu.pms.knowledge.vo.ReplyRecommandVO;
 
 public interface KnowledgeReplyService {
 
@@ -13,4 +14,6 @@ public interface KnowledgeReplyService {
 	public boolean deleteOneReply(String rplId, String empId);
 	
 	public boolean modifyOneReply(KnowledgeReplyVO knowledgeReplyVO);
+	
+	public boolean updateReplyRecommend(ReplyRecommandVO replyRecommandvo);
 }
