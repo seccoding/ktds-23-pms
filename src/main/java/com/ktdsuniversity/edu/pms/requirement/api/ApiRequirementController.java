@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,8 +56,6 @@ public class ApiRequirementController {
 			RequirementSearchVO requirementSearchVO, Authentication authentication) {
 		
 		// 요구사항 리스트를 불러오는 API
-		
-		System.out.println("@@@@@@@@@@@@@@" + authentication + "@@@@@@@@@@@@@");
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
@@ -110,8 +109,12 @@ public class ApiRequirementController {
 
 		RequirementVO requirement = this.requirementService.getOneRequirement(rqmId);
 		
+		// 모든 데이터를 하나의 응답으로 합치기
+		Map <String, Object> responseData = new HashMap<>();
+		responseData.put("requirement", requirement);
+		responseData.put("isPmAndPl", isPmAndPl);
 
-		return ApiResponse.Ok(requirement, requirement == null ? 0 : 1);
+		return ApiResponse.Ok(responseData, responseData == null ? 0 : 1);
 
 	}
 	
@@ -309,6 +312,46 @@ public class ApiRequirementController {
 		AjaxResponse ajax = new AjaxResponse();
 		return ApiResponse.Ok(isSuccess);
 
+	}
+	
+	
+	@PostMapping("/requirement/delayapprove/{rqmId}")
+	public ApiResponse delayRequirementApprove(Authentication authentication, @PathVariable String rqmId,
+			@RequestBody boolean isApprove) {
+		
+		// 승인 => 일정상태를 진행중으로 바꾸고 기간 7일 연장, 거절 => 일정상태를 진행중으로 바꿈
+
+		boolean isSuccess = this.requirementService.updateDelayRequirement(rqmId, isApprove);
+		
+		return ApiResponse.Ok(isSuccess);
+
+	}
+	
+	
+	@PostMapping("/requirement/testresult/{rqmId}")
+	public ApiResponse requirementTestResult(Authentication authentication, @PathVariable String rqmId,
+			@RequestBody boolean testApprove) {
+		
+		// 테스트결과: 성공 =>  일정상태: 종료, 진행상태: 개발완료, 실패 => 진행상태: 개발중 으로 바꿈
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	
+		RequirementVO requirementVO= this.requirementService.getOneRequirement(rqmId);	
+		
+		if(!employeeVO.getAdmnCode().equals("301")) { // 관리자가 아니고
+			if(!requirementVO.getTstr().equals(employeeVO.getEmpId())
+					&&  requirementVO.getRqmSts().equals("604")) { // 테스터가 아니면
+				return ApiResponse.Ok("테스트 결과 입력 권한이 없습니다");
+//				return new AjaxResponse().append("error", true).
+//						append("errorMassage", "테스트 결과 입력 권한이 없습니다");
+			}
+		}
+		
+		boolean isSuccess = this.requirementService.updateTestResult(requirementVO, testApprove);
+		
+//		return new AjaxResponse().append("result", isSuccess);
+		return ApiResponse.Ok(isSuccess);
 	}
 	
 	
