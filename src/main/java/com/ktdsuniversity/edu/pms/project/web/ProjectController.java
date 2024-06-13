@@ -168,22 +168,22 @@ public class ProjectController {
         return "project/teammate";
     }
 
-    @GetMapping("/project/write")
-    public String viewProjectWritePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
-                                       Model model) {
-        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
-        if (!employeeVO.getAdmnCode().equals("301")) {
-            throw new AccessDeniedException();
-        }
-
-        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
-        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
-
-        model.addAttribute("employee", employeeList);
-        model.addAttribute("department", departmentList);
-
-        return "project/projectwrite";
-    }
+//    @GetMapping("/project/write")
+//    public String viewProjectWritePage(@SessionAttribute("_LOGIN_USER_") EmployeeVO employeeVO,
+//                                       Model model) {
+//        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+//        if (!employeeVO.getAdmnCode().equals("301")) {
+//            throw new AccessDeniedException();
+//        }
+//
+//        List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
+//        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
+//
+//        model.addAttribute("employee", employeeList);
+//        model.addAttribute("department", departmentList);
+//
+//        return "project/projectwrite";
+//    }
 
     @ResponseBody
     @PostMapping("/ajax/project/write")
@@ -245,7 +245,7 @@ public class ProjectController {
 
 
         ProjectVO projectVO = projectService.getOneProject(prjId);
-        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
+//        List<DepartmentVO> departmentList = departmentService.getOnlyDepartment().getDepartmentList();
         List<EmployeeVO> employeeList = employeeService.getAllEmployee().getEmployeeList();
         List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 
@@ -258,7 +258,7 @@ public class ProjectController {
             ProjectTeammateVO pm = pmOptional.get();
             model.addAttribute("project", projectVO);
             model.addAttribute("pm", pm);
-            model.addAttribute("department", departmentList);
+//            model.addAttribute("department", departmentList);
             model.addAttribute("employee", employeeList);
             model.addAttribute("commonCodeList", projectCommonCodeList);
         } else {
