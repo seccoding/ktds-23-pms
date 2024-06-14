@@ -214,13 +214,12 @@ public class ApiMemoController {
      * 수신 쪽지 읽음
      */
     @PutMapping("/receive/read/{rcvMemoId}")
-    public ApiResponse doReceiveDateModify(@PathVariable String rcvMemoId, @RequestBody ReceiveMemoVO receiveMemoVO,
-                                           Authentication authentication) {
+    public ApiResponse doReceiveDateModify(@PathVariable String rcvMemoId, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
         ReceiveMemoVO originReceiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
-        if(! originReceiveMemoVO.getRcvMemoId().equals(employeeVO.getEmpId())) {
+        if(! originReceiveMemoVO.getRcvId().equals(employeeVO.getEmpId())) {
             throw new PageNotFoundException();
         }
 
