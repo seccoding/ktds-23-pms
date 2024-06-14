@@ -36,6 +36,19 @@ public class SendMemoServiceImpl implements SendMemoService{
         return sendMemoListVO;
     }
 
+//	@Override
+//	public SendMemoListVO searchAllSaveSendMemo(SearchMemoVO searchMemoVO) {
+//		
+//		int saveSendMemoCount = this.sendMemoDao.searchSaveMemoAllCount(searchMemoVO);
+//		List<SendMemoVO> saveSendMemoList = this.sendMemoDao.searchAllSaveSendMemo(searchMemoVO);
+//		
+//		SendMemoListVO saveSendMemoListVO = new SendMemoListVO();
+//		saveSendMemoListVO.setSendMenoCnt(saveSendMemoCount);
+//		saveSendMemoListVO.setSendMemoList(saveSendMemoList);
+//		
+//		return saveSendMemoListVO;
+//	}
+
     @Override
     public SendMemoVO getOneSendMemo(String sendMemoId) {
 
@@ -131,4 +144,5 @@ public class SendMemoServiceImpl implements SendMemoService{
     public int getSendCountBySendMemoId(String sendMemoId) {
         return this.sendMemoDao.getSendCountBySendMemoId(sendMemoId);
     }
+
 }

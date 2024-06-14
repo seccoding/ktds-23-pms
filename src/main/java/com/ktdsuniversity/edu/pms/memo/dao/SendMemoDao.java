@@ -18,7 +18,7 @@ public interface SendMemoDao {
      * 발신 쪽지 목록(정보) 조회
      */
     public List<SendMemoVO> searchAllSendMeno(SearchMemoVO searchMemoVO);
-
+    
     /**
      * 한 개의 발신 쪽지 조회
      */
@@ -50,4 +50,5 @@ public interface SendMemoDao {
     public int deleteOneSendMemo(String sendMemoId);
     
     public int getSendCountBySendMemoId(String sendMemoId);
+
 }
