@@ -51,8 +51,8 @@ public class ApiRequirementController {
 	@Autowired
 	private CommonCodeService commonCodeService;
 	
-	@GetMapping("/requirement/search")
-	public ApiResponse getRequirementList( 
+	@GetMapping("/requirement/search/{prjIdValue}")
+	public ApiResponse getRequirementList(@PathVariable String prjIdValue,
 			RequirementSearchVO requirementSearchVO, Authentication authentication) {
 		
 		// 요구사항 리스트를 불러오는 API
@@ -69,7 +69,8 @@ public class ApiRequirementController {
 
 		projectList.setProjectList(
 				projectList.getProjectList().stream().toList());
-
+		
+		requirementSearchVO.setPrjId(prjIdValue);
 		RequirementListVO requirementList = requirementService.searchAllRequirement(requirementSearchVO);
 		requirementSearchVO.setPageCount(requirementList.getCount());
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
