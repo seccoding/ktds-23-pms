@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.commoncode.service.CommonCodeService;
@@ -309,6 +312,44 @@ public class ApiProjectController {
 	    		return ApiResponse.FORBIDDEN("수정 중 오류가 발생했습니다.");
 	    	}
 	    	return ApiResponse.Ok(isSuccess);
+	    }
+	    
+	    @PostMapping("/teammate/{prjId}")
+	    public ApiResponse addNewProjectTeammate(@RequestBody ArrayList<ProjectTeammateVO> ProjectTeammateVOList, @PathVariable String prjId, Authentication authentication) {
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+//	        if (!employeeVO.getAdmnCode().equals("301")) {
+//	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+//	        }
+	        List<String> errorMessages = new ArrayList<>();
+	    	
+	    	ProjectVO projectVO = projectService.getOneProject(prjId);
+
+	        if (projectVO == null) {
+	        	errorMessages.add("존재하지 않는 프로젝트입니다.");
+	        	return ApiResponse.BAD_REQUEST(errorMessages);
+	        }
+
+	        int willCnt = ProjectTeammateVOList.size();
+	        int successCnt = 0;
+	        for (ProjectTeammateVO pjtmVO:ProjectTeammateVOList) {
+	        	boolean addResult = projectService.insertOneTeammate(pjtmVO);
+	        	if(!addResult) {
+	        		errorMessages.add("프로젝트 구성원 추가 중 오류가 발생했습니다.");
+	        		return ApiResponse.BAD_REQUEST(errorMessages);
+	        	}else {
+	        		successCnt++;
+	        	}
+	        	
+	        }
+	        if(willCnt==successCnt) {
+	        	
+	        	return ApiResponse.Ok(true);
+	        }else {
+	        	errorMessages.add("프로젝트 구성원 추가에 실패했습니다.");
+        		return ApiResponse.BAD_REQUEST(errorMessages);
+	        }
 	    }
 
 }
