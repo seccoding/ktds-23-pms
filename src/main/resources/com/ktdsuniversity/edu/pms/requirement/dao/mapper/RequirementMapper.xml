@@ -245,7 +245,7 @@
 	    ON  R.MDFR_ID	= MDFR.EMP_ID 
 	 WHERE	R.DEL_YN = 'N'
 	 <choose>
-		  <when test='prjId != null and prjId!= ""'>
+		  <when test='prjId != null and prjId != ""'>
 		   AND R.PRJ_ID = #{prjId}
 		   </when>
 		  <otherwise>

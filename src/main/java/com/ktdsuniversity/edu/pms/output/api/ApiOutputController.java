@@ -54,8 +54,8 @@ public class ApiOutputController {
 	private ProjectDao projectDao;
 	
 	
-	@GetMapping("/output/search")
-	public ApiResponse getOutputList( 
+	@GetMapping("/output/search/{prjIdValue}")
+	public ApiResponse getOutputList(@PathVariable String prjIdValue,
 			OutputSearchVO outputSearchVO, Authentication authentication) {
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -76,6 +76,8 @@ public class ApiOutputController {
 		projectList= projectList.stream().toList();
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
+		
+		outputSearchVO.setPrjId(prjIdValue);
 		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
 		
 
@@ -118,8 +120,8 @@ public class ApiOutputController {
 	}
 	
 	
-	@PostMapping("/output/write")
-	public ApiResponse createOutput(Authentication authentication, 
+	@PostMapping("/output/write/")
+	public ApiResponse createOutput(Authentication authentication,
 			@RequestParam MultipartFile file, OutputVO outputVO) {
 		
 		// 입력한 값들을 전송하는 API
