@@ -3,12 +3,13 @@ package com.ktdsuniversity.edu.pms.team.service;
 import java.util.List;
 
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.team.vo.TeamApprovalVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
 
 public interface TeamService {
 
-	public boolean createNewTeam(TeamVO teamVO);
+	public boolean createNewTeam(TeamApprovalVO teamApprovalVO);
 
 	public TeamVO selectOneTeam(String teamId);
 

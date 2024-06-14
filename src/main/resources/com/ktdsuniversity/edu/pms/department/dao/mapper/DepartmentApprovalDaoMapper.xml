@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.department.dao.DepartmentApprovalDao">
+
+<insert id="insertDepartmentApprovalRequest" 
+		parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO">
+	<selectKey keyProperty="deptApprId" resultType="string" order="BEFORE">
+			SELECT 'DEPT_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_DEPT_APPR_PK.NEXTVAL, 6, '0')
+			  FROM DUAL
+		</selectKey>
+		
+		INSERT INTO DEPARTMENT_APPROVAL
+		     ( DEPT_APPR_ID
+		     , DEPT_APPR_TYPE
+		     , DEPT_ID
+		     , DEPT_NAME
+		     , DEPT_LEAD_ID
+		     , DEL_YN
+		     , DEPT_APPR_YN
+		     , DEPT_APPR_REQTR)
+		VALUES
+		     ( #{deptApprId}
+		     , #{deptApprType}
+		     , #{deptId}
+		     , #{deptName}
+		     , #{deptLeadId}
+		     , #{delYn}
+		     , 'N'
+		     , #{deptApprReqtr})
+</insert>	
+
+</mapper>

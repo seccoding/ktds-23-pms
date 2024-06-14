@@ -78,9 +78,9 @@ public class DepartmentController {
 //		return new AjaxResponse().append("teamList", teamListVO.getTeamList());
 //	}
 //	
-	@ResponseBody
-	@PostMapping("/ajax/department/create")
-	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model, @RequestParam("deptLeadId") String deptLeadId) {
+//	@ResponseBody
+//	@PostMapping("/ajax/department/create")
+//	public AjaxResponse doCreateNewDepartment(DepartmentVO departmentVO, Model model, @RequestParam("deptLeadId") String deptLeadId) {
 		
 //		String str =  this.departmentService.getOnlypstnid(deptLeadId);
 //		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
@@ -100,9 +100,9 @@ public class DepartmentController {
 //			return new AjaxResponse().append("message", "아이디를 확인하세요");
 //		}
 		
-		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
-		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
-	}
+//		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
+//		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
+//	}
 	
 	@ResponseBody
 	@GetMapping("/ajax/department/cancreate")

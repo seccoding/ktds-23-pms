@@ -5,21 +5,29 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.department.vo.SearchDepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.team.service.TeamService;
+import com.ktdsuniversity.edu.pms.team.vo.TeamApprovalVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamListVO;
 import com.ktdsuniversity.edu.pms.team.vo.TeamVO;
+import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
 
@@ -70,10 +78,13 @@ public class ApiDepartmentController {
 		return ApiResponse.Ok(empInTeam);
 	}
 	
-	// 부서 등록
+	// 부서 등록 2단계 경영지원부 -> 대표이사
 	@PostMapping("/department")
-	public ApiResponse doCreateNewDepartment(DepartmentVO departmentVO, Authentication authentication) {
+	public ApiResponse doCreateNewDepartment(DepartmentApprovalVO departmentApprovalVO, Authentication authentication) {
 	
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
 		// update해야 하는 것!!
 		// 1. 서비스에서 변경이력로그에 기록 남기기
 		// 2. 부서장의 emp테이블 변경 및 트랜젝션..
@@ -82,8 +93,8 @@ public class ApiDepartmentController {
 		// 5. 이미 부서장으로 소속된 부서가 있는 부서장임명일 경우 validation... 해야됨 
 		// 2,5 --> 사원에 먼저 채워주면 자연스럽게 트랜젝션까지 해결될듯?
 		
-		boolean isNotEmptyName = ValidationUtils.notEmpty(departmentVO.getDeptName());
-		boolean isNotEmptyEmpName = ValidationUtils.notEmpty(departmentVO.getDeptLeadId());
+		boolean isNotEmptyName = ValidationUtils.notEmpty(departmentApprovalVO.getDeptName());
+		boolean isNotEmptyEmpName = ValidationUtils.notEmpty(departmentApprovalVO.getDeptLeadId());
 		
 		List<String> errorMessage = null;
 		
@@ -105,17 +116,46 @@ public class ApiDepartmentController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 		
-		boolean isSuccess = this.departmentService.createNewDepartment(departmentVO);
+		
+		departmentApprovalVO.setDeptApprReqtr(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.departmentService.createNewDepartment(departmentApprovalVO);
 		return  ApiResponse.Ok(isSuccess);
 	}
 	
-	// 팀등록
+	// 부서 삭제
+	@DeleteMapping("/department/delete/{deptId}")
+	public ApiResponse deleteOneDepartment(@PathVariable String deptId) {
+		boolean isSuccessDelete = this.departmentService.deleteOneDepartment(deptId);
+		return  ApiResponse.Ok(isSuccessDelete); 
+	}
+	
+	// 부서 수정
+	@PostMapping("/department/modify")
+	public ApiResponse modifyOneDepartment(DepartmentVO departmentVO) {
+	
+		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
+
+		return  ApiResponse.Ok(isModifySuccess);
+	}
+	// 팀등록 부서장 -> 경영지원부장 -> 대표이사
 	@PostMapping("/team")
-	public ApiResponse doCreateNewTeam(TeamVO teamVO) {
+	public ApiResponse doCreateNewTeam(TeamApprovalVO teamApprovalVO, Authentication authentication) {
 				
-		boolean isSuccess = this.teamService.createNewTeam(teamVO);
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
+		teamApprovalVO.setTmApprReqtr(employeeVO.getEmpId());
+		
+		boolean isSuccess = this.teamService.createNewTeam(teamApprovalVO);
 		return  ApiResponse.Ok(isSuccess);
 		
+	}
+	// 팀삭제
+	@DeleteMapping("/team/delete/{tmId}")
+	public ApiResponse deleteOneTeam(@PathVariable String tmId) {
+		boolean isSuccessDelete = this.teamService.deleteOneTeam(tmId);
+		return  ApiResponse.Ok(isSuccessDelete);
 	}
 
 	// 팀 상세정보 조회
@@ -126,11 +166,13 @@ public class ApiDepartmentController {
 		return ApiResponse.Ok(TeamVO);
 	}
 	
-	// 팀원 등록
+	// 팀원 등록 팀장 -> 부서장 -> 경영지원부장
 	@PostMapping("/team/member")
 	public ApiResponse doCreateNewTeamMember(EmployeeVO employeeVO) {
 		boolean isSuccess = this.teamService.createNewTeamMember(employeeVO);
 		return ApiResponse.Ok(isSuccess);
 	}
+	
+	
 	
 }

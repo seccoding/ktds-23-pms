@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.department.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
+import com.ktdsuniversity.edu.pms.department.dao.DepartmentApprovalDao;
 import com.ktdsuniversity.edu.pms.department.dao.DepartmentDao;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
@@ -35,6 +38,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 	private EmployeeDao employeeDao;
 	
 	@Autowired
+	private DepartmentApprovalDao departmentApprovalDao;
+	
+	@Autowired
 	private ApprovalDao approvalDao;
 	
 	@Override
@@ -52,15 +58,50 @@ public class DepartmentServiceImpl implements DepartmentService{
 
 	@Transactional
 	@Override
-	public boolean createNewDepartment(DepartmentVO departmentVO) {
+	public boolean createNewDepartment(DepartmentApprovalVO departmentApprovalVO) {
 		
-		// 새로운 부서 생성
-		int insertedCount = this.departmentDao.createNewDepartment(departmentVO);
-//		this.approvalDao.insertApproval(결제승인라인, ApprovalVO)
+		departmentApprovalVO.setDeptApprType("INSERT");
+		departmentApprovalVO.setDelYn("N");
 		
-//		EmployeeVO changeDeptEmpl = this.employeeDao.getOneEmployee(departmentVO.getDeptLeadId());
+		int requestedCount = this.departmentApprovalDao.insertDepartmentApprovalRequest(departmentApprovalVO);
 		
-		return insertedCount > 0 ;
+		// 결재 승인자 리스트
+		List<String> approvalList = new ArrayList<>();
+		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(departmentApprovalVO.getDeptApprReqtr());
+				
+		// 경영지원부 정보
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		// 경영지원부서장
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		// 대표이사
+		String ceoId = this.employeeDao.getAllEmployee().stream()
+																.filter(emp -> emp.getPstnId().equals("110"))
+																.map(emp -> emp.getEmpId())		
+																.findFirst().orElse(mgmtSprtDeptLeadId);
+		approvalList.add(mgmtSprtDeptLeadId);
+		approvalList.add(ceoId);
+		
+
+		ApprovalVO approvalVO = new ApprovalVO();
+		// apprType: 결재 승인 타입(소모품, 비품, 부서, 직원)
+		approvalVO.setApprType("DEPARTMENT");
+		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
+		approvalVO.setApprInfo(departmentApprovalVO.getDeptApprId());
+		// apprReqtr: 결재 요청자
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
+		this.approvalDao.insertApproval(approvalList, approvalVO);
+		
+		return requestedCount > 0;
+		
+//		세영이형.. 쓰세요..
+//		// 새로운 부서 생성
+//				int insertedCount = this.departmentDao.createNewDepartment(departmentApprovalVO);
+////				this.approvalDao.insertApproval(결제승인라인, ApprovalVO)
+//				
+////				EmployeeVO changeDeptEmpl = this.employeeDao.getOneEmployee(departmentVO.getDeptLeadId());
+//				
+//				return insertedCount > 0 ;
 	}
 
 	@Override

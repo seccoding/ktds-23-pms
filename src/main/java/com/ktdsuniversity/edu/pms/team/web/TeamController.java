@@ -25,35 +25,35 @@ public class TeamController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-	@ResponseBody
-	@PostMapping("/ajax/team/create")
-	public AjaxResponse doCreateNewTeam(TeamVO teamVO, Model model) {
-//		PSH - 수정 : logger 변환
-//		System.out.println(teamVO.getTmName());
-		boolean isEmptyTeamName = StringUtil.isEmpty(teamVO.getTmName());
-		boolean isEmptyTeamLeaderId= StringUtil.isEmpty(teamVO.getTmLeadId());
-		boolean isEmptyChargeDept= StringUtil.isEmpty(teamVO.getDeptId());
-		
-		if (isEmptyTeamName) {
-			model.addAttribute("errorMessage", "팀 이름은 필수 입력 값입니다.");
-			model.addAttribute("teamVO", teamVO);
-			return new AjaxResponse().append("errormessage", model);
-		}
-		if (isEmptyTeamLeaderId) {
-			model.addAttribute("errorMessage", "팀장 이름은 필수 입력 값입니다.");
-			model.addAttribute("teamVO", teamVO);
-			return new AjaxResponse().append("errormessage", model);
-		}
-		if (isEmptyChargeDept) {
-			model.addAttribute("errorMessage", "담당부서 아이디는 필수 입력 값입니다.");
-			model.addAttribute("teamVO", teamVO);
-			return new AjaxResponse().append("errormessage", model);
-		}
-		
-		boolean isSuccess = this.teamService.createNewTeam(teamVO);
-		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
-		
-	}
+//	@ResponseBody
+//	@PostMapping("/ajax/team/create")
+//	public AjaxResponse doCreateNewTeam(TeamVO teamVO, Model model) {
+////		PSH - 수정 : logger 변환
+////		System.out.println(teamVO.getTmName());
+//		boolean isEmptyTeamName = StringUtil.isEmpty(teamVO.getTmName());
+//		boolean isEmptyTeamLeaderId= StringUtil.isEmpty(teamVO.getTmLeadId());
+//		boolean isEmptyChargeDept= StringUtil.isEmpty(teamVO.getDeptId());
+//		
+//		if (isEmptyTeamName) {
+//			model.addAttribute("errorMessage", "팀 이름은 필수 입력 값입니다.");
+//			model.addAttribute("teamVO", teamVO);
+//			return new AjaxResponse().append("errormessage", model);
+//		}
+//		if (isEmptyTeamLeaderId) {
+//			model.addAttribute("errorMessage", "팀장 이름은 필수 입력 값입니다.");
+//			model.addAttribute("teamVO", teamVO);
+//			return new AjaxResponse().append("errormessage", model);
+//		}
+//		if (isEmptyChargeDept) {
+//			model.addAttribute("errorMessage", "담당부서 아이디는 필수 입력 값입니다.");
+//			model.addAttribute("teamVO", teamVO);
+//			return new AjaxResponse().append("errormessage", model);
+//		}
+//		
+//		boolean isSuccess = this.teamService.createNewTeam(teamVO);
+//		return new AjaxResponse().append("result", isSuccess).append("nextUrl", "/department/search");
+//		
+//	}
 	
 	@ResponseBody
 	@GetMapping("/ajax/team/emp")
