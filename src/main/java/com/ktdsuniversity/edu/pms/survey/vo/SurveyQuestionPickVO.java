@@ -8,10 +8,10 @@ public class SurveyQuestionPickVO {
 	private String nextId;
 	private String delYn;
 	private int seq;
+	private int sqpCount;
 
 	private SurveyQuestionVO surveyQuestionVO;
 
-	
 	public String getSqpId() {
 		return sqpId;
 	}
@@ -58,6 +58,14 @@ public class SurveyQuestionPickVO {
 
 	public void setSeq(int seq) {
 		this.seq = seq;
+	}
+
+	public int getSqpCount() {
+		return sqpCount;
+	}
+
+	public void setSqpCount(int sqpCount) {
+		this.sqpCount = sqpCount;
 	}
 
 	public SurveyQuestionVO getSurveyQuestionVO() {

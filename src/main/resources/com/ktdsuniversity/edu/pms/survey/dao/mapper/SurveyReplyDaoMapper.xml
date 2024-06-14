@@ -20,6 +20,7 @@
 		INSERT INTO SURVEY_REPLY
 		 (SRV_RPL_ID
 		, SRV_ID
+		, SQP_ID
 		, SRV_RPL_CNTNT
 		, CRTR_ID
 		, CRT_DT
@@ -27,6 +28,7 @@
 		VALUES
 		 ('SRV_RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_REPLY_PK.NEXTVAL, 6, '0')
 		, #{srvId}
+		, #{sqpId}
 		, #{srvRplCntnt}
 		, ${crtrId}
 		, SYSDATE
@@ -36,6 +38,7 @@
 	<select id="getAllReplies" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO" resultMap="surveyReplyVOMap">
 		SELECT SRV_RPL_ID
 			 , SRV_ID
+			 , SQP_ID
 			 , SRV_RPL_CNTNT
 			 , CRTR_ID
 			 , CRT_DT
