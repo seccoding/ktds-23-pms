@@ -71,14 +71,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public boolean modifyEmployee(EmployeeVO employeeVO) {
-		
-		int updatedCount = this.employeeDao.modifyEmployee(employeeVO);
-		return updatedCount > 0;
-	}
-
-	
-	@Override
 	public EmployeeVO getOneEmployee(String empId) {
 		
 //		System.out.println(">?>>>" + empId);
@@ -121,7 +113,37 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return createSuccessCount > 0;
 	}
 	
+	// 수정
+	@Override
+	public boolean modifyEmployee(EmployeeVO employeeVO) {
+		
+		int updatedCount = this.employeeDao.modifyEmployee(employeeVO);
+		return updatedCount > 0;
+	}
+		
+		
+	// 비밀번호 변경
+	@Override
+	public boolean modifyPwd(EmployeeInfoVO employeeInfoVO) {
+		
+		if(employeeInfoVO.getNewPwd() != null && !employeeInfoVO.getNewPwd().isEmpty()) {
+			if(!employeeInfoVO.getNewPwd().equals(employeeInfoVO.getConfirmPwd())) {
+				return false;
+			}
+			
+			String newPwd = employeeInfoVO.getNewPwd();
+			String salt = this.sha.generateSalt();
+			newPwd = this.sha.getEncrypt(newPwd, salt);
+			
+			employeeInfoVO.setPwd(newPwd);
+			employeeInfoVO.setSalt(salt);
+		}
+		
+		int updatedCount = this.employeeDao.modifyPwd(employeeInfoVO);
+		return updatedCount > 0;
+	}
 	
+	// 프로필 사진 등록
 	@Override
 	public boolean createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file) {
 		

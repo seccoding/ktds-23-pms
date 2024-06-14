@@ -1,11 +1,5 @@
 package com.ktdsuniversity.edu.pms.employee.vo;
 
-import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
-import com.ktdsuniversity.edu.pms.changehistory.vo.JobHistoryVO;
-import com.ktdsuniversity.edu.pms.changehistory.vo.PositionHistoryVO;
-import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
-import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
-
 public class EmployeeInfoVO {
 
 	private String empId;		//아이디
@@ -32,6 +26,8 @@ public class EmployeeInfoVO {
 	private String tmId;
 	private String tmName;
 	private String pwd;
+	private String newPwd;
+	private String confirmPwd;
 	private String salt;
 	
 	public String getEmpId() {
@@ -178,6 +174,19 @@ public class EmployeeInfoVO {
 	}
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
+	}
+	
+	public String getNewPwd() {
+		return newPwd;
+	}
+	public void setNewPwd(String newPwd) {
+		this.newPwd = newPwd;
+	}
+	public String getConfirmPwd() {
+		return confirmPwd;
+	}
+	public void setConfirmPwd(String confirmPwd) {
+		this.confirmPwd = confirmPwd;
 	}
 	public String getSalt() {
 		return salt;

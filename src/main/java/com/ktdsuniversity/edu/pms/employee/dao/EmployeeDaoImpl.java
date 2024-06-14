@@ -69,10 +69,17 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 //		return getSqlSession().insert(EmployeeDao.NAME_SPACE + ".createNewEmployee", employeeVO);
 //	}
 
+	// 수정
 	@Override
 	public int modifyEmployee(EmployeeVO employeeVO) {
 
 		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyEmployee", employeeVO);
+	}
+	
+	// 비밀번호 변경
+	@Override
+	public int modifyPwd(EmployeeInfoVO employeeInfoVO) {
+		return getSqlSession().update(EmployeeDao.NAME_SPACE + ".modifyPwd", employeeInfoVO);
 	}
 
 	public int createEmployee(EmployeeInfoVO employeeInfoVO) {
@@ -208,6 +215,8 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	public int createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file) {
 		return getSqlSession().update(EmployeeDao.NAME_SPACE+".createEmployeeProfile", employeeInfoVO);
 	}
+
+
 
 
 

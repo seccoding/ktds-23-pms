@@ -66,6 +66,8 @@ public interface EmployeeService {
 
 	public boolean createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file);
 
+	public boolean modifyPwd(EmployeeInfoVO employeeInfoVO);
+
 
 
 
