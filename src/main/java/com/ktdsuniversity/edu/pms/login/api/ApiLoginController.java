@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
@@ -49,7 +50,7 @@ public class ApiLoginController {
 	 * @return
 	 */
 	@GetMapping("/commute")
-	public ApiResponse getAllCommuteList(Authentication authentication, @RequestBody CommuteVO commuteVO) {
+	public ApiResponse getAllCommuteList(Authentication authentication,  CommuteVO commuteVO) {
 
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();

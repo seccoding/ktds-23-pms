@@ -15,7 +15,7 @@ public class CustomExceptionHandler {
 	public ResponseEntity<Map<String, Object>> handelExpiredJwtException() {
 		return ResponseEntity
 				.status(HttpStatus.FORBIDDEN)
-				.body(Map.of("message", "로그인정보가 만료되었습니다"));
+				.body(Map.of("error", "로그인정보가 만료되었습니다"));
 
 	}
 }

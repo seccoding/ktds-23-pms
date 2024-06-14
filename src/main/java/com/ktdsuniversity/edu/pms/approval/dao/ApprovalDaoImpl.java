@@ -39,7 +39,7 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 			apprList.add(temp);
 		}
 		
-//		2. insert 실행후 리스트의 size와 비교하여 일치하지 않는 경우 false로 반환
+//		2. insert 실행후 리스트의 size 와 비교하여 일치하지 않는 경우 false 로 반환
 		int insertCnt = getSqlSession().update(ApprovalDao.NAME_SPACE+".insertApproval", apprList);
 		if(insertCnt != approverList.size()) {
 			return false;
@@ -60,7 +60,6 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	@Override
 	public int updateOneApproveal(ApprovalVO approvalVO) {
 		
-//		TODO approvalVO.apprId 값의 pid 가 있을경우 해당 내용을 보이게 설정 
 		return getSqlSession().update(ApprovalDao.NAME_SPACE+".updateOneApproveal", approvalVO);
 	}
 
