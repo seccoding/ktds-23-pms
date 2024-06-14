@@ -150,8 +150,6 @@ public class ApiEmployeeController {
 				.add("brth", Type.NOT_EMPTY, "생일을 입력해주세요.")
 				.add("email", Type.NOT_EMPTY, "이메일을 입력해주세요.")
 				.add("email", Type.EMAIL, "이메일 형식으로 입력해주세요.")
-//				.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해주세요.")
-//				.add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해주세요.")
 				.add("mngrYn", Type.NOT_EMPTY, "임원여부를 설정해주세요.")
 				.start();
 		
@@ -165,6 +163,28 @@ public class ApiEmployeeController {
 		return ApiResponse.Ok(isSuccess);
 	}
 	
+	// 비밀번호 변경
+//	@PutMapping("/employee/modifyPwd/{empId}")
+//	public ApiResponse domodifyPwd(@RequestBody EmployeeVO employeeVO,
+//			@PathVariable("empId") String empId,
+//			Authentication authentication) {
+//		
+//		Validator<EmployeeVO> validator = new Validator<EmployeeVO>(employeeVO);
+//		
+//		validator.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해주세요.")
+//				 .add("newPwd", Type.NOT_EMPTY, "새로운 비밀번호를 입력해주세요.")
+//				 .add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해주세요.")
+//				 .start();
+//		
+//		if(validator.hasErrors()) {
+//
+//			return ApiResponse.BAD_REQUEST(validator.getErrors());
+//		};
+//		
+//		boolean isSuccess = this.employeeService.modifyPwd(employeeVO);
+//		
+//		return ApiResponse.Ok(isSuccess);
+//	}
 	
 	// 회원 등록
 	@PostMapping("/employee")

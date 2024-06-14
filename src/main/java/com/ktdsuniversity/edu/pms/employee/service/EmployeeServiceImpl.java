@@ -179,9 +179,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employeeVO.setPwd(newPwd);
 			employeeVO.setSalt(salt);
 		}
-		
-		
-		
+
 		// 부서가 변경된 경우 부서 변경 이력 추가
 //		if(!originEmployee.getDeptId().equals( employeeVO.getDeptId())) {
 //			
@@ -234,6 +232,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		int updatedCount = this.employeeDao.modifyOneEmployee(employeeVO);
 		return updatedCount > 0;
 	}
+	
+	
+
+
 
 	@Transactional
 	@Override
@@ -337,6 +339,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeInfoVO employeeInfo = this.employeeDao.getEmployeeInfo(empId);
 		return employeeInfo;
 	}
+
 
 
 
