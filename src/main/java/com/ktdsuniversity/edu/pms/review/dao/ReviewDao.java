@@ -99,5 +99,7 @@ public interface ReviewDao {
 	public List<ReviewVO> getReviewResult(String prjId);
 
 	public int getReviewResultCount(String prjId);
+
+	public int getDoneEmpIdList(String prjId);
 	
 }

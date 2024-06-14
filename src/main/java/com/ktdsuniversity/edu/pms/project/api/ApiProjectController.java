@@ -29,6 +29,8 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.AccessDeniedException;
 import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
+import com.ktdsuniversity.edu.pms.issue.service.IssueService;
+import com.ktdsuniversity.edu.pms.issue.vo.IssueVO;
 import com.ktdsuniversity.edu.pms.project.service.CalendarService;
 import com.ktdsuniversity.edu.pms.project.service.ClientService;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
@@ -78,6 +80,9 @@ public class ApiProjectController {
 	    
 	    @Autowired
 	    private ReviewService reviewService;
+	    
+	    @Autowired
+	    private IssueService issueService;
 	    
 	    // getAllProject + getAllProjectByProjectTeammateRole
 	    @GetMapping("/search")
@@ -142,13 +147,24 @@ public class ApiProjectController {
 	        	totalReq++;
 	        }
 	        List<String> doneSurvList = this.surveyReplyService.getDoneEmpIdList(prjId);
-//	        List<String> doneReviewList = this.reviewService.getDoneEmpIdList(prjId);
+	        int doneRevCnt = this.reviewService.getDoneEmpIdList(prjId);
 	        int doneSurvCnt = doneSurvList.size();
-//	        int doneRevCnt = doneReviewList.size();
+	        List<IssueVO> issue = this.issueService.searchIssueByPrjId(prjId);
+	        int totalIssue = 0;
+	        int doneIssue = 0;
+	        for(IssueVO item:issue) {
+	        	if(item.getIsSts().equals("704")) {
+	        		doneIssue++;
+	        	}
+	        	totalIssue++;
+	        }
+	        
 	        chartData.add(totalReq);
 	        chartData.add(doneReq);
 	        chartData.add(doneSurvCnt);
-//	        chartData.add(doneRevCnt);
+	        chartData.add(doneRevCnt);
+	        chartData.add(totalIssue);
+	        chartData.add(doneIssue);
 	        projectVO.setChartData(chartData);
 	        
 	        // client 가져오기

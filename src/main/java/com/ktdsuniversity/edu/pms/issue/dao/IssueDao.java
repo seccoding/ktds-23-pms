@@ -66,4 +66,6 @@ public interface IssueDao {
 
 	public int deleteManyIssue(List<String> deleteItems);
 
+	public List<IssueVO> searchIssueByPrjId(String prjId);
+
 }

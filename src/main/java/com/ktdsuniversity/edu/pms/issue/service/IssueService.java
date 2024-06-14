@@ -51,4 +51,6 @@ public interface IssueService {
 	public boolean deleteOneIssue(String isId);
 
 	public boolean deleteManyIssue(List<String> deleteItems);
+
+	public List<IssueVO> searchIssueByPrjId(String prjId);
 }
