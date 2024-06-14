@@ -16,9 +16,9 @@
             <result column="ORIGIN_FILE_NAME" property="originFileName" />
             <result column="SEND_DATE" property="sendDate" />
             <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-            <id column="SEND_EMP_ID" property="empId" />
-            <result column="SEND_EMP_NAME" property="empName" />
-            <result column="SEND_EMAIL" property="email" />
+	            <id column="SEND_EMP_ID" property="empId" />
+	            <result column="SEND_EMP_NAME" property="empName" />
+	            <result column="SEND_EMAIL" property="email" />
 	        </association>
 	        <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 	            <id column="SEND_DEPT_ID" property="deptId" />

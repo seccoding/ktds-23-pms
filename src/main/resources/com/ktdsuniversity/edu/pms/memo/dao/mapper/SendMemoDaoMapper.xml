@@ -38,6 +38,7 @@
 <!--        </association>-->
         <collection property="receiveMemoVOList" ofType="com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO">
             <id column="RCV_MEMO_ID" property="rcvMemoId" />
+            <result column="RCV_SEND_MEMO_ID" property="sendMemoId" />
             <result column="RCV_ID" property="rcvId" />
             <result column="RCV_CODE" property="rcvCode"/>
             <result column="RCV_DATE" property="rcvDate"/>
@@ -147,9 +148,9 @@
              , RM.RCV_CODE
              , RM.RCV_DATE
              , RM.RCV_ID
-             , RCVE.EMP_NAME
-         	 , RCVE.EMAIL
-             , RCVD.DEPT_NAME
+             , RCVE.EMP_NAME RCV_EMP_NAME
+         	 , RCVE.EMAIL RCV_EMAIL
+             , RCVD.DEPT_NAME RCV_DEPT_NAME
           FROM SEND_MEMO SM
          INNER JOIN EMPLOYEE E
             ON SM.SEND_ID = E.EMP_ID
