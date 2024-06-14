@@ -320,4 +320,10 @@
   		  FROM PROJECT_REVIEW 
  		 WHERE PRJ_ID = #{prjId}
 	</select>
+	<select id="getDoneEmpIdList" parameterType="String" resultType="Integer">
+		SELECT COUNT(1)
+		  FROM PROJECT_REVIEW
+		 WHERE PRJ_ID = #{_parameter}
+		   AND DEL_YN = 'N'
+	</select>
 </mapper>

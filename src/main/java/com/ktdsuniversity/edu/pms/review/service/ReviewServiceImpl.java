@@ -198,6 +198,11 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewListVO;
 	}
 
+	@Override
+	public int getDoneEmpIdList(String prjId) {
+		return this.reviewDao.getDoneEmpIdList(prjId);
+	}
+
 	
 	
 }

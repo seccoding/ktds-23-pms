@@ -73,4 +73,9 @@ public class IssueDaoImpl extends SqlSessionDaoSupport implements IssueDao {
 	public int deleteManyIssue(List<String> deleteItems) {
 		return getSqlSession().update(IssueDao.NAME_SPACE + ".deleteManyIssue", deleteItems);
 	}
+
+	@Override
+	public List<IssueVO> searchIssueByPrjId(String prjId) {
+		return getSqlSession().selectList(IssueDao.NAME_SPACE+".searchIssueByPrjId", prjId);
+	}
 }

@@ -153,6 +153,11 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".getReviewResultCount", prjId);
 	}
 
+	@Override
+	public int getDoneEmpIdList(String prjId) {
+		return getSqlSession().selectOne(ReviewDao.NAME_SPACE+".getDoneEmpIdList", prjId);
+	}
+
 	
 	
 

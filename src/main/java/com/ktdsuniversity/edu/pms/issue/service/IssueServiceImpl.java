@@ -134,4 +134,9 @@ public class IssueServiceImpl implements IssueService {
 
 		return deletedCount > 0;
 	}
+
+	@Override
+	public List<IssueVO> searchIssueByPrjId(String prjId) {
+		return this.issueDao.searchIssueByPrjId(prjId);
+	}
 }

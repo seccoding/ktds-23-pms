@@ -295,4 +295,14 @@
 			#{isId}
 		</foreach>
 	</update>
+	
+	<select id="searchIssueByPrjId" parameterType="String" resultType="com.ktdsuniversity.edu.pms.issue.vo.IssueVO">
+		SELECT I.IS_STS
+		     , I.IS_ID 
+		FROM ISSUE I
+		 INNER JOIN REQUIREMENT R
+		    ON I.RQM_ID = R.RQM_ID 
+		 WHERE R.PRJ_ID = #{_parameter}
+		   AND I.DEL_YN = 'N'
+	</select>
 </mapper>

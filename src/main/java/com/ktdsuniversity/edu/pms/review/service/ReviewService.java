@@ -84,4 +84,6 @@ public interface ReviewService {
 
 	public ReviewListVO getReviewResult(String prjId);
 
+	int getDoneEmpIdList(String prjId);
+
 }
