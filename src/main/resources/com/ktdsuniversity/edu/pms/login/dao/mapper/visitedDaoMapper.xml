@@ -12,7 +12,7 @@
 			, ACCS_DT
 			, DEL_YN)
 			VALUES
-			( SEQ_VSTD_HT_PK.NEXTVAL
+			('VH' || '_' ||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_VSTD_HT_PK.NEXTVAL, 6, '0') 
 			, #{empId}
 			, #{accsUrl}
 			, SYSDATE

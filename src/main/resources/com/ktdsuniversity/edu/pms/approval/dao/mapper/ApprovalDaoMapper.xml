@@ -85,10 +85,18 @@
 	</insert>
 	<update id="updateOneApproveal" 
 	parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+	DECLARE 
+	BEGIN	
 		UPDATE PMS.APPROVAL
-		SET   APPR_YN=#{apprYn}
-			, APPR_RSN=#{apprRsn}
-		WHERE APPR_ID=#{apprId}
+		   SET APPR_YN=#{apprYn}
+			 , APPR_RSN=#{apprRsn}
+		 WHERE APPR_ID=#{apprId};
+		<if test='apprYn == "Y"'>
+		UPDATE PMS.APPROVAL
+		   SET SEARCH_YN = 'Y' 
+		 WHERE P_APPR_ID=#{apprId};
+		</if>
+	END;
 	</update>
 	
 	<select id="getAllInsertedApproval" 
