@@ -317,6 +317,17 @@
 		 WHERE EMP_ID = #{empId}
 	</update>
 	
+	
+	<update id="modifyPwd" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO">
+		UPDATE EMPLOYEE
+		SET <if test='newPwd != null and !newPwd.isEmpty()' >
+			PWD = #{newPwd}
+		  , SALT = #{salt}
+		  </if>
+		WHERE EMP_ID = #{empId}
+
+	</update>
+	
 	<update id="modifyOneEmployee" 
 			parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		UPDATE EMPLOYEE

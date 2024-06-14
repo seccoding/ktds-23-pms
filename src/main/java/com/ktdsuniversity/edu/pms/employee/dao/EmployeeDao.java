@@ -82,4 +82,6 @@ public interface EmployeeDao {
 
 	public int createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file);
 
+	public int modifyPwd(EmployeeInfoVO employeeInfoVO);
+
 }

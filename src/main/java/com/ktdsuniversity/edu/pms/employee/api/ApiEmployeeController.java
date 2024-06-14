@@ -164,27 +164,30 @@ public class ApiEmployeeController {
 	}
 	
 	// 비밀번호 변경
-//	@PutMapping("/employee/modifyPwd/{empId}")
-//	public ApiResponse domodifyPwd(@RequestBody EmployeeVO employeeVO,
-//			@PathVariable("empId") String empId,
-//			Authentication authentication) {
-//		
-//		Validator<EmployeeVO> validator = new Validator<EmployeeVO>(employeeVO);
-//		
-//		validator.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해주세요.")
-//				 .add("newPwd", Type.NOT_EMPTY, "새로운 비밀번호를 입력해주세요.")
-//				 .add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해주세요.")
-//				 .start();
-//		
-//		if(validator.hasErrors()) {
-//
-//			return ApiResponse.BAD_REQUEST(validator.getErrors());
-//		};
-//		
-//		boolean isSuccess = this.employeeService.modifyPwd(employeeVO);
-//		
-//		return ApiResponse.Ok(isSuccess);
-//	}
+	@PutMapping("/employee/modifyPwd/{empId}")
+	public ApiResponse domodifyPwd(@RequestBody EmployeeInfoVO employeeInfoVO,
+			@PathVariable("empId") String empId,
+			Authentication authentication) {
+		
+		Validator<EmployeeInfoVO> validator = new Validator<EmployeeInfoVO>(employeeInfoVO);
+		
+		validator.add("pwd", Type.NOT_EMPTY, "비밀번호를 입력해주세요.")
+				 .add("pwd", Type.NOT_EMPTY, "새로운 비밀번호를 입력해주세요.")
+				 .add("pwd", Type.PASSWORD, "비밀번호 형식으로 입력해 주세요.")
+				 .add("confirmPwd", Type.NOT_EMPTY, "비밀번호 확인을 입력해주세요.")
+				 .add("confirmPwd", Type.EQUALS, employeeInfoVO.getPwd(), "동일한 비밀번호를 입력해 주세요.")
+				 .start();
+		
+		if(validator.hasErrors()) {
+			return ApiResponse.BAD_REQUEST(validator.getErrors());
+		};
+		
+		boolean isSuccess = this.employeeService.modifyPwd(employeeInfoVO);
+		
+		return ApiResponse.Ok(isSuccess);
+	}
+	
+	
 	
 	// 회원 등록
 	@PostMapping("/employee")
