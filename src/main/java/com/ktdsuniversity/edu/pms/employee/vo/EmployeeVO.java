@@ -53,6 +53,7 @@ public class EmployeeVO {
 	private String newPwd;
 	private String decryptedPrflFileName;
 	private String cmcdName;
+	private String pstnName;
 	
 	
 	
@@ -404,6 +405,24 @@ public class EmployeeVO {
 	public void setTmId(String tmId) {
 		this.tmId = tmId;
 	}
+
+	public String getWorkStsName() {
+		return workStsName;
+	}
+
+	public void setWorkStsName(String workStsName) {
+		this.workStsName = workStsName;
+	}
+
+	public String getPstnName() {
+		return pstnName;
+	}
+
+	public void setPstnName(String pstnName) {
+		this.pstnName = pstnName;
+	}
+	
+	
 	
 	
 }
