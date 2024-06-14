@@ -45,5 +45,12 @@
 		 WHERE SRV_ID = #{srvId}
 		   AND DEL_YN = 'N'
 	</select>
+	<select id="getDoneEmpIdList" parameterType="String" resultType="String">
+		SELECT DISTINCT R.CRTR_ID 
+		  FROM SURVEY_REPLY R
+		 INNER JOIN SURVEY_QUESTION Q
+		    ON R.SRV_ID = Q.SRV_ID 
+		 WHERE Q.PRJ_ID = #{_parameter}
+	</select>
 
 </mapper>

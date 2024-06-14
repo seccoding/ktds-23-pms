@@ -41,6 +41,8 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
 import com.ktdsuniversity.edu.pms.requirement.service.RequirementService;
 import com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO;
+import com.ktdsuniversity.edu.pms.review.service.ReviewService;
+import com.ktdsuniversity.edu.pms.survey.service.SurveyReplyService;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
@@ -70,6 +72,12 @@ public class ApiProjectController {
 	    
 	    @Autowired
 	    private CalendarService calendarService;
+	    
+	    @Autowired
+	    private SurveyReplyService surveyReplyService;
+	    
+	    @Autowired
+	    private ReviewService reviewService;
 	    
 	    // getAllProject + getAllProjectByProjectTeammateRole
 	    @GetMapping("/search")
@@ -114,7 +122,6 @@ public class ApiProjectController {
 	        	prjTeamEmp.setEmployeeVO(empDetail);
 	        	
 	        }
-	        
 	        int projectTeammateCount = projectService.getProjectTeammateCount(prjId);
 	         // 요구사항 리스트 가져오기
 	        List<RequirementVO> totalRequirementsList = requirementService.getAllRequirement(prjId).stream().toList();
@@ -123,6 +130,26 @@ public class ApiProjectController {
 	        		.toList();
 	        projectVO.setTotalRequireCnt(totalRequirementsList.size());
 	        projectVO.setRequireCnt(projectRequirementsList.size());
+	        
+	        List<Integer> chartData = new ArrayList<>();
+	        List<RequirementVO> req = this.requirementService.getAllRequirement(prjId);
+	        int totalReq = 0;
+	        int doneReq = 0;
+	        for(RequirementVO item:req) {
+	        	if(item.getRqmSts().equals("605")) {
+	        		doneReq++;
+	        	}
+	        	totalReq++;
+	        }
+	        List<String> doneSurvList = this.surveyReplyService.getDoneEmpIdList(prjId);
+//	        List<String> doneReviewList = this.reviewService.getDoneEmpIdList(prjId);
+	        int doneSurvCnt = doneSurvList.size();
+//	        int doneRevCnt = doneReviewList.size();
+	        chartData.add(totalReq);
+	        chartData.add(doneReq);
+	        chartData.add(doneSurvCnt);
+//	        chartData.add(doneRevCnt);
+	        projectVO.setChartData(chartData);
 	        
 	        // client 가져오기
 	        ClientVO client = this.clientService.getClientOfProject(projectVO.getClntInfo());
@@ -351,5 +378,6 @@ public class ApiProjectController {
         		return ApiResponse.BAD_REQUEST(errorMessages);
 	        }
 	    }
+	    
 
 }

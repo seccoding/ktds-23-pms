@@ -41,7 +41,19 @@ public class ProjectVO {
 	private List<ProjectTeammateVO> projectTeammateList;
     private List<RequirementVO> projectRequirementsList;
     
-    public ClientVO getClientVO() {
+    // [totalReqCnt, DoneReqCnt, DoneServCnt, DoneReviewCnt, totalIssueCnt, doneIssueCnt]
+    private List<Integer> chartData;
+    
+    
+    public List<Integer> getChartData() {
+		return chartData;
+	}
+
+	public void setChartData(List<Integer> chartData) {
+		this.chartData = chartData;
+	}
+
+	public ClientVO getClientVO() {
 		return clientVO;
 	}
 

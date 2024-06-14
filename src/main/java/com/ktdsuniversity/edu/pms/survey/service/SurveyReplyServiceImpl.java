@@ -41,4 +41,9 @@ public class SurveyReplyServiceImpl implements SurveyReplyService {
 		return surveyListVO;
 	}
 
+	@Override
+	public List<String> getDoneEmpIdList(String prjId) {
+		return this.surveyReplyDao.getDoneEmpIdList(prjId);
+	}
+
 }

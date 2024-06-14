@@ -145,4 +145,6 @@ public class RequirementServiceImpl implements RequirementService {
 		return this.requirementDao.updateTestResult(requirementVO) > 0;
 	}
 
+	
+
 }

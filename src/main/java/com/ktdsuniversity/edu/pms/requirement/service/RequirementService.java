@@ -57,5 +57,4 @@ public interface RequirementService {
 	
 	public List<RequirementVO> getAllRequirementByTeammateId(String empId);
 	public boolean updateTestResult(RequirementVO requirementVO, boolean testApprove);
-
 }
