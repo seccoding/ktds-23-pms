@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 @Repository
 public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements SurveyQuestionPickDao {
@@ -62,6 +63,11 @@ public class SurveyQuestionPickDaoImpl extends SqlSessionDaoSupport implements S
 	@Override
 	public int deleteOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO) {
 		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".deleteOneAnswer", surveyQuestionPickVO);
+	}
+
+	@Override
+	public int updateAllSqpCountPlusOneByReply(SurveyReplyVO surveyReplyVO) {
+		return getSqlSession().update(SurveyQuestionPickDao.NAME_SPACE + ".updateAllSqpCountPlusOneByReply", surveyReplyVO);
 	}
 
 }

@@ -4,6 +4,7 @@ public class SurveyReplyVO {
 
 	private String srvRplId;
 	private String srvId;
+	private String sqpId;
 	private String srvRplCntnt;
 	private String crtrId;
 	private String crtDt;
@@ -25,6 +26,14 @@ public class SurveyReplyVO {
 
 	public void setSrvId(String srvId) {
 		this.srvId = srvId;
+	}
+
+	public String getSqpId() {
+		return sqpId;
+	}
+
+	public void setSqpId(String sqpId) {
+		this.sqpId = sqpId;
 	}
 
 	public String getSrvRplCntnt() {

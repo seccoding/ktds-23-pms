@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionDao;
+import com.ktdsuniversity.edu.pms.survey.dao.SurveyQuestionPickDao;
 import com.ktdsuniversity.edu.pms.survey.dao.SurveyReplyDao;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyListVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
@@ -18,7 +19,7 @@ public class SurveyReplyServiceImpl implements SurveyReplyService {
 	@Autowired
 	private SurveyReplyDao surveyReplyDao;
 	@Autowired
-	private SurveyQuestionDao surveyQuestionDao;
+	private SurveyQuestionPickDao surveyQuestionPickDao;
 	@Autowired
 	private ProjectDao projectDao;
 
@@ -26,8 +27,10 @@ public class SurveyReplyServiceImpl implements SurveyReplyService {
 	@Override
 	public boolean responseSurvey(SurveyReplyVO surveyReplyVO) {
 		int insertedCount = this.surveyReplyDao.insertSurveyAnswer(surveyReplyVO);
+		System.out.println("작성자" + surveyReplyVO.getCrtrId());
 		insertedCount = this.projectDao.updateOneTeammateSurveySts(surveyReplyVO);
-		//surveyReplyVO.getCrtrId(), surveyReplyVO.getSurveyQuestionVO().getPrjId()
+		// insertedCount = this.surveyQuestionPickDao.updateAllSqpCountPlusOneByReply(surveyReplyVO);		
+		// surveyReplyVO.getCrtrId(), surveyReplyVO.getSurveyQuestionVO().getPrjId()
 		return insertedCount > 0;
 	}
 

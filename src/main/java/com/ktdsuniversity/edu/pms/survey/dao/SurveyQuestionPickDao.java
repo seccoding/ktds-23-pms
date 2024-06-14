@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ktdsuniversity.edu.pms.survey.vo.SearchSurveyQuestionPickVO;
 import com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionPickVO;
+import com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO;
 
 public interface SurveyQuestionPickDao {
 	
@@ -26,5 +27,7 @@ public interface SurveyQuestionPickDao {
 	public List<SurveyQuestionPickVO> getAllPicks(SurveyQuestionPickVO surveyQuestionPickVO);
 
 	public int deleteOneAnswer(SurveyQuestionPickVO surveyQuestionPickVO);
+
+	public int updateAllSqpCountPlusOneByReply(SurveyReplyVO surveyReplyVO);
 
 }

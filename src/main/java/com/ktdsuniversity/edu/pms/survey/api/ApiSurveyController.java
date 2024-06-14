@@ -201,6 +201,7 @@ public class ApiSurveyController {
 		
 		surveyReplyVO.setSurveyQuestionVO(surveyQuestionVO);
 		
+		System.out.println("답변 ID :"+ surveyReplyVO.getSqpId());
 		boolean isSuccess = this.surveyReplyService.responseSurvey(surveyReplyVO);
 		List<Object> dataList = new ArrayList<>();
 		dataList.add(isSuccess);

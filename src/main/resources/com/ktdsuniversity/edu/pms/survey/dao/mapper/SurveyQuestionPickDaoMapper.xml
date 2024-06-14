@@ -28,14 +28,16 @@
 		, SQP_CNTNT
 		, NEXT_ID
 		, DEL_YN
-		, SEQ)
+		, SEQ
+		, SQP_COUNT)
 		VALUES
 		 (#{sqpId}
 		, #{srvId}
 		, #{sqpCntnt}
 		, #{nextId}
 		, 'N'
-		, #{seq})
+		, #{seq}
+		, 0)
 	</insert>
 	
 	<select id="getOneAnswer" parameterType="String" resultMap="SurveyQuestionPickVoMap">
@@ -91,4 +93,22 @@
 		     , DEL_YN = 'Y'
 		 WHERE SQP_ID = #{sqpId}
 	</update>
+	
+	<!-- 
+	<update id="updateAllSqpCountPlusOneByReply" 
+			parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO">
+		UPDATE SURVEY_QUESTION_PICK 
+		   SET SQP_COUNT = SQP_COUNT + 1
+		 WHERE SQP_ID IN (SELECT SQP_ID
+						    FROM SURVEY_REPLY 
+						   WHERE SRV_ID IN (SELECT DISTINCT SQ.SRV_ID 
+							                  FROM SURVEY_QUESTION SQ
+							                  JOIN SURVEY_QUESTION_PICK SQP
+							                    ON SQ.SRV_ID = SQP.SRV_ID
+							                 WHERE SQ.PRJ_ID = #{prjId})
+						     AND SQP_ID IS NOT NULL
+						     AND DEL_YN = 'N' 
+						     AND CRTR_ID = #{crtrId})
+	</update>
+	 -->
 </mapper>
