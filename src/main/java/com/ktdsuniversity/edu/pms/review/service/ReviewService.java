@@ -82,4 +82,6 @@ public interface ReviewService {
 
 	public List<ProjectTeammateVO> getEmpPrjList(String empId);
 
+	public ReviewListVO getReviewResult(String prjId);
+
 }

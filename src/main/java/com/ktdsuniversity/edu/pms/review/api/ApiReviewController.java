@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.pms.review.api;
 
-import java.security.Security;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.review.service.ReviewService;
+import com.ktdsuniversity.edu.pms.review.vo.ReviewListVO;
 import com.ktdsuniversity.edu.pms.review.vo.ReviewVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 import com.ktdsuniversity.edu.pms.utils.Validator;
@@ -169,4 +169,20 @@ public class ApiReviewController {
 	}
 	
 
+	/**
+	 * 관리자 또는 PM 일 경우 
+	 * 결과 보기 또는 후기 관리를 클릭할 때 작성된 모든 후기를 가져오는 메서드
+	 * @param authentication 
+	 * @param prjId
+	 * @return List<ProjectVO> 
+	 */
+	@GetMapping("writes/reviewResult/{prjId}")
+	public ApiResponse getReviewResult(Authentication authentication, @PathVariable String prjId) {
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		ReviewListVO reviewListVO = this.reviewService.getReviewResult(prjId);
+		
+		return ApiResponse.Ok(reviewListVO);
+	}
 }

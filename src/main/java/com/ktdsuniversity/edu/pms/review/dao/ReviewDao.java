@@ -95,5 +95,9 @@ public interface ReviewDao {
 	 * @return 작성 여부에 따라 int 를 반환
 	 */
 	public String getReviewYnByEmpIdAndPrjId(Map<String, String> param);
+
+	public List<ReviewVO> getReviewResult(String prjId);
+
+	public int getReviewResultCount(String prjId);
 	
 }

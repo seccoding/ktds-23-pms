@@ -168,7 +168,6 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	// 리뷰 작성 가능 여부를 가져오는 메서드
-	@Transactional
 	@Override
 	public boolean getReviewYnByEmpIdAndPrjId(Map<String, String> param) {
 		String isSuccess = this.reviewDao.getReviewYnByEmpIdAndPrjId(param);
@@ -181,11 +180,22 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	// 사원이 속한 프로젝트 리스트 가져오기
-	@Transactional
 	@Override
 	public List<ProjectTeammateVO> getEmpPrjList(String empId) {
 		List<ProjectTeammateVO> projectTeammateVOList = this.projectDao.getAllProjectTeammateByTmId(empId);
 		return projectTeammateVOList;
+	}
+
+	@Override
+	public ReviewListVO getReviewResult(String prjId) {
+		ReviewListVO reviewListVO = new ReviewListVO();
+		List<ReviewVO> reviewList = this.reviewDao.getReviewResult(prjId);
+		int reviewCount = this.reviewDao.getReviewResultCount(prjId);
+		
+		reviewListVO.setReviewList(reviewList);
+		reviewListVO.setReviewCnt(reviewCount);
+		
+		return reviewListVO;
 	}
 
 	

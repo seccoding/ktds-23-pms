@@ -302,4 +302,22 @@
 		   AND PRJ_ID = #{prjId}
 		   AND DEL_YN = 'N'
 	</select>
+	
+	<select id="getReviewResult" parameterType="string" resultMap="ReviewVOMap">
+		SELECT PR.PRJ_NAME
+	    	 , RV.RV_CNTNT
+     		 , RV.CRT_DT
+  		  FROM PROJECT_REVIEW RV
+  		  JOIN PROJECT PR
+            ON PR.PRJ_ID = RV.PRJ_ID 
+         WHERE RV.PRJ_ID = #{prjId}
+           AND RV.DEL_YN = 'N'
+	</select>
+	
+	
+	<select id="getReviewResultCount" parameterType="string" resultType="_int">
+		SELECT COUNT(1)
+  		  FROM PROJECT_REVIEW 
+ 		 WHERE PRJ_ID = #{prjId}
+	</select>
 </mapper>

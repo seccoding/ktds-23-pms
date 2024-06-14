@@ -141,9 +141,20 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".getReviewYnByEmpIdAndPrjId", param);
 	}
 
+	@Override
+	public List<ReviewVO> getReviewResult(String prjId) {
+		
+		return getSqlSession().selectList(ReviewDao.NAME_SPACE + ".getReviewResult", prjId);
+	}
+
+	@Override
+	public int getReviewResultCount(String prjId) {
+		
+		return getSqlSession().selectOne(ReviewDao.NAME_SPACE + ".getReviewResultCount", prjId);
+	}
+
 	
-
-
+	
 
 	
 
