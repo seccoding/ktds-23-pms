@@ -14,6 +14,11 @@ public interface SendMemoService {
     public SendMemoListVO searchAllSendMemo(SearchMemoVO searchMemoVO);
 
     /**
+     * 전체 보관 발신 쪽지 조회 
+     */
+//	public SendMemoListVO searchAllSaveSendMemo(SearchMemoVO searchMemoVO);
+
+    /**
      * 한 개의 발신 쪽지 조회
      */
     public SendMemoVO getOneSendMemo(String sendMemoId);
@@ -38,5 +43,9 @@ public interface SendMemoService {
      */
     public boolean deleteOneSendMemo(String sendMemoId);
     
+    /**
+     * 발신자로 수신 쪽지 개수 조회
+     */
     public int getSendCountBySendMemoId(String sendMemoId);
+
 }

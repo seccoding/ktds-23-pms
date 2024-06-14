@@ -9,6 +9,7 @@ import com.ktdsuniversity.edu.pms.memo.service.ReceiveMemoService;
 import com.ktdsuniversity.edu.pms.memo.service.SendMemoService;
 import com.ktdsuniversity.edu.pms.memo.vo.*;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
+import com.ktdsuniversity.edu.pms.utils.SecurityUtils;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,13 +32,35 @@ public class ApiMemoController {
     private EmployeeService employeeService;
     
     
-    
+    /**
+     * 부서 아이디로 부서원 조회
+     */
     @GetMapping("/member/{deptId}")
     public ApiResponse getEmployeeByDeptId(@PathVariable String deptId, Authentication authentication) {
-    	
     	List<EmployeeVO> employeeListVO = this.employeeService.getEmployeeByDeptId(deptId);
     	return ApiResponse.Ok(employeeListVO);
+    }
+    
+    /**
+     * 보관처리한 쪽지 전체 조회
+     */
+    @GetMapping("/memo/save")
+    public ApiResponse searchSaveMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
+    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+    	System.out.println("보관 쪽지 조회!!!!! " + employeeVO.getEmpName());
+    	searchMemoVO.setEmpId(employeeVO.getEmpId());
+    	searchMemoVO.setSearchKeyword("Y");
+    
+    	SendMemoListVO saveSendMemoListVO = this.sendMemoService.searchAllSendMemo(searchMemoVO);
+    	ReceiveMemoListVO saveReceiveMemoListVO = this.receiveMemoService.searchAllReceiveMemo(searchMemoVO);
     	
+    	// 보관발신쪽지 조회
+//    	SendMemoListVO sendMemoListVO = this.sendMemoService.searchAllSaveSendMemo(searchMemoVO);
+    	// 보관수신쪽지 조회
+//    	ReceiveMemoListVO receiveMemoListVO = this.receiveMemoService.searchAllSaveReceiverMemo(searchMemoVO);
+    	
+    	return null;
     }
 
     // ---------- 발신 ----------
