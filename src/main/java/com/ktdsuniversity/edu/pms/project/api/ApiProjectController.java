@@ -77,7 +77,7 @@ public class ApiProjectController {
 	        // 접속 유저에 따라 내려주는 데이터를 다르게 설정
 	        searchProjectVO.setEmployeeVO(employeeVO);
 	   
-	        ProjectListVO projectListVO = projectService.searchProject(searchProjectVO);
+	        ProjectListVO projectListVO = this.projectService.searchProject(searchProjectVO);
 	        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 		
 	        List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammate().stream()

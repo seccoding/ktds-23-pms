@@ -72,4 +72,6 @@ public interface ProjectDao {
 	int updateOneTeammateSurveySts(SurveyReplyVO surveyReplyVO);
 
 	List<ProjectTeammateVO> getAllProjectTeammateByTmId(String empId);
+
+	String findPmNameByPrjId(String prjId);
 }

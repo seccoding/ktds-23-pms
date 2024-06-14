@@ -438,6 +438,16 @@
         AND DEL_YN = 'N'
         AND "ROLE" = 'PM'
     </select>
+    
+    <select id="findPmNameByPrjId" parameterType="String" resultType="String">
+    	SELECT E.EMP_NAME
+    	  FROM EMPLOYEE E
+    	 INNER JOIN PROJECT_TEAMMATE P
+    	    ON P.TM_ID = E.EMP_ID
+    	 WHERE P.PRJ_ID = #{_parameter}
+    	   AND P."ROLE" = 'PM'
+    	   AND P.DEL_YN = 'N'
+    </select>
 
     <select id="selectDeletedPm"
             parameterType="com.ktdsuniversity.edu.pms.project.vo.CreateProjectVO"

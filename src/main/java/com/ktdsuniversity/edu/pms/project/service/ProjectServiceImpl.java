@@ -1,5 +1,6 @@
 package com.ktdsuniversity.edu.pms.project.service;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.CreationException;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
@@ -9,6 +10,8 @@ import com.ktdsuniversity.edu.pms.project.vo.ProjectStatusVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.project.vo.SearchProjectVO;
+import com.ktdsuniversity.edu.pms.utils.ApiResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -44,6 +48,14 @@ public class ProjectServiceImpl implements ProjectService {
         searchProjectVO.setPageCount(projectCount);
 
         List<ProjectVO> projectList = projectDao.searchBoard(searchProjectVO);
+        for(ProjectVO prj:projectList) {
+        	ProjectTeammateVO prjTmMate = new ProjectTeammateVO();
+        	EmployeeVO empVO = new EmployeeVO();
+        	empVO.setEmpName(this.projectDao.findPmNameByPrjId(prj.getPrjId()));
+        	prjTmMate.setEmployeeVO(empVO);
+        	prj.setPm(prjTmMate);
+        	prj.getPm().setEmployeeVO(empVO);;
+        }
 
         ProjectListVO projectListVO = new ProjectListVO();
         projectListVO.setProjectCount(projectCount);
