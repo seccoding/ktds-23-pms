@@ -38,6 +38,18 @@ public interface ApprovalDao {
 	 * @return
 	 */
 	public int updateOneApproveal(ApprovalVO approvalVO);
+	/**
+	 * apprId 를 통해 ApprovalVO 를 반환한다 
+	 * @param apprId
+	 * @return
+	 */
+	public ApprovalVO getApprovalByApprId(String apprId);
+	/**
+	 * apprInfo 를 통해서 승인되지 않은 건수가 몇개인지 조회한다
+	 * @param approvalVO
+	 * @return
+	 */
+	public int getNonApprCnt(ApprovalVO approvalVO);
 
 
 

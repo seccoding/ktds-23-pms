@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,18 @@ public class ApiApprovalController {
 		ApprovalListVO approvalListVO= this.approvalService.getAllApproval();
 		
 		return ApiResponse.Ok(approvalListVO);
+	}
+	/**
+	 * 본인이 승인해야되는 승인 정보를 보내준다 
+	 * @param authentication
+	 * @param apprId
+	 * @return
+	 */
+	@GetMapping("/approval/{apprId}")
+	public ApiResponse gellApprovalInfoByApprId (Authentication authentication , @PathVariable String apprId) {
+		Object approvalInfo = this.approvalService.gellApprovalByApprId(apprId);
+		return ApiResponse.Ok(approvalInfo);
+		
 	}
 	/**
 	 * 한개의 승인이 승인 혹은 거절 될 경우 해당 내용을 DB 에 업데이트 한다 
