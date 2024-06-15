@@ -76,11 +76,27 @@ public class ApiRequirementController {
 		List<CommonCodeVO> scdSts = this.commonCodeService.getAllCommonCodeListByPId("500");
 		List<CommonCodeVO> rqmSts = this.commonCodeService.getAllCommonCodeListByPId("600");
 		
+		// PM or PL 인지 체크
+		boolean isPmAndPl = false;
+		List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjIdValue).stream()
+				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+				.filter(tm -> tm.getRole().equals("PM") || tm.getRole().equals("PL")).toList();
+		if (tmList.size() > 0) {
+			isPmAndPl = true;
+		}
 		
-		return ApiResponse.Ok(requirementList.getRequirementList(), 
-				requirementList.getCount(),
-				requirementSearchVO.getPageCount(), 
-				requirementSearchVO.getPageNo() < requirementSearchVO.getPageCount() - 1);
+		// 모든 데이터를 하나의 응답으로 합치기
+		Map <String, Object> responseData = new HashMap<>();
+		responseData.put("requirementList", requirementList);
+		responseData.put("isPmAndPl", isPmAndPl);
+		
+		return ApiResponse.Ok(responseData, responseData == null ? 0 : 1);
+		
+		
+//		return ApiResponse.Ok(requirementList.getRequirementList(), 
+//				requirementList.getCount(),
+//				requirementSearchVO.getPageCount(), 
+//				requirementSearchVO.getPageNo() < requirementSearchVO.getPageCount() - 1);
 	}
 	
 	
@@ -152,12 +168,12 @@ public class ApiRequirementController {
 	}
 	
 	
-	@GetMapping("/requirement/write/{prjId}")
-	public ApiResponse getProjectTeammate(@PathVariable String prjId, Authentication authentication) {
+	@GetMapping("/requirement/teammate/{prjIdValue}")
+	public ApiResponse getProjectTeammate(@PathVariable String prjIdValue, Authentication authentication) {
 		
-		// 프로젝트를 선택할 시에 Teammate 정보를 불러오는 API
+		// 프로젝트에 해당하는 Teammate 정보를 불러오는 API
 		
-		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjId);
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjIdValue);
 		return ApiResponse.Ok(prjTeammateList);
 	}
 	

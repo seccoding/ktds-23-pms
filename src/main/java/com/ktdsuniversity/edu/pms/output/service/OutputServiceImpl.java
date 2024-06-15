@@ -61,9 +61,12 @@ public class OutputServiceImpl implements OutputService {
 				
 		if (file != null && !file.isEmpty()) {// 파일 존재
 			StoredFile storedFile = fileHandler.storeFile(file);
+			System.out.println("fileName========> " + storedFile.getFileName());
+			System.out.println("realFileName========> " + storedFile.getRealFileName());
 			if (storedFile != null) {
 				outputVO.setOutFile(storedFile.getFileName());
 				outputVO.setOutEncodeFile(storedFile.getRealFileName());
+			
 			}
 		} else {
 			throw new PageNotFoundException();

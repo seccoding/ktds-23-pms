@@ -33,6 +33,7 @@ import com.ktdsuniversity.edu.pms.output.vo.OutputSearchVO;
 import com.ktdsuniversity.edu.pms.output.vo.OutputVO;
 import com.ktdsuniversity.edu.pms.project.dao.ProjectDao;
 import com.ktdsuniversity.edu.pms.project.service.ProjectService;
+import com.ktdsuniversity.edu.pms.project.vo.ProjectListVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO;
 import com.ktdsuniversity.edu.pms.project.vo.ProjectVO;
 import com.ktdsuniversity.edu.pms.utils.AjaxResponse;
@@ -62,29 +63,58 @@ public class ApiOutputController {
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
 //		this.checkAccess(employeeVO, prjId);
+//		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
+//			outputSearchVO.setEmpId(employeeVO.getEmpId());
+//		}
+//		
+//		List<ProjectVO> projectList;
+//		if(employeeVO.getAdmnCode().equals("301")) {
+//			projectList=this.projectService.getAllProject().getProjectList();
+//		}else {
+//			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+//
+//		}
+//		projectList= projectList.stream().toList();
+		
+		ProjectListVO projectList = this.projectService.getAllProject();
 		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
 			outputSearchVO.setEmpId(employeeVO.getEmpId());
-		}
-		
-		List<ProjectVO> projectList;
-		if(employeeVO.getAdmnCode().equals("301")) {
-			projectList=this.projectService.getAllProject().getProjectList();
-		}else {
-			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {
+		} // 관리자라면
 
-		}
-		projectList= projectList.stream().toList();
+		projectList.setProjectList(
+				projectList.getProjectList().stream().toList());
+		
+		
 		List<CommonCodeVO> commonCodeList = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> verStsList = this.commonCodeService.getAllCommonCodeListByPId("400");
 		
 		outputSearchVO.setPrjId(prjIdValue);
 		OutputListVO outputList = this.outputService.serarchAllOutputList(outputSearchVO);
+		outputSearchVO.setPageCount(outputList.getListCnt());
+		
+		// PM or PL 인지 체크
+		boolean isPmAndPl = false;
+		List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammateByProjectId(prjIdValue).stream()
+				.filter(tm -> tm.getTmId().equals(employeeVO.getEmpId()))
+				.filter(tm -> tm.getRole().equals("PM") || tm.getRole().equals("PL")).toList();
+		if (tmList.size() > 0) {
+			isPmAndPl = true;
+		}
+		
+		// 모든 데이터를 하나의 응답으로 합치기
+		Map <String, Object> responseData = new HashMap<>();
+		responseData.put("outputList", outputList);
+		responseData.put("isPmAndPl", isPmAndPl);
+		
+		return ApiResponse.Ok(responseData, responseData == null ? 0 : 1);
 		
 
-		return ApiResponse.Ok(outputList.getOutputList(), 
-				outputList.getListCnt(), 
-				outputSearchVO.getPageCount(), 
-				outputSearchVO.getPageNo() < outputSearchVO.getPageCount() - 1);
+//		return ApiResponse.Ok(outputList.getOutputList(), 
+//				outputList.getListCnt(), 
+//				outputSearchVO.getPageCount(), 
+//				outputSearchVO.getPageNo() < outputSearchVO.getPageCount() - 1);
 	}
 	
 	
@@ -96,23 +126,33 @@ public class ApiOutputController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
-		this.checkAccess(employeeVO);
+//		this.checkAccess(employeeVO);
+//		
+//
+//		List<ProjectVO> projectList;
+//		if(employeeVO.getAdmnCode().equals("301")) {
+//			projectList=this.projectService.getAllProject().getProjectList();
+//		}else {
+//			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+//
+//		}
+//		projectList =projectList.stream().toList();
 		
-
-		List<ProjectVO> projectList;
-		if(employeeVO.getAdmnCode().equals("301")) {
-			projectList=this.projectService.getAllProject().getProjectList();
-		}else {
-			 projectList = this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId());
+		ProjectListVO projectList = this.projectService.getAllProject();
+		if (!employeeVO.getAdmnCode().equals("301")) {// 관리자가 아니면
+			projectList.setProjectList(this.projectService.getAllProjectByProjectTeammateId(employeeVO.getEmpId()));
+		} else {// 관리자라면
 
 		}
-		projectList =projectList.stream().toList();
+		projectList.setProjectList(
+				projectList.getProjectList().stream().toList());
+		
 		List<CommonCodeVO> outputType = this.commonCodeService.getAllCommonCodeListByPId("1000");
 		List<CommonCodeVO> prjSts = this.commonCodeService.getAllCommonCodeListByPId("400");
 		
 		// 모든 데이터를 하나의 응답으로 합치기
 		Map <String, Object> responseData = new HashMap<>();
-		responseData.put("projectList", projectList);
+		responseData.put("projectList", projectList.getProjectList());
 		responseData.put("outputType", outputType);
 		responseData.put("prjSts", prjSts);
 		
@@ -120,7 +160,17 @@ public class ApiOutputController {
 	}
 	
 	
-	@PostMapping("/output/write/")
+	@GetMapping("/output/teammate/{prjIdValue}")
+	public ApiResponse getProjectTeammate(@PathVariable String prjIdValue, Authentication authentication) {
+		
+		// 프로젝트에 해당하는 Teammate 정보를 불러오는 API
+		
+		List<ProjectTeammateVO> prjTeammateList = this.projectService.getAllProjectTeammateByProjectId(prjIdValue);
+		return ApiResponse.Ok(prjTeammateList);
+	}
+	
+	
+	@PostMapping("/output/write")
 	public ApiResponse createOutput(Authentication authentication,
 			@RequestParam MultipartFile file, OutputVO outputVO) {
 		
@@ -129,7 +179,7 @@ public class ApiOutputController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
-		this.checkAccess(employeeVO, outputVO.getPrjId());
+//		this.checkAccess(employeeVO, outputVO.getPrjId());
 		
 		Map<String,List<String>> error = this.outputvalidator(outputVO, file);
 		if(error != null) {
@@ -151,7 +201,7 @@ public class ApiOutputController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
-		this.checkAccess(employeeVO);
+//		this.checkAccess(employeeVO);
 
 		List<ProjectVO> projectList;
 		if(employeeVO.getAdmnCode().equals("301")) {
@@ -190,7 +240,7 @@ public class ApiOutputController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
-		this.checkAccess(employeeVO, outputVO.getPrjId());
+//		this.checkAccess(employeeVO, outputVO.getPrjId());
 
 		Map<String,List<String>> error = this.outputvalidator(outputVO, file);
 		if(error != null) {
@@ -211,7 +261,7 @@ public class ApiOutputController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 		
-		this.checkAccess(employeeVO);
+//		this.checkAccess(employeeVO);
 		OutputVO output = this.outputService.getOneOutput(outId);
 		if(this.throwUnauthorizedUser(employeeVO,output.getCrtrId())) {
 			return ApiResponse.Ok(false);
