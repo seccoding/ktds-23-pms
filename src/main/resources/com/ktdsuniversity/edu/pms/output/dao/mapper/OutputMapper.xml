@@ -231,8 +231,7 @@
 		, CRTR_ID
 		, PRJ_ID
 		, DEL_YN
-		,
-		OUT_VER_NUM)
+		, OUT_VER_NUM)
 		VALUES
 		( ('OUT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' ||
 		LPAD(SEQ_OUTPUT_PK.NEXTVAL, 6, '0'))
