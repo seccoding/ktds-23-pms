@@ -121,21 +121,21 @@ public class DepartmentController {
 		List<EmployeeVO> empList = this.employeeService.getChangeToDeptLead(departmentId);
 		return new AjaxResponse().append("oneDepartment", departmentVO).append("empList", empList);
 	}
-	@ResponseBody
-	@PostMapping("/ajax/department/modify")
-	public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
+	// @ResponseBody
+	// @PostMapping("/ajax/department/modify")
+	// public AjaxResponse modifyOneDepartment(DepartmentVO departmentVO) {
 	
-		int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
-		System.out.println("count:"+count);
+	// 	int count=  this.departmentService.getDepartMent(departmentVO.getDeptLeadId());
+	// 	System.out.println("count:"+count);
 		
-		if(count==1) {
-			return new AjaxResponse().append("message", "아이디가 존재 합니다");
-		}
+	// 	if(count==1) {
+	// 		return new AjaxResponse().append("message", "아이디가 존재 합니다");
+	// 	}
 		
-		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
+	// 	// boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
 
-		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
-	}
+	// 	// return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
+	// }
 
 	@ResponseBody
 	@GetMapping("/ajax/department/candelete/{deptId}")
@@ -144,12 +144,12 @@ public class DepartmentController {
 		return new AjaxResponse().append("possible", isDeletePossible).append("next", "/department/search");
 
 	}
-	@ResponseBody
-	@GetMapping("/ajax/department/delete/{deptId}")
-	public AjaxResponse deleteOneDepartment(@PathVariable String deptId) {
-		boolean isSuccessDelete = this.departmentService.deleteOneDepartment(deptId);
-		return new AjaxResponse().append("success", isSuccessDelete).append("next", "/department/search"); 
-	}
+	// @ResponseBody
+	// @GetMapping("/ajax/department/delete/{deptId}")
+	// public AjaxResponse deleteOneDepartment(@PathVariable String deptId) {
+	// 	boolean isSuccessDelete = this.departmentService.deleteOneDepartment(deptId);
+	// 	return new AjaxResponse().append("success", isSuccessDelete).append("next", "/department/search"); 
+	// }
 
 	@ResponseBody
 	@GetMapping("/ajax/department/search/findemployee/{teamId}")
