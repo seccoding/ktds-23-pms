@@ -21,7 +21,8 @@ public interface ApprovalService {
 	 * 
 	 * @return
 	 */
-	
+	public ApprovalVO gellApprovalByApprId(String apprId);
+
 	/**
 	 * 승인 혹은 반려를 할 경우 해당내용을 업데이트 한다
 	 * @param approvalVO
@@ -55,6 +56,7 @@ public interface ApprovalService {
 //	public List<BorrowVO> getAddProductApproval(List<String> addProducts);
 //	
 //	public boolean getDeptLeader(String empId);
+
 
 
 

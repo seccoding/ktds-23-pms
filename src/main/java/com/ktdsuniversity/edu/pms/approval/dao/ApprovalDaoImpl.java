@@ -30,6 +30,10 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	}
 
 	@Override
+	public ApprovalVO getApprovalByApprId(String apprId) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE + ".getApprovalByApprId", apprId);
+	}
+	@Override
 	public boolean insertApproval(List<String> approverList, ApprovalVO approvalVO) {
 //		1. 파라미터로 받아온 정보로 insert 에 넣을 리스트 파라미터 생성
 		List<ApprovalVO> apprList = new ArrayList<>();
@@ -62,6 +66,12 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 		
 		return getSqlSession().update(ApprovalDao.NAME_SPACE+".updateOneApproveal", approvalVO);
 	}
+	
+	@Override
+	public int getNonApprCnt(ApprovalVO approvalVO) {
+		return getSqlSession().selectOne(ApprovalDao.NAME_SPACE+".getNonApprCnt", approvalVO);
+	}
+
 
 	/**
 	 * insertApproval 로 들어간 승인정보를 가져와서 pid를 업데이트 해준다
@@ -83,6 +93,9 @@ public class ApprovalDaoImpl extends SqlSessionDaoSupport implements ApprovalDao
 	private int updateInsertedApproval(List<ApprovalVO> apprList) {
 		return getSqlSession().update(ApprovalDao.NAME_SPACE+".updateInsertedApproval",apprList);
 	}
+
+	
+	
 	
 
 

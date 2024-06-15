@@ -4,9 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao">
 
-		<!-- 
+	
 	<resultMap id="approvalVOMap" type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" autoMapping="true">
 		<id column="APPR_ID" property="apprId"/>
+		<!-- 
 		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
             <id column="EMP_ID" property="empId"/>
             <result column="EMP_NAME" property="empName"/>
@@ -20,8 +21,9 @@
 			<id column="DEPT_ID" property="deptId"/>
 			<result column="DEPT_NAME" property="deptName"/>
 		</association>
+		-->
 	</resultMap>
-		 -->
+	
 	
 
 	<select id="getAllCount" resultType="_int">	
@@ -46,6 +48,15 @@
 		WHERE DEL_YN='N'
 		  AND SEARCH_YN='Y'
 
+	</select>
+	
+	<select id="getApprovalByApprId" parameterType="string" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+		 SELECT APPR_ID
+			  , APPR_TYPE
+			  , APPR_INFO
+		   FROM PMS.APPROVAL
+		  WHERE APPR_ID = #{_parameter}
+			AND DEL_YN='N'
 	</select>
 	
 	<insert id="insertApproval" parameterType="java.util.List">
@@ -113,6 +124,13 @@
 			 , APPR_RSN
 		  FROM APPROVAL a
 		 WHERE APPR_INFO = #{_parameter}
+	</select>
+	
+	<select id="getNonApprCnt" parameterType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" resultType="_int">
+		SELECT COUNT(1)
+  	 	  FROM APPROVAL a 
+ 		 WHERE APPR_INFO =#{apprInfo}
+   		   AND (APPR_YN ='N'  OR APPR_YN IS  NULL )
 	</select>
 	
 	<update id="updateInsertedApproval" parameterType="list">
