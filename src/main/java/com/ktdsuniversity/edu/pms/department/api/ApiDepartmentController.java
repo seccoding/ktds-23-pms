@@ -125,19 +125,34 @@ public class ApiDepartmentController {
 	
 	// 부서 삭제
 	@DeleteMapping("/department/delete/{deptId}")
-	public ApiResponse deleteOneDepartment(@PathVariable String deptId) {
-		boolean isSuccessDelete = this.departmentService.deleteOneDepartment(deptId);
+	public ApiResponse deleteOneDepartment(@PathVariable String deptId, Authentication authentication) {
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+
+		// 삭제 요청자 삭제부서아이디 
+		DepartmentApprovalVO departmentApprovalVO = new DepartmentApprovalVO();
+		departmentApprovalVO.setDeptApprReqtr(employeeVO.getEmpId());
+		departmentApprovalVO.setDeptId(deptId);
+
+		boolean isSuccessDelete = this.departmentService.deleteOneDepartment(departmentApprovalVO);
 		return  ApiResponse.Ok(isSuccessDelete); 
 	}
 	
 	// 부서 수정
-	@PostMapping("/department/modify")
-	public ApiResponse modifyOneDepartment(DepartmentVO departmentVO) {
+	@PutMapping("/department/modify")
+	public ApiResponse modifyOneDepartment(DepartmentApprovalVO departmentApprovalVO, Authentication authentication) {
 	
-		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentVO);
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
 
+		departmentApprovalVO.setDeptApprReqtr(employeeVO.getEmpId());
+
+		boolean isModifySuccess = this.departmentService.modifyOneDepartment(departmentApprovalVO);
 		return  ApiResponse.Ok(isModifySuccess);
 	}
+
 	// 팀등록 부서장 -> 경영지원부장 -> 대표이사
 	@PostMapping("/team")
 	public ApiResponse doCreateNewTeam(TeamApprovalVO teamApprovalVO, Authentication authentication) {

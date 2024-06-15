@@ -19,9 +19,9 @@ public interface DepartmentService {
 
 	public DepartmentVO selectOneDepartment(String departmentId);
 
-	public boolean modifyOneDepartment(DepartmentVO departmentVO);
+	public boolean modifyOneDepartment(DepartmentApprovalVO departmentApprovalVO);
 
-	public boolean deleteOneDepartment(String deptId);
+	public boolean deleteOneDepartment(DepartmentApprovalVO departmentApprovalVO);
 
 	public String getDepartmentNameById(String deptId);
 	
