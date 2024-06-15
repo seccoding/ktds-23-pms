@@ -196,12 +196,9 @@ public class ApiSurveyController {
 
 		surveyReplyVO.setSrvId(srvId);
 		surveyReplyVO.setCrtrId(employeeVO.getEmpId());
-		
 		SurveyQuestionVO surveyQuestionVO = this.surveyQuestionService.getOneProjectIdBySrvId(srvId);
-		
 		surveyReplyVO.setSurveyQuestionVO(surveyQuestionVO);
-		
-		System.out.println("답변 ID :"+ surveyReplyVO.getSqpId());
+		System.out.println("선택지 ID :" + surveyReplyVO.getSqpId());
 		boolean isSuccess = this.surveyReplyService.responseSurvey(surveyReplyVO);
 		List<Object> dataList = new ArrayList<>();
 		dataList.add(isSuccess);

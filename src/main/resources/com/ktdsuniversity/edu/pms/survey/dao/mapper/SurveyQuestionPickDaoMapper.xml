@@ -94,7 +94,6 @@
 		 WHERE SQP_ID = #{sqpId}
 	</update>
 	
-	<!-- 
 	<update id="updateAllSqpCountPlusOneByReply" 
 			parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO">
 		UPDATE SURVEY_QUESTION_PICK 
@@ -105,10 +104,9 @@
 							                  FROM SURVEY_QUESTION SQ
 							                  JOIN SURVEY_QUESTION_PICK SQP
 							                    ON SQ.SRV_ID = SQP.SRV_ID
-							                 WHERE SQ.PRJ_ID = #{prjId})
+							                 WHERE SQ.PRJ_ID = #{surveyQuestionVO.prjId})
 						     AND SQP_ID IS NOT NULL
 						     AND DEL_YN = 'N' 
 						     AND CRTR_ID = #{crtrId})
 	</update>
-	 -->
 </mapper>

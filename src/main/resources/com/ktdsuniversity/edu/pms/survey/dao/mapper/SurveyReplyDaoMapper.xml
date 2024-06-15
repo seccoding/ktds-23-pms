@@ -30,7 +30,7 @@
 		, #{srvId}
 		, #{sqpId}
 		, #{srvRplCntnt}
-		, ${crtrId}
+		, #{crtrId}
 		, SYSDATE
 		, 'N')
 	</insert>

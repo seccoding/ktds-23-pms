@@ -26,10 +26,12 @@ public class SurveyReplyServiceImpl implements SurveyReplyService {
 	@Transactional
 	@Override
 	public boolean responseSurvey(SurveyReplyVO surveyReplyVO) {
-		int insertedCount = this.surveyReplyDao.insertSurveyAnswer(surveyReplyVO);
 		System.out.println("작성자" + surveyReplyVO.getCrtrId());
+		System.out.println("프로젝트 ID" + surveyReplyVO.getSurveyQuestionVO().getPrjId());
+		System.out.println("SQP ID" + surveyReplyVO.getSqpId());
+		int insertedCount = this.surveyReplyDao.insertSurveyAnswer(surveyReplyVO);
 		insertedCount = this.projectDao.updateOneTeammateSurveySts(surveyReplyVO);
-		// insertedCount = this.surveyQuestionPickDao.updateAllSqpCountPlusOneByReply(surveyReplyVO);		
+		insertedCount = this.surveyQuestionPickDao.updateAllSqpCountPlusOneByReply(surveyReplyVO);
 		// surveyReplyVO.getCrtrId(), surveyReplyVO.getSurveyQuestionVO().getPrjId()
 		return insertedCount > 0;
 	}
