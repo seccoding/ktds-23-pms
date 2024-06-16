@@ -26,7 +26,7 @@
 			  JOIN EMPLOYEE E
 			    ON C.EMP_ID = E.EMP_ID
 			<where>
-				<if test='commuteType == "today" or commuteType == null'>
+				<if test='commuteType == "today" '>
 					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 				</if>
 				<if test='commuteType == "oneMonth"'>
@@ -35,7 +35,7 @@
 				<if test='commuteType == "twoMonth"'>
 					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 60, 'YYYY-MM-DD')
 				</if>
-				<if test='commuteType == "thrMonth"'>
+				<if test='commuteType == "thrMonth" or commuteType == null'>
 					AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE - 90, 'YYYY-MM-DD')
 				</if>
 			</where>
@@ -51,7 +51,10 @@
 			 AND C.EMP_ID LIKE '%' || #{searchKeyword} || '%'
 					</when>
 				</choose>
-			</if>
+				</if>
+			<if test="empId != null">
+			AND C.EMP_ID =#{empId}
+			</if>	
 			 ORDER BY C.CMMT_TIME DESC
 	</select>
 	
