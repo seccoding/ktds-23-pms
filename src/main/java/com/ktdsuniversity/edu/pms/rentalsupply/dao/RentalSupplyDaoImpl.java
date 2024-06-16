@@ -42,6 +42,11 @@ public class RentalSupplyDaoImpl extends SqlSessionDaoSupport implements RentalS
 	public RentalSupplyVO selectOneRentalSupply(String rsplId) {
 		return getSqlSession().selectOne(RentalSupplyDao.NAME_SPACE+ ".selectOneRentalSupply", rsplId);
 	}
+	
+	@Override
+	public List<RentalSupplyVO> selectAllRentalSupplyCategory() {
+		return getSqlSession().selectList(RentalSupplyDao.NAME_SPACE + ".selectAllRentalSupplyCategory");
+	}
 
 	/**
 	 * 대여품 등록
@@ -74,6 +79,5 @@ public class RentalSupplyDaoImpl extends SqlSessionDaoSupport implements RentalS
 	public int deleteOneRentalSupply(RentalSupplyVO rentalSupplyVO) {
 		return getSqlSession().update(RentalSupplyDao.NAME_SPACE + ".deleteOneRentalSupply", rentalSupplyVO);
 	}
-	
 	
 }

@@ -1,5 +1,7 @@
 package com.ktdsuniversity.edu.pms.supply.vo;
 
+import java.util.List;
+
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
@@ -9,9 +11,11 @@ public class SupplyApprovalVO extends SupplyVO {
 	private String splApprType;
 	private String splApprReqtr;
 	private String splApprYn;
+	private String splRqstType; // 소모품 결재 신청 유형 (등록, 수정, 신청)
 	
 	private ApprovalVO approvalVO;
 	private EmployeeVO employeeVO;
+	private List<SupplyApprovalVO> supplies;
 	
 	public String getSplApprId() {
 		return splApprId;
@@ -49,5 +53,17 @@ public class SupplyApprovalVO extends SupplyVO {
 	public void setEmployeeVO(EmployeeVO employeeVO) {
 		this.employeeVO = employeeVO;
 	}
-
+	public List<SupplyApprovalVO> getSupplies() {
+		return supplies;
+	}
+	public void setSupplies(List<SupplyApprovalVO> supplies) {
+		this.supplies = supplies;
+	}
+	public String getSplRqstType() {
+		return splRqstType;
+	}
+	public void setSplRqstType(String splRqstType) {
+		this.splRqstType = splRqstType;
+	}
+	
 }
