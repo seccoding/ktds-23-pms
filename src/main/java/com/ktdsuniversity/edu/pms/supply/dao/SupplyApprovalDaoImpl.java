@@ -34,4 +34,14 @@ public class SupplyApprovalDaoImpl extends SqlSessionDaoSupport implements Suppl
 		return getSqlSession().insert(SupplyApprovalDao.NAME_SPACE + ".insertSupplyApprovalRequest", supplyApprovalVO);
 	}
 
+	@Override
+	public SupplyApprovalVO getSupplyApprovalByPK(String splApprId) {
+		return getSqlSession().selectOne(SupplyApprovalDao.NAME_SPACE + ".getSupplyApprovalByPK", splApprId);
+	}
+
+	@Override
+	public int updateOneSupplyApprovalYnToYByPK(String splApprId) {
+		return getSqlSession().update(SupplyApprovalDao.NAME_SPACE + ".updateOneSupplyApprovalYnToYByPK", splApprId);
+	}
+
 }

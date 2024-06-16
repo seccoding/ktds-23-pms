@@ -14,5 +14,9 @@ public interface RentalSupplyApprovalDao {
 	public List<RentalSupplyApprovalVO> searchAllApprovalLog(SearchRentalSupplyVO searchRentalSupplyVO);
 	
 	public int insertRentalSupplyApprovalRequest(RentalSupplyApprovalVO rentalSupplyApprovalVO);
+	
+	public RentalSupplyApprovalVO getRentalSupplyApprovalByPK(String rsplApprId);
+	
+	public int updateOneRentalSupplyApprovalYnToYByPK(String rsplApprId);
 
 }
