@@ -8,4 +8,5 @@ public interface DepartmentApprovalDao {
 
 	public int insertDepartmentApprovalRequest(DepartmentApprovalVO departmentApprovalVO);
 	
+	public DepartmentApprovalVO getDepartmentApprovalByPK(String deptApprId); 
 }

@@ -168,12 +168,12 @@ public class DepartmentController {
 				
 	}
 	
-	@ResponseBody
-	@GetMapping("/ajax/department/team/delete/{teamId}")
-	public AjaxResponse deleteOneTeam(@PathVariable String teamId) {
-		boolean isSuccessDelete = this.teamService.deleteOneTeam(teamId);
-		return new AjaxResponse().append("success", isSuccessDelete);
-	}
+	// @ResponseBody
+	// @GetMapping("/ajax/department/team/delete/{teamId}")
+	// public AjaxResponse deleteOneTeam(@PathVariable String teamId) {
+	// 	boolean isSuccessDelete = this.teamService.deleteOneTeam(teamId);
+	// 	return new AjaxResponse().append("success", isSuccessDelete);
+	// }
 	
 	@ResponseBody
 	@PostMapping("/ajax/department/team/employee/add")

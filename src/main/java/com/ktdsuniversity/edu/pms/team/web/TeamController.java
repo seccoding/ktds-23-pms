@@ -70,29 +70,29 @@ public class TeamController {
 		return new AjaxResponse().append("oneTeam", teamVO).append("empList", empInTeam);
 	}
 	
-	@ResponseBody
-	@PostMapping("/ajax/team/modify")
-	public AjaxResponse modifyOneTeam(TeamVO teamVO) {
-		String str =  this.departmentService.getOnlypstnid(teamVO.getTmLeadId());
-		int count=  this.departmentService.getDepartMent(teamVO.getTmLeadId());
+	// @ResponseBody
+	// @PostMapping("/ajax/team/modify")
+	// public AjaxResponse modifyOneTeam(TeamVO teamVO) {
+	// 	String str =  this.departmentService.getOnlypstnid(teamVO.getTmLeadId());
+	// 	int count=  this.departmentService.getDepartMent(teamVO.getTmLeadId());
 		
-		if(str!=null) {
-			int number = Integer.parseInt(str);
-			if(number == 101) {
-				return new AjaxResponse().append("message", "사원 부터 사용이 가능 합니다");
-			}
-			if(count==1) {
-				return new AjaxResponse().append("message", "아이디가 존재 합니다");
-			}
-		}
-		else {
-			return new AjaxResponse().append("message", "아이디를 확인하세요");
-		}
+	// 	if(str!=null) {
+	// 		int number = Integer.parseInt(str);
+	// 		if(number == 101) {
+	// 			return new AjaxResponse().append("message", "사원 부터 사용이 가능 합니다");
+	// 		}
+	// 		if(count==1) {
+	// 			return new AjaxResponse().append("message", "아이디가 존재 합니다");
+	// 		}
+	// 	}
+	// 	else {
+	// 		return new AjaxResponse().append("message", "아이디를 확인하세요");
+	// 	}
 
-		boolean isModifySuccess = this.teamService.modifyOneTeam(teamVO);
-		return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
+	// 	boolean isModifySuccess = this.teamService.modifyOneTeam(teamVO);
+	// 	return new AjaxResponse().append("success", isModifySuccess).append("next", "/department/search");
 		
-	}
+	// }
 }
 
 

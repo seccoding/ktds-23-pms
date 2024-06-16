@@ -166,10 +166,33 @@ public class ApiDepartmentController {
 		return  ApiResponse.Ok(isSuccess);
 		
 	}
+	// 팀수정
+	@PutMapping("/team/modify")
+	public ApiResponse modifyOneTeam(TeamApprovalVO teamApprovalVO, Authentication authentication) {
+		
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
+		teamApprovalVO.setTmApprReqtr(employeeVO.getEmpId());
+
+		boolean isModifySuccess = this.teamService.modifyOneTeam(teamApprovalVO);
+		return  ApiResponse.Ok(isModifySuccess);
+		
+	}
+	
 	// 팀삭제
 	@DeleteMapping("/team/delete/{tmId}")
-	public ApiResponse deleteOneTeam(@PathVariable String tmId) {
-		boolean isSuccessDelete = this.teamService.deleteOneTeam(tmId);
+	public ApiResponse deleteOneTeam(@PathVariable String tmId,Authentication authentication) {
+
+		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
+		
+		// 삭제 요청자 삭제부서아이디 
+		TeamApprovalVO teamApprovalVO = new TeamApprovalVO();
+		teamApprovalVO.setTmApprReqtr(employeeVO.getEmpId());
+		teamApprovalVO.setTmId(tmId);
+
+		boolean isSuccessDelete = this.teamService.deleteOneTeam(teamApprovalVO);
 		return  ApiResponse.Ok(isSuccessDelete);
 	}
 

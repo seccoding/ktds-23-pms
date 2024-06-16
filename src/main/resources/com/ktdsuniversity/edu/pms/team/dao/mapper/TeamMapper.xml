@@ -54,7 +54,6 @@
 		UPDATE TEAM
 		   SET TM_NAME = #{tmName}
 		   	 , TM_LEAD_ID = #{tmLeadId}
-		   	 , DEPT_ID = #{deptId}
 		 WHERE TM_ID = #{tmId}
 	</update>
 	
