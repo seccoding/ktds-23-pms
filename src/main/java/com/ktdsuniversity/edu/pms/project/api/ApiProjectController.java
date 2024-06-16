@@ -128,6 +128,7 @@ public class ApiProjectController {
 	        searchProjectVO.setEmployeeVO(employeeVO);
 	   
 	        ProjectListVO projectListVO = this.projectService.searchProject(searchProjectVO);
+	        
 	        for(ProjectVO prj:projectListVO.getProjectList()) {
 	        	prj.setChartData( getChartData(prj.getPrjId()));
 	        }
@@ -424,10 +425,8 @@ public class ApiProjectController {
 	    public ApiResponse getUpcomingPrjEvent(Authentication authentication) {
 	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-			
 			List<ProjectVO> prjList = this.projectService.getAllPrjEvent(employeeVO.getEmpId());
-			
-	        return ApiResponse.Ok(employeeVO);
+	        return ApiResponse.Ok(prjList);
 	    }
 	    
 

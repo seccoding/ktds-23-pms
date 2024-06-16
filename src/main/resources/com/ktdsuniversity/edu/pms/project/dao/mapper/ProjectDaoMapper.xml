@@ -630,6 +630,15 @@
     </select>
     
     <select id="getAllPrjEvent" parameterType="String" resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
-    
+    	SELECT P.PRJ_NAME 
+			 , TO_CHAR(P.STRT_DT, 'YYYY-MM-DD') STRT_DT
+		     , TO_CHAR(P.END_DT, 'YYYY-MM-DD') END_DT
+		  FROM PROJECT P
+		 INNER JOIN PROJECT_TEAMMATE T
+		    ON P.PRJ_ID = T.PRJ_ID 
+		 WHERE T.TM_ID = #{_parameter}
+		   AND (P.STRT_DT > SYSDATE 
+		    OR P.END_DT > SYSDATE)
+		   AND P.DEL_YN = 'N'
     </select>
 </mapper>
