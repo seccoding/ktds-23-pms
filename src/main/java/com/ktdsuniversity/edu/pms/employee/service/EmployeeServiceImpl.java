@@ -14,6 +14,7 @@ import com.ktdsuniversity.edu.pms.beans.SHA;
 import com.ktdsuniversity.edu.pms.changehistory.dao.ChangeHistoryDao;
 import com.ktdsuniversity.edu.pms.changehistory.vo.DepartmentHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeChangeHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
@@ -362,6 +363,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeInfo;
 	}
 
+	@Override
+	public int insertEmployeeChangeHistory(EmployeeChangeHistoryVO changeData) {
+		return this.employeeDao.insertEmployeeChangeHistory(changeData);		
+	}
+
+	@Override
+	public List<EmployeeChangeHistoryVO> getEmployeeChangeHistory(String empId) {
+		return this.employeeDao.getEmployeeChangeHistory(empId);
+	}
+
+	@Override
+	public List<EmployeeInfoVO> getNewEmployeeList() {
+		return this.employeeDao.getNewEmployeeList();
+	}
 
 
 

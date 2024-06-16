@@ -3,10 +3,13 @@ package com.ktdsuniversity.edu.pms.employee.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,7 @@ import com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO;
 import com.ktdsuniversity.edu.pms.department.service.DepartmentService;
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentListVO;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeChangeHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
@@ -83,6 +87,12 @@ public class ApiEmployeeController {
 								searchEmployeeVO.getPageCount(), searchEmployeeVO.getPageNo() < searchEmployeeVO.getPageCount() -1);
 	}
 	
+	@GetMapping("/employeeList")
+	public ResponseEntity<List<EmployeeInfoVO>> getNewEmployeeList() {
+		final var result = this.employeeService.getNewEmployeeList();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
 	// 사원 상세 조회
 	@GetMapping("/employee/view/{empId}")
 	public ApiResponse getOneEmployee(@PathVariable("empId") String empId, Authentication authentication) {
@@ -107,25 +117,25 @@ public class ApiEmployeeController {
 	
 	// 부서, 팀, 직무, 직급 리스트 조회
 	@GetMapping("/employee/data")
-	public ApiResponse getDataList() {
+	public ResponseEntity<Map<String, List<EmployeeDataVO>>> getDataList() {
 		var result = new HashMap<String, List<EmployeeDataVO>>();
 		List<EmployeeDataVO> deptList = this.employeeService.getDepartList();
 		List<EmployeeDataVO> teamList = this.employeeService.getTeamList();
 		List<EmployeeDataVO> jobList = this.employeeService.getJobList();
-		List<EmployeeDataVO> gradeList = this.employeeService.getEmployeeGradeList();
+		List<EmployeeDataVO> positionList = this.employeeService.getEmployeeGradeList();
 		List<EmployeeDataVO> workStsList = this.employeeService.getEmployeeWorkStsList();
 		
 		result.put("depart", deptList);
 		result.put("team", teamList);
 		result.put("job", jobList);
-		result.put("grade", gradeList.stream().filter(grade -> {
+		result.put("position", positionList.stream().filter(grade -> {
             return Integer.parseInt(grade.getDataId()) <= 110;
     }).toList());
 		result.put("workSts", workStsList.stream().filter(workSts -> {
 			return Integer.parseInt(workSts.getDataId()) <= 204;
 		}).toList());
 		
-		return ApiResponse.Ok(result);
+		return new ResponseEntity<Map<String, List<EmployeeDataVO>>> (result, HttpStatus.OK);
 	}
 	
 	
@@ -136,7 +146,7 @@ public class ApiEmployeeController {
 										Authentication authentication) {
 		
 		Validator<EmployeeVO> validator = new Validator<EmployeeVO>(employeeVO);
-
+		
 		validator.add("empName", Type.NOT_EMPTY, "이름을 입력해주세요.")
 				.add("empId", Type.NOT_EMPTY, "사원번호를 입력해주세요.")
 				.add("jobId", Type.NOT_EMPTY, "직무를 입력해주세요.")
@@ -157,6 +167,32 @@ public class ApiEmployeeController {
 
 			return ApiResponse.BAD_REQUEST(validator.getErrors());
 		}
+		
+		EmployeeInfoVO prevData = this.employeeService.getEmployeeInfo(empId);
+		
+		EmployeeChangeHistoryVO changeData = new EmployeeChangeHistoryVO();
+		changeData.setEmpId(empId);
+		if(!prevData.getDeptId().equals(employeeVO.getDeptId())) {
+			changeData.setType("depart");
+			changeData.setPreValue(prevData.getDeptId());
+			changeData.setCurValue(employeeVO.getDeptId());
+			this.employeeService.insertEmployeeChangeHistory(changeData);
+		} 
+
+		if(!prevData.getJobId().equals(employeeVO.getJobId())) {
+			changeData.setType("job");
+			changeData.setPreValue(prevData.getJobId());
+			changeData.setCurValue(employeeVO.getJobId());
+			this.employeeService.insertEmployeeChangeHistory(changeData);
+		}
+
+		if(!prevData.getPstnId().equals(employeeVO.getPstnId())) {
+			changeData.setType("position");
+			changeData.setPreValue(prevData.getPstnId());
+			changeData.setCurValue(employeeVO.getPstnId());
+			this.employeeService.insertEmployeeChangeHistory(changeData);
+		}
+
 		
 		boolean isSuccess = this.employeeService.modifyOneEmployee(employeeVO);
 		
@@ -251,7 +287,14 @@ public class ApiEmployeeController {
         return ApiResponse.Ok(isCreateSuccess);
     }
 	
-	
+	@GetMapping("/employee/{empId}/history")
+	public ResponseEntity<List<EmployeeChangeHistoryVO>> getEmployeeChangeHistoryList(@PathVariable("empId") String empId,
+													Authentication authentication) throws Exception {
+		
+		List<EmployeeChangeHistoryVO> historyList = this.employeeService.getEmployeeChangeHistory(empId);
+		
+		return new ResponseEntity<>(historyList, HttpStatus.OK);
+	}
 	
 
 	

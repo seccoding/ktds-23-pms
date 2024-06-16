@@ -28,6 +28,8 @@
 					 javaType="com.ktdsuniversity.edu.pms.team.vo.TeamVO">
 			<id column="TM_ID" property="tmId"/>
 			<result column="TM_NAME" property="tmName"/>
+			<result column="TM_LEAD_ID" property="tmLeadId"/>
+			<result column="DEPT_LEAD_ID" property="deptLeadId"/>
 		</association>
 
 	</resultMap>
@@ -133,6 +135,49 @@
 	 ORDER BY E.HIRE_DT DESC
 	  
 	</select>
+	
+	
+	<select id="getNewEmployeeList" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO">
+		SELECT
+			E.EMP_ID
+			 , E.EMP_NAME
+			 , E.WORK_STS
+			 , C2.CMCD_NAME AS WORK_STS_NAME
+			 , E.SAL_YEAR
+			 , TO_CHAR(E.HIRE_DT, 'YYYY-MM-DD')HIRE_DT 
+			 , EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM E.HIRE_DT) AS HIRE_YEAR
+			 , E.CNTCT
+			 , E.ADDR
+			 , TO_CHAR(E.BRTH,'YYYY-MM-DD' )BRTH  
+			 , E.EMAIL
+			 , E.MNGR_YN
+			 , E.ADMN_CODE
+			 , E.PRFL
+			 , E.ORIGIN_PRFL_FILE_NAME
+			 , E.DEPT_ID
+			 , D.DEPT_NAME 
+			 , E.JOB_ID
+			 , J.JOB_NAME
+			 , E.PSTN_ID
+			 , C.CMCD_NAME AS PSTN_NAME
+			 , T.TM_ID
+			 , T.TM_NAME
+			FROM 	EMPLOYEE E
+		    JOIN DEPARTMENT D
+		    ON D.DEPT_ID = E.DEPT_ID
+		    JOIN JOB J
+		    ON J.JOB_ID = E.JOB_ID
+		    JOIN COMMON_CODE C
+		    ON C.CMCD_ID = E.PSTN_ID
+		    JOIN COMMON_CODE C2
+		  	ON C2.CMCD_ID = E.WORK_STS
+		    LEFT JOIN TEAM T
+		    ON E.TM_ID = T.TM_ID
+		    WHERE E.WORK_STS != '204'
+	 		ORDER BY E.HIRE_DT DESC
+	</select>
+	
+	
 	<select id="searchAllEmployee" 
 			parameterType="com.ktdsuniversity.edu.pms.employee.vo.SearchEmployeeVO"
 			resultMap="employeeVOMap">
@@ -233,8 +278,10 @@
 		 , TO_CHAR(E.LGN_TRY_DT,'YYYY-MM-DD HH:MM:SS' ) LGN_TRY_DT
 		 , E.LGN_YN
 		 , D.DEPT_NAME 
+		 , D.DEPT_LEAD_ID
 		 , J.JOB_NAME
 		 , T.TM_ID
+		 , T.TM_LEAD_ID
 		 , T.TM_NAME
 	  FROM EMPLOYEE E 
 	  JOIN DEPARTMENT D
@@ -580,6 +627,39 @@
 	    FROM   COMMON_CODE
 	    WHERE  TO_NUMBER(CMCD_ID) > 200
 	</select>
+	
+	<select id="getEmployeeChangeHistory" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeChangeHistoryVO">
+		SELECT
+				HISTORY_ID
+			,	EMP_ID
+			,	TYPE
+			,	CUR_VALUE
+			,	PRE_VALUE
+			,	UPD_DATE
+		FROM	EMP_CHANGE_HISTORY
+		WHERE	EMP_ID = #{empId}
+	</select>
+	
+	<insert id="insertEmployeeChangeHistory" parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeChangeHistoryVO">
+		INSERT INTO EMP_CHANGE_HISTORY
+		(	
+			HISTORY_ID
+		,	EMP_ID
+		,	TYPE
+		,	CUR_VALUE
+		,	PRE_VALUE
+		,	UPD_DATE
+		)
+		VALUES
+		(
+			SEQ_EMP_CHANGE_HISTORY_PK.NEXTVAL
+		,	#{empId}
+		,	#{type}
+		,	#{curValue}
+		,	#{preValue}
+		,	SYSDATE
+		)
+	</insert>
 
 
 </mapper>

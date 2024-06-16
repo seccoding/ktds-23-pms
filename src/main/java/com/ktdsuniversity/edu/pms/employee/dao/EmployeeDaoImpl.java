@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ktdsuniversity.edu.pms.department.vo.DepartmentVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeChangeHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
@@ -214,6 +215,21 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 	@Override
 	public int createEmployeeProfile(EmployeeInfoVO employeeInfoVO, MultipartFile file) {
 		return getSqlSession().update(EmployeeDao.NAME_SPACE+".createEmployeeProfile", employeeInfoVO);
+	}
+
+	@Override
+	public int insertEmployeeChangeHistory(EmployeeChangeHistoryVO changeData) {
+		return getSqlSession().insert(EmployeeDao.NAME_SPACE+".insertEmployeeChangeHistory", changeData);
+	}
+
+	@Override
+	public List<EmployeeChangeHistoryVO> getEmployeeChangeHistory(String empId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".getEmployeeChangeHistory", empId);
+	}
+
+	@Override
+	public List<EmployeeInfoVO> getNewEmployeeList() {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".getNewEmployeeList");
 	}
 
 

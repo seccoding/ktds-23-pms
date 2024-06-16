@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeChangeHistoryVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeDataVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeInfoVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
@@ -68,12 +69,10 @@ public interface EmployeeService {
 
 	public boolean modifyPwd(EmployeeInfoVO employeeInfoVO);
 
+	public int insertEmployeeChangeHistory(EmployeeChangeHistoryVO changeData);
 
+	public List<EmployeeChangeHistoryVO> getEmployeeChangeHistory(String empId);
 
-
-
-
-
-
+	public List<EmployeeInfoVO> getNewEmployeeList();
 
 }
