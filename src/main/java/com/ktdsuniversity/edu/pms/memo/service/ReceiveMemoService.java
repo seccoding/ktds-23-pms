@@ -1,10 +1,13 @@
 package com.ktdsuniversity.edu.pms.memo.service;
 
+import java.util.List;
+
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+
 import com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO;
 import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
-
-import java.util.List;
 
 public interface ReceiveMemoService {
 
@@ -42,5 +45,10 @@ public interface ReceiveMemoService {
      * 수신 쪽지 개수 확인
      */
     public int getRcvCountBySendMemoId(String sendMemoId);
+    
+    /**
+     * 첨부파일 다운로드
+     */
+    public ResponseEntity<Resource> getDownloadFile(ReceiveMemoVO receiveMemoVO);
 
 }

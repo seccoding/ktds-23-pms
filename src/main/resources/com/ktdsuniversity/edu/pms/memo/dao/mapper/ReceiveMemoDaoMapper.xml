@@ -76,6 +76,13 @@
         <!--            ON T.TM_ID = E.TM_ID-->
          WHERE RM.RCV_ID = #{empId}
            AND RM.RCV_DEL_YN = 'N'
+        <if test='searchKeyword != null and searchKeyword != "" '>
+            <choose>
+                <when test='searchType == "rcv_save"'>
+                    AND RM.RCV_SAVE_YN = 'Y'
+                </when>
+            </choose>
+        </if>
     </select>
 
     <select id="searchAllReceiveMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultMap="receiveMemoVOMap">
@@ -106,6 +113,13 @@
             ON D.DEPT_ID = E.DEPT_ID
          WHERE RM.RCV_ID = #{empId}
            AND RM.RCV_DEL_YN = 'N'
+        <if test='searchKeyword != null and searchKeyword != "" '>
+            <choose>
+                <when test='searchType == "rcv_save"'>
+                    AND RM.RCV_SAVE_YN = 'Y'
+                </when>
+            </choose>
+        </if>
          ORDER BY SM.SEND_DATE DESC
     </select>
 
@@ -125,6 +139,7 @@
              , SM.MEMO_TTL
              , SM.MEMO_CNTNT
              , SM.ORIGIN_FILE_NAME
+             , SM.FILE_NAME
              , SM.SEND_DATE
              , SEND_E.EMP_NAME SEND_EMP_NAME
              , SEND_E.EMAIL SEND_EMAIL

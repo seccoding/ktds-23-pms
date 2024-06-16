@@ -1,24 +1,37 @@
 package com.ktdsuniversity.edu.pms.memo.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.employee.service.EmployeeService;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeListVO;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.pms.memo.service.ReceiveMemoService;
 import com.ktdsuniversity.edu.pms.memo.service.SendMemoService;
-import com.ktdsuniversity.edu.pms.memo.vo.*;
+import com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoListVO;
+import com.ktdsuniversity.edu.pms.memo.vo.ReceiveMemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SendMemoListVO;
+import com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
-import com.ktdsuniversity.edu.pms.utils.SecurityUtils;
 import com.ktdsuniversity.edu.pms.utils.ValidationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/memo")
@@ -41,26 +54,16 @@ public class ApiMemoController {
     	return ApiResponse.Ok(employeeListVO);
     }
     
+
     /**
-     * 보관처리한 쪽지 전체 조회
+     * 파일 다운로드
      */
-    @GetMapping("/memo/save")
-    public ApiResponse searchSaveMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
-    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-    	System.out.println("보관 쪽지 조회!!!!! " + employeeVO.getEmpName());
-    	searchMemoVO.setEmpId(employeeVO.getEmpId());
-    	searchMemoVO.setSearchKeyword("Y");
-    
-    	SendMemoListVO saveSendMemoListVO = this.sendMemoService.searchAllSendMemo(searchMemoVO);
-    	ReceiveMemoListVO saveReceiveMemoListVO = this.receiveMemoService.searchAllReceiveMemo(searchMemoVO);
-    	
-    	// 보관발신쪽지 조회
-//    	SendMemoListVO sendMemoListVO = this.sendMemoService.searchAllSaveSendMemo(searchMemoVO);
-    	// 보관수신쪽지 조회
-//    	ReceiveMemoListVO receiveMemoListVO = this.receiveMemoService.searchAllSaveReceiverMemo(searchMemoVO);
-    	
-    	return null;
+    @GetMapping("/receive/downloadFile/{rcvMemoId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String rcvMemoId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();																				  
+        ReceiveMemoVO receiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
+        return this.receiveMemoService.getDownloadFile(receiveMemoVO);
     }
 
     // ---------- 발신 ----------
@@ -78,7 +81,25 @@ public class ApiMemoController {
         return ApiResponse.Ok(sendMemoListVO.getSendMemoList(), sendMemoListVO.getSendMenoCnt(),
                                 searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
     }
+    
+    /**
+     * 보관처리한 발신 쪽지 전체 조회
+     */
+    @GetMapping("/send/save")
+    public ApiResponse searchSaveSendMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
 
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+
+        searchMemoVO.setEmpId(employeeVO.getEmpId());
+        searchMemoVO.setSearchKeyword("Y");
+        searchMemoVO.setSearchType("send_save");
+        SendMemoListVO saveSendMemoListVO = this.sendMemoService.searchAllSendMemo(searchMemoVO);
+
+        return ApiResponse.Ok(saveSendMemoListVO.getSendMemoList(), saveSendMemoListVO.getSendMenoCnt(),
+                searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
+    }
+    
     /**
      * 한 개의 발신 쪽지 조회
      */
@@ -212,6 +233,24 @@ public class ApiMemoController {
         ReceiveMemoListVO receiveMemoListVO = this.receiveMemoService.searchAllReceiveMemo(searchMemoVO);
         
         return ApiResponse.Ok(receiveMemoListVO.getReceiveMemoList(), receiveMemoListVO.getRcvMemoCnt(),
+                searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
+    }
+    
+    /**
+     * 보관처리한 수신 쪽지 전체 조회
+     */
+    @GetMapping("/receive/save")
+    public ApiResponse searchSaveRcvMemoList(SearchMemoVO searchMemoVO, Authentication authentication) {
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+
+        searchMemoVO.setEmpId(employeeVO.getEmpId());
+        searchMemoVO.setSearchKeyword("Y");
+        searchMemoVO.setSearchType("rcv_save");
+        ReceiveMemoListVO saveReceiveMemoListVO = this.receiveMemoService.searchAllReceiveMemo(searchMemoVO);
+
+        return ApiResponse.Ok(saveReceiveMemoListVO.getReceiveMemoList(), saveReceiveMemoListVO.getRcvMemoCnt(),
                 searchMemoVO.getPageCount(), searchMemoVO.getPageNo() < searchMemoVO.getPageCount() - 1);
     }
 

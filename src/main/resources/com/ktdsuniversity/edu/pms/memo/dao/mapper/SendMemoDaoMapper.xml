@@ -43,7 +43,7 @@
             <result column="RCV_CODE" property="rcvCode"/>
             <result column="RCV_DATE" property="rcvDate"/>
             <association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
-                <id column="EMP_ID" property="empId" />
+                <id column="RCV_EMP_ID" property="empId" />
                 <result column="RCV_EMP_NAME" property="empName" />
                 <result column="RCV_EMAIL" property="email" />
             </association>
@@ -100,6 +100,13 @@
         <!--            ON T.TM_ID = E.TM_ID-->
          WHERE SM.SEND_ID = #{empId}
            AND SM.SEND_DEL_YN = 'N'
+        <if test='searchKeyword != null and searchKeyword != "" '>
+            <choose>
+                <when test='searchType == "send_save"'>
+                    AND SM.SEND_SAVE_YN = 'Y'
+                </when>
+            </choose>
+        </if>
     </select>
 
     <select id="searchAllSendMemo" parameterType="com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO" resultMap="sendMemoVOMap" >
@@ -128,6 +135,13 @@
 <!--            ON T.TM_ID = E.TM_ID-->
             WHERE SM.SEND_ID = #{empId}
            AND SM.SEND_DEL_YN = 'N'
+       <if test='searchKeyword != null and searchKeyword != "" '>
+            <choose>
+                <when test='searchType == "send_save"'>
+                    AND SM.SEND_SAVE_YN = 'Y'
+                </when>
+            </choose>
+        </if>
          ORDER BY SM.SEND_DATE DESC
     <include refid="Common.pagenate_footer"/>
     </select>
@@ -142,6 +156,7 @@
              , SM.SEND_SAVE_YN
              , SM.SEND_DEL_YN
              , SM.SEND_STS_CODE
+             , E.EMP_ID
              , E.EMP_NAME
              , E.EMAIL
              , D.DEPT_NAME
@@ -149,6 +164,7 @@
              , RM.RCV_DATE
              , RM.RCV_ID
              , RCVE.EMP_NAME RCV_EMP_NAME
+             , RCVE.EMP_ID RCV_EMP_ID
          	 , RCVE.EMAIL RCV_EMAIL
              , RCVD.DEPT_NAME RCV_DEPT_NAME
           FROM SEND_MEMO SM
