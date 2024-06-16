@@ -51,6 +51,7 @@
 			, MDF_DT
 			, MDFR_ID
 			, DEL_YN
+			, STAR_RATING
 			)
 		VALUES
 		 (('RV_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_REVIEW_PK.NEXTVAL, 6, '0'))
@@ -60,7 +61,9 @@
 			, #{crtrId}
 			, NULL
 			, NULL
-			, 'N')
+			, 'N'
+			, #{starRating}
+			)
 	</insert>
 
 
@@ -307,6 +310,7 @@
 		SELECT PR.PRJ_NAME
 	    	 , RV.RV_CNTNT
      		 , RV.CRT_DT
+		     , RV.STAR_RATING
   		  FROM PROJECT_REVIEW RV
   		  JOIN PROJECT PR
             ON PR.PRJ_ID = RV.PRJ_ID 

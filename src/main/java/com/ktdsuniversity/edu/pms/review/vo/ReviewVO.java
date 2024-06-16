@@ -18,6 +18,7 @@ public class ReviewVO extends PaginateVO {
 	private String delYn;
 	private String empId;
 	private String mngrYn;
+	private String starRating;
 		
 	private ProjectVO projectVO;
 	private DepartmentVO departmentVO;
@@ -122,7 +123,12 @@ public class ReviewVO extends PaginateVO {
 	public void setDelYn(String delYn) {
 		this.delYn = delYn;
 	}
-	
-	
-	
+
+	public String getStarRating() {
+		return starRating;
+	}
+
+	public void setStarRating(String starRating) {
+		this.starRating = starRating;
+	}
 }
