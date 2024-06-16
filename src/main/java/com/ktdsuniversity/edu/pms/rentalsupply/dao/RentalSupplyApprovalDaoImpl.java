@@ -34,4 +34,14 @@ public class RentalSupplyApprovalDaoImpl extends SqlSessionDaoSupport implements
 		return getSqlSession().insert(RentalSupplyApprovalDao.NAME_SPACE + ".insertRentalSupplyApprovalRequest", rentalSupplyApprovalVO);
 	}
 
+	@Override
+	public RentalSupplyApprovalVO getRentalSupplyApprovalByPK(String rsplApprId) {
+		return getSqlSession().selectOne(RentalSupplyApprovalDao.NAME_SPACE + ".getRentalSupplyApprovalByPK", rsplApprId);
+	}
+
+	@Override
+	public int updateOneRentalSupplyApprovalYnToYByPK(String rsplApprId) {
+		return getSqlSession().update(RentalSupplyApprovalDao.NAME_SPACE + ".updateOneRentalSupplyApprovalYnToYByPK", rsplApprId);
+	}
+
 }

@@ -24,26 +24,26 @@
 	<select id="searchRentalSupplyAllApprovalLogCount"
 			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.SearchRentalSupplyVO"
 			resultType="_int">
-SELECT COUNT(1)
-  FROM (SELECT ra.RSPL_APPR_ID
-			 , ra.RSPL_APPR_TYPE
-			 , ra.RSPL_ID
-			 , ra.RSPL_NAME
-			 , ra.RSPL_CTGR
-			 , ra.INV_QTY
-			 , ra.RSPL_APPR_REQTR
-			 , ra.DEL_YN
-			 , ra.RSPL_APPR_YN
-			 , ra.RSPL_RQST_TYPE
-			 , a.APPR_DATE
-			 , e.EMP_NAME
-			 , e.EMAIL
-		  FROM RSUPPLY_APPROVAL ra 
-		  JOIN APPROVAL a 
-		    ON a.APPR_INFO = ra.RSPL_APPR_ID
-		  JOIN EMPLOYEE e
-		    ON e.EMP_ID = ra.RSPL_APPR_REQTR)
- WHERE DEL_YN = 'N'
+		SELECT COUNT(1)
+		  FROM (SELECT ra.RSPL_APPR_ID
+					 , ra.RSPL_APPR_TYPE
+					 , ra.RSPL_ID
+					 , ra.RSPL_NAME
+					 , ra.RSPL_CTGR
+					 , ra.INV_QTY
+					 , ra.RSPL_APPR_REQTR
+					 , ra.DEL_YN
+					 , ra.RSPL_APPR_YN
+					 , ra.RSPL_RQST_TYPE
+					 , a.APPR_DATE
+					 , e.EMP_NAME
+					 , e.EMAIL
+				  FROM RSUPPLY_APPROVAL ra 
+				  JOIN APPROVAL a 
+				    ON a.APPR_INFO = ra.RSPL_APPR_ID
+				  JOIN EMPLOYEE e
+				    ON e.EMP_ID = ra.RSPL_APPR_REQTR)
+		 WHERE DEL_YN = 'N'
 	</select>
 
 	<select id="searchAllApprovalLog"
@@ -75,7 +75,7 @@ SELECT COUNT(1)
 					 , a.APPR_DATE
 					 , e.EMP_NAME
 					 , e.EMAIL
-				  FROM SUPPLY_APPROVAL ra 
+				  FROM RSUPPLY_APPROVAL ra 
 				  JOIN APPROVAL a 
 				    ON a.APPR_INFO = ra.RSPL_APPR_ID
 				  JOIN EMPLOYEE e
@@ -120,5 +120,29 @@ SELECT COUNT(1)
 		, 'N'
 		, #{rsplRqstType})
 	</insert>
+	
+	<select id="getRentalSupplyApprovalByPK" parameterType="string" resultMap="RentalSupplyApprovalVOMap">
+		SELECT RSPL_APPR_ID
+			 , RSPL_APPR_TYPE
+			 , RSPL_ID
+			 , RSPL_NAME
+			 , RSPL_CTGR
+			 , RSPL_PRICE
+			 , INV_QTY
+			 , RSPL_IMG
+			 , RSPL_DTL
+			 , RSPL_APPR_REQTR
+			 , DEL_YN
+			 , RSPL_APPR_YN
+			 , RSPL_RQST_TYPE
+		  FROM RSUPPLY_APPROVAL
+		 WHERE RSPL_APPR_ID = #{_parameter}
+	</select>
+	
+	<update id="updateOneRentalSupplyApprovalYnToYByPK" parameterType="string">
+		UPDATE RSUPPLY_APPROVAL
+		   SET RSPL_APPR_YN = 'Y'
+		 WHERE RSPL_APPR_ID = #{_parameter}
+	</update>
 
 </mapper>
