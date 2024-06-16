@@ -51,4 +51,9 @@ public class SurveyReplyServiceImpl implements SurveyReplyService {
 		return this.surveyReplyDao.getDoneEmpIdList(prjId);
 	}
 
+	@Override
+	public List<SurveyReplyVO> getallDescriptiveTypeAnswer(String prjId) {
+		return this.surveyReplyDao.getallDescriptiveTypeAnswer(prjId);
+	}
+
 }

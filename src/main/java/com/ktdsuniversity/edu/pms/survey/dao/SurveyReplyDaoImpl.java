@@ -33,5 +33,10 @@ public class SurveyReplyDaoImpl extends SqlSessionDaoSupport implements SurveyRe
 	public List<String> getDoneEmpIdList(String prjId) {
 		return getSqlSession().selectList(SurveyReplyDao.NAME_SPACE+".getDoneEmpIdList", prjId);
 	}
+
+	@Override
+	public List<SurveyReplyVO> getallDescriptiveTypeAnswer(String prjId) {
+		return getSqlSession().selectList(SurveyReplyDao.NAME_SPACE+".getallDescriptiveTypeAnswer", prjId);
+	}
 	
 }

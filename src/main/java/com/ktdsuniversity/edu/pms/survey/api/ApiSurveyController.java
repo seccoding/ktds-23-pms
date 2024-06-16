@@ -47,10 +47,8 @@ public class ApiSurveyController {
 	private SurveyQuestionPickService surveyQuestionPickService;
 	@Autowired
 	private SurveyReplyService surveyReplyService;
-
 	@Autowired
 	private ProjectService projectService;
-
 	@Autowired
 	private CommonCodeService commonCodeService;
 
@@ -117,10 +115,19 @@ public class ApiSurveyController {
 			allPicks.addAll(pickList.getPickList());
 		}
 
+		System.out.println("결과 아이디 보기" + prjId);
+		int roleNoneCount = this.surveyQuestionService.getRoleNoneCount(prjId);
+		int serveyDoneCount = this.surveyQuestionService.getServeyDoneCount(prjId);
+
+		List<SurveyReplyVO> descriptiveTypeAnswer = this.surveyReplyService.getallDescriptiveTypeAnswer(prjId);
+
 		List<Object> dataList = new ArrayList<>();
 		dataList.add(surveyQuestion);
 		dataList.add(questionList);
 		dataList.add(allPicks);
+		dataList.add(roleNoneCount);
+		dataList.add(serveyDoneCount);
+		dataList.add(descriptiveTypeAnswer);
 
 		return ApiResponse.Ok(dataList);
 	}
@@ -204,7 +211,7 @@ public class ApiSurveyController {
 		dataList.add(isSuccess);
 		dataList.add(surveyReplyVO.getSrvId());
 		dataList.add(employeeVO.getEmpId());
-		//dataList.add(surveyReplyVO.getSrvId());
+		// dataList.add(surveyReplyVO.getSrvId());
 		// 응답 반환
 		return ApiResponse.Ok(dataList);
 	}

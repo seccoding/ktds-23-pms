@@ -79,6 +79,7 @@
 		SELECT SQP_ID
 			 , SRV_ID
 			 , SQP_CNTNT
+			 , SQP_COUNT
 			 , NEXT_ID
 			 , DEL_YN
 			 , SEQ
@@ -107,6 +108,7 @@
 							                 WHERE SQ.PRJ_ID = #{surveyQuestionVO.prjId})
 						     AND SQP_ID IS NOT NULL
 						     AND DEL_YN = 'N' 
-						     AND CRTR_ID = #{crtrId})
+						     AND CRTR_ID = #{crtrId}
+						     AND SQP_ID = #{sqpId})
 	</update>
 </mapper>
