@@ -21,7 +21,7 @@ public interface ApprovalService {
 	 * 
 	 * @return
 	 */
-	public ApprovalVO gellApprovalByApprId(String apprId);
+	public Object gellApprovalByApprId(String apprId);
 
 	/**
 	 * 승인 혹은 반려를 할 경우 해당내용을 업데이트 한다
