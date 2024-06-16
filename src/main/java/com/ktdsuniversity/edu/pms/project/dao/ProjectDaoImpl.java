@@ -177,4 +177,9 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
 	public String findPmNameByPrjId(String prjId) {
 		return getSqlSession().selectOne(ProjectDao.NAME_SPACE+".findPmNameByPrjId", prjId);
 	}
+
+	@Override
+	public String getPrjTmId(ProjectTeammateVO projectTeammateVO) {
+		return getSqlSession().selectOne(ProjectDao.NAME_SPACE+".getPrjTmId", projectTeammateVO);
+	}
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -393,6 +394,22 @@ public class ApiProjectController {
 	        	errorMessages.add("프로젝트 구성원 추가에 실패했습니다.");
         		return ApiResponse.BAD_REQUEST(errorMessages);
 	        }
+	    }
+	    
+	    
+	    @DeleteMapping("/teammate")
+	    public ApiResponse deleteTeammate(@RequestBody ProjectTeammateVO projectTeammateVO, Authentication authentication) {
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
+	        if (!employeeVO.getAdmnCode().equals("301")) {
+	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+	        }
+	    	
+	    	String prjTmId = this.projectService.getPrjTmId(projectTeammateVO);
+	        boolean deleteResult = projectService.deleteOneTeammate(prjTmId);
+
+	        return ApiResponse.Ok(deleteResult);
 	    }
 	    
 

@@ -622,4 +622,10 @@
 			   AND PT.DEL_YN = 'N'
 			 ORDER BY P.CRT_DT DESC
     </select>
+    <select id="getPrjTmId" parameterType="com.ktdsuniversity.edu.pms.project.vo.ProjectTeammateVO" resultType="String">
+    	SELECT PRJ_TM_ID 
+		  FROM PROJECT_TEAMMATE
+		 WHERE PRJ_ID = #{prjId}
+		   AND TM_ID = #{tmId}
+    </select>
 </mapper>
