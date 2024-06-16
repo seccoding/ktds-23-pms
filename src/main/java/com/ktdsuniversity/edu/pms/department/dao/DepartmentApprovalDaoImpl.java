@@ -21,4 +21,10 @@ public class DepartmentApprovalDaoImpl extends SqlSessionDaoSupport implements D
 	public int insertDepartmentApprovalRequest(DepartmentApprovalVO departmentApprovalVO) {
 		return getSqlSession().insert(DepartmentApprovalDao.NAME_SPACE + ".insertDepartmentApprovalRequest", departmentApprovalVO);
 	}
+
+	// 한가지만 가져오는 것
+	@Override
+	public DepartmentApprovalVO getDepartmentApprovalByPK(String deptApprId) {
+		return getSqlSession().selectOne(DepartmentApprovalDao.NAME_SPACE + ".getDepartmentApprovalByPK", deptApprId);
+	}
 }

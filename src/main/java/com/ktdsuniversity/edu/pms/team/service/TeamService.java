@@ -13,7 +13,7 @@ public interface TeamService {
 
 	public TeamVO selectOneTeam(String teamId);
 
-	public boolean modifyOneTeam(TeamVO teamVO);
+	public boolean modifyOneTeam(TeamApprovalVO teamApprovalVO);
 	
 	public TeamListVO getOnlyTeam();
 
@@ -21,7 +21,7 @@ public interface TeamService {
 
 	public boolean isPossibleDelete(String teamId);
 
-	public boolean deleteOneTeam(String teamId);
+	public boolean deleteOneTeam(TeamApprovalVO teamApprovalVO);
 	
 	public List<EmployeeVO> getAllEmployeeInTeam(String teamId);
 

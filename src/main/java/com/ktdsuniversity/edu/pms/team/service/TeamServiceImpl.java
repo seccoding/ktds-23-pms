@@ -86,8 +86,41 @@ public class TeamServiceImpl implements TeamService{
 
 	@Transactional
 	@Override
-	public boolean modifyOneTeam(TeamVO teamVO) {
-		return teamDao.updateOneTeam(teamVO) > 0;
+	public boolean modifyOneTeam(TeamApprovalVO teamApprovalVO) {
+		teamApprovalVO.setTmApprType("UPDATE");
+		teamApprovalVO.setDelYn("N");
+		
+		int requestedCount = this.teamApprovalDao.insertTeamApprovalRequest(teamApprovalVO);
+
+		// 결재 승인자 리스트
+		List<String> approvalList = new ArrayList<>();
+		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(teamApprovalVO.getTmApprReqtr());		// 결재 요청자가 속한 팀의 장
+		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();				
+		// 경영지원부 정보
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		// 경영지원부서장
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		// 대표이사
+		String ceoId = this.employeeDao.getAllEmployee().stream()
+																.filter(emp -> emp.getPstnId().equals("110"))
+																.map(emp -> emp.getEmpId())		
+																.findFirst().orElse(mgmtSprtDeptLeadId);
+		approvalList.add(tmLeadId);
+		approvalList.add(mgmtSprtDeptLeadId);
+		approvalList.add(ceoId);
+		
+		ApprovalVO approvalVO = new ApprovalVO();
+		// apprType: 결재 승인 타입(소모품, 비품, 부서, 직원)
+		approvalVO.setApprType("TEAM");
+		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
+		approvalVO.setApprInfo(teamApprovalVO.getTmApprId());
+		// apprReqtr: 결재 요청자
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
+		this.approvalDao.insertApproval(approvalList, approvalVO);
+		
+		return requestedCount > 0;
+		// return teamDao.updateOneTeam(teamVO) > 0;
 	}
 
 	@Override
@@ -114,8 +147,43 @@ public class TeamServiceImpl implements TeamService{
 
 	@Transactional
 	@Override
-	public boolean deleteOneTeam(String teamId) {
-		return teamDao.deleteOneTeam(teamId) > 0;
+	public boolean deleteOneTeam(TeamApprovalVO teamApprovalVO) {
+		
+		teamApprovalVO.setTmApprType("DELETE");
+		teamApprovalVO.setDelYn("N");
+		
+		int requestedCount = this.teamApprovalDao.insertTeamApprovalRequest(teamApprovalVO);
+
+		// 결재 승인자 리스트
+		List<String> approvalList = new ArrayList<>();
+		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(teamApprovalVO.getTmApprReqtr());		// 결재 요청자가 속한 팀의 장
+		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();				
+		// 경영지원부 정보
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		// 경영지원부서장
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		// 대표이사
+		String ceoId = this.employeeDao.getAllEmployee().stream()
+																.filter(emp -> emp.getPstnId().equals("110"))
+																.map(emp -> emp.getEmpId())		
+																.findFirst().orElse(mgmtSprtDeptLeadId);
+		approvalList.add(tmLeadId);
+		approvalList.add(mgmtSprtDeptLeadId);
+		approvalList.add(ceoId);
+		
+		ApprovalVO approvalVO = new ApprovalVO();
+		// apprType: 결재 승인 타입(소모품, 비품, 부서, 직원)
+		approvalVO.setApprType("TEAM");
+		// apprInfo: 결재시 업데이트 해야하는 정보를 담은 FK ID
+		approvalVO.setApprInfo(teamApprovalVO.getTmApprId());
+		// apprReqtr: 결재 요청자
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
+		this.approvalDao.insertApproval(approvalList, approvalVO);
+		
+		return requestedCount > 0;
+
+		// return teamDao.deleteOneTeam(teamId) > 0;
 	}
 
 	@Override
