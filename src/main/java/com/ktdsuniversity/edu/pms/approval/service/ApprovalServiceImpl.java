@@ -14,6 +14,7 @@ import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -28,18 +29,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	@Override
 	public ApprovalListVO getAllApproval() {
-		int approvalCount = this.approvalDao.getAllCount();
 		List<ApprovalVO> approvalList = this.approvalDao.getAllApproval();
 		
 		ApprovalListVO approvalListVO = new ApprovalListVO();
-		approvalListVO.setApprCnt(approvalCount);
 		approvalListVO.setApprList(approvalList);
 		
 		return approvalListVO;
 	}
 	
 	@Override
-	public ApprovalVO gellApprovalByApprId(String apprId) {
+	public Object gellApprovalByApprId(String apprId) {
 //		1. apprId로 DB에 있는 approvalVO를 가져온다
 		ApprovalVO approvalVO= this.approvalDao.getApprovalByApprId(apprId);
 		logger.debug("저장된 승인요청 타입: "+approvalVO.getApprType()+" 테이블 pk: "+approvalVO.getApprInfo());
@@ -47,7 +46,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 //		2.조건문을 통해 필요한 정보를 selecet 한 후 반환
 		if(apprType.equals("SUPPLY")) {
+			SupplyApprovalVO approvalVO2 = this.supplyApprovalDao.getSupplyApprovalByPK(approvalVO.getApprInfo());
+			return approvalVO2;
 		}else if(apprType.equals("DEPARTMENT")) {
+			
 		}
 		
 		return null;
@@ -77,6 +79,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 //		3. 완료시 해당 승인내용을 db에 반영한다   
 		if(cnt==0) {
+			logger.debug("다른테이블 업데이트 필요함 ");
 			
 		}
 		
