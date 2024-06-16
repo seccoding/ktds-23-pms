@@ -76,4 +76,6 @@ public interface ProjectDao {
 	String findPmNameByPrjId(String prjId);
 
 	String getPrjTmId(ProjectTeammateVO projectTeammateVO);
+
+	List<ProjectVO> getAllPrjEvent(String empId);
 }

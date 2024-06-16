@@ -46,4 +46,6 @@ public interface ProjectService {
 	List<ProjectTeammateVO> getAllProjectTeammateByTmId(String empId);
 
 	String getPrjTmId(ProjectTeammateVO projectTeammateVO);
+
+	List<ProjectVO> getAllPrjEvent(String empId);
 }

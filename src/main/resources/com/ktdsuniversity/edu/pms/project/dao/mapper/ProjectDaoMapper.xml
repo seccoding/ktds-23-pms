@@ -628,4 +628,8 @@
 		 WHERE PRJ_ID = #{prjId}
 		   AND TM_ID = #{tmId}
     </select>
+    
+    <select id="getAllPrjEvent" parameterType="String" resultType="com.ktdsuniversity.edu.pms.project.vo.ProjectVO">
+    
+    </select>
 </mapper>

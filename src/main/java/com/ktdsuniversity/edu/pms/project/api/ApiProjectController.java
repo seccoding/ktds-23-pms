@@ -85,6 +85,39 @@ public class ApiProjectController {
 	    @Autowired
 	    private IssueService issueService;
 	    
+	    public List<Integer> getChartData(String prjId){
+	    	List<Integer> chartData = new ArrayList<>();
+	        List<RequirementVO> req = this.requirementService.getAllRequirement(prjId);
+	        int totalReq = 0;
+	        int doneReq = 0;
+	        for(RequirementVO item:req) {
+	        	if(item.getRqmSts().equals("605")) {
+	        		doneReq++;
+	        	}
+	        	totalReq++;
+	        }
+	        List<String> doneSurvList = this.surveyReplyService.getDoneEmpIdList(prjId);
+	        int doneRevCnt = this.reviewService.getDoneEmpIdList(prjId);
+	        int doneSurvCnt = doneSurvList.size();
+	        List<IssueVO> issue = this.issueService.searchIssueByPrjId(prjId);
+	        int totalIssue = 0;
+	        int doneIssue = 0;
+	        for(IssueVO item:issue) {
+	        	if(item.getIsSts().equals("704")) {
+	        		doneIssue++;
+	        	}
+	        	totalIssue++;
+	        }
+	        
+	        chartData.add(totalReq);
+	        chartData.add(doneReq);
+	        chartData.add(doneSurvCnt);
+	        chartData.add(doneRevCnt);
+	        chartData.add(totalIssue);
+	        chartData.add(doneIssue);
+	        return chartData;
+	    }
+	    
 	    // getAllProject + getAllProjectByProjectTeammateRole
 	    @GetMapping("/search")
 	    public ApiResponse getSearchProjectListPage(SearchProjectVO searchProjectVO,Authentication authentication) {
@@ -95,6 +128,9 @@ public class ApiProjectController {
 	        searchProjectVO.setEmployeeVO(employeeVO);
 	   
 	        ProjectListVO projectListVO = this.projectService.searchProject(searchProjectVO);
+	        for(ProjectVO prj:projectListVO.getProjectList()) {
+	        	prj.setChartData( getChartData(prj.getPrjId()));
+	        }
 	        List<CommonCodeVO> projectCommonCodeList = commonCodeService.getAllCommonCodeListByPId("400");
 		
 	        List<ProjectTeammateVO> tmList = this.projectService.getAllProjectTeammate().stream()
@@ -103,6 +139,7 @@ public class ApiProjectController {
 			boolean isPM = !tmList.isEmpty();
 			
 			List<ProjectTeammateVO> projectTeammateVO = this.projectService.getAllProjectTeammateByTmId(employeeVO.getEmpId());
+			
 			
 	        List<Object> dataList = new ArrayList<>();
 			dataList.add(projectCommonCodeList);
@@ -137,36 +174,7 @@ public class ApiProjectController {
 	        projectVO.setTotalRequireCnt(totalRequirementsList.size());
 	        projectVO.setRequireCnt(projectRequirementsList.size());
 	        
-	        List<Integer> chartData = new ArrayList<>();
-	        List<RequirementVO> req = this.requirementService.getAllRequirement(prjId);
-	        int totalReq = 0;
-	        int doneReq = 0;
-	        for(RequirementVO item:req) {
-	        	if(item.getRqmSts().equals("605")) {
-	        		doneReq++;
-	        	}
-	        	totalReq++;
-	        }
-	        List<String> doneSurvList = this.surveyReplyService.getDoneEmpIdList(prjId);
-	        int doneRevCnt = this.reviewService.getDoneEmpIdList(prjId);
-	        int doneSurvCnt = doneSurvList.size();
-	        List<IssueVO> issue = this.issueService.searchIssueByPrjId(prjId);
-	        int totalIssue = 0;
-	        int doneIssue = 0;
-	        for(IssueVO item:issue) {
-	        	if(item.getIsSts().equals("704")) {
-	        		doneIssue++;
-	        	}
-	        	totalIssue++;
-	        }
-	        
-	        chartData.add(totalReq);
-	        chartData.add(doneReq);
-	        chartData.add(doneSurvCnt);
-	        chartData.add(doneRevCnt);
-	        chartData.add(totalIssue);
-	        chartData.add(doneIssue);
-	        projectVO.setChartData(chartData);
+	        projectVO.setChartData(getChartData(prjId));
 	        
 	        // client 가져오기
 	        ClientVO client = this.clientService.getClientOfProject(projectVO.getClntInfo());
@@ -410,6 +418,16 @@ public class ApiProjectController {
 	        boolean deleteResult = projectService.deleteOneTeammate(prjTmId);
 
 	        return ApiResponse.Ok(deleteResult);
+	    }
+	    
+	    @GetMapping("/upcoming/event")
+	    public ApiResponse getUpcomingPrjEvent(Authentication authentication) {
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+			
+			List<ProjectVO> prjList = this.projectService.getAllPrjEvent(employeeVO.getEmpId());
+			
+	        return ApiResponse.Ok(employeeVO);
 	    }
 	    
 

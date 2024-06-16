@@ -182,4 +182,9 @@ public class ProjectDaoImpl extends SqlSessionDaoSupport implements ProjectDao {
 	public String getPrjTmId(ProjectTeammateVO projectTeammateVO) {
 		return getSqlSession().selectOne(ProjectDao.NAME_SPACE+".getPrjTmId", projectTeammateVO);
 	}
+
+	@Override
+	public List<ProjectVO> getAllPrjEvent(String empId) {
+		return getSqlSession().selectList(ProjectDao.NAME_SPACE+".getAllPrjEvent", empId);
+	}
 }

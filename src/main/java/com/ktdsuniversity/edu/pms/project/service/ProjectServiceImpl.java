@@ -274,4 +274,9 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDao.getPrjTmId(projectTeammateVO);
 	}
 
+	@Override
+	public List<ProjectVO> getAllPrjEvent(String empId) {
+		return projectDao.getAllPrjEvent(empId);
+	}
+
 }
