@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ktdsuniversity.edu.pms.rentalsupply.dao.RentalSupplyApprovalDao">
+
+	<resultMap type="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalVO"
+			   id="RentalSupplyApprovalVOMap"
+			   autoMapping="true">
+		<id column="RSPL_APPR_ID" property="rsplApprId" />
+		<association property="approvalVO"
+					 javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+			<id column="APPR_ID" property="apprId" />
+			<result column="APPR_DATE" property="apprDate" />
+		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+			<result column="EMAIL" property="email" />
+		</association>
+	</resultMap>
+	
+	<select id="searchRentalSupplyAllApprovalLogCount"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.SearchRentalSupplyVO"
+			resultType="_int">
+SELECT COUNT(1)
+  FROM (SELECT ra.RSPL_APPR_ID
+			 , ra.RSPL_APPR_TYPE
+			 , ra.RSPL_ID
+			 , ra.RSPL_NAME
+			 , ra.RSPL_CTGR
+			 , ra.INV_QTY
+			 , ra.RSPL_APPR_REQTR
+			 , ra.DEL_YN
+			 , ra.RSPL_APPR_YN
+			 , ra.RSPL_RQST_TYPE
+			 , a.APPR_DATE
+			 , e.EMP_NAME
+			 , e.EMAIL
+		  FROM RSUPPLY_APPROVAL ra 
+		  JOIN APPROVAL a 
+		    ON a.APPR_INFO = ra.RSPL_APPR_ID
+		  JOIN EMPLOYEE e
+		    ON e.EMP_ID = ra.RSPL_APPR_REQTR)
+ WHERE DEL_YN = 'N'
+	</select>
+
+	<select id="searchAllApprovalLog"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.SearchRentalSupplyVO"
+			resultMap="RentalSupplyApprovalVOMap">
+		SELECT RSPL_APPR_ID
+			 , RSPL_APPR_TYPE
+			 , RSPL_ID
+			 , RSPL_NAME
+			 , RSPL_CTGR
+			 , INV_QTY
+			 , RSPL_APPR_REQTR
+			 , DEL_YN
+			 , RSPL_APPR_YN
+			 , RSPL_RQST_TYPE
+			 , TO_CHAR(APPR_DATE, 'YYYY-MM-DD') APPR_DATE
+			 , EMP_NAME
+			 , EMAIL
+		  FROM (SELECT ra.RSPL_APPR_ID
+					 , ra.RSPL_APPR_TYPE
+					 , ra.RSPL_ID
+					 , ra.RSPL_NAME
+					 , ra.RSPL_CTGR
+					 , ra.INV_QTY
+					 , ra.RSPL_APPR_REQTR
+					 , ra.DEL_YN
+					 , ra.RSPL_APPR_YN
+					 , ra.RSPL_RQST_TYPE
+					 , a.APPR_DATE
+					 , e.EMP_NAME
+					 , e.EMAIL
+				  FROM SUPPLY_APPROVAL ra 
+				  JOIN APPROVAL a 
+				    ON a.APPR_INFO = ra.RSPL_APPR_ID
+				  JOIN EMPLOYEE e
+				    ON e.EMP_ID = ra.RSPL_APPR_REQTR)
+		 WHERE DEL_YN = 'N'
+	</select>
+
+	<insert id="insertRentalSupplyApprovalRequest"
+			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalVO">
+		
+		<selectKey keyProperty="rsplApprId" resultType="string" order="BEFORE">
+			SELECT 'RSPL_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RSUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
+			  FROM DUAL
+		</selectKey>
+		
+		INSERT INTO RSUPPLY_APPROVAL
+		 (RSPL_APPR_ID
+		, RSPL_APPR_TYPE
+		, RSPL_ID
+		, RSPL_NAME
+		, RSPL_CTGR
+		, RSPL_PRICE
+		, INV_QTY
+		, RSPL_IMG
+		, RSPL_DTL
+		, RSPL_APPR_REQTR
+		, DEL_YN
+		, RSPL_APPR_YN
+		, RSPL_RQST_TYPE)
+		VALUES
+		 (#{rsplApprId}
+		, #{rsplApprType}
+		, #{rsplId}
+		, #{rsplName}
+		, #{rsplCtgr}
+		, #{rsplPrice}
+		, #{invQty}
+		, #{rsplImg}
+		, #{rsplDtl}
+		, #{rsplApprReqtr}
+		, #{delYn}
+		, 'N'
+		, #{rsplRqstType})
+	</insert>
+
+</mapper>

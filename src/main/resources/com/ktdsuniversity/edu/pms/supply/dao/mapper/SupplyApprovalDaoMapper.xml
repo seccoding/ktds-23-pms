@@ -34,6 +34,7 @@ SELECT COUNT(1)
 			 , sa.SPL_APPR_REQTR
 			 , sa.DEL_YN
 			 , sa.SPL_APPR_YN
+			 , sa.SPL_RQST_TYPE
 			 , a.APPR_DATE
 			 , e.EMP_NAME
 			 , e.EMAIL
@@ -57,6 +58,7 @@ SELECT COUNT(1)
 			 , SPL_APPR_REQTR
 			 , DEL_YN
 			 , SPL_APPR_YN
+			 , SPL_RQST_TYPE
 			 , TO_CHAR(APPR_DATE, 'YYYY-MM-DD') APPR_DATE
 			 , EMP_NAME
 			 , EMAIL
@@ -69,6 +71,7 @@ SELECT COUNT(1)
 					 , sa.SPL_APPR_REQTR
 					 , sa.DEL_YN
 					 , sa.SPL_APPR_YN
+					 , sa.SPL_RQST_TYPE
 					 , a.APPR_DATE
 					 , e.EMP_NAME
 					 , e.EMAIL
@@ -100,7 +103,8 @@ SELECT COUNT(1)
 		, SPL_DTL
 		, SPL_APPR_REQTR
 		, DEL_YN
-		, SPL_APPR_YN)
+		, SPL_APPR_YN
+		, SPL_RQST_TYPE)
 		VALUES
 		 (#{splApprId}
 		, #{splApprType}
@@ -113,7 +117,8 @@ SELECT COUNT(1)
 		, #{splDtl}
 		, #{splApprReqtr}
 		, #{delYn}
-		, 'N')
+		, 'N'
+		, #{splRqstType})
 	</insert>
 
 </mapper>

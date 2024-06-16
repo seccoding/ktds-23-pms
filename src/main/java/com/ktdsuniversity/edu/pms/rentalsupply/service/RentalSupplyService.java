@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.pms.rentalsupply.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalListVO;
+import com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyListVO;
 import com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO;
 import com.ktdsuniversity.edu.pms.rentalsupply.vo.SearchRentalSupplyVO;
@@ -22,20 +24,13 @@ public interface RentalSupplyService {
 	 */
 	public RentalSupplyVO getOneRentalSupply(String rsplId);
 	
-	/**
-	 * 새 대여품 등록
-	 * @param rentalSupplyVO
-	 * @param file 대여품에 대한 이미지 파일
-	 * @return
-	 */
-	public boolean registerNewRentalSupply(RentalSupplyVO rentalSupplyVO, MultipartFile file);
+	public RentalSupplyListVO getAllRentalSupplyCategory();
 	
-	/**
-	 * 대여품 정보 수정
-	 * @param rentalSupplyVO 수정 할 대여품 VO
-	 * @return
-	 */
-	public boolean updateOneRentalSupply(RentalSupplyVO rentalSupplyVO);
+	public boolean requestRegistrationNewRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO, MultipartFile file);
+	
+	public boolean requestModificationRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO, MultipartFile file);
+	
+	public boolean requestGetRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO);
 	
 	/**
 	 * 대여품 재고 수정(현재 사용하지 않으며, 앞으로도 사용하지 않을 가능성이 높음)
@@ -44,11 +39,8 @@ public interface RentalSupplyService {
 	 */
 	public boolean updateOneRentalSupplyStock(RentalSupplyVO rentalSupplyVO);
 	
-	/**
-	 * 대여품 삭제(논리적 삭제)
-	 * @param rentalSupplyVO 수정 할 대여품 VO
-	 * @return
-	 */
-	public boolean deleteOneRentalSupply(RentalSupplyVO rentalSupplyVO);
+	public boolean requestDeleteRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO);
+	
+	public RentalSupplyApprovalListVO searchAllRentalSupplyApprovalLog(SearchRentalSupplyVO searchRentalSupplyVO);
 	
 }

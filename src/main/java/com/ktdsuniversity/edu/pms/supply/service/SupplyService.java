@@ -6,7 +6,6 @@ import com.ktdsuniversity.edu.pms.supply.vo.SearchSupplyVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyListVO;
-import com.ktdsuniversity.edu.pms.supply.vo.SupplyLogListVO;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 
 public interface SupplyService {
@@ -42,6 +41,8 @@ public interface SupplyService {
 	 * @return
 	 */
 	public boolean requestModificationSupply(SupplyApprovalVO supplyApprovalVO, MultipartFile file);
+	
+	public boolean requestGetSupply(SupplyApprovalVO supplyApprovalVO);
 
 	/**
 	 * 소모품 재고 수정(현재 사용하지 않으며, 앞으로도 사용하지 않을 가능성이 높음)

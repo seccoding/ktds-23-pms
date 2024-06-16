@@ -30,6 +30,8 @@ public interface RentalSupplyDao {
 	 */
 	public RentalSupplyVO selectOneRentalSupply(String rsplId);
 	
+	public List<RentalSupplyVO> selectAllRentalSupplyCategory();
+	
 	/**
 	 * 새 대여품 등록
 	 * @param rentalSupplyVO
