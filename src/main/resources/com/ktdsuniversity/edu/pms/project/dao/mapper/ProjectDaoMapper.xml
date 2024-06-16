@@ -640,5 +640,6 @@
 		   AND (P.STRT_DT > SYSDATE 
 		    OR P.END_DT > SYSDATE)
 		   AND P.DEL_YN = 'N'
+		   AND T.DEL_YN = 'N'
     </select>
 </mapper>
