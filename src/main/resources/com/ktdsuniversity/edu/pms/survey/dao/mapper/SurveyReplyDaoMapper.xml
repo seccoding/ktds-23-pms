@@ -48,6 +48,7 @@
 		 WHERE SRV_ID = #{srvId}
 		   AND DEL_YN = 'N'
 	</select>
+	
 	<select id="getDoneEmpIdList" parameterType="String" resultType="String">
 		SELECT DISTINCT R.CRTR_ID 
 		  FROM SURVEY_REPLY R
@@ -56,4 +57,14 @@
 		 WHERE Q.PRJ_ID = #{_parameter}
 	</select>
 
+	<select id="getallDescriptiveTypeAnswer" parameterType="String" resultType="com.ktdsuniversity.edu.pms.survey.vo.SurveyReplyVO">
+		SELECT SR.SRV_ID
+			 , SR.SRV_RPL_CNTNT
+		  FROM SURVEY_REPLY SR
+		  JOIN SURVEY_QUESTION SQ
+		    ON SR.SRV_ID = SQ.SRV_ID 
+		 WHERE SQ.TYPE_YN = 'Y'
+		   AND SQ.PRJ_ID = #{_parameter}
+		   AND SR.DEL_YN = 'N'
+	</select>
 </mapper>

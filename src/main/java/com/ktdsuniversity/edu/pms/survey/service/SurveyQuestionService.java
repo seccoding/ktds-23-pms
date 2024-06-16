@@ -123,4 +123,8 @@ public interface SurveyQuestionService {
 
 	public SurveyQuestionVO getOneProjectIdBySrvId(String srvId);
 
+	public int getRoleNoneCount(String prjId);
+
+	public int getServeyDoneCount(String prjId);
+
 }

@@ -112,4 +112,15 @@ public class SurveyQuestionDaoImpl extends SqlSessionDaoSupport implements Surve
 		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".getOneSrvQuestionVOBySrvId", srvId);
 	}
 
+	@Override
+	public int getRoleNoneCount(String prjId) {
+		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".getRoleNoneCount", prjId);
+	}
+
+	@Override
+	public int surveyQuestionDao(String prjId) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(SurveyQuestionDao.NAME_SPACE + ".surveyQuestionDao", prjId);
+	}
+
 }

@@ -50,6 +50,10 @@ public interface SurveyQuestionDao {
 
 	public SurveyQuestionVO getOneSrvQuestionVOBySrvId(String srvId);
 
+	public int getRoleNoneCount(String prjId);
+
+	public int surveyQuestionDao(String prjId);
+
 	
 
 }

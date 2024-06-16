@@ -428,5 +428,21 @@
 		  FROM SURVEY_QUESTION
 		 WHERE SRV_ID = #{srvId}
 	</select>
+	
+	<select id="getRoleNoneCount"
+			parameterType="String">
+		SELECT COUNT(1)
+		  FROM PROJECT_TEAMMATE
+		 WHERE PRJ_ID = #{_parameter}
+		   AND ROLE = 'NONE'
+	</select>
+	<select id="surveyQuestionDao"
+			parameterType="String">
+		SELECT COUNT(1)
+		  FROM PROJECT_TEAMMATE
+		 WHERE PRJ_ID = #{_parameter}
+		   AND ROLE = 'NONE'
+		   AND SRV_YN = 'Y'
+	</select>
 
 </mapper>

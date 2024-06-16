@@ -176,4 +176,15 @@ public class SurveyQuestionServiceImpl implements SurveyQuestionService {
 		return this.surveyQuestionDao.getOneSrvQuestionVOBySrvId(srvId);
 	}
 
+	@Override
+	public int getRoleNoneCount(String prjId) {
+		return this.surveyQuestionDao.getRoleNoneCount(prjId);
+	}
+
+	@Override
+	public int getServeyDoneCount(String prjId) {
+		// TODO Auto-generated method stub
+		return this.surveyQuestionDao.surveyQuestionDao(prjId);
+	}
+
 }

@@ -13,6 +13,8 @@ public interface SurveyReplyService {
 
 	List<String> getDoneEmpIdList(String prjId);
 
+	List<SurveyReplyVO> getallDescriptiveTypeAnswer(String prjId);
+
 	
 
 }

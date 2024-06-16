@@ -15,4 +15,6 @@ public interface SurveyReplyDao {
 
 	public List<String> getDoneEmpIdList(String prjId);
 
+	public List<SurveyReplyVO> getallDescriptiveTypeAnswer(String prjId);
+
 }
