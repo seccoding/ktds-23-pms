@@ -76,6 +76,7 @@
         <!--            ON T.TM_ID = E.TM_ID-->
          WHERE RM.RCV_ID = #{empId}
            AND RM.RCV_DEL_YN = 'N'
+           AND SM.SEND_DEL_YN = 'N'
         <if test='searchKeyword != null and searchKeyword != "" '>
             <choose>
                 <when test='searchType == "rcv_save"'>
@@ -113,6 +114,7 @@
             ON D.DEPT_ID = E.DEPT_ID
          WHERE RM.RCV_ID = #{empId}
            AND RM.RCV_DEL_YN = 'N'
+           AND SM.SEND_DEL_YN = 'N'
         <if test='searchKeyword != null and searchKeyword != "" '>
             <choose>
                 <when test='searchType == "rcv_save"'>

@@ -6,6 +6,8 @@ import com.ktdsuniversity.edu.pms.memo.dao.ReceiveMemoDao;
 import com.ktdsuniversity.edu.pms.memo.dao.SendMemoDao;
 import com.ktdsuniversity.edu.pms.memo.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -144,5 +146,12 @@ public class SendMemoServiceImpl implements SendMemoService{
     public int getSendCountBySendMemoId(String sendMemoId) {
         return this.sendMemoDao.getSendCountBySendMemoId(sendMemoId);
     }
+
+	@Override
+	public ResponseEntity<Resource> getDownloadFile(SendMemoVO sendMemoVO) {
+		ResponseEntity<Resource> file = this.fileHandler.download(
+				sendMemoVO.getOriginFileName(), sendMemoVO.getFileName());
+		return file;
+	}
 
 }

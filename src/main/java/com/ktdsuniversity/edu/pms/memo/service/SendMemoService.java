@@ -3,6 +3,9 @@ package com.ktdsuniversity.edu.pms.memo.service;
 import com.ktdsuniversity.edu.pms.memo.vo.SearchMemoVO;
 import com.ktdsuniversity.edu.pms.memo.vo.SendMemoListVO;
 import com.ktdsuniversity.edu.pms.memo.vo.SendMemoVO;
+
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -47,5 +50,10 @@ public interface SendMemoService {
      * 발신자로 수신 쪽지 개수 조회
      */
     public int getSendCountBySendMemoId(String sendMemoId);
+
+    /**
+     * 파일 다운로드
+     */
+	public ResponseEntity<Resource> getDownloadFile(SendMemoVO sendMemoVO);
 
 }
