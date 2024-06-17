@@ -308,7 +308,7 @@ public class ApiRentalSupplyController {
 			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
 		}
 
-		boolean isReturnSuccess = rentalSupplyService.requestReturnRentalSupply(rentalSupplyApprovalVO);
+		boolean isReturnSuccess = this.rentalSupplyService.requestReturnRentalSupply(rentalSupplyApprovalVO);
 		
 	    if (isReturnSuccess) {
 	        return ApiResponse.Ok(true);

@@ -87,6 +87,7 @@
 		<if test="empId != null and empId != ''">
 		   AND SPL_APPR_REQTR = #{empId}
 		</if>
+		 ORDER BY APPR_DATE DESC
 	</select>
 
 	<insert id="insertSupplyApprovalRequest"

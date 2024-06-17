@@ -52,6 +52,7 @@
 					 , RSPL_MDF_DT
 				  FROM RSUPPLY)
 		 WHERE DEL_YN = 'N'
+		 ORDER BY RSPL_REGT_DT DESC
 	</select>
 	
 	<select id="selectOneRentalSupply"

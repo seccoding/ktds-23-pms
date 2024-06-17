@@ -113,7 +113,8 @@ public class SupplyServiceImpl implements SupplyService {
 		approvalList.add(mgmtSprtDeptLeadId);
 
 		if (price > 10000000) {
-			approvalList.add(ceoId);
+//			approvalList.add(ceoId);
+			approvalList.add("system01");
 		}
 
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -177,7 +178,8 @@ public class SupplyServiceImpl implements SupplyService {
 					supplyApprovalVO.getSplPrice() * (supplyApprovalVO.getInvQty() - originalSupplyVO.getInvQty()));
 
 			if (price > 10000000) {
-				approvalList.add(ceoId);
+//				approvalList.add(ceoId);
+				approvalList.add("system01");
 			}
 		}
 
@@ -243,7 +245,8 @@ public class SupplyServiceImpl implements SupplyService {
 			approvalList.add(mgmtSprtDeptLeadId);
 		}
 		if (price > 10000000) {
-			approvalList.add(ceoId);
+//			approvalList.add(ceoId);
+			approvalList.add("system01");
 		}
 
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -292,7 +295,8 @@ public class SupplyServiceImpl implements SupplyService {
 		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();
 		approvalList.add(mgmtSprtDeptLeadId);
 		if (price > 10000000) {
-			approvalList.add(ceoId);
+//			approvalList.add(ceoId);
+			approvalList.add("system01");
 		}
 
 		ApprovalVO approvalVO = new ApprovalVO();
