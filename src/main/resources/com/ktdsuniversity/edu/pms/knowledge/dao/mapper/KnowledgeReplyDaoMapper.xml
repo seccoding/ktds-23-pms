@@ -144,6 +144,12 @@
 			WHERE REP_RPL_ID=#{_parameter}
 	</update>
 	
+	<update id="replyCount" parameterType="string">
+		UPDATE PMS.REPLY
+			SET   RPL_CNT=RPL_CNT+1
+			WHERE RPL_ID=#{_parameter}
+	</update>
+	
 	<!-- 댓글 --> 
 	<select id="getAllreReply" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO" resultMap="knowledgeReplyVOMap">
 		SELECT RPL_ID

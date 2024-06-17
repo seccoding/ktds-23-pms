@@ -32,4 +32,6 @@ public interface KnowledgeReplyDao {
 	// 댓글 id 권한 설정
 	public String findEmpid(String id);
 	
+	public int replyCount(String id);
+	
 }

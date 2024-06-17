@@ -74,5 +74,11 @@ public class KnowledgeReplyDaoImpl extends SqlSessionDaoSupport implements Knowl
 		return getSqlSession().selectOne(KnowledgeReplyDao.NAME_SPACE+".findEmpid", id);
 	}
 
+	@Override
+	public int replyCount(String id) {
+		// TODO Auto-generated method stub
+		return getSqlSession().update(KnowledgeReplyDao.NAME_SPACE+".replyCount", id);
+	}
+
 	
 }

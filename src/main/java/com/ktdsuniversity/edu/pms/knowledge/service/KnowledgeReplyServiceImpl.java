@@ -59,7 +59,10 @@ public class KnowledgeReplyServiceImpl implements KnowledgeReplyService{
 			boolean isInsert=knowledgeReplyDao.insertOneReplyRecommend(replyRecommandvo)>0;
 			if(isInsert) {
 				boolean isRecommend = knowledgeReplyDao.replyRecommandCount(replyRecommandvo.getReprplid())>0;
+				// 댓글에 횟수 증가 				
+				boolean str= this.knowledgeReplyDao.replyCount(replyRecommandvo.getReprplid())>0;
 				return isRecommend;
+			
 			}
 			else {
 				throw new CreationException();
