@@ -66,5 +66,6 @@
 		 WHERE SQ.TYPE_YN = 'Y'
 		   AND SQ.PRJ_ID = #{_parameter}
 		   AND SR.DEL_YN = 'N'
+		   AND SR.SRV_RPL_CNTNT IS NOT NULL
 	</select>
 </mapper>
