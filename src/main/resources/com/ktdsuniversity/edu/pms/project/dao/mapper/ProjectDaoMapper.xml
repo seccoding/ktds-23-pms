@@ -407,6 +407,7 @@
              , DEPT_ID = #{deptId}
              , STRT_DT = #{strtDt}
              , END_DT = #{endDt}
+             , PRJ_STS = #{prjSts}
              , MDFR_ID = #{mdfId}  
              , MDF_DT = SYSDATE
              , PRJ_MEMO = #{prjMemo}
