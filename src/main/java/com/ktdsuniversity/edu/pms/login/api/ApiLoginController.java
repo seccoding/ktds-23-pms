@@ -63,7 +63,7 @@ public class ApiLoginController {
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 //		관리자가 아니고, 직급이 부장이하인 경우는 본인의 id 만 조회하게 강제
 		
-		if(Integer.parseInt(employeeVO.getPstnId())>106) {
+		if(Integer.parseInt(employeeVO.getPstnId())<106) {
 			commuteVO.setEmpId(employeeVO.getEmpId());
 		}
 		

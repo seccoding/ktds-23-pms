@@ -129,7 +129,7 @@
 	
 	<update id="updateCommuteLeaveWork" parameterType="String">
 		UPDATE PMS.COMMUTE
-		   SET FNSH_TIME=SYSDATE+7/24
+		   SET FNSH_TIME=SYSDATE
 		 WHERE TO_CHAR(CMMT_DATE,'YYYY-MM-DD') =  TO_CHAR(SYSDATE,'YYYY-MM-DD')
 		   AND EMP_ID=#{_parameter}
 	</update>
