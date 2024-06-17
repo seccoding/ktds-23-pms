@@ -34,6 +34,6 @@ public interface KnowledgeService {
 	
 	public boolean deleteManyKnowledge(List<String> deleteItems);
 
-
+	public String findid(String kinId);
 
 }

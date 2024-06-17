@@ -104,13 +104,20 @@ public class Apiknowledge {
 			KnowledgeVO knowledgevo,Authentication authentication) {
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		String employeeVO = ((SecurityUser) userDetails).getEmployeeVO().getEmpId();
+		EmployeeVO employee = ((SecurityUser) userDetails).getEmployeeVO();
 		
+		String name=this.knowledgeService.findid(knlId);
+		List<String> errorMessage = new ArrayList<>();
+		if(!employee.getEmpId().equals(name)) {
+			errorMessage.add("글 작성자만 수정이 가능합니다");  // More specific error message
+		    return ApiResponse.BAD_REQUEST(errorMessage);
+		}
+			
 		knowledgevo.setKnlId(knlId);
-		knowledgevo.setCrtrId(employeeVO);
+		knowledgevo.setCrtrId(employee.getEmpId());
 		
 		boolean isUpdateSuccess = this.knowledgeService.updateOneKnowledge(knowledgevo, file);
-		
+	
 		return ApiResponse.Ok(isUpdateSuccess);
 		
 		
@@ -118,7 +125,17 @@ public class Apiknowledge {
 	
 	//삭제
 	@GetMapping("/knowledge/delete/{knlId}")
-	public  ApiResponse doKnowledgeModify(@PathVariable String knlId) {
+	public  ApiResponse doKnowledgeModify(@PathVariable String knlId, Authentication authentication) {
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employee = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		String name=this.knowledgeService.findid(knlId);
+		List<String> errorMessage = new ArrayList<>();
+		if(!employee.getEmpId().equals(name)) {
+			errorMessage.add("글 작성자만 삭제 가능합니다");  
+		    return ApiResponse.BAD_REQUEST(errorMessage);
+		}
 		
 		boolean isDeleteSuccess= this.knowledgeService.deleteOneKnowledge(knlId);
 		

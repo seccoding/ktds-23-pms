@@ -114,9 +114,16 @@ public class KnowledgeDaoImpl extends SqlSessionDaoSupport implements KnowledgeD
 
 
 	@Override
-	public String findbyId(KnowledgeVO knowledgeVO) {
-		return getSqlSession().selectOne(KnowledgeReplyDao.NAME_SPACE+".findbyId", knowledgeVO);
+	public String findkindId(String kinId) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(KnowledgeDao.NAME_SPACE+".findkindId", kinId);
 	}
+
+
+
+
+
+	
 	
 	
 }

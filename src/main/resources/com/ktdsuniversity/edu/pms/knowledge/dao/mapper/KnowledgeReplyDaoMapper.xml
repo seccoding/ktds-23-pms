@@ -32,7 +32,7 @@
 	<select id="getAllReplies" 
 			parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO" 
 			resultMap="knowledgeReplyVOMap">
-		SELECT LEVEL
+		SELECT  LEVEL
 		     , R.RPL_ID
 		     , R.RPL_PID
 		     , R.RPL_CNTNT
@@ -44,6 +44,7 @@
 		     , R.DEL_YN
 		     , E.EMP_ID
 		     , E.EMP_NAME
+		     , R.RPL_CNT
 		  FROM REPLY R
 		 INNER JOIN EMPLOYEE E
 		    ON R.CRTR_ID = E.EMP_ID
@@ -136,7 +137,33 @@
 		,#{repcrtrid})
 	</insert>
 	
+	<update id="replyRecommandCount" parameterType="string">
+		UPDATE REPLY_RECCOMMEND
+			SET   REP_REC_CNT= REP_REC_CNT + 1
+			,REP_REC_YN ='N'
+			WHERE REP_RPL_ID=#{_parameter}
+	</update>
 	
+	<!-- 댓글 --> 
+	<select id="getAllreReply" parameterType="com.ktdsuniversity.edu.pms.knowledge.vo.KnowledgeReplyVO" resultMap="knowledgeReplyVOMap">
+		SELECT RPL_ID
+			,RPL_PID 
+			,RPL_CNTNT
+			,P_POST_ID
+			,CRT_DT
+			,CRTR_ID
+			,MDF_DT
+			,MDFR_ID
+			,DEL_YN
+			,RPL_CNT
+			FROM REPLY
+			WHERE  RPL_PID =#{rplPid}
+			AND DEL_YN='N'
+	</select>
+	
+	<select id="findEmpid"  parameterType="string"  resultType="string">
+		SELECT CRTR_ID FROM REPLY WHERE RPL_ID =#{_parameter}
+	</select>
 	
 	
 </mapper>

@@ -55,9 +55,24 @@ public class KnowledgeReplyDaoImpl extends SqlSessionDaoSupport implements Knowl
 		return getSqlSession().insert(KnowledgeReplyDao.NAME_SPACE+".insertOneReplyRecommend", replyRecommandvo);
 	}
 
+
 	@Override
-	public int recommendOneKnowledgeReply(String reprplid) {
+	public int replyRecommandCount(String replyid) {
 		// TODO Auto-generated method stub
-		return getSqlSession().update(KnowledgeReplyDao.NAME_SPACE+".recommendOneKnowledgeReply", reprplid);
+		return getSqlSession().update(KnowledgeReplyDao.NAME_SPACE+".replyRecommandCount", replyid);
 	}
+
+	@Override
+	public List<KnowledgeReplyVO> getAllreReply(KnowledgeReplyVO knowledgereplyvo) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectList(KnowledgeReplyDao.NAME_SPACE+".getAllreReply", knowledgereplyvo);
+	}
+
+	@Override
+	public String findEmpid(String id) {
+		// TODO Auto-generated method stub
+		return getSqlSession().selectOne(KnowledgeReplyDao.NAME_SPACE+".findEmpid", id);
+	}
+
+	
 }

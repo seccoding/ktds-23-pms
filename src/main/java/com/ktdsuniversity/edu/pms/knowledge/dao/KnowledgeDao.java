@@ -40,8 +40,8 @@ public interface KnowledgeDao {
 
 	public int deleteManyKnowledge(List<String> deleteItems);
 	
-	// 권한 설정 	
-	public String  findbyId(KnowledgeVO knowledgeVO);
+	public String findkindId(String kinId);
+	
 	
 
 

@@ -16,4 +16,10 @@ public interface KnowledgeReplyService {
 	public boolean modifyOneReply(KnowledgeReplyVO knowledgeReplyVO);
 	
 	public boolean updateReplyRecommend(ReplyRecommandVO replyRecommandvo);
+	
+	//재댓글	
+	public List<KnowledgeReplyVO> getAllreReplies(KnowledgeReplyVO knowledgeReplyVO);
+	
+	public String findReplyId(String id);
+	
 }

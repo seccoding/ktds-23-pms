@@ -310,6 +310,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 					// List<KnowledgeVO>에 insert
 					for (KnowledgeVO knowledgeVO : knowledgeListInExcel) {
 						insertedCount += this.knowledgeDao.insertNewKnowledge(knowledgeVO);
+						
 					}
 					
 				}
@@ -320,6 +321,14 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
 		
 	}
+
+	@Override
+	public String findid(String kinId) {
+		// TODO Auto-generated method stub
+		return this.knowledgeDao.findkindId(kinId);
+	}
+
+	
 
 
 
