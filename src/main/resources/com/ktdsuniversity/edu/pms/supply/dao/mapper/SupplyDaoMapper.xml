@@ -53,6 +53,7 @@
 					 , SPL_MDF_DT
 		  		  FROM SUPPLY)
 		 WHERE DEL_YN = 'N'
+		 ORDER BY SPL_REGT_DT DESC
 	</select>
 	
 	<select id="selectOneSupply" 

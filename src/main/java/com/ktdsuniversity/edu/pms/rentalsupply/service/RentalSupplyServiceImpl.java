@@ -112,7 +112,8 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		int price = rentalSupplyApprovalVO.getRsplPrice() * rentalSupplyApprovalVO.getInvQty();
 		approvalList.add(mgmtSprtDeptLeadId);
 		if (price > 10000000) {
-			approvalList.add(ceoId);
+//			approvalList.add(ceoId);
+			approvalList.add("system01");
 		}
 
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -175,7 +176,8 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 			price = Math.abs(
 					rentalSupplyApprovalVO.getRsplPrice() * (rentalSupplyApprovalVO.getInvQty() - originalRentalSupplyVO.getInvQty()));
 			if (price > 10000000) {
-				approvalList.add(ceoId);
+//				approvalList.add(ceoId);
+				approvalList.add("system01");
 			}
 		}
 
@@ -195,6 +197,7 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 	@Override
 	public boolean requestGetRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO) {
 		rentalSupplyApprovalVO.setRsplRqstType("신청");
+		rentalSupplyApprovalVO.setRtrnYn("N");
 		
 	    EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalVO.getRsplApprReqtr());
 
@@ -244,7 +247,8 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 	        approvalList.add(mgmtSprtDeptLeadId);
 	    }
 	    if (price > 10000000) {
-	        approvalList.add(ceoId);
+//	        approvalList.add(ceoId);
+	    	approvalList.add("system01");
 	    }
 
 	    ApprovalVO approvalVO = new ApprovalVO();
@@ -293,7 +297,8 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		int price = rentalSupplyApprovalVO.getRsplPrice() * rentalSupplyApprovalVO.getInvQty();
 		approvalList.add(mgmtSprtDeptLeadId);
 		if (price > 10000000) {
-			approvalList.add(ceoId);
+//			approvalList.add(ceoId);
+			approvalList.add("system01");
 		}
 
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -321,12 +326,14 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		return rentalSupplyApprovalListVO;
 	}
 
+	@Transactional
 	@Override
 	public boolean requestReturnRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO) {
-	    EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalVO.getRsplApprReqtr());
+		RentalSupplyApprovalVO rentalSupplyApprovalData = this.rentalSupplyApprovalDao.getRentalSupplyApprovalByPK(rentalSupplyApprovalVO.getRsplApprId());
+	    EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalData.getRsplApprReqtr());
 
 	    // 원래 소모품 정보를 가져옴
-	    RentalSupplyVO originalRentalSupplyVO = this.rentalSupplyDao.selectOneRentalSupply(rentalSupplyApprovalVO.getRsplId());
+	    RentalSupplyVO originalRentalSupplyVO = this.rentalSupplyDao.selectOneRentalSupply(rentalSupplyApprovalData.getRsplId());
 	    if (originalRentalSupplyVO == null) {
 	        return false;
 	    }
@@ -334,9 +341,12 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 	    int requestedQty = rentalSupplyApprovalVO.getRsplRqstQty();
 	    int newQty = originalRentalSupplyVO.getInvQty() + requestedQty;
 	    
+	    originalRentalSupplyVO.setInvQty(newQty);
+	    
 	    rentalSupplyApprovalVO.setInvQty(newQty);
 	    
 	    int requestedCount = this.rentalSupplyApprovalDao.updateOneRentalSupplyForReturn(rentalSupplyApprovalVO);
+	    this.rentalSupplyDao.updateOneRentalSupply(originalRentalSupplyVO);
 	    
 	    List<String> approvalList = new ArrayList<>();
 	    DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");

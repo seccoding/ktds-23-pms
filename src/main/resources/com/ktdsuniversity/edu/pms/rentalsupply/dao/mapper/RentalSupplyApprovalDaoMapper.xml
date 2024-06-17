@@ -90,6 +90,7 @@
 		<if test="empId != null and empId != ''">
 		   AND RSPL_APPR_REQTR = #{empId}
 		</if>
+		 ORDER BY APPR_DATE DESC
 	</select>
 
 	<insert id="insertRentalSupplyApprovalRequest"
