@@ -51,15 +51,26 @@
 	</insert>	
 
 	<select id="getDepartmentApprovalByPK" parameterType="string" resultMap="DepartmentApprovalVOMap">
-			SELECT DEPT_APPR_ID
-				, DEPT_APPR_TYPE
-				, DEPT_ID
-				, DEPT_NAME
-				, DEPT_LEAD_ID
-				, DEL_YN
-				, DEPT_APPR_YN
-				, DEPT_APPR_REQTR
-			FROM DEPARTMENT_APPROVAL
+		   SELECT DA.DEPT_APPR_ID
+				, DA.DEPT_APPR_TYPE
+				, DA.DEPT_ID
+				, DA.DEPT_NAME
+				, DA.DEPT_LEAD_ID
+				, DA.DEL_YN
+				, DA.DEPT_APPR_YN
+				, DA.DEPT_APPR_REQTR
+				, DA.DEPT_APPR_REASON
+				, EA.EMP_NAME EA_EMP_NAME
+				, EA.EMP_ID EA_EMP_ID
+				, EA.EMAIL EA_EMAIL
+				, EDL.EMP_NAME EDL_EMP_NAME
+				, EDL.EMP_ID EDL_EMP_ID
+				, EDL.EMAIL EDL_EMAIL
+			 FROM DEPARTMENT_APPROVAL DA
+			 JOIN EMPLOYEE EA
+			   ON DA.DEPT_APPR_REQTR = EA.EMP_ID
+			 JOIN EMPLOYEE EDL
+			   ON DA.DEPT_LEAD_ID = EDL.EMP_ID
 			WHERE DEPT_APPR_ID=#{_parameter}
     </select>
 
