@@ -137,7 +137,6 @@
         INNER JOIN CLIENT CL
         ON CL.CLNT_ID = P.CLNT_INFO
         WHERE P.DEL_YN = 'N'
-        AND D.DEL_YN = 'N'
         AND C.DEL_YN = 'N'
   		<if test='searchStatus != null and searchStatus != ""'>
             <choose>
