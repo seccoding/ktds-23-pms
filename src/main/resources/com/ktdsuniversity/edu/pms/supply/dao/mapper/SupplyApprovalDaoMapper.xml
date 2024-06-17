@@ -122,20 +122,23 @@
 	</insert>
 	
 	<select id="getSupplyApprovalByPK" parameterType="string" resultMap="SupplyApprovalVOMap">
-		SELECT SPL_APPR_ID
-			 , SPL_APPR_TYPE
-			 , SPL_ID
-			 , SPL_NAME
-			 , SPL_CTGR
-			 , SPL_PRICE
-			 , INV_QTY
-			 , SPL_IMG
-			 , SPL_DTL
-			 , SPL_APPR_REQTR
-			 , DEL_YN
-			 , SPL_APPR_YN
-			 , SPL_RQST_TYPE
-		  FROM SUPPLY_APPROVAL
+		SELECT S.SPL_APPR_ID
+			 , S.SPL_APPR_TYPE
+			 , S.SPL_ID
+			 , S.SPL_NAME
+			 , S.SPL_CTGR
+			 , S.SPL_PRICE
+			 , S.INV_QTY
+			 , S.SPL_IMG
+			 , S.SPL_DTL
+			 , S.SPL_APPR_REQTR
+			 , S.DEL_YN
+			 , S.SPL_APPR_YN
+			 , S.SPL_RQST_TYPE
+			 , E.EMP_NAME
+		  FROM SUPPLY_APPROVAL S
+		  JOIN EMPLOYEE E
+		    ON E.EMP_ID= S.SPL_APPR_REQTR
 		 WHERE SPL_APPR_ID = #{_parameter}
 	</select>
 	

@@ -13,8 +13,16 @@ import com.ktdsuniversity.edu.pms.approval.dao.ApprovalDao;
 
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalListVO;
 import com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO;
+import com.ktdsuniversity.edu.pms.department.dao.DepartmentApprovalDao;
+import com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO;
+import com.ktdsuniversity.edu.pms.rentalsupply.dao.RentalSupplyApprovalDao;
+import com.ktdsuniversity.edu.pms.rentalsupply.dao.RentalSupplyDao;
+import com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalVO;
+import com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO;
 import com.ktdsuniversity.edu.pms.supply.dao.SupplyApprovalDao;
+import com.ktdsuniversity.edu.pms.supply.dao.SupplyDao;
 import com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO;
+import com.ktdsuniversity.edu.pms.supply.vo.SupplyVO;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -26,6 +34,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	@Autowired
 	private SupplyApprovalDao supplyApprovalDao;
+	
+	@Autowired 
+	private RentalSupplyApprovalDao rentalSupplyApprovalDao;
+	
+	@Autowired
+	private DepartmentApprovalDao departmentApprovalDao;
+	
+	@Autowired
+	private SupplyDao supplyDao;
+	
+	@Autowired
+	private RentalSupplyDao rentalSupplyDao;
 
 	@Override
 	public ApprovalListVO getAllApproval() {
@@ -49,7 +69,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 			SupplyApprovalVO approvalVO2 = this.supplyApprovalDao.getSupplyApprovalByPK(approvalVO.getApprInfo());
 			return approvalVO2;
 		}else if(apprType.equals("DEPARTMENT")) {
-			
+			DepartmentApprovalVO approvalVO2 = this.departmentApprovalDao.getDepartmentApprovalByPK(approvalVO.getApprInfo());
+			return approvalVO2;
+		}else if(apprType.equals("RSUPPLY")){
+			RentalSupplyVO approvalVO2 = this.rentalSupplyApprovalDao.getRentalSupplyApprovalByPK(approvalVO.getApprInfo());
+			return approvalVO2;
 		}
 		
 		return null;
@@ -74,16 +98,79 @@ public class ApprovalServiceImpl implements ApprovalService {
 		this.approvalDao.updateOneApproveal(approvalVO);
 		
 //		2. 해당 내용의 승인이 전부 완료되었는지 체크 
+		approvalVO = this.approvalDao.getApprovalByApprId(approvalVO.getApprId());
 		int cnt = this.approvalDao.getNonApprCnt(approvalVO);
 		logger.debug(approvalVO.getApprInfo()+"의 미승인 건수: "+cnt);
 		
 //		3. 완료시 해당 승인내용을 db에 반영한다   
 		if(cnt==0) {
-			logger.debug("다른테이블 업데이트 필요함 ");
+			return updateApprovalDetails(approvalVO);
+		}
+		return false;
+		
+	}
+	
+	private boolean updateApprovalDetails (ApprovalVO approvalVO) {
+		logger.debug("다른테이블 업데이트 필요함 ");
+		approvalVO= this.approvalDao.getApprovalByApprId(approvalVO.getApprId());
+		if(approvalVO.getApprType().equals("SUPPLY")) {//소모품 테이블 업테이트
+			
+			this.supplyApprovalDao.updateOneSupplyApprovalYnToYByPK(approvalVO.getApprInfo());
+			SupplyApprovalVO supplyApprovalVO = this.supplyApprovalDao.getSupplyApprovalByPK(approvalVO.getApprInfo());
+			
+			SupplyVO supplyVO = new SupplyVO();
+			supplyVO.setSplName(supplyApprovalVO.getSplName());
+			supplyVO.setSplCtgr(supplyApprovalVO.getSplCtgr());
+			supplyVO.setSplPrice(supplyApprovalVO.getSplPrice());
+			supplyVO.setInvQty(supplyApprovalVO.getInvQty());
+			supplyVO.setSplImg(supplyApprovalVO.getSplImg());
+			supplyVO.setSplDtl(supplyApprovalVO.getSplDtl());				
+			
+			if(supplyApprovalVO.getSplApprType().equals("INSERT")){
+				supplyVO.setSplRegtId(supplyApprovalVO.getSplApprReqtr());
+				this.supplyDao.registerNewSupply(supplyVO);		
+				
+				return true;
+			}else if(supplyApprovalVO.getSplApprType().equals("UPDATE")){
+				supplyVO.setSplId(supplyApprovalVO.getSplId());
+				if(supplyApprovalVO.getSplRqstType().equals("수정")) {
+					supplyVO.setSplMdfrId(supplyApprovalVO.getSplApprReqtr());						
+				}
+				this.supplyDao.updateOneSupply(supplyVO);
+				
+				return true;
+			}
+		}else if(approvalVO.getApprType().equals("RSUPPLY")) {//대여품 테이블 업데이트
+			this.rentalSupplyApprovalDao.updateOneRentalSupplyApprovalYnToYByPK(approvalVO.getApprInfo());
+			RentalSupplyApprovalVO rentalSupplyApprovalVO = this.rentalSupplyApprovalDao.getRentalSupplyApprovalByPK(approvalVO.getApprInfo());
+
+			RentalSupplyVO rentalSupplyVO = new RentalSupplyVO();
+			rentalSupplyVO.setRsplName(rentalSupplyApprovalVO.getRsplName());
+			rentalSupplyVO.setRsplCtgr(rentalSupplyApprovalVO.getRsplCtgr());
+			rentalSupplyVO.setRsplPrice(rentalSupplyApprovalVO.getRsplPrice());
+			rentalSupplyVO.setInvQty(rentalSupplyApprovalVO.getInvQty());
+			rentalSupplyVO.setRsplImg(rentalSupplyApprovalVO.getRsplImg());				
+			rentalSupplyVO.setRsplDtl(rentalSupplyApprovalVO.getRsplDtl());				
+			
+			if(rentalSupplyApprovalVO.getRsplApprType().equals("INSERT")) {
+				rentalSupplyVO.setRsplRegtId(rentalSupplyApprovalVO.getRsplApprReqtr());				
+				this.rentalSupplyApprovalDao.insertRentalSupplyApprovalRequest(rentalSupplyApprovalVO);
+				
+				return true;
+			}
+			else if(rentalSupplyApprovalVO.getRsplApprType().equals("UPDATE")) {
+				rentalSupplyVO.setRsplId(rentalSupplyApprovalVO.getRsplId());
+				if(rentalSupplyApprovalVO.getRsplRqstType().equals("수정")) {
+					rentalSupplyVO.setRsplMdfrId(rentalSupplyApprovalVO.getRsplApprReqtr());				
+				}
+				this.rentalSupplyDao.updateOneRentalSupply(rentalSupplyVO);
+				
+				return true;
+			}else if(approvalVO.getApprType().equals("DEPARTMENT")){
+				
+			}
 			
 		}
-		
-		
 		return false;
 	}
 

@@ -92,9 +92,7 @@ public class ApiApprovalController {
 		
 		if(approvalVO.getApprYn().equals("N") && approvalVO.getApprRsn()==null) {
 			return ApiResponse.BAD_REQUEST(List.of("사유를 적어주시기 바랍니다"));
-		}
-		Validator<ApprovalVO> validator = new Validator<ApprovalVO>(approvalVO);
-		
+		}		
 		
 		boolean isUpdated =false;
 		isUpdated=this.approvalService.updateOneApproveal(approvalVO);
