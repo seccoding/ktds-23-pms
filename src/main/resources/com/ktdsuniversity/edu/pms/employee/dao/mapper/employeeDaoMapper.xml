@@ -18,6 +18,7 @@
 					 javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
 			<id column="DEPT_ID" property="deptId"/>
 			<result column="DEPT_NAME" property="deptName"/>
+			<result column="DEPT_LEAD_ID" property="deptLeadId"/>
 		</association>
 		<association property="jobVO"
 					 javaType="com.ktdsuniversity.edu.pms.job.vo.JobVO">
@@ -29,7 +30,7 @@
 			<id column="TM_ID" property="tmId"/>
 			<result column="TM_NAME" property="tmName"/>
 			<result column="TM_LEAD_ID" property="tmLeadId"/>
-			<result column="DEPT_LEAD_ID" property="deptLeadId"/>
+			
 		</association>
 
 	</resultMap>
