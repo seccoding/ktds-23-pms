@@ -73,6 +73,15 @@
 		 WHERE DEL_YN = 'N'
 		   AND RSPL_ID = #{_parameter}
 	</select>
+
+	<select id="selectAllRentalSupplyCategory"
+			resultType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">
+		SELECT RSPL_CTGR 
+		  FROM (SELECT RSPL_CTGR
+		  		  FROM RSUPPLY
+		  		 WHERE DEL_YN = 'N')
+		 GROUP BY RSPL_CTGR
+	</select>
 	
 	<insert id="registerNewRentalSupply"
 			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyVO">

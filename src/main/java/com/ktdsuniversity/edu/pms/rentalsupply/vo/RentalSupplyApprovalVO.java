@@ -12,6 +12,8 @@ public class RentalSupplyApprovalVO extends RentalSupplyVO {
 	private String rsplApprReqtr;
 	private String rsplApprYn;
 	private String rsplRqstType;
+	private String rtrnYn;
+	private int rsplRqstQty;
 	
 	private ApprovalVO approvalVO;
 	private EmployeeVO employeeVO;
@@ -64,6 +66,18 @@ public class RentalSupplyApprovalVO extends RentalSupplyVO {
 	}
 	public void setRsupplies(List<RentalSupplyApprovalVO> rsupplies) {
 		this.rsupplies = rsupplies;
+	}
+	public String getRtrnYn() {
+		return rtrnYn;
+	}
+	public void setRtrnYn(String rtrnYn) {
+		this.rtrnYn = rtrnYn;
+	}
+	public int getRsplRqstQty() {
+		return rsplRqstQty;
+	}
+	public void setRsplRqstQty(int rsplRqstQty) {
+		this.rsplRqstQty = rsplRqstQty;
 	}
 	
 }

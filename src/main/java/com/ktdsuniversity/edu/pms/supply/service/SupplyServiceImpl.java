@@ -98,10 +98,6 @@ public class SupplyServiceImpl implements SupplyService {
 		List<String> approvalList = new ArrayList<>();
 		// 결재 요청자 정보
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
-		// 결재 요청자가 속한 팀의 장
-		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-		// 결재 요청자가 속한 부서의 장
-		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
 		// 경영지원부 정보
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		// 경영지원부서장
@@ -110,16 +106,12 @@ public class SupplyServiceImpl implements SupplyService {
 		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110"))
 				.map(emp -> emp.getEmpId()).findFirst().orElse(mgmtSprtDeptLeadId);
 
-		// 결재라인 순서(팀장 -> 부서장 -> 경영지원부장 -> 대표이사)
+		// 결재라인 순서(경영지원부장 -> 대표이사)
 		// 결재라인 조건
 		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();
-		approvalList.add(tmLeadId);
-		if (price > 1000000) {
-			approvalList.add(deptLeadId);
-		}
-		if (price > 5000000) {
-			approvalList.add(mgmtSprtDeptLeadId);
-		}
+
+		approvalList.add(mgmtSprtDeptLeadId);
+
 		if (price > 10000000) {
 			approvalList.add(ceoId);
 		}
@@ -163,10 +155,6 @@ public class SupplyServiceImpl implements SupplyService {
 		List<String> approvalList = new ArrayList<>();
 		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
-		// 결재 요청자가 속한 팀의 장
-		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-		// 결재 요청자가 속한 부서의 장
-		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
 		// 경영지원부 정보
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		// 경영지원부서장
@@ -182,18 +170,12 @@ public class SupplyServiceImpl implements SupplyService {
 		 */
 		int price;
 
-		approvalList.add(tmLeadId);
+		approvalList.add(mgmtSprtDeptLeadId);
 
 		if (supplyApprovalVO.getInvQty() != originalSupplyVO.getInvQty()) {
 			price = Math.abs(
 					supplyApprovalVO.getSplPrice() * (supplyApprovalVO.getInvQty() - originalSupplyVO.getInvQty()));
 
-			if (price > 1000000) {
-				approvalList.add(deptLeadId);
-			}
-			if (price > 5000000) {
-				approvalList.add(mgmtSprtDeptLeadId);
-			}
 			if (price > 10000000) {
 				approvalList.add(ceoId);
 			}
@@ -215,68 +197,62 @@ public class SupplyServiceImpl implements SupplyService {
 	@Override
 	public boolean requestGetSupply(SupplyApprovalVO supplyApprovalVO) {
 		supplyApprovalVO.setSplRqstType("신청");
-		
-	    EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
 
-	    // 원래 소모품 정보를 가져옴
-	    SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyApprovalVO.getSplId());
-	    if (originalSupplyVO == null) {
-	        return false;
-	    }
+		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
 
-	    int requestedQty = supplyApprovalVO.getInvQty();
-	    int newQty = originalSupplyVO.getInvQty() - requestedQty;
-	    if (newQty < 0) {
-	        return false; // 재고가 부족한 경우
-	    }
+		// 원래 소모품 정보를 가져옴
+		SupplyVO originalSupplyVO = this.supplyDao.selectOneSupply(supplyApprovalVO.getSplId());
+		if (originalSupplyVO == null) {
+			return false;
+		}
 
-	    // 결재 요청 타입(UPDATE)
-	    supplyApprovalVO.setSplApprType("UPDATE");
-	    supplyApprovalVO.setDelYn("N");
-	    
-	    supplyApprovalVO.setSplName(originalSupplyVO.getSplName());
+		int requestedQty = supplyApprovalVO.getSplRqstQty();
+		int newQty = originalSupplyVO.getInvQty() - requestedQty;
+		if (newQty < 0) {
+			return false; // 재고가 부족한 경우
+		}
+
+		// 결재 요청 타입(UPDATE)
+		supplyApprovalVO.setSplApprType("UPDATE");
+		supplyApprovalVO.setDelYn("N");
+
+		supplyApprovalVO.setSplName(originalSupplyVO.getSplName());
 		supplyApprovalVO.setSplCtgr(originalSupplyVO.getSplCtgr());
 		supplyApprovalVO.setSplImg(originalSupplyVO.getSplImg());
 		supplyApprovalVO.setSplDtl(originalSupplyVO.getSplDtl());
 		supplyApprovalVO.setSplPrice(originalSupplyVO.getSplPrice());
+		supplyApprovalVO.setInvQty(newQty);
 
-	    // 재고를 차감한 값을 설정
-	    originalSupplyVO.setInvQty(newQty);
-	    this.supplyDao.updateOneSupplyStock(originalSupplyVO);
+		int requestedCount = this.supplyApprovalDao.insertSupplyApprovalRequest(supplyApprovalVO);
 
-	    int requestedCount = this.supplyApprovalDao.insertSupplyApprovalRequest(supplyApprovalVO);
+		// 결재 승인자 리스트
+		List<String> approvalList = new ArrayList<>();
+		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
+		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
+		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110"))
+				.map(emp -> emp.getEmpId()).findFirst().orElse(mgmtSprtDeptLeadId);
 
-	    // 결재 승인자 리스트
-	    List<String> approvalList = new ArrayList<>();
-	    String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-	    String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
-	    DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
-	    String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
-	    String ceoId = this.employeeDao.getAllEmployee().stream()
-	                              .filter(emp -> emp.getPstnId().equals("110"))
-	                              .map(emp -> emp.getEmpId())
-	                              .findFirst()
-	                              .orElse(mgmtSprtDeptLeadId);
+		int price = originalSupplyVO.getSplPrice() * requestedQty;
+		approvalList.add(tmLeadId);
+		if (price > 1000000) {
+			approvalList.add(deptLeadId);
+		}
+		if (price > 5000000) {
+			approvalList.add(mgmtSprtDeptLeadId);
+		}
+		if (price > 10000000) {
+			approvalList.add(ceoId);
+		}
 
-	    int price = originalSupplyVO.getSplPrice() * requestedQty;
-	    approvalList.add(tmLeadId);
-	    if (price > 1000000) {
-	        approvalList.add(deptLeadId);
-	    }
-	    if (price > 5000000) {
-	        approvalList.add(mgmtSprtDeptLeadId);
-	    }
-	    if (price > 10000000) {
-	        approvalList.add(ceoId);
-	    }
+		ApprovalVO approvalVO = new ApprovalVO();
+		approvalVO.setApprType("SUPPLY");
+		approvalVO.setApprInfo(supplyApprovalVO.getSplApprId());
+		approvalVO.setApprReqtr(employeeVO.getEmpId());
+		this.approvalDao.insertApproval(approvalList, approvalVO);
 
-	    ApprovalVO approvalVO = new ApprovalVO();
-	    approvalVO.setApprType("SUPPLY");
-	    approvalVO.setApprInfo(supplyApprovalVO.getSplApprId());
-	    approvalVO.setApprReqtr(employeeVO.getEmpId());
-	    this.approvalDao.insertApproval(approvalList, approvalVO);
-
-	    return requestedCount > 0;
+		return requestedCount > 0;
 	}
 
 	@Transactional
@@ -308,21 +284,13 @@ public class SupplyServiceImpl implements SupplyService {
 		List<String> approvalList = new ArrayList<>();
 
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(supplyApprovalVO.getSplApprReqtr());
-		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
 		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110"))
 				.map(emp -> emp.getEmpId()).findFirst().orElse(mgmtSprtDeptLeadId);
 
 		int price = supplyApprovalVO.getSplPrice() * supplyApprovalVO.getInvQty();
-		approvalList.add(tmLeadId);
-		if (price > 1000000) {
-			approvalList.add(deptLeadId);
-		}
-		if (price > 5000000) {
-			approvalList.add(mgmtSprtDeptLeadId);
-		}
+		approvalList.add(mgmtSprtDeptLeadId);
 		if (price > 10000000) {
 			approvalList.add(ceoId);
 		}
@@ -337,20 +305,6 @@ public class SupplyServiceImpl implements SupplyService {
 
 		return deletedCount > 0;
 	}
-
-//	@Override
-//	public SupplyLogListVO searchAllSupplyLog(SearchSupplyVO searchSupplyVO) {
-//		int supplyLogCount = this.supplyLogDao.searchSupplyLogAllCount(searchSupplyVO);
-//		searchSupplyVO.setPageCount(supplyLogCount);
-//		
-//		List<SupplyLogVO> supplyLogList = this.supplyLogDao.searchAllSupplyLog(searchSupplyVO);
-//		
-//		SupplyLogListVO supplyLogListVO = new SupplyLogListVO();
-//		supplyLogListVO.setSupplyLogCnt(supplyLogCount);
-//		supplyLogListVO.setSupplyLogList(supplyLogList);
-//		
-//		return supplyLogListVO;
-//	}
 
 	@Override
 	public SupplyApprovalListVO searchAllSupplyApprovalLog(SearchSupplyVO searchSupplyVO) {

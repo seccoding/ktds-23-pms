@@ -84,6 +84,10 @@ public class ApiSupplyController {
 			@RequestParam(required = false) MultipartFile file, Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
 
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyApprovalVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyApprovalVO.getSplCtgr());
@@ -144,6 +148,10 @@ public class ApiSupplyController {
 			Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
 
 		boolean isNotEmptyName = ValidationUtils.notEmpty(supplyApprovalVO.getSplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(supplyApprovalVO.getSplCtgr());
@@ -213,7 +221,7 @@ public class ApiSupplyController {
 			return ApiResponse.BAD_REQUEST(List.of("해당 소모품이 존재하지 않습니다."));
 		}
 
-		int requestedQty = supplyApprovalVO.getInvQty();
+		int requestedQty = supplyApprovalVO.getSplRqstQty();
 		if (requestedQty <= 0) {
 			return ApiResponse.BAD_REQUEST(List.of("올바른 신청 갯수를 입력해 주세요."));
 		}
@@ -241,7 +249,9 @@ public class ApiSupplyController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-		// TODO 권한 체크
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
 
 		SupplyApprovalVO supplyApprovalVO = new SupplyApprovalVO();
 		supplyApprovalVO.setSplId(splId);
@@ -253,7 +263,14 @@ public class ApiSupplyController {
 	}
 
 	@GetMapping("/supply/log")
-	public ApiResponse getSupplyApprovalLogList(SearchSupplyVO searchSupplyVO) {
+	public ApiResponse getSupplyApprovalLogList(SearchSupplyVO searchSupplyVO, Authentication authentication) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+		
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010") && !employeeVO.getMngrYn().equals("Y")) {
+			searchSupplyVO.setEmpId(employeeVO.getEmpId());
+		}
+			
 		SupplyApprovalListVO supplyApprovalListVO = this.supplyService.searchAllSupplyApprovalLog(searchSupplyVO);
 
 		return ApiResponse.Ok(supplyApprovalListVO.getSupplyApprovalList(), supplyApprovalListVO.getSupplyApprovalCnt(),

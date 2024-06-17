@@ -42,5 +42,7 @@ public interface RentalSupplyService {
 	public boolean requestDeleteRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO);
 	
 	public RentalSupplyApprovalListVO searchAllRentalSupplyApprovalLog(SearchRentalSupplyVO searchRentalSupplyVO);
+
+	public boolean requestReturnRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO);
 	
 }

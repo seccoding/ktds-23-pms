@@ -99,10 +99,6 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		List<String> approvalList = new ArrayList<>();
 		// 결재 요청자 정보
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalVO.getRsplApprReqtr());
-		// 결재 요청자가 속한 팀의 장
-		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-		// 결재 요청자가 속한 부서의 장
-		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
 		// 경영지원부 정보
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		// 경영지원부서장
@@ -111,16 +107,10 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110"))
 				.map(emp -> emp.getEmpId()).findFirst().orElse(mgmtSprtDeptLeadId);
 
-		// 결재라인 순서(팀장 -> 부서장 -> 경영지원부장 -> 대표이사)
+		// 결재라인 순서(경영지원부장 -> 대표이사)
 		// 결재라인 조건
 		int price = rentalSupplyApprovalVO.getRsplPrice() * rentalSupplyApprovalVO.getInvQty();
-		approvalList.add(tmLeadId);
-		if (price > 1000000) {
-			approvalList.add(deptLeadId);
-		}
-		if (price > 5000000) {
-			approvalList.add(mgmtSprtDeptLeadId);
-		}
+		approvalList.add(mgmtSprtDeptLeadId);
 		if (price > 10000000) {
 			approvalList.add(ceoId);
 		}
@@ -164,10 +154,6 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		List<String> approvalList = new ArrayList<>();
 		// 결재 요청자 정보 **(Mapper에 팀장, 부서장 조회하는 코드 추가 필요)
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalVO.getRsplApprReqtr());
-		// 결재 요청자가 속한 팀의 장
-		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-		// 결재 요청자가 속한 부서의 장
-		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
 		// 경영지원부 정보
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		// 경영지원부서장
@@ -183,18 +169,11 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		 */
 		int price;
 
-		approvalList.add(tmLeadId);
+		approvalList.add(mgmtSprtDeptLeadId);
 
 		if (rentalSupplyApprovalVO.getInvQty() != originalRentalSupplyVO.getInvQty()) {
 			price = Math.abs(
 					rentalSupplyApprovalVO.getRsplPrice() * (rentalSupplyApprovalVO.getInvQty() - originalRentalSupplyVO.getInvQty()));
-
-			if (price > 1000000) {
-				approvalList.add(deptLeadId);
-			}
-			if (price > 5000000) {
-				approvalList.add(mgmtSprtDeptLeadId);
-			}
 			if (price > 10000000) {
 				approvalList.add(ceoId);
 			}
@@ -225,7 +204,7 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 	        return false;
 	    }
 
-	    int requestedQty = rentalSupplyApprovalVO.getInvQty();
+	    int requestedQty = rentalSupplyApprovalVO.getRsplRqstQty();
 	    int newQty = originalRentalSupplyVO.getInvQty() - requestedQty;
 	    if (newQty < 0) {
 	        return false; // 재고가 부족한 경우
@@ -240,10 +219,7 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 	    rentalSupplyApprovalVO.setRsplImg(originalRentalSupplyVO.getRsplImg());
 	    rentalSupplyApprovalVO.setRsplDtl(originalRentalSupplyVO.getRsplDtl());
 	    rentalSupplyApprovalVO.setRsplPrice(originalRentalSupplyVO.getRsplPrice());
-
-	    // 재고를 차감한 값을 설정
-	    originalRentalSupplyVO.setInvQty(newQty);
-	    this.rentalSupplyDao.updateOneRentalSupplyStock(originalRentalSupplyVO);
+	    rentalSupplyApprovalVO.setInvQty(newQty);
 
 	    int requestedCount = this.rentalSupplyApprovalDao.insertRentalSupplyApprovalRequest(rentalSupplyApprovalVO);
 
@@ -309,21 +285,13 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		List<String> approvalList = new ArrayList<>();
 
 		EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalVO.getRsplApprReqtr());
-		String tmLeadId = employeeVO.getTeamVO().getTmLeadId();
-		String deptLeadId = employeeVO.getDepartmentVO().getDeptLeadId();
 		DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
 		String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
 		String ceoId = this.employeeDao.getAllEmployee().stream().filter(emp -> emp.getPstnId().equals("110"))
 				.map(emp -> emp.getEmpId()).findFirst().orElse(mgmtSprtDeptLeadId);
 
 		int price = rentalSupplyApprovalVO.getRsplPrice() * rentalSupplyApprovalVO.getInvQty();
-		approvalList.add(tmLeadId);
-		if (price > 1000000) {
-			approvalList.add(deptLeadId);
-		}
-		if (price > 5000000) {
-			approvalList.add(mgmtSprtDeptLeadId);
-		}
+		approvalList.add(mgmtSprtDeptLeadId);
 		if (price > 10000000) {
 			approvalList.add(ceoId);
 		}
@@ -351,6 +319,39 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 		rentalSupplyApprovalListVO.setRentalSupplyApprovalList(rentalSupplyApprovalList);
 
 		return rentalSupplyApprovalListVO;
+	}
+
+	@Override
+	public boolean requestReturnRentalSupply(RentalSupplyApprovalVO rentalSupplyApprovalVO) {
+	    EmployeeVO employeeVO = this.employeeDao.getOneEmployee(rentalSupplyApprovalVO.getRsplApprReqtr());
+
+	    // 원래 소모품 정보를 가져옴
+	    RentalSupplyVO originalRentalSupplyVO = this.rentalSupplyDao.selectOneRentalSupply(rentalSupplyApprovalVO.getRsplId());
+	    if (originalRentalSupplyVO == null) {
+	        return false;
+	    }
+	    
+	    int requestedQty = rentalSupplyApprovalVO.getRsplRqstQty();
+	    int newQty = originalRentalSupplyVO.getInvQty() + requestedQty;
+	    
+	    rentalSupplyApprovalVO.setInvQty(newQty);
+	    
+	    int requestedCount = this.rentalSupplyApprovalDao.updateOneRentalSupplyForReturn(rentalSupplyApprovalVO);
+	    
+	    List<String> approvalList = new ArrayList<>();
+	    DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+	    String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+	    
+	    approvalList.add(mgmtSprtDeptLeadId);
+	    
+	    ApprovalVO approvalVO = new ApprovalVO();
+	    approvalVO.setApprType("RSUPPLY");
+	    approvalVO.setApprInfo(rentalSupplyApprovalVO.getRsplApprId());
+	    approvalVO.setApprReqtr(employeeVO.getEmpId());
+	    this.approvalDao.insertApproval(approvalList, approvalVO);
+
+	    return requestedCount > 0;
+
 	}
 
 	

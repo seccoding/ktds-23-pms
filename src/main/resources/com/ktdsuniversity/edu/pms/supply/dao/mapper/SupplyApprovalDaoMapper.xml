@@ -35,6 +35,7 @@
 					 , sa.DEL_YN
 					 , sa.SPL_APPR_YN
 					 , sa.SPL_RQST_TYPE
+					 , sa.SPL_RQST_QTY
 					 , a.APPR_DATE
 					 , e.EMP_NAME
 					 , e.EMAIL
@@ -59,6 +60,7 @@
 			 , DEL_YN
 			 , SPL_APPR_YN
 			 , SPL_RQST_TYPE
+			 , SPL_RQST_QTY
 			 , TO_CHAR(APPR_DATE, 'YYYY-MM-DD') APPR_DATE
 			 , EMP_NAME
 			 , EMAIL
@@ -72,6 +74,7 @@
 					 , sa.DEL_YN
 					 , sa.SPL_APPR_YN
 					 , sa.SPL_RQST_TYPE
+					 , sa.SPL_RQST_QTY
 					 , a.APPR_DATE
 					 , e.EMP_NAME
 					 , e.EMAIL
@@ -81,6 +84,9 @@
 				  JOIN EMPLOYEE e
 				    ON e.EMP_ID = sa.SPL_APPR_REQTR)
 		 WHERE DEL_YN = 'N'
+		<if test="empId != null and empId != ''">
+		   AND SPL_APPR_REQTR = #{empId}
+		</if>
 	</select>
 
 	<insert id="insertSupplyApprovalRequest"
@@ -104,7 +110,8 @@
 		, SPL_APPR_REQTR
 		, DEL_YN
 		, SPL_APPR_YN
-		, SPL_RQST_TYPE)
+		, SPL_RQST_TYPE
+		, SPL_RQST_QTY)
 		VALUES
 		 (#{splApprId}
 		, #{splApprType}
@@ -118,10 +125,12 @@
 		, #{splApprReqtr}
 		, #{delYn}
 		, 'N'
-		, #{splRqstType})
+		, #{splRqstType}
+		, #{splRqstQty})
 	</insert>
 	
 	<select id="getSupplyApprovalByPK" parameterType="string" resultMap="SupplyApprovalVOMap">
+
 		SELECT S.SPL_APPR_ID
 			 , S.SPL_APPR_TYPE
 			 , S.SPL_ID
@@ -135,6 +144,7 @@
 			 , S.DEL_YN
 			 , S.SPL_APPR_YN
 			 , S.SPL_RQST_TYPE
+			 , S.SPL_RQST_QTY
 			 , E.EMP_NAME
 		  FROM SUPPLY_APPROVAL S
 		  JOIN EMPLOYEE E
