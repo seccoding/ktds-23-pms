@@ -91,6 +91,10 @@ public class ApiRentalSupplyController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
+
 		boolean isNotEmptyName = ValidationUtils.notEmpty(rentalSupplyApprovalVO.getRsplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(rentalSupplyApprovalVO.getRsplCtgr());
 		boolean isNotEmptyPrice = ValidationUtils.notEmpty(Integer.toString(rentalSupplyApprovalVO.getRsplPrice()));
@@ -137,7 +141,7 @@ public class ApiRentalSupplyController {
 			return ApiResponse.BAD_REQUEST(errorMessage);
 		}
 
-		rentalSupplyApprovalVO.setRsplRegtId(employeeVO.getEmpId());
+		rentalSupplyApprovalVO.setRsplApprReqtr(employeeVO.getEmpId());
 
 		boolean isRequestSuccess = this.rentalSupplyService.requestRegistrationNewRentalSupply(rentalSupplyApprovalVO,
 				file);
@@ -151,6 +155,10 @@ public class ApiRentalSupplyController {
 			Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
 
 		boolean isNotEmptyName = ValidationUtils.notEmpty(rentalSupplyApprovalVO.getRsplName());
 		boolean isNotEmptyCategory = ValidationUtils.notEmpty(rentalSupplyApprovalVO.getRsplCtgr());
@@ -203,6 +211,8 @@ public class ApiRentalSupplyController {
 	@PutMapping("/rentalsupply/get")
 	public ApiResponse doRentalSupplyGetApprovalRequest(@RequestBody RentalSupplyApprovalVO rentalSupplyApprovalVO,
 			Authentication authentication) {
+		rentalSupplyApprovalVO.setRtrnYn("N");
+		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
@@ -212,7 +222,7 @@ public class ApiRentalSupplyController {
 			return ApiResponse.BAD_REQUEST(List.of("해당 대여품이 존재하지 않습니다."));
 		}
 
-		int requestedQty = rentalSupplyApprovalVO.getInvQty();
+		int requestedQty = rentalSupplyApprovalVO.getRsplRqstQty();
 		if (requestedQty <= 0) {
 			return ApiResponse.BAD_REQUEST(List.of("올바른 신청 갯수를 입력해 주세요."));
 		}
@@ -240,7 +250,9 @@ public class ApiRentalSupplyController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
-		// TODO 권한 체크
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
 
 		RentalSupplyApprovalVO rentalSupplyApprovalVO = new RentalSupplyApprovalVO();
 		rentalSupplyApprovalVO.setRsplId(rsplId);
@@ -252,7 +264,15 @@ public class ApiRentalSupplyController {
 	}
 
 	@GetMapping("/rentalsupply/log")
-	public ApiResponse getRentalSupplyApprovalLogList(SearchRentalSupplyVO searchRentalSupplyVO) {
+	public ApiResponse getRentalSupplyApprovalLogList(SearchRentalSupplyVO searchRentalSupplyVO,
+			Authentication authentication) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010") && !employeeVO.getMngrYn().equals("Y")) {
+			searchRentalSupplyVO.setEmpId(employeeVO.getEmpId());
+		}
+
 		RentalSupplyApprovalListVO rentalSupplyApprovalListVO = this.rentalSupplyService
 				.searchAllRentalSupplyApprovalLog(searchRentalSupplyVO);
 
@@ -262,8 +282,8 @@ public class ApiRentalSupplyController {
 	}
 
 	@PostMapping("/rentalsupply/apply")
-	public ApiResponse applyForMultipleRentalSupplies(@RequestBody List<RentalSupplyApprovalVO> rentalSupplyApprovalVOList,
-			Authentication authentication) {
+	public ApiResponse applyForMultipleRentalSupplies(
+			@RequestBody List<RentalSupplyApprovalVO> rentalSupplyApprovalVOList, Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 
@@ -276,5 +296,24 @@ public class ApiRentalSupplyController {
 			}
 		}
 		return ApiResponse.Ok(true);
+	}
+
+	@PostMapping("/rentalsupply/return")
+	public ApiResponse doRentalSupplyReturnApprovalRequest(@RequestBody RentalSupplyApprovalVO rentalSupplyApprovalVO,
+			Authentication authentication) {
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+
+		if (!employeeVO.getDeptId().equals("DEPT_230101_000010")) {
+			return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
+		}
+
+		boolean isReturnSuccess = rentalSupplyService.requestReturnRentalSupply(rentalSupplyApprovalVO);
+		
+	    if (isReturnSuccess) {
+	        return ApiResponse.Ok(true);
+	    } else {
+	        return ApiResponse.BAD_REQUEST("반납 요청 처리에 실패했습니다.");
+	    }
 	}
 }

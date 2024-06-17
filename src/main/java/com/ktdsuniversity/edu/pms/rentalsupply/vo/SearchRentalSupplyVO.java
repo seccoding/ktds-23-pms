@@ -7,7 +7,7 @@ public class SearchRentalSupplyVO extends PaginateVO{
 	private String searchStatus;
 	private String searchType;
 	private String searchKeyword;
-	
+	private String empId;
 	
 	public String getSearchStatus() {
 		return searchStatus;
@@ -31,6 +31,12 @@ public class SearchRentalSupplyVO extends PaginateVO{
 
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
+	}
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
 	}
 
 }

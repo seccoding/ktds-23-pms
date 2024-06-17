@@ -35,6 +35,8 @@
 					 , ra.DEL_YN
 					 , ra.RSPL_APPR_YN
 					 , ra.RSPL_RQST_TYPE
+					 , ra.RTRN_YN
+					 , ra.RSPL_RQST_QTY
 					 , a.APPR_DATE
 					 , e.EMP_NAME
 					 , e.EMAIL
@@ -59,6 +61,8 @@
 			 , DEL_YN
 			 , RSPL_APPR_YN
 			 , RSPL_RQST_TYPE
+			 , RTRN_YN
+			 , RSPL_RQST_QTY
 			 , TO_CHAR(APPR_DATE, 'YYYY-MM-DD') APPR_DATE
 			 , EMP_NAME
 			 , EMAIL
@@ -72,6 +76,8 @@
 					 , ra.DEL_YN
 					 , ra.RSPL_APPR_YN
 					 , ra.RSPL_RQST_TYPE
+					 , ra.RTRN_YN
+					 , ra.RSPL_RQST_QTY
 					 , a.APPR_DATE
 					 , e.EMP_NAME
 					 , e.EMAIL
@@ -81,6 +87,9 @@
 				  JOIN EMPLOYEE e
 				    ON e.EMP_ID = ra.RSPL_APPR_REQTR)
 		 WHERE DEL_YN = 'N'
+		<if test="empId != null and empId != ''">
+		   AND RSPL_APPR_REQTR = #{empId}
+		</if>
 	</select>
 
 	<insert id="insertRentalSupplyApprovalRequest"
@@ -104,7 +113,9 @@
 		, RSPL_APPR_REQTR
 		, DEL_YN
 		, RSPL_APPR_YN
-		, RSPL_RQST_TYPE)
+		, RSPL_RQST_TYPE
+		, RTRN_YN
+		, RSPL_RQST_QTY)
 		VALUES
 		 (#{rsplApprId}
 		, #{rsplApprType}
@@ -118,7 +129,9 @@
 		, #{rsplApprReqtr}
 		, #{delYn}
 		, 'N'
-		, #{rsplRqstType})
+		, #{rsplRqstType}
+		, #{rtrnYn}
+		, #{rsplRqstQty})
 	</insert>
 	
 	<select id="getRentalSupplyApprovalByPK" parameterType="string" resultMap="RentalSupplyApprovalVOMap">
@@ -132,9 +145,12 @@
 			 , RSPL_IMG
 			 , RSPL_DTL
 			 , RSPL_APPR_REQTR
+			 , RTRN_YN
 			 , DEL_YN
 			 , RSPL_APPR_YN
 			 , RSPL_RQST_TYPE
+			 , RTRN_YN
+			 , RSPL_RQST_QTY
 		  FROM RSUPPLY_APPROVAL
 		 WHERE RSPL_APPR_ID = #{_parameter}
 	</select>
@@ -143,6 +159,14 @@
 		UPDATE RSUPPLY_APPROVAL
 		   SET RSPL_APPR_YN = 'Y'
 		 WHERE RSPL_APPR_ID = #{_parameter}
+	</update>
+	
+	<update id="updateOneRentalSupplyForReturn" parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalVO">
+		UPDATE RSUPPLY_APPROVAL
+		   SET RTRN_YN = 'Y'
+		     , RSPL_RQST_TYPE = '반납'
+		     , INV_QTY = #{invQty}
+		 WHERE RSPL_APPR_ID = #{rsplApprId}
 	</update>
 
 </mapper>

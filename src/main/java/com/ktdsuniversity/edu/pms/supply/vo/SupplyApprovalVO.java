@@ -12,6 +12,7 @@ public class SupplyApprovalVO extends SupplyVO {
 	private String splApprReqtr;
 	private String splApprYn;
 	private String splRqstType; // 소모품 결재 신청 유형 (등록, 수정, 신청)
+	private int splRqstQty;
 	
 	private ApprovalVO approvalVO;
 	private EmployeeVO employeeVO;
@@ -64,6 +65,12 @@ public class SupplyApprovalVO extends SupplyVO {
 	}
 	public void setSplRqstType(String splRqstType) {
 		this.splRqstType = splRqstType;
+	}
+	public int getSplRqstQty() {
+		return splRqstQty;
+	}
+	public void setSplRqstQty(int splRqstQty) {
+		this.splRqstQty = splRqstQty;
 	}
 	
 }

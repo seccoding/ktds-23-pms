@@ -6,6 +6,7 @@ public class SearchSupplyVO extends PaginateVO {
 	
 	private String searchType;
 	private String searchKeyword;
+	private String empId;
 	
 	public String getSearchType() {
 		return searchType;
@@ -19,4 +20,11 @@ public class SearchSupplyVO extends PaginateVO {
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
 	}
+	public String getEmpId() {
+		return empId;
+	}
+	public void setEmpId(String empId) {
+		this.empId = empId;
+	}
+	
 }

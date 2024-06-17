@@ -18,5 +18,7 @@ public interface RentalSupplyApprovalDao {
 	public RentalSupplyApprovalVO getRentalSupplyApprovalByPK(String rsplApprId);
 	
 	public int updateOneRentalSupplyApprovalYnToYByPK(String rsplApprId);
+	
+	public int updateOneRentalSupplyForReturn(RentalSupplyApprovalVO rentalSupplyApprovalVO);
 
 }
