@@ -154,7 +154,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 			
 			if(rentalSupplyApprovalVO.getRsplApprType().equals("INSERT")) {
 				rentalSupplyVO.setRsplRegtId(rentalSupplyApprovalVO.getRsplApprReqtr());				
-				this.rentalSupplyApprovalDao.insertRentalSupplyApprovalRequest(rentalSupplyApprovalVO);
+				this.rentalSupplyDao.registerNewRentalSupply(rentalSupplyVO);
 				
 				return true;
 			}
