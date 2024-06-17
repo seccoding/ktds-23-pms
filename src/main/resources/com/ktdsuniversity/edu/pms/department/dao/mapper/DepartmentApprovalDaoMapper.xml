@@ -4,6 +4,23 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ktdsuniversity.edu.pms.department.dao.DepartmentApprovalDao">
 
+	<resultMap type="com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO"
+			   id="DepartmentApprovalVOMap"
+			   autoMapping="true">
+		<id column="DEPT_APPR_ID" property="deptApprId" />
+		<association property="approvalVO"
+					 javaType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
+			<id column="APPR_ID" property="apprId" />
+			<result column="APPR_DATE" property="apprDate" />
+		</association>
+		<association property="employeeVO"
+					 javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+			<id column="EMP_ID" property="empId" />
+			<result column="EMP_NAME" property="empName" />
+			<result column="EMAIL" property="email" />
+		</association>
+	</resultMap>
+	
 	<insert id="insertDepartmentApprovalRequest" 
 			parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO">
 		<selectKey keyProperty="deptApprId" resultType="string" order="BEFORE">
@@ -19,7 +36,8 @@
 				, DEPT_LEAD_ID
 				, DEL_YN
 				, DEPT_APPR_YN
-				, DEPT_APPR_REQTR)
+				, DEPT_APPR_REQTR
+				, DEPT_APPR_REASON)
 			VALUES
 				( #{deptApprId}
 				, #{deptApprType}
@@ -28,7 +46,8 @@
 				, #{deptLeadId}
 				, #{delYn}
 				, 'N'
-				, #{deptApprReqtr})
+				, #{deptApprReqtr}
+				, #{deptApprReason})
 	</insert>	
 
 	<select id="getDepartmentApprovalByPK" parameterType="string" resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO">
