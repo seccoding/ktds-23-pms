@@ -12,7 +12,61 @@ public class DepartmentApprovalVO extends DepartmentVO {
 	private ApprovalVO approvalVO;
 	private String deptApprReqtr;
 	private String deptApprReason;
-	private EmployeeVO employeeVO;
+
+	private String eaEmpName; // 결제 요청자 정보 ea
+	private String eaEmpId;
+	private String eaEmail;
+	private String edlEmpName; // 부서장 정보 edl
+	private String edlEmpId;
+	private String edlEmail;
+
+	public String getEaEmpName() {
+		return eaEmpName;
+	}
+
+	public void setEaEmpName(String eaEmpName) {
+		this.eaEmpName = eaEmpName;
+	}
+
+	public String getEaEmpId() {
+		return eaEmpId;
+	}
+
+	public void setEaEmpId(String eaEmpId) {
+		this.eaEmpId = eaEmpId;
+	}
+
+	public String getEaEmail() {
+		return eaEmail;
+	}
+
+	public void setEaEmail(String eaEmail) {
+		this.eaEmail = eaEmail;
+	}
+
+	public String getEdlEmpName() {
+		return edlEmpName;
+	}
+
+	public void setEdlEmpName(String edlEmpName) {
+		this.edlEmpName = edlEmpName;
+	}
+
+	public String getEdlEmpId() {
+		return edlEmpId;
+	}
+
+	public void setEdlEmpId(String edlEmpId) {
+		this.edlEmpId = edlEmpId;
+	}
+
+	public String getEdlEmail() {
+		return edlEmail;
+	}
+
+	public void setEdlEmail(String edlEmail) {
+		this.edlEmail = edlEmail;
+	}
 
 	public EmployeeVO getEmployeeVO() {
 		return employeeVO;
