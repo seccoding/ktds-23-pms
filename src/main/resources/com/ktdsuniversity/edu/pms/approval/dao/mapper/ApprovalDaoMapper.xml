@@ -7,21 +7,16 @@
 	
 	<resultMap id="approvalVOMap" type="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO" autoMapping="true">
 		<id column="APPR_ID" property="apprId"/>
-		<!-- 
-		<association property="employeeVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		
+		<association property="reqtrVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
             <id column="EMP_ID" property="empId"/>
             <result column="EMP_NAME" property="empName"/>
-            <result column="PRFL" property="prfl"/>
         </association>
-        <association property="commonCodeVO" javaType="com.ktdsuniversity.edu.pms.commoncode.vo.CommonCodeVO">
-        	<id column="CMCD_ID" property="cmcdId"/>
-        	<result column="CMCD_NAME" property="cmcdName"/>
+        <association property="approverVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+            <id column="EMP_ID" property="empId"/>
+            <result column="EMP_NAME" property="empName"/>
         </association>
-        <association property="departmentVO" javaType="com.ktdsuniversity.edu.pms.department.vo.DepartmentVO">
-			<id column="DEPT_ID" property="deptId"/>
-			<result column="DEPT_NAME" property="deptName"/>
-		</association>
-		-->
+		 
 	</resultMap>
 	
 	
@@ -33,29 +28,39 @@
 		  AND SEARCH_YN='Y'
 	</select>
 	
-	<select id="getAllApproval" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
-	   SELECT APPR_ID
-			, P_APPR_ID
-			, APPR_TYPE
-			, APPR_INFO
-			, APPR_REQTR
-			, APPR_DATE
-			, APPR_END_DATE
-			, APPROVER
-			, APPR_YN
-			, APPR_RSN
-		 FROM PMS.APPROVAL
+	<select id="getAllApproval" resultMap="approvalVOMap">
+	   SELECT A.APPR_ID
+			, A.P_APPR_ID
+			, A.APPR_TYPE
+			, A.APPR_INFO
+			, A.APPR_REQTR
+			, A.APPR_DATE
+			, A.APPR_END_DATE
+			, A.APPROVER
+			, A.APPR_YN
+			, A.APPR_RSN
+			, reqtrVO.EMP_NAME
+			, approverVO.EMP_NAME
+		 FROM PMS.APPROVAL A
+		 JOIN EMPLOYEE reqtrVO
+		   ON reqtrVO.EMP_ID = A.APPR_REQTR
+		 JOIN EMPLOYEE  approverVO
+		   ON A.APPROVER = approverVO.EMP_ID
 		WHERE DEL_YN='N'
 		  AND SEARCH_YN='Y'
 		ORDER BY APPR_YN DESC, APPR_END_DATE DESC
 
 	</select>
 	
-	<select id="getApprovalByApprId" parameterType="string" resultType="com.ktdsuniversity.edu.pms.approval.vo.ApprovalVO">
-		 SELECT APPR_ID
-			  , APPR_TYPE
-			  , APPR_INFO
-		   FROM PMS.APPROVAL
+	<select id="getApprovalByApprId" parameterType="string" resultMap="approvalVOMap">
+		 SELECT A.APPR_ID
+			  , A.APPR_TYPE
+			  , A.APPR_INFO
+		   FROM PMS.APPROVAL A
+ 		   JOIN EMPLOYEE reqtrVO
+		     ON reqtrVO.EMP_ID = A.APPR_REQTR
+		   JOIN EMPLOYEE  approverVO
+		     ON A.APPROVER = approverVO.EMP_ID		   
 		  WHERE APPR_ID = #{_parameter}
 			AND DEL_YN='N'
 		  ORDER BY APPR_YN DESC, APPR_END_DATE DESC

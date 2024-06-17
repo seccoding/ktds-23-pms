@@ -1,15 +1,16 @@
 package com.ktdsuniversity.edu.pms.approval.vo;
 
 import com.ktdsuniversity.edu.pms.common.vo.PaginateVO;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 
 public class ApprovalVO extends PaginateVO {
 
 	/**
 	 * 결재 요청에 대한 고유번호
 	 */
-	private String apprId; 		
-	private String pApprId; 		// 부모 결제요청 ID
-	private String apprType; 		// 결제 승인 타입(소모품, 비품, 부서, 직원)
+	private String apprId;
+	private String pApprId; // 부모 결제요청 ID
+	private String apprType; // 결제 승인 타입(소모품, 비품, 부서, 직원)
 	private String apprInfo; // 결제시 업데이트 해야하는 정보를 담은 FK ID
 	private String apprReqtr; // 결제 요청자
 	private String apprDate; // 결제 요청일
@@ -20,7 +21,13 @@ public class ApprovalVO extends PaginateVO {
 	private String delYn; // 삭제여부
 	private String searchYn; // 검색가능여부(승인페이지 노출)
 
-	public ApprovalVO() {}
+	private EmployeeVO reqtrVO;
+
+	private EmployeeVO approverVO;
+
+	public ApprovalVO() {
+	}
+
 	public ApprovalVO(ApprovalVO approvalVO) {
 		this.apprId = approvalVO.apprId;
 		this.pApprId = approvalVO.pApprId;
@@ -130,6 +137,22 @@ public class ApprovalVO extends PaginateVO {
 
 	public void setSearchYn(String searchYn) {
 		this.searchYn = searchYn;
+	}
+
+	public EmployeeVO getReqtrVO() {
+		return reqtrVO;
+	}
+
+	public void setReqtrVO(EmployeeVO reqtrVO) {
+		this.reqtrVO = reqtrVO;
+	}
+
+	public EmployeeVO getApproverVO() {
+		return approverVO;
+	}
+
+	public void setApproverVO(EmployeeVO approverVO) {
+		this.approverVO = approverVO;
 	}
 
 	@Override
