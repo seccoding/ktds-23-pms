@@ -59,12 +59,7 @@ public class ApiReviewController {
 		projectTeammateVO.setTmId(employeeVO.getEmpId());
 		projectTeammateVO.setPrjId(reviewVO.getPrjId());
 		
-		System.out.println("==============" + reviewVO.getEmpId() + " :: " + reviewVO.getRvCntnt()
-		+ " :: " + projectTeammateVO.getTmId() + " :: " + projectTeammateVO.getPrjId()
-				);
-		
 		Validator<ReviewVO> validator = new Validator<>(reviewVO);
-		
 		
 		validator.add("rvCntnt", Type.NOT_EMPTY, "후기 내용을 작성해주세요.")
 				 .start();
@@ -74,8 +69,6 @@ public class ApiReviewController {
 			String errorMessage = errors.values().toString();
 			return ApiResponse.Ok(errorMessage);
 		}
-		
-		
 		
 		boolean isCreateSuccess = this.reviewService.insertNewReviewAndUpdateStatus(reviewVO, projectTeammateVO);
 		
@@ -90,19 +83,18 @@ public class ApiReviewController {
 	
 	
 	// 관리자 리뷰 삭제
-	@PutMapping("writes/{prjId}")
-	public ApiResponse deleteReview(@PathVariable String prjId, Authentication authentication, ReviewVO reviewVO) {
+	@PutMapping("writes/{rvId}")
+	public ApiResponse deleteReview(@PathVariable String rvId, Authentication authentication) {
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-		
 		
 		if (employeeVO.getAdmnCode().equals("N")) {
 			return ApiResponse.FORBIDDEN("권한이 없습니다.");
 		} 
 		
 		// 후기 삭제 메서드
-		boolean isDeleteSuccess = this.reviewService.reviewViewResultDelete(reviewVO.getRvId());
+		boolean isDeleteSuccess = this.reviewService.reviewViewResultDelete(rvId);
 		if (isDeleteSuccess) {
 			logger.debug("후기 삭제에 성공했습니다.");
 		} else {
@@ -112,13 +104,14 @@ public class ApiReviewController {
 		// 후기 수정 메서드 (삭제시 삭제일, 삭제한 관리자 ID 저장
 		Map<String, Object> modifyParam = new HashMap<>();
 		modifyParam.put("empId", employeeVO.getEmpId());
-		modifyParam.put("reviewId", reviewVO.getRvId());
+		modifyParam.put("reviewId", rvId);
+		System.out.println(modifyParam);
 		boolean isModifySuccess = this.reviewService.reviewResultModify(modifyParam);
 		
 		if (isModifySuccess) {
 			logger.debug("후기 수정에 성공했습니다.");
 		} else {
-			logger.debug("후기 삭제에 실패했습니다.");
+			logger.debug("후기 수정에 실패했습니다.");
 		}
 		
 		

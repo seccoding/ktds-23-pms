@@ -129,7 +129,7 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	@Override
 	public int reviewResultModify(Map<String, Object> modifyParam) {
 	
-		return getSqlSession().update(ReviewDao.NAME_SPACE + ".modifyReview", modifyParam);
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".reviewResultModify", modifyParam);
 	}
 
 	/**

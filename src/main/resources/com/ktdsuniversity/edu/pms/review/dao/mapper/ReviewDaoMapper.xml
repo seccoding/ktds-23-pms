@@ -289,16 +289,16 @@
 	</update>
 	
 	<update id="reviewResultModify"
-    			parameterType="String">
+    			parameterType="string">
     	UPDATE PROJECT_REVIEW
     	   SET MDF_DT = SYSDATE
-    	       MDFR_ID = #{empId}
+    	     , MDFR_ID = #{empId}
     	 WHERE RV_ID = #{reviewId}
    	</update>	
 	
 	<select id="getReviewYnByEmpIdAndPrjId"
-			parameterType="String"
-			resultType="String">
+			parameterType="string"
+			resultType="string">
 		SELECT RV_YN
 		  FROM PROJECT_TEAMMATE
 		 WHERE TM_ID = #{empId}
@@ -313,9 +313,13 @@
      		 , RV.CRT_DT
 		     , RV.STAR_RATING
 		     , RV.RV_ID
+		     , RV.CRTR_ID
+		     , E.EMP_NAME
   		  FROM PROJECT_REVIEW RV
   		  JOIN PROJECT PR
-            ON PR.PRJ_ID = RV.PRJ_ID 
+            ON PR.PRJ_ID = RV.PRJ_ID
+          JOIN EMPLOYEE E
+            ON E.EMP_ID = RV.CRTR_ID
          WHERE RV.PRJ_ID = #{prjId}
            AND RV.DEL_YN = 'N'
 	</select>
@@ -326,7 +330,7 @@
   		  FROM PROJECT_REVIEW 
  		 WHERE PRJ_ID = #{prjId}
 	</select>
-	<select id="getDoneEmpIdList" parameterType="String" resultType="Integer">
+	<select id="getDoneEmpIdList" parameterType="string" resultType="Integer">
 		SELECT COUNT(1)
 		  FROM PROJECT_REVIEW
 		 WHERE PRJ_ID = #{_parameter}
