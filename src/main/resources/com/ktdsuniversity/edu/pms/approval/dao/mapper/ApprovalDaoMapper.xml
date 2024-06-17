@@ -10,11 +10,11 @@
 		
 		<association property="reqtrVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
             <id column="EMP_ID" property="empId"/>
-            <result column="EMP_NAME" property="empName"/>
+            <result column="REQTR_NAME" property="empName"/>
         </association>
         <association property="approverVO" javaType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
             <id column="EMP_ID" property="empId"/>
-            <result column="EMP_NAME" property="empName"/>
+            <result column="APPROVER_NAME" property="empName"/>
         </association>
 		 
 	</resultMap>
@@ -39,15 +39,15 @@
 			, A.APPROVER
 			, A.APPR_YN
 			, A.APPR_RSN
-			, reqtrVO.EMP_NAME
-			, approverVO.EMP_NAME
+			, A.SEARCH_YN
+			, reqtrVO.EMP_NAME as REQTR_NAME
+			, approverVO.EMP_NAME AS APPROVER_NAME
 		 FROM PMS.APPROVAL A
 		 JOIN EMPLOYEE reqtrVO
 		   ON reqtrVO.EMP_ID = A.APPR_REQTR
 		 JOIN EMPLOYEE  approverVO
 		   ON A.APPROVER = approverVO.EMP_ID
 		WHERE DEL_YN='N'
-		  AND SEARCH_YN='Y'
 		ORDER BY APPR_YN DESC, APPR_END_DATE DESC
 
 	</select>

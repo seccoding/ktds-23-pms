@@ -46,6 +46,7 @@ public class ApiApprovalController {
 		approvalListVO.getApprList()
 		.stream()
 		.filter((appr)->appr.getApprReqtr().equals(employeeVO.getEmpId()))
+		.filter((appr)->appr.getSearchYn().equals("Y"))
 		.toList());
 		approvalListVO.setApprCnt(approvalListVO.getApprList().size());
 		
@@ -65,6 +66,7 @@ public class ApiApprovalController {
 		approvalListVO.getApprList()
 		.stream()
 		.filter((appr)->appr.getApprover().equals(employeeVO.getEmpId()))
+		.filter((appr)->appr.getSearchYn().equals("Y"))
 		.toList());
 		approvalListVO.setApprCnt(approvalListVO.getApprList().size());
 
