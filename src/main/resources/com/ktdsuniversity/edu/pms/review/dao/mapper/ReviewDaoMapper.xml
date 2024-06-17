@@ -308,9 +308,11 @@
 	
 	<select id="getReviewResult" parameterType="string" resultMap="ReviewVOMap">
 		SELECT PR.PRJ_NAME
+			 , PR.PRJ_ID
 	    	 , RV.RV_CNTNT
      		 , RV.CRT_DT
 		     , RV.STAR_RATING
+		     , RV.RV_ID
   		  FROM PROJECT_REVIEW RV
   		  JOIN PROJECT PR
             ON PR.PRJ_ID = RV.PRJ_ID 
