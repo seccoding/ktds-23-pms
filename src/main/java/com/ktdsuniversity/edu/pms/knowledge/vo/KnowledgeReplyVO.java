@@ -18,9 +18,17 @@ public class KnowledgeReplyVO {
 	private String mdfDt;
 	private String mdfrId;
 	private String delYn;
+	private String rplcnt;
+	
 	
 	private EmployeeVO employeeVO;
 	
+	public String getRplcnt() {
+		return rplcnt;
+	}
+	public void setRplcnt(String rplcnt) {
+		this.rplcnt = rplcnt;
+	}
 	public int getLevel() {
 		return level;
 	}
