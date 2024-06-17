@@ -47,6 +47,7 @@
 		 FROM PMS.APPROVAL
 		WHERE DEL_YN='N'
 		  AND SEARCH_YN='Y'
+		ORDER BY APPR_YN DESC, APPR_END_DATE DESC
 
 	</select>
 	
@@ -57,6 +58,8 @@
 		   FROM PMS.APPROVAL
 		  WHERE APPR_ID = #{_parameter}
 			AND DEL_YN='N'
+		  ORDER BY APPR_YN DESC, APPR_END_DATE DESC
+			
 	</select>
 	
 	<insert id="insertApproval" parameterType="java.util.List">

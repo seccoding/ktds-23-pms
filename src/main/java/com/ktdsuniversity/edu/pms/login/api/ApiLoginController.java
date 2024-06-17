@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.login.dao.CommuteDao;
 import com.ktdsuniversity.edu.pms.login.service.CommuteService;
 import com.ktdsuniversity.edu.pms.login.service.LoginLogService;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteListVO;
 import com.ktdsuniversity.edu.pms.login.vo.CommuteVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
+import com.ktdsuniversity.edu.pms.utils.SecurityUtils;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -29,6 +32,10 @@ public class ApiLoginController {
 	private LoginLogService loginLogService;
 	@Autowired
 	private CommuteService commuteService;
+	@Autowired
+	private CommuteDao commuteDao;
+	
+	SecurityUtils securityUtils = new SecurityUtils();
 	
 	@PostMapping("/logout")
 	public ApiResponse doLogout(Authentication authentication, @RequestBody Map<String,Boolean> body) {
@@ -64,6 +71,15 @@ public class ApiLoginController {
 		
 		return ApiResponse.Ok(commuteListVO);
 	}
+	
+	@GetMapping("/commute/one")
+	public ApiResponse getCommute(Authentication authentication) {
+		EmployeeVO employeeVO = securityUtils.getEmpVoByAuthentication(authentication);
+		
+		CommuteVO commuteVO= this.commuteDao.getOneCommuteDataByEmpIdToday(employeeVO.getEmpId());
+		return ApiResponse.Ok(commuteVO);
+	}
+	
 	
 //	public ApiResponse searchAllCommuteList(Authentication authentication , @RequestBody )
 	/**
