@@ -65,6 +65,14 @@ public class ApiMemoController {
         ReceiveMemoVO receiveMemoVO = this.receiveMemoService.getOneReceiveMemo(rcvMemoId);
         return this.receiveMemoService.getDownloadFile(receiveMemoVO);
     }
+    
+    @GetMapping("/send/downloadFile/{sendMemoId}")
+    public ResponseEntity<Resource> sendDownloadFile(@PathVariable String sendMemoId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();																				  
+        SendMemoVO sendMemoVO = this.sendMemoService.getOneSendMemo(sendMemoId);
+        return this.sendMemoService.getDownloadFile(sendMemoVO);
+    }
 
     // ---------- 발신 ----------
     /**

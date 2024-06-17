@@ -79,10 +79,6 @@ public class ReceiveMemoServiceImpl implements ReceiveMemoService{
     
     @Override
     public ResponseEntity<Resource> getDownloadFile(ReceiveMemoVO receiveMemoVO) {
-
-        System.out.println("receiveMemoVO = " + receiveMemoVO.getSendMemoVO().getFileName());
-        System.out.println("receiveMemoVO = " + receiveMemoVO.getSendMemoVO().getOriginFileName());
-
         ResponseEntity<Resource> file = this.fileHandler.download(
                 receiveMemoVO.getSendMemoVO().getOriginFileName(), receiveMemoVO.getSendMemoVO().getFileName());
         return file;
