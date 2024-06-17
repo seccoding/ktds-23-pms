@@ -393,7 +393,7 @@
 			 , HIRE_YEAR = #{hireYear}
 			 , DEPT_ID = #{deptId}
 			 , PSTN_ID = #{pstnId}
-			 , MNGR_YN = 'Y'
+			 , MNGR_YN = #{mngrYn}
 		 WHERE EMP_ID = #{empId}
 	</update>
 	
