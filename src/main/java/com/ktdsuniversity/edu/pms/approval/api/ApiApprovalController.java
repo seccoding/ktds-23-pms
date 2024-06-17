@@ -1,6 +1,7 @@
 package com.ktdsuniversity.edu.pms.approval.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -79,7 +80,8 @@ public class ApiApprovalController {
 	@GetMapping("/approval/{apprId}")
 	public ApiResponse gellApprovalInfoByApprId (Authentication authentication , @PathVariable String apprId) {
 		Object approvalInfo = this.approvalService.gellApprovalByApprId(apprId);
-		return ApiResponse.Ok(approvalInfo);
+		ApprovalVO approvalVO =this.approvalService.getAllApproval().getApprList().stream().filter(appr->appr.getApprId().equals(apprId)).toList().get(0);
+		return ApiResponse.Ok(Map.of("approvalInfo",approvalInfo,"approvalVO",approvalVO));
 		
 	}
 	/**

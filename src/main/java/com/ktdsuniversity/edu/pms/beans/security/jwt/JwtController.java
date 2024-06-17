@@ -43,6 +43,7 @@ public class JwtController {
 			.add("pwd", Type.PASSWORD, "비밀번호가 올바르지 않습니다")
 			.start();	
 		if(validator.hasErrors()) {
+			this.loginLogService.insertLoginProcess(employee.getEmpId(), false);
 			return ResponseEntity
 					.status(HttpStatus.FORBIDDEN)
 					.body(Map.of("message","아이디 또는 비밀번호가 올바르지 않습니다.","error",validator.getErrors()));
