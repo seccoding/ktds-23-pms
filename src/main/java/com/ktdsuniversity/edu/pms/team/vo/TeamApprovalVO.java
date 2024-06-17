@@ -6,6 +6,18 @@ public class TeamApprovalVO extends TeamVO {
 	private String delYn;
 	private String tmApprYn;
 	private String tmApprReqtr;
+	private String tmApprReason;
+	
+	
+	
+
+	public String getTmApprReason() {
+		return tmApprReason;
+	}
+
+	public void setTmApprReason(String tmApprReason) {
+		this.tmApprReason = tmApprReason;
+	}
 
 	public String getTmApprReqtr() {
 		return tmApprReqtr;
