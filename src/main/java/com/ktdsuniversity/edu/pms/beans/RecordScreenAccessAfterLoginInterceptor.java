@@ -42,8 +42,12 @@ public class RecordScreenAccessAfterLoginInterceptor implements HandlerIntercept
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if(request.getHeader("Authorization") ==null ||request.getHeader("Authorization").isEmpty()) {
+			return false;
+		}
 //		request header 에 있는 token 값을 사용해서 EmployeeVO 를 가져온다
-		String token =request.getHeader("Authorization");
+		String token =request.getHeader("Authorization") ;
+		
 		EmployeeVO employeeVO = this.jsonWebTokenProvider.getUserFormToken(token);
 		
 		if (employeeVO == null) {//유져 정보 없으면 다시 kick

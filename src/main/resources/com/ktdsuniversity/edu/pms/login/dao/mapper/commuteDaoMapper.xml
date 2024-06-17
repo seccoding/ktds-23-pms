@@ -106,6 +106,7 @@
 	  FROM COMMUTE C
 	 WHERE C.EMP_ID =#{_parameter}
 	   AND TO_CHAR(C.CMMT_DATE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	   AND C.DEL_YN='N'
 	</select>
 	
 	<insert id="insertCommuteIn"
