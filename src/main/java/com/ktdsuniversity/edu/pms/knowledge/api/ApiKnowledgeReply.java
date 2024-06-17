@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
+import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.knowledge.dao.KnowledgeReplyDao;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeReplyService;
 import com.ktdsuniversity.edu.pms.knowledge.service.KnowledgeService;
@@ -36,11 +37,12 @@ public class ApiKnowledgeReply {
 	// 댓글 리스트(list)	
 	@GetMapping("/reply/{pPostId}")
 	public ApiResponse getAllknowledge(@PathVariable String pPostId, 
+			
 			KnowledgeReplyVO knowledgeReplyVO) {
 		knowledgeReplyVO.setpPostId(pPostId);
 		List<KnowledgeReplyVO> knowledgeReplyList = this.knowledgeReplyService.getAllReplies(knowledgeReplyVO);
 		
-		
+	
 		return ApiResponse.Ok( knowledgeReplyList);
 	}
 	
@@ -50,6 +52,10 @@ public class ApiKnowledgeReply {
 			KnowledgeReplyVO knowledgeReplyVO,
 			Authentication authentication,
 			KnowledgeReplyVO knowledgereplyvo) {
+		
+		
+		
+		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String employeeVO = ((SecurityUser) userDetails).getEmployeeVO().getEmpId();
 		
@@ -64,14 +70,18 @@ public class ApiKnowledgeReply {
 	@GetMapping("/knowledge/reply/delete/{rplId}")
 	public ApiResponse doDeleteReplies(@PathVariable String rplId, Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		String employeeVO = ((SecurityUser) userDetails).getEmployeeVO().getEmpId();
-		
-		
-		
-		
-		boolean isSuccess = this.knowledgeReplyService.deleteOneReply(rplId, employeeVO);
+		EmployeeVO employee = ((SecurityUser) userDetails).getEmployeeVO();
 		
 		List<String> errorMessage = new ArrayList<>();
+		String str=this.knowledgeReplyService.findReplyId(rplId);
+		if(!employee.getEmpId().equals(str)) {
+			errorMessage.add("글 작성자만 수정 가능합니다");  
+		    return ApiResponse.BAD_REQUEST(errorMessage);
+		}
+
+		
+		boolean isSuccess = this.knowledgeReplyService.deleteOneReply(rplId, employee.getEmpId());
+		
 		if (isSuccess) {
 			System.out.println("삭제에 성공하였습니다");
 		}
@@ -88,23 +98,24 @@ public class ApiKnowledgeReply {
 	public ApiResponse doModifyReplies(@PathVariable String rplId, 
 			KnowledgeReplyVO knowledgeReplyVO,
 			Authentication authentication) {
+		
 	
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		String employeeVO = ((SecurityUser) userDetails).getEmployeeVO().getEmpId();
+		EmployeeVO employee = ((SecurityUser) userDetails).getEmployeeVO();
 		
-		// 권한 설정	
-        // 1.DB를 통해 ID값이 있는지 확인
-		// 2.DB를 통해 가져온 값이 NULL이느 경우 메세지
-		// 3 DB를 통해 가져온 값과  employeeVO을 비교
-		
+		List<String> errorMessage = new ArrayList<>();
+		String str=this.knowledgeReplyService.findReplyId(rplId);
+		if(!employee.getEmpId().equals(str)) {
+			errorMessage.add("글 작성자만 수정 가능합니다");  
+		    return ApiResponse.BAD_REQUEST(errorMessage);
+		}
 		
 		knowledgeReplyVO.setRplId(rplId);
-		knowledgeReplyVO.setCrtrId(employeeVO);
+		knowledgeReplyVO.setCrtrId(employee.getEmpId());
 			
 		boolean isSuccess = this.knowledgeReplyService.modifyOneReply(knowledgeReplyVO);
 		
 		//추천 중복체크		
-		List<String> errorMessage = new ArrayList<>();
 		if (!isSuccess) {
 			errorMessage.add("추천은 한번만 가능 합니다");  // More specific error message
 		     return ApiResponse.BAD_REQUEST(errorMessage);
@@ -116,8 +127,10 @@ public class ApiKnowledgeReply {
 	
 	//  댓글 추천	
 	@PostMapping("/knowledge/reply/recommand/{rplId}")
-	public ApiResponse postMethodName(@PathVariable String rplId, Authentication authentication, ReplyRecommandVO replyRecommandvo) {
-
+	public ApiResponse replyRecommand(@PathVariable String rplId, 
+			Authentication authentication, 
+			ReplyRecommandVO replyRecommandvo) {
+		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		String employeeVO = ((SecurityUser) userDetails).getEmployeeVO().getEmpId();
 		
@@ -126,14 +139,69 @@ public class ApiKnowledgeReply {
 		
 		boolean  isRecommend= knowledgeReplyService.updateReplyRecommend(replyRecommandvo);
 		
-		//추천 중복체크		
+		return ApiResponse.Ok(isRecommend);
+	}
+	
+	// 답변	
+	//재댓글 list
+	@GetMapping("/reReply/{knlId}")
+	public ApiResponse getAllreReply(@PathVariable String knlId, 
+			KnowledgeReplyVO knowledgeReplyVO) {
+		System.out.println("knlId"+knlId);
+		knowledgeReplyVO.setRplPid(knlId);
+		List<KnowledgeReplyVO> knowledgeReplyList = this.knowledgeReplyService.getAllreReplies(knowledgeReplyVO);
+		
+		return ApiResponse.Ok( knowledgeReplyList);
+	}
+	
+	//재댓글	insert
+	@PostMapping("/knowledge/rereply/{pPostId}")
+	public ApiResponse postMethodName(@RequestParam(required = false) String pPostId,
+			@RequestParam(required = false) String rplId,
+			KnowledgeReplyVO knowledgeReplyVO,
+			Authentication authentication,
+			KnowledgeReplyVO knowledgereplyvo) {
+			System.out.println("pPostId:"+pPostId);
+			System.out.println("rplId:"+pPostId);
+			
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			String employeeVO = ((SecurityUser) userDetails).getEmployeeVO().getEmpId();
+			
+			knowledgereplyvo.setRplPid(rplId);
+			knowledgereplyvo.setCrtrId(employeeVO);
+			knowledgeReplyVO.setRplId(pPostId);
+			
+			boolean isSuccess = this.knowledgeReplyService.createNewReply(knowledgeReplyVO);
+		
+			return ApiResponse.Ok(isSuccess);
+	}
+
+	//재댓글 삭제
+	@GetMapping("/knowledge/rereply/delete/{rplId}")
+	public ApiResponse doDeletetrReplies(@PathVariable String rplId, Authentication authentication) {
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		EmployeeVO employee = ((SecurityUser) userDetails).getEmployeeVO();
+		
 		List<String> errorMessage = new ArrayList<>();
-		if (!isRecommend) {
-			errorMessage.add("추천은 한번만 가능 합니다");  // More specific error message
+		String str=this.knowledgeReplyService.findReplyId(rplId);
+		if(!employee.getEmpId().equals(str)) {
+			errorMessage.add("글 작성자만 수정 가능합니다");  
+		    return ApiResponse.BAD_REQUEST(errorMessage);
+		}
+		
+		
+		boolean isSuccess = this.knowledgeReplyService.deleteOneReply(rplId, employee.getEmpId());
+		
+		if (isSuccess) {
+			System.out.println("삭제에 성공하였습니다");
+		}
+		else {
+			 errorMessage.add("삭제에 실패하였습니다");  // More specific error message
 		     return ApiResponse.BAD_REQUEST(errorMessage);
 		}
-
-		return ApiResponse.Ok(isRecommend);
+			
+		return ApiResponse.Ok(isSuccess);
 	}
 	
 	

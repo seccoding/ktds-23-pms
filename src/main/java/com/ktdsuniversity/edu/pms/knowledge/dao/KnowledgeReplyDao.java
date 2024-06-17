@@ -24,7 +24,12 @@ public interface KnowledgeReplyDao {
 	
 	public int insertOneReplyRecommend(ReplyRecommandVO replyRecommandvo);
 	
-	public int recommendOneKnowledgeReply(String reprplid);
-
+	public int replyRecommandCount(String replyid);
+	
+	// 답글 
+	public List<KnowledgeReplyVO> getAllreReply(KnowledgeReplyVO knowledgereplyvo);
+	
+	// 댓글 id 권한 설정
+	public String findEmpid(String id);
 	
 }

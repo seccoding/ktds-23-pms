@@ -290,11 +290,12 @@
 		 </foreach>
 	</update>
 	
-	<select id="findbyId" parameterType="string" resultType="string">
-		SELECT EMP_ID  
-			FROM REPLY  
-			WHERE RPL_ID=#{_parameter};
+	<select id="findkindId" parameterType="string" resultType="string">
+		SELECT CRTR_ID
+			FROM KNOWLEDGE WHERE KNL_ID =#{_parameter}
 	</select>
+	
+	
 	
 	
 	

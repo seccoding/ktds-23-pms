@@ -57,16 +57,42 @@ public class KnowledgeReplyServiceImpl implements KnowledgeReplyService{
 	
 		if(originKnowledgeReplyRecommendVO==null) {
 			boolean isInsert=knowledgeReplyDao.insertOneReplyRecommend(replyRecommandvo)>0;
-			return true;
+			if(isInsert) {
+				boolean isRecommend = knowledgeReplyDao.replyRecommandCount(replyRecommandvo.getReprplid())>0;
+				return isRecommend;
+			}
+			else {
+				throw new CreationException();
+			}
 			
 		}
 		else {
 			return false;
 		}
 		
-
 		
 		
-
 	}
+	// 재댓글
+	@Override
+	public List<KnowledgeReplyVO> getAllreReplies(KnowledgeReplyVO knowledgeReplyVO) {
+		// TODO Auto-generated method stub
+		return this.knowledgeReplyDao.getAllreReply(knowledgeReplyVO);
+	}
+
+	@Override
+	public String findReplyId(String id) {
+		// TODO Auto-generated method stub
+		return this.knowledgeReplyDao.findEmpid(id);
+	}
+	
+		
+	
+
+	
+
+	
+
+	
+	
 }
