@@ -50,7 +50,7 @@
 				, #{deptApprReason})
 	</insert>	
 
-	<select id="getDepartmentApprovalByPK" parameterType="string" resultType="com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO">
+	<select id="getDepartmentApprovalByPK" parameterType="string" resultMap="DepartmentApprovalVOMap">
 			SELECT DEPT_APPR_ID
 				, DEPT_APPR_TYPE
 				, DEPT_ID
