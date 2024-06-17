@@ -20,7 +20,8 @@
 				 , TM_LEAD_ID
 				 , DEL_YN
 				 , TM_APPR_YN
-				 , TM_APPR_REQTR)
+				 , TM_APPR_REQTR
+				 , TM_APPR_REASON)
 			VALUES
 			     ( #{tmApprId}
 				 , #{tmApprType}
@@ -30,7 +31,8 @@
 				 , #{tmLeadId}
 				 , #{delYn}
 				 , 'N'
-				 , #{tmApprReqtr})
+				 , #{tmApprReqtr}
+				 , #{tmApprReason})
 	</insert>
 
 </mapper>

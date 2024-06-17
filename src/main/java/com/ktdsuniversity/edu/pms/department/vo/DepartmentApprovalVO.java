@@ -68,20 +68,12 @@ public class DepartmentApprovalVO extends DepartmentVO {
 		this.edlEmail = edlEmail;
 	}
 
-	public EmployeeVO getEmployeeVO() {
-		return employeeVO;
-	}
-
 	public String getDeptApprReason() {
 		return deptApprReason;
 	}
 
 	public void setDeptApprReason(String deptApprReason) {
 		this.deptApprReason = deptApprReason;
-	}
-
-	public void setEmployeeVO(EmployeeVO employeeVO) {
-		this.employeeVO = employeeVO;
 	}
 
 	public String getDeptApprReqtr() {
