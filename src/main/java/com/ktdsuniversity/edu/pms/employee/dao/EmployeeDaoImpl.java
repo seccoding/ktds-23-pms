@@ -232,6 +232,11 @@ public class EmployeeDaoImpl extends SqlSessionDaoSupport implements EmployeeDao
 		return getSqlSession().selectList(EmployeeDao.NAME_SPACE + ".getNewEmployeeList");
 	}
 
+	@Override
+	public List<EmployeeVO> findEmployeeLoginInfoByDeptId(String deptId) {
+		return getSqlSession().selectList(EmployeeDao.NAME_SPACE+".findEmployeeLoginInfoByDeptId", deptId);
+	}
+
 
 
 

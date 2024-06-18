@@ -661,6 +661,15 @@
 		,	SYSDATE
 		)
 	</insert>
-
+	<select id="findEmployeeLoginInfoByDeptId" parameterType="String" resultType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
+		SELECT EMP_NAME 
+			 , PRFL 
+			 , ORIGIN_PRFL_FILE_NAME 
+			 , LGN_YN 
+			 , EMP_ID 
+		  FROM EMPLOYEE
+		 WHERE DEPT_ID = #{_parameter}
+		   AND WORK_STS != '204'
+	</select>
 
 </mapper>
