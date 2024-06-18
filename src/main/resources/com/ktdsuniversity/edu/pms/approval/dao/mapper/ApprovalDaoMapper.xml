@@ -88,7 +88,7 @@
 					     ,  #{approvalVO.apprInfo} AS APPR_INFO
 					     ,  #{approvalVO.apprReqtr} AS APPR_REQTR
 					     ,  SYSDATE AS APPR_DATE
-					     ,  TO_CHAR(SYSDATE+8,'YYYY-MM-DD') AS APPR_END_DATE
+					     ,  TO_DATE(TO_CHAR(SYSDATE + 8,'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS APPR_END_DATE
 					     ,  #{approvalVO.approver} AS APPROVER
 					     <choose>
 					     <when test="index == 0">
