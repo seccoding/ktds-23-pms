@@ -322,7 +322,7 @@ public class ApiProjectController {
 	    	List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
 			List<EmployeeVO> returnEmpList = new ArrayList<>();
 			for(EmployeeVO emp:employeeListVO) {
-				returnEmpList.add(this.employeeService.getOneEmployee(emp.getEmpId()));
+				returnEmpList.add(this.employeeService.getOneEmployeenullCheck(emp.getEmpId()));
 			}
 			return ApiResponse.Ok(returnEmpList);
 		}
