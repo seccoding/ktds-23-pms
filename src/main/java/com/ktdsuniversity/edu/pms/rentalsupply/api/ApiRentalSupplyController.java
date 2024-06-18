@@ -72,7 +72,7 @@ public class ApiRentalSupplyController {
 	@GetMapping("/rentalsupply/image/{rsplImg}")
 	public ApiResponse getRentalSupplyImage(@PathVariable String rsplImg) {
 		try {
-			Path filePath = Paths.get("C:/uploadfile/" + rsplImg);
+			Path filePath = Paths.get("/usr/local/src/uploadfile/" + rsplImg);
 			if (Files.exists(filePath)) {
 				byte[] imageBytes = Files.readAllBytes(filePath);
 				String base64Image = Base64.getEncoder().encodeToString(imageBytes);

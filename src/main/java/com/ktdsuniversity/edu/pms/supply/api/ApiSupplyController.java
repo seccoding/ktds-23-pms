@@ -66,7 +66,7 @@ public class ApiSupplyController {
 	@GetMapping("/supply/image/{splImg}")
 	public ApiResponse getSupplyImage(@PathVariable String splImg) {
 		try {
-			Path filePath = Paths.get("C:/uploadfile/" + splImg);
+			Path filePath = Paths.get("/usr/local/src/uploadfile/" + splImg);
 			if (Files.exists(filePath)) {
 				byte[] imageBytes = Files.readAllBytes(filePath);
 				String base64Image = Base64.getEncoder().encodeToString(imageBytes);
