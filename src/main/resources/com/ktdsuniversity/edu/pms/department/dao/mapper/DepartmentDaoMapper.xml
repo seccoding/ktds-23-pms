@@ -55,7 +55,7 @@
 			 , DEL_YN
 			 , DEPT_LEAD_ID)
 			VALUES (
-			   'DEPT_' || TO_CHAR(SYSDATE, 'YYMMDD')|| '_' ||LPAD(SEQ_DEPT_PK.NEXTVAL,6,0)
+			   'DEPT_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3)|| '_' ||LPAD(SEQ_DEPT_PK.NEXTVAL,6,0)
 			 , #{deptName}
 			 , SYSDATE
 			 , 'N'

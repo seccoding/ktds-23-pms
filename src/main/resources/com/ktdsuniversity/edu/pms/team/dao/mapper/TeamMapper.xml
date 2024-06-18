@@ -14,7 +14,7 @@
 		     , DEL_YN
 		     , TM_LEAD_ID)
 			VALUES (
-		       'TEAM_' || TO_CHAR(SYSDATE, 'YYMMDD')|| '_' ||LPAD(SEQ_TEAM_PK.NEXTVAL,6,0)
+		       'TEAM_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3)|| '_' ||LPAD(SEQ_TEAM_PK.NEXTVAL,6,0)
 		     , SYSDATE
 		     , #{tmName}
 		     , #{deptId}
