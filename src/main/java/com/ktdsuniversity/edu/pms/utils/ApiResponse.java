@@ -79,6 +79,16 @@ public class ApiResponse {
 
 	}
 
+	public ApiResponse(HttpStatus status) {
+		this.status = status.value();
+		this.statusMessage = status.getReasonPhrase();
+	}
+
+	public ApiResponse setErrors(Object errors) {
+		this.errors = errors;
+		return this;
+	}
+	
 	public int getStatus() {
 		return status;
 	}
