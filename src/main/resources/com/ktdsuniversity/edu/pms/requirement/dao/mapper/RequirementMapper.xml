@@ -340,7 +340,7 @@ SELECT  R.RQM_ID
 	, DEL_YN
 	, RQM_ENCODE_FILE)
 	VALUES
-	( ('RQM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RQM_PK.NEXTVAL, 6, '0'))
+	( ('RQM_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_RQM_PK.NEXTVAL, 6, '0'))
 	, #{rqmTtl}
 	, #{rqmCntnt}
 	, #{strtDt}
