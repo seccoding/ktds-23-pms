@@ -11,7 +11,7 @@
 		, INFO
 		, DEL_YN)
 		VALUES 
-		  (('CLNT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_CLNT_PK.NEXTVAL, 6, '0'))
+		  (('CLNT_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_CLNT_PK.NEXTVAL, 6, '0'))
 		, #{clntName}
 		, #{cntct}
 		, #{info}
