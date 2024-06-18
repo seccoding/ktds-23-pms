@@ -76,7 +76,7 @@ public interface ReviewService {
 	 * @param reviewId 수정할 후기의 PK
 	 * @return 후기 수정 성공 여부
 	 */
-	public boolean reviewResultModify(Map<String, Object> modifyParam);
+	public boolean reviewResultModify(Map<String, Object> modifyParam, Map<String, Object> modifyRvYnParam);
 
 	public boolean getReviewYnByEmpIdAndPrjId(Map<String, String> param);
 

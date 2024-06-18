@@ -84,7 +84,7 @@ public class ApiReviewController {
 	
 	// 관리자 리뷰 삭제
 	@PutMapping("writes/{rvId}")
-	public ApiResponse deleteReview(@PathVariable String rvId, Authentication authentication) {
+	public ApiResponse deleteReview(@PathVariable String rvId, @RequestBody String prjId, Authentication authentication) {
 		
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
@@ -103,10 +103,14 @@ public class ApiReviewController {
 		
 		// 후기 수정 메서드 (삭제시 삭제일, 삭제한 관리자 ID 저장
 		Map<String, Object> modifyParam = new HashMap<>();
+		Map<String, Object> modifyRvYnParam = new HashMap<>();
 		modifyParam.put("empId", employeeVO.getEmpId());
 		modifyParam.put("reviewId", rvId);
+		modifyRvYnParam.put("prjId", prjId);
+		modifyRvYnParam.put("empId", employeeVO.getEmpId());
+		
 		System.out.println(modifyParam);
-		boolean isModifySuccess = this.reviewService.reviewResultModify(modifyParam);
+		boolean isModifySuccess = this.reviewService.reviewResultModify(modifyParam, modifyRvYnParam);
 		
 		if (isModifySuccess) {
 			logger.debug("후기 수정에 성공했습니다.");
