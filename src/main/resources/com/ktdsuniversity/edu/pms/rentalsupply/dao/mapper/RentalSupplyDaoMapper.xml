@@ -100,7 +100,7 @@
 		, RSPL_REGT_DT
 		, RSPL_MDF_DT)
 		VALUES
-		 ('RSPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RSUPPLY_PK.NEXTVAL, 6, '0')
+		 ('RSPL_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_RSUPPLY_PK.NEXTVAL, 6, '0')
 		, #{rsplName}
 		, #{rsplCtgr}
 		, #{rsplPrice}

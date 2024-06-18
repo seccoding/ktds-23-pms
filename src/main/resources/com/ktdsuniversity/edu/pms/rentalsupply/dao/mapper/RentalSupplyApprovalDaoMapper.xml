@@ -97,7 +97,7 @@
 			parameterType="com.ktdsuniversity.edu.pms.rentalsupply.vo.RentalSupplyApprovalVO">
 		
 		<selectKey keyProperty="rsplApprId" resultType="string" order="BEFORE">
-			SELECT 'RSPL_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_RSUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
+			SELECT 'RSPL_APPR_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_RSUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
 			  FROM DUAL
 		</selectKey>
 		

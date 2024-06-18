@@ -80,7 +80,7 @@
 			, APPR_END_DATE
 			, APPROVER
 			, SEARCH_YN)
-			SELECT ('APPR' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_APPR_PK.NEXTVAL, 6, '0')) AS APPR_ID
+			SELECT ('APPR' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_APPR_PK.NEXTVAL, 6, '0')) AS APPR_ID
 				 , T.*
 			  FROM(
 		<foreach item="approvalVO" index="index" collection="list" separator="UNION ALL">
