@@ -63,15 +63,7 @@ public class SecurityConfig {
 				.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/token")).permitAll()
 				.anyRequest().authenticated());
 		
-		http.formLogin( 
-				formLogin -> 
-				formLogin.loginPage("/employee/login")
-						.loginProcessingUrl("/member/login-proc")
-						.usernameParameter("empId")
-						.passwordParameter("pwd")
-						.successHandler(new LoginSuccessHandler())
-						.failureHandler(new LoginFailureHandler())	
-				);	
+		
 			
 		http.csrf(csrf-> csrf
 				.ignoringRequestMatchers(
