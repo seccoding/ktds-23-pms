@@ -101,7 +101,7 @@
 		, SPL_REGT_DT
 		, SPL_MDF_DT)
 		VALUES
-		 ('SPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_PK.NEXTVAL, 6, '0')
+		 ('SPL_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_SUPPLY_PK.NEXTVAL, 6, '0')
 		, #{splName}
 		, #{splCtgr}
 		, #{splPrice}

@@ -94,7 +94,7 @@
 			parameterType="com.ktdsuniversity.edu.pms.supply.vo.SupplyApprovalVO">
 		
 		<selectKey keyProperty="splApprId" resultType="string" order="BEFORE">
-			SELECT 'SPL_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
+			SELECT 'SPL_APPR_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_SUPPLY_APPROVAL_PK.NEXTVAL, 6, '0')
 			  FROM DUAL
 		</selectKey>
 		
