@@ -322,10 +322,24 @@ public class ApiProjectController {
 	    	List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
 			List<EmployeeVO> returnEmpList = new ArrayList<>();
 			for(EmployeeVO emp:employeeListVO) {
-				returnEmpList.add(this.employeeService.getOneEmployeenullCheck(emp.getEmpId()));
+				returnEmpList.add(this.employeeService.getOneEmployee(emp.getEmpId()));
 			}
 			return ApiResponse.Ok(returnEmpList);
 		}
+	    @GetMapping("/employee/login/findbydeptid/{deptId}")
+	    public ApiResponse findLoginEmployeesInfoByDeptId(@PathVariable String deptId, Authentication authentication) {
+	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+	    	EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
+	    	// 검증로직, 프로젝트 생성은 관리자만 가능하다.
+	    	
+	    	
+	    	List<EmployeeVO> employeeListVO = this.employeeService.findEmployeeLoginInfoByDeptId(deptId);
+//	    	List<EmployeeVO> returnEmpList = new ArrayList<>();
+//	    	for(EmployeeVO emp:employeeListVO) {
+//	    		returnEmpList.add(this.employeeService.getOneEmployeenullCheck(emp.getEmpId()));
+//	    	}
+	    	return ApiResponse.Ok(employeeListVO);
+	    }
 	    
 	    @GetMapping("/calendar/{prjId}")
 	    public ApiResponse getCalendar(@PathVariable String prjId,Authentication authentication) {

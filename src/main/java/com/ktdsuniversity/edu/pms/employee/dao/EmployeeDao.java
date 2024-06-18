@@ -91,4 +91,6 @@ public interface EmployeeDao {
 
 	public List<EmployeeInfoVO> getNewEmployeeList();
 
+	public List<EmployeeVO> findEmployeeLoginInfoByDeptId(String deptId);
+
 }

@@ -378,6 +378,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return this.employeeDao.getNewEmployeeList();
 	}
 
+	@Override
+	public List<EmployeeVO> findEmployeeLoginInfoByDeptId(String deptId) {
+		List<EmployeeVO> empList = this.employeeDao.findEmployeeLoginInfoByDeptId(deptId);
+		return empList;
+	}
+
+	
+
 
 
 }

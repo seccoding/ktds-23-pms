@@ -75,4 +75,7 @@ public interface EmployeeService {
 
 	public List<EmployeeInfoVO> getNewEmployeeList();
 
+	public List<EmployeeVO> findEmployeeLoginInfoByDeptId(String deptId);
+
+
 }
