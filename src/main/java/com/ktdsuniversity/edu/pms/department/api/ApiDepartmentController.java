@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,7 +81,7 @@ public class ApiDepartmentController {
 	
 	// 부서 등록 2단계 경영지원부 -> 대표이사
 	@PostMapping("/department")
-	public ApiResponse doCreateNewDepartment(DepartmentApprovalVO departmentApprovalVO, Authentication authentication) {
+	public ApiResponse doCreateNewDepartment(@RequestBody DepartmentApprovalVO departmentApprovalVO, Authentication authentication) {
 	
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
@@ -141,7 +142,7 @@ public class ApiDepartmentController {
 	
 	// 부서 수정
 	@PutMapping("/department/modify")
-	public ApiResponse modifyOneDepartment(DepartmentApprovalVO departmentApprovalVO, Authentication authentication) {
+	public ApiResponse modifyOneDepartment(@RequestBody DepartmentApprovalVO departmentApprovalVO, Authentication authentication) {
 	
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
@@ -155,7 +156,7 @@ public class ApiDepartmentController {
 
 	// 팀등록 부서장 -> 경영지원부장 -> 대표이사
 	@PostMapping("/team")
-	public ApiResponse doCreateNewTeam(TeamApprovalVO teamApprovalVO, Authentication authentication) {
+	public ApiResponse doCreateNewTeam(@RequestBody TeamApprovalVO teamApprovalVO, Authentication authentication) {
 				
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
@@ -168,7 +169,7 @@ public class ApiDepartmentController {
 	}
 	// 팀수정
 	@PutMapping("/team/modify")
-	public ApiResponse modifyOneTeam(TeamApprovalVO teamApprovalVO, Authentication authentication) {
+	public ApiResponse modifyOneTeam(@RequestBody TeamApprovalVO teamApprovalVO, Authentication authentication) {
 		
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 		EmployeeVO employeeVO = ((SecurityUser)userDetails).getEmployeeVO();
