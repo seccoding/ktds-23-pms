@@ -24,7 +24,7 @@
 	<insert id="insertDepartmentApprovalRequest" 
 			parameterType="com.ktdsuniversity.edu.pms.department.vo.DepartmentApprovalVO">
 		<selectKey keyProperty="deptApprId" resultType="string" order="BEFORE">
-				SELECT 'DEPT_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_DEPT_APPR_PK.NEXTVAL, 6, '0')
+				SELECT 'DEPT_APPR_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3) || '_' || LPAD(SEQ_DEPT_APPR_PK.NEXTVAL, 6, '0')
 				FROM DUAL
 			</selectKey>
 			
