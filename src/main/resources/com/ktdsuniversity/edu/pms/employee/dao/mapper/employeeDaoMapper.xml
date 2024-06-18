@@ -388,7 +388,7 @@
 			 , PWD = #{newPwd}
 			 , SALT = #{salt}
 			 </if>
-			 , BRTH = #{brth}
+			 , BRTH = TO_DATE(#{brth}, 'YYYY-MM-DD HH24:MI:SS')
 			 , EMAIL = #{email}
 			 , HIRE_YEAR = #{hireYear}
 			 , DEPT_ID = #{deptId}
@@ -443,10 +443,10 @@
 		VALUES
 		 (SUBSTR(TO_CHAR(SYSDATE, 'YYYYMM'), 3) || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0')
 		, #{empName}
-		, #{hireDt}
+		, TO_DATE(#{hireDt}, 'YYYY-MM-DD HH24:MI:SS')
 		, #{cntct}
 		, #{addr}
-		, #{brth}
+		, TO_DATE(#{brth}, 'YYYY-MM-DD HH24:MI:SS')
 		, SUBSTR(TO_CHAR(SYSDATE, 'YYYYMM'), 3) || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0') || '@pms.com'
 		, #{mngrYn}
 		, #{deptId}

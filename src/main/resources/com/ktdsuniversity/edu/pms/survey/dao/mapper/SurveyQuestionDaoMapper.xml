@@ -141,7 +141,7 @@
 	<insert id="insertNewSurveyQuestion" parameterType="com.ktdsuniversity.edu.pms.survey.vo.SurveyQuestionVO">
 	
 		<selectKey keyProperty="srvId" order="BEFORE" resultType="string">
-			SELECT 'SRV_QST_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_SURVEY_QUESTION_PK.NEXTVAL, 6, '0')
+			SELECT 'SRV_QST_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_SURVEY_QUESTION_PK.NEXTVAL, 6, '0')
 			  FROM DUAL
 		</selectKey>
 	
