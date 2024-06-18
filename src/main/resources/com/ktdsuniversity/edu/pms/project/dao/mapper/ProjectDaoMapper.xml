@@ -283,7 +283,7 @@
         SRV_STS,
         PRJ_MEMO)
         VALUES
-        (('PRJ_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_PK.NEXTVAL, 6, '0')),
+        (('PRJ_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_PROJECT_PK.NEXTVAL, 6, '0')),
         #{prjName},
         #{clntInfo},
         #{deptId},
@@ -307,7 +307,7 @@
         RV_YN,
 		SRV_YN)
         VALUES
-        (('PRJ_TM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0')),
+        (('PRJ_TM_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0')),
         #{prjId},
         #{tmId},
         #{role},
@@ -521,7 +521,7 @@
         "ROLE")
         VALUES
         (
-        'PRJ_TM_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0'),
+        'PRJ_TM_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_PROJECT_TEAMMATE_PK.NEXTVAL, 6, '0'),
         #{prjId},
         #{tmId},
         #{role}

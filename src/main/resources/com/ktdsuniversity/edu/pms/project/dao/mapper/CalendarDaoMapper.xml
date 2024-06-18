@@ -21,7 +21,7 @@
 			, PRJ_ID
 			, DEL_YN)
 			 VALUES 
-			 ('CLND_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_CLND_PK.NEXTVAL, 6, '0')
+			 ('CLND_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_CLND_PK.NEXTVAL, 6, '0')
 			, #{clndDate}
 			, #{clndContent}
 			, #{prjId}
