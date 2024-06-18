@@ -161,10 +161,13 @@ public class ReviewServiceImpl implements ReviewService {
 	// 리뷰 삭제시 실행되는 메서드 (삭제일, 삭제한 관리자 ID 업데이트)
 	@Transactional
 	@Override
-	public boolean reviewResultModify(Map<String, Object> modifyParam) {
+	public boolean reviewResultModify(Map<String, Object> modifyParam, Map<String, Object> modifyParamRvyn) {
 		int modifySuccess = this.reviewDao.reviewResultModify(modifyParam);
+		int updateSuccess = this.reviewDao.updatePtRvyn(modifyParamRvyn);
 		
-		return modifySuccess > 0;
+		boolean isSuccess = modifySuccess > 0 && updateSuccess > 0 ?  true : false;
+		
+		return isSuccess;
 	}
 
 	// 리뷰 작성 가능 여부를 가져오는 메서드

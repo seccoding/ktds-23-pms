@@ -131,6 +131,10 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	
 		return getSqlSession().update(ReviewDao.NAME_SPACE + ".reviewResultModify", modifyParam);
 	}
+	@Override
+	public int updatePtRvyn(Map<String, Object> modifyParamRvyn) {
+		return getSqlSession().update(ReviewDao.NAME_SPACE + ".updatePtRvyn", modifyParamRvyn);
+	}
 
 	/**
 	 * 후기 작성 여부 확인 메서드
@@ -157,6 +161,8 @@ public class ReviewDaoImpl extends SqlSessionDaoSupport implements ReviewDao{
 	public int getDoneEmpIdList(String prjId) {
 		return getSqlSession().selectOne(ReviewDao.NAME_SPACE+".getDoneEmpIdList", prjId);
 	}
+
+	
 
 	
 	

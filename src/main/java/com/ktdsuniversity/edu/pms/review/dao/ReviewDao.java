@@ -87,6 +87,7 @@ public interface ReviewDao {
 	 * @return 성공 여부 int 반환
 	 */
 	public int reviewResultModify(Map<String, Object> modifyParam);
+	public int updatePtRvyn(Map<String, Object> modifyParamRvyn);
 
 	/**
 	 * 리뷰 작성 가능 여부를 반환하는 메서드
@@ -101,5 +102,7 @@ public interface ReviewDao {
 	public int getReviewResultCount(String prjId);
 
 	public int getDoneEmpIdList(String prjId);
+	
+	
 	
 }

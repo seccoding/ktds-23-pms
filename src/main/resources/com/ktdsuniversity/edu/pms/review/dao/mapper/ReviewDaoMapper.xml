@@ -294,6 +294,13 @@
     	   SET MDF_DT = SYSDATE
     	     , MDFR_ID = #{empId}
     	 WHERE RV_ID = #{reviewId}
+   	</update>
+   	
+   	<update id="updatePtRvyn" parameterType="string">
+   		UPDATE PROJECT_TEAMMATE
+   		   SET RV_YN = 'N'
+   		 WHERE TM_ID = #{empId}
+   		   AND PRJ_ID = #{prjId}
    	</update>	
 	
 	<select id="getReviewYnByEmpIdAndPrjId"
