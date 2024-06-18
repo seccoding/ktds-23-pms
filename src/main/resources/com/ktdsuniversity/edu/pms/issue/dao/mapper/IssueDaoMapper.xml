@@ -237,7 +237,7 @@
 		, FILE_NAME
 		, ORIGIN_FILE_NAME)
 		VALUES
-		(('IS_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_ISSUE_PK.NEXTVAL, 6,
+		(('IS_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_ISSUE_PK.NEXTVAL, 6,
 		'0'))
 		, #{rqmId}
 		, #{isTtl}
