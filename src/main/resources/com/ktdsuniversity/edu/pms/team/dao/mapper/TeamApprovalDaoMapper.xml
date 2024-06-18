@@ -7,7 +7,7 @@
 	<insert id="insertTeamApprovalRequest" 
 		parameterType="com.ktdsuniversity.edu.pms.team.vo.TeamApprovalVO">
 		<selectKey keyProperty="tmApprId" resultType="string" order="BEFORE">
-				SELECT 'TM_APPR_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_TM_APPR_PK.NEXTVAL, 6, '0')
+				SELECT 'TM_APPR_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3) || '_' || LPAD(SEQ_TM_APPR_PK.NEXTVAL, 6, '0')
 				  FROM DUAL
 			</selectKey>
 			
