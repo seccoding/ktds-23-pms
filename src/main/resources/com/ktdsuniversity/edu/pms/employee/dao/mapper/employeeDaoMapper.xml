@@ -441,13 +441,13 @@
 		, PWD
 		, SALT)
 		VALUES
-		 (TO_CHAR(SYSDATE, 'YYMM') || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0')
+		 (SUBSTR(TO_CHAR(SYSDATE, 'YYYYMM'), 3) || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0')
 		, #{empName}
 		, #{hireDt}
 		, #{cntct}
 		, #{addr}
 		, #{brth}
-		, TO_CHAR(SYSDATE, 'YYMM') || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0') || '@pms.com'
+		, SUBSTR(TO_CHAR(SYSDATE, 'YYYYMM'), 3) || LPAD(SEQ_EMP_PK.NEXTVAL, 3, '0') || '@pms.com'
 		, #{mngrYn}
 		, #{deptId}
 		, #{jobId}
@@ -522,7 +522,7 @@
 		, DEPT_ID
 		, DEL_YN)
 		VALUES 
-		 ('ASGN_'||TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_TEAM_PK.NEXTVAL, 6, '0')
+		 ('ASGN_'||SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_TEAM_PK.NEXTVAL, 6, '0')
 		, #{teamVO.tmName}
 		, SYSDATE
 		, #{teamVO.tmLeadId}
