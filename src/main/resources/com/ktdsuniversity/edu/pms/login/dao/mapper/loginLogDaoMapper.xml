@@ -164,7 +164,8 @@
 		parameterType="com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO">
 		UPDATE EMPLOYEE
 		SET LGN_TRY = 0
-		  , LGN_TRY_DT = SYSDATE	
+		  , LGN_TRY_DT = SYSDATE
+		  , LGN_YN ='Y'	
 		WHERE EMP_ID = #{empId}
 	</update>
 

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.pms.approval.service.ApprovalServiceImpl;
 import com.ktdsuniversity.edu.pms.beans.SHA;
+import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
 import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdAndPwdIsNotMatchException;
 import com.ktdsuniversity.edu.pms.exceptions.EmpIdEndDTException;
@@ -38,6 +39,9 @@ public class LoginLogServiceImpl implements LoginLogService {
 
 	@Autowired
 	private SHA sha;
+	
+	@Autowired
+	private EmployeeDao employeeDao;
 
 	@Override
 	public EmployeeVO getOneEmployeeByEmpIdAndPwd(EmployeeVO employeeVO) {
@@ -264,6 +268,9 @@ public class LoginLogServiceImpl implements LoginLogService {
 	@Transactional
 	public int insertLogoutProcess(String empId, boolean isLeaveWork) {
 		this.loginLogDao.updateEmpLogout(empId);
+		EmployeeVO employeeVO = new EmployeeVO();
+		employeeVO.setEmpId(empId);
+		this.loginLogDao.updateOneEmpIdNotUseNow(employeeVO);
 		if(isLeaveWork) {/*isLeaveWork 가 true 일 경우 퇴근 기록*/
 			this.commuteDao.updateCommuteLeaveWork(empId);
 		}
