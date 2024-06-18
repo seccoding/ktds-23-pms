@@ -317,9 +317,7 @@ public class ApiProjectController {
 	    	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
 	        // 검증로직, 프로젝트 생성은 관리자만 가능하다.
-	        if (!employeeVO.getAdmnCode().equals("301")) {
-	        	return ApiResponse.FORBIDDEN("접근 권한이 없습니다.");
-	        }
+	        
 	    	
 	    	List<EmployeeVO> employeeListVO = this.employeeService.findEmployeesByDeptId(deptId);
 			List<EmployeeVO> returnEmpList = new ArrayList<>();
