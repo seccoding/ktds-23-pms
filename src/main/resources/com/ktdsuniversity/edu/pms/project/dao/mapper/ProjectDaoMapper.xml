@@ -288,8 +288,8 @@
         #{clntInfo},
         #{deptId},
         '401',
-        TO_DATE(#{strtDt}, 'YYYYMMDD'),
-        TO_DATE(#{endDt}, 'YYYYMMDD'),
+        TO_DATE(#{strtDt}, 'YYYY-MM-DD'),
+        TO_DATE(#{endDt}, 'YYYY-MM-DD'),
         'N',
         #{crtrId},
         'N',
@@ -405,8 +405,8 @@
            SET PRJ_NAME = #{prjName}
              , CLNT_INFO = #{clntInfo}
              , DEPT_ID = #{deptId}
-             , STRT_DT = #{strtDt}
-             , END_DT = #{endDt}
+             , STRT_DT = TO_DATE(#{strtDt},'YYYY-MM-DD')
+             , END_DT = TO_DATE(#{endDt},'YYYY-MM-DD')
              , PRJ_STS = #{prjSts}
              , MDFR_ID = #{mdfId}  
              , MDF_DT = SYSDATE

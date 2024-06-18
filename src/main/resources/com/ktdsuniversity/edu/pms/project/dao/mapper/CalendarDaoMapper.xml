@@ -22,7 +22,7 @@
 			, DEL_YN)
 			 VALUES 
 			 ('CLND_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_CLND_PK.NEXTVAL, 6, '0')
-			, #{clndDate}
+			, TO_DATE(#{clndDate}, 'YYYY-MM-DD')
 			, #{clndContent}
 			, #{prjId}
 			, 'N')
@@ -31,7 +31,7 @@
 	<update id="modifyCalendar" parameterType="com.ktdsuniversity.edu.pms.project.vo.CalendarVO">
 		UPDATE CALENDAR 
 		   SET CLND_CONTENT = #{clndContent}
-		 WHERE CLND_DATE = #{clndDate}
+		 WHERE CLND_DATE = TO_DATE(#{clndDate}, 'YYYY-MM-DD')
 		   AND PRJ_ID = #{prjId}
 	</update>
 </mapper>
