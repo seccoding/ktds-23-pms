@@ -87,7 +87,7 @@
 			, MDFR_ID
 			, DEL_YN)
 		VALUES
-			 (('RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REPLY_PK.NEXTVAL, 6, '0'))
+			 (('RPL_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3) || '_' || LPAD(SEQ_REPLY_PK.NEXTVAL, 6, '0'))
 			, #{rplPid}
 			, #{rplCntnt}
 			, #{pPostId}
@@ -131,7 +131,7 @@
 		REP_REC_YN, 
 		REP_RPL_ID, 
 		REP_CRTR_ID)
-		VALUES(('RPL_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD(SEQ_REPLYRECOMMEND_PK.NEXTVAL, 6, '0')) 
+		VALUES(('RPL_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3) || '_' || LPAD(SEQ_REPLYRECOMMEND_PK.NEXTVAL, 6, '0')) 
 		,'Y'  
 		,#{reprplid}
 		,#{repcrtrid})
