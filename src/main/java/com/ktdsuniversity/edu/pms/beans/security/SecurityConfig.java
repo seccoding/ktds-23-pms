@@ -83,7 +83,7 @@ public class SecurityConfig {
 			CorsConfigurationSource sourse =request->{
 				CorsConfiguration config = new CorsConfiguration();
 				
-				config.setAllowedOrigins(List.of("http://localhost:3000","http://43.202.29.221"));
+				config.setAllowedOrigins(List.of("*"));
 //				전자 로컬 react 서버, 후자 젠킨스  서버
 				config.setAllowedMethods(List.of("GET","PUT","POST","DELETE"));
 				config.setAllowedHeaders(List.of("*"));
