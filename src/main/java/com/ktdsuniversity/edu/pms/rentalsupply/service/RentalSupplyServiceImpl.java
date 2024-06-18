@@ -348,17 +348,17 @@ public class RentalSupplyServiceImpl implements RentalSupplyService{
 	    int requestedCount = this.rentalSupplyApprovalDao.updateOneRentalSupplyForReturn(rentalSupplyApprovalVO);
 	    this.rentalSupplyDao.updateOneRentalSupply(originalRentalSupplyVO);
 	    
-	    List<String> approvalList = new ArrayList<>();
-	    DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
-	    String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
-	    
-	    approvalList.add(mgmtSprtDeptLeadId);
-	    
-	    ApprovalVO approvalVO = new ApprovalVO();
-	    approvalVO.setApprType("RSUPPLY");
-	    approvalVO.setApprInfo(rentalSupplyApprovalVO.getRsplApprId());
-	    approvalVO.setApprReqtr(employeeVO.getEmpId());
-	    this.approvalDao.insertApproval(approvalList, approvalVO);
+//	    List<String> approvalList = new ArrayList<>();
+//	    DepartmentVO mgmtSprtDeptVO = this.departmentDao.getOneDepartment("DEPT_230101_000010");
+//	    String mgmtSprtDeptLeadId = mgmtSprtDeptVO.getDeptLeadId();
+//	    
+//	    approvalList.add(mgmtSprtDeptLeadId);
+//	    
+//	    ApprovalVO approvalVO = new ApprovalVO();
+//	    approvalVO.setApprType("RSUPPLY");
+//	    approvalVO.setApprInfo(rentalSupplyApprovalVO.getRsplApprId());
+//	    approvalVO.setApprReqtr(employeeVO.getEmpId());
+//	    this.approvalDao.insertApproval(approvalList, approvalVO);
 
 	    return requestedCount > 0;
 
