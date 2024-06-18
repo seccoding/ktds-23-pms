@@ -48,7 +48,7 @@
               , RCV_CODE
               , RCV_SAVE_YN
               , RCV_DEL_YN)
-        SELECT 'RCV_MM' || TO_CHAR(SYSDATE, 'YYMMDD')
+        SELECT 'RCV_MM' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3)
                 || '_' || LPAD(SEQ_RECEIVE_MEMO_PK.NEXTVAL, 6, '0'), RCV.*
           FROM (
         <foreach collection="list" item="receiveMemoVO" separator="UNION ALL">

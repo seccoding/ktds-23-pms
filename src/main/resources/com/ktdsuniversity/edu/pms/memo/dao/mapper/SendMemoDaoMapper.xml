@@ -84,7 +84,7 @@
     </insert>
 
     <select id="selectSendMemoId" resultType="string">
-        SELECT 'SEND_MM_' || TO_CHAR(SYSDATE, 'YYMMDD')
+        SELECT 'SEND_MM_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3)
                || '_' || LPAD(SEQ_SEND_MEMO_PK.NEXTVAL, 6, '0')
           FROM DUAL
     </select>
