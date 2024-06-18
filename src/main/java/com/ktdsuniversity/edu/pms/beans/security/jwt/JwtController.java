@@ -82,7 +82,7 @@ public class JwtController {
 		}else {
 //			로그인 시도횟수 1 증가, 로그인 기록 db 삽입, 출근기록이 없을시 출근기록 db삽입
 			this.loginLogService.insertLoginProcess(empId, true);
-			String jwt =jsonWebTokenProvider.generateToken(Duration.ofMinutes(20), dbEmployee);
+			String jwt =jsonWebTokenProvider.generateToken(Duration.ofMinutes(240), dbEmployee);
 			EmployeeVO employeeVO = this.jsonWebTokenProvider.getUserFormToken(jwt);
 			SecurityUser user = new SecurityUser(employeeVO);
 			
