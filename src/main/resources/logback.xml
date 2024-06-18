@@ -26,7 +26,7 @@
 	<!-- 
 	TRACE > DEBUG > INFO > WARN > ERROR
 	 -->
-	<root level="debug">
+	<root level="info">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
