@@ -157,7 +157,7 @@
 		 , FILE_NAME
 		 , ORIGIN_FILE_NAME)
 	VALUES
-	     (('KNL' || '_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' || LPAD (SEQ_KNOWLEDGE_PK.NEXTVAL, 6, '0'))
+	     (('KNL' || '_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'),3) || '_' || LPAD (SEQ_KNOWLEDGE_PK.NEXTVAL, 6, '0'))
 	     , #{knlTtl}
 	     , #{knlCntnt}
 	     , 0
