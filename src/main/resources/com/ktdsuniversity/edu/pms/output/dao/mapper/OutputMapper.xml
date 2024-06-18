@@ -233,7 +233,7 @@
 		, DEL_YN
 		, OUT_VER_NUM)
 		VALUES
-		( ('OUT_' || TO_CHAR(SYSDATE, 'YYMMDD') || '_' ||
+		( ('OUT_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' ||
 		LPAD(SEQ_OUTPUT_PK.NEXTVAL, 6, '0'))
 		, #{outType}
 		, #{outTtl}
