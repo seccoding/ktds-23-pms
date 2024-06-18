@@ -82,10 +82,9 @@ public class SecurityConfig {
 		http.cors(cors ->{
 			CorsConfigurationSource sourse =request->{
 				CorsConfiguration config = new CorsConfiguration();
-				
 				config.setAllowedOrigins(List.of("*"));
 //				전자 로컬 react 서버, 후자 젠킨스  서버
-				config.setAllowedMethods(List.of("GET","PUT","POST","DELETE"));
+				config.setAllowedMethods(List.of("*"));
 				config.setAllowedHeaders(List.of("*"));
 				return config;
 			};
