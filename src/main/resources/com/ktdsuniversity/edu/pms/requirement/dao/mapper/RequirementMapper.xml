@@ -343,8 +343,8 @@ SELECT  R.RQM_ID
 	( ('RQM_' || SUBSTR(TO_CHAR(SYSDATE, 'YYYYMMDD'), 3) || '_' || LPAD(SEQ_RQM_PK.NEXTVAL, 6, '0'))
 	, #{rqmTtl}
 	, #{rqmCntnt}
-	, #{strtDt}
-	, #{endDt}
+	, TO_DATE(#{strtDt}, 'YYYY-MM-DD')
+	, TO_DATE(#{endDt}, 'YYYY-MM-DD')
 	, #{rqmFile}
 	, #{dvlrp}
 	, #{cfrmr}
@@ -366,8 +366,8 @@ SELECT  R.RQM_ID
 	parameterType="com.ktdsuniversity.edu.pms.requirement.vo.RequirementVO">
 	UPDATE PMS.REQUIREMENT SET 
 	  RQM_CNTNT=#{rqmCntnt}
-	, STRT_DT=#{strtDt}
-	, END_DT=#{endDt}
+	, STRT_DT=TO_DATE(#{strtDt}, 'YYYY-MM-DD')
+	, END_DT=TO_DATE(#{endDt}, 'YYYY-MM-DD')
 	, RQM_FILE=#{rqmFile}
 	, RQM_ENCODE_FILE=#{rqmEncodeFile}
 	, SCD_STS=#{scdSts}
