@@ -20,14 +20,14 @@ public abstract class StringUtil {
 	 * @param str 입력받은 사원번호
 	 * @return 사원번호 형식이 맞다면 true, 틀리다면 false
 	 */
-	public final static boolean isEmpIdFormat(final String str) {
+	public final static boolean isMemIdFormat(final String str) {
 		if (isEmpty(str)) {
 			return true;
 		}
 
-		String EmpIdFormat = "(\\d{7}|.*system.*)";
+		String MemIdFormat = "(\\d{7}|.*system.*)";
 
-		return str.matches(EmpIdFormat);
+		return str.matches(MemIdFormat);
 	}
 
 

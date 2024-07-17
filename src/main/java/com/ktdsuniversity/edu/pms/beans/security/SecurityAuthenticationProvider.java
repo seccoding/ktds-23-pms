@@ -25,12 +25,12 @@ public class SecurityAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
-		String empId = authentication.getName();
+		String memId = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		
-		UserDetails userDetails = this.userDetailsService.loadUserByUsername(empId);
+		UserDetails userDetails = this.userDetailsService.loadUserByUsername(memId);
 		
-		String salt = ((SecurityUser)userDetails).getEmployeeVO().getSalt();
+		String salt = ((SecurityUser)userDetails).getMemberVO().getSalt();
 		
 		((SecuritySHA)passwordEncoder).setSalt(salt);
 		

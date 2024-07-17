@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.member.vo.MemberVO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,11 +27,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 		Object user = authentication.getPrincipal();
 		
 		if(user instanceof UserDetails) {
-			EmployeeVO employeeVO = ((SecurityUser)user).getEmployeeVO();
-			logger.info("empId :"+employeeVO.getEmpId());
-			logger.info("password :"+employeeVO.getPwd());
+			MemberVO memberVO = ((SecurityUser)user).getMemberVO();
+			logger.info("memId :"+memberVO.getMemId());
+			logger.info("password :"+memberVO.getPwd());
 		}else {
-			logger.info("empId :"+user);
+			logger.info("memId :"+user);
 		}
 		
 		response.sendRedirect("/requirement/search");

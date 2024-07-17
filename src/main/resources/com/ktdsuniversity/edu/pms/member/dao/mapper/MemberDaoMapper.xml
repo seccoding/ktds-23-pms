@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ktdsuniversity.edu.pms.member.dao.MemberDao">
+
+	<select id="getOneMember" parameterType="string"
+		resultType="com.ktdsuniversity.edu.pms.member.vo.MemberVO">
+		SELECT MEM_ID
+		, PWD
+		, SALT
+		<!--, SYM_KEY-->
+		, NAME
+		, CONT
+		, ADDR
+		, EMAIL
+		, BDAY
+		, JN_DT
+		, TRM_DT
+		, PHN_PLAN_ID
+		, PAY_MTHD
+		, LOG_TRY_CNT
+		, ID_LOCK_YN
+		, MGR_YN
+		, WDRL_YN
+		FROM MEMBER
+		WHERE WDRL_YN != 'Y'
+	</select>
+
+	<insert id="createMember"
+		parameterType="com.ktdsuniversity.edu.pms.member.vo.MemberVO">
+		INSERT INTO MEMBER
+		(MEM_ID
+		, PWD
+		, SALT
+		, NAME
+		, CONT
+		, ADDR
+		, EMAIL
+		, BDAY
+		, JN_DT
+		, TRM_DT
+		, PHN_PLAN_ID
+		, PAY_MTHD
+		, LOG_TRY_CNT
+		, ID_LOCK_YN
+		, MGR_YN
+		, WDRL_YN)
+		VALUES
+		(#{memId}
+		, #{pwd}
+		, #{salt}
+		, #{name}
+		, #{cont}
+		, #{addr}
+		, #{email}
+		, #{bday}
+		, SYSDATE
+		, NULL
+		, #{phnPlanId}
+		, #{payMthd}
+		, 0
+		, 'N'
+		, 'N'
+		, 'N')
+	</insert>
+
+</mapper>

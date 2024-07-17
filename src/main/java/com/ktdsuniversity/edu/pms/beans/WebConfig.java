@@ -2,7 +2,6 @@ package com.ktdsuniversity.edu.pms.beans;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,88 +11,71 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.ktdsuniversity.edu.pms.beans.security.jwt.JsonWebTokenProvider;
-import com.ktdsuniversity.edu.pms.login.service.VisitedService;
-
 @Configuration
 @Configurable
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
-	@Autowired
-	private VisitedService visitedService;
-	
-	@Autowired 
-	private JsonWebTokenProvider jsonWebTokenProvider;
-	
-	@Value("${app.tempsession.enable:false}")
-	private boolean enableTempSession;
 
-//	@Value("${app.tempsession.empId}")
-//	private String empId;
-//
-//	@Value("${app.tempsession.empName}")
-//	private String empName;
+    @Value("${app.tempsession.enable:false}")
+    private boolean enableTempSession;
 
-	@Value("${app.authentication.check-url-pattern:/**}")
-	private String authCheckUrlPattern;
+    @Value("${app.tempsession.memId:defaultMemId}")
+    private String tempMemId;
 
-	@Value("${app.authentication.ignore-url-patterns:}")
-	private List<String> authCheckIgnoreUrlPatterns;
+    @Value("${app.tempsession.Name:defaultName}")
+    private String tempName;
 
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
+    @Value("${app.authentication.check-url-pattern:/**}")
+    private String authCheckUrlPattern;
 
-		registry.jsp("/WEB-INF/views/", ".jsp");
-	}
+    @Value("${app.authentication.ignore-url-patterns:}")
+    private List<String> authCheckIgnoreUrlPatterns;
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/js/**") // /js/로 시작하는 모든 URL
-				.addResourceLocations("classpath:/static/js/");
-		registry.addResourceHandler("/css/**") // /css/로 시작하는 모든 URL
-				.addResourceLocations("classpath:/static/css/");
-		registry.addResourceHandler("/images/**") // /image/로 시작하는 모든 URL
-				.addResourceLocations("classpath:/static/images/");
-		registry.addResourceHandler("/html/**") // /image/로 시작하는 모든 URL
-				.addResourceLocations("classpath:/static/html/");
-	}
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.jsp("/WEB-INF/views/", ".jsp");
+    }
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/");
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("classpath:/static/images/");
+        registry.addResourceHandler("/html/**")
+                .addResourceLocations("classpath:/static/html/");
+    }
 
-//		tempSession 으로 관리자 권한을 부여하던 코드, 해당 interceptor가 삭제되어 주석처리
-//		if (this.enableTempSession) {
-//			TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
-//			tempSessionInterceptor.setEnableTempSession(enableTempSession);
-//			tempSessionInterceptor.setTempEmpId(empId);
-//			tempSessionInterceptor.setTempEmpName(empName);
-//
-//			registry.addInterceptor(tempSessionInterceptor)
-//					.addPathPatterns("/**");
-//		}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        if (this.enableTempSession) {
+            TempSessionInterceptor tempSessionInterceptor = new TempSessionInterceptor();
+            tempSessionInterceptor.setEnableTempSession(enableTempSession);
+            tempSessionInterceptor.setTempMemId(tempMemId);
+            tempSessionInterceptor.setTempName(tempName);
 
-		RecordScreenAccessAfterLoginInterceptor rsaalException = new RecordScreenAccessAfterLoginInterceptor();
-		rsaalException.setVisitedService(visitedService);
-		rsaalException.setJsonWebTokenProvider(jsonWebTokenProvider);
-		
-		
-		//세션에 값이 있으면 해당 방문한 페이지를 DB에 저장시키는 interceptor
-//		registry.addInterceptor(rsaalException)
-//				.addPathPatterns(this.authCheckUrlPattern)
-//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
-		
-		//세션에 값이 없으면 url로 접근을 막는 interceptor
-//		registry.addInterceptor(new LoginInterceptor())
-//				.addPathPatterns(this.authCheckUrlPattern)
-//				.excludePathPatterns(this.authCheckIgnoreUrlPatterns);
-		
-//		서버에 요청시 해당 url 과 사용자의 아이디를 DB에 insert 하고 log 를 남김
-		registry.addInterceptor(rsaalException)
-				.addPathPatterns("/**")
-				.excludePathPatterns("/auth/token");
+            registry.addInterceptor(tempSessionInterceptor)
+                    .addPathPatterns("/**");
+        }
 
-		//경영지원부가 아니라면 아래 url의 접근을 막는 interceptor
-//		registry.addInterceptor(new RestrictRegistInterceptor())
-//				.addPathPatterns("/employee/regist", "/ajax/employee/regist");
-	}
+        RecordScreenAccessAfterLoginInterceptor rsaalInterceptor = new RecordScreenAccessAfterLoginInterceptor();
+
+        // 세션에 값이 있으면 해당 페이지에 접근을 허용하는 인터셉터
+        registry.addInterceptor(rsaalInterceptor)
+                .addPathPatterns(this.authCheckUrlPattern)
+                .excludePathPatterns(this.authCheckIgnoreUrlPatterns)
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/api/v1/login")
+                .excludePathPatterns("/api/v1/member");
+
+        // 세션에 값이 없으면 URL로 접근을 막는 인터셉터
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns(this.authCheckUrlPattern)
+                .excludePathPatterns(this.authCheckIgnoreUrlPatterns)
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/api/v1/login")
+                .excludePathPatterns("/api/v1/member");
+    }
 }

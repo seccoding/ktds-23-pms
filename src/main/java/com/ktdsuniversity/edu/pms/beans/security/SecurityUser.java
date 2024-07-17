@@ -3,14 +3,11 @@ package com.ktdsuniversity.edu.pms.beans.security;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import org.apache.ibatis.annotations.Case;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ktdsuniversity.edu.pms.employee.dao.EmployeeDao;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
-import com.ktdsuniversity.edu.pms.login.dao.LoginLogDao;
+import com.ktdsuniversity.edu.pms.member.vo.MemberVO;
 
 public class SecurityUser implements UserDetails {
 	
@@ -20,17 +17,17 @@ public class SecurityUser implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private EmployeeVO employeeVO;
+	private MemberVO memberVO;
 	
-	public SecurityUser (EmployeeVO employeeVO) {
-		this.employeeVO= employeeVO;
+	public SecurityUser (MemberVO memberVO) {
+		this.memberVO= memberVO;
 	}
 	
-	public EmployeeVO getEmployeeVO() {
-		return employeeVO;
+	public MemberVO getMemberVO() {
+		return memberVO;
 	}
-	public void setEmployeeVO(EmployeeVO employeeVO) {
-		this.employeeVO = employeeVO;
+	public void setMemberVO(MemberVO memberVO) {
+		this.memberVO = memberVO;
 	}
 
 
@@ -45,12 +42,12 @@ public class SecurityUser implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return this.employeeVO.getPwd();
+		return this.memberVO.getPwd();
 	}
 
 	@Override
 	public String getUsername() {
-		return this.employeeVO.getEmpName();
+		return this.memberVO.getName();
 	}
 
 //	계정만료 여부
@@ -62,7 +59,7 @@ public class SecurityUser implements UserDetails {
 //	로그인 사용자 계정의 잠금처리 여부
 	@Override
 	public boolean isAccountNonLocked() {
-		if(!this.employeeVO.getWorkSts().equals("201")) {
+		if(!this.memberVO.getIdLockYn().equals("N")) {
 			return false;
 		}
 		return true;
@@ -70,25 +67,22 @@ public class SecurityUser implements UserDetails {
 	
 	public String isAccountNonLockedCode(){
 		if(!this.isAccountNonLocked()) {// 휴직 or 퇴직 사원인경우
-			return this.employeeVO.getWorkSts();
+			return this.memberVO.getIdLockYn();
 		}
 		return null;
 	}
 	
-//	비밀번호 유효기간 만료여부
-	@Override
-	public boolean isCredentialsNonExpired() {
-		LocalDate pwdCnDt = LocalDate.parse(this.employeeVO.getPwdCnDt());
-		pwdCnDt =pwdCnDt.plusDays(90);
-		LocalDate date = LocalDate.now();
-		
-		return date.isBefore(pwdCnDt) ;
-	}
+
 	
 //	  해당계정 사용여부
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return false;
 	}
 
 }

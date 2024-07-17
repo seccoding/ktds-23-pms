@@ -11,7 +11,7 @@ import java.util.Map;
 public class Validator<T> {
 	
 	public enum Type {
-		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, EMPID, DEPTID, JOBID, PSTNID, DATE, NOW_DATE, IMAGE_FILE
+		NOT_EMPTY, SIZE, EMAIL, EQUALS, PASSWORD, MAX, MIN, MEMID, DEPTID, JOBID, PSTNID, DATE, NOW_DATE, IMAGE_FILE
 	}
 
 	private T object;
@@ -68,8 +68,8 @@ public class Validator<T> {
 				} else if (type == Type.EMAIL) {
 					result = StringUtil.isEmailFormat(value);
 				}
-				else if (type == Type.EMPID) {
-					result = StringUtil.isEmpIdFormat(value);
+				else if (type == Type.MEMID) {
+					result = StringUtil.isMemIdFormat(value);
 				}
 				else if (type == Type.SIZE) {
 					if (this.hasRefValue(key, type)) {

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ktdsuniversity.edu.pms.beans.security.SecurityUser;
-import com.ktdsuniversity.edu.pms.employee.vo.EmployeeVO;
+import com.ktdsuniversity.edu.pms.member.vo.MemberVO;
 import com.ktdsuniversity.edu.pms.utils.ApiResponse;
 
 @RestController
@@ -17,7 +17,7 @@ public class ApiMainController {
 	@GetMapping("/")
 	public ApiResponse viewLoginInfo(Authentication authentication) {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-		EmployeeVO employeeVO = ((SecurityUser) userDetails).getEmployeeVO();
-		return ApiResponse.Ok(employeeVO);
+		MemberVO memberVO = ((SecurityUser) userDetails).getMemberVO();
+		return ApiResponse.Ok(memberVO);
 	}
 }

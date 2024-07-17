@@ -1,11 +1,11 @@
 spring:
   application.name: pms
   datasource:
-# 아마존 서버로 변경 240605 정세영
-    url: jdbc:oracle:thin:@43.202.29.221:1521:XE
+# 로컬 서버로 변경
+    url: jdbc:oracle:thin:@localhost:1521:XE
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    username: PMS
-    password: pms
+    username: hr
+    password: 142857
   servlet:
     # 파일 업로드 설정
     multipart:
